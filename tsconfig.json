@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "removeComments": false, // comments are required for bundle splitting using webpackChunkName
+    "module": "ESNext",
+    "target": "ESNext",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
+  }
+}

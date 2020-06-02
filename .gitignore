@@ -1,0 +1,14 @@
+# OSX
+.DS_Store
+
+# node.js
+node_modules/
+
+dist
+
+# logs
+*.log
+npm-debug.log*
+
+# idea(s)
+.idea
