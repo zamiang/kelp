@@ -1,21 +1,17 @@
-/**
- * process.env.NODE_ENV is used to determine to return production config or not
- * env is a string passed by "webpack --env" on command line or calling this function directly
- *
- */
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { EnvironmentPlugin } = require("webpack");
+const secrets = require("./secrets.json");
 
 const isProduction = process.env.NODE_ENV === "production";
-
-const CURRENT_WORKING_DIR = process.cwd();
+const currentWorkingDirectory = process.cwd();
 
 const paths = {
-  app: path.resolve(CURRENT_WORKING_DIR, "app"),
-  dist: path.resolve(CURRENT_WORKING_DIR, "dist"),
-  assets: path.resolve(CURRENT_WORKING_DIR, "public"),
-  modules: path.resolve(CURRENT_WORKING_DIR, "node_modules"),
+  app: path.resolve(currentWorkingDirectory, "app"),
+  dist: path.resolve(currentWorkingDirectory, "dist"),
+  assets: path.resolve(currentWorkingDirectory, "public"),
+  modules: path.resolve(currentWorkingDirectory, "node_modules"),
 };
 
 const node = {
@@ -41,6 +37,11 @@ const getClientConfig = () => ({
       lang: "en-US",
       appMountId: "root",
       template: require("html-webpack-template"),
+    }),
+    new EnvironmentPlugin({
+      GOOGLE_CLIENT_ID: secrets.client_id,
+      GOOGLE_CLIENT_SECRET: secrets.client_secret,
+      NODE_ENV: "development",
     }),
   ],
   module: {
