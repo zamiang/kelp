@@ -1,11 +1,11 @@
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import clsx from "clsx";
-import React from "react";
-import { styles } from "./app";
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import clsx from 'clsx';
+import React from 'react';
+import { styles } from './app';
 
 interface IProps {
   isOpen: boolean;
@@ -17,10 +17,7 @@ const LeftDrawer = (props: IProps) => (
   <Drawer
     variant="permanent"
     classes={{
-      paper: clsx(
-        props.classes.drawerPaper,
-        !props.isOpen && props.classes.drawerPaperClose
-      ),
+      paper: clsx(props.classes.drawerPaper, !props.isOpen && props.classes.drawerPaperClose),
     }}
     open={props.isOpen}
   >
