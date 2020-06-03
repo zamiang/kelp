@@ -144,8 +144,13 @@ const App = () => {
     cookiePolicy: 'single_host_origin',
     autoLoad: false,
     fetchBasicProfile: true,
-    scope:
-      'https://www.googleapis.com/auth/gmail.metadata https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/drive.activity.readonly https://www.googleapis.com/auth/calendar.events.readonly',
+    scope: [
+      'https://www.googleapis.com/auth/gmail.readonly', // Despite not needing the content of messages, readonly is required to filter emails by date
+      'https://www.googleapis.com/auth/contacts.readonly',
+      'https://www.googleapis.com/auth/drive.metadata.readonly',
+      'https://www.googleapis.com/auth/drive.activity.readonly',
+      'https://www.googleapis.com/auth/calendar.events.readonly',
+    ].join(' '),
   });
   const isLoggedIn = googleLoginState.accessToken.length > 0;
 

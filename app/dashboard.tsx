@@ -1,13 +1,11 @@
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import { addDays, differenceInCalendarDays, subDays } from 'date-fns';
-import { uniq } from 'lodash';
 import React, { useState } from 'react';
-import { useAsync } from 'react-async-hook';
+import { UseAsyncReturn, useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
 import { styles } from './app';
 import Copyright from './copyright';
@@ -64,12 +62,6 @@ const listCalendarEvents = async () =>
     orderBy: 'updated', // starttime does not work :shrug:
     timeMin: subDays(new Date(), 30).toISOString(),
     timeMax: addDays(new Date(), 1).toISOString(),
-  });
-
-const lookupPeople = async (people: string[]) =>
-  await gapi.client.people.people.getBatchGet({
-    fields: 'name, nicknames, emailAddresses, photos',
-    resourceNames: uniq(people),
   });
 
 interface IProps {
@@ -131,13 +123,18 @@ const Dashboard = (props: IProps) => {
       });
     }
   });
-  const peopleResponse = useAsync(() => lookupPeople(people), [props.accessToken]);
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
+    <React.Fragment>
       <TopBar classes={classes} handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} />
-      <LeftDrawer classes={classes} handleDrawerClose={handleDrawerClose} isOpen={isOpen} />
+      {people.length > 0 && (
+        <LeftDrawer
+          classes={classes}
+          handleDrawerClose={handleDrawerClose}
+          isOpen={isOpen}
+          people={people}
+        />
+      )}
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
@@ -150,19 +147,14 @@ const Dashboard = (props: IProps) => {
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
+                {driveResponse.loading && <div>Loading</div>}
                 <Docs docs={filteredDriveFiles} />
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                {driveResponse.loading && <div>Loading</div>}
+                {activityResponse.loading && <div>Loading</div>}
                 {JSON.stringify(filteredDriveActivity)}
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                {peopleResponse.loading && <div>Loading</div>}
-                {JSON.stringify(peopleResponse)}
               </Paper>
             </Grid>
             <Grid item xs={12}>
@@ -177,7 +169,7 @@ const Dashboard = (props: IProps) => {
           </Box>
         </Container>
       </main>
-    </div>
+    </React.Fragment>
   );
 };
 
