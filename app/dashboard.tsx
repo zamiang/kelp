@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import { addDays, differenceInCalendarDays, subDays } from 'date-fns';
+import { uniq } from 'lodash';
 import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
@@ -61,13 +62,14 @@ const listCalendarEvents = async () =>
     maxAttendees: 10,
     maxResults: 10,
     orderBy: 'updated', // starttime does not work :shrug:
-    /**
-     * Lower bound (exclusive) for an event's end time to filter by. Optional. The default is not to filter by end time. Must be an RFC3339 timestamp with
-     * mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided but are ignored. If timeMax is
-     * set, timeMin must be smaller than timeMax.
-     */
     timeMin: subDays(new Date(), 30).toISOString(),
     timeMax: addDays(new Date(), 1).toISOString(),
+  });
+
+const lookupPeople = async (people: string[]) =>
+  await gapi.client.people.people.getBatchGet({
+    fields: 'name, nicknames, emailAddresses, photos',
+    resourceNames: uniq(people),
   });
 
 interface IProps {
@@ -113,6 +115,24 @@ const Dashboard = (props: IProps) => {
     calendarResponse && calendarResponse.result && calendarResponse.result.result.items
       ? calendarResponse.result.result.items.filter((event) => event.attendees)
       : [];
+
+  const people: string[] = [];
+  filteredDriveActivity.map((activity: DriveActivity) => {
+    if (activity && activity.actors) {
+      activity.actors.map((actor) => {
+        if (
+          actor.user &&
+          actor.user.knownUser &&
+          actor.user.knownUser.personName &&
+          !actor.user.isCurrentUser
+        ) {
+          people.push(actor.user.knownUser.personName);
+        }
+      });
+    }
+  });
+  const peopleResponse = useAsync(() => lookupPeople(people), [props.accessToken]);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -137,6 +157,12 @@ const Dashboard = (props: IProps) => {
               <Paper className={classes.paper}>
                 {driveResponse.loading && <div>Loading</div>}
                 {JSON.stringify(filteredDriveActivity)}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                {peopleResponse.loading && <div>Loading</div>}
+                {JSON.stringify(peopleResponse)}
               </Paper>
             </Grid>
             <Grid item xs={12}>
