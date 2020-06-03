@@ -101,14 +101,17 @@ const LeftDrawer = (props: IProps) => {
     peopleResponse.result &&
     peopleResponse.result.result.responses &&
     peopleResponse.result.result.responses.map((person) => ({
-      id: person.requestedResourceName,
+      id: person.requestedResourceName || 'unknown',
       name:
         person.person && person.person.names && person.person.names[0].displayName
           ? person.person.names[0].displayName
           : 'unknown',
 
       email:
-        person.person && person.person.emailAddresses && person.person.emailAddresses[0]
+        person.person &&
+        person.person.emailAddresses &&
+        person.person.emailAddresses[0] &&
+        person.person.emailAddresses[0].value
           ? person.person.emailAddresses[0].value
           : 'unknown',
     }));
