@@ -1,15 +1,15 @@
-import * as gapiTypes from "gapi";
+import "gapi";
 import React from "react";
 import { googleState, styles } from "./app";
 import { fetchFromGoogle } from "./fetch";
 
-declare const gapi: gapiTypes;
+// declare const gapi: gapiTypes;
 
 /*
  * check signed in: gapi.auth2.getAuthInstance().isSignedIn.get()
  */
 
-const loadLibraries = () =>
+const loadLibraries = () => {
   gapi.client.init({
     discoveryDocs: [
       "https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest",
@@ -18,6 +18,8 @@ const loadLibraries = () =>
       "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
     ],
   });
+  return null;
+};
 
 gapi.load("client", loadLibraries);
 
@@ -27,7 +29,8 @@ interface IProps {
 }
 
 const listDriveActivity = async () =>
-  await gapi.client.driveactivity.activity.query({
+  // Todo: Make driveactivity types
+  await (gapi.client as any).driveactivity.activity.query({
     pageSize: 10,
   });
 

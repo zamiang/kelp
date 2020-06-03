@@ -68,6 +68,9 @@ const getClientConfig = () => ({
       },
     ],
   },
+  externals: {
+    gapi: "gapi",
+  },
   output: {
     chunkFilename: isProduction
       ? "[name].[hash].bundle.js"
