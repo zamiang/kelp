@@ -59,7 +59,7 @@ const App = () => {
   const theme = useTheme();
   const classes = useStyles({ theme });
   const [googleLoginState, setGoogleLoginState] = useState(initialGoogleState);
-  const { signIn, loaded } = useGoogleLogin({
+  const { signIn } = useGoogleLogin({
     // TODO: Handle GoogleOfflineResponse and remove response: any
     onSuccess: (response: any) => setGoogleLoginState(response),
     onFailure: (error: any) => {
@@ -70,17 +70,18 @@ const App = () => {
     autoLoad: false,
     fetchBasicProfile: true,
     scope:
-      "https://www.googleapis.com/auth/gmail.metadata https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/calendar.events.readonly",
+      "https://www.googleapis.com/auth/gmail.metadata https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/drive.activity.readonly https://www.googleapis.com/auth/calendar.events.readonly",
   });
   const isLoggedIn = googleLoginState.accessToken.length > 0;
   return (
     <div className={classes.wrapper}>
       <h1 className={classes.title}>Hello World</h1>
       <h2>{process.env.GOOGLE_CLIENT_ID}</h2>
-      {loaded && !isLoggedIn ? <button onClick={signIn}>Sign In</button> : null}
       {isLoggedIn ? (
         <Vis classes={classes} googleLoginState={googleLoginState} />
-      ) : null}
+      ) : (
+        <button onClick={signIn}>Sign In</button>
+      )}
     </div>
   );
 };

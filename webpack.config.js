@@ -36,6 +36,8 @@ const getClientConfig = () => ({
       title: "Time",
       lang: "en-US",
       appMountId: "root",
+      headHtmlSnippet:
+        '<script src="https://apis.google.com/js/api.js"></script>',
       template: require("html-webpack-template"),
     }),
     new EnvironmentPlugin({
