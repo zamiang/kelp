@@ -28,6 +28,7 @@ const lookupPeople = async (people: string[]) => {
 };
 
 /*
+// for reference
 const foo = {
   httpStatusCode: 200,
   person: {
@@ -94,9 +95,6 @@ const foo = {
 };
 */
 
-/*const gmailResponse = useAsync(() => listEmails(peopleResponse), [peopleResponse.loading]);
-console.log(gmailResponse, '<<<<<<<<<<<<');
-*/
 const LeftDrawer = (props: IProps) => {
   const peopleResponse = useAsync(() => lookupPeople(props.people), props.people);
   const formattedPeople =

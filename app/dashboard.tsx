@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import { addDays, differenceInCalendarDays, subDays } from 'date-fns';
 import React, { useState } from 'react';
-import { UseAsyncReturn, useAsync } from 'react-async-hook';
+import { useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
 import { styles } from './app';
 import Copyright from './copyright';
