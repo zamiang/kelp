@@ -1,63 +1,138 @@
+import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React, { useState } from "react";
 import { render } from "react-dom";
 import { useGoogleLogin } from "react-google-login";
-import { ThemeProvider, createUseStyles, useTheme } from "react-jss";
-import Vis from "./vis";
+import Copyright from "./copyright";
+import Dashboard from "./dashboard";
 
-export interface ITheme {
-  theme: {
-    background: string;
-    color: string;
-  };
-}
+const drawerWidth = 240;
 
-const theme: ITheme["theme"] = {
-  background: "#f7df1e",
-  color: "#24292e",
-};
-
-const useStyles = createUseStyles({
-  wrapper: {
-    padding: 40,
-    background: ({ theme }: ITheme) => theme.background,
-    textAlign: "left",
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  toolbar: {
+    paddingRight: 24, // keep right padding when drawer closed
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  toolbarIcon: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  menuButtonHidden: {
+    display: "none",
   },
   title: {
-    font: {
-      size: 40,
-      weight: 900,
-    },
-    color: ({ theme }: ITheme) => theme.color,
+    flexGrow: 1,
   },
-  link: {
-    color: ({ theme }: ITheme) => theme.color,
-    "&:hover": {
-      opacity: 0.5,
+  drawerPaper: {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: "hidden",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9),
     },
   },
-});
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto",
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
+  },
+  centerPaper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  fixedHeight: {
+    height: 240,
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 export type styles = ReturnType<typeof useStyles>;
 
+// Note: Lots more info on this object but is unused by the app
 const initialGoogleState = {
-  googleId: "",
-  tokenId: "",
   accessToken: "",
-  profileObj: {
-    googleId: "",
-    imageUrl: "",
-    email: "",
-    name: "",
-    givenName: "",
-    familyName: "",
-  },
 };
 
 export type googleState = typeof initialGoogleState;
 
+const loadLibraries = () => {
+  gapi.client.init({
+    discoveryDocs: [
+      "https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest",
+      "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
+      "https://www.googleapis.com/discovery/v1/apis/driveactivity/v2/rest",
+      "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+    ],
+  });
+  return null;
+};
+
+gapi.load("client", loadLibraries);
+
 const App = () => {
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles();
+
   const [googleLoginState, setGoogleLoginState] = useState(initialGoogleState);
   const { signIn } = useGoogleLogin({
     // TODO: Handle GoogleOfflineResponse and remove response: any
@@ -73,23 +148,37 @@ const App = () => {
       "https://www.googleapis.com/auth/gmail.metadata https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/drive.activity.readonly https://www.googleapis.com/auth/calendar.events.readonly",
   });
   const isLoggedIn = googleLoginState.accessToken.length > 0;
+
   return (
-    <div className={classes.wrapper}>
-      <h1 className={classes.title}>Hello World</h1>
-      <h2>{process.env.GOOGLE_CLIENT_ID}</h2>
+    <div className={classes.root}>
+      <CssBaseline />
       {isLoggedIn ? (
-        <Vis classes={classes} googleLoginState={googleLoginState} />
+        <Dashboard classes={classes} />
       ) : (
-        <button onClick={signIn}>Sign In</button>
+        <Container component="main" maxWidth="xs">
+          <Paper className={classes.centerPaper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={signIn}
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+          </Paper>
+          <Box mt={8}>
+            <Copyright />
+          </Box>
+        </Container>
       )}
     </div>
   );
 };
 
-const Container = () => (
-  <ThemeProvider theme={theme}>
-    <App />
-  </ThemeProvider>
-);
-
-render(<Container />, document.getElementById("root"));
+render(<App />, document.getElementById("root"));
