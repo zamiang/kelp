@@ -8,18 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import { formatRelative } from 'date-fns';
 import React from 'react';
 
-export type doc = {
-  id: string;
-  name: string;
-  webViewLink: string;
-  shared: boolean;
-  starred: boolean;
-  trashed: boolean;
-  modifiedTime: string;
-};
-
 interface IProps {
-  docs: doc[];
+  docs: gapi.client.drive.File[];
 }
 
 const Docs = (props: IProps) => (
@@ -39,7 +29,9 @@ const Docs = (props: IProps) => (
       <TableBody>
         {props.docs.map((row) => (
           <TableRow key={row.id}>
-            <TableCell>{formatRelative(new Date(row.modifiedTime), new Date())}</TableCell>
+            <TableCell>
+              {row.modifiedTime && formatRelative(new Date(row.modifiedTime), new Date())}
+            </TableCell>
             <TableCell>{row.name}</TableCell>
             <TableCell>{row.starred}</TableCell>
             <TableCell align="right">
