@@ -26,6 +26,9 @@ module.exports = {
     project: ["tsconfig.json"],
     sourceType: "module",
   },
+  globals: {
+    gapi: "writable",
+  },
   plugins: [
     "@typescript-eslint",
     "@typescript-eslint/tslint",
@@ -34,6 +37,7 @@ module.exports = {
     "security",
   ],
   rules: {
+    "import/no-unresolved": [2, { ignore: ["gapi"] }],
     "@typescript-eslint/camelcase": 0, // Triggers on external APIs
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/interface-name-prefix": 0,
