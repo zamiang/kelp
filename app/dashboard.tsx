@@ -4,12 +4,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
-import { differenceInCalendarDays } from 'date-fns';
+import { addDays, differenceInCalendarDays, subDays } from 'date-fns';
 import React, { useState } from 'react';
+import { useAsync } from 'react-async-hook';
+import { DriveActivity } from './activity';
 import { styles } from './app';
 import Copyright from './copyright';
-import Docs, { doc } from './docs';
-import { fetchFromGoogle } from './fetch';
+import Docs from './docs';
 import LeftDrawer from './left-drawer';
 import TopBar from './top-bar';
 
@@ -23,6 +24,7 @@ export type googleState = typeof initialGoogleState;
 const loadLibraries = () => {
   gapi.client.init({
     discoveryDocs: [
+      'https://www.googleapis.com/discovery/v1/apis/people/v1/rest',
       'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest',
       'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
       'https://www.googleapis.com/discovery/v1/apis/driveactivity/v2/rest',
@@ -40,6 +42,7 @@ const listDriveActivity = async () =>
     pageSize: 10,
   });
 
+// TODO: Figure out how to list people on a file
 const listDriveFiles = async () =>
   // Does not allow filtering by modified time OR deleted
   await gapi.client.drive.files.list({
@@ -52,8 +55,24 @@ const listDriveFiles = async () =>
     fields: 'nextPageToken, files(id, name, webViewLink, shared, starred, trashed, modifiedTime)',
   });
 
+const listCalendarEvents = async () =>
+  await gapi.client.calendar.events.list({
+    calendarId: 'primary',
+    maxAttendees: 10,
+    maxResults: 10,
+    orderBy: 'updated', // starttime does not work :shrug:
+    /**
+     * Lower bound (exclusive) for an event's end time to filter by. Optional. The default is not to filter by end time. Must be an RFC3339 timestamp with
+     * mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided but are ignored. If timeMax is
+     * set, timeMin must be smaller than timeMax.
+     */
+    timeMin: subDays(new Date(), 30).toISOString(),
+    timeMax: addDays(new Date(), 1).toISOString(),
+  });
+
 interface IProps {
   classes: styles;
+  accessToken: string;
 }
 
 const Dashboard = (props: IProps) => {
@@ -67,17 +86,33 @@ const Dashboard = (props: IProps) => {
     setOpen(false);
   };
 
-  const [driveResponse] = fetchFromGoogle('drive', listDriveFiles(), {});
-  const [activity] = fetchFromGoogle('activity', listDriveActivity(), {});
+  const driveResponse = useAsync(listDriveFiles, [props.accessToken]);
+  const activityResponse = useAsync(listDriveActivity, [props.accessToken]);
+  const calendarResponse = useAsync(listCalendarEvents, [props.accessToken]);
 
-  const filteredDriveFiles =
-    driveResponse && driveResponse.data && driveResponse.data.files
-      ? driveResponse.data.files.filter(
-          (file: doc) =>
-            !file.trashed && differenceInCalendarDays(new Date(), new Date(file.modifiedTime)) < 30,
+  const filteredDriveActivity =
+    activityResponse && activityResponse.result && activityResponse.result.result.activities
+      ? activityResponse.result.result.activities.filter(
+          (activity: DriveActivity) =>
+            activity.actors &&
+            activity.actors[0] &&
+            activity.actors[0].user &&
+            !activity.actors[0].user.isCurrentUser,
         )
       : [];
-
+  const filteredDriveFiles =
+    driveResponse && driveResponse.result && driveResponse.result.result.files
+      ? driveResponse.result.result.files.filter(
+          (file) =>
+            !file.trashed &&
+            file.modifiedTime &&
+            differenceInCalendarDays(new Date(), new Date(file.modifiedTime)) < 30,
+        )
+      : [];
+  const filteredCalendarEvents =
+    calendarResponse && calendarResponse.result && calendarResponse.result.result.items
+      ? calendarResponse.result.result.items.filter((event) => event.attendees)
+      : [];
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -88,9 +123,7 @@ const Dashboard = (props: IProps) => {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <pre>ACTIVITY:{JSON.stringify(activity)}</pre>
-              </Paper>
+              <Paper className={fixedHeightPaper}>foo</Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>Other stuff</Paper>
@@ -98,6 +131,18 @@ const Dashboard = (props: IProps) => {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Docs docs={filteredDriveFiles} />
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                {driveResponse.loading && <div>Loading</div>}
+                {JSON.stringify(filteredDriveActivity)}
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                {calendarResponse.loading && <div>Loading</div>}
+                {JSON.stringify(filteredCalendarEvents)}
               </Paper>
             </Grid>
           </Grid>
