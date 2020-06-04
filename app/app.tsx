@@ -119,6 +119,7 @@ export type googleState = typeof initialGoogleState;
 const loadLibraries = () => {
   gapi.client.init({
     discoveryDocs: [
+      'https://www.googleapis.com/discovery/v1/apis/people/v1/rest',
       'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest',
       'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
       'https://www.googleapis.com/discovery/v1/apis/driveactivity/v2/rest',

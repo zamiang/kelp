@@ -6,8 +6,7 @@ interface IProps {
   people?:
     | {
         id: string;
-        name: string;
-        email: string;
+        name?: string;
       }[]
     | null;
 }
