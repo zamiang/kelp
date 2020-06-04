@@ -1,9 +1,8 @@
-import { number, string } from 'prop-types';
 import React from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
 import Dashboard from './dashboard';
-import { IProps as FetchFirstProps } from './fetch-first';
+import { IProps as FetchFirstProps, IPersonStore } from './fetch-first';
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 type email = {
@@ -107,7 +106,7 @@ export type formattedEmail = {
 };
 
 export interface IProps extends FetchFirstProps {
-  personStore: {};
+  personStore: IPersonStore;
   calendarEvents?: gapi.client.calendar.Event[];
   driveFiles?: gapi.client.drive.File[];
   driveActivity: DriveActivity[];

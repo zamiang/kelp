@@ -15,7 +15,7 @@ const People = (props: IProps) => {
   const peopleHtml = (props.people || []).map((person) => (
     <React.Fragment key={person.id}>
       <Divider />
-      <List>{person.name}</List>
+      <List>{person.name || person.id}</List>
     </React.Fragment>
   ));
 

@@ -50,24 +50,6 @@ const Dashboard = (props: IProps) => {
                 <Docs docs={props.driveFiles} />
               </Paper>
             </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <b>activity</b>
-                {JSON.stringify(props.driveActivity)}
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <b>emails</b>
-                {JSON.stringify(props.emails)}
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <b>calendar</b>
-                {JSON.stringify(props.calendarEvents)}
-              </Paper>
-            </Grid>
           </Grid>
           <Box pt={4}>
             <Copyright />

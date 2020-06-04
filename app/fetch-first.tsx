@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
 import { styles } from './app';
-import FetchSecond from './fetch-second';
+import FetchSecond, { formattedEmail } from './fetch-second';
 
 const listDriveActivity = async () => {
   // Todo: Make driveactivity types
@@ -19,10 +19,7 @@ const listDriveActivity = async () => {
     activityResponse && activityResponse.result && activityResponse.result.activities
       ? activityResponse.result.activities.filter(
           (activity: DriveActivity) =>
-            activity.actors &&
-            activity.actors[0] &&
-            activity.actors[0].user &&
-            !activity.actors[0].user.isCurrentUser,
+            activity.actors && activity.actors[0] && activity.actors[0].user,
         )
       : [];
 
@@ -31,12 +28,7 @@ const listDriveActivity = async () => {
   (activity || []).map((activity) => {
     if (activity && activity.actors) {
       activity.actors.map((actor) => {
-        if (
-          actor.user &&
-          actor.user.knownUser &&
-          actor.user.knownUser.personName &&
-          !actor.user.isCurrentUser
-        ) {
+        if (actor.user && actor.user.knownUser && actor.user.knownUser.personName) {
           peopleIds.push(actor.user.knownUser.personName);
         }
       });
@@ -46,7 +38,7 @@ const listDriveActivity = async () => {
   return { uniqueActorIds: uniq(peopleIds), activity };
 };
 
-type person = {
+export type person = {
   id: string;
   name: string;
   email: string;
@@ -151,10 +143,11 @@ export interface IProps {
   accessToken: string;
 }
 
-interface IPersonStore {
+export interface IPersonStore {
   [email: string]: {
     id: string;
     name?: string;
+    emails: formattedEmail[];
   };
 }
 
@@ -171,6 +164,7 @@ const FetchFirst = (props: IProps) => {
         (personStore[person.email.toLocaleLowerCase()] = {
           id: person.email.toLocaleLowerCase(),
           name: person.name,
+          emails: [],
         }),
     );
     setPersonStore(personStore);
@@ -182,6 +176,7 @@ const FetchFirst = (props: IProps) => {
       if (!personStore[formattedEmail]) {
         personStore[formattedEmail] = {
           id: formattedEmail,
+          emails: [],
         };
       }
     });
