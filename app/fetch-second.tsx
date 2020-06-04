@@ -1,7 +1,9 @@
+import { number, string } from 'prop-types';
 import React from 'react';
 import { useAsync } from 'react-async-hook';
+import { DriveActivity } from './activity';
 import Dashboard from './dashboard';
-import { IProps as FetchTopProps } from './fetch-top';
+import { IProps as FetchFirstProps } from './fetch-first';
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 type email = {
@@ -22,37 +24,109 @@ const listCurrentUserEmailsForContacts = async (emailAddresses: string[]) => {
   return response.result.messages as email[];
 };
 
-const fetchEmails = async (emails: email[]) => {
+type headerName = 'Date' | 'Subject' | 'From' | 'To';
+
+// date: "Sat, 16 May 2020 12:56:45 -0400"
+// "Brennan Moore <brennanmoore@gmail.com>"
+interface IEmail {
+  result: {
+    historyId: string;
+    id: string;
+    internalDate: string;
+    labelIds: string[];
+    payload: {
+      headers: {
+        name: headerName;
+        value: string;
+      }[];
+    };
+    mimeType: string;
+    sizeEstimate: number;
+    snippet: string;
+    threadId: string;
+  };
+}
+
+const regex = new RegExp(/<(.*?)>/, 'i');
+const formatEmailFromGmail = (email: string) => {
+  console.log(email, '<<<<<<');
+  const formattedValue = regex.exec(email);
+  return formattedValue ? formattedValue[1] : null;
+};
+
+const fetchEmails = async (emails: email[]): Promise<formattedEmail[]> => {
   if (emails.length < 1) {
-    return null;
+    return [];
   }
   const emailPromises = emails.map((email) =>
     (gapi.client as any).gmail.users.messages.get({
       id: email.id,
       userId: 'me',
       format: 'metadata',
+      metadataHeaders: ['Date', 'Subject', 'From', 'To'],
     }),
   );
-  return await Promise.all(emailPromises);
+  const emailResponses: IEmail[] = await Promise.all(emailPromises);
+
+  return emailResponses.map((email) => {
+    const formattedEmail: formattedEmail = {
+      id: email.result.id,
+      snippet: email.result.snippet,
+      threadId: email.result.threadId,
+      date: '',
+      subject: '',
+      from: null,
+      to: [],
+    };
+    console.log(email);
+    email.result.payload.headers.forEach((header) => {
+      switch (header.name) {
+        case 'Date':
+          formattedEmail.date = header.value;
+          break;
+        case 'Subject':
+          formattedEmail.subject = header.value;
+          break;
+        case 'From':
+          formattedEmail.from = formatEmailFromGmail(header.value);
+          break;
+        case 'To':
+          formattedEmail.to.push(formatEmailFromGmail(header.value));
+      }
+    });
+    return formattedEmail;
+  });
 };
 
-export interface IProps extends FetchTopProps {
+export type formattedEmail = {
+  id: string;
+  snippet: string;
+  threadId: string;
+  date: string;
+  subject: string;
+  from: string | null;
+  to: (string | null)[];
+};
+
+export interface IProps extends FetchFirstProps {
   personStore: {};
   calendarEvents?: gapi.client.calendar.Event[];
   driveFiles?: gapi.client.drive.File[];
-  driveActivity: any;
+  driveActivity: DriveActivity[];
 }
-
+/**
+ * Fetches 2nd layer of information.
+ * This layer requires the person store to be completely setup before fetching
+ */
 const FetchSecond = (props: IProps) => {
   const addresses = Object.keys(props.personStore);
   const gmailResponse = useAsync(() => listCurrentUserEmailsForContacts(addresses), [
-    addresses[0],
     addresses.length,
   ]);
   const emails = gmailResponse.result || [];
   const emailsResponse = useAsync(() => fetchEmails(emails), [emails.length]);
-
-  return <Dashboard emails={emailsResponse.result} {...props} />;
+  console.log(emailsResponse);
+  return <Dashboard emails={emailsResponse.result ? emailsResponse.result : []} {...props} />;
 };
 
 export default FetchSecond;

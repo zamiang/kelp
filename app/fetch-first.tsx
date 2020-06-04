@@ -15,7 +15,7 @@ const listDriveActivity = async () => {
       30,
     ).toISOString()}"`,
   });
-  const activity =
+  const activity: DriveActivity[] =
     activityResponse && activityResponse.result && activityResponse.result.activities
       ? activityResponse.result.activities.filter(
           (activity: DriveActivity) =>
@@ -28,7 +28,7 @@ const listDriveActivity = async () => {
 
   // these are returned as 'people ids'
   const peopleIds: string[] = [];
-  (activity || []).map((activity: DriveActivity) => {
+  (activity || []).map((activity) => {
     if (activity && activity.actors) {
       activity.actors.map((actor) => {
         if (
@@ -160,7 +160,10 @@ interface IPersonStore {
 
 const initialPersonStore: IPersonStore = {};
 
-const FetchTop = (props: IProps) => {
+/**
+ * Fetches data that can be fetched in parallel and creates the person store object
+ */
+const FetchFirst = (props: IProps) => {
   const [personStore, setPersonStore] = useState(initialPersonStore);
   const addPeopleToStore = (people: person[]) => {
     people.forEach(
@@ -210,4 +213,4 @@ const FetchTop = (props: IProps) => {
   );
 };
 
-export default FetchTop;
+export default FetchFirst;

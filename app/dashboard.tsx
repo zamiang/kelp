@@ -6,12 +6,12 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import Copyright from './copyright';
 import Docs from './docs';
-import { IProps as FetchProps } from './fetch-second';
+import { IProps as FetchProps, formattedEmail } from './fetch-second';
 import LeftDrawer from './left-drawer';
 import TopBar from './top-bar';
 
 interface IProps extends FetchProps {
-  emails?: any;
+  emails?: formattedEmail[];
 }
 
 const Dashboard = (props: IProps) => {
