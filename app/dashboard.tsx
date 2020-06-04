@@ -150,6 +150,9 @@ type person = {
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 const listEmails = async (people: person[]) => {
+  if (people.length < 1) {
+    return null;
+  }
   const formattedEmails = people.map((person) => `from:${person.email}`);
   return await (gapi.client as any).gmail.users.messages.list({
     userId: 'me',
