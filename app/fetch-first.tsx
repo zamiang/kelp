@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
 import { styles } from './app';
-import FetchSecond, { formattedEmail } from './fetch-second';
+import FetchSecond from './fetch-second';
 
 const listDriveActivity = async () => {
   // Todo: Make driveactivity types
@@ -28,7 +28,12 @@ const listDriveActivity = async () => {
   (activity || []).map((activity) => {
     if (activity && activity.actors) {
       activity.actors.map((actor) => {
-        if (actor.user && actor.user.knownUser && actor.user.knownUser.personName) {
+        if (
+          actor.user &&
+          actor.user.knownUser &&
+          actor.user.knownUser.personName &&
+          !actor.user.isCurrentUser
+        ) {
           peopleIds.push(actor.user.knownUser.personName);
         }
       });
@@ -105,6 +110,19 @@ const listDriveFiles = async () => {
     : [];
 };
 
+export interface ICalendarEvent {
+  id: string;
+  link?: string;
+  summary?: string;
+  start?: string;
+  end?: string;
+  attendees?: {
+    email?: string;
+    responseStatus?: string;
+    self?: boolean;
+  }[];
+}
+
 const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) => any) => {
   const calendarResponse = await gapi.client.calendar.events.list({
     calendarId: 'primary',
@@ -131,8 +149,16 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
 
   const uniqueAttendeeEmails = uniq(emailAddresses);
   addEmailAddressesToStore(uniqueAttendeeEmails);
+
   return {
-    calendarEvents: filteredCalendarEvents,
+    calendarEvents: filteredCalendarEvents.map((event) => ({
+      id: event.id || 'wtf',
+      link: event.htmlLink,
+      summary: event.summary,
+      start: event.start && event.start.dateTime,
+      end: event.end && event.end.dateTime,
+      attendees: event.attendees,
+    })),
     // calendar events return little attendee information beyond email addresses (contradicting docs)
     uniqueAttendeeEmails,
   };
@@ -143,44 +169,21 @@ export interface IProps {
   accessToken: string;
 }
 
-export interface IPersonStore {
-  [email: string]: {
-    id: string;
-    name?: string;
-    emails: formattedEmail[];
-  };
-}
-
-const initialPersonStore: IPersonStore = {};
+const initialPersonList: person[] = [];
+const initialEmailList: string[] = [];
 
 /**
  * Fetches data that can be fetched in parallel and creates the person store object
  */
 const FetchFirst = (props: IProps) => {
-  const [personStore, setPersonStore] = useState(initialPersonStore);
+  const [personList, setPersonList] = useState(initialPersonList);
+  const [emailList, setEmailList] = useState(initialEmailList);
   const addPeopleToStore = (people: person[]) => {
-    people.forEach(
-      (person) =>
-        (personStore[person.email.toLocaleLowerCase()] = {
-          id: person.email.toLocaleLowerCase(),
-          name: person.name,
-          emails: [],
-        }),
-    );
-    setPersonStore(personStore);
+    // TODO: Add and diff here
+    setPersonList(people);
   };
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
-    // Add email addresses to the store if they are not already there
-    emailAddresses.forEach((email) => {
-      const formattedEmail = email.toLocaleLowerCase();
-      if (!personStore[formattedEmail]) {
-        personStore[formattedEmail] = {
-          id: formattedEmail,
-          emails: [],
-        };
-      }
-    });
-    setPersonStore(personStore);
+    setEmailList(emailAddresses);
   };
 
   const driveResponse = useAsync(listDriveFiles, [props.accessToken]);
@@ -198,7 +201,8 @@ const FetchFirst = (props: IProps) => {
   return (
     <React.Fragment>
       <FetchSecond
-        personStore={personStore}
+        personList={personList}
+        emailList={emailList}
         calendarEvents={calendarResponse.result ? calendarResponse.result.calendarEvents : []}
         driveFiles={driveResponse.result}
         driveActivity={activityResponse.result ? activityResponse.result.activity : []}

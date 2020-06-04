@@ -1,5 +1,5 @@
 import { DriveActivity } from './activity';
-import { person } from './fetch-first';
+import { ICalendarEvent, person } from './fetch-first';
 import { formattedEmail } from './fetch-second';
 
 interface IPersonByEmail {
@@ -9,15 +9,18 @@ interface IPersonByEmail {
     emailAddress: string;
     emails: formattedEmail[];
     driveActivity: DriveActivity[];
+    calendarEvents: ICalendarEvent[];
   };
 }
 
+// handle one person w/ multiple email addresses
 const createNewPersonFromPerson = (person: person) => ({
   id: person.id,
   name: person.name,
   emailAddress: person.email.toLocaleLowerCase(),
   emails: [],
   driveActivity: [],
+  calendarEvents: [],
 });
 
 const createNewPersonFromEmail = (email: string) => ({
@@ -25,14 +28,17 @@ const createNewPersonFromEmail = (email: string) => ({
   emailAddress: email,
   emails: [],
   driveActivity: [],
+  calendarEvents: [],
 });
 
 export default class PersonDataStore {
-  private personByEmail: IPersonByEmail = {};
-  private personById: IPersonByEmail = {};
+  private personByEmail: IPersonByEmail;
+  private personById: IPersonByEmail;
 
   constructor() {
     console.warn('setting up data store');
+    this.personByEmail = {};
+    this.personById = {};
   }
 
   addPeopleToStore(people: person[]) {
@@ -57,8 +63,10 @@ export default class PersonDataStore {
       (driveActivity.actors || []).map((actor) => {
         if (actor.user && actor.user.knownUser && actor.user.knownUser.personName) {
           const personById = this.personById[actor.user.knownUser.personName];
-          personById.driveActivity.push(driveActivity);
-          this.personByEmail[personById.emailAddress].driveActivity.push(driveActivity);
+          if (personById) {
+            personById.driveActivity.push(driveActivity);
+            this.personByEmail[personById.emailAddress].driveActivity.push(driveActivity);
+          }
         }
       });
     });
@@ -71,9 +79,44 @@ export default class PersonDataStore {
         this.personByEmail[from] && this.personByEmail[from].emails.push(email);
       }
       if (email.to) {
-        email.to.map((emailTo) => emailTo && this.personByEmail[emailTo].emails.push(email));
+        email.to.map(
+          (emailTo) =>
+            emailTo &&
+            this.personByEmail[emailTo] &&
+            this.personByEmail[emailTo].emails.push(email),
+        );
       }
     });
+  }
+
+  addCalendarEventsToStore(events: ICalendarEvent[]) {
+    events.forEach((event) => {
+      (event.attendees || []).forEach((attendee) => {
+        if (attendee && attendee.email) {
+          // TODO: Also format the attendees?
+          this.personByEmail[attendee.email].calendarEvents.push(event);
+        }
+      });
+    });
+  }
+
+  getEmailAddresses() {
+    return Object.keys(this.personByEmail);
+  }
+
+  getPeople() {
+    return Object.values(this.personByEmail);
+  }
+
+  getPersonByEmail(email: string) {
+    return this.personByEmail[email];
+  }
+
+  // @param peopleId: person/1313513
+  // @deprecated
+  getPersonByPeopleId(peopleId: string) {
+    console.warn('do not use getPersonByPeopleId - may be inaccurate');
+    return this.personById[peopleId];
   }
 
   getLength() {

@@ -4,14 +4,16 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import React, { useState } from 'react';
+import { styles } from './app';
 import Copyright from './copyright';
-import Docs from './docs';
-import { IProps as FetchProps, formattedEmail } from './fetch-second';
+// import Docs from './docs';
 import LeftDrawer from './left-drawer';
+import PersonDataStore from './person-store';
 import TopBar from './top-bar';
 
-interface IProps extends FetchProps {
-  emails?: formattedEmail[];
+interface IProps {
+  personDataStore: PersonDataStore;
+  classes: styles;
 }
 
 const Dashboard = (props: IProps) => {
@@ -32,7 +34,7 @@ const Dashboard = (props: IProps) => {
         classes={classes}
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}
-        people={Object.values(props.personStore)}
+        people={props.personDataStore.getPeople()}
       />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -47,7 +49,6 @@ const Dashboard = (props: IProps) => {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <b>activity</b>
-                <Docs docs={props.driveFiles} />
               </Paper>
             </Grid>
           </Grid>

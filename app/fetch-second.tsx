@@ -1,8 +1,9 @@
+import { uniq } from 'lodash';
 import React from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
-import Dashboard from './dashboard';
-import { IProps as FetchFirstProps, IPersonStore } from './fetch-first';
+import { IProps as FetchFirstProps, ICalendarEvent, person } from './fetch-first';
+import FormatData from './format-data';
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 type email = {
@@ -106,8 +107,9 @@ export type formattedEmail = {
 };
 
 export interface IProps extends FetchFirstProps {
-  personStore: IPersonStore;
-  calendarEvents?: gapi.client.calendar.Event[];
+  personList: person[];
+  emailList: string[];
+  calendarEvents?: ICalendarEvent[];
   driveFiles?: gapi.client.drive.File[];
   driveActivity: DriveActivity[];
 }
@@ -116,13 +118,17 @@ export interface IProps extends FetchFirstProps {
  * This layer requires the person store to be completely setup before fetching
  */
 const FetchSecond = (props: IProps) => {
-  const addresses = Object.keys(props.personStore);
-  const gmailResponse = useAsync(() => listCurrentUserEmailsForContacts(addresses), [
-    addresses.length,
+  const emailAddresses = props.emailList;
+  props.personList.forEach((person) => {
+    emailAddresses.push(person.email);
+  });
+  const uniqueEmailAddresses = uniq(emailAddresses);
+  const gmailResponse = useAsync(() => listCurrentUserEmailsForContacts(uniqueEmailAddresses), [
+    uniqueEmailAddresses.length,
   ]);
   const emails = gmailResponse.result || [];
   const emailsResponse = useAsync(() => fetchEmails(emails), [emails.length]);
-  return <Dashboard emails={emailsResponse.result ? emailsResponse.result : []} {...props} />;
+  return <FormatData emails={emailsResponse.result ? emailsResponse.result : []} {...props} />;
 };
 
 export default FetchSecond;
