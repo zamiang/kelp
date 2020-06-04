@@ -49,7 +49,6 @@ interface IEmail {
 
 const regex = new RegExp(/<(.*?)>/, 'i');
 const formatEmailFromGmail = (email: string) => {
-  console.log(email, '<<<<<<');
   const formattedValue = regex.exec(email);
   return formattedValue ? formattedValue[1] : null;
 };
@@ -78,7 +77,6 @@ const fetchEmails = async (emails: email[]): Promise<formattedEmail[]> => {
       from: null,
       to: [],
     };
-    console.log(email);
     email.result.payload.headers.forEach((header) => {
       switch (header.name) {
         case 'Date':
@@ -125,7 +123,6 @@ const FetchSecond = (props: IProps) => {
   ]);
   const emails = gmailResponse.result || [];
   const emailsResponse = useAsync(() => fetchEmails(emails), [emails.length]);
-  console.log(emailsResponse);
   return <Dashboard emails={emailsResponse.result ? emailsResponse.result : []} {...props} />;
 };
 
