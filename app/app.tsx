@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
-import FetchFirst from './fetch-first';
+import FetchFirst from './fetch/fetch-first';
 
 const drawerWidth = 240;
 

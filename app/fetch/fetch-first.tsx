@@ -2,8 +2,8 @@ import { addDays, differenceInCalendarDays, subDays } from 'date-fns';
 import { uniq } from 'lodash';
 import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
-import { DriveActivity } from './activity';
-import { styles } from './app';
+import { styles } from '../app';
+import { DriveActivity } from '../types/activity';
 import FetchSecond from './fetch-second';
 
 const listDriveActivity = async () => {

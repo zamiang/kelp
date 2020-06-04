@@ -1,9 +1,9 @@
 import { uniq } from 'lodash';
 import React from 'react';
 import { useAsync } from 'react-async-hook';
-import { DriveActivity } from './activity';
+import FormatData from '../store/create-stores';
+import { DriveActivity } from '../types/activity';
 import { IProps as FetchFirstProps, ICalendarEvent, person } from './fetch-first';
-import FormatData from './format-data';
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 type email = {

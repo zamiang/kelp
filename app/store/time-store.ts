@@ -1,7 +1,7 @@
 import { isAfter, isBefore } from 'date-fns';
-import { DriveActivity } from './activity';
-import { ICalendarEvent } from './fetch-first';
-import { formattedEmail } from './fetch-second';
+import { ICalendarEvent } from '../fetch/fetch-first';
+import { formattedEmail } from '../fetch/fetch-second';
+import { DriveActivity } from '../types/activity';
 
 interface ISegment extends ICalendarEvent {
   driveActivity: DriveActivity[];

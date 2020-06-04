@@ -8,8 +8,8 @@ import { styles } from './app';
 import Copyright from './copyright';
 // import Docs from './docs';
 import LeftDrawer from './left-drawer';
-import PersonDataStore from './person-store';
-import TimeDataStore from './time-store';
+import PersonDataStore from './store/person-store';
+import TimeDataStore from './store/time-store';
 import TopBar from './top-bar';
 
 interface IProps {

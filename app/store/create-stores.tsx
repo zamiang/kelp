@@ -1,6 +1,6 @@
 import React from 'react';
-import Dashboard from './dashboard';
-import { IProps as FetchProps, formattedEmail } from './fetch-second';
+import Dashboard from '../dashboard';
+import { IProps as FetchProps, formattedEmail } from '../fetch/fetch-second';
 import PersonDataStore from './person-store';
 import TimeDataStore from './time-store';
 
@@ -8,7 +8,7 @@ interface IProps extends FetchProps {
   emails?: formattedEmail[];
 }
 
-const FormatData = (props: IProps) => {
+const CreateDataStores = (props: IProps) => {
   const personDataStore = new PersonDataStore(props.personList, props.emailList);
 
   personDataStore.addEmailsToStore(props.emails || []);
@@ -22,6 +22,7 @@ const FormatData = (props: IProps) => {
 
   console.log('TIME DATA STORE:', timeDataStore);
 
+  // TODO: props.children this
   return (
     <Dashboard
       classes={props.classes}
@@ -31,4 +32,4 @@ const FormatData = (props: IProps) => {
   );
 };
 
-export default FormatData;
+export default CreateDataStores;

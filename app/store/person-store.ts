@@ -1,6 +1,6 @@
-import { DriveActivity } from './activity';
-import { ICalendarEvent, person } from './fetch-first';
-import { formattedEmail } from './fetch-second';
+import { ICalendarEvent, person } from '../fetch/fetch-first';
+import { formattedEmail } from '../fetch/fetch-second';
+import { DriveActivity } from '../types/activity';
 
 interface IPersonByEmail {
   [email: string]: {
@@ -36,7 +36,7 @@ export default class PersonDataStore {
   private personById: IPersonByEmail;
 
   constructor(personList: person[], emailList: string[]) {
-    console.warn('setting up data store');
+    console.warn('setting up person store');
     this.personByEmail = {};
     this.personById = {};
 
