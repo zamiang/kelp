@@ -9,10 +9,12 @@ import Copyright from './copyright';
 // import Docs from './docs';
 import LeftDrawer from './left-drawer';
 import PersonDataStore from './person-store';
+import TimeDataStore from './time-store';
 import TopBar from './top-bar';
 
 interface IProps {
   personDataStore: PersonDataStore;
+  timeDataStore: TimeDataStore;
   classes: styles;
 }
 

@@ -72,7 +72,7 @@ const fetchEmails = async (emails: email[]): Promise<formattedEmail[]> => {
       id: email.result.id,
       snippet: email.result.snippet,
       threadId: email.result.threadId,
-      date: '',
+      date: new Date(),
       subject: '',
       from: null,
       to: [],
@@ -80,7 +80,7 @@ const fetchEmails = async (emails: email[]): Promise<formattedEmail[]> => {
     email.result.payload.headers.forEach((header) => {
       switch (header.name) {
         case 'Date':
-          formattedEmail.date = header.value;
+          formattedEmail.date = new Date(header.value);
           break;
         case 'Subject':
           formattedEmail.subject = header.value;
@@ -100,7 +100,7 @@ export type formattedEmail = {
   id: string;
   snippet: string;
   threadId: string;
-  date: string;
+  date: Date;
   subject: string;
   from: string | null;
   to: (string | null)[];

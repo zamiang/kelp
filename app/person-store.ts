@@ -35,10 +35,13 @@ export default class PersonDataStore {
   private personByEmail: IPersonByEmail;
   private personById: IPersonByEmail;
 
-  constructor() {
+  constructor(personList: person[], emailList: string[]) {
     console.warn('setting up data store');
     this.personByEmail = {};
     this.personById = {};
+
+    this.addPeopleToStore(personList);
+    this.addEmailAddressessToStore(emailList);
   }
 
   addPeopleToStore(people: person[]) {

@@ -87,6 +87,7 @@ const batchFetchPeople = async (
 };
 
 // TODO: Figure out how to list people on a file
+// NOTE: Currently unused, data is returned by the activity endpoing
 const listDriveFiles = async () => {
   // Does not allow filtering by modified time OR deleted
   const driveResponse = await gapi.client.drive.files.list({
@@ -114,8 +115,8 @@ export interface ICalendarEvent {
   id: string;
   link?: string;
   summary?: string;
-  start?: string;
-  end?: string;
+  start: Date;
+  end: Date;
   attendees?: {
     email?: string;
     responseStatus?: string;
@@ -151,14 +152,19 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
   addEmailAddressesToStore(uniqueAttendeeEmails);
 
   return {
-    calendarEvents: filteredCalendarEvents.map((event) => ({
-      id: event.id || 'wtf',
-      link: event.htmlLink,
-      summary: event.summary,
-      start: event.start && event.start.dateTime,
-      end: event.end && event.end.dateTime,
-      attendees: event.attendees,
-    })),
+    calendarEvents: filteredCalendarEvents
+      .filter(
+        (event) =>
+          event.id && event.start && event.start.dateTime && event.end && event.end.dateTime,
+      )
+      .map((event) => ({
+        id: event.id!,
+        link: event.htmlLink,
+        summary: event.summary,
+        start: new Date(event.start!.dateTime!),
+        end: new Date(event.end!.dateTime!),
+        attendees: event.attendees,
+      })),
     // calendar events return little attendee information beyond email addresses (contradicting docs)
     uniqueAttendeeEmails,
   };
