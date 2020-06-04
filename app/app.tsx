@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
-import Dashboard from './dashboard';
+import FetchTop from './fetch-top';
 
 const drawerWidth = 240;
 
@@ -159,7 +159,7 @@ const App = () => {
     <div className={classes.root}>
       <CssBaseline />
       {isLoggedIn ? (
-        <Dashboard classes={classes} accessToken={googleLoginState.accessToken} />
+        <FetchTop classes={classes} accessToken={googleLoginState.accessToken} />
       ) : (
         <Container component="main" maxWidth="xs">
           <Paper className={classes.centerPaper}>

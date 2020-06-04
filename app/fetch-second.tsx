@@ -1,15 +1,7 @@
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import clsx from 'clsx';
-import React, { useState } from 'react';
+import React from 'react';
 import { useAsync } from 'react-async-hook';
-import { styles } from './app';
-import Copyright from './copyright';
-import Docs from './docs';
-import LeftDrawer from './left-drawer';
-import TopBar from './top-bar';
+import Dashboard from './dashboard';
+import { IProps as FetchTopProps } from './fetch-top';
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 type email = {
@@ -18,11 +10,9 @@ type email = {
 };
 
 const listCurrentUserEmailsForContacts = async (emailAddresses: string[]) => {
-  console.log('about to fetch', emailAddresses);
   if (emailAddresses.length < 1) {
     return null;
   }
-  console.log('about to fetch', emailAddresses);
   const formattedEmails = emailAddresses.map((email) => `from:${email}`);
   const response = await (gapi.client as any).gmail.users.messages.list({
     userId: 'me',
@@ -46,9 +36,11 @@ const fetchEmails = async (emails: email[]) => {
   return await Promise.all(emailPromises);
 };
 
-interface IProps {
-  classes: styles;
-  accessToken: string;
+export interface IProps extends FetchTopProps {
+  personStore: {};
+  calendarEvents?: gapi.client.calendar.Event[];
+  driveFiles?: gapi.client.drive.File[];
+  driveActivity: any;
 }
 
 const FetchSecond = (props: IProps) => {
@@ -57,11 +49,10 @@ const FetchSecond = (props: IProps) => {
     addresses[0],
     addresses.length,
   ]);
-  console.log(gmailResponse, '<<<<<<<<<<<');
   const emails = gmailResponse.result || [];
   const emailsResponse = useAsync(() => fetchEmails(emails), [emails.length]);
 
-  return <Dashboard emails={emailsResponse.result} />;
+  return <Dashboard emails={emailsResponse.result} {...props} />;
 };
 
 export default FetchSecond;

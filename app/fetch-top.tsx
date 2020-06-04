@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity } from './activity';
 import { styles } from './app';
+import FetchSecond from './fetch-second';
 
 const listDriveActivity = async () => {
   // Todo: Make driveactivity types
@@ -145,7 +146,7 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
   };
 };
 
-interface IProps {
+export interface IProps {
   classes: styles;
   accessToken: string;
 }
@@ -200,9 +201,10 @@ const FetchTop = (props: IProps) => {
     <React.Fragment>
       <FetchSecond
         personStore={personStore}
-        calendarEvents={calendarResponse.result?.calendarEvents}
+        calendarEvents={calendarResponse.result ? calendarResponse.result.calendarEvents : []}
         driveFiles={driveResponse.result}
-        driveActivity={activityResponse.result?.activity}
+        driveActivity={activityResponse.result ? activityResponse.result.activity : []}
+        {...props}
       />
     </React.Fragment>
   );

@@ -4,15 +4,14 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import { styles } from './app';
 import Copyright from './copyright';
 import Docs from './docs';
+import { IProps as FetchProps } from './fetch-second';
 import LeftDrawer from './left-drawer';
 import TopBar from './top-bar';
 
-interface IProps {
-  classes: styles;
-  accessToken: string;
+interface IProps extends FetchProps {
+  emails?: any;
 }
 
 const Dashboard = (props: IProps) => {
@@ -33,7 +32,7 @@ const Dashboard = (props: IProps) => {
         classes={classes}
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}
-        people={Object.values(personStore)}
+        people={Object.values(props.personStore)}
       />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -48,43 +47,25 @@ const Dashboard = (props: IProps) => {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <b>activity</b>
-                {driveResponse.loading && <div>Loading</div>}
-                <Docs docs={driveResponse} />
+                <Docs docs={props.driveFiles} />
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <b>activity</b>
-                {activityResponse.loading && <div>Loading</div>}
-                {JSON.stringify(activityResponse)}
+                {JSON.stringify(props.driveActivity)}
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <b>gmail</b>
-                {gmailResponse.loading && <div>Loading</div>}
-                {JSON.stringify(gmailResponse)}
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <b>people</b>
-                {peopleResponse.loading && <div>Loading</div>}
-                {JSON.stringify(peopleResponse)}
+                <b>emails</b>
+                {JSON.stringify(props.emails)}
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <b>calendar</b>
-                {calendarResponse.loading && <div>Loading</div>}
-                {JSON.stringify(calendarResponse)}
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <b>email</b>
-                {emailsResponse.loading && <div>Loading</div>}
-                {JSON.stringify(emailsResponse)}
+                {JSON.stringify(props.calendarEvents)}
               </Paper>
             </Grid>
           </Grid>
