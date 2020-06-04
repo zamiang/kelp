@@ -7,9 +7,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import { formatRelative } from 'date-fns';
 import React from 'react';
+import { UseAsyncReturn } from 'react-async-hook';
 
 interface IProps {
-  docs: gapi.client.drive.File[];
+  docs: UseAsyncReturn<gapi.client.drive.File[], string[]>;
 }
 
 const Docs = (props: IProps) => (
@@ -27,7 +28,7 @@ const Docs = (props: IProps) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.docs.map((row) => (
+        {(props.docs.result || []).map((row) => (
           <TableRow key={row.id}>
             <TableCell>
               {row.modifiedTime && formatRelative(new Date(row.modifiedTime), new Date())}
