@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
 import { IProps } from './dashboard';
+import Docs from './docs';
+import Title from './title';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -24,8 +26,10 @@ interface IPersonProps extends IProps {
 const Person = (props: IPersonProps) => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const person = props.personDataStore.getPersonByEmail(props.personEmail);
   return (
     <React.Fragment>
+      <Title>{person.name || person.emailAddress}</Title>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Paper className={fixedHeightPaper}>{props.personEmail}</Paper>
@@ -35,7 +39,7 @@ const Person = (props: IPersonProps) => {
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <b>activity</b>
+            <Docs {...props} />
           </Paper>
         </Grid>
       </Grid>

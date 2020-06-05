@@ -531,7 +531,7 @@ interface SystemEvent {
 /**
  * Information about the target of activity.
  */
-interface Target {
+export interface Target {
   /**
    * The target is a shared drive.
    */

@@ -1,10 +1,9 @@
 import { isAfter, isBefore } from 'date-fns';
-import { ICalendarEvent } from '../fetch/fetch-first';
+import { ICalendarEvent, IFormattedDriveActivity } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
-import { DriveActivity } from '../types/activity';
 
-interface ISegment extends ICalendarEvent {
-  driveActivity: DriveActivity[];
+export interface ISegment extends ICalendarEvent {
+  driveActivity: IFormattedDriveActivity[];
   emails: formattedEmail[];
 }
 
@@ -37,14 +36,14 @@ export default class TimeStore {
     });
   }
 
-  addDriveActivityToStore(driveActivity: DriveActivity[]) {
+  addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
     driveActivity
       // TODO: filter earlier
-      .filter((activity) => activity.timestamp)
+      .filter((activity) => activity.time)
       .forEach((activity) => {
         // NOTE: SUPER SLOW
         // TODO: Design  segment storage system or add optimizations assuming segments are ordered
-        const start = new Date(activity.timestamp!);
+        const start = activity.time;
         this.segments.forEach((segment) => {
           if (isAfter(start, segment.start) && isBefore(start, segment.end)) {
             segment.driveActivity.push(activity);
@@ -55,5 +54,9 @@ export default class TimeStore {
 
   getLength() {
     return this.segments.length;
+  }
+
+  getSegments() {
+    return this.segments;
   }
 }

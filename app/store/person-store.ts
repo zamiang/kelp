@@ -1,6 +1,5 @@
-import { ICalendarEvent, person } from '../fetch/fetch-first';
+import { ICalendarEvent, IFormattedDriveActivity, person } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
-import { DriveActivity } from '../types/activity';
 
 interface IPersonByEmail {
   [email: string]: {
@@ -8,7 +7,7 @@ interface IPersonByEmail {
     name?: string;
     emailAddress: string;
     emails: formattedEmail[];
-    driveActivity: DriveActivity[];
+    driveActivity: IFormattedDriveActivity[];
     calendarEvents: ICalendarEvent[];
   };
 }
@@ -61,17 +60,14 @@ export default class PersonDataStore {
     });
   }
 
-  addDriveActivityToStore(driveActivity: DriveActivity[]) {
+  addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
     (driveActivity || []).map((driveActivity) => {
-      (driveActivity.actors || []).map((actor) => {
-        if (actor.user && actor.user.knownUser && actor.user.knownUser.personName) {
-          const personById = this.personById[actor.user.knownUser.personName];
-          if (personById) {
-            personById.driveActivity.push(driveActivity);
-            this.personByEmail[personById.emailAddress].driveActivity.push(driveActivity);
-          }
-        }
-      });
+      const personById =
+        driveActivity.actorPersonId && this.personById[driveActivity.actorPersonId];
+      if (personById) {
+        personById.driveActivity.push(driveActivity);
+        this.personByEmail[personById.emailAddress].driveActivity.push(driveActivity);
+      }
     });
   }
 

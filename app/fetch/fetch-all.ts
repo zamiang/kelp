@@ -1,5 +1,4 @@
-import { DriveActivity } from '../types/activity';
-import FetchFirst, { ICalendarEvent, person } from './fetch-first';
+import FetchFirst, { ICalendarEvent, IFormattedDriveActivity, person } from './fetch-first';
 import FetchSecond, { formattedEmail } from './fetch-second';
 
 interface IReturnType {
@@ -8,7 +7,7 @@ interface IReturnType {
   emails: formattedEmail[];
   calendarEvents?: ICalendarEvent[];
   driveFiles?: gapi.client.drive.File[];
-  driveActivity: DriveActivity[];
+  driveActivity: IFormattedDriveActivity[];
   isLoading: boolean;
 }
 
