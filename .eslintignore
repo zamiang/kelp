@@ -1,3 +1,4 @@
 webpack.config.js
 public/app.js
 babel.config.js
+.eslintrc.js

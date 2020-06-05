@@ -48,7 +48,7 @@ interface ActionDetail {
   /**
    * An object was edited.
    */
-  edit?: {};
+  edit?: unknown;
   /**
    * An object was moved.
    */
@@ -81,11 +81,11 @@ interface Actor {
   /**
    * An administrator.
    */
-  administrator?: {};
+  administrator?: unknown;
   /**
    * An anonymous user.
    */
-  anonymous?: {};
+  anonymous?: unknown;
   /**
    * An account acting on behalf of another.
    */
@@ -254,7 +254,7 @@ interface DriveItem {
   /**
    * The Drive item is a file.
    */
-  driveFile?: {};
+  driveFile?: unknown;
   /**
    * The Drive item is a folder. Includes information about the type of folder.
    */
@@ -283,7 +283,7 @@ interface DriveItemReference {
   /**
    * The Drive item is a file.
    */
-  driveFile?: {};
+  driveFile?: unknown;
   /**
    * The Drive item is a folder. Includes information about the type of folder.
    */
@@ -425,7 +425,7 @@ interface Permission {
   /**
    * If set, this permission applies to anyone, even logged out users.
    */
-  anyone?: {};
+  anyone?: unknown;
   /**
    * The domain to whom this permission applies.
    */
@@ -616,7 +616,7 @@ interface User {
   /**
    * A user whose account has since been deleted.
    */
-  deletedUser?: {};
+  deletedUser?: unknown;
   /**
    * A known user.
    */
@@ -624,7 +624,7 @@ interface User {
   /**
    * A user about whom nothing is currently known.
    */
-  unknownUser?: {};
+  unknownUser?: unknown;
 
   isCurrentUser?: boolean;
 }

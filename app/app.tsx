@@ -39,7 +39,7 @@ const initialGoogleState = {
 
 export type googleState = typeof initialGoogleState;
 
-const loadLibraries = () => {
+const loadLibraries = () =>
   gapi.client.init({
     discoveryDocs: [
       'https://www.googleapis.com/discovery/v1/apis/people/v1/rest',
@@ -49,10 +49,9 @@ const loadLibraries = () => {
       'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
     ],
   });
-  return null;
-};
 
-gapi.load('client', loadLibraries);
+// load libraries is callback style
+gapi.load('client', loadLibraries as any);
 
 const App = () => {
   const classes = useStyles();

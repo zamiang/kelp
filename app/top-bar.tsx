@@ -7,7 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import clsx from 'clsx';
 import React from 'react';
-import { styles } from './app';
+import { styles } from './dashboard';
 
 interface IProps {
   isOpen: boolean;

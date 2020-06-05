@@ -23,13 +23,7 @@ const CreateDataStores = (props: IProps) => {
   console.log('TIME DATA STORE:', timeDataStore);
 
   // TODO: props.children this
-  return (
-    <Dashboard
-      classes={props.classes}
-      timeDataStore={timeDataStore}
-      personDataStore={personDataStore}
-    />
-  );
+  return <Dashboard timeDataStore={timeDataStore} personDataStore={personDataStore} />;
 };
 
 export default CreateDataStores;

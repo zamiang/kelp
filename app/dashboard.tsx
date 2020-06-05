@@ -96,6 +96,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export type styles = ReturnType<typeof useStyles>;
+
 interface IProps {
   personDataStore: PersonDataStore;
   timeDataStore: TimeDataStore;
