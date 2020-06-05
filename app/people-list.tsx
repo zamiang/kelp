@@ -11,13 +11,14 @@ interface IProps {
     | {
         id: string;
         name?: string;
+        emailAddress: string;
       }[]
     | null;
 }
 
 const People = (props: IProps) => {
   const peopleHtml = (props.people || []).map((person) => (
-    <ListItem button key={person.id} onClick={() => props.handlePersonClick(person.id)}>
+    <ListItem button key={person.id} onClick={() => props.handlePersonClick(person.emailAddress)}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
