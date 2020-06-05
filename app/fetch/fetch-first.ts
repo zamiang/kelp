@@ -1,9 +1,8 @@
 import { addDays, differenceInCalendarDays, subDays } from 'date-fns';
 import { uniq } from 'lodash';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity } from '../types/activity';
-import FetchSecond from './fetch-second';
 
 const listDriveActivity = async () => {
   // Todo: Make driveactivity types
@@ -179,7 +178,7 @@ const initialEmailList: string[] = [];
 /**
  * Fetches data that can be fetched in parallel and creates the person store object
  */
-const FetchFirst = (props: IProps) => {
+const FetchFirst = (accessToken: string) => {
   const [personList, setPersonList] = useState(initialPersonList);
   const [emailList, setEmailList] = useState(initialEmailList);
   const addPeopleToStore = (people: person[]) => {
@@ -190,27 +189,32 @@ const FetchFirst = (props: IProps) => {
     setEmailList(emailAddresses);
   };
 
-  const driveResponse = useAsync(listDriveFiles, [props.accessToken]);
-  const activityResponse = useAsync(listDriveActivity, [props.accessToken]);
+  const driveResponse = useAsync(listDriveFiles, [accessToken]);
+  const activityResponse = useAsync(listDriveActivity, [accessToken]);
   const calendarResponse = useAsync(() => listCalendarEvents(addEmailAddressesToStore), [
-    props.accessToken,
+    accessToken,
   ]);
   const peopleIds =
     activityResponse.result && activityResponse.result.uniqueActorIds
       ? activityResponse.result.uniqueActorIds
       : [];
   // this has a sideffect of updating the store
-  useAsync(() => batchFetchPeople(peopleIds, addPeopleToStore), [peopleIds.length]);
+  const peopleResponse = useAsync(() => batchFetchPeople(peopleIds, addPeopleToStore), [
+    peopleIds.length,
+  ]);
 
-  return (
-    <FetchSecond
-      personList={personList}
-      emailList={emailList}
-      calendarEvents={calendarResponse.result ? calendarResponse.result.calendarEvents : []}
-      driveFiles={driveResponse.result}
-      driveActivity={activityResponse.result ? activityResponse.result.activity : []}
-    />
-  );
+  return {
+    isLoading:
+      driveResponse.loading &&
+      activityResponse.loading &&
+      calendarResponse.loading &&
+      peopleResponse.loading,
+    personList,
+    emailList,
+    calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
+    driveFiles: driveResponse.result,
+    driveActivity: activityResponse.result ? activityResponse.result.activity : [],
+  };
 };
 
 export default FetchFirst;

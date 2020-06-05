@@ -1,9 +1,6 @@
 import { uniq } from 'lodash';
-import React from 'react';
 import { useAsync } from 'react-async-hook';
-import FormatData from '../store/create-stores';
-import { DriveActivity } from '../types/activity';
-import { ICalendarEvent, person } from './fetch-first';
+import { person } from './fetch-first';
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 type email = {
@@ -109,9 +106,6 @@ export type formattedEmail = {
 export interface IProps {
   personList: person[];
   emailList: string[];
-  calendarEvents?: ICalendarEvent[];
-  driveFiles?: gapi.client.drive.File[];
-  driveActivity: DriveActivity[];
 }
 /**
  * Fetches 2nd layer of information.
@@ -128,7 +122,10 @@ const FetchSecond = (props: IProps) => {
   ]);
   const emails = gmailResponse.result || [];
   const emailsResponse = useAsync(() => fetchEmails(emails), [emails.length]);
-  return <FormatData emails={emailsResponse.result ? emailsResponse.result : []} {...props} />;
+  return {
+    isLoading: emailsResponse.loading,
+    emails: emailsResponse.result ? emailsResponse.result : [],
+  };
 };
 
 export default FetchSecond;

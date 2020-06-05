@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
-import FetchFirst from './fetch/fetch-first';
+import DashboardContainer from './dashboard-container';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,7 +83,7 @@ const App = () => {
     <div className={classes.root}>
       <CssBaseline />
       {isLoggedIn ? (
-        <FetchFirst accessToken={googleLoginState.accessToken} />
+        <DashboardContainer accessToken={googleLoginState.accessToken} />
       ) : (
         <Container component="main" maxWidth="xs">
           <Paper className={classes.centerPaper}>
