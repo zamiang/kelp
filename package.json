@@ -54,7 +54,7 @@
     "react-google-login": "5.1.20",
     "react-router-dom": "5.2.0",
     "ts-loader": "7.0.5",
-    "typescript": "3.9.3",
+    "typescript": "3.9.5",
     "typescript-plugin-lodash": "0.1.0",
     "url-loader": "4.1.0",
     "validator": "13.0.0",
