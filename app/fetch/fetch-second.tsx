@@ -3,7 +3,7 @@ import React from 'react';
 import { useAsync } from 'react-async-hook';
 import FormatData from '../store/create-stores';
 import { DriveActivity } from '../types/activity';
-import { IProps as FetchFirstProps, ICalendarEvent, person } from './fetch-first';
+import { ICalendarEvent, person } from './fetch-first';
 
 // TODO: Figure out why gapi.client.gmail isn't imported
 type email = {
@@ -106,7 +106,7 @@ export type formattedEmail = {
   to: (string | null)[];
 };
 
-export interface IProps extends FetchFirstProps {
+export interface IProps {
   personList: person[];
   emailList: string[];
   calendarEvents?: ICalendarEvent[];

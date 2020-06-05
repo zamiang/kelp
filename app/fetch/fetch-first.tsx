@@ -209,7 +209,6 @@ const FetchFirst = (props: IProps) => {
       calendarEvents={calendarResponse.result ? calendarResponse.result.calendarEvents : []}
       driveFiles={driveResponse.result}
       driveActivity={activityResponse.result ? activityResponse.result.activity : []}
-      {...props}
     />
   );
 };
