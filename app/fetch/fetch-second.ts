@@ -114,7 +114,7 @@ export interface IProps {
 const FetchSecond = (props: IProps) => {
   const emailAddresses = props.emailList;
   props.personList.forEach((person) => {
-    emailAddresses.push(person.email);
+    emailAddresses.push(person.emailAddress);
   });
   const uniqueEmailAddresses = uniq(emailAddresses);
   const gmailResponse = useAsync(() => listCurrentUserEmailsForContacts(uniqueEmailAddresses), [

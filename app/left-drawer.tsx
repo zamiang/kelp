@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { drawerWidth } from './dashboard';
 import PeopleList from './people-list';
+import { IPerson } from './store/person-store';
 
 const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
@@ -48,13 +49,7 @@ interface IProps {
   handleDrawerClose: () => void;
   handlePersonClick: (personId: string) => void;
   handleMeetingsClick: () => void;
-  people?:
-    | {
-        id: string;
-        name?: string;
-        emailAddress: string;
-      }[]
-    | null;
+  people?: IPerson[] | null;
 }
 
 const LeftDrawer = (props: IProps) => {

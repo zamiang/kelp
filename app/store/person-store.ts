@@ -1,22 +1,26 @@
 import { ICalendarEvent, IFormattedDriveActivity, person } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
 
+export interface IPerson {
+  id: string;
+  name?: string;
+  emailAddress: string;
+  imageUrl?: string | null;
+  emails: formattedEmail[];
+  driveActivity: IFormattedDriveActivity[];
+  calendarEvents: ICalendarEvent[];
+}
+
 interface IPersonByEmail {
-  [email: string]: {
-    id: string;
-    name?: string;
-    emailAddress: string;
-    emails: formattedEmail[];
-    driveActivity: IFormattedDriveActivity[];
-    calendarEvents: ICalendarEvent[];
-  };
+  [email: string]: IPerson;
 }
 
 // handle one person w/ multiple email addresses
 const createNewPersonFromPerson = (person: person) => ({
   id: person.id,
   name: person.name,
-  emailAddress: person.email.toLocaleLowerCase(),
+  emailAddress: person.emailAddress.toLocaleLowerCase(),
+  imageUrl: person.imageUrl,
   emails: [],
   driveActivity: [],
   calendarEvents: [],
@@ -25,6 +29,7 @@ const createNewPersonFromPerson = (person: person) => ({
 const createNewPersonFromEmail = (email: string) => ({
   id: email,
   emailAddress: email,
+  imageUrl: null,
   emails: [],
   driveActivity: [],
   calendarEvents: [],
@@ -46,7 +51,7 @@ export default class PersonDataStore {
   addPeopleToStore(people: person[]) {
     people.forEach((person) => {
       const newPerson = createNewPersonFromPerson(person);
-      this.personByEmail[person.email.toLocaleLowerCase()] = newPerson;
+      this.personByEmail[person.emailAddress.toLocaleLowerCase()] = newPerson;
       this.personById[person.id] = newPerson;
     });
   }
