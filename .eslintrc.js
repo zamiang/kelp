@@ -9,6 +9,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:security/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
@@ -23,7 +24,14 @@ module.exports = {
   globals: {
     gapi: 'writable',
   },
-  plugins: ['@typescript-eslint', '@typescript-eslint/tslint', 'import', 'react', 'security'],
+  plugins: [
+    '@typescript-eslint',
+    '@typescript-eslint/tslint',
+    'import',
+    'react',
+    'security',
+    'react-hooks',
+  ],
   rules: {
     'import/no-unresolved': [2, { ignore: ['gapi'] }],
     '@typescript-eslint/camelcase': 0, // Triggers on external APIs
