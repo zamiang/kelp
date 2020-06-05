@@ -1,8 +1,12 @@
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import React from 'react';
 
 interface IProps {
+  handlePersonClick: (id: string) => void;
   people?:
     | {
         id: string;
@@ -13,13 +17,20 @@ interface IProps {
 
 const People = (props: IProps) => {
   const peopleHtml = (props.people || []).map((person) => (
-    <React.Fragment key={person.id}>
-      <Divider />
-      <List>{person.name || person.id}</List>
-    </React.Fragment>
+    <ListItem button key={person.id} onClick={() => props.handlePersonClick(person.id)}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary={person.name || person.id} />
+    </ListItem>
   ));
 
-  return <React.Fragment>{peopleHtml}</React.Fragment>;
+  return (
+    <div>
+      <ListSubheader inset>People</ListSubheader>
+      {peopleHtml}
+    </div>
+  );
 };
 
 export default People;
