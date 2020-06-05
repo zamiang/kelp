@@ -29,7 +29,7 @@
     "@material-ui/styles": "4.10.0",
     "@types/gapi": "0.0.39",
     "@types/gapi.client.calendar": "3.0.4",
-    "@types/gapi.client.drive": "3.0.6",
+    "@types/gapi.client.drive": "3.0.7",
     "@types/gapi.client.gmail": "1.0.1",
     "@types/gapi.client.people": "1.0.2",
     "@types/lodash": "4.14.155",
