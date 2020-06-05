@@ -42,7 +42,8 @@ export default class TimeStore {
       // TODO: filter earlier
       .filter((activity) => activity.timestamp)
       .forEach((activity) => {
-        // NOTE: SUPER SLOW (design a segment storage system)
+        // NOTE: SUPER SLOW
+        // TODO: Design  segment storage system or add optimizations assuming segments are ordered
         const start = new Date(activity.timestamp!);
         this.segments.forEach((segment) => {
           if (isAfter(start, segment.start) && isBefore(start, segment.end)) {

@@ -31,8 +31,8 @@ const plugins = [
     template: require('html-webpack-template'),
   }),
   new EnvironmentPlugin({
-    GOOGLE_CLIENT_ID: secrets.client_id,
-    GOOGLE_CLIENT_SECRET: secrets.client_secret,
+    GOOGLE_CLIENT_ID: secrets.googleClientId,
+    GOOGLE_CLIENT_SECRET: secrets.googleClientSecret,
     NODE_ENV: 'development',
   }),
 ];
@@ -41,8 +41,8 @@ if (isProduction) {
     new S3Plugin({
       include: [/.*\.(css|js|html)/],
       s3Options: {
-        accessKeyId: secrets.AWS_ACCESS_KEY_ID,
-        secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: secrets.awsAccessKeyId,
+        secretAccessKey: secrets.awsSecretAccessKey,
       },
       s3UploadOptions: {
         Bucket: 'www.collasso.me',

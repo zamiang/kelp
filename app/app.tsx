@@ -159,7 +159,7 @@ const App = () => {
     <div className={classes.root}>
       <CssBaseline />
       {isLoggedIn ? (
-        <FetchFirst classes={classes} accessToken={googleLoginState.accessToken} />
+        <FetchFirst accessToken={googleLoginState.accessToken} />
       ) : (
         <Container component="main" maxWidth="xs">
           <Paper className={classes.centerPaper}>

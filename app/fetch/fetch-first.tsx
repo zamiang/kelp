@@ -2,7 +2,6 @@ import { addDays, differenceInCalendarDays, subDays } from 'date-fns';
 import { uniq } from 'lodash';
 import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
-import { styles } from '../app';
 import { DriveActivity } from '../types/activity';
 import FetchSecond from './fetch-second';
 
@@ -171,7 +170,6 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
 };
 
 export interface IProps {
-  classes: styles;
   accessToken: string;
 }
 
@@ -205,16 +203,14 @@ const FetchFirst = (props: IProps) => {
   useAsync(() => batchFetchPeople(peopleIds, addPeopleToStore), [peopleIds.length]);
 
   return (
-    <React.Fragment>
-      <FetchSecond
-        personList={personList}
-        emailList={emailList}
-        calendarEvents={calendarResponse.result ? calendarResponse.result.calendarEvents : []}
-        driveFiles={driveResponse.result}
-        driveActivity={activityResponse.result ? activityResponse.result.activity : []}
-        {...props}
-      />
-    </React.Fragment>
+    <FetchSecond
+      personList={personList}
+      emailList={emailList}
+      calendarEvents={calendarResponse.result ? calendarResponse.result.calendarEvents : []}
+      driveFiles={driveResponse.result}
+      driveActivity={activityResponse.result ? activityResponse.result.activity : []}
+      {...props}
+    />
   );
 };
 
