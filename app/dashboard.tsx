@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 export interface IProps {
   personDataStore: PersonDataStore;
   timeDataStore: TimeDataStore;
+  lastUpdated: Date;
 }
 
 const routes = {
@@ -53,7 +54,7 @@ const Dashboard = (props: IProps) => {
 
   return (
     <React.Fragment>
-      <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} />
+      <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} lastUpdated={props.lastUpdated} />
       <LeftDrawer
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}

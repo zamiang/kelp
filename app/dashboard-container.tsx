@@ -24,7 +24,13 @@ const DashboardContainer = (props: IProps) => {
   timeDataStore.addDriveActivityToStore(data.driveActivity);
   console.log('TIME DATA STORE:', timeDataStore);
 
-  return <Dashboard timeDataStore={timeDataStore} personDataStore={personDataStore} />;
+  return (
+    <Dashboard
+      timeDataStore={timeDataStore}
+      personDataStore={personDataStore}
+      lastUpdated={data.lastUpdated}
+    />
+  );
 };
 
 export default DashboardContainer;

@@ -7,6 +7,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
+import { format } from 'date-fns';
 import React from 'react';
 import { drawerWidth } from './dashboard';
 
@@ -77,11 +78,15 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  date: {
+    paddingLeft: 10,
+  },
 }));
 
 interface IProps {
   isOpen: boolean;
   handleDrawerOpen: () => void;
+  lastUpdated: Date;
 }
 
 const TopBar = (props: IProps) => {
@@ -105,6 +110,10 @@ const TopBar = (props: IProps) => {
         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           Time
         </Typography>
+        <Typography variant="body2" color="inherit" noWrap className={classes.date}>
+          Last update on {format(props.lastUpdated, "MMMM do, yyyy 'at' hh:mm a")}
+        </Typography>
+
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />

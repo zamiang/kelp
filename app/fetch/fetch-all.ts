@@ -9,6 +9,7 @@ interface IReturnType {
   driveFiles?: gapi.client.drive.File[];
   driveActivity: IFormattedDriveActivity[];
   isLoading: boolean;
+  lastUpdated: Date;
 }
 
 const FetchAll = (accessToken: string): IReturnType => {

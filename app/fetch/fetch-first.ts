@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { DriveActivity, Target } from '../types/activity';
 
+const NUMBER_OF_DAYS_BACK = 7;
+const startDate = subDays(new Date(), NUMBER_OF_DAYS_BACK);
+
 const getTargetInfo = (target: Target) => {
   if (target.drive) {
     // Not handling these
@@ -44,10 +47,7 @@ const listDriveActivity = async () => {
   // Todo: Make driveactivity types
   const activityResponse = await (gapi.client as any).driveactivity.activity.query({
     pageSize: 100,
-    filter: `detail.action_detail_case:(CREATE EDIT COMMENT) AND time >= "${subDays(
-      new Date(),
-      30,
-    ).toISOString()}"`,
+    filter: `detail.action_detail_case:(CREATE EDIT COMMENT) AND time >= "${startDate.toISOString()}"`,
   });
   const activity: DriveActivity[] =
     activityResponse && activityResponse.result && activityResponse.result.activities
@@ -152,7 +152,7 @@ const listDriveFiles = async () => {
         (file) =>
           !file.trashed &&
           file.modifiedTime &&
-          differenceInCalendarDays(new Date(), new Date(file.modifiedTime)) < 30,
+          differenceInCalendarDays(new Date(), new Date(file.modifiedTime)) < NUMBER_OF_DAYS_BACK,
       )
     : [];
 };
@@ -174,9 +174,10 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
   const calendarResponse = await gapi.client.calendar.events.list({
     calendarId: 'primary',
     maxAttendees: 10,
-    maxResults: 10,
+    maxResults: 80,
+    singleEvents: true,
     orderBy: 'updated', // starttime does not work :shrug:
-    timeMin: subDays(new Date(), 30).toISOString(),
+    timeMin: startDate.toISOString(),
     timeMax: addDays(new Date(), 1).toISOString(),
   });
 
@@ -262,6 +263,7 @@ const FetchFirst = (accessToken: string) => {
     calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
     driveFiles: driveResponse.result,
     driveActivity: activityResponse.result ? activityResponse.result.activity : [],
+    lastUpdated: new Date(),
   };
 };
 
