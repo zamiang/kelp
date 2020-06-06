@@ -3,30 +3,18 @@ import Collapse from '@material-ui/core/Collapse';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { formatRelative } from 'date-fns';
+import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { IProps } from './dashboard';
 import { ISegment } from './store/time-store';
-import Title from './title';
-
-const useMeetingStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-}));
 
 const useRowStyles = makeStyles({
   root: {
@@ -41,18 +29,27 @@ const Row = (props: { row: ISegment }) => {
   const classes = useRowStyles();
   return (
     <React.Fragment>
-      <TableRow className={classes.root}>
-        <TableCell>
+      <TableRow className={classes.root} hover onClick={() => setOpen(!isOpen)}>
+        <TableCell style={{ width: '1%', paddingRight: '1px' }} align="right">
+          <Typography variant="h6">{format(props.row.start, 'd')}</Typography>
+        </TableCell>
+        <TableCell style={{ width: '1%', textTransform: 'uppercase', paddingTop: '7px' }}>
+          <Typography variant="caption">{format(props.row.start, 'MMM')}</Typography>
+        </TableCell>
+        <TableCell style={{ width: '168px' }}>
+          {format(props.row.start, 'p')}–{format(props.row.end, 'p')}
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <Typography variant="h6">
+            <Link color="textPrimary" target="_blank" href={props.row.link || ''}>
+              {props.row.summary}
+            </Link>
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
           <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!isOpen)}>
             {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {props.row.summary}
-        </TableCell>
-        <TableCell>{formatRelative(props.row.start, new Date())}</TableCell>
-        <TableCell align="right">
-          <Link href={props.row.link || ''}>Link</Link>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -72,33 +69,17 @@ const Row = (props: { row: ISegment }) => {
 };
 
 const Meetings = (props: IProps) => {
-  const classes = useMeetingStyles();
   const meetings = props.timeDataStore.getSegments();
-
   return (
     <React.Fragment>
-      <Title>Meetings</Title>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Title>Recent Google Docs</Title>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell />
-                  <TableCell>Name</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell align="right">Link</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {meetings.map((row) => (
-                  <Row key={row.id} row={row} />
-                ))}
-              </TableBody>
-            </Table>
-          </Paper>
-        </Grid>
+      <Grid item xs={12}>
+        <Table size="small">
+          <TableBody>
+            {meetings.map((row) => (
+              <Row key={row.id} row={row} />
+            ))}
+          </TableBody>
+        </Table>
       </Grid>
     </React.Fragment>
   );

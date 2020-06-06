@@ -1,4 +1,3 @@
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -6,23 +5,22 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
 import DashboardContainer from './dashboard-container';
+import theme from './theme';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   centerPaper: {
     marginTop: theme.spacing(8),
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -80,29 +78,33 @@ const App = () => {
   // ideal render path
   // create-store => (fetch first) => (fetch second) => get store back => render dashboard
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      {isLoggedIn ? (
-        <DashboardContainer accessToken={googleLoginState.accessToken} />
-      ) : (
-        <Container component="main" maxWidth="xs">
-          <Paper className={classes.centerPaper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Button variant="outlined" color="primary" onClick={signIn} className={classes.submit}>
-              Sign In
-            </Button>
-          </Paper>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
-        </Container>
-      )}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <CssBaseline />
+        {isLoggedIn ? (
+          <DashboardContainer accessToken={googleLoginState.accessToken} />
+        ) : (
+          <Container component="main" maxWidth="xs">
+            <Paper className={classes.centerPaper}>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={signIn}
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+            </Paper>
+            <Box mt={8}>
+              <Copyright />
+            </Box>
+          </Container>
+        )}
+      </div>
+    </ThemeProvider>
   );
 };
 
