@@ -12,17 +12,57 @@ import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { format } from 'date-fns';
+import { uniqBy } from 'lodash';
 import React, { useState } from 'react';
 import { IProps } from './dashboard';
+import { formattedEmail } from './fetch/fetch-second';
 import { ISegment } from './store/time-store';
 
-const useRowStyles = makeStyles({
+const Email = (props: { email: formattedEmail }) => {
+  const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
+  return (
+    <TableRow>
+      <TableCell style={{ width: '10%' }}>
+        <Typography variant="caption">{props.email.from}</Typography>
+      </TableCell>
+      <TableCell component="th" scope="row">
+        <Typography variant="caption">
+          <Link color="textPrimary" target="_blank" href={emailLink}>
+            <b>{props.email.subject}</b>
+          </Link>
+        </Typography>
+      </TableCell>
+    </TableRow>
+  );
+};
+
+const EmailsForSegment = (props: { segment: ISegment }) => {
+  const threads = uniqBy(props.segment.emails, 'threadId');
+  if (threads.length < 1) {
+    return null;
+  }
+  return (
+    <React.Fragment>
+      <Typography variant="h6">Emails</Typography>
+      <Table size="small">
+        <TableBody>
+          {threads.map((email) => (
+            <Email key={email.id} email={email} />
+          ))}
+        </TableBody>
+      </Table>
+    </React.Fragment>
+  );
+};
+
+const useRowStyles = makeStyles((theme) => ({
   root: {
+    background: theme.palette.primary.main,
     '& > *': {
       borderBottom: 'unset',
     },
   },
-});
+}));
 
 const Row = (props: { row: ISegment }) => {
   const [isOpen, setOpen] = useState(false);
@@ -56,10 +96,7 @@ const Row = (props: { row: ISegment }) => {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={isOpen} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
-              {JSON.stringify(props.row)}
+              <EmailsForSegment segment={props.row} />
             </Box>
           </Collapse>
         </TableCell>
