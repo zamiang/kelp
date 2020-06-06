@@ -1,3 +1,4 @@
+import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -5,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
@@ -19,14 +21,20 @@ const useStyles = makeStyles((theme) => ({
   },
   centerPaper: {
     marginTop: theme.spacing(8),
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    padding: theme.spacing(6, 8, 6, 8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    width: '100%',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+  },
+  body: {
+    marginTop: theme.spacing(1),
   },
 }));
 
@@ -84,18 +92,28 @@ const App = () => {
         {isLoggedIn ? (
           <DashboardContainer accessToken={googleLoginState.accessToken} />
         ) : (
-          <Container component="main" maxWidth="xs">
+          <Container component="main" maxWidth="sm">
             <Paper className={classes.centerPaper}>
+              <Avatar className={classes.avatar}>
+                <EqualizerIcon />
+              </Avatar>
               <Typography component="h1" variant="h5">
-                Sign in
+                Log in to Time
+              </Typography>
+              <Typography variant="body2" className={classes.body}>
+                This application does not store your data or send your data to any third parties.
+                The application is hosted as a ‘static website’ where the application code is served
+                in the same way an image is served. All data processing is done on your computer and
+                not on a web server out of your control.
               </Typography>
               <Button
                 variant="contained"
                 color="secondary"
+                size="large"
                 onClick={signIn}
                 className={classes.submit}
               >
-                Sign In
+                Log In
               </Button>
             </Paper>
             <Box mt={8}>
