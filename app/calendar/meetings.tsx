@@ -144,23 +144,21 @@ interface IMeetingsProps extends IProps {
 const Meetings = (props: IMeetingsProps) => {
   const meetings = props.timeDataStore.getSegments();
   return (
-    <React.Fragment>
-      <Grid item xs={12}>
-        <Table size="small">
-          <TableBody>
-            {meetings.map((meeting) => (
-              <Meeting
-                key={meeting.id}
-                meeting={meeting}
-                handlePersonClick={props.handlePersonClick}
-                personStore={props.personDataStore}
-                docStore={props.docDataStore}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </Grid>
-    </React.Fragment>
+    <Grid item xs={12}>
+      <Table size="small">
+        <TableBody>
+          {meetings.map((meeting) => (
+            <Meeting
+              key={meeting.id}
+              meeting={meeting}
+              handlePersonClick={props.handlePersonClick}
+              personStore={props.personDataStore}
+              docStore={props.docDataStore}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </Grid>
   );
 };
 

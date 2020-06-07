@@ -1,60 +1,34 @@
-import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import ListItemText from '@material-ui/core/ListItemText';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import { format } from 'date-fns';
 import React from 'react';
 import { IProps } from '../dashboard';
 import { IDoc } from '../store/doc-store';
 
-const useRowStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.primary.main,
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-  secondary: {
-    color: theme.palette.getContrastText(theme.palette.secondary.main),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  avatarContainer: {
-    width: 42,
-    paddingLeft: 0,
-    paddingRight: 0,
-  },
-}));
-
-const Row = (props: { row: IDoc }) => {
-  const classes = useRowStyles();
-  return (
-    <React.Fragment>
-      <TableRow className={classes.root} hover>
-        <TableCell style={{ width: '1%', paddingRight: '1px' }} align="right">
-          <Typography variant="h6">{props.row.name}</Typography>
-        </TableCell>
-        <TableCell style={{ width: '1%', textTransform: 'uppercase', paddingTop: '7px' }}>
-          <Typography variant="caption">{props.row.description}</Typography>
-        </TableCell>
-        <TableCell style={{ width: '168px' }}>{props.row.viewedByMe}</TableCell>
-        <TableCell component="th" scope="row">
-          <Typography variant="h6">
-            <Link color="textPrimary" target="_blank" href={props.row.link || ''}>
-              {props.row.name}
-            </Link>
-          </Typography>
-        </TableCell>
-        <TableCell align="right" className={classes.avatarContainer}>
-          <Avatar className={classes.secondary}>todo</Avatar>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
-  );
-};
+const Doc = (props: { doc: IDoc }) => (
+  <TableRow hover>
+    <TableCell style={{ width: 40, paddingRight: 16 }}>
+      <InsertDriveFileIcon />
+    </TableCell>
+    <TableCell>
+      <Link color="textPrimary" target="_blank" href={props.doc.link || ''}>
+        <ListItemText primary={props.doc.name} />
+      </Link>
+    </TableCell>
+    <TableCell align="right">
+      <Typography variant="caption" color="textSecondary">
+        Last updated on {format(new Date(props.doc.updatedAt!), "MMMM do, yyyy 'at' hh:mm a")}
+      </Typography>
+    </TableCell>
+  </TableRow>
+);
 
 const DocumentList = (props: IProps) => {
   const docs = props.docDataStore.getDocs();
@@ -63,8 +37,8 @@ const DocumentList = (props: IProps) => {
       <Grid item xs={12}>
         <Table size="small">
           <TableBody>
-            {docs.map((row) => (
-              <Row key={row.id} row={row} />
+            {docs.map((doc) => (
+              <Doc key={doc.id} doc={doc} />
             ))}
           </TableBody>
         </Table>

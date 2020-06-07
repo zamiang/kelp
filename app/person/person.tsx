@@ -1,16 +1,15 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { IProps } from '../dashboard';
-import DocsForPerson from './docs-for-person';
+import DriveActivityList from '../docs/drive-activity-list';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    padding: theme.spacing(4),
     background: theme.palette.primary.main,
   },
   title: {
@@ -31,7 +30,7 @@ const Person = (props: IPersonProps) => {
   const classes = useStyles();
   const person = props.personDataStore.getPersonByEmail(props.routeId!);
   return (
-    <Container maxWidth="lg" className={classes.container}>
+    <Grid item xs={12} className={classes.container}>
       <Box flexDirection="row" alignItems="flex-start" display="flex">
         {person.imageUrl ? (
           <Avatar className={classes.avatar} src={person.imageUrl} />
@@ -42,8 +41,12 @@ const Person = (props: IPersonProps) => {
           {person.name || person.emailAddress}
         </Typography>
       </Box>
-      <DocsForPerson {...props} person={person} />
-    </Container>
+      <DriveActivityList
+        driveActivity={person.driveActivity}
+        personStore={props.personDataStore}
+        docStore={props.docDataStore}
+      />
+    </Grid>
   );
 };
 
