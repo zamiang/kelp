@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { EnvironmentPlugin } = require('webpack');
 const S3Plugin = require('webpack-s3-plugin');
 const secrets = require('./secrets.json');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const currentWorkingDirectory = process.cwd();
@@ -22,13 +23,14 @@ const node = {
 
 const plugins = [
   new CleanWebpackPlugin(),
+  new CopyWebpackPlugin({
+    patterns: [{ from: '../favicons', to: '' }],
+  }),
   new HtmlWebpackPlugin({
     title: 'Time',
     lang: 'en-US',
     appMountId: 'root',
-    headHtmlSnippet: `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-      <script src="https://apis.google.com/js/api.js"></script>`,
-    template: require('html-webpack-template'),
+    template: 'template.html',
   }),
   new EnvironmentPlugin({
     GOOGLE_CLIENT_ID: secrets.googleClientId,
