@@ -15,11 +15,11 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useState } from 'react';
-import { IProps } from './dashboard';
-import { IFormattedDriveActivity } from './fetch/fetch-first';
-import { formattedEmail } from './fetch/fetch-second';
-import PersonDataStore from './store/person-store';
-import { ISegment } from './store/time-store';
+import { IProps } from '../dashboard';
+import { IFormattedDriveActivity } from '../fetch/fetch-first';
+import { formattedEmail } from '../fetch/fetch-second';
+import PersonDataStore from '../store/person-store';
+import { ISegment } from '../store/time-store';
 
 const Activity = (props: { activity: IFormattedDriveActivity; personStore: PersonDataStore }) => {
   const person = props.activity.actorPersonId

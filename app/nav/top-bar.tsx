@@ -9,7 +9,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
-import { drawerWidth } from './dashboard';
+import { drawerWidth } from '../dashboard';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -80,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
   date: {
     paddingLeft: 10,
+    color: theme.palette.text.hint,
   },
 }));
 
@@ -111,7 +112,7 @@ const TopBar = (props: IProps) => {
           Time
         </Typography>
         <Typography variant="body2" color="inherit" noWrap className={classes.date}>
-          Last update on {format(props.lastUpdated, "MMMM do, yyyy 'at' hh:mm a")}
+          Last updated on {format(props.lastUpdated, "MMMM do, yyyy 'at' hh:mm a")}
         </Typography>
 
         <div className={classes.search}>

@@ -4,7 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import React from 'react';
-import { IPerson } from './store/person-store';
+import { IPerson } from '../store/person-store';
 
 interface IProps {
   handlePersonClick: (id: string) => void;

@@ -6,8 +6,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { formatRelative } from 'date-fns';
 import React from 'react';
-import { IProps } from './dashboard';
-import Title from './title';
+import { IProps } from '../dashboard';
+import Title from '../shared/title';
 
 interface IPersonProps extends IProps {
   personEmail: string;

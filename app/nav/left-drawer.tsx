@@ -8,11 +8,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import clsx from 'clsx';
 import React from 'react';
-import { drawerWidth } from './dashboard';
+import { drawerWidth } from '../dashboard';
+import { IPerson } from '../store/person-store';
 import PeopleList from './people-list';
-import { IPerson } from './store/person-store';
 
 const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
@@ -49,6 +50,7 @@ interface IProps {
   handleDrawerClose: () => void;
   handlePersonClick: (personId: string) => void;
   handleMeetingsClick: () => void;
+  handleDocsClick: () => void;
   people?: IPerson[] | null;
 }
 
@@ -73,7 +75,13 @@ const LeftDrawer = (props: IProps) => {
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText primary="Meetings" />
+          <ListItemText primary="Calendar" />
+        </ListItem>
+        <ListItem button onClick={props.handleDocsClick}>
+          <ListItemIcon>
+            <InsertDriveFileIcon />
+          </ListItemIcon>
+          <ListItemText primary="Docs" />
         </ListItem>
       </List>
       <Divider />

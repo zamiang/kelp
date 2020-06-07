@@ -1,13 +1,14 @@
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
+import Meetings from './calendar/meetings';
 import Copyright from './copyright';
-import LeftDrawer from './left-drawer';
-import Meetings from './meetings';
-import Person from './person';
+import LeftDrawer from './nav/left-drawer';
+import TopBar from './nav/top-bar';
+import Docs from './person/docs';
+import Person from './person/person';
 import PersonDataStore from './store/person-store';
 import TimeDataStore from './store/time-store';
-import TopBar from './top-bar';
 
 export const drawerWidth = 240;
 
@@ -28,11 +29,12 @@ export interface IProps {
 
 const routes = {
   '/': (props: IProps) => <Meetings {...props} />,
+  '/docs': (props: IProps) => <Docs {...props} />,
   '/person': (props: IProps, id: string | null) => <Person {...props} personEmail={id!} />,
 };
 
 interface IRoute {
-  path: '/' | '/person';
+  path: '/' | '/person' | '/docs';
   id: string | null;
 }
 
@@ -49,6 +51,7 @@ const Dashboard = (props: IProps) => {
 
   const handlePersonClick = (id: string) => setRoute({ path: '/person', id });
   const handleMeetingsClick = () => setRoute({ path: '/', id: null });
+  const handleDocsClick = () => setRoute({ path: '/docs', id: null });
 
   const routeComponent = routes[currentRoute.path](props, currentRoute.id);
 
@@ -56,6 +59,7 @@ const Dashboard = (props: IProps) => {
     <React.Fragment>
       <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} lastUpdated={props.lastUpdated} />
       <LeftDrawer
+        handleDocsClick={handleDocsClick}
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}
         people={props.personDataStore.getPeople()}

@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useState } from 'react';
@@ -13,7 +13,13 @@ import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
 import DashboardContainer from './dashboard-container';
-import theme from './theme';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#ffffff' },
+    secondary: { main: '#6AA9CC' },
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
