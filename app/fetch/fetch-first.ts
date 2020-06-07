@@ -132,8 +132,6 @@ const batchFetchPeople = async (
   return { people: formattedPeople };
 };
 
-// TODO: Figure out how to list people on a file
-// NOTE: Currently unused, data is returned by the activity endpoing
 const listDriveFiles = async () => {
   // Does not allow filtering by modified time OR deleted
   const driveResponse = await gapi.client.drive.files.list({
@@ -142,7 +140,7 @@ const listDriveFiles = async () => {
     supportsAllDrives: true,
     supportsTeamDrives: true,
     orderBy: 'modifiedTime desc',
-    pageSize: 10,
+    pageSize: 30,
     fields:
       'nextPageToken, files(id, name, webViewLink, owners, shared, starred, trashed, modifiedTime)',
   });
@@ -183,9 +181,7 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
 
   const filteredCalendarEvents =
     calendarResponse && calendarResponse.result && calendarResponse.result.items
-      ? calendarResponse.result.items.filter(
-          (event) => event.attendees && event.attendees.length > 0,
-        )
+      ? calendarResponse.result.items
       : [];
 
   const emailAddresses: string[] = [];
@@ -197,7 +193,6 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
 
   const uniqueAttendeeEmails = uniq(emailAddresses);
   addEmailAddressesToStore(uniqueAttendeeEmails);
-
   return {
     calendarEvents: filteredCalendarEvents
       .filter(

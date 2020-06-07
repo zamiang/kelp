@@ -3,10 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 import Meetings from './calendar/meetings';
 import Copyright from './copyright';
+import DocumentList from './docs/document-list';
 import LeftDrawer from './nav/left-drawer';
 import TopBar from './nav/top-bar';
-import Docs from './person/docs';
 import Person from './person/person';
+import DocDataStore from './store/doc-store';
 import PersonDataStore from './store/person-store';
 import TimeDataStore from './store/time-store';
 
@@ -24,12 +25,13 @@ const useStyles = makeStyles((theme) => ({
 export interface IProps {
   personDataStore: PersonDataStore;
   timeDataStore: TimeDataStore;
+  docDataStore: DocDataStore;
   lastUpdated: Date;
 }
 
 const routes = {
   '/': (props: IProps) => <Meetings {...props} />,
-  '/docs': (props: IProps) => <Docs {...props} />,
+  '/docs': (props: IProps) => <DocumentList {...props} />,
   '/person': (props: IProps, id: string | null) => <Person {...props} personEmail={id!} />,
 };
 

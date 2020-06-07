@@ -1,6 +1,7 @@
 import React from 'react';
 import Dashboard from './dashboard';
 import FetchAll from './fetch/fetch-all';
+import DocDataStore from './store/doc-store';
 import PersonDataStore from './store/person-store';
 import TimeDataStore from './store/time-store';
 
@@ -24,10 +25,14 @@ const DashboardContainer = (props: IProps) => {
   timeDataStore.addDriveActivityToStore(data.driveActivity);
   console.log('TIME DATA STORE:', timeDataStore);
 
+  const docDataStore = new DocDataStore(data.driveFiles || []);
+  console.log('DOC DATA STORE:', docDataStore);
+
   return (
     <Dashboard
       timeDataStore={timeDataStore}
       personDataStore={personDataStore}
+      docDataStore={docDataStore}
       lastUpdated={data.lastUpdated}
     />
   );

@@ -56,7 +56,13 @@ export default class TimeStore {
     return this.segments.length;
   }
 
-  getSegments() {
-    return this.segments;
+  getSegments(order: 'asc' | 'desc' = 'asc') {
+    return this.segments.sort((a, b) => {
+      if (order === 'asc') {
+        return a.start > b.start ? -1 : 1;
+      } else {
+        return a.start < b.start ? -1 : 1;
+      }
+    });
   }
 }
