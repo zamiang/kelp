@@ -16,50 +16,12 @@ import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useState } from 'react';
 import { IProps } from '../dashboard';
-import { IFormattedDriveActivity } from '../fetch/fetch-first';
+import DriveActivityList from '../docs/drive-activity-list';
 import { formattedEmail } from '../fetch/fetch-second';
 import PeopleList from '../nav/people-list';
+import DocDataStore from '../store/doc-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
-
-const Activity = (props: { activity: IFormattedDriveActivity; personStore: PersonDataStore }) => {
-  const person = props.activity.actorPersonId
-    ? props.personStore.getPersonByPeopleId(props.activity.actorPersonId)
-    : { name: 'unknown', id: 'blank' };
-  return (
-    <TableRow>
-      <TableCell style={{ width: '15%' }}>
-        <Typography variant="caption">{person.name || person.id}</Typography>
-      </TableCell>
-      <TableCell component="th" scope="row">
-        <Typography variant="caption">
-          <Link color="textPrimary" target="_blank" href={props.activity.link || ''}>
-            <b>{props.activity.title}</b>
-          </Link>
-        </Typography>
-      </TableCell>
-    </TableRow>
-  );
-};
-
-const DriveActivityForSegment = (props: { segment: ISegment; personStore: PersonDataStore }) => {
-  const actions = uniqBy(props.segment.driveActivity, 'link');
-  if (actions.length < 1) {
-    return null;
-  }
-  return (
-    <React.Fragment>
-      <Typography variant="h6">Documents</Typography>
-      <Table size="small">
-        <TableBody>
-          {actions.map((action) => (
-            <Activity key={action.id} activity={action} personStore={props.personStore} />
-          ))}
-        </TableBody>
-      </Table>
-    </React.Fragment>
-  );
-};
 
 const Email = (props: { email: formattedEmail }) => {
   const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
@@ -116,33 +78,34 @@ const useRowStyles = makeStyles((theme) => ({
   },
 }));
 
-const Row = (props: {
-  row: ISegment;
+const Meeting = (props: {
+  meeting: ISegment;
   personStore: PersonDataStore;
+  docStore: DocDataStore;
   handlePersonClick: (email: string) => void;
 }) => {
   const [isOpen, setOpen] = useState(false);
   const classes = useRowStyles();
-  const actionCount = props.row.driveActivity.length + props.row.emails.length;
-  const people = (props.row.attendees || [])
+  const actionCount = props.meeting.driveActivity.length + props.meeting.emails.length;
+  const people = (props.meeting.attendees || [])
     .filter((person) => person.email)
     .map((person) => props.personStore.getPersonByEmail(person.email!));
   return (
     <React.Fragment>
       <TableRow className={classes.root} hover onClick={() => setOpen(!isOpen)}>
         <TableCell style={{ width: '1%', paddingRight: '1px' }} align="right">
-          <Typography variant="h6">{format(props.row.start, 'd')}</Typography>
+          <Typography variant="h6">{format(props.meeting.start, 'd')}</Typography>
         </TableCell>
         <TableCell style={{ width: '1%', textTransform: 'uppercase', paddingTop: '7px' }}>
-          <Typography variant="caption">{format(props.row.start, 'MMM')}</Typography>
+          <Typography variant="caption">{format(props.meeting.start, 'MMM')}</Typography>
         </TableCell>
         <TableCell style={{ width: '168px' }}>
-          {format(props.row.start, 'p')}–{format(props.row.end, 'p')}
+          {format(props.meeting.start, 'p')}–{format(props.meeting.end, 'p')}
         </TableCell>
         <TableCell component="th" scope="row">
           <Typography variant="h6">
-            <Link color="textPrimary" target="_blank" href={props.row.link || ''}>
-              {props.row.summary}
+            <Link color="textPrimary" target="_blank" href={props.meeting.link || ''}>
+              {props.meeting.summary}
             </Link>
           </Typography>
         </TableCell>
@@ -159,8 +122,12 @@ const Row = (props: {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={isOpen} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <EmailsForSegment segment={props.row} />
-              <DriveActivityForSegment segment={props.row} personStore={props.personStore} />
+              <EmailsForSegment segment={props.meeting} />
+              <DriveActivityList
+                driveActivity={props.meeting.driveActivity}
+                docStore={props.docStore}
+                personStore={props.personStore}
+              />
               <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
             </Box>
           </Collapse>
@@ -181,12 +148,13 @@ const Meetings = (props: IMeetingsProps) => {
       <Grid item xs={12}>
         <Table size="small">
           <TableBody>
-            {meetings.map((row) => (
-              <Row
-                key={row.id}
-                row={row}
+            {meetings.map((meeting) => (
+              <Meeting
+                key={meeting.id}
+                meeting={meeting}
                 handlePersonClick={props.handlePersonClick}
                 personStore={props.personDataStore}
+                docStore={props.docDataStore}
               />
             ))}
           </TableBody>

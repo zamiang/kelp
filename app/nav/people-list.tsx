@@ -11,9 +11,9 @@ interface IProps {
   people?: IPerson[] | null;
 }
 
-const PeopleList = (props: IProps) => {
-  const peopleHtml = (props.people || []).map((person) => (
-    <ListItem button key={person.id} onClick={() => props.handlePersonClick(person.emailAddress)}>
+const peopleHtml = (people: IPerson[], handlePersonClick: (id: string) => void) =>
+  people.map((person) => (
+    <ListItem button key={person.id} onClick={() => handlePersonClick(person.emailAddress)}>
       <ListItemIcon>
         {person.imageUrl ? (
           <Avatar src={person.imageUrl} />
@@ -25,12 +25,11 @@ const PeopleList = (props: IProps) => {
     </ListItem>
   ));
 
-  return (
-    <div>
-      <ListSubheader inset>People</ListSubheader>
-      {peopleHtml}
-    </div>
-  );
-};
+const PeopleList = (props: IProps) => (
+  <div>
+    <ListSubheader inset>People</ListSubheader>
+    {peopleHtml(props.people || [], props.handlePersonClick)}
+  </div>
+);
 
 export default PeopleList;

@@ -114,7 +114,6 @@ const TopBar = (props: IProps) => {
         <Typography variant="body2" color="inherit" noWrap className={classes.date}>
           Last updated on {format(props.lastUpdated, "MMMM do, yyyy 'at' hh:mm a")}
         </Typography>
-
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />

@@ -7,7 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import { formatRelative } from 'date-fns';
 import React from 'react';
 import { IProps } from '../dashboard';
-import Title from '../shared/title';
 import { IPerson } from '../store/person-store';
 
 interface IPersonProps extends IProps {
@@ -19,7 +18,6 @@ const DocsForPerson = (props: IPersonProps) => {
   const rows = person.driveActivity;
   return (
     <React.Fragment>
-      <Title>Recent Google Docs</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
