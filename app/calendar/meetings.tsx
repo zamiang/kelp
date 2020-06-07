@@ -18,6 +18,7 @@ import React, { useState } from 'react';
 import { IProps } from '../dashboard';
 import { IFormattedDriveActivity } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
+import PeopleList from '../nav/people-list';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
@@ -115,10 +116,17 @@ const useRowStyles = makeStyles((theme) => ({
   },
 }));
 
-const Row = (props: { row: ISegment; personStore: PersonDataStore }) => {
+const Row = (props: {
+  row: ISegment;
+  personStore: PersonDataStore;
+  handlePersonClick: (email: string) => void;
+}) => {
   const [isOpen, setOpen] = useState(false);
   const classes = useRowStyles();
   const actionCount = props.row.driveActivity.length + props.row.emails.length;
+  const people = (props.row.attendees || [])
+    .filter((person) => person.email)
+    .map((person) => props.personStore.getPersonByEmail(person.email!));
   return (
     <React.Fragment>
       <TableRow className={classes.root} hover onClick={() => setOpen(!isOpen)}>
@@ -153,6 +161,7 @@ const Row = (props: { row: ISegment; personStore: PersonDataStore }) => {
             <Box margin={1}>
               <EmailsForSegment segment={props.row} />
               <DriveActivityForSegment segment={props.row} personStore={props.personStore} />
+              <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
             </Box>
           </Collapse>
         </TableCell>
@@ -161,7 +170,11 @@ const Row = (props: { row: ISegment; personStore: PersonDataStore }) => {
   );
 };
 
-const Meetings = (props: IProps) => {
+interface IMeetingsProps extends IProps {
+  handlePersonClick: (personEmail: string) => void;
+}
+
+const Meetings = (props: IMeetingsProps) => {
   const meetings = props.timeDataStore.getSegments();
   return (
     <React.Fragment>
@@ -169,7 +182,12 @@ const Meetings = (props: IProps) => {
         <Table size="small">
           <TableBody>
             {meetings.map((row) => (
-              <Row key={row.id} row={row} personStore={props.personDataStore} />
+              <Row
+                key={row.id}
+                row={row}
+                handlePersonClick={props.handlePersonClick}
+                personStore={props.personDataStore}
+              />
             ))}
           </TableBody>
         </Table>

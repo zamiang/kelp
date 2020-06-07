@@ -8,13 +8,14 @@ import { formatRelative } from 'date-fns';
 import React from 'react';
 import { IProps } from '../dashboard';
 import Title from '../shared/title';
+import { IPerson } from '../store/person-store';
 
 interface IPersonProps extends IProps {
-  personEmail: string;
+  person: IPerson;
 }
 
-const Docs = (props: IPersonProps) => {
-  const person = props.personDataStore.getPersonByEmail(props.personEmail);
+const DocsForPerson = (props: IPersonProps) => {
+  const person = props.person;
   const rows = person.driveActivity;
   return (
     <React.Fragment>
@@ -43,4 +44,4 @@ const Docs = (props: IPersonProps) => {
   );
 };
 
-export default Docs;
+export default DocsForPerson;

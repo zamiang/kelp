@@ -29,10 +29,15 @@ export interface IProps {
   lastUpdated: Date;
 }
 
+interface IRouteProps extends IProps {
+  handlePersonClick: (id: string) => void;
+  routeId: string | null;
+}
+
 const routes = {
-  '/': (props: IProps) => <Meetings {...props} />,
-  '/docs': (props: IProps) => <DocumentList {...props} />,
-  '/person': (props: IProps, id: string | null) => <Person {...props} personEmail={id!} />,
+  '/': (props: IRouteProps) => <Meetings {...props} />,
+  '/docs': (props: IRouteProps) => <DocumentList {...props} />,
+  '/person': (props: IRouteProps) => <Person {...props} />,
 };
 
 interface IRoute {
@@ -55,7 +60,11 @@ const Dashboard = (props: IProps) => {
   const handleMeetingsClick = () => setRoute({ path: '/', id: null });
   const handleDocsClick = () => setRoute({ path: '/docs', id: null });
 
-  const routeComponent = routes[currentRoute.path](props, currentRoute.id);
+  const routeComponent = routes[currentRoute.path]({
+    ...props,
+    routeId: currentRoute.id,
+    handlePersonClick,
+  });
 
   return (
     <React.Fragment>

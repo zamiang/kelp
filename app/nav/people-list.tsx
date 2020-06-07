@@ -11,7 +11,7 @@ interface IProps {
   people?: IPerson[] | null;
 }
 
-const People = (props: IProps) => {
+const PeopleList = (props: IProps) => {
   const peopleHtml = (props.people || []).map((person) => (
     <ListItem button key={person.id} onClick={() => props.handlePersonClick(person.emailAddress)}>
       <ListItemIcon>
@@ -33,4 +33,4 @@ const People = (props: IProps) => {
   );
 };
 
-export default People;
+export default PeopleList;

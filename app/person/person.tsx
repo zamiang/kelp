@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { IProps } from '../dashboard';
 import Title from '../shared/title';
-import Docs from './docs';
+import DocsForPerson from './docs-for-person';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -25,26 +25,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IPersonProps extends IProps {
-  personEmail: string;
+  routeId: string | null;
 }
 
 const Person = (props: IPersonProps) => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const person = props.personDataStore.getPersonByEmail(props.personEmail);
+  const person = props.personDataStore.getPersonByEmail(props.routeId!);
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Title>{person.name || person.emailAddress}</Title>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
-          <Paper className={fixedHeightPaper}>{props.personEmail}</Paper>
+          <Paper className={fixedHeightPaper}>{person.id}</Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={3}>
           <Paper className={fixedHeightPaper}>Other stuff</Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <Docs {...props} />
+            <DocsForPerson {...props} person={person} />
           </Paper>
         </Grid>
       </Grid>
