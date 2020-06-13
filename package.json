@@ -57,7 +57,7 @@
     "typescript": "3.9.5",
     "typescript-plugin-lodash": "0.1.0",
     "url-loader": "4.1.0",
-    "validator": "13.0.0",
+    "validator": "13.1.1",
     "webpack": "4.43.0",
     "webpack-cli": "3.3.11",
     "webpack-s3-plugin": "1.0.3"
