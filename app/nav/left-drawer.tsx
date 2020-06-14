@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
@@ -20,6 +21,9 @@ import { ISegment } from '../store/time-store';
 import Search from './search';
 
 const useStyles = makeStyles((theme) => ({
+  logo: {
+    fontWeight: 700,
+  },
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
@@ -66,10 +70,14 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
+  currentRoute: string;
 }
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
+  const isMeetingsSelected = props.currentRoute === '/';
+  const isDocsSelected = props.currentRoute === '/docs';
+  const isPeopleSelected = props.currentRoute === '/people';
   return (
     <Drawer
       variant="permanent"
@@ -86,26 +94,31 @@ const LeftDrawer = (props: IProps) => {
       <div className={classes.spacer} />
       <List>
         <ListItem>
-          <Typography variant="h3">Time</Typography>
+          <ListItemIcon>
+            <EqualizerIcon color="secondary" />
+          </ListItemIcon>
+          <Typography variant="h4" className={classes.logo}>
+            Time
+          </Typography>
         </ListItem>
       </List>
       <div className={classes.spacer} />
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <ListItem button onClick={props.handleMeetingsClick}>
+        <ListItem button onClick={props.handleMeetingsClick} selected={isMeetingsSelected}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Calendar" />
         </ListItem>
-        <ListItem button onClick={props.handleDocsClick}>
+        <ListItem button onClick={props.handleDocsClick} selected={isDocsSelected}>
           <ListItemIcon>
             <InsertDriveFileIcon />
           </ListItemIcon>
           <ListItemText primary="Docs" />
         </ListItem>
-        <ListItem button onClick={props.handlePeopleClick}>
+        <ListItem button onClick={props.handlePeopleClick} selected={isPeopleSelected}>
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>

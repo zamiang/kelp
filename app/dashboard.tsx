@@ -85,6 +85,7 @@ const Dashboard = (props: IProps) => {
         handlePersonClick={handlePersonClick}
         handleMeetingsClick={handleMeetingsClick}
         handleDrawerOpen={handleDrawerOpen}
+        currentRoute={currentRoute.path}
       />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
