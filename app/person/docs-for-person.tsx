@@ -15,7 +15,7 @@ interface IPersonProps extends IProps {
 
 const DocsForPerson = (props: IPersonProps) => {
   const person = props.person;
-  const rows = person.driveActivity;
+  const rows = person.driveActivityIds.map((id) => props.driveActivityStore.getById(id));
   return (
     <React.Fragment>
       <Table size="small">

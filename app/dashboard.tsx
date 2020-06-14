@@ -7,6 +7,8 @@ import TopBar from './nav/top-bar';
 import People from './person/people';
 import Person from './person/person';
 import DocDataStore from './store/doc-store';
+import DriveActivityDataStore from './store/drive-activity-store';
+import EmailDataStore from './store/email-store';
 import PersonDataStore from './store/person-store';
 import TimeDataStore from './store/time-store';
 
@@ -26,6 +28,8 @@ export interface IProps {
   personDataStore: PersonDataStore;
   timeDataStore: TimeDataStore;
   docDataStore: DocDataStore;
+  driveActivityStore: DriveActivityDataStore;
+  emailStore: EmailDataStore;
   lastUpdated: Date;
 }
 

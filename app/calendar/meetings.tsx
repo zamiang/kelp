@@ -22,6 +22,8 @@ import { formattedEmail } from '../fetch/fetch-second';
 import PeopleList from '../nav/people-list';
 import panelStyles from '../shared/panel-styles';
 import DocDataStore from '../store/doc-store';
+import DriveActivityDataStore from '../store/drive-activity-store';
+import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
@@ -43,8 +45,9 @@ const Email = (props: { email: formattedEmail }) => {
   );
 };
 
-const EmailsForSegment = (props: { segment: ISegment }) => {
-  const threads = uniqBy(props.segment.emails, 'threadId');
+const EmailsForSegment = (props: { segment: ISegment; emailStore: EmailDataStore }) => {
+  const emails = props.segment.emailIds.map((emailId) => props.emailStore.getById(emailId));
+  const threads = uniqBy(emails, 'threadId');
   if (threads.length < 1) {
     return null;
   }
@@ -91,6 +94,8 @@ const Meeting = (props: {
   meeting: ISegment;
   personStore: PersonDataStore;
   docStore: DocDataStore;
+  driveActivityStore: DriveActivityDataStore;
+  emailStore: EmailDataStore;
   handlePersonClick: (email: string) => void;
   currentTime: Date;
 }) => {
@@ -98,7 +103,7 @@ const Meeting = (props: {
   const isCurrent = !isAfter(props.currentTime, props.meeting.end) && !isMeetingInFuture;
   const [isOpen, setOpen] = useState(isCurrent);
   const classes = useRowStyles();
-  const actionCount = props.meeting.driveActivity.length + props.meeting.emails.length;
+  const actionCount = props.meeting.driveActivityIds.length + props.meeting.emailIds.length;
   const people = (props.meeting.attendees || [])
     .filter((person) => person.email)
     .map((person) => props.personStore.getPersonByEmail(person.email!));
@@ -142,9 +147,10 @@ const Meeting = (props: {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={isOpen} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <EmailsForSegment segment={props.meeting} />
+              <EmailsForSegment segment={props.meeting} emailStore={props.emailStore} />
               <DriveActivityList
-                driveActivity={props.meeting.driveActivity}
+                driveActivityIds={props.meeting.driveActivityIds}
+                driveActivityStore={props.driveActivityStore}
                 docStore={props.docStore}
                 personStore={props.personStore}
               />
@@ -186,6 +192,8 @@ const Meetings = (props: IRouteProps) => {
               handlePersonClick={props.handlePersonClick}
               personStore={props.personDataStore}
               docStore={props.docDataStore}
+              emailStore={props.emailStore}
+              driveActivityStore={props.driveActivityStore}
             />
           ))}
         </TableBody>

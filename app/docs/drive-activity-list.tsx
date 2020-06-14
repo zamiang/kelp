@@ -12,6 +12,7 @@ import { uniqBy } from 'lodash';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-first';
 import DocDataStore from '../store/doc-store';
+import DriveActivityDataStore from '../store/drive-activity-store';
 import PersonDataStore from '../store/person-store';
 
 const Activity = (props: {
@@ -40,12 +41,14 @@ const Activity = (props: {
 };
 
 const DriveActivityList = (props: {
-  driveActivity: IFormattedDriveActivity[];
+  driveActivityIds: string[];
+  driveActivityStore: DriveActivityDataStore;
   personStore: PersonDataStore;
   docStore: DocDataStore;
 }) => {
+  const driveActivity = props.driveActivityIds.map((id) => props.driveActivityStore.getById(id));
   const actions = uniqBy(
-    props.driveActivity.filter((action) => action.link),
+    driveActivity.filter((action) => action.link),
     'link',
   );
   if (actions.length < 1) {

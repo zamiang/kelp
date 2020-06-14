@@ -2,6 +2,8 @@ import React from 'react';
 import Dashboard from './dashboard';
 import FetchAll from './fetch/fetch-all';
 import DocDataStore from './store/doc-store';
+import DriveActivityDataStore from './store/drive-activity-store';
+import EmailDataStore from './store/email-store';
 import PersonDataStore from './store/person-store';
 import TimeDataStore from './store/time-store';
 
@@ -28,8 +30,16 @@ const DashboardContainer = (props: IProps) => {
   const docDataStore = new DocDataStore(data.driveFiles || []);
   console.log('DOC DATA STORE:', docDataStore);
 
+  const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
+  console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
+
+  const emailDataStore = new EmailDataStore(data.emails);
+  console.log('EMAIL DATA STORE:', emailDataStore);
+
   return (
     <Dashboard
+      driveActivityStore={driveActivityDataStore}
+      emailStore={emailDataStore}
       timeDataStore={timeDataStore}
       personDataStore={personDataStore}
       docDataStore={docDataStore}

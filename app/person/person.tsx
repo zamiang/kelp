@@ -36,7 +36,8 @@ const Person = (props: IRouteProps) => {
         </Typography>
       </Box>
       <DriveActivityList
-        driveActivity={person.driveActivity}
+        driveActivityIds={person.driveActivityIds}
+        driveActivityStore={props.driveActivityStore}
         personStore={props.personDataStore}
         docStore={props.docDataStore}
       />
