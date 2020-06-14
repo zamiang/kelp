@@ -22,7 +22,17 @@ const theme = createMuiTheme({
     secondary: { main: '#7D58FE' },
   },
   typography: {
-    fontFamily: "'Noto Sans', sans-serif;",
+    fontFamily: "'Helvetica Neue', sans-serif;",
+    fontWeightRegular: 500,
+    h1: {
+      fontWeight: 500,
+    },
+    h2: {
+      fontWeight: 500,
+    },
+    h3: {
+      fontWeight: 500,
+    },
     subtitle1: {
       fontFamily: bodyFontFamily,
     },

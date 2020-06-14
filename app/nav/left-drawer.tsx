@@ -1,3 +1,5 @@
+import { styled } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -11,8 +13,9 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import clsx from 'clsx';
-import { format } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import React from 'react';
 import { drawerWidth } from '../dashboard';
 import { IDoc } from '../store/doc-store';
@@ -56,7 +59,15 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.hint,
   },
   spacer: { margin: theme.spacing(2) },
+  selected: { color: theme.palette.text.primary },
+  unSelected: { color: theme.palette.text.hint },
 }));
+
+const StyledListItem = styled(ListItem)({
+  '&.Mui-selected': {
+    backgroundColor: 'white',
+  },
+});
 
 export interface IProps {
   isOpen: boolean;
@@ -106,35 +117,48 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <ListItem button onClick={props.handleMeetingsClick} selected={isMeetingsSelected}>
+        <StyledListItem button onClick={props.handleMeetingsClick} selected={isMeetingsSelected}>
           <ListItemIcon>
-            <DashboardIcon />
+            <DashboardIcon className={isMeetingsSelected ? classes.selected : classes.unSelected} />
           </ListItemIcon>
-          <ListItemText primary="Calendar" />
-        </ListItem>
-        <ListItem button onClick={props.handleDocsClick} selected={isDocsSelected}>
+          <ListItemText
+            primary="Calendar"
+            className={isMeetingsSelected ? classes.selected : classes.unSelected}
+          />
+        </StyledListItem>
+        <StyledListItem button onClick={props.handleDocsClick} selected={isDocsSelected}>
           <ListItemIcon>
-            <InsertDriveFileIcon />
+            <InsertDriveFileIcon
+              className={isDocsSelected ? classes.selected : classes.unSelected}
+            />
           </ListItemIcon>
-          <ListItemText primary="Docs" />
-        </ListItem>
-        <ListItem button onClick={props.handlePeopleClick} selected={isPeopleSelected}>
+          <ListItemText
+            primary="Docs"
+            className={isDocsSelected ? classes.selected : classes.unSelected}
+          />
+        </StyledListItem>
+        <StyledListItem button onClick={props.handlePeopleClick} selected={isPeopleSelected}>
           <ListItemIcon>
-            <PeopleIcon />
+            <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
           </ListItemIcon>
-          <ListItemText primary="People" />
-        </ListItem>
+          <ListItemText
+            primary="People"
+            className={isPeopleSelected ? classes.selected : classes.unSelected}
+          />
+        </StyledListItem>
       </List>
       <div className={classes.spacer} />
-      {props.isOpen && (
-        <List>
-          <ListItem>
-            <Typography variant="body2" color="inherit" className={classes.date}>
-              Updated <br /> {format(props.lastUpdated, "MMMM do, yyyy 'at' hh:mm a")}
-            </Typography>
-          </ListItem>
-        </List>
-      )}
+      <List>
+        <StyledListItem button dense>
+          <ListItemIcon>
+            <RefreshIcon color="secondary" />
+          </ListItemIcon>
+          <ListItemText
+            primary={`${formatDistanceToNow(props.lastUpdated)} ago`}
+            className={classes.unSelected}
+          />
+        </StyledListItem>
+      </List>
     </Drawer>
   );
 };

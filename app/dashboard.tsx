@@ -90,9 +90,6 @@ const Dashboard = (props: IProps) => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         {routeComponent}
-        <Box pt={4}>
-          <Copyright />
-        </Box>
       </main>
     </React.Fragment>
   );
