@@ -11,7 +11,6 @@ import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
 import DashboardContainer from './dashboard-container';
-import headerImage from './images/designer_file_case.png';
 
 const bodyFontFamily = 'Arial, sans-serif;';
 
@@ -141,7 +140,11 @@ const App = () => {
         ) : (
           <Container component="main" maxWidth="sm">
             <Paper elevation={0} className={classes.centerPaper}>
-              <img src={headerImage} className={classes.image} />
+              {/* From: https://dribbble.com/shots/2766518-Designer-s-Folder-illustration */}
+              <img
+                src="https://www.collasso.me/images/designer_file_case.png"
+                className={classes.image}
+              />
               <Typography variant="h1">Time</Typography>
               <Typography variant="body2" className={classes.body}>
                 Time brings your data together in one place. Pivot your meetings by what documents

@@ -76,7 +76,7 @@ module.exports = {
   },
   settings: {
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
+      '@typescript-eslint/parser': ['.ts', '.tsx', '.d.ts'],
     },
     react: { version: 'detect' },
   },
