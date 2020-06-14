@@ -1,19 +1,23 @@
-import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
+import { format } from 'date-fns';
 import React from 'react';
 import { drawerWidth } from '../dashboard';
+import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
-import PeopleList from './people-list';
+import { ISegment } from '../store/time-store';
+import Search from './search';
 
 const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
@@ -24,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
   },
   drawerPaper: {
+    border: '0px',
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -43,15 +48,24 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9),
     },
   },
+  date: {
+    color: theme.palette.text.hint,
+  },
+  spacer: { margin: theme.spacing(2) },
 }));
 
-interface IProps {
+export interface IProps {
   isOpen: boolean;
   handleDrawerClose: () => void;
+  handleDrawerOpen: () => void;
   handlePersonClick: (personId: string) => void;
   handleMeetingsClick: () => void;
   handleDocsClick: () => void;
-  people?: IPerson[] | null;
+  handlePeopleClick: () => void;
+  people: IPerson[];
+  lastUpdated: Date;
+  documents: IDoc[];
+  meetings: ISegment[];
 }
 
 const LeftDrawer = (props: IProps) => {
@@ -69,7 +83,15 @@ const LeftDrawer = (props: IProps) => {
           <ChevronLeftIcon />
         </IconButton>
       </div>
-      <Divider />
+      <div className={classes.spacer} />
+      <List>
+        <ListItem>
+          <Typography variant="h3">Time</Typography>
+        </ListItem>
+      </List>
+      <div className={classes.spacer} />
+      <Search {...props} />
+      <div className={classes.spacer} />
       <List>
         <ListItem button onClick={props.handleMeetingsClick}>
           <ListItemIcon>
@@ -83,11 +105,23 @@ const LeftDrawer = (props: IProps) => {
           </ListItemIcon>
           <ListItemText primary="Docs" />
         </ListItem>
+        <ListItem button onClick={props.handlePeopleClick}>
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary="People" />
+        </ListItem>
       </List>
-      <Divider />
-      <List>
-        <PeopleList people={props.people} handlePersonClick={props.handlePersonClick} />
-      </List>
+      <div className={classes.spacer} />
+      {props.isOpen && (
+        <List>
+          <ListItem>
+            <Typography variant="body2" color="inherit" className={classes.date}>
+              Updated <br /> {format(props.lastUpdated, "MMMM do, yyyy 'at' hh:mm a")}
+            </Typography>
+          </ListItem>
+        </List>
+      )}
     </Drawer>
   );
 };

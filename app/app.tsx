@@ -14,10 +14,36 @@ import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
 import DashboardContainer from './dashboard-container';
 
+const bodyFontFamily = 'Arial, sans-serif;';
+
 const theme = createMuiTheme({
   palette: {
-    primary: { main: '#ffffff' },
-    secondary: { main: '#6AA9CC' },
+    primary: { main: '#EDF1F2' },
+    secondary: { main: '#7D58FE' },
+  },
+  typography: {
+    fontFamily: "'Noto Sans', sans-serif;",
+    subtitle1: {
+      fontFamily: bodyFontFamily,
+    },
+    subtitle2: {
+      fontFamily: bodyFontFamily,
+    },
+    body1: {
+      fontFamily: bodyFontFamily,
+    },
+    body2: {
+      fontFamily: bodyFontFamily,
+    },
+    caption: {
+      fontFamily: bodyFontFamily,
+    },
+    overline: {
+      fontFamily: bodyFontFamily,
+    },
+    button: {
+      fontWeight: 700,
+    },
   },
 });
 
@@ -28,19 +54,18 @@ const useStyles = makeStyles((theme) => ({
   centerPaper: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(6, 8, 6, 8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    width: '100%',
+    padding: theme.spacing(2, 6),
+    borderRadius: 25,
   },
   avatar: {
     margin: theme.spacing(1),
   },
   body: {
     marginTop: theme.spacing(1),
+    color: theme.palette.text.hint,
   },
 }));
 
@@ -99,13 +124,11 @@ const App = () => {
           <DashboardContainer accessToken={googleLoginState.accessToken} />
         ) : (
           <Container component="main" maxWidth="sm">
-            <Paper className={classes.centerPaper}>
+            <Paper elevation={0} className={classes.centerPaper}>
               <Avatar className={classes.avatar}>
                 <EqualizerIcon />
               </Avatar>
-              <Typography component="h1" variant="h5">
-                Log in to Time
-              </Typography>
+              <Typography variant="h1">Time</Typography>
               <Typography variant="body2" className={classes.body}>
                 This application does not store your data or send your data to any third parties.
                 The application is hosted as a ‘static website’ where the application code is served

@@ -19,6 +19,7 @@ import { IProps } from '../dashboard';
 import DriveActivityList from '../docs/drive-activity-list';
 import { formattedEmail } from '../fetch/fetch-second';
 import PeopleList from '../nav/people-list';
+import panelStyles from '../shared/panel-styles';
 import DocDataStore from '../store/doc-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
@@ -143,8 +144,12 @@ interface IMeetingsProps extends IProps {
 
 const Meetings = (props: IMeetingsProps) => {
   const meetings = props.timeDataStore.getSegments();
+  const styles = panelStyles();
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} className={styles.panel}>
+      <Typography variant="h2" color="textPrimary" gutterBottom>
+        Meetings
+      </Typography>
       <Table size="small">
         <TableBody>
           {meetings.map((meeting) => (

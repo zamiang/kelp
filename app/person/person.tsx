@@ -6,12 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { IProps } from '../dashboard';
 import DriveActivityList from '../docs/drive-activity-list';
+import panelStyles from '../shared/panel-styles';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(4),
-    background: theme.palette.primary.main,
-  },
   title: {
     paddingTop: 5,
     paddingLeft: theme.spacing(2),
@@ -29,8 +26,9 @@ interface IPersonProps extends IProps {
 const Person = (props: IPersonProps) => {
   const classes = useStyles();
   const person = props.personDataStore.getPersonByEmail(props.routeId!);
+  const panelClasses = panelStyles();
   return (
-    <Grid item xs={12} className={classes.container}>
+    <Grid item xs={12} className={panelClasses.panel}>
       <Box flexDirection="row" alignItems="flex-start" display="flex">
         {person.imageUrl ? (
           <Avatar className={classes.avatar} src={person.imageUrl} />

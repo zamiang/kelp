@@ -10,6 +10,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { format } from 'date-fns';
 import React from 'react';
 import { IProps } from '../dashboard';
+import panelStyles from '../shared/panel-styles';
 import { IDoc } from '../store/doc-store';
 
 const Doc = (props: { doc: IDoc }) => (
@@ -32,18 +33,20 @@ const Doc = (props: { doc: IDoc }) => (
 
 const DocumentList = (props: IProps) => {
   const docs = props.docDataStore.getDocs();
+  const styles = panelStyles();
   return (
-    <React.Fragment>
-      <Grid item xs={12}>
-        <Table size="small">
-          <TableBody>
-            {docs.map((doc) => (
-              <Doc key={doc.id} doc={doc} />
-            ))}
-          </TableBody>
-        </Table>
-      </Grid>
-    </React.Fragment>
+    <Grid item xs={12} className={styles.panel}>
+      <Typography variant="h2" color="textPrimary" gutterBottom>
+        Documents
+      </Typography>
+      <Table size="small">
+        <TableBody>
+          {docs.map((doc) => (
+            <Doc key={doc.id} doc={doc} />
+          ))}
+        </TableBody>
+      </Table>
+    </Grid>
   );
 };
 

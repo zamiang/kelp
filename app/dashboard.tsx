@@ -6,6 +6,7 @@ import Copyright from './copyright';
 import DocumentList from './docs/document-list';
 import LeftDrawer from './nav/left-drawer';
 import TopBar from './nav/top-bar';
+import People from './person/people';
 import Person from './person/person';
 import DocDataStore from './store/doc-store';
 import PersonDataStore from './store/person-store';
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    background: 'white',
   },
 }));
 
@@ -38,10 +40,11 @@ const routes = {
   '/': (props: IRouteProps) => <Meetings {...props} />,
   '/docs': (props: IRouteProps) => <DocumentList {...props} />,
   '/person': (props: IRouteProps) => <Person {...props} />,
+  '/people': (props: IRouteProps) => <People {...props} />,
 };
 
 interface IRoute {
-  path: '/' | '/person' | '/docs';
+  path: '/' | '/person' | '/docs' | '/people';
   id: string | null;
 }
 
@@ -56,6 +59,7 @@ const Dashboard = (props: IProps) => {
     setOpen(false);
   };
 
+  const handlePeopleClick = () => setRoute({ path: '/people', id: null });
   const handlePersonClick = (id: string) => setRoute({ path: '/person', id });
   const handleMeetingsClick = () => setRoute({ path: '/', id: null });
   const handleDocsClick = () => setRoute({ path: '/docs', id: null });
@@ -68,22 +72,19 @@ const Dashboard = (props: IProps) => {
 
   return (
     <React.Fragment>
-      <TopBar
-        people={props.personDataStore.getPeople()}
-        documents={props.docDataStore.getDocs()}
-        meetings={props.timeDataStore.getSegments()}
-        handlePersonClick={handlePersonClick}
-        handleDrawerOpen={handleDrawerOpen}
-        isOpen={isOpen}
-        lastUpdated={props.lastUpdated}
-      />
+      <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} />
       <LeftDrawer
+        lastUpdated={props.lastUpdated}
         handleDocsClick={handleDocsClick}
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}
         people={props.personDataStore.getPeople()}
+        documents={props.docDataStore.getDocs()}
+        meetings={props.timeDataStore.getSegments()}
+        handlePeopleClick={handlePeopleClick}
         handlePersonClick={handlePersonClick}
         handleMeetingsClick={handleMeetingsClick}
+        handleDrawerOpen={handleDrawerOpen}
       />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
