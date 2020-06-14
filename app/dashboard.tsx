@@ -31,7 +31,7 @@ export interface IProps {
   lastUpdated: Date;
 }
 
-interface IRouteProps extends IProps {
+export interface IRouteProps extends IProps {
   handlePersonClick: (id: string) => void;
   routeId: string | null;
 }

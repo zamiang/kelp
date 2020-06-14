@@ -15,7 +15,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useState } from 'react';
-import { IProps } from '../dashboard';
+import { IRouteProps } from '../dashboard';
 import DriveActivityList from '../docs/drive-activity-list';
 import { formattedEmail } from '../fetch/fetch-second';
 import PeopleList from '../nav/people-list';
@@ -138,11 +138,7 @@ const Meeting = (props: {
   );
 };
 
-interface IMeetingsProps extends IProps {
-  handlePersonClick: (personEmail: string) => void;
-}
-
-const Meetings = (props: IMeetingsProps) => {
+const Meetings = (props: IRouteProps) => {
   const meetings = props.timeDataStore.getSegments();
   const styles = panelStyles();
   return (

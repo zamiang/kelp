@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { format } from 'date-fns';
 import React from 'react';
-import { IProps } from '../dashboard';
+import { IRouteProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
 import { IDoc } from '../store/doc-store';
 
@@ -31,7 +31,7 @@ const Doc = (props: { doc: IDoc }) => (
   </TableRow>
 );
 
-const DocumentList = (props: IProps) => {
+const DocumentList = (props: IRouteProps) => {
   const docs = props.docDataStore.getDocs();
   const styles = panelStyles();
   return (

@@ -65,7 +65,7 @@ const Search = (props: IProps) => {
   const classes = useStyles();
   const options = getAutocompleteResults(props);
 
-  const handleAutocompleteSelect = (event: React.ChangeEvent<unknown>, result: IResult) =>
+  const handleAutocompleteSelect = (_: React.ChangeEvent<unknown>, result: IResult) =>
     onAutocompleteSelect(props, result);
   return (
     <ListItem button onClick={props.handleDrawerOpen} className={classes.listItem}>

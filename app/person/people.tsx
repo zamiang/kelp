@@ -2,11 +2,11 @@ import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { IProps } from '../dashboard';
+import { IRouteProps } from '../dashboard';
 import PeopleList from '../nav/people-list';
 import panelStyles from '../shared/panel-styles';
 
-const People = (props: IProps) => {
+const People = (props: IRouteProps) => {
   const styles = panelStyles();
   const people = props.personDataStore.getPeople();
   return (

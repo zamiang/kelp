@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { IProps } from '../dashboard';
+import { IRouteProps } from '../dashboard';
 import DriveActivityList from '../docs/drive-activity-list';
 import panelStyles from '../shared/panel-styles';
 
@@ -19,11 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface IPersonProps extends IProps {
-  routeId: string | null;
-}
-
-const Person = (props: IPersonProps) => {
+const Person = (props: IRouteProps) => {
   const classes = useStyles();
   const person = props.personDataStore.getPersonByEmail(props.routeId!);
   const panelClasses = panelStyles();
