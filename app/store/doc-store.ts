@@ -30,6 +30,12 @@ export default class DocDataStore {
     this.addDocsToStore(docsList);
   }
 
+  setupFromFakeData(docs: IDoc[]) {
+    docs.forEach((document) => {
+      this.docsById[document.id] = document;
+    });
+  }
+
   addDocsToStore(docs: gapi.client.drive.File[]) {
     docs.forEach((document) => {
       this.docsById[document.id || 'wtf'] = creatDocFromGoogleDoc(document);

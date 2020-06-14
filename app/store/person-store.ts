@@ -6,9 +6,9 @@ export interface IPerson {
   name?: string;
   emailAddress: string;
   imageUrl?: string | null;
-  emails: formattedEmail[];
-  driveActivity: IFormattedDriveActivity[];
-  calendarEvents: ICalendarEvent[];
+  emailIds: string[];
+  driveActivityIds: string[];
+  segmentIds: string[];
 }
 
 interface IPersonByEmail {
@@ -21,31 +21,31 @@ const createNewPersonFromPerson = (person: person) => ({
   name: person.name,
   emailAddress: person.emailAddress.toLocaleLowerCase(),
   imageUrl: person.imageUrl,
-  emails: [],
-  driveActivity: [],
-  calendarEvents: [],
+  emailIds: [],
+  driveActivityIds: [],
+  segmentIds: [],
 });
 
 const createNewPersonFromEmail = (email: string) => ({
   id: email,
   emailAddress: email,
   imageUrl: null,
-  emails: [],
-  driveActivity: [],
-  calendarEvents: [],
+  emailIds: [],
+  driveActivityIds: [],
+  segmentIds: [],
 });
 
 export default class PersonDataStore {
   private personByEmail: IPersonByEmail;
   private personById: IPersonByEmail;
 
-  constructor(personList: person[], emailList: string[]) {
+  constructor(personList: person[], emailAddresses: string[]) {
     console.warn('setting up person store');
     this.personByEmail = {};
     this.personById = {};
 
     this.addPeopleToStore(personList);
-    this.addEmailAddressessToStore(emailList);
+    this.addEmailAddressessToStore(emailAddresses);
   }
 
   addPeopleToStore(people: person[]) {
@@ -56,11 +56,11 @@ export default class PersonDataStore {
     });
   }
 
-  addEmailAddressessToStore(emails: string[]) {
-    emails.forEach((email) => {
-      const formattedEmail = email.toLocaleLowerCase();
-      if (!this.personByEmail[formattedEmail]) {
-        this.personByEmail[formattedEmail] = createNewPersonFromEmail(formattedEmail);
+  addEmailAddressessToStore(emailAddresses: string[]) {
+    emailAddresses.forEach((emailAddress) => {
+      const formattedEmailAddress = emailAddress.toLocaleLowerCase();
+      if (!this.personByEmail[formattedEmailAddress]) {
+        this.personByEmail[formattedEmailAddress] = createNewPersonFromEmail(formattedEmailAddress);
       }
     });
   }
@@ -70,8 +70,8 @@ export default class PersonDataStore {
       const personById =
         driveActivity.actorPersonId && this.personById[driveActivity.actorPersonId];
       if (personById) {
-        personById.driveActivity.push(driveActivity);
-        this.personByEmail[personById.emailAddress].driveActivity.push(driveActivity);
+        personById.driveActivityIds.push(driveActivity.id);
+        this.personByEmail[personById.emailAddress].driveActivityIds.push(driveActivity.id);
       }
     });
   }
@@ -80,14 +80,14 @@ export default class PersonDataStore {
     (emails || []).forEach((email) => {
       if (email.from) {
         const from = email.from;
-        this.personByEmail[from] && this.personByEmail[from].emails.push(email);
+        this.personByEmail[from] && this.personByEmail[from].emailIds.push(email.id);
       }
       if (email.to) {
         email.to.map(
           (emailTo) =>
             emailTo &&
             this.personByEmail[emailTo] &&
-            this.personByEmail[emailTo].emails.push(email),
+            this.personByEmail[emailTo].emailIds.push(email.id),
         );
       }
     });
@@ -98,7 +98,7 @@ export default class PersonDataStore {
       (event.attendees || []).forEach((attendee) => {
         if (attendee && attendee.email) {
           // TODO: Also format the attendees?
-          this.personByEmail[attendee.email].calendarEvents.push(event);
+          this.personByEmail[attendee.email].segmentIds.push(event.id);
         }
       });
     });

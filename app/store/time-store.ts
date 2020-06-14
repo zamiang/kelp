@@ -3,16 +3,27 @@ import { ICalendarEvent, IFormattedDriveActivity } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
 
 export interface ISegment extends ICalendarEvent {
-  driveActivity: IFormattedDriveActivity[];
-  emails: formattedEmail[];
+  driveActivityIds: string[];
+  emailIds: string[];
+}
+
+interface ISegmentsByID {
+  [id: string]: ISegment;
 }
 
 export default class TimeStore {
   private segments: ISegment[];
+  private segmentsById: ISegmentsByID;
 
   constructor(calendarEvents: ICalendarEvent[]) {
     console.warn('setting up time store');
     this.segments = this.createInitialSegments(calendarEvents);
+    this.segmentsById = {};
+    this.segments.map((segment) => (this.segmentsById[segment.id] = segment));
+  }
+
+  getSegmentById(id: string) {
+    return this.segmentsById[id];
   }
 
   createInitialSegments(calendarEvents: ICalendarEvent[]) {
@@ -20,8 +31,8 @@ export default class TimeStore {
       .filter((event) => event.start && event.end)
       .map((event) => ({
         ...event,
-        emails: [],
-        driveActivity: [],
+        emailIds: [],
+        driveActivityIds: [],
       }));
   }
 
@@ -30,7 +41,7 @@ export default class TimeStore {
       // NOTE: SUPER SLOW (design a segment storage system)
       this.segments.forEach((segment) => {
         if (isAfter(email.date, segment.start) && isBefore(email.date, segment.end)) {
-          segment.emails.push(email);
+          segment.emailIds.push(email.id);
         }
       });
     });
@@ -46,7 +57,7 @@ export default class TimeStore {
         const start = activity.time;
         this.segments.forEach((segment) => {
           if (isAfter(start, segment.start) && isBefore(start, segment.end)) {
-            segment.driveActivity.push(activity);
+            segment.driveActivityIds.push(activity.id);
           }
         });
       });
