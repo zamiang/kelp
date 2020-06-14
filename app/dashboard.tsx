@@ -1,8 +1,6 @@
-import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 import Meetings from './calendar/meetings';
-import Copyright from './copyright';
 import DocumentList from './docs/document-list';
 import LeftDrawer from './nav/left-drawer';
 import TopBar from './nav/top-bar';
@@ -64,6 +62,8 @@ const Dashboard = (props: IProps) => {
   const handleMeetingsClick = () => setRoute({ path: '/', id: null });
   const handleDocsClick = () => setRoute({ path: '/docs', id: null });
 
+  const handleRefreshClick = () => alert('TODO!');
+
   const routeComponent = routes[currentRoute.path]({
     ...props,
     routeId: currentRoute.id,
@@ -85,6 +85,7 @@ const Dashboard = (props: IProps) => {
         handlePersonClick={handlePersonClick}
         handleMeetingsClick={handleMeetingsClick}
         handleDrawerOpen={handleDrawerOpen}
+        handleRefreshClick={handleRefreshClick}
         currentRoute={currentRoute.path}
       />
       <main className={classes.content}>

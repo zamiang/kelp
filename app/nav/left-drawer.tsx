@@ -1,5 +1,4 @@
 import { styled } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -13,14 +12,13 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
-import RefreshIcon from '@material-ui/icons/Refresh';
 import clsx from 'clsx';
-import { formatDistanceToNow } from 'date-fns';
 import React from 'react';
 import { drawerWidth } from '../dashboard';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
+import RefreshButton from './refresh-button';
 import Search from './search';
 
 const useStyles = makeStyles((theme) => ({
@@ -77,6 +75,7 @@ export interface IProps {
   handleMeetingsClick: () => void;
   handleDocsClick: () => void;
   handlePeopleClick: () => void;
+  handleRefreshClick: () => void;
   people: IPerson[];
   lastUpdated: Date;
   documents: IDoc[];
@@ -148,17 +147,7 @@ const LeftDrawer = (props: IProps) => {
         </StyledListItem>
       </List>
       <div className={classes.spacer} />
-      <List>
-        <StyledListItem button dense>
-          <ListItemIcon>
-            <RefreshIcon color="secondary" />
-          </ListItemIcon>
-          <ListItemText
-            primary={`${formatDistanceToNow(props.lastUpdated)} ago`}
-            className={classes.unSelected}
-          />
-        </StyledListItem>
-      </List>
+      <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
     </Drawer>
   );
 };
