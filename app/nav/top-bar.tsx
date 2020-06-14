@@ -9,7 +9,7 @@ import { drawerWidth } from '../dashboard';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    background: 'transparent',
+    background: 'white',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
