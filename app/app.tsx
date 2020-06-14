@@ -1,4 +1,3 @@
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -6,13 +5,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
 import DashboardContainer from './dashboard-container';
+import headerImage from './images/designer_file_case.png';
 
 const bodyFontFamily = 'Arial, sans-serif;';
 
@@ -66,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(6, 8, 6, 8),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(4, 0, 2),
     padding: theme.spacing(2, 6),
     borderRadius: 25,
   },
@@ -75,7 +74,14 @@ const useStyles = makeStyles((theme) => ({
   },
   body: {
     marginTop: theme.spacing(1),
+    color: theme.palette.text.primary,
+  },
+  hint: {
+    marginTop: theme.spacing(2),
     color: theme.palette.text.hint,
+  },
+  image: {
+    maxWidth: 210,
   },
 }));
 
@@ -135,15 +141,13 @@ const App = () => {
         ) : (
           <Container component="main" maxWidth="sm">
             <Paper elevation={0} className={classes.centerPaper}>
-              <Avatar className={classes.avatar}>
-                <EqualizerIcon />
-              </Avatar>
+              <img src={headerImage} className={classes.image} />
               <Typography variant="h1">Time</Typography>
               <Typography variant="body2" className={classes.body}>
-                This application does not store your data or send your data to any third parties.
-                The application is hosted as a ‘static website’ where the application code is served
-                in the same way an image is served. All data processing is done on your computer and
-                not on a web server out of your control.
+                Time brings your data together in one place. Pivot your meetings by what documents
+                the attendees have edited recently. By associating person, a time slot and documents
+                together, Time infers associations between information, making the information
+                easier to find. Prepare for your next meeting in a flash!
               </Typography>
               <Button
                 variant="contained"
@@ -155,6 +159,11 @@ const App = () => {
                 Log In
               </Button>
             </Paper>
+            <Typography variant="body2" className={classes.hint}>
+              This application does not store your data or send your data to any third parties. Your
+              browser retrieves your data directly from the Google API and processes the data on
+              your computer.
+            </Typography>
             <Box mt={8}>
               <Copyright />
             </Box>
