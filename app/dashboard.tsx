@@ -68,7 +68,15 @@ const Dashboard = (props: IProps) => {
 
   return (
     <React.Fragment>
-      <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} lastUpdated={props.lastUpdated} />
+      <TopBar
+        people={props.personDataStore.getPeople()}
+        documents={props.docDataStore.getDocs()}
+        meetings={props.timeDataStore.getSegments()}
+        handlePersonClick={handlePersonClick}
+        handleDrawerOpen={handleDrawerOpen}
+        isOpen={isOpen}
+        lastUpdated={props.lastUpdated}
+      />
       <LeftDrawer
         handleDocsClick={handleDocsClick}
         handleDrawerClose={handleDrawerClose}
