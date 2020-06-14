@@ -17,7 +17,7 @@ const bodyFontFamily = 'Arial, sans-serif;';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#EDF1F2' },
-    secondary: { main: '#7D58FE' },
+    secondary: { main: '#7D58FE', light: '#F6F6FE' },
   },
   typography: {
     fontFamily: "'Helvetica Neue', sans-serif;",

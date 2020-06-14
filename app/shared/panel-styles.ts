@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 36,
     marginRight: theme.spacing(2),
     padding: theme.spacing(6),
-    background: theme.palette.primary.light,
+    background: theme.palette.secondary.light,
   },
 }));
 

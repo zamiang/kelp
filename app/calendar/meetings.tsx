@@ -12,9 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { format } from 'date-fns';
+import clsx from 'clsx';
+import { format, isAfter, isBefore } from 'date-fns';
 import { uniqBy } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IRouteProps } from '../dashboard';
 import DriveActivityList from '../docs/drive-activity-list';
 import { formattedEmail } from '../fetch/fetch-second';
@@ -62,11 +63,18 @@ const EmailsForSegment = (props: { segment: ISegment }) => {
 };
 
 const useRowStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.primary.main,
+  meeting: {
+    background: 'transparent',
+    transition: 'background 0.3s',
     '& > *': {
       borderBottom: 'unset',
     },
+  },
+  meetingCurrent: {
+    borderTop: `2px solid ${theme.palette.secondary.main}`,
+  },
+  meetingInFuture: {
+    opacity: 0.7,
   },
   secondary: {
     color: theme.palette.getContrastText(theme.palette.secondary.main),
@@ -84,8 +92,11 @@ const Meeting = (props: {
   personStore: PersonDataStore;
   docStore: DocDataStore;
   handlePersonClick: (email: string) => void;
+  currentTime: Date;
 }) => {
-  const [isOpen, setOpen] = useState(false);
+  const isMeetingInFuture = isBefore(props.currentTime, props.meeting.start);
+  const isCurrent = !isAfter(props.currentTime, props.meeting.end) && !isMeetingInFuture;
+  const [isOpen, setOpen] = useState(isCurrent);
   const classes = useRowStyles();
   const actionCount = props.meeting.driveActivity.length + props.meeting.emails.length;
   const people = (props.meeting.attendees || [])
@@ -93,7 +104,15 @@ const Meeting = (props: {
     .map((person) => props.personStore.getPersonByEmail(person.email!));
   return (
     <React.Fragment>
-      <TableRow className={classes.root} hover onClick={() => setOpen(!isOpen)}>
+      <TableRow
+        className={clsx(
+          classes.meeting,
+          isMeetingInFuture && classes.meetingInFuture,
+          isCurrent && classes.meetingCurrent,
+        )}
+        hover
+        onClick={() => setOpen(!isOpen)}
+      >
         <TableCell style={{ width: '1%', paddingRight: '1px' }} align="right">
           <Typography variant="h6">{format(props.meeting.start, 'd')}</Typography>
         </TableCell>
@@ -140,7 +159,18 @@ const Meeting = (props: {
 
 const Meetings = (props: IRouteProps) => {
   const meetings = props.timeDataStore.getSegments();
+  const [seconds, setSeconds] = useState(0);
   const styles = panelStyles();
+
+  // rerender every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((seconds) => seconds + 1);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [seconds]);
+
+  const currentTime = new Date();
   return (
     <Grid item xs={12} className={styles.panel}>
       <Typography variant="h2" color="textPrimary" gutterBottom>
@@ -150,6 +180,7 @@ const Meetings = (props: IRouteProps) => {
         <TableBody>
           {meetings.map((meeting) => (
             <Meeting
+              currentTime={currentTime}
               key={meeting.id}
               meeting={meeting}
               handlePersonClick={props.handlePersonClick}
