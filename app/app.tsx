@@ -10,7 +10,8 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
-import DashboardContainer from './dashboard-container';
+// import DashboardContainer from './dashboard-container';
+import DashboardContainer from './dashboard-fake-container';
 
 const bodyFontFamily = 'Arial, sans-serif;';
 

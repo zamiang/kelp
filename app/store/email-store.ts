@@ -10,7 +10,6 @@ export default class EmailDataStore {
   constructor(emails: formattedEmail[]) {
     console.warn('setting up email store');
     this.emailById = {};
-
     this.addEmailsToStore(emails);
   }
 

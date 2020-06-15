@@ -12,7 +12,7 @@ interface IDocById {
 }
 
 // handle one person w/ multiple email addresses
-const creatDocFromGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
+export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
   id: googleDoc.id || 'wtf',
   name: googleDoc.name,
   description: googleDoc.description,
@@ -24,7 +24,7 @@ const creatDocFromGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
 export default class DocDataStore {
   private docsById: IDocById;
 
-  constructor(docsList: gapi.client.drive.File[]) {
+  constructor(docsList: IDoc[]) {
     console.warn('setting up person store');
     this.docsById = {};
     this.addDocsToStore(docsList);
@@ -36,9 +36,9 @@ export default class DocDataStore {
     });
   }
 
-  addDocsToStore(docs: gapi.client.drive.File[]) {
+  addDocsToStore(docs: IDoc[]) {
     docs.forEach((document) => {
-      this.docsById[document.id || 'wtf'] = creatDocFromGoogleDoc(document);
+      this.docsById[document.id || 'wtf'] = document;
     });
   }
 

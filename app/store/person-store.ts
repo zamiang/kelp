@@ -1,4 +1,8 @@
-import { ICalendarEvent, IFormattedDriveActivity, person } from '../fetch/fetch-first';
+import {
+  person as GooglePerson,
+  ICalendarEvent,
+  IFormattedDriveActivity,
+} from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
 
 export interface IPerson {
@@ -16,7 +20,7 @@ interface IPersonByEmail {
 }
 
 // handle one person w/ multiple email addresses
-const createNewPersonFromPerson = (person: person) => ({
+export const formatPerson = (person: GooglePerson) => ({
   id: person.id,
   name: person.name,
   emailAddress: person.emailAddress.toLocaleLowerCase(),
@@ -39,7 +43,7 @@ export default class PersonDataStore {
   private personByEmail: IPersonByEmail;
   private personById: IPersonByEmail;
 
-  constructor(personList: person[], emailAddresses: string[]) {
+  constructor(personList: IPerson[], emailAddresses: string[]) {
     console.warn('setting up person store');
     this.personByEmail = {};
     this.personById = {};
@@ -48,11 +52,10 @@ export default class PersonDataStore {
     this.addEmailAddressessToStore(emailAddresses);
   }
 
-  addPeopleToStore(people: person[]) {
+  addPeopleToStore(people: IPerson[]) {
     people.forEach((person) => {
-      const newPerson = createNewPersonFromPerson(person);
-      this.personByEmail[person.emailAddress.toLocaleLowerCase()] = newPerson;
-      this.personById[person.id] = newPerson;
+      this.personByEmail[person.emailAddress.toLocaleLowerCase()] = person;
+      this.personById[person.id] = person;
     });
   }
 

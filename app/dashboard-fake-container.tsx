@@ -1,10 +1,10 @@
 import React from 'react';
 import Dashboard from './dashboard';
-import FetchAll from './fetch/fetch-all';
-import DocDataStore, { formatGoogleDoc } from './store/doc-store';
+import DocDataStore from './store/doc-store';
 import DriveActivityDataStore from './store/drive-activity-store';
 import EmailDataStore from './store/email-store';
-import PersonDataStore, { formatPerson } from './store/person-store';
+import PersonDataStore from './store/person-store';
+import data from './store/store-faker';
 import TimeDataStore from './store/time-store';
 
 interface IProps {
@@ -12,24 +12,20 @@ interface IProps {
 }
 
 const DashboardContainer = (props: IProps) => {
-  // TODO: Listen for log-out or token espiring and re-fetch
-  const data = FetchAll(props.accessToken);
-  const people = data.personList.map((person) => formatPerson(person));
-
+  console.log(props);
   // TODO: Only create the datastores once data.isLoading is false
-  const personDataStore = new PersonDataStore(people, data.emailList);
+  const personDataStore = new PersonDataStore(data.people, []);
   personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
-  personDataStore.addCalendarEventsToStore(data.calendarEvents || []);
+  personDataStore.addCalendarEventsToStore(data.segments);
   console.log('PERSON DATA STORE:', personDataStore);
 
-  const timeDataStore = new TimeDataStore(data.calendarEvents || []);
-  timeDataStore.addEmailsToStore(data.emails || []);
+  const timeDataStore = new TimeDataStore(data.segments);
+  timeDataStore.addEmailsToStore(data.emails);
   timeDataStore.addDriveActivityToStore(data.driveActivity);
   console.log('TIME DATA STORE:', timeDataStore);
 
-  const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));
-  const docDataStore = new DocDataStore(docs);
+  const docDataStore = new DocDataStore(data.documents);
   console.log('DOC DATA STORE:', docDataStore);
 
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
@@ -45,7 +41,7 @@ const DashboardContainer = (props: IProps) => {
       timeDataStore={timeDataStore}
       personDataStore={personDataStore}
       docDataStore={docDataStore}
-      lastUpdated={data.lastUpdated}
+      lastUpdated={new Date()}
     />
   );
 };

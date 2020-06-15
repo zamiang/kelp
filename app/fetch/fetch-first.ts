@@ -83,12 +83,12 @@ const listDriveActivity = async () => {
   return { uniqueActorIds: uniq(peopleIds), activity: formattedDriveActivity };
 };
 
-export type person = {
+export interface person {
   id: string;
   name: string;
   emailAddress: string;
   imageUrl?: string | null;
-};
+}
 
 const batchFetchPeople = async (
   peopleIds: string[],
