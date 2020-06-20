@@ -11,7 +11,7 @@ interface IProps {
   accessToken: string;
 }
 
-const DashboardContainer = (props: IProps) => {
+const DashboardFakeContainer = (props: IProps) => {
   console.log(props);
   // TODO: Only create the datastores once data.isLoading is false
   const personDataStore = new PersonDataStore(data.people, []);
@@ -46,4 +46,4 @@ const DashboardContainer = (props: IProps) => {
   );
 };
 
-export default DashboardContainer;
+export default DashboardFakeContainer;

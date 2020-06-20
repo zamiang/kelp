@@ -1,5 +1,4 @@
 import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { IRouteProps } from '../dashboard';
@@ -14,9 +13,7 @@ const People = (props: IRouteProps) => {
       <Typography variant="h2" color="textPrimary" gutterBottom>
         People
       </Typography>
-      <List>
-        <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
-      </List>
+      <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
     </Grid>
   );
 };

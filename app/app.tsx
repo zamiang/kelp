@@ -10,8 +10,8 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
-import DashboardContainer from './dashboard-container';
-// import DashboardContainer from './dashboard-fake-container';
+// import DashboardContainer from './dashboard-container';
+import DashboardContainer from './dashboard-fake-container';
 
 const bodyFontFamily = 'Arial, sans-serif;';
 
@@ -129,9 +129,6 @@ const App = () => {
     ].join(' '),
   });
   const isLoggedIn = googleLoginState.accessToken.length > 0;
-
-  // ideal render path
-  // create-store => (fetch first) => (fetch second) => get store back => render dashboard
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
@@ -141,7 +138,7 @@ const App = () => {
         ) : (
           <Container component="main" maxWidth="sm">
             <Paper elevation={0} className={classes.centerPaper}>
-              {/* From: https://dribbble.com/shots/2766518-Designer-s-Folder-illustration */}
+              {/* Modified from: https://dribbble.com/shots/2766518-Designer-s-Folder-illustration */}
               <img
                 src="https://www.collasso.me/images/designer_file_case.png"
                 className={classes.image}
