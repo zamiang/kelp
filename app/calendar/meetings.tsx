@@ -1,5 +1,4 @@
 import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,11 +13,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import clsx from 'clsx';
 import { format, isAfter, isBefore } from 'date-fns';
-import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { IRouteProps } from '../dashboard';
 import DriveActivityList from '../docs/drive-activity-list';
-import { formattedEmail } from '../fetch/fetch-second';
 import PeopleList from '../nav/people-list';
 import panelStyles from '../shared/panel-styles';
 import DocDataStore from '../store/doc-store';
@@ -26,44 +23,7 @@ import DriveActivityDataStore from '../store/drive-activity-store';
 import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
-
-const Email = (props: { email: formattedEmail }) => {
-  const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
-  return (
-    <TableRow>
-      <TableCell style={{ width: '10%' }}>
-        <Typography variant="caption">{props.email.from}</Typography>
-      </TableCell>
-      <TableCell component="th" scope="row">
-        <Typography variant="caption">
-          <Link color="textPrimary" target="_blank" href={emailLink}>
-            <b>{props.email.subject}</b>
-          </Link>
-        </Typography>
-      </TableCell>
-    </TableRow>
-  );
-};
-
-const EmailsForSegment = (props: { segment: ISegment; emailStore: EmailDataStore }) => {
-  const emails = props.segment.emailIds.map((emailId) => props.emailStore.getById(emailId));
-  const threads = uniqBy(emails, 'threadId');
-  if (threads.length < 1) {
-    return null;
-  }
-  return (
-    <React.Fragment>
-      <Typography variant="h6">Emails</Typography>
-      <Table size="small">
-        <TableBody>
-          {threads.map((email) => (
-            <Email key={email.id} email={email} />
-          ))}
-        </TableBody>
-      </Table>
-    </React.Fragment>
-  );
-};
+import EmailsForSegment from './emails';
 
 const useRowStyles = makeStyles((theme) => ({
   meeting: {
@@ -107,6 +67,9 @@ const Meeting = (props: {
   const people = (props.meeting.attendees || [])
     .filter((person) => person.email)
     .map((person) => props.personStore.getPersonByEmail(person.email!));
+  const hasPeople = people.length > 0;
+  const hasEmails = props.meeting.emailIds.length > 0;
+  const hasDriveActivity = props.meeting.driveActivityIds.length > 0;
   return (
     <React.Fragment>
       <TableRow
@@ -146,16 +109,36 @@ const Meeting = (props: {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={isOpen} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <EmailsForSegment segment={props.meeting} emailStore={props.emailStore} />
-              <DriveActivityList
-                driveActivityIds={props.meeting.driveActivityIds}
-                driveActivityStore={props.driveActivityStore}
-                docStore={props.docStore}
-                personStore={props.personStore}
-              />
-              <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
-            </Box>
+            <Grid container spacing={1}>
+              {hasEmails && (
+                <Grid item style={{ width: '100%' }}>
+                  <Typography variant="h6">Emails</Typography>
+                  <EmailsForSegment
+                    segment={props.meeting}
+                    emailStore={props.emailStore}
+                    personStore={props.personStore}
+                    handlePersonClick={props.handlePersonClick}
+                  />
+                </Grid>
+              )}
+              {hasDriveActivity && (
+                <Grid item>
+                  <Typography variant="h6">Active Documents</Typography>
+                  <DriveActivityList
+                    driveActivityIds={props.meeting.driveActivityIds}
+                    driveActivityStore={props.driveActivityStore}
+                    docStore={props.docStore}
+                    personStore={props.personStore}
+                  />
+                </Grid>
+              )}
+              {hasPeople && (
+                <Grid item>
+                  <Typography variant="h6">Guests</Typography>
+                  <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
+                </Grid>
+              )}
+            </Grid>
           </Collapse>
         </TableCell>
       </TableRow>

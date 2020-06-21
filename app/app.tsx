@@ -108,7 +108,6 @@ gapi.load('client', loadLibraries as any);
 
 const App = () => {
   const classes = useStyles();
-
   const [googleLoginState, setGoogleLoginState] = useState(initialGoogleState);
   const { signIn } = useGoogleLogin({
     // TODO: Handle GoogleOfflineResponse and remove response: any

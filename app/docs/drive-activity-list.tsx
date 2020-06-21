@@ -55,21 +55,18 @@ const DriveActivityList = (props: {
     return null;
   }
   return (
-    <React.Fragment>
-      <ListSubheader inset>Active Documents</ListSubheader>
-      <Table size="small">
-        <TableBody>
-          {actions.map((action) => (
-            <Activity
-              key={action.id}
-              activity={action}
-              personStore={props.personStore}
-              docStore={props.docStore}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </React.Fragment>
+    <Table size="small">
+      <TableBody>
+        {actions.map((action) => (
+          <Activity
+            key={action.id}
+            activity={action}
+            personStore={props.personStore}
+            docStore={props.docStore}
+          />
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
