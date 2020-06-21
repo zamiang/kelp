@@ -1,12 +1,9 @@
+import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
-import ListItemText from '@material-ui/core/ListItemText';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { format } from 'date-fns';
+import { makeStyles } from '@material-ui/core/styles';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import { formatDistanceToNow } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-first';
@@ -14,28 +11,47 @@ import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import PersonDataStore from '../store/person-store';
 
+const useRowStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    overflow: 'hidden',
+  },
+  icon: {
+    height: 32,
+    width: 32,
+    background: theme.palette.secondary.main,
+    color: 'white',
+    borderRadius: '50%',
+    padding: 5,
+    display: 'block',
+  },
+}));
+
+type classesType = ReturnType<typeof useRowStyles>;
+
 const Activity = (props: {
   activity: IFormattedDriveActivity;
   personStore: PersonDataStore;
   docStore: DocDataStore;
+  classes: classesType;
 }) => {
   const doc = props.docStore.getByLink(props.activity.link!);
   return (
-    <TableRow hover>
-      <TableCell style={{ width: 40, paddingRight: 16 }}>
-        <InsertDriveFileIcon />
-      </TableCell>
-      <TableCell>
-        <Link color="textPrimary" target="_blank" href={doc.link || ''}>
-          <ListItemText primary={doc.name} />
+    <Grid container wrap="nowrap" spacing={3} alignItems="center">
+      <Grid item>
+        <InsertDriveFileIcon className={props.classes.icon} />
+      </Grid>
+      <Grid item xs={7} zeroMinWidth>
+        <Link color="textPrimary" target="_blank" href={doc.link || ''} noWrap>
+          {doc.name}
         </Link>
-      </TableCell>
-      <TableCell align="right">
-        <Typography variant="caption" color="textSecondary">
-          Last updated on {format(new Date(doc.updatedAt!), "MMMM do, yyyy 'at' hh:mm a")}
+      </Grid>
+      <Grid item xs={4} style={{ textAlign: 'right' }}>
+        <Typography variant="caption" color="textSecondary" align="right">
+          updated {formatDistanceToNow(new Date(doc.updatedAt!))} ago
         </Typography>
-      </TableCell>
-    </TableRow>
+      </Grid>
+    </Grid>
   );
 };
 
@@ -45,6 +61,7 @@ const DriveActivityList = (props: {
   personStore: PersonDataStore;
   docStore: DocDataStore;
 }) => {
+  const classes = useRowStyles();
   const driveActivity = props.driveActivityIds.map((id) => props.driveActivityStore.getById(id));
   const actions = uniqBy(
     driveActivity.filter((action) => action.link),
@@ -54,18 +71,19 @@ const DriveActivityList = (props: {
     return null;
   }
   return (
-    <Table size="small">
-      <TableBody>
+    <div className={classes.root}>
+      <div>
         {actions.map((action) => (
           <Activity
             key={action.id}
             activity={action}
             personStore={props.personStore}
             docStore={props.docStore}
+            classes={classes}
           />
         ))}
-      </TableBody>
-    </Table>
+      </div>
+    </div>
   );
 };
 

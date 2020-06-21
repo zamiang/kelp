@@ -3,6 +3,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,15 +16,15 @@ import clsx from 'clsx';
 import { format, isAfter, isBefore } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { IRouteProps } from '../dashboard';
-import DriveActivityList from '../docs/drive-activity-list';
-import PeopleList from '../nav/people-list';
 import panelStyles from '../shared/panel-styles';
 import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
+import DriveActivityList from './drive-activity';
 import EmailsForSegment from './emails';
+import PeopleList from './people-list';
 
 const useRowStyles = makeStyles((theme) => ({
   meeting: {
@@ -48,6 +49,23 @@ const useRowStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     paddingRight: 0,
   },
+  paper: {
+    margin: `${theme.spacing(1)}px 0 ${theme.spacing(1)}px auto`,
+    padding: theme.spacing(2),
+  },
+  // todo move into theme
+  heading: {
+    borderBottom: `2px solid ${theme.palette.secondary.main}`,
+    marginBottom: 15,
+    display: 'inline-block',
+  },
+  smallHeading: {
+    marginTop: 15,
+    marginBottom: 5,
+  },
+  tableCell: {
+    padding: '0 0 0 50px !important',
+  },
 }));
 
 const Meeting = (props: {
@@ -69,6 +87,7 @@ const Meeting = (props: {
     .map((person) => props.personStore.getPersonByEmail(person.email!));
   const hasPeople = people.length > 0;
   const hasEmails = props.meeting.emailIds.length > 0;
+  const hasDescription = props.meeting.description && props.meeting.description.length > 0;
   const hasDriveActivity = props.meeting.driveActivityIds.length > 0;
   return (
     <React.Fragment>
@@ -107,38 +126,51 @@ const Meeting = (props: {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell className={classes.tableCell} colSpan={6}>
           <Collapse in={isOpen} timeout="auto" unmountOnExit>
-            <Grid container spacing={1}>
-              {hasEmails && (
-                <Grid item style={{ width: '100%' }}>
-                  <Typography variant="h6">Emails</Typography>
-                  <EmailsForSegment
-                    segment={props.meeting}
-                    emailStore={props.emailStore}
-                    personStore={props.personStore}
-                    handlePersonClick={props.handlePersonClick}
-                  />
+            <Paper className={classes.paper}>
+              <Grid container spacing={6}>
+                <Grid item xs={9}>
+                  {hasDescription && (
+                    <Typography variant="body2">{props.meeting.description}</Typography>
+                  )}
+                  {hasEmails && (
+                    <React.Fragment>
+                      <Typography variant="h6" className={classes.smallHeading}>
+                        Emails
+                      </Typography>
+                      <EmailsForSegment
+                        segment={props.meeting}
+                        emailStore={props.emailStore}
+                        personStore={props.personStore}
+                        handlePersonClick={props.handlePersonClick}
+                      />
+                    </React.Fragment>
+                  )}
+                  {hasDriveActivity && (
+                    <React.Fragment>
+                      <Typography variant="h6" className={classes.smallHeading}>
+                        Active Documents
+                      </Typography>
+                      <DriveActivityList
+                        driveActivityIds={props.meeting.driveActivityIds}
+                        driveActivityStore={props.driveActivityStore}
+                        docStore={props.docStore}
+                        personStore={props.personStore}
+                      />
+                    </React.Fragment>
+                  )}
                 </Grid>
-              )}
-              {hasDriveActivity && (
-                <Grid item>
-                  <Typography variant="h6">Active Documents</Typography>
-                  <DriveActivityList
-                    driveActivityIds={props.meeting.driveActivityIds}
-                    driveActivityStore={props.driveActivityStore}
-                    docStore={props.docStore}
-                    personStore={props.personStore}
-                  />
-                </Grid>
-              )}
-              {hasPeople && (
-                <Grid item>
-                  <Typography variant="h6">Guests</Typography>
-                  <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
-                </Grid>
-              )}
-            </Grid>
+                {hasPeople && (
+                  <Grid item xs={3}>
+                    <Typography variant="h6" className={classes.heading}>
+                      Guests
+                    </Typography>
+                    <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
+                  </Grid>
+                )}
+              </Grid>
+            </Paper>
           </Collapse>
         </TableCell>
       </TableRow>

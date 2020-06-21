@@ -32,7 +32,7 @@ const Person = (props: IRouteProps) => {
           <Avatar className={classes.avatar}>{(person.name || person.id)[0]}</Avatar>
         )}
         <Typography className={classes.title} variant="h2" color="textPrimary" gutterBottom>
-          {person.name || person.emailAddress}
+          {props.personDataStore.getPersonDisplayName(person)}
         </Typography>
       </Box>
       <DriveActivityList

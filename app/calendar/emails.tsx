@@ -1,11 +1,8 @@
+import { Typography } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
 import { formattedEmail } from '../fetch/fetch-second';
@@ -14,11 +11,18 @@ import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
 const useRowStyles = makeStyles(() => ({
-  table: {
-    width: '100%',
-  },
   from: {
-    width: '20%',
+    minWidth: 180,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  paper: {
+    maxWidth: '45vw',
+  },
+  root: {
+    flexGrow: 1,
+    overflow: 'hidden',
   },
 }));
 
@@ -31,27 +35,25 @@ const Email = (props: {
   handlePersonClick: (email: string) => void;
 }) => {
   const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
-  const from = props.personStore.getPersonByEmail(props.email.from || '') || 'unknown';
+  const person = props.personStore.getPersonByEmail(props.email.from || '');
   return (
-    <TableRow>
-      <TableCell className={props.classes.from}>
-        <Typography variant="caption">
-          <Link color="textPrimary" onClick={() => props.handlePersonClick(props.email.from || '')}>
-            {from.name || from.emailAddress}
-          </Link>
-        </Typography>
-      </TableCell>
-      <TableCell component="th" scope="row">
-        <Typography variant="caption">
+    <Grid container wrap="nowrap" spacing={3} alignItems="center">
+      <Grid item onClick={() => props.handlePersonClick(person && person.emailAddress)}>
+        <Avatar style={{ height: 32, width: 32 }} src={person.imageUrl || ''}>
+          {props.personStore.getPersonDisplayName(person)[0]}
+        </Avatar>
+      </Grid>
+      <Grid item xs={3} onClick={() => props.handlePersonClick(person && person.emailAddress)}>
+        <Typography variant="body2">{props.personStore.getPersonDisplayName(person)}</Typography>
+      </Grid>
+      <Grid item xs={8} zeroMinWidth>
+        <Typography variant="body2" noWrap>
           <Link color="textPrimary" target="_blank" href={emailLink}>
-            <b>{props.email.subject}</b>
+            <b>{props.email.subject}</b> {props.email.snippet}
           </Link>
         </Typography>
-      </TableCell>
-      <TableCell component="th" scope="row">
-        <Typography variant="caption">{format(props.email.date, 'MM/dd')}</Typography>
-      </TableCell>
-    </TableRow>
+      </Grid>
+    </Grid>
   );
 };
 
@@ -68,8 +70,8 @@ const EmailsForSegment = (props: {
     return null;
   }
   return (
-    <Table size="small" className={classes.table}>
-      <TableBody>
+    <div className={classes.root}>
+      <div className={classes.paper}>
         {threads.map((email) => (
           <Email
             key={email.id}
@@ -79,8 +81,8 @@ const EmailsForSegment = (props: {
             handlePersonClick={props.handlePersonClick}
           />
         ))}
-      </TableBody>
-    </Table>
+      </div>
+    </div>
   );
 };
 

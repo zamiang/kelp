@@ -88,6 +88,7 @@ const segments: ISegment[] = times(24, () => {
     id: Faker.random.uuid(),
     link: Faker.internet.url(),
     summary: `${Faker.commerce.productName()} meeting`,
+    description: Faker.lorem.paragraphs(3),
     start: startDate,
     end: addMinutes(startDate, 30),
     attendees: people.map((person) => ({

@@ -126,6 +126,10 @@ export default class PersonDataStore {
     return this.personById[peopleId];
   }
 
+  getPersonDisplayName(person: IPerson) {
+    return person.name || person.emailAddress;
+  }
+
   getLength() {
     return Object.keys(this.personByEmail).length;
   }

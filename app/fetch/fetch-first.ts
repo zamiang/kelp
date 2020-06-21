@@ -161,6 +161,7 @@ export interface ICalendarEvent {
   summary?: string;
   start: Date;
   end: Date;
+  description?: string;
   attendees?: {
     email?: string;
     responseStatus?: string;
@@ -206,6 +207,7 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
         start: new Date(event.start!.dateTime!),
         end: new Date(event.end!.dateTime!),
         attendees: event.attendees,
+        description: event.description,
       })),
     // calendar events return little attendee information beyond email addresses (contradicting docs)
     uniqueAttendeeEmails,
