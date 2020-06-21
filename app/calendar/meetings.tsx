@@ -15,6 +15,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import clsx from 'clsx';
 import { format, isAfter, isBefore } from 'date-fns';
 import React, { useEffect, useState } from 'react';
+import AutoLinkText from 'react-autolink-text2';
 import { IRouteProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
 import DocDataStore from '../store/doc-store';
@@ -132,7 +133,9 @@ const Meeting = (props: {
               <Grid container spacing={6}>
                 <Grid item xs={9}>
                   {hasDescription && (
-                    <Typography variant="body2">{props.meeting.description}</Typography>
+                    <Typography variant="body2">
+                      <AutoLinkText text={props.meeting.description!} />
+                    </Typography>
                   )}
                   {hasEmails && (
                     <React.Fragment>
