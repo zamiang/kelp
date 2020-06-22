@@ -73,7 +73,7 @@ const useRowStyles = makeStyles((theme) => ({
 }));
 
 // For display purposes
-type MeetingState = 'current' | 'upcomming' | 'past';
+type MeetingState = 'current' | 'upcoming' | 'past';
 
 const Meeting = (props: {
   meeting: ISegment;
@@ -100,7 +100,7 @@ const Meeting = (props: {
       <TableRow
         className={clsx(
           classes.meeting,
-          props.state === 'upcomming' && classes.meetingInFuture,
+          props.state === 'upcoming' && classes.meetingInFuture,
           props.state === 'current' && classes.meetingCurrent,
         )}
         hover
@@ -189,7 +189,7 @@ const Meeting = (props: {
 const Meetings = (props: IRouteProps) => {
   const [isOpen, setOpen] = useState(false);
   const currentMeetings = props.timeDataStore.getCurrentOrUpNextSegments();
-  const upcommingMeetings = props.timeDataStore.getUpcommingSegments(
+  const upcomingMeetings = props.timeDataStore.getupcomingSegments(
     currentMeetings[0] && currentMeetings[0].id,
   );
   const pastMeetings = props.timeDataStore.getPastSegments(
@@ -224,7 +224,7 @@ const Meetings = (props: IRouteProps) => {
             className={styles.topRightButton}
             onClick={() => setOpen(!isOpen)}
           >
-            {isOpen ? 'hide' : 'show'} {upcommingMeetings.length} upcomming meetings
+            {isOpen ? 'hide' : 'show'} {upcomingMeetings.length} upcoming meetings
             {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </Button>
         </Grid>
@@ -232,7 +232,7 @@ const Meetings = (props: IRouteProps) => {
       <Collapse in={isOpen} timeout="auto" unmountOnExit>
         <Table size="small">
           <TableBody>
-            {upcommingMeetings.map((meeting) => (
+            {upcomingMeetings.map((meeting) => (
               <Meeting
                 currentTime={currentTime}
                 key={meeting.id}
@@ -242,7 +242,7 @@ const Meetings = (props: IRouteProps) => {
                 docStore={props.docDataStore}
                 emailStore={props.emailStore}
                 driveActivityStore={props.driveActivityStore}
-                state="upcomming"
+                state="upcoming"
               />
             ))}
           </TableBody>

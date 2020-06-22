@@ -80,7 +80,7 @@ export default class TimeStore {
     });
   }
 
-  getUpcommingSegments(filterOutSegmentId?: string) {
+  getupcomingSegments(filterOutSegmentId?: string) {
     const currentTime = new Date();
     return this.segments.filter(
       (segment) => segment.end > currentTime && segment.id !== filterOutSegmentId,
