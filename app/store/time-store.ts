@@ -17,7 +17,10 @@ export default class TimeStore {
 
   constructor(calendarEvents: ICalendarEvent[]) {
     console.warn('setting up time store');
-    this.segments = this.createInitialSegments(calendarEvents);
+    // sort by asc to support later optimizations
+    this.segments = this.createInitialSegments(calendarEvents).sort((a, b) =>
+      a.start > b.start ? -1 : 1,
+    );
     this.segmentsById = {};
     this.segments.map((segment) => (this.segmentsById[segment.id] = segment));
   }
@@ -75,5 +78,26 @@ export default class TimeStore {
         return a.start < b.start ? -1 : 1;
       }
     });
+  }
+
+  getUpcommingSegments(filterOutSegmentId?: string) {
+    const currentTime = new Date();
+    return this.segments.filter(
+      (segment) => segment.end > currentTime && segment.id !== filterOutSegmentId,
+    );
+  }
+
+  getCurrentOrUpNextSegments() {
+    const currentTime = new Date();
+    return this.segments.filter(
+      (segment) => segment.end > currentTime && segment.start < currentTime,
+    );
+  }
+
+  getPastSegments(filterOutSegmentId?: string) {
+    const currentTime = new Date();
+    return this.segments.filter(
+      (segment) => segment.end < currentTime && segment.id !== filterOutSegmentId,
+    );
   }
 }

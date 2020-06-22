@@ -81,7 +81,7 @@ documents.map((document) => {
  * 24 thirty minute meetings back to back
  * Cover the entire day - 'Faker.date.recent(1)`
  */
-let startDate = addMinutes(new Date(), 30);
+let startDate = addMinutes(new Date(), 300);
 const segments: ISegment[] = times(24, () => {
   startDate = subMinutes(startDate, 30);
   return {

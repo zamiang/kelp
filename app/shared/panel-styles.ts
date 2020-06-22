@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(6),
     background: theme.palette.secondary.light,
   },
+  topRightButton: {
+    marginLeft: 'auto',
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 export default useStyles;

@@ -1,4 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import clsx from 'clsx';
-import { format, isAfter, isBefore } from 'date-fns';
+import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import AutoLinkText from 'react-autolink-text2';
 import { IRouteProps } from '../dashboard';
@@ -63,11 +64,16 @@ const useRowStyles = makeStyles((theme) => ({
   smallHeading: {
     marginTop: 15,
     marginBottom: 5,
+    fontSize: theme.typography.body2.fontSize,
+    textTransform: 'uppercase',
   },
   tableCell: {
     padding: '0 0 0 50px !important',
   },
 }));
+
+// For display purposes
+type MeetingState = 'current' | 'upcomming' | 'past';
 
 const Meeting = (props: {
   meeting: ISegment;
@@ -77,10 +83,9 @@ const Meeting = (props: {
   emailStore: EmailDataStore;
   handlePersonClick: (email: string) => void;
   currentTime: Date;
+  state: MeetingState;
 }) => {
-  const isMeetingInFuture = isBefore(props.currentTime, props.meeting.start);
-  const isCurrent = !isAfter(props.currentTime, props.meeting.end) && !isMeetingInFuture;
-  const [isOpen, setOpen] = useState(isCurrent);
+  const [isOpen, setOpen] = useState(props.state === 'current');
   const classes = useRowStyles();
   const actionCount = props.meeting.driveActivityIds.length + props.meeting.emailIds.length;
   const people = (props.meeting.attendees || [])
@@ -95,8 +100,8 @@ const Meeting = (props: {
       <TableRow
         className={clsx(
           classes.meeting,
-          isMeetingInFuture && classes.meetingInFuture,
-          isCurrent && classes.meetingCurrent,
+          props.state === 'upcomming' && classes.meetingInFuture,
+          props.state === 'current' && classes.meetingCurrent,
         )}
         hover
         onClick={() => setOpen(!isOpen)}
@@ -118,7 +123,7 @@ const Meeting = (props: {
           </Typography>
         </TableCell>
         <TableCell align="right" className={classes.avatarContainer}>
-          <Avatar className={classes.secondary}>{actionCount}</Avatar>
+          {actionCount > 0 && <Avatar className={classes.secondary}>{actionCount}</Avatar>}
         </TableCell>
         <TableCell align="right" className={classes.avatarContainer}>
           <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!isOpen)}>
@@ -182,7 +187,15 @@ const Meeting = (props: {
 };
 
 const Meetings = (props: IRouteProps) => {
-  const meetings = props.timeDataStore.getSegments();
+  const [isOpen, setOpen] = useState(false);
+  const currentMeetings = props.timeDataStore.getCurrentOrUpNextSegments();
+  const upcommingMeetings = props.timeDataStore.getUpcommingSegments(
+    currentMeetings[0] && currentMeetings[0].id,
+  );
+  const pastMeetings = props.timeDataStore.getPastSegments(
+    currentMeetings[0] && currentMeetings[0].id,
+  );
+
   const [seconds, setSeconds] = useState(0);
   const styles = panelStyles();
 
@@ -197,12 +210,47 @@ const Meetings = (props: IRouteProps) => {
   const currentTime = new Date();
   return (
     <Grid item xs={12} className={styles.panel}>
-      <Typography variant="h2" color="textPrimary" gutterBottom>
-        Meetings
-      </Typography>
+      <Grid container alignItems="flex-end">
+        <Grid item xs={6}>
+          <Typography variant="h2" color="textPrimary" gutterBottom>
+            Meetings
+          </Typography>
+        </Grid>
+        <Grid item xs={6} style={{ textAlign: 'right' }}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="small"
+            className={styles.topRightButton}
+            onClick={() => setOpen(!isOpen)}
+          >
+            {isOpen ? 'hide' : 'show'} {upcommingMeetings.length} upcomming meetings
+            {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </Button>
+        </Grid>
+      </Grid>
+      <Collapse in={isOpen} timeout="auto" unmountOnExit>
+        <Table size="small">
+          <TableBody>
+            {upcommingMeetings.map((meeting) => (
+              <Meeting
+                currentTime={currentTime}
+                key={meeting.id}
+                meeting={meeting}
+                handlePersonClick={props.handlePersonClick}
+                personStore={props.personDataStore}
+                docStore={props.docDataStore}
+                emailStore={props.emailStore}
+                driveActivityStore={props.driveActivityStore}
+                state="upcomming"
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </Collapse>
       <Table size="small">
         <TableBody>
-          {meetings.map((meeting) => (
+          {currentMeetings.map((meeting) => (
             <Meeting
               currentTime={currentTime}
               key={meeting.id}
@@ -212,6 +260,24 @@ const Meetings = (props: IRouteProps) => {
               docStore={props.docDataStore}
               emailStore={props.emailStore}
               driveActivityStore={props.driveActivityStore}
+              state="current"
+            />
+          ))}
+        </TableBody>
+      </Table>
+      <Table size="small">
+        <TableBody>
+          {pastMeetings.map((meeting) => (
+            <Meeting
+              currentTime={currentTime}
+              key={meeting.id}
+              meeting={meeting}
+              handlePersonClick={props.handlePersonClick}
+              personStore={props.personDataStore}
+              docStore={props.docDataStore}
+              emailStore={props.emailStore}
+              driveActivityStore={props.driveActivityStore}
+              state="past"
             />
           ))}
         </TableBody>
