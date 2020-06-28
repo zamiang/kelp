@@ -1,11 +1,13 @@
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import ListItemText from '@material-ui/core/ListItemText';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
+import {
+  Grid,
+  Link,
+  ListItemText,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@material-ui/core';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { format } from 'date-fns';
 import React from 'react';

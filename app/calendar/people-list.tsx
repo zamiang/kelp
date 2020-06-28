@@ -1,6 +1,4 @@
-import { Typography } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import Grid from '@material-ui/core/Grid';
+import { Avatar, Grid, Typography } from '@material-ui/core';
 import { sortBy } from 'lodash';
 import React from 'react';
 import { IPerson } from '../store/person-store';
