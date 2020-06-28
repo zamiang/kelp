@@ -27,7 +27,7 @@ const plugins = [
     patterns: [{ from: '../favicons', to: '' }],
   }),
   new HtmlWebpackPlugin({
-    title: 'Time',
+    title: 'Kelp',
     lang: 'en-US',
     appMountId: 'root',
     template: 'template.html',

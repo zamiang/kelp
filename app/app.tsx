@@ -10,8 +10,8 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import Copyright from './copyright';
-// import DashboardContainer from './dashboard-container';
-import DashboardContainer from './dashboard-fake-container';
+import DashboardContainer from './dashboard-container';
+// import DashboardContainer from './dashboard-fake-container';
 
 const bodyFontFamily = 'Arial, sans-serif;';
 
@@ -142,11 +142,11 @@ const App = () => {
                 src="https://www.collasso.me/images/designer_file_case.png"
                 className={classes.image}
               />
-              <Typography variant="h1">Time</Typography>
+              <Typography variant="h1">Kelp</Typography>
               <Typography variant="body2" className={classes.body}>
-                Time brings your data together in one place. Pivot your meetings by what documents
+                Kelp brings your data together in one place. Pivot your meetings by what documents
                 the attendees have edited recently. By associating person, a time slot and documents
-                together, Time infers associations between information, making the information
+                together, Kelp infers associations between information, making the information
                 easier to find. Prepare for your next meeting in a flash!
               </Typography>
               <Button
