@@ -69,7 +69,7 @@ const documents: IDoc[] = times(DOCUMENT_COUNT, () => ({
   description: Faker.lorem.lines(1),
   viewedByMe: true,
   link: Faker.internet.url(),
-  updatedAt: Faker.date.recent(1).toISOString(),
+  updatedAt: new Date(Faker.date.recent(1).toISOString()),
 }));
 
 /**

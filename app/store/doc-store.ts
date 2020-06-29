@@ -4,7 +4,7 @@ export interface IDoc {
   description?: string;
   viewedByMe?: boolean;
   link?: string;
-  updatedAt?: string;
+  updatedAt?: Date;
 }
 
 interface IDocById {
@@ -18,7 +18,7 @@ export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
   description: googleDoc.description,
   viewedByMe: googleDoc.viewedByMe,
   link: googleDoc.webViewLink,
-  updatedAt: googleDoc.modifiedTime,
+  updatedAt: googleDoc.modifiedTime ? new Date(googleDoc.modifiedTime) : undefined,
 });
 
 export default class DocDataStore {
