@@ -1,4 +1,4 @@
-import { Grid, Link, ListItem, Typography } from '@material-ui/core';
+import { Grid, ListItem, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -12,25 +12,58 @@ import { ISegment } from '../store/time-store';
 const useStyles = makeStyles((theme) => ({
   meeting: {
     background: 'transparent',
-    transition: 'background 0.3s',
-    paddingLeft: 0,
-    borderBottom: `1px solid ${theme.palette.primary.dark}`,
+    borderLeft: `2px solid ${theme.palette.secondary.main}`,
+    transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
+    opacity: 1,
+    marginBottom: theme.spacing(1),
+    paddingTop: theme.spacing(1),
+    paddingBottom: 0,
     '& > *': {
       borderBottom: 'unset',
     },
+    '&.MuiListItem-button:hover': {
+      opacity: 0.8,
+      borderColor: theme.palette.secondary.main,
+    },
+  },
+  meetingAccepted: {
+    borderColor: theme.palette.secondary.main,
+    '&.MuiListItem-button:hover': {
+      borderColor: theme.palette.secondary.main,
+    },
+  },
+  meetingTentative: {
+    borderColor: theme.palette.secondary.light,
+    '&.MuiListItem-button:hover': {
+      borderColor: theme.palette.secondary.light,
+    },
+  },
+  meetingDeclined: {
+    textDecoration: 'line-through',
+    borderColor: theme.palette.secondary.main,
+    '&.MuiListItem-button:hover': {
+      textDecoration: 'line-through',
+      borderColor: theme.palette.secondary.main,
+    },
+  },
+  meetingNeedsAction: {
+    borderColor: theme.palette.secondary.main,
+    '&.MuiListItem-button:hover': {
+      borderColor: theme.palette.secondary.main,
+    },
   },
   meetingSelected: {
-    background: theme.palette.background.paper,
+    borderColor: theme.palette.info.main,
+    background: 'rgba(0, 0, 0, 0.04)', // unsure where this comes from
+    '&.MuiListItem-button:hover': {
+      borderColor: theme.palette.info.main,
+    },
   },
   meetingCurrent: {
-    borderTop: `2px solid ${theme.palette.secondary.main}`,
+    // borderTop: `2px solid ${theme.palette.secondary.main}`,
   },
   meetingInFuture: {
     opacity: 0.7,
-  },
-  secondary: {
-    color: theme.palette.getContrastText(theme.palette.secondary.main),
-    backgroundColor: theme.palette.secondary.main,
   },
   avatarContainer: {
     width: 42,
@@ -61,19 +94,17 @@ const Meeting = (props: {
       button={true}
       className={clsx(
         classes.meeting,
-        props.meeting.state === 'upcoming' && classes.meetingInFuture,
-        props.meeting.state === 'current' && classes.meetingCurrent,
+        props.meeting.selfResponseStatus === 'accepted' && classes.meetingAccepted,
+        props.meeting.selfResponseStatus === 'tentative' && classes.meetingTentative,
+        props.meeting.selfResponseStatus === 'declined' && classes.meetingDeclined,
+        props.meeting.selfResponseStatus === 'needsAction' && classes.meetingNeedsAction,
         props.selectedMeetingId === props.meeting.id && classes.meetingSelected,
       )}
       onClick={() => props.setSelectedMeetingId(props.meeting.id)}
     >
       <Grid container spacing={2}>
         <Grid item style={{ flex: 1 }}>
-          <Typography variant="body1" style={{ fontWeight: 'bold' }}>
-            <Link color="textPrimary" target="_blank" href={props.meeting.link || ''}>
-              {props.meeting.summary || '(no title)'}
-            </Link>
-          </Typography>
+          <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
         </Grid>
         <Grid item className={classes.time}>
           <Typography variant="subtitle2" color="textPrimary">

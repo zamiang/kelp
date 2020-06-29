@@ -96,7 +96,7 @@ export default class TimeStore {
 
   getSegmentsByDay() {
     const segments = this.getSegments();
-    return groupBy(segments, (segment) => format(segment.start, 'd-MMM'));
+    return groupBy(segments, (segment) => format(segment.start, 'EEEE, MMM d'));
   }
 
   getupcomingSegments(filterOutSegmentId?: string) {

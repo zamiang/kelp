@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { drawerWidth } from '../dashboard';
 
 // TODO: Pull from theme?
 const TOP_BAR_HEIGHT = 64;
@@ -9,8 +10,10 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'auto',
     maxHeight: `calc(100vh - ${TOP_BAR_HEIGHT})px`,
     padding: theme.spacing(5),
-    background: theme.palette.secondary.light,
+    paddingRight: 0,
+    background: theme.palette.primary.light,
     position: 'relative',
+    width: `calc((100vw - ${drawerWidth}px) * 0.382)`,
   },
   topRightButton: {
     marginLeft: 'auto',
@@ -21,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   dockedPanel: {
-    width: '49vw',
-    top: TOP_BAR_HEIGHT,
+    width: `calc((100vw - ${drawerWidth}px) * 0.618)`,
+    // top: TOP_BAR_HEIGHT,
   },
 }));
 

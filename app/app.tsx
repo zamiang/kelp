@@ -1,6 +1,17 @@
-import { Box, Button, Container, CssBaseline, Paper, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
@@ -13,8 +24,9 @@ const bodyFontFamily = 'Arial, sans-serif;';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: '#EDF1F2' },
-    secondary: { main: '#7D58FE', light: '#F6F6FE' },
+    primary: { main: '#EDF1F2', light: '#F6F6FE' },
+    secondary: { main: '#7D58FE' },
+    info: { main: '#D6F9F5' },
   },
   typography: {
     fontFamily: "'Helvetica Neue', sans-serif;",
@@ -76,8 +88,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     color: theme.palette.text.hint,
   },
-  image: {
-    maxWidth: 210,
+  logoImage: {
+    width: 119,
+    marginLeft: -10,
+    marginRight: -8,
+  },
+  logoContainer: {
+    marginLeft: -86,
+  },
+  container: {
+    /* Modified from: https://dribbble.com/shots/2766518-Designer-s-Folder-illustration */
+    // backgroundImage: `url(${config.DOMAIN}/images/designer_file_case.png)`,
+    // backgroundSize: unset;
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
   },
 }));
 
@@ -126,19 +150,21 @@ const App = () => {
   const isLoggedIn = googleLoginState.accessToken.length > 0;
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.root}>
+      <div className={clsx(classes.root, !isLoggedIn && classes.container)}>
         <CssBaseline />
         {isLoggedIn ? (
           <DashboardContainer accessToken={googleLoginState.accessToken} />
         ) : (
           <Container component="main" maxWidth="sm">
             <Paper elevation={0} className={classes.centerPaper}>
-              {/* Modified from: https://dribbble.com/shots/2766518-Designer-s-Folder-illustration */}
-              <img
-                src={`${config.DOMAIN}/images/designer_file_case.png`}
-                className={classes.image}
-              />
-              <Typography variant="h1">Kelp</Typography>
+              <ListItem className={classes.logoContainer}>
+                <ListItemIcon>
+                  <img className={classes.logoImage} src={`${config.DOMAIN}/images/kelp.svg`} />
+                </ListItemIcon>
+                <ListItemText disableTypography={true}>
+                  <Typography variant="h1">KELP</Typography>
+                </ListItemText>
+              </ListItem>
               <Typography variant="body2" className={classes.body}>
                 Kelp brings your data together in one place. Pivot your meetings by what documents
                 the attendees have edited recently. By associating person, a time slot and documents

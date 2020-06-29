@@ -162,9 +162,10 @@ const listDriveFiles = async () => {
  * - "tentative" - The attendee has tentatively accepted the invitation.
  * - "accepted" - The attendee has accepted the invitation.
  */
-type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accpted';
+type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted';
 
-type attendee = {
+// todo move these
+export type attendee = {
   email?: string;
   responseStatus?: string;
   self?: boolean;
@@ -177,17 +178,17 @@ export interface ICalendarEvent {
   start: Date;
   end: Date;
   description?: string;
-  selfResponseStatus?: responseStatus;
+  selfResponseStatus: responseStatus | 'needsAction';
   attendees?: attendee[];
 }
 
-const getSelfResponseStatus = (attendees: attendee[]) => {
+export const getSelfResponseStatus = (attendees: attendee[]) => {
   for (const person of attendees) {
     if (person.self) {
       return person.responseStatus as responseStatus;
     }
   }
-  return undefined;
+  return 'needsAction';
 };
 
 const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) => any) => {
