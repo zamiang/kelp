@@ -12,7 +12,7 @@ interface IProps {
   personStore: PersonDataStore;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   person: {
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
