@@ -6,9 +6,8 @@ const TOP_BAR_HEIGHT = 64;
 
 const useStyles = makeStyles((theme) => ({
   panel: {
-    minHeight: '80vh',
     overflowX: 'auto',
-    maxHeight: `calc(100vh - ${TOP_BAR_HEIGHT})px`,
+    minHeight: '100vh',
     padding: theme.spacing(5),
     paddingRight: 0,
     background: theme.palette.primary.light,

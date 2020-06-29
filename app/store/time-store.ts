@@ -29,7 +29,7 @@ export default class TimeStore {
     this.segments.map((segment) => (this.segmentsById[segment.id] = segment));
   }
 
-  getSegmentById(id: string) {
+  getSegmentById(id: string): ISegment | undefined {
     return this.segmentsById[id];
   }
 

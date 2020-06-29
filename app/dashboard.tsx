@@ -34,7 +34,7 @@ export interface IProps {
 }
 
 export interface IRouteProps extends IProps {
-  handlePersonClick: (id: string) => void;
+  handlePersonClick: (id?: string) => void;
   routeId: string | null;
 }
 
@@ -62,7 +62,7 @@ const Dashboard = (props: IProps) => {
   };
 
   const handlePeopleClick = () => setRoute({ path: '/people', id: null });
-  const handlePersonClick = (id: string) => setRoute({ path: '/person', id });
+  const handlePersonClick = (id?: string) => id && setRoute({ path: '/person', id });
   const handleMeetingsClick = () => setRoute({ path: '/', id: null });
   const handleDocsClick = () => setRoute({ path: '/docs', id: null });
 

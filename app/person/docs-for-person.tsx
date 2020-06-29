@@ -22,15 +22,18 @@ const DocsForPerson = (props: IPersonProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{formatRelative(row.time, new Date())}</TableCell>
-              <TableCell>{row.title}</TableCell>
-              <TableCell align="right">
-                <Link href={row.link || ''}>Link</Link>
-              </TableCell>
-            </TableRow>
-          ))}
+          {rows.map(
+            (row) =>
+              row && (
+                <TableRow key={row.id}>
+                  <TableCell>{formatRelative(row.time, new Date())}</TableCell>
+                  <TableCell>{row.title}</TableCell>
+                  <TableCell align="right">
+                    <Link href={row.link || ''}>Link</Link>
+                  </TableCell>
+                </TableRow>
+              ),
+          )}
         </TableBody>
       </Table>
     </React.Fragment>

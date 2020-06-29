@@ -38,7 +38,7 @@ const ExpandedMeeting = (props: {
   docStore: DocDataStore;
   driveActivityStore: DriveActivityDataStore;
   emailStore: EmailDataStore;
-  handlePersonClick: (email: string) => void;
+  handlePersonClick: (email?: string) => void;
 }) => {
   const classes = useStyles();
   const people = (props.meeting.attendees || []).filter((person) => person.email);

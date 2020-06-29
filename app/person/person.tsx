@@ -20,6 +20,9 @@ const Person = (props: IRouteProps) => {
   const classes = useStyles();
   const person = props.personDataStore.getPersonByEmail(props.routeId!);
   const panelClasses = panelStyles();
+  if (!person) {
+    return null;
+  }
   return (
     <Grid item xs={12} className={panelClasses.panel}>
       <Box flexDirection="row" alignItems="flex-start" display="flex">

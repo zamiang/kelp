@@ -115,7 +115,7 @@ export default class PersonDataStore {
     return Object.values(this.personByEmail);
   }
 
-  getPersonByEmail(email: string) {
+  getPersonByEmail(email: string): IPerson | undefined {
     return this.personByEmail[email];
   }
 

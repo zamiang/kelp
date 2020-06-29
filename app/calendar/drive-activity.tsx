@@ -62,7 +62,7 @@ const DriveActivityList = (props: {
   const classes = useRowStyles();
   const driveActivity = props.driveActivityIds.map((id) => props.driveActivityStore.getById(id));
   const actions = uniqBy(
-    driveActivity.filter((action) => action.link),
+    driveActivity.filter((action) => action && action.link),
     'link',
   );
   if (actions.length < 1) {
@@ -73,8 +73,8 @@ const DriveActivityList = (props: {
       <div>
         {actions.map((action) => (
           <Activity
-            key={action.id}
-            activity={action}
+            key={action!.id}
+            activity={action!}
             personStore={props.personStore}
             docStore={props.docStore}
             classes={classes}

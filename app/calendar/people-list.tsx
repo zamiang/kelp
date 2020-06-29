@@ -42,6 +42,9 @@ const PeopleRow = (props: IProps) => {
     <React.Fragment>
       {orderBy(props.attendees || [], 'responseStatus').map((attendee) => {
         const person = props.personStore.getPersonByEmail(attendee.email!);
+        if (!person) {
+          return null;
+        }
         return (
           <ListItem
             button={true}

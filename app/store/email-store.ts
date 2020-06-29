@@ -23,7 +23,7 @@ export default class EmailDataStore {
     return Object.values(this.emailById).filter((email) => email.threadId === threadId);
   }
 
-  getById(emailId: string) {
+  getById(emailId: string): formattedEmail | undefined {
     return this.emailById[emailId];
   }
 

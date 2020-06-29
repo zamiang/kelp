@@ -22,6 +22,9 @@ const Activity = (props: {
   docStore: DocDataStore;
 }) => {
   const doc = props.docStore.getByLink(props.activity.link!);
+  if (!doc) {
+    return null;
+  }
   return (
     <TableRow hover>
       <TableCell style={{ width: 40, paddingRight: 16 }}>
@@ -49,7 +52,7 @@ const DriveActivityList = (props: {
 }) => {
   const driveActivity = props.driveActivityIds.map((id) => props.driveActivityStore.getById(id));
   const actions = uniqBy(
-    driveActivity.filter((action) => action.link),
+    driveActivity.filter((action) => action && action.link),
     'link',
   );
   if (actions.length < 1) {
@@ -60,8 +63,8 @@ const DriveActivityList = (props: {
       <TableBody>
         {actions.map((action) => (
           <Activity
-            key={action.id}
-            activity={action}
+            key={action!.id}
+            activity={action!}
             personStore={props.personStore}
             docStore={props.docStore}
           />

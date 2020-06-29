@@ -20,8 +20,7 @@ export default class DriveActivityDataStore {
     });
   }
 
-  getById(id: string) {
-    console.log('working', id);
+  getById(id: string): IFormattedDriveActivity | undefined {
     return this.driveActivityById[id];
   }
 
