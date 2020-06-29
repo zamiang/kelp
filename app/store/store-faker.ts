@@ -1,7 +1,7 @@
 import { addMinutes, subMinutes } from 'date-fns';
 import Faker from 'faker';
 import { random, sample, times } from 'lodash';
-import { IFormattedDriveActivity } from '../fetch/fetch-first';
+import { IFormattedDriveActivity, getSelfResponseStatus } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
 import { IDoc } from './doc-store';
 import { IPerson } from './person-store';
@@ -11,6 +11,7 @@ const PEOPLE_COUNT = 10;
 const EMAIL_THREAD_COUNT = 10;
 const EMAIL_COUNT = 50;
 const DOCUMENT_COUNT = 10;
+const CURRENT_USER_EMAIL = 'brennanmoore@gmail.com';
 
 /**
  * create name/email pairs to be used across the fake data
@@ -28,6 +29,17 @@ times(PEOPLE_COUNT, () => {
     driveActivityIds: [],
     segmentIds: [],
   });
+});
+
+// add current user
+people.push({
+  id: CURRENT_USER_EMAIL,
+  emailAddress: CURRENT_USER_EMAIL,
+  name: 'current user',
+  imageUrl: Faker.image.avatar(),
+  emailIds: [],
+  driveActivityIds: [],
+  segmentIds: [],
 });
 
 /**
@@ -84,6 +96,13 @@ documents.map((document) => {
 let startDate = addMinutes(new Date(), 300);
 const segments: ISegment[] = times(24, () => {
   startDate = subMinutes(startDate, 30);
+
+  const attendees = people.map((person) => ({
+    email: person.emailAddress,
+    self: person.emailAddress === CURRENT_USER_EMAIL,
+    responseStatus: sample<any>(['needsAction', 'declined', 'tentative', 'accepted']),
+  }));
+
   return {
     id: Faker.random.uuid(),
     link: Faker.internet.url(),
@@ -91,10 +110,8 @@ const segments: ISegment[] = times(24, () => {
     description: Faker.lorem.paragraphs(3),
     start: startDate,
     end: addMinutes(startDate, 30),
-    attendees: people.map((person) => ({
-      email: person.emailAddress,
-      self: false,
-    })),
+    attendees,
+    selfResponseStatus: getSelfResponseStatus(attendees),
     state: sample<any>(['current', 'upcoming', 'past']),
     driveActivityIds: [],
     emailIds: [],

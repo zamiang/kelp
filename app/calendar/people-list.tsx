@@ -1,30 +1,78 @@
-import { Avatar, Grid, Typography } from '@material-ui/core';
-import { sortBy } from 'lodash';
+import { Avatar, Grid, ListItem, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { orderBy } from 'lodash';
 import React from 'react';
-import { IPerson } from '../store/person-store';
+import { attendee } from '../fetch/fetch-first';
+import PersonDataStore from '../store/person-store';
 
 interface IProps {
   handlePersonClick: (id: string) => void;
-  people?: IPerson[] | null;
+  attendees?: attendee[] | null;
+  personStore: PersonDataStore;
 }
 
-const PeopleRow = (people: IPerson[], handlePersonClick: (id: string) => void) =>
-  people.map((person) => (
-    <Grid item xs={12} key={person.id} onClick={() => handlePersonClick(person.emailAddress)}>
-      <Grid container alignItems="center">
-        <Grid item xs={2}>
-          <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>
-            {(person.name || person.id)[0]}
-          </Avatar>
-        </Grid>
-        <Grid item xs zeroMinWidth>
-          <Typography variant="subtitle2" noWrap>
-            {person.name || person.id}
-          </Typography>
-        </Grid>
-      </Grid>
-    </Grid>
-  ));
+const useStyles = makeStyles(() => ({
+  person: {
+    transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
+    opacity: 1,
+    '& > *': {
+      borderBottom: 'unset',
+    },
+    '&.MuiListItem-button:hover': {
+      opacity: 0.8,
+    },
+  },
+  personAccepted: {},
+  personTentative: {
+    opacity: 0.8,
+  },
+  personDeclined: {
+    textDecoration: 'line-through',
+    '&.MuiListItem-button:hover': {
+      textDecoration: 'line-through',
+    },
+  },
+  personNeedsAction: {},
+}));
+
+const PeopleRow = (props: IProps) => {
+  const classes = useStyles();
+  return (
+    <React.Fragment>
+      {orderBy(props.attendees || [], 'responseStatus').map((attendee) => {
+        const person = props.personStore.getPersonByEmail(attendee.email!);
+        return (
+          <ListItem
+            button={true}
+            key={person.id}
+            onClick={() => props.handlePersonClick(person.emailAddress)}
+            className={clsx(
+              classes.person,
+              attendee.responseStatus === 'accepted' && classes.personAccepted,
+              attendee.responseStatus === 'tentative' && classes.personTentative,
+              attendee.responseStatus === 'declined' && classes.personDeclined,
+              attendee.responseStatus === 'needsAction' && classes.personNeedsAction,
+            )}
+          >
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>
+                  {(person.name || person.id)[0]}
+                </Avatar>
+              </Grid>
+              <Grid item>
+                <Typography variant="subtitle2" noWrap>
+                  {person.name || person.id}
+                </Typography>
+              </Grid>
+            </Grid>
+          </ListItem>
+        );
+      })}
+    </React.Fragment>
+  );
+};
 
 /**
 const PeopleGrid = (people: IPerson[], handlePersonClick: (id: string) => void) =>
@@ -36,7 +84,7 @@ const PeopleGrid = (people: IPerson[], handlePersonClick: (id: string) => void) 
  */
 const PeopleList = (props: IProps) => (
   <Grid container spacing={2}>
-    {PeopleRow(props.people ? sortBy(props.people, 'name') : [], props.handlePersonClick)}
+    <PeopleRow {...props} />
   </Grid>
 );
 

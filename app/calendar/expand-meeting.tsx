@@ -1,5 +1,6 @@
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { format } from 'date-fns';
 import React from 'react';
 import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
@@ -19,8 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {
     borderBottom: `2px solid ${theme.palette.secondary.main}`,
-    marginBottom: 15,
+    marginBottom: theme.spacing(2),
     display: 'inline-block',
+    marginLeft: theme.spacing(1),
   },
   smallHeading: {
     marginTop: theme.spacing(3),
@@ -39,20 +41,30 @@ const ExpandedMeeting = (props: {
   handlePersonClick: (email: string) => void;
 }) => {
   const classes = useStyles();
-  const people = (props.meeting.attendees || [])
-    .filter((person) => person.email)
-    .map((person) => props.personStore.getPersonByEmail(person.email!));
+  const people = (props.meeting.attendees || []).filter((person) => person.email);
   const hasPeople = people.length > 0;
   const hasEmails = props.meeting.emailIds.length > 0;
   const hasDescription = props.meeting.description && props.meeting.description.length > 0;
   const hasDriveActivity = props.meeting.driveActivityIds.length > 0;
   return (
     <div className={classes.container}>
+      {props.meeting.link && (
+        <Link color="secondary" target="_blank" href={props.meeting.link}>
+          See in Google Calendar
+        </Link>
+      )}
       <Typography variant="h3" color="textPrimary" gutterBottom>
         {props.meeting.summary || '(no title)'}
       </Typography>
-      <Grid container spacing={6}>
-        <Grid item xs={8}>
+      <Typography variant="subtitle2" gutterBottom>
+        <i>
+          {format(props.meeting.start, 'EEEE, MMMM d')} ⋅ {format(props.meeting.start, 'p')}
+          {' – '}
+          {format(props.meeting.end, 'p')}
+        </i>
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={7}>
           {hasDescription && <Typography variant="body2">{props.meeting.description!}</Typography>}
           {hasEmails && (
             <React.Fragment>
@@ -82,11 +94,15 @@ const ExpandedMeeting = (props: {
           )}
         </Grid>
         {hasPeople && (
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <Typography variant="h6" className={classes.heading}>
               Guests
             </Typography>
-            <PeopleList people={people} handlePersonClick={props.handlePersonClick} />
+            <PeopleList
+              personStore={props.personStore}
+              attendees={people}
+              handlePersonClick={props.handlePersonClick}
+            />
           </Grid>
         )}
       </Grid>

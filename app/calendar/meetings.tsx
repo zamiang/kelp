@@ -1,4 +1,4 @@
-import { Avatar, Drawer, Grid, Typography } from '@material-ui/core';
+import { Drawer, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { IRouteProps } from '../dashboard';
@@ -8,13 +8,13 @@ import Meeting from './meeting';
 
 const useStyles = makeStyles((theme) => ({
   day: {
-    color: theme.palette.getContrastText(theme.palette.secondary.main),
-    backgroundColor: theme.palette.secondary.main,
-    fontSize: theme.typography.body1.fontSize,
+    fontSize: theme.typography.body2.fontSize,
+    textTransform: 'uppercase',
+    marginBottom: theme.spacing(2),
+    marginLeft: -theme.spacing(2),
+    borderBottom: `1px solid ${theme.palette.primary.dark}`,
   },
-  month: { textTransform: 'uppercase', paddingTop: 2, textAlign: 'center', display: 'block' },
   meetingRow: {
-    borderTop: `1px solid ${theme.palette.primary.dark}`,
     marginBottom: theme.spacing(4),
   },
 }));
@@ -31,30 +31,23 @@ const MeetingsByDay = (
   return (
     <React.Fragment>
       {Object.keys(meetingsByDay).map((day) => (
-        <Grid container key={day} spacing={2} className={classes.meetingRow}>
-          <Grid item>
-            <Avatar className={classes.day}>{day.split('-')[0]}</Avatar>
-            <Typography className={classes.month} variant="caption">
-              {day.split('-')[1]}
-            </Typography>
-          </Grid>
-          <Grid item style={{ flex: 1 }}>
-            {meetingsByDay[day].map((meeting) => (
-              <Meeting
-                currentTime={currentTime}
-                key={meeting.id}
-                meeting={meeting}
-                handlePersonClick={props.handlePersonClick}
-                personStore={props.personDataStore}
-                docStore={props.docDataStore}
-                emailStore={props.emailStore}
-                driveActivityStore={props.driveActivityStore}
-                setSelectedMeetingId={props.setSelectedMeetingId}
-                selectedMeetingId={props.selectedMeetingId}
-              />
-            ))}
-          </Grid>
-        </Grid>
+        <div key={day} className={classes.meetingRow}>
+          <Typography className={classes.day}>{day}</Typography>
+          {meetingsByDay[day].map((meeting) => (
+            <Meeting
+              currentTime={currentTime}
+              key={meeting.id}
+              meeting={meeting}
+              handlePersonClick={props.handlePersonClick}
+              personStore={props.personDataStore}
+              docStore={props.docDataStore}
+              emailStore={props.emailStore}
+              driveActivityStore={props.driveActivityStore}
+              setSelectedMeetingId={props.setSelectedMeetingId}
+              selectedMeetingId={props.selectedMeetingId}
+            />
+          ))}
+        </div>
       ))}
     </React.Fragment>
   );
@@ -78,17 +71,13 @@ const Meetings = (props: IRouteProps) => {
 
   return (
     <React.Fragment>
-      <Grid item xs={12} className={styles.panel}>
-        <Grid container spacing={0}>
-          <Grid item xs={5}>
-            <MeetingsByDay
-              selectedMeetingId={selectedMeetingId}
-              setSelectedMeetingId={setSelectedMeetingId}
-              {...props}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
+      <div className={styles.panel}>
+        <MeetingsByDay
+          selectedMeetingId={selectedMeetingId}
+          setSelectedMeetingId={setSelectedMeetingId}
+          {...props}
+        />
+      </div>
       <Drawer
         open={selectedMeetingId ? true : false}
         classes={{

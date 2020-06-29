@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Meetings from './calendar/meetings';
 import DocumentList from './docs/document-list';
 import LeftDrawer from './nav/left-drawer';
-import TopBar from './nav/top-bar';
+// import TopBar from './nav/top-bar';
 import People from './person/people';
 import Person from './person/person';
 import DocDataStore from './store/doc-store';
@@ -73,10 +73,10 @@ const Dashboard = (props: IProps) => {
     routeId: currentRoute.id,
     handlePersonClick,
   });
-
+  // <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} /> --!>
+  // add above route component <div className={classes.appBarSpacer} />
   return (
     <React.Fragment>
-      <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} />
       <LeftDrawer
         lastUpdated={props.lastUpdated}
         handleDocsClick={handleDocsClick}
@@ -92,10 +92,7 @@ const Dashboard = (props: IProps) => {
         handleRefreshClick={handleRefreshClick}
         currentRoute={currentRoute.path}
       />
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        {routeComponent}
-      </main>
+      <main className={classes.content}>{routeComponent}</main>
     </React.Fragment>
   );
 };
