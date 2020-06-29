@@ -35,17 +35,16 @@ const Activity = (props: {
 }) => {
   const doc = props.docStore.getByLink(props.activity.link!);
   return (
-    <Grid container wrap="nowrap" spacing={3} alignItems="center">
+    <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item>
         <InsertDriveFileIcon className={props.classes.icon} />
       </Grid>
-      <Grid item xs={7} zeroMinWidth>
+      <Grid item zeroMinWidth>
         <Link color="textPrimary" target="_blank" href={doc.link || ''} noWrap>
           {doc.name}
         </Link>
-      </Grid>
-      <Grid item xs={4} style={{ textAlign: 'right' }}>
-        <Typography variant="caption" color="textSecondary" align="right">
+        <br />
+        <Typography variant="caption" color="textSecondary">
           {formatDistanceToNow(new Date(doc.updatedAt!))} ago
         </Typography>
       </Grid>

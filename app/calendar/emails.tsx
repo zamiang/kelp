@@ -34,20 +34,24 @@ const Email = (props: {
   const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
   const person = props.personStore.getPersonByEmail(props.email.from || '');
   return (
-    <Grid container wrap="nowrap" spacing={3} alignItems="center">
+    <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item onClick={() => props.handlePersonClick(person && person.emailAddress)}>
         <Avatar style={{ height: 32, width: 32 }} src={person.imageUrl || ''}>
           {props.personStore.getPersonDisplayName(person)[0]}
         </Avatar>
       </Grid>
-      <Grid item xs={3} onClick={() => props.handlePersonClick(person && person.emailAddress)}>
-        <Typography variant="body2">{props.personStore.getPersonDisplayName(person)}</Typography>
-      </Grid>
-      <Grid item xs={8} zeroMinWidth>
+      <Grid item zeroMinWidth>
         <Typography variant="body2" noWrap>
           <Link color="textPrimary" target="_blank" href={emailLink}>
             <b>{props.email.subject}</b> {props.email.snippet}
           </Link>
+        </Typography>
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          onClick={() => props.handlePersonClick(person && person.emailAddress)}
+        >
+          {props.personStore.getPersonDisplayName(person)}
         </Typography>
       </Grid>
     </Grid>
