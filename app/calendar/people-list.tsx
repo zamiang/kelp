@@ -61,7 +61,7 @@ const PeopleRow = (props: IProps) => {
                   {(person.name || person.id)[0]}
                 </Avatar>
               </Grid>
-              <Grid item>
+              <Grid item wrap="nowrap" xs={10}>
                 <Typography variant="subtitle2" noWrap>
                   {person.name || person.id}
                 </Typography>

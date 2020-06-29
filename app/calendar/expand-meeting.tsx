@@ -65,7 +65,13 @@ const ExpandedMeeting = (props: {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={7}>
-          {hasDescription && <Typography variant="body2">{props.meeting.description!}</Typography>}
+          {hasDescription && (
+            <Typography
+              variant="body2"
+              style={{ wordWrap: 'break-word' }}
+              dangerouslySetInnerHTML={{ __html: props.meeting.description! }}
+            />
+          )}
           {hasEmails && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

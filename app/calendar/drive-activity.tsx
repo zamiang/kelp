@@ -34,6 +34,7 @@ const Activity = (props: {
   classes: classesType;
 }) => {
   const doc = props.docStore.getByLink(props.activity.link!);
+  if (!doc) return null;
   return (
     <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item>

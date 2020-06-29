@@ -4,7 +4,7 @@ import { uniqBy } from 'lodash';
 import React from 'react';
 import { formattedEmail } from '../fetch/fetch-second';
 import EmailDataStore from '../store/email-store';
-import PersonDataStore from '../store/person-store';
+import PersonDataStore, { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
 const useRowStyles = makeStyles(() => ({
@@ -32,11 +32,11 @@ const Email = (props: {
   handlePersonClick: (email: string) => void;
 }) => {
   const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
-  const person = props.personStore.getPersonByEmail(props.email.from || '');
+  const person: IPerson | undefined = props.personStore.getPersonByEmail(props.email.from || '');
   return (
     <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item onClick={() => props.handlePersonClick(person && person.emailAddress)}>
-        <Avatar style={{ height: 32, width: 32 }} src={person.imageUrl || ''}>
+        <Avatar style={{ height: 32, width: 32 }} src={(person && person.imageUrl) || ''}>
           {props.personStore.getPersonDisplayName(person)[0]}
         </Avatar>
       </Grid>
