@@ -11,11 +11,11 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import React from 'react';
+import config from '../config';
 import { drawerWidth } from '../dashboard';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
@@ -57,6 +57,11 @@ const useStyles = makeStyles((theme) => ({
   },
   date: {
     color: theme.palette.text.hint,
+  },
+  logoImage: {
+    width: 93,
+    marginLeft: -28,
+    marginRight: -12,
   },
   spacer: { margin: theme.spacing(2) },
   selected: { color: theme.palette.text.primary },
@@ -107,10 +112,10 @@ const LeftDrawer = (props: IProps) => {
       <List>
         <ListItem>
           <ListItemIcon>
-            <EqualizerIcon color="secondary" />
+            <img className={classes.logoImage} src={`${config.DOMAIN}/images/kelp.svg`} />
           </ListItemIcon>
           <Typography variant="h4" className={classes.logo}>
-            Time
+            Kelp
           </Typography>
         </ListItem>
       </List>

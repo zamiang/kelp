@@ -1,15 +1,15 @@
 module.exports = {
   presets: [
     [
-      "@babel/env",
+      '@babel/env',
       {
         targets: {
-          browsers: ["last 2 Chrome versions"],
+          browsers: ['last 2 Chrome versions'],
         },
       },
     ],
-    "@babel/preset-typescript",
-    "@babel/preset-react",
+    '@babel/preset-typescript',
+    '@babel/preset-react',
   ],
-  plugins: ["lodash"],
+  plugins: ['lodash', 'date-fns'],
 };

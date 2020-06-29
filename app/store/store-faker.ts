@@ -1,6 +1,6 @@
 import { addMinutes, subMinutes } from 'date-fns';
 import Faker from 'faker';
-import { random, times } from 'lodash';
+import { random, sample, times } from 'lodash';
 import { IFormattedDriveActivity } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
 import { IDoc } from './doc-store';
@@ -95,6 +95,7 @@ const segments: ISegment[] = times(24, () => {
       email: person.emailAddress,
       self: false,
     })),
+    state: sample<any>(['current', 'upcoming', 'past']),
     driveActivityIds: [],
     emailIds: [],
   };

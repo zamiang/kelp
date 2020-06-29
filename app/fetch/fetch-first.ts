@@ -155,6 +155,21 @@ const listDriveFiles = async () => {
     : [];
 };
 
+/**
+ * The attendee's response status. Possible values are:
+ * - "needsAction" - The attendee has not responded to the invitation.
+ * - "declined" - The attendee has declined the invitation.
+ * - "tentative" - The attendee has tentatively accepted the invitation.
+ * - "accepted" - The attendee has accepted the invitation.
+ */
+type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accpted';
+
+type attendee = {
+  email?: string;
+  responseStatus?: string;
+  self?: boolean;
+};
+
 export interface ICalendarEvent {
   id: string;
   link?: string;
@@ -162,12 +177,18 @@ export interface ICalendarEvent {
   start: Date;
   end: Date;
   description?: string;
-  attendees?: {
-    email?: string;
-    responseStatus?: string;
-    self?: boolean;
-  }[];
+  selfResponseStatus?: responseStatus;
+  attendees?: attendee[];
 }
+
+const getSelfResponseStatus = (attendees: attendee[]) => {
+  for (const person of attendees) {
+    if (person.self) {
+      return person.responseStatus as responseStatus;
+    }
+  }
+  return undefined;
+};
 
 const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) => any) => {
   const calendarResponse = await gapi.client.calendar.events.list({
@@ -206,6 +227,8 @@ const listCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) =
         summary: event.summary,
         start: new Date(event.start!.dateTime!),
         end: new Date(event.end!.dateTime!),
+        // TODO: Handle lack of enum type in the google calendar library
+        selfResponseStatus: getSelfResponseStatus(event.attendees || []),
         attendees: event.attendees,
         description: event.description,
       })),

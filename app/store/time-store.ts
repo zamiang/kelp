@@ -1,10 +1,14 @@
-import { isAfter, isBefore } from 'date-fns';
+import { format, isAfter, isBefore } from 'date-fns';
+import { groupBy } from 'lodash';
 import { ICalendarEvent, IFormattedDriveActivity } from '../fetch/fetch-first';
 import { formattedEmail } from '../fetch/fetch-second';
+
+type SegmentState = 'current' | 'upcoming' | 'past';
 
 export interface ISegment extends ICalendarEvent {
   driveActivityIds: string[];
   emailIds: string[];
+  state: SegmentState;
 }
 
 interface ISegmentsByID {
@@ -36,7 +40,17 @@ export default class TimeStore {
         ...event,
         emailIds: [],
         driveActivityIds: [],
+        state: this.getStateForMeeting(event),
       }));
+  }
+
+  getStateForMeeting(event: ICalendarEvent): SegmentState {
+    const currentTime = new Date();
+    if (event.end > currentTime && event.start < currentTime) {
+      return 'current';
+    } else if (event.end > currentTime) {
+      return 'upcoming';
+    } else return 'past';
   }
 
   addEmailsToStore(emails: formattedEmail[]) {
@@ -78,6 +92,11 @@ export default class TimeStore {
         return a.start < b.start ? -1 : 1;
       }
     });
+  }
+
+  getSegmentsByDay() {
+    const segments = this.getSegments();
+    return groupBy(segments, (segment) => format(segment.start, 'd-MMM'));
   }
 
   getupcomingSegments(filterOutSegmentId?: string) {

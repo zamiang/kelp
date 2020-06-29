@@ -41,7 +41,7 @@ const plugins = [
 if (isProduction) {
   plugins.push(
     new S3Plugin({
-      include: [/.*\.(css|js|html)/],
+      include: [/.*\.(css|js|html|svg|png)/],
       s3Options: {
         accessKeyId: secrets.awsAccessKeyId,
         secretAccessKey: secrets.awsSecretAccessKey,

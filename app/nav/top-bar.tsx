@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: 'white',
     zIndex: theme.zIndex.drawer + 1,
+    borderBottom: `1px solid ${theme.palette.primary.light}`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

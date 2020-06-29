@@ -46,7 +46,7 @@ const Activity = (props: {
       </Grid>
       <Grid item xs={4} style={{ textAlign: 'right' }}>
         <Typography variant="caption" color="textSecondary" align="right">
-          updated {formatDistanceToNow(new Date(doc.updatedAt!))} ago
+          {formatDistanceToNow(new Date(doc.updatedAt!))} ago
         </Typography>
       </Grid>
     </Grid>

@@ -4,9 +4,10 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
+import config from './config';
 import Copyright from './copyright';
-import DashboardContainer from './dashboard-container';
-// import DashboardContainer from './dashboard-fake-container';
+// import DashboardContainer from './dashboard-container';
+import DashboardContainer from './dashboard-fake-container';
 
 const bodyFontFamily = 'Arial, sans-serif;';
 
@@ -134,7 +135,7 @@ const App = () => {
             <Paper elevation={0} className={classes.centerPaper}>
               {/* Modified from: https://dribbble.com/shots/2766518-Designer-s-Folder-illustration */}
               <img
-                src="https://www.collasso.me/images/designer_file_case.png"
+                src={`${config.DOMAIN}/images/designer_file_case.png`}
                 className={classes.image}
               />
               <Typography variant="h1">Kelp</Typography>
