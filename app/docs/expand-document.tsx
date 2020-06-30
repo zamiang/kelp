@@ -37,6 +37,7 @@ const ExpandedDocument = (props: {
   handlePersonClick: (email?: string) => void;
 }) => {
   const classes = useStyles();
+  // const activity = props.driveActivityStore.getDriveActivityForDocument(props.document.link || '');
   return (
     <div className={classes.container}>
       {props.document.link && (

@@ -56,8 +56,8 @@ const emails: formattedEmail[] = times(EMAIL_COUNT, () => ({
   threadId: threadIds[random(0, EMAIL_THREAD_COUNT - 1)],
   date: Faker.date.recent(1),
   subject: Faker.lorem.lines(1),
-  from: people[random(0, PEOPLE_COUNT - 1)].emailAddress,
-  to: [people[random(0, PEOPLE_COUNT - 1)].emailAddress],
+  from: sample(people)!.emailAddress,
+  to: [sample(people)!.emailAddress],
 }));
 
 /**
@@ -84,7 +84,7 @@ documents.map((document) => {
       action: 'comment', // TODO
       actorPersonId: people[random(0, PEOPLE_COUNT - 1)].emailAddress, // TODO use person id
       title: Faker.lorem.lines(1),
-      link: document.id, // document.link,
+      link: document.id,
     });
   });
 });
