@@ -17,7 +17,7 @@ export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
   name: googleDoc.name,
   description: googleDoc.description,
   viewedByMe: googleDoc.viewedByMe,
-  link: googleDoc.webViewLink,
+  link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
   updatedAt: googleDoc.modifiedTime ? new Date(googleDoc.modifiedTime) : undefined,
 });
 

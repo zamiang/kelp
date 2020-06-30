@@ -1,7 +1,9 @@
 import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
+import { uniqBy } from 'lodash';
 import React from 'react';
+import PeopleList from '../shared/people-list';
 import DocDataStore, { IDoc } from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import EmailDataStore from '../store/email-store';
@@ -37,7 +39,13 @@ const ExpandedDocument = (props: {
   handlePersonClick: (email?: string) => void;
 }) => {
   const classes = useStyles();
-  // const activity = props.driveActivityStore.getDriveActivityForDocument(props.document.link || '');
+  const activity =
+    props.driveActivityStore.getDriveActivityForDocument(props.document.link || '') || [];
+  const people = uniqBy(activity, 'actorPersonId')
+    .filter((activity) => activity.actorPersonId)
+    .map((activity) => ({
+      email: props.personStore.getPersonByPeopleId(activity.actorPersonId!).emailAddress,
+    }));
   return (
     <div className={classes.container}>
       {props.document.link && (
@@ -61,6 +69,18 @@ const ExpandedDocument = (props: {
               style={{ wordWrap: 'break-word' }}
               dangerouslySetInnerHTML={{ __html: props.document.description }}
             />
+          )}
+          {people.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                People
+              </Typography>
+              <PeopleList
+                handlePersonClick={props.handlePersonClick}
+                attendees={people}
+                personStore={props.personStore}
+              />
+            </React.Fragment>
           )}
         </Grid>
       </Grid>

@@ -3,12 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import React from 'react';
-import { attendee } from '../fetch/fetch-first';
+import { attendee as attendeeType } from '../fetch/fetch-first';
 import PersonDataStore from '../store/person-store';
 
 interface IProps {
   handlePersonClick: (id: string) => void;
-  attendees?: attendee[] | null;
+  attendees?: attendeeType[] | null;
   personStore: PersonDataStore;
 }
 
@@ -40,7 +40,7 @@ const PeopleRow = (props: IProps) => {
   const classes = useStyles();
   return (
     <React.Fragment>
-      {orderBy(props.attendees || [], 'responseStatus').map((attendee) => {
+      {orderBy(props.attendees || [], 'responseStatus').map((attendee: attendeeType) => {
         const person = props.personStore.getPersonByEmail(attendee.email!);
         if (!person) {
           return null;

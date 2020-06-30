@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: 1,
     marginBottom: theme.spacing(1),
     paddingTop: theme.spacing(1),
-    paddingBottom: 0,
+    paddingBottom: theme.spacing(1),
     '& > *': {
       borderBottom: 'unset',
     },
@@ -50,7 +50,7 @@ const PersonRow = (
         classes.person,
         props.selectedPersonId === props.person.id && classes.personSelected,
       )}
-      onClick={() => props.setSelectedPersonId(props.person.id)}
+      onClick={() => props.setSelectedPersonId(props.person.emailAddress)}
     >
       <ListItemIcon>
         {props.person.imageUrl ? (
@@ -73,7 +73,6 @@ const People = (props: IRouteProps) => {
   const selectedPerson = selectedPersonId
     ? props.personDataStore.getPersonByEmail(selectedPersonId)
     : null;
-
   return (
     <React.Fragment>
       <div className={styles.panel}>

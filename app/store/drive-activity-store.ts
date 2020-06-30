@@ -23,7 +23,6 @@ export default class DriveActivityDataStore {
   addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
     driveActivity.forEach((driveActivityItem) => {
       this.driveActivityById[driveActivityItem.id] = driveActivityItem;
-      console.log(driveActivityItem);
       if (driveActivityItem.link) {
         if (this.driveActivityByDocumentId[driveActivityItem.link]) {
           this.driveActivityByDocumentId[driveActivityItem.link].push(driveActivityItem);
