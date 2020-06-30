@@ -38,21 +38,25 @@ const Person = (props: IRouteProps & { person: IPerson }) => {
         <Avatar className={classes.avatar} src={props.person.imageUrl || ''}>
           {(props.person.name || props.person.id)[0]}
         </Avatar>
-        <Typography className={classes.title} variant="h3" color="textPrimary" gutterBottom>
+        <Typography className={classes.title} variant="h3" color="textPrimary" gutterBottom noWrap>
           {props.personDataStore.getPersonDisplayName(props.person)}
         </Typography>
       </Box>
       <Grid container spacing={3}>
         <Grid item xs={7}>
-          <Typography variant="h6" className={classes.smallHeading}>
-            Active Documents
-          </Typography>
-          <DriveActivity
-            driveActivityIds={props.person.driveActivityIds}
-            driveActivityStore={props.driveActivityStore}
-            personStore={props.personDataStore}
-            docStore={props.docDataStore}
-          />
+          {props.person.driveActivityIds.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Active Documents
+              </Typography>
+              <DriveActivity
+                driveActivityIds={props.person.driveActivityIds}
+                driveActivityStore={props.driveActivityStore}
+                personStore={props.personDataStore}
+                docStore={props.docDataStore}
+              />
+            </React.Fragment>
+          )}
         </Grid>
       </Grid>
     </div>
