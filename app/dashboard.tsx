@@ -5,7 +5,6 @@ import DocumentList from './docs/document-list';
 import LeftDrawer from './nav/left-drawer';
 // import TopBar from './nav/top-bar';
 import People from './person/people';
-import Person from './person/person';
 import DocDataStore from './store/doc-store';
 import DriveActivityDataStore from './store/drive-activity-store';
 import EmailDataStore from './store/email-store';
@@ -41,12 +40,11 @@ export interface IRouteProps extends IProps {
 const routes = {
   '/': (props: IRouteProps) => <Meetings {...props} />,
   '/docs': (props: IRouteProps) => <DocumentList {...props} />,
-  '/person': (props: IRouteProps) => <Person {...props} />,
   '/people': (props: IRouteProps) => <People {...props} />,
 };
 
 interface IRoute {
-  path: '/' | '/person' | '/docs' | '/people';
+  path: '/' | '/docs' | '/people';
   id: string | null;
 }
 
@@ -62,7 +60,7 @@ const Dashboard = (props: IProps) => {
   };
 
   const handlePeopleClick = () => setRoute({ path: '/people', id: null });
-  const handlePersonClick = (id?: string) => id && setRoute({ path: '/person', id });
+  const handlePersonClick = (id?: string) => id && setRoute({ path: '/people', id });
   const handleMeetingsClick = () => setRoute({ path: '/', id: null });
   const handleDocsClick = () => setRoute({ path: '/docs', id: null });
 

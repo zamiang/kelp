@@ -2,14 +2,14 @@ import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import React from 'react';
+import DriveActivityList from '../shared/drive-activity';
+import EmailsForSegment from '../shared/emails';
+import PeopleList from '../shared/people-list';
 import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
-import DriveActivityList from './drive-activity';
-import EmailsForSegment from './emails';
-import PeopleList from './people-list';
 
 const useStyles = makeStyles((theme) => ({
   // todo move into theme

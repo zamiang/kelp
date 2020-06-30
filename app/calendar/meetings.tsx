@@ -55,7 +55,9 @@ const MeetingsByDay = (
 
 const Meetings = (props: IRouteProps) => {
   const segments = props.timeDataStore.getSegments();
-  const [selectedMeetingId, setSelectedMeetingId] = useState(segments[0] ? segments[0].id : null);
+  const [selectedMeetingId, setSelectedMeetingId] = useState(
+    props.routeId || (segments[0] ? segments[0].id : null),
+  );
   const selectedMeeting = selectedMeetingId
     ? props.timeDataStore.getSegmentById(selectedMeetingId)
     : null;

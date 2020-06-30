@@ -51,11 +51,11 @@ const Doc = (props: {
         props.selectedDocumentId === props.doc.id && classes.documentSelected,
       )}
     >
-      <Grid container spacing={2} alignItems="center">
+      <Grid container spacing={2} alignItems="center" wrap="nowrap">
         <Grid item>
           <InsertDriveFileIcon />
         </Grid>
-        <Grid item xs={10} wrap="nowrap">
+        <Grid item xs={10}>
           <Typography noWrap variant="body1">
             {props.doc.name}
           </Typography>
@@ -70,7 +70,9 @@ const Doc = (props: {
 
 const DocumentList = (props: IRouteProps) => {
   const docs = props.docDataStore.getDocs();
-  const [selectedDocumentId, setSelectedDocumentId] = useState(docs[0] ? docs[0].id : null);
+  const [selectedDocumentId, setSelectedDocumentId] = useState(
+    props.routeId || (docs[0] ? docs[0].id : null),
+  );
   const selectedDocument = selectedDocumentId
     ? props.docDataStore.getByLink(selectedDocumentId)
     : null;

@@ -58,13 +58,13 @@ const PeopleRow = (props: IProps) => {
               attendee.responseStatus === 'needsAction' && classes.personNeedsAction,
             )}
           >
-            <Grid container alignItems="center" spacing={1}>
+            <Grid container alignItems="center" spacing={1} wrap="nowrap">
               <Grid item>
                 <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>
                   {(person.name || person.id)[0]}
                 </Avatar>
               </Grid>
-              <Grid item wrap="nowrap" xs={10}>
+              <Grid item xs={10}>
                 <Typography variant="subtitle2" noWrap>
                   {person.name || person.id}
                 </Typography>
