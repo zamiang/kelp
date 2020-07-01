@@ -10,8 +10,9 @@ import { ISegment } from './time-store';
 const PEOPLE_COUNT = 10;
 const EMAIL_THREAD_COUNT = 10;
 const EMAIL_COUNT = 50;
-const DOCUMENT_COUNT = 10;
+const DOCUMENT_COUNT = 100;
 const CURRENT_USER_EMAIL = 'brennanmoore@gmail.com';
+const HOURS_COVERED = 24;
 
 /**
  * create name/email pairs to be used across the fake data
@@ -94,7 +95,7 @@ documents.map((document) => {
  * Cover the entire day - 'Faker.date.recent(1)`
  */
 let startDate = addMinutes(new Date(), 300);
-const segments: ISegment[] = times(24, () => {
+const segments: ISegment[] = times(HOURS_COVERED, () => {
   startDate = subMinutes(startDate, 30);
 
   const attendees = people.map((person) => ({

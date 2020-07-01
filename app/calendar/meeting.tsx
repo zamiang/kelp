@@ -9,6 +9,8 @@ import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
+export const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
+
 const useStyles = makeStyles((theme) => ({
   meeting: {
     background: 'transparent',
@@ -16,8 +18,6 @@ const useStyles = makeStyles((theme) => ({
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
     marginBottom: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: 0,
     '& > *': {
       borderBottom: 'unset',
     },
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   meetingTentative: {
+    color: theme.palette.text.hint,
     borderColor: theme.palette.secondary.light,
     '&.MuiListItem-button:hover': {
       borderColor: theme.palette.secondary.light,
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   meetingNeedsAction: {
     borderColor: theme.palette.secondary.main,
+    color: theme.palette.text.hint,
     '&.MuiListItem-button:hover': {
       borderColor: theme.palette.secondary.main,
     },
@@ -74,6 +76,21 @@ const useStyles = makeStyles((theme) => ({
     padding: '0 0 0 50px !important',
   },
   time: { textAlign: 'right' },
+  currentTime: {
+    marginLeft: -theme.spacing(3),
+    marginTop: -theme.spacing(1),
+  },
+  dot: {
+    borderRadius: '50%',
+    height: 8,
+    width: 8,
+    background: theme.palette.secondary.main,
+  },
+  border: {
+    marginTop: 0,
+    width: '100%',
+    borderTop: `2px solid ${theme.palette.secondary.main}`,
+  },
 }));
 
 const Meeting = (props: {
@@ -86,36 +103,48 @@ const Meeting = (props: {
   currentTime: Date;
   setSelectedMeetingId: (id: string) => void;
   selectedMeetingId: string | null;
+  shouldRenderCurrentTime: boolean;
 }) => {
   const classes = useStyles();
   // const actionCount = props.meeting.driveActivityIds.length + props.meeting.emailIds.length;
+
+  // Set the meeting ID to the current one if none is set. Potentially is a way to do this w/o hooks?
+  if (props.shouldRenderCurrentTime && !props.selectedMeetingId) {
+    props.setSelectedMeetingId(props.meeting.id);
+  }
   return (
-    <ListItem
-      button={true}
-      className={clsx(
-        classes.meeting,
-        props.meeting.selfResponseStatus === 'accepted' && classes.meetingAccepted,
-        props.meeting.selfResponseStatus === 'tentative' && classes.meetingTentative,
-        props.meeting.selfResponseStatus === 'declined' && classes.meetingDeclined,
-        props.meeting.selfResponseStatus === 'needsAction' && classes.meetingNeedsAction,
-        props.selectedMeetingId === props.meeting.id && classes.meetingSelected,
+    <React.Fragment>
+      {props.shouldRenderCurrentTime && (
+        <ListItem className={classes.currentTime} id={CURRENT_TIME_ELEMENT_ID}>
+          <div className={classes.dot}></div>
+          <div className={classes.border}></div>
+        </ListItem>
       )}
-      onClick={() => props.setSelectedMeetingId(props.meeting.id)}
-    >
-      <Grid container spacing={2}>
-        <Grid item style={{ flex: 1 }}>
-          <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
+      <ListItem
+        button={true}
+        className={clsx(
+          classes.meeting,
+          props.meeting.selfResponseStatus === 'accepted' && classes.meetingAccepted,
+          props.meeting.selfResponseStatus === 'tentative' && classes.meetingTentative,
+          props.meeting.selfResponseStatus === 'declined' && classes.meetingDeclined,
+          props.meeting.selfResponseStatus === 'needsAction' && classes.meetingNeedsAction,
+          props.selectedMeetingId === props.meeting.id && classes.meetingSelected,
+        )}
+        onClick={() => props.setSelectedMeetingId(props.meeting.id)}
+      >
+        <Grid container spacing={2}>
+          <Grid item style={{ flex: 1 }}>
+            <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
+          </Grid>
+          <Grid item className={classes.time}>
+            <Typography variant="subtitle2">{format(props.meeting.start, 'p')}</Typography>
+            <Typography variant="subtitle2" style={{ opacity: 0.5 }}>
+              {format(props.meeting.end, 'p')}
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item className={classes.time}>
-          <Typography variant="subtitle2" color="textPrimary">
-            {format(props.meeting.start, 'p')}
-          </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
-            {format(props.meeting.end, 'p')}
-          </Typography>
-        </Grid>
-      </Grid>
-    </ListItem>
+      </ListItem>
+    </React.Fragment>
   );
 };
 

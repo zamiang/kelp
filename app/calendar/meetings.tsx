@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { IRouteProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
 import ExpandedMeeting from './expand-meeting';
-import Meeting from './meeting';
+import Meeting, { CURRENT_TIME_ELEMENT_ID } from './meeting';
 
 const useStyles = makeStyles((theme) => ({
   day: {
@@ -28,25 +28,37 @@ const MeetingsByDay = (
   const meetingsByDay = props.timeDataStore.getSegmentsByDay();
   const currentTime = new Date();
   const classes = useStyles();
+  const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
+  let hasRenderedCurrentTime = false;
   return (
     <React.Fragment>
-      {Object.keys(meetingsByDay).map((day) => (
+      {days.map((day) => (
         <div key={day} className={classes.meetingRow}>
           <Typography className={classes.day}>{day}</Typography>
-          {meetingsByDay[day].map((meeting) => (
-            <Meeting
-              currentTime={currentTime}
-              key={meeting.id}
-              meeting={meeting}
-              handlePersonClick={props.handlePersonClick}
-              personStore={props.personDataStore}
-              docStore={props.docDataStore}
-              emailStore={props.emailStore}
-              driveActivityStore={props.driveActivityStore}
-              setSelectedMeetingId={props.setSelectedMeetingId}
-              selectedMeetingId={props.selectedMeetingId}
-            />
-          ))}
+          {meetingsByDay[day]
+            .sort((a, b) => (a.start > b.start ? 1 : -1))
+            .map((meeting) => {
+              let shouldRenderCurrentTime = false;
+              if (!hasRenderedCurrentTime && meeting.start > currentTime) {
+                hasRenderedCurrentTime = true;
+                shouldRenderCurrentTime = true;
+              }
+              return (
+                <Meeting
+                  currentTime={currentTime}
+                  shouldRenderCurrentTime={shouldRenderCurrentTime}
+                  key={meeting.id}
+                  meeting={meeting}
+                  handlePersonClick={props.handlePersonClick}
+                  personStore={props.personDataStore}
+                  docStore={props.docDataStore}
+                  emailStore={props.emailStore}
+                  driveActivityStore={props.driveActivityStore}
+                  setSelectedMeetingId={props.setSelectedMeetingId}
+                  selectedMeetingId={props.selectedMeetingId}
+                />
+              );
+            })}
         </div>
       ))}
     </React.Fragment>
@@ -54,10 +66,7 @@ const MeetingsByDay = (
 };
 
 const Meetings = (props: IRouteProps) => {
-  const segments = props.timeDataStore.getSegments();
-  const [selectedMeetingId, setSelectedMeetingId] = useState(
-    props.routeId || (segments[0] ? segments[0].id : null),
-  );
+  const [selectedMeetingId, setSelectedMeetingId] = useState(props.routeId);
   const selectedMeeting = selectedMeetingId
     ? props.timeDataStore.getSegmentById(selectedMeetingId)
     : null;
@@ -71,6 +80,15 @@ const Meetings = (props: IRouteProps) => {
     return () => clearInterval(interval);
   }, [seconds]);
 
+  // Scroll the 'current time' dot into view
+  // TODO: This is weird and non-standard react. Ideally the meeting to scroll to on initial load would be declared in this function and passed down
+  // HOWEVER I can't figure out how to have that only happen on render and not on every time selected meeting id changes
+  if (!selectedMeetingId) {
+    setTimeout(() => {
+      const element = document.getElementById(CURRENT_TIME_ELEMENT_ID);
+      element && element.scrollIntoView(true);
+    }, 100);
+  }
   return (
     <React.Fragment>
       <div className={styles.panel}>
