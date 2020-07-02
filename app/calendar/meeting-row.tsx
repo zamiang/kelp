@@ -46,12 +46,6 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.info.main,
     },
   },
-  meetingCurrent: {
-    // borderTop: `2px solid ${theme.palette.secondary.main}`,
-  },
-  meetingInFuture: {
-    opacity: 0.7,
-  },
   avatarContainer: {
     width: 42,
     paddingLeft: 0,
@@ -117,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Meeting = (props: {
+const MeetingRow = (props: {
   meeting: ISegment;
   personStore: PersonDataStore;
   docStore: DocDataStore;
@@ -183,4 +177,4 @@ const Meeting = (props: {
   );
 };
 
-export default Meeting;
+export default MeetingRow;
