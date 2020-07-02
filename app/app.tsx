@@ -25,11 +25,12 @@ const bodyFontFamily = 'Arial, sans-serif;';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#EDF1F2', light: '#F6F6FE' },
-    secondary: { main: '#7D58FE' },
+    secondary: { main: '#7D58FE', light: '#ECE7FE' },
     info: { main: '#D6F9F5' },
   },
   typography: {
-    fontFamily: "'Helvetica Neue', sans-serif;",
+    fontSize: 13,
+    fontFamily: "'-apple-system', 'Helvetica Neue', sans-serif;",
     fontWeightRegular: 500,
     h1: {
       fontWeight: 500,
@@ -162,10 +163,10 @@ const App = () => {
                   <img className={classes.logoImage} src={`${config.DOMAIN}/images/kelp.svg`} />
                 </ListItemIcon>
                 <ListItemText disableTypography={true}>
-                  <Typography variant="h1">KELP</Typography>
+                  <Typography variant="h1">Kelp</Typography>
                 </ListItemText>
               </ListItem>
-              <Typography variant="body2" className={classes.body}>
+              <Typography variant="body1" className={classes.body}>
                 Kelp brings your data together in one place. Pivot your meetings by what documents
                 the attendees have edited recently. By associating person, a time slot and documents
                 together, Kelp infers associations between information, making the information
@@ -181,7 +182,7 @@ const App = () => {
                 Log In
               </Button>
             </Paper>
-            <Typography variant="body2" className={classes.hint}>
+            <Typography variant="body1" className={classes.hint}>
               This application does not store your data or send your data to any third parties. Your
               browser retrieves your data directly from the Google API and processes the data on
               your computer.

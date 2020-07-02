@@ -14,9 +14,9 @@ export const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 const useStyles = makeStyles((theme) => ({
   meeting: {
     background: 'transparent',
-    borderLeft: `2px solid ${theme.palette.secondary.main}`,
-    transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
+    transition: 'background 0.3s, opacity 0.3s',
     opacity: 1,
+    paddingLeft: 0,
     marginBottom: theme.spacing(1),
     '& > *': {
       borderBottom: 'unset',
@@ -26,36 +26,21 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.secondary.main,
     },
   },
-  meetingAccepted: {
-    borderColor: theme.palette.secondary.main,
-    '&.MuiListItem-button:hover': {
-      borderColor: theme.palette.secondary.main,
-    },
-  },
+  meetingAccepted: {},
   meetingTentative: {
     color: theme.palette.text.hint,
-    borderColor: theme.palette.secondary.light,
-    '&.MuiListItem-button:hover': {
-      borderColor: theme.palette.secondary.light,
-    },
   },
   meetingDeclined: {
     textDecoration: 'line-through',
-    borderColor: theme.palette.secondary.main,
+
     '&.MuiListItem-button:hover': {
       textDecoration: 'line-through',
-      borderColor: theme.palette.secondary.main,
     },
   },
   meetingNeedsAction: {
-    borderColor: theme.palette.secondary.main,
     color: theme.palette.text.hint,
-    '&.MuiListItem-button:hover': {
-      borderColor: theme.palette.secondary.main,
-    },
   },
   meetingSelected: {
-    borderColor: theme.palette.info.main,
     background: 'rgba(0, 0, 0, 0.04)', // unsure where this comes from
     '&.MuiListItem-button:hover': {
       borderColor: theme.palette.info.main,
@@ -80,16 +65,55 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: -theme.spacing(3),
     marginTop: -theme.spacing(1),
   },
-  dot: {
+  currentTimeDot: {
     borderRadius: '50%',
     height: 8,
     width: 8,
     background: theme.palette.secondary.main,
   },
-  border: {
+  currentTimeBorder: {
     marginTop: 0,
     width: '100%',
     borderTop: `2px solid ${theme.palette.secondary.main}`,
+  },
+  border: {
+    borderRadius: 4,
+    background: theme.palette.secondary.main,
+    padding: '0px !important',
+    transition: 'background 0.3s',
+    width: 4,
+    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+  },
+  borderAccepted: {
+    background: theme.palette.secondary.main,
+    '&.MuiListItem-button:hover': {
+      background: theme.palette.secondary.main,
+    },
+  },
+  borderTentative: {
+    background: theme.palette.secondary.light,
+    '&.MuiListItem-button:hover': {
+      background: theme.palette.secondary.light,
+    },
+  },
+  borderDeclined: {
+    background: theme.palette.secondary.main,
+    '&.MuiListItem-button:hover': {
+      background: theme.palette.secondary.main,
+    },
+  },
+  borderNeedsAction: {
+    background: theme.palette.secondary.main,
+    '&.MuiListItem-button:hover': {
+      background: theme.palette.secondary.main,
+    },
+  },
+  borderSelected: {
+    background: theme.palette.info.main,
+    '&.MuiListItem-button:hover': {
+      background: theme.palette.info.main,
+    },
   },
 }));
 
@@ -116,8 +140,8 @@ const Meeting = (props: {
     <React.Fragment>
       {props.shouldRenderCurrentTime && (
         <ListItem className={classes.currentTime} id={CURRENT_TIME_ELEMENT_ID}>
-          <div className={classes.dot}></div>
-          <div className={classes.border}></div>
+          <div className={classes.currentTimeDot}></div>
+          <div className={classes.currentTimeBorder}></div>
         </ListItem>
       )}
       <ListItem
@@ -132,7 +156,18 @@ const Meeting = (props: {
         )}
         onClick={() => props.setSelectedMeetingId(props.meeting.id)}
       >
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
+          <Grid
+            item
+            className={clsx(
+              classes.border,
+              props.meeting.selfResponseStatus === 'accepted' && classes.borderAccepted,
+              props.meeting.selfResponseStatus === 'tentative' && classes.borderTentative,
+              props.meeting.selfResponseStatus === 'declined' && classes.borderDeclined,
+              props.meeting.selfResponseStatus === 'needsAction' && classes.borderNeedsAction,
+              props.selectedMeetingId === props.meeting.id && classes.borderSelected,
+            )}
+          ></Grid>
           <Grid item style={{ flex: 1 }}>
             <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
           </Grid>

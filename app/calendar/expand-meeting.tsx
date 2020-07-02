@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body2.fontSize,
     textTransform: 'uppercase',
   },
+  content: {
+    marginTop: theme.spacing(1),
+  },
 }));
 
 const ExpandedMeeting = (props: {
@@ -63,7 +66,7 @@ const ExpandedMeeting = (props: {
           {format(props.meeting.end, 'p')}
         </i>
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.content}>
         <Grid item xs={7}>
           {hasDescription && (
             <Typography

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { IRouteProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
 import ExpandedMeeting from './expand-meeting';
-import Meeting, { CURRENT_TIME_ELEMENT_ID } from './meeting';
+import Meeting, { CURRENT_TIME_ELEMENT_ID } from './meeting-row';
 
 const useStyles = makeStyles((theme) => ({
   day: {
