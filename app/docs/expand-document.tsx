@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
-import PeopleList from '../shared/people-list';
+import PersonList from '../shared/person-list';
 import DocDataStore, { IDoc } from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import EmailDataStore from '../store/email-store';
@@ -41,11 +41,10 @@ const ExpandedDocument = (props: {
   const classes = useStyles();
   const activity =
     props.driveActivityStore.getDriveActivityForDocument(props.document.link || '') || [];
+
   const people = uniqBy(activity, 'actorPersonId')
     .filter((activity) => activity.actorPersonId)
-    .map((activity) => ({
-      email: props.personStore.getPersonByPeopleId(activity.actorPersonId!).emailAddress,
-    }));
+    .map((activity) => props.personStore.getPersonById(activity.actorPersonId!)!);
   return (
     <div className={classes.container}>
       {props.document.link && (
@@ -75,9 +74,9 @@ const ExpandedDocument = (props: {
               <Typography variant="h6" className={classes.smallHeading}>
                 People
               </Typography>
-              <PeopleList
+              <PersonList
                 handlePersonClick={props.handlePersonClick}
-                attendees={people}
+                people={people}
                 personStore={props.personStore}
               />
             </React.Fragment>

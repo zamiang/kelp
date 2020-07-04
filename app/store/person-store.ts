@@ -1,9 +1,7 @@
-import {
-  person as GooglePerson,
-  ICalendarEvent,
-  IFormattedDriveActivity,
-} from '../fetch/fetch-first';
-import { formattedEmail } from '../fetch/fetch-second';
+import { ICalendarEvent } from '../fetch/fetch-calendar-events';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { formattedEmail } from '../fetch/fetch-emails';
+import { person as GooglePerson } from '../fetch/fetch-people';
 
 export interface IPerson {
   id: string;
@@ -15,8 +13,12 @@ export interface IPerson {
   segmentIds: string[];
 }
 
-interface IPersonByEmail {
-  [email: string]: IPerson;
+export interface IPersonById {
+  [id: string]: IPerson;
+}
+
+interface IEmailAddressToPersonIdHash {
+  [emailAddress: string]: string;
 }
 
 // handle one person w/ multiple email addresses
@@ -40,41 +42,48 @@ const createNewPersonFromEmail = (email: string) => ({
 });
 
 export default class PersonDataStore {
-  private personByEmail: IPersonByEmail;
-  private personById: IPersonByEmail;
+  private personById: IPersonById;
+  private emailAddressToPersonIdHash: IEmailAddressToPersonIdHash;
 
   constructor(personList: IPerson[], emailAddresses: string[]) {
     console.warn('setting up person store');
-    this.personByEmail = {};
     this.personById = {};
+    this.emailAddressToPersonIdHash = {};
 
     this.addPeopleToStore(personList);
     this.addEmailAddressessToStore(emailAddresses);
   }
 
+  getPersonIdForEmailAddress(emailAddress: string) {
+    return this.emailAddressToPersonIdHash[emailAddress];
+  }
+
+  addPersonToStore(person: IPerson) {
+    this.personById[person.id] = person;
+    this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
+  }
+
   addPeopleToStore(people: IPerson[]) {
     people.forEach((person) => {
-      this.personByEmail[person.emailAddress.toLocaleLowerCase()] = person;
-      this.personById[person.id] = person;
+      this.addPersonToStore(person);
     });
   }
 
   addEmailAddressessToStore(emailAddresses: string[]) {
     emailAddresses.forEach((emailAddress) => {
       const formattedEmailAddress = emailAddress.toLocaleLowerCase();
-      if (!this.personByEmail[formattedEmailAddress]) {
-        this.personByEmail[formattedEmailAddress] = createNewPersonFromEmail(formattedEmailAddress);
+      const person = this.emailAddressToPersonIdHash[formattedEmailAddress];
+      if (!person) {
+        this.addPersonToStore(createNewPersonFromEmail(formattedEmailAddress));
       }
     });
   }
 
   addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
     (driveActivity || []).map((driveActivity) => {
-      const personById =
-        driveActivity.actorPersonId && this.personById[driveActivity.actorPersonId];
-      if (personById) {
-        personById.driveActivityIds.push(driveActivity.id);
-        this.personByEmail[personById.emailAddress].driveActivityIds.push(driveActivity.id);
+      const person = driveActivity.actorPersonId && this.personById[driveActivity.actorPersonId];
+      if (person) {
+        person.driveActivityIds.push(driveActivity.id);
       }
     });
   }
@@ -82,48 +91,45 @@ export default class PersonDataStore {
   addEmailsToStore(emails: formattedEmail[]) {
     (emails || []).forEach((email) => {
       if (email.from) {
-        const from = email.from;
-        this.personByEmail[from] && this.personByEmail[from].emailIds.push(email.id);
+        const personId = this.emailAddressToPersonIdHash[email.from];
+        if (personId) {
+          this.personById[personId] && this.personById[personId].emailIds.push(email.id);
+        }
       }
       if (email.to) {
-        email.to.map(
-          (emailTo) =>
-            emailTo &&
-            this.personByEmail[emailTo] &&
-            this.personByEmail[emailTo].emailIds.push(email.id),
-        );
+        email.to.map((emailTo) => {
+          const personId = emailTo && this.emailAddressToPersonIdHash[emailTo];
+          if (personId) {
+            this.personById[personId] && this.personById[personId].emailIds.push(email.id);
+          }
+        });
       }
     });
   }
 
-  addCalendarEventsToStore(events: ICalendarEvent[]) {
+  addGoogleCalendarEventsIdsToStore(events: ICalendarEvent[]) {
     events.forEach((event) => {
       (event.attendees || []).forEach((attendee) => {
         if (attendee && attendee.email) {
-          // TODO: Also format the attendees?
-          this.personByEmail[attendee.email].segmentIds.push(event.id);
+          const personId = this.emailAddressToPersonIdHash[attendee.email];
+          if (personId) {
+            this.personById[personId].segmentIds.push(event.id);
+          }
         }
       });
     });
   }
 
   getEmailAddresses() {
-    return Object.keys(this.personByEmail);
+    return Object.keys(this.personById);
   }
 
   getPeople() {
-    return Object.values(this.personByEmail);
+    return Object.values(this.personById);
   }
 
-  getPersonByEmail(email: string): IPerson | undefined {
-    return this.personByEmail[email];
-  }
-
-  // @param peopleId: person/1313513
-  // @deprecated
-  getPersonByPeopleId(peopleId: string) {
-    console.warn('do not use getPersonByPeopleId - may be inaccurate');
-    return this.personById[peopleId];
+  getPersonById(id: string): IPerson | undefined {
+    return this.personById[id];
   }
 
   getPersonDisplayName(person: IPerson) {
@@ -131,6 +137,6 @@ export default class PersonDataStore {
   }
 
   getLength() {
-    return Object.keys(this.personByEmail).length;
+    return Object.keys(this.personById).length;
   }
 }

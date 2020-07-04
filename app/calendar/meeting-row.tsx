@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     transition: 'background 0.3s, opacity 0.3s',
     opacity: 1,
     paddingLeft: 0,
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
     '& > *': {
       borderBottom: 'unset',
     },

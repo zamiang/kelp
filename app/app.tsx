@@ -17,10 +17,10 @@ import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
 import config from './config';
 import Copyright from './copyright';
-// import DashboardContainer from './dashboard-container';
-import DashboardContainer from './dashboard-fake-container';
+import DashboardContainer from './dashboard-container';
+// import DashboardContainer from './dashboard-fake-container';
 
-const bodyFontFamily = 'Arial, sans-serif;';
+const bodyFontFamily = "'-apple-system', Arial, sans-serif;";
 
 const theme = createMuiTheme({
   palette: {
@@ -164,6 +164,9 @@ const App = () => {
                 </ListItemIcon>
                 <ListItemText disableTypography={true}>
                   <Typography variant="h1">Kelp</Typography>
+                  <Typography variant="subtitle1" style={{ fontStyle: 'italic' }}>
+                    Your information filtration system
+                  </Typography>
                 </ListItemText>
               </ListItem>
               <Typography variant="body1" className={classes.body}>
@@ -179,7 +182,7 @@ const App = () => {
                 onClick={signIn}
                 className={classes.submit}
               >
-                Log In
+                Log In with Google
               </Button>
             </Paper>
             <Typography variant="body1" className={classes.hint}>

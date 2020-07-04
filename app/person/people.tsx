@@ -71,7 +71,7 @@ const People = (props: IRouteProps) => {
     props.routeId || (people[0] ? people[0].id : null),
   );
   const selectedPerson = selectedPersonId
-    ? props.personDataStore.getPersonByEmail(selectedPersonId)
+    ? props.personDataStore.getPersonById(selectedPersonId)
     : null;
   return (
     <React.Fragment>
