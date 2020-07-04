@@ -1,15 +1,16 @@
 import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
+import { flatten } from 'lodash';
 import React from 'react';
+import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/drive-activity';
-import EmailsForSegment from '../shared/emails';
-import PeopleList from '../shared/people-list';
+import EmailsList from '../shared/emails-list';
 import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
-import { ISegment } from '../store/time-store';
+import TimeStore, { ISegment } from '../store/time-store';
 
 const useStyles = makeStyles((theme) => ({
   // todo move into theme
@@ -41,14 +42,30 @@ const ExpandedMeeting = (props: {
   docStore: DocDataStore;
   driveActivityStore: DriveActivityDataStore;
   emailStore: EmailDataStore;
+  timeStore: TimeStore;
   handlePersonClick: (email?: string) => void;
 }) => {
   const classes = useStyles();
-  const people = (props.meeting.attendees || []).filter((person) => person.email);
-  const hasPeople = people.length > 0;
+  const attendees = (props.meeting.formattedAttendees || []).filter((person) => person.personId);
+  const hasAttendees = attendees.length > 0;
   const hasEmails = props.meeting.emailIds.length > 0;
   const hasDescription = props.meeting.description && props.meeting.description.length > 0;
   const hasDriveActivity = props.meeting.driveActivityIds.length > 0;
+  const attendeeIds = (props.meeting.formattedAttendees || [])
+    .filter((attendee) => !attendee.self)
+    .map((attendee) => attendee.personId);
+  const people = attendeeIds
+    .map((id) => props.personStore.getPersonById(id))
+    .filter((person) => !!person);
+  const documentsCurrentUserEditedWhileMeetingWithAttendees = flatten(
+    people.map((person) => {
+      const segmentIds = person!.segmentIds;
+      const segments = segmentIds.map((id) => props.timeStore.getSegmentById(id)!.driveActivityIds);
+      return flatten(segments);
+    }),
+  );
+  const recentEmailsFromAttendees = flatten(people.map((person) => person!.emailIds));
+  const driveActivityFromAttendees = flatten(people.map((person) => person!.driveActivityIds));
   return (
     <div className={classes.container}>
       {props.meeting.link && (
@@ -78,10 +95,10 @@ const ExpandedMeeting = (props: {
           {hasEmails && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
-                Emails
+                Emails Sent or received during the meeting
               </Typography>
-              <EmailsForSegment
-                segment={props.meeting}
+              <EmailsList
+                emailIds={props.meeting.emailIds}
                 emailStore={props.emailStore}
                 personStore={props.personStore}
                 handlePersonClick={props.handlePersonClick}
@@ -91,7 +108,7 @@ const ExpandedMeeting = (props: {
           {hasDriveActivity && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
-                Active Documents
+                Documents with activity during this meeting
               </Typography>
               <DriveActivityList
                 driveActivityIds={props.meeting.driveActivityIds}
@@ -101,15 +118,54 @@ const ExpandedMeeting = (props: {
               />
             </React.Fragment>
           )}
+          {documentsCurrentUserEditedWhileMeetingWithAttendees.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Documents you edited while meeting with these attendees recently
+              </Typography>
+              <DriveActivityList
+                driveActivityIds={documentsCurrentUserEditedWhileMeetingWithAttendees}
+                driveActivityStore={props.driveActivityStore}
+                docStore={props.docStore}
+                personStore={props.personStore}
+              />
+            </React.Fragment>
+          )}
+          {recentEmailsFromAttendees.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Recent emails from people in this meeting
+              </Typography>
+              <EmailsList
+                emailIds={recentEmailsFromAttendees}
+                emailStore={props.emailStore}
+                personStore={props.personStore}
+                handlePersonClick={props.handlePersonClick}
+              />
+            </React.Fragment>
+          )}
+          {driveActivityFromAttendees.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Documents recently edited by people in this meeting
+              </Typography>
+              <DriveActivityList
+                driveActivityIds={driveActivityFromAttendees}
+                driveActivityStore={props.driveActivityStore}
+                docStore={props.docStore}
+                personStore={props.personStore}
+              />
+            </React.Fragment>
+          )}
         </Grid>
-        {hasPeople && (
+        {hasAttendees && (
           <Grid item xs={5}>
             <Typography variant="h6" className={classes.heading}>
               Guests
             </Typography>
-            <PeopleList
+            <AttendeeList
               personStore={props.personStore}
-              attendees={people}
+              attendees={attendees}
               handlePersonClick={props.handlePersonClick}
             />
           </Grid>

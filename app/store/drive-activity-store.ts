@@ -1,4 +1,4 @@
-import { IFormattedDriveActivity } from '../fetch/fetch-first';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 
 interface driveActivityById {
   [id: string]: IFormattedDriveActivity;

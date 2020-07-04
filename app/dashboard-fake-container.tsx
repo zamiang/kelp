@@ -17,10 +17,10 @@ const DashboardFakeContainer = (props: IProps) => {
   const personDataStore = new PersonDataStore(data.people, []);
   personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
-  personDataStore.addCalendarEventsToStore(data.segments);
+  personDataStore.addGoogleCalendarEventsIdsToStore(data.segments);
   console.log('PERSON DATA STORE:', personDataStore);
 
-  const timeDataStore = new TimeDataStore(data.segments);
+  const timeDataStore = new TimeDataStore(data.segments, personDataStore);
   timeDataStore.addEmailsToStore(data.emails);
   timeDataStore.addDriveActivityToStore(data.driveActivity);
   console.log('TIME DATA STORE:', timeDataStore);
@@ -31,7 +31,7 @@ const DashboardFakeContainer = (props: IProps) => {
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
   console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
 
-  const emailDataStore = new EmailDataStore(data.emails);
+  const emailDataStore = new EmailDataStore(data.emails, personDataStore);
   console.log('EMAIL DATA STORE:', emailDataStore);
 
   return (

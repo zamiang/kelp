@@ -1,21 +1,31 @@
-import { formattedEmail } from '../fetch/fetch-second';
+import { formattedEmail } from '../fetch/fetch-emails';
+import PersonDataStore from './person-store';
+
+export interface IEmail extends formattedEmail {
+  fromPersonId: string;
+}
 
 interface IEmailById {
-  [id: string]: formattedEmail;
+  [id: string]: IEmail;
 }
 
 export default class EmailDataStore {
   private emailById: IEmailById;
 
-  constructor(emails: formattedEmail[]) {
+  constructor(emails: formattedEmail[], personStore: PersonDataStore) {
     console.warn('setting up email store');
     this.emailById = {};
-    this.addEmailsToStore(emails);
+    this.addEmailsToStore(emails, personStore);
   }
 
-  addEmailsToStore(emails: formattedEmail[]) {
+  addEmailsToStore(emails: formattedEmail[], personStore: PersonDataStore) {
     emails.forEach((email) => {
-      this.emailById[email.id] = email;
+      if (email.from) {
+        this.emailById[email.id] = {
+          ...email,
+          fromPersonId: personStore.getPersonIdForEmailAddress(email.from),
+        };
+      }
     });
   }
 
@@ -23,7 +33,13 @@ export default class EmailDataStore {
     return Object.values(this.emailById).filter((email) => email.threadId === threadId);
   }
 
-  getById(emailId: string): formattedEmail | undefined {
+  getEmailsFrom(emailAddresses: string[]) {
+    return Object.values(this.emailById).filter(
+      (email) => email.from && emailAddresses.indexOf(email.from) > -1,
+    );
+  }
+
+  getById(emailId: string): IEmail | undefined {
     return this.emailById[emailId];
   }
 

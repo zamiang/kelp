@@ -1,14 +1,23 @@
 import { format, isAfter, isBefore } from 'date-fns';
 import { groupBy } from 'lodash';
-import { ICalendarEvent, IFormattedDriveActivity } from '../fetch/fetch-first';
-import { formattedEmail } from '../fetch/fetch-second';
+import { ICalendarEvent } from '../fetch/fetch-calendar-events';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { formattedEmail } from '../fetch/fetch-emails';
+import PersonDataStore from './person-store';
 
 type SegmentState = 'current' | 'upcoming' | 'past';
+
+export interface IFormattedAttendee {
+  personId: string; // for lookup in the person store
+  responseStatus?: string;
+  self?: boolean;
+}
 
 export interface ISegment extends ICalendarEvent {
   driveActivityIds: string[];
   emailIds: string[];
   state: SegmentState;
+  formattedAttendees: IFormattedAttendee[];
 }
 
 interface ISegmentsByID {
@@ -19,10 +28,10 @@ export default class TimeStore {
   private segments: ISegment[];
   private segmentsById: ISegmentsByID;
 
-  constructor(calendarEvents: ICalendarEvent[]) {
+  constructor(calendarEvents: ICalendarEvent[], personStore: PersonDataStore) {
     console.warn('setting up time store');
     // sort by asc to support later optimizations
-    this.segments = this.createInitialSegments(calendarEvents).sort((a, b) =>
+    this.segments = this.createInitialSegments(calendarEvents, personStore).sort((a, b) =>
       a.start > b.start ? -1 : 1,
     );
     this.segmentsById = {};
@@ -33,15 +42,25 @@ export default class TimeStore {
     return this.segmentsById[id];
   }
 
-  createInitialSegments(calendarEvents: ICalendarEvent[]) {
+  createInitialSegments(calendarEvents: ICalendarEvent[], personStore: PersonDataStore) {
     return calendarEvents
       .filter((event) => event.start && event.end)
-      .map((event) => ({
-        ...event,
-        emailIds: [],
-        driveActivityIds: [],
-        state: this.getStateForMeeting(event),
-      }));
+      .map((event) => {
+        const formattedAttendees = event.attendees
+          .filter((attendee) => !!attendee.email)
+          .map((attendee) => ({
+            personId: personStore.getPersonIdForEmailAddress(attendee.email!),
+            responseStatus: attendee.responseStatus,
+            self: attendee.self,
+          }));
+        return {
+          ...event,
+          formattedAttendees,
+          emailIds: [],
+          driveActivityIds: [],
+          state: this.getStateForMeeting(event),
+        };
+      });
   }
 
   getStateForMeeting(event: ICalendarEvent): SegmentState {

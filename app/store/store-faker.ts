@@ -1,8 +1,9 @@
 import { addMinutes, subMinutes } from 'date-fns';
 import Faker from 'faker';
-import { random, sample, times } from 'lodash';
-import { IFormattedDriveActivity, getSelfResponseStatus } from '../fetch/fetch-first';
-import { formattedEmail } from '../fetch/fetch-second';
+import { random, sample, sampleSize, times } from 'lodash';
+import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { formattedEmail } from '../fetch/fetch-emails';
 import { IDoc } from './doc-store';
 import { IPerson } from './person-store';
 import { ISegment } from './time-store';
@@ -10,7 +11,7 @@ import { ISegment } from './time-store';
 const PEOPLE_COUNT = 10;
 const EMAIL_THREAD_COUNT = 10;
 const EMAIL_COUNT = 50;
-const DOCUMENT_COUNT = 100;
+const DOCUMENT_COUNT = 50;
 const CURRENT_USER_EMAIL = 'brennanmoore@gmail.com';
 const HOURS_COVERED = 24;
 
@@ -98,10 +99,15 @@ let startDate = addMinutes(new Date(), 300);
 const segments: ISegment[] = times(HOURS_COVERED, () => {
   startDate = subMinutes(startDate, 30);
 
-  const attendees = people.map((person) => ({
+  const attendees = sampleSize(people, 5).map((person) => ({
     email: person.emailAddress,
     self: person.emailAddress === CURRENT_USER_EMAIL,
     responseStatus: sample<any>(['needsAction', 'declined', 'tentative', 'accepted']),
+  }));
+  const formattedAttendees = attendees.map((attendee) => ({
+    personId: attendee.email, // TODO: Simulate google person ids
+    self: attendee.self,
+    responseStatus: attendee.responseStatus,
   }));
 
   return {
@@ -112,6 +118,7 @@ const segments: ISegment[] = times(HOURS_COVERED, () => {
     start: startDate,
     end: addMinutes(startDate, 30),
     attendees,
+    formattedAttendees,
     selfResponseStatus: getSelfResponseStatus(attendees),
     state: sample<any>(['current', 'upcoming', 'past']),
     driveActivityIds: [],

@@ -17,13 +17,13 @@ const DashboardContainer = (props: IProps) => {
   const people = data.personList.map((person) => formatPerson(person));
 
   // TODO: Only create the datastores once data.isLoading is false
-  const personDataStore = new PersonDataStore(people, data.emailList);
+  const personDataStore = new PersonDataStore(people, data.emailAddresses);
   personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
-  personDataStore.addCalendarEventsToStore(data.calendarEvents || []);
+  personDataStore.addGoogleCalendarEventsIdsToStore(data.calendarEvents || []);
   console.log('PERSON DATA STORE:', personDataStore);
 
-  const timeDataStore = new TimeDataStore(data.calendarEvents || []);
+  const timeDataStore = new TimeDataStore(data.calendarEvents || [], personDataStore);
   timeDataStore.addEmailsToStore(data.emails || []);
   timeDataStore.addDriveActivityToStore(data.driveActivity);
   console.log('TIME DATA STORE:', timeDataStore);
@@ -35,7 +35,7 @@ const DashboardContainer = (props: IProps) => {
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
   console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
 
-  const emailDataStore = new EmailDataStore(data.emails);
+  const emailDataStore = new EmailDataStore(data.emails, personDataStore);
   console.log('EMAIL DATA STORE:', emailDataStore);
 
   return (

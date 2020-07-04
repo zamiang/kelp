@@ -109,6 +109,7 @@ const Meetings = (props: IRouteProps) => {
         {selectedMeeting && (
           <ExpandedMeeting
             meeting={selectedMeeting}
+            timeStore={props.timeDataStore}
             handlePersonClick={props.handlePersonClick}
             personStore={props.personDataStore}
             docStore={props.docDataStore}

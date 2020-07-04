@@ -4,7 +4,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import { formatDistanceToNow } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
-import { IFormattedDriveActivity } from '../fetch/fetch-first';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import PersonDataStore from '../store/person-store';

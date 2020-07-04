@@ -1,9 +1,15 @@
-import FetchFirst, { ICalendarEvent, IFormattedDriveActivity, person } from './fetch-first';
-import FetchSecond, { formattedEmail } from './fetch-second';
+import { uniq } from 'lodash';
+import { ICalendarEvent } from './fetch-calendar-events';
+import { IFormattedDriveActivity } from './fetch-drive-activity';
+import { formattedEmail } from './fetch-emails';
+import FetchFirst from './fetch-first';
+import { person } from './fetch-people';
+import FetchSecond from './fetch-second';
+import FetchThird from './fetch-third';
 
 interface IReturnType {
   personList: person[];
-  emailList: string[];
+  emailAddresses: string[];
   emails: formattedEmail[];
   calendarEvents?: ICalendarEvent[];
   driveFiles?: gapi.client.drive.File[];
@@ -14,15 +20,24 @@ interface IReturnType {
 
 const FetchAll = (accessToken: string): IReturnType => {
   const firstLayer = FetchFirst(accessToken);
+  const googleDocIds = (firstLayer.driveFiles || []).map((file) => file.id!);
   const secondLayer = FetchSecond({
-    personList: firstLayer.personList,
-    emailList: firstLayer.emailList,
+    googleDocIds,
+    accessToken,
+  });
+  const peopleIds = uniq(
+    secondLayer.driveActivity.map((activity) => activity.actorPersonId).filter((id) => !!id),
+  ) as string[];
+  const thirdLayer = FetchThird({
+    peopleIds,
+    emailAddresses: firstLayer.emailAddresses,
   });
 
   return {
     ...firstLayer,
     ...secondLayer,
-    isLoading: firstLayer.isLoading && secondLayer.isLoading,
+    ...thirdLayer,
+    isLoading: firstLayer.isLoading && secondLayer.isLoading && thirdLayer.isLoading,
   };
 };
 

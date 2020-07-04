@@ -2,10 +2,8 @@ import { Avatar, Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { uniqBy } from 'lodash';
 import React from 'react';
-import { formattedEmail } from '../fetch/fetch-second';
-import EmailDataStore from '../store/email-store';
+import EmailDataStore, { IEmail } from '../store/email-store';
 import PersonDataStore from '../store/person-store';
-import { ISegment } from '../store/time-store';
 
 const useRowStyles = makeStyles(() => ({
   from: {
@@ -26,13 +24,13 @@ const useRowStyles = makeStyles(() => ({
 type classesType = ReturnType<typeof useRowStyles>;
 
 const Email = (props: {
-  email: formattedEmail;
+  email: IEmail;
   personStore: PersonDataStore;
   classes: classesType;
   handlePersonClick: (email?: string) => void;
 }) => {
   const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
-  const person = props.personStore.getPersonByEmail(props.email.from || '');
+  const person = props.personStore.getPersonById(props.email.fromPersonId);
   return (
     <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item onClick={() => props.handlePersonClick(person && person.emailAddress)}>
@@ -58,14 +56,14 @@ const Email = (props: {
   );
 };
 
-const EmailsForSegment = (props: {
-  segment: ISegment;
+const EmailsList = (props: {
+  emailIds: string[];
   emailStore: EmailDataStore;
   personStore: PersonDataStore;
   handlePersonClick: (email?: string) => void;
 }) => {
   const classes = useRowStyles();
-  const emails = props.segment.emailIds.map((emailId) => props.emailStore.getById(emailId));
+  const emails = props.emailIds.map((emailId) => props.emailStore.getById(emailId));
   const threads = uniqBy(emails, 'threadId');
   if (threads.length < 1) {
     return null;
@@ -90,4 +88,4 @@ const EmailsForSegment = (props: {
   );
 };
 
-export default EmailsForSegment;
+export default EmailsList;
