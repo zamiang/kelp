@@ -16,30 +16,35 @@ const batchFetchPeople = async (
     personFields: 'names,nicknames,emailAddresses,photos',
     resourceNames: peopleIds,
   });
+  // NOTE: unsure why, but this rarely returns anything beyond email address
   const formattedPeople =
     people.result &&
     people.result.responses &&
-    people.result.responses.map((person) => ({
-      id: person.requestedResourceName || 'unknown',
-      name:
-        person.person && person.person.names && person.person.names[0].displayName
-          ? person.person.names[0].displayName
-          : 'unknown',
-      emailAddress:
+    people.result.responses.map((person) => {
+      const emailAddress =
         person.person &&
         person.person.emailAddresses &&
         person.person.emailAddresses[0] &&
         person.person.emailAddresses[0].value
           ? person.person.emailAddresses[0].value
-          : 'unknown',
-      imageUrl:
-        person.person &&
-        person.person.photos &&
-        person.person.photos[0] &&
-        person.person.photos[0].url
-          ? person.person.photos[0].url
-          : null,
-    }));
+          : 'unknown';
+      return {
+        id: person.requestedResourceName || 'unknown',
+        name:
+          person.person && person.person.names && person.person.names[0].displayName
+            ? person.person.names[0].displayName
+            : emailAddress,
+        emailAddress,
+        imageUrl:
+          person.person &&
+          person.person.photos &&
+          person.person.photos[0] &&
+          person.person.photos[0].url
+            ? person.person.photos[0].url
+            : null,
+      };
+    });
+
   if (formattedPeople) {
     addPeopleToStore(formattedPeople);
   }

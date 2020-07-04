@@ -28,11 +28,11 @@ const FetchFirst = (accessToken: string) => {
   ]);
 
   return {
-    emailAddresses: emailList,
     isLoading: driveResponse.loading && calendarResponse.loading && emailList,
-    calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
-    driveFiles: driveResponse.result,
+    calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents || [] : [],
+    driveFiles: driveResponse.result || [],
     lastUpdated: new Date(),
+    emailAddresses: emailList,
   };
 };
 

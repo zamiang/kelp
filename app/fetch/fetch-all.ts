@@ -11,8 +11,8 @@ interface IReturnType {
   personList: person[];
   emailAddresses: string[];
   emails: formattedEmail[];
-  calendarEvents?: ICalendarEvent[];
-  driveFiles?: gapi.client.drive.File[];
+  calendarEvents: ICalendarEvent[];
+  driveFiles: gapi.client.drive.File[];
   driveActivity: IFormattedDriveActivity[];
   isLoading: boolean;
   lastUpdated: Date;
@@ -20,10 +20,9 @@ interface IReturnType {
 
 const FetchAll = (accessToken: string): IReturnType => {
   const firstLayer = FetchFirst(accessToken);
-  const googleDocIds = (firstLayer.driveFiles || []).map((file) => file.id!);
+  const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const secondLayer = FetchSecond({
     googleDocIds,
-    accessToken,
   });
   const peopleIds = uniq(
     secondLayer.driveActivity.map((activity) => activity.actorPersonId).filter((id) => !!id),
