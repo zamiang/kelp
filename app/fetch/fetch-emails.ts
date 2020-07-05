@@ -57,33 +57,35 @@ export const fetchEmails = async (emails: email[]): Promise<formattedEmail[]> =>
   );
   const emailResponses: IEmail[] = await Promise.all(emailPromises);
 
-  return emailResponses.map((email) => {
-    const formattedEmail: formattedEmail = {
-      id: email.result.id,
-      snippet: email.result.snippet,
-      threadId: email.result.threadId,
-      date: new Date(),
-      subject: '',
-      from: null,
-      to: [],
-    };
-    email.result.payload.headers.forEach((header) => {
-      switch (header.name) {
-        case 'Date':
-          formattedEmail.date = new Date(header.value);
-          break;
-        case 'Subject':
-          formattedEmail.subject = header.value;
-          break;
-        case 'From':
-          formattedEmail.from = formatEmailFromGmail(header.value);
-          break;
-        case 'To':
-          formattedEmail.to.push(formatEmailFromGmail(header.value));
-      }
+  return emailResponses
+    .filter((email) => !email.result.labelIds.includes('CATEGORY_UPDATES'))
+    .map((email) => {
+      const formattedEmail: formattedEmail = {
+        id: email.result.id,
+        snippet: email.result.snippet,
+        threadId: email.result.threadId,
+        date: new Date(),
+        subject: '',
+        from: null,
+        to: [],
+      };
+      email.result.payload.headers.forEach((header) => {
+        switch (header.name) {
+          case 'Date':
+            formattedEmail.date = new Date(header.value);
+            break;
+          case 'Subject':
+            formattedEmail.subject = header.value;
+            break;
+          case 'From':
+            formattedEmail.from = formatEmailFromGmail(header.value);
+            break;
+          case 'To':
+            formattedEmail.to.push(formatEmailFromGmail(header.value));
+        }
+      });
+      return formattedEmail;
     });
-    return formattedEmail;
-  });
 };
 
 export const fetchCurrentUserEmailsForEmailAddresses = async (emailAddresses: string[]) => {
