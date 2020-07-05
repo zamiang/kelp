@@ -58,6 +58,7 @@ const emails: formattedEmail[] = times(EMAIL_COUNT, () => ({
   threadId: threadIds[random(0, EMAIL_THREAD_COUNT - 1)],
   date: Faker.date.recent(1),
   subject: Faker.lorem.lines(1),
+  labelIds: [],
   from: sample(people)!.emailAddress,
   to: [sample(people)!.emailAddress],
 }));

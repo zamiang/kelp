@@ -1,38 +1,10 @@
-// TODO: Figure out why gapi.client.gmail isn't imported
-type email = {
-  id: string;
-  threadId: string;
-};
-
-type headerName = 'Date' | 'Subject' | 'From' | 'To';
-
-// date: "Sat, 16 May 2020 12:56:45 -0400"
-// "Brennan Moore <brennanmoore@gmail.com>"
-interface IEmail {
-  result: {
-    historyId: string;
-    id: string;
-    internalDate: string;
-    labelIds: string[];
-    payload: {
-      headers: {
-        name: headerName;
-        value: string;
-      }[];
-    };
-    mimeType: string;
-    sizeEstimate: number;
-    snippet: string;
-    threadId: string;
-  };
-}
-
 export type formattedEmail = {
   id: string;
   snippet: string;
   threadId: string;
   date: Date;
   subject: string;
+  labelIds: string[];
   from: string | null;
   to: (string | null)[];
 };
@@ -43,45 +15,45 @@ const formatEmailFromGmail = (email: string) => {
   return formattedValue ? formattedValue[1] : null;
 };
 
-export const fetchEmails = async (emails: email[]): Promise<formattedEmail[]> => {
+export const fetchEmails = async (
+  emails: gapi.client.gmail.Message[],
+): Promise<formattedEmail[]> => {
   if (emails.length < 1) {
     return [];
   }
   const emailPromises = emails.map((email) =>
-    (gapi.client as any).gmail.users.messages.get({
-      id: email.id,
+    gapi.client.gmail.users.messages.get({
+      id: email.id!,
       userId: 'me',
       format: 'metadata',
-      metadataHeaders: ['Date', 'Subject', 'From', 'To'],
+      metadataHeaders: ['Subject', 'From', 'To'] as any, // Google's types are incorrect - needs to be an array of strings
     }),
   );
-  const emailResponses: IEmail[] = await Promise.all(emailPromises);
+  const emailResponses = await Promise.all(emailPromises);
 
   return emailResponses
-    .filter((email) => !email.result.labelIds.includes('CATEGORY_UPDATES'))
+    .filter((email) => !email.result.labelIds!.includes('CATEGORY_UPDATES')) // Filter out google calendar / google doc notification emails
     .map((email) => {
       const formattedEmail: formattedEmail = {
-        id: email.result.id,
-        snippet: email.result.snippet,
-        threadId: email.result.threadId,
-        date: new Date(),
+        id: email.result.id!,
+        snippet: email.result.snippet!,
+        threadId: email.result.threadId!,
+        labelIds: email.result.labelIds!,
+        date: new Date(Number(email.result.internalDate!)),
         subject: '',
         from: null,
         to: [],
       };
-      email.result.payload.headers.forEach((header) => {
+      email.result.payload!.headers!.forEach((header) => {
         switch (header.name) {
-          case 'Date':
-            formattedEmail.date = new Date(header.value);
-            break;
           case 'Subject':
-            formattedEmail.subject = header.value;
+            formattedEmail.subject = header.value!;
             break;
           case 'From':
-            formattedEmail.from = formatEmailFromGmail(header.value);
+            formattedEmail.from = formatEmailFromGmail(header.value!);
             break;
           case 'To':
-            formattedEmail.to.push(formatEmailFromGmail(header.value));
+            formattedEmail.to.push(formatEmailFromGmail(header.value!));
         }
       });
       return formattedEmail;
@@ -93,10 +65,10 @@ export const fetchCurrentUserEmailsForEmailAddresses = async (emailAddresses: st
     return null;
   }
   const formattedEmails = emailAddresses.map((email) => `from:${email}`);
-  const response = await (gapi.client as any).gmail.users.messages.list({
+  const response = await gapi.client.gmail.users.messages.list({
     userId: 'me',
     q: `newer_than:30d ${formattedEmails.join(' OR ')}`,
   });
 
-  return response.result.messages as email[];
+  return response.result.messages!;
 };
