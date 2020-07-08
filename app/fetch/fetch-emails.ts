@@ -32,7 +32,7 @@ export const fetchEmails = async (
   const emailResponses = await Promise.all(emailPromises);
 
   return emailResponses
-    .filter((email) => !email.result.labelIds!.includes('CATEGORY_UPDATES')) // Filter out google calendar / google doc notification emails
+    .filter((email) => email.result.labelIds && !email.result.labelIds.includes('CATEGORY_UPDATES')) // Filter out google calendar / google doc notification emails
     .map((email) => {
       const formattedEmail: formattedEmail = {
         id: email.result.id!,

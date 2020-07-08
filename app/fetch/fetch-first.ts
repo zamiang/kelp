@@ -31,6 +31,8 @@ const FetchFirst = (accessToken: string) => {
     isLoading: driveResponse.loading && calendarResponse.loading && emailList,
     calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents || [] : [],
     driveFiles: driveResponse.result || [],
+    refetchCalendarEvents: calendarResponse.execute,
+    refetchDriveFiles: driveResponse.execute,
     lastUpdated: new Date(),
     emailAddresses: emailList,
   };

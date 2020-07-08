@@ -8,6 +8,7 @@ export interface IProps {
   peopleIds: string[];
   emailAddresses: string[];
 }
+
 /**
  * Fetches people
  * This layer requires the person store to be completely setup before fetching
@@ -39,6 +40,7 @@ const FetchThird = (props: IProps) => {
     isLoading: emailsResponse.loading && peopleResponse.loading,
     emails: emailsResponse.result ? emailsResponse.result : [],
     personList,
+    refetchPersonList: emailsResponse.execute,
   };
 };
 

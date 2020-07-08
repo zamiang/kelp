@@ -46,6 +46,7 @@ const DashboardContainer = (props: IProps) => {
       personDataStore={personDataStore}
       docDataStore={docDataStore}
       lastUpdated={data.lastUpdated}
+      refetch={data.refetch}
     />
   );
 };

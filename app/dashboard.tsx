@@ -30,6 +30,7 @@ export interface IProps {
   driveActivityStore: DriveActivityDataStore;
   emailStore: EmailDataStore;
   lastUpdated: Date;
+  refetch: () => void;
 }
 
 export interface IRouteProps extends IProps {
@@ -64,7 +65,7 @@ const Dashboard = (props: IProps) => {
   const handleMeetingsClick = () => setRoute({ path: '/', id: null });
   const handleDocsClick = () => setRoute({ path: '/docs', id: null });
 
-  const handleRefreshClick = () => alert('TODO!');
+  const handleRefreshClick = () => props.refetch();
 
   const routeComponent = routes[currentRoute.path]({
     ...props,

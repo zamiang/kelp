@@ -13,6 +13,7 @@ const FetchSecond = (props: IProps) => {
   ]);
   return {
     driveActivity: activityResponse.result ? activityResponse.result.activity : [],
+    refetchDriveActivity: activityResponse.execute,
     isLoading: activityResponse.loading,
   };
 };

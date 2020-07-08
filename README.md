@@ -13,7 +13,8 @@ This aspires to do a few things with instant value:
 In the future it will also do things that are more 'vitamin' like
 
 - Stay accountable to what you want to be doing
-- Help separate from work cleanly
+- Help separate from work
+- Show information about relationships over time
 
 ## Open Source
 

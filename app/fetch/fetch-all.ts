@@ -15,6 +15,7 @@ interface IReturnType {
   driveFiles: gapi.client.drive.File[];
   driveActivity: IFormattedDriveActivity[];
   isLoading: boolean;
+  refetch: () => void;
   lastUpdated: Date;
 }
 
@@ -36,6 +37,12 @@ const FetchAll = (accessToken: string): IReturnType => {
     ...firstLayer,
     ...secondLayer,
     ...thirdLayer,
+    refetch: async () => {
+      await firstLayer.refetchCalendarEvents();
+      await firstLayer.refetchDriveFiles();
+      await secondLayer.refetchDriveActivity();
+      await thirdLayer.refetchPersonList();
+    },
     isLoading: firstLayer.isLoading && secondLayer.isLoading && thirdLayer.isLoading,
   };
 };
