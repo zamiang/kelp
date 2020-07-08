@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { useGoogleLogin } from 'react-google-login';
+import { hot } from 'react-hot-loader/root';
 import config from './config';
 import Copyright from './copyright';
 import DashboardContainer from './dashboard-container';
@@ -107,11 +108,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // Note: Lots more info on this object but is unused by the app
-const initialGoogleState = {
-  accessToken: '',
-};
-
-export type googleState = typeof initialGoogleState;
+const getInitialGoogleState = () =>
+  gapi && gapi.auth ? { accessToken: gapi.auth.getToken().access_token } : { accessToken: '' };
 
 const loadLibraries = () =>
   gapi.client.init({
@@ -129,7 +127,7 @@ gapi.load('client', loadLibraries as any);
 
 const App = () => {
   const classes = useStyles();
-  const [googleLoginState, setGoogleLoginState] = useState(initialGoogleState);
+  const [googleLoginState, setGoogleLoginState] = useState(getInitialGoogleState());
   const { signIn } = useGoogleLogin({
     // TODO: Handle GoogleOfflineResponse and remove response: any
     onSuccess: (response: any) => setGoogleLoginState(response),
@@ -200,4 +198,6 @@ const App = () => {
   );
 };
 
-render(<App />, document.getElementById('root'));
+const HotApp = hot(App);
+
+render(<HotApp />, document.getElementById('root'));

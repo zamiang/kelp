@@ -1,13 +1,14 @@
-# Kelp [working title]
+# Kelp
 
-Time is our central organizing principal. If something matters, but you don’t spend any time on it. Does it really matter?
+** Your information filtration system **
 
-Imagine your all your chrome tabs, google docs, emails and notes spread across your desk. The most important thing to know about a document is whether it is in a tab, an email or a doc - not it's contents.
+Kelp brings your data together in one place. Pivot your meetings by what documents the attendees have edited recently. By associating person, a time slot and documents together, Kelp infers associations between information, making the information easier to find. Prepare for your next meeting in a flash!
 
-This aspires to do a few things with direct value:
+This aspires to do a few things with instant value:
 
-- help you find what you need
-- ‘right information right time’
+- help you find what you need when you need it
+- provide the ‘right information at the right time’
+- be easy to understand (no 'black box' recommendation)
 
 In the future it will also do things that are more 'vitamin' like
 
@@ -39,10 +40,9 @@ Add your google oauth app's tokens to secrets.json
       "client_secret": "bar"
     }
 
-When starting the app, in separate tabs run
+When starting the ap
 
-    npm start
-    npm run dev
+    npm run start
 
 [google oauth]: https://developers.google.com/identity/protocols/oauth2
 [google drive api]: https://developers.google.com/drive

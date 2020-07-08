@@ -67,6 +67,7 @@ const getClientConfig = () => ({
   },
   devServer: {
     contentBase: './dist',
+    hot: true,
   },
   mode: isProduction ? 'production' : 'development',
   node,
