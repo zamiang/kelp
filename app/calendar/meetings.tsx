@@ -1,23 +1,9 @@
 import { Drawer, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { IRouteProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
 import ExpandedMeeting from './expand-meeting';
 import Meeting, { CURRENT_TIME_ELEMENT_ID } from './meeting-row';
-
-const useStyles = makeStyles((theme) => ({
-  day: {
-    fontSize: theme.typography.body2.fontSize,
-    textTransform: 'uppercase',
-    marginBottom: theme.spacing(2),
-    marginLeft: -theme.spacing(2),
-    borderBottom: `1px solid ${theme.palette.primary.dark}`,
-  },
-  meetingRow: {
-    marginBottom: theme.spacing(4),
-  },
-}));
 
 const MeetingsByDay = (
   props: IRouteProps & {
@@ -27,14 +13,14 @@ const MeetingsByDay = (
 ) => {
   const meetingsByDay = props.timeDataStore.getSegmentsByDay();
   const currentTime = new Date();
-  const classes = useStyles();
+  const styles = panelStyles();
   const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
   let hasRenderedCurrentTime = false;
   return (
     <React.Fragment>
       {days.map((day) => (
-        <div key={day} className={classes.meetingRow}>
-          <Typography className={classes.day}>{day}</Typography>
+        <div key={day} className={styles.row}>
+          <Typography className={styles.title}>{day}</Typography>
           {meetingsByDay[day]
             .sort((a, b) => (a.start > b.start ? 1 : -1))
             .map((meeting) => {

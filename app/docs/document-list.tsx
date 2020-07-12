@@ -80,14 +80,22 @@ const DocumentList = (props: IRouteProps) => {
   return (
     <React.Fragment>
       <div className={styles.panel}>
-        {docs.map((doc) => (
-          <Doc
-            key={doc.id}
-            doc={doc}
-            setSelectedDocumentId={setSelectedDocumentId}
-            selectedDocumentId={selectedDocumentId}
-          />
-        ))}
+        <div className={styles.row}>
+          <Typography className={styles.title}>Documents you edited recently</Typography>
+          {docs.map((doc) => (
+            <Doc
+              key={doc.id}
+              doc={doc}
+              setSelectedDocumentId={setSelectedDocumentId}
+              selectedDocumentId={selectedDocumentId}
+            />
+          ))}
+        </div>
+        <div className={styles.row}>
+          <Typography className={styles.title}>
+            Documents with activity from people you are in meetings with [today]
+          </Typography>
+        </div>
       </div>
       <Drawer
         open={selectedDocumentId ? true : false}

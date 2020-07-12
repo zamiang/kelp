@@ -26,6 +26,16 @@ const useStyles = makeStyles((theme) => ({
     width: `calc((100vw - ${drawerWidth}px) * 0.618)`,
     // top: TOP_BAR_HEIGHT,
   },
+  title: {
+    fontSize: theme.typography.body2.fontSize,
+    textTransform: 'uppercase',
+    marginBottom: theme.spacing(2),
+    marginLeft: -theme.spacing(2),
+    borderBottom: `1px solid ${theme.palette.primary.dark}`,
+  },
+  row: {
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 export default useStyles;
