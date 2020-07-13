@@ -1,6 +1,4 @@
-# Kelp
-
-** Your information filtration system **
+# Kelp: Your information filtration system
 
 Kelp brings your data together in one place. Pivot your meetings by what documents the attendees have edited recently. By associating person, a time slot and documents together, Kelp infers associations between information, making the information easier to find. Prepare for your next meeting in a flash!
 
