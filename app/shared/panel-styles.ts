@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
     padding: theme.spacing(5),
     paddingRight: 0,
-    background: theme.palette.primary.light,
     position: 'relative',
     width: `calc((100vw - ${drawerWidth}px) * 0.382)`,
   },

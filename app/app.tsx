@@ -18,15 +18,15 @@ import { useGoogleLogin } from 'react-google-login';
 import { hot } from 'react-hot-loader/root';
 import config from './config';
 import Copyright from './copyright';
-import DashboardContainer from './dashboard-container';
-// import DashboardContainer from './dashboard-fake-container';
+// import DashboardContainer from './dashboard-container';
+import DashboardContainer from './dashboard-fake-container';
 
 const bodyFontFamily = "'-apple-system', Arial, sans-serif;";
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: '#EDF1F2', light: '#F6F6FE' },
-    secondary: { main: '#7D58FE', light: '#ECE7FE' },
+    primary: { main: '#e8eaf6', light: '#ffffff', dark: '#b6b8c3' },
+    secondary: { main: '#4fc3f7', light: '#8bf6ff', dark: '#0093c4' },
     info: { main: '#D6F9F5' },
   },
   typography: {
@@ -77,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(4, 0, 2),
     padding: theme.spacing(2, 6),
-    borderRadius: 25,
   },
   avatar: {
     margin: theme.spacing(1),
@@ -174,8 +173,8 @@ const App = () => {
                 easier to find. Prepare for your next meeting in a flash!
               </Typography>
               <Button
-                variant="contained"
                 color="secondary"
+                variant="contained"
                 size="large"
                 onClick={signIn}
                 className={classes.submit}
