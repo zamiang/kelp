@@ -38,7 +38,7 @@ const plugins = [
     NODE_ENV: 'development',
   }),
 ];
-if (isProduction) {
+if (isProduction && secrets.awsAccessKeyId) {
   plugins.push(
     new S3Plugin({
       include: [/.*\.(css|js|html|svg|png)/],
