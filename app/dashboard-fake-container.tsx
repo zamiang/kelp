@@ -36,6 +36,7 @@ const DashboardFakeContainer = (props: IProps) => {
 
   return (
     <Dashboard
+      refetch={() => null}
       driveActivityStore={driveActivityDataStore}
       emailStore={emailDataStore}
       timeDataStore={timeDataStore}
