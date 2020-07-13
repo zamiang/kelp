@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://www.kelp.nyc",
   "description": "Kelp brings your data together in one place",
-  "repository": "https://github.com/zamiang/time",
+  "repository": "https://github.com/zamiang/kelp",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Brennan Moore",
