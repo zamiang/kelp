@@ -17,9 +17,8 @@
     "build": "NODE_ENV=production webpack --colors",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
     "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
-    "lint:timing": "TIMING=1 npx eslint './**/*.{js,ts,tsx}'",
     "prettier": "prettier --write \"{app,webpack}/**/*.{ts,tsx,js}\"",
-    "prettier-check": "prettier --list-different \"{app,webpack}/**/*.{ts,tsx,js}\"",
+    "prettier:check": "prettier --list-different \"{app,webpack}/**/*.{ts,tsx,js}\"",
     "start": "webpack-dev-server --open",
     "typecheck": "node node_modules/.bin/tsc --project tsconfig.json --noEmit --pretty"
   },
