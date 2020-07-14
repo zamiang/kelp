@@ -4,7 +4,7 @@ import { random, sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
-import { IDoc } from './doc-store';
+import { DocumentType, IDoc } from './doc-store';
 import { IPerson } from './person-store';
 import { ISegment } from './time-store';
 
@@ -73,6 +73,7 @@ const documents: IDoc[] = times(DOCUMENT_COUNT, () => ({
   viewedByMe: true,
   link: Faker.internet.url(),
   updatedAt: new Date(Faker.date.recent(1).toISOString()),
+  documentType: sample(['UNKNOWN', 'GOOGLE_SHEET', 'GOOGLE_SLIDES', 'GOOGLE_DOC'])! as DocumentType,
 }));
 
 /**
