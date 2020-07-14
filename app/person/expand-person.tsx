@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Person = (props: IRouteProps & { person: IPerson }) => {
+const ExpandPerson = (props: IRouteProps & { person: IPerson }) => {
   const classes = useStyles();
   if (!props.person) {
     return null;
@@ -63,4 +63,4 @@ const Person = (props: IRouteProps & { person: IPerson }) => {
   );
 };
 
-export default Person;
+export default ExpandPerson;
