@@ -47,7 +47,7 @@ if (isProduction) {
         secretAccessKey: secrets.awsSecretAccessKey,
       },
       s3UploadOptions: {
-        Bucket: 'www.collasso.me',
+        Bucket: 'www.kelp.nyc',
       },
       /*
       cloudfrontInvalidateOptions: {
