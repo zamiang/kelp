@@ -39,7 +39,7 @@ Add your google oauth app's tokens to secrets.json
       "client_secret": "bar"
     }
 
-When starting the ap
+When starting the app
 
     npm run start
 
