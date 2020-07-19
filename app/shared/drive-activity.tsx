@@ -1,6 +1,8 @@
-import { Grid, Link, Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { formatDistanceToNow } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
@@ -9,18 +11,14 @@ import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import PersonDataStore from '../store/person-store';
 
-const useRowStyles = makeStyles((theme) => ({
+const useRowStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     overflow: 'hidden',
   },
   icon: {
-    height: 32,
-    width: 32,
-    background: theme.palette.secondary.main,
-    color: 'white',
-    borderRadius: '50%',
-    padding: 5,
+    height: 24,
+    width: 24,
     display: 'block',
   },
 }));
@@ -36,7 +34,7 @@ const Activity = (props: {
   const doc = props.docStore.getByLink(props.activity.link!);
   if (!doc) return null;
   return (
-    <Grid container wrap="nowrap" spacing={2} alignItems="center">
+    <Grid container wrap="nowrap" spacing={2}>
       <Grid item>
         <InsertDriveFileIcon className={props.classes.icon} />
       </Grid>

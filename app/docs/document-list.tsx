@@ -1,4 +1,5 @@
-import { Drawer, Typography } from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
+import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { IRouteProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';

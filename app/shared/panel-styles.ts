@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   panel: {
     overflowX: 'auto',
     minHeight: '100vh',
-    padding: theme.spacing(5),
+    padding: theme.spacing(3),
     paddingRight: 0,
     position: 'relative',
     width: `calc((100vw - ${drawerWidth}px) * 0.382)`,
@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body2.fontSize,
     textTransform: 'uppercase',
     marginBottom: theme.spacing(2),
-    marginLeft: -theme.spacing(2),
     borderBottom: `1px solid ${theme.palette.primary.dark}`,
   },
   row: {

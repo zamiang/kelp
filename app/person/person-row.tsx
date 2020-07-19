@@ -1,4 +1,8 @@
-import { Avatar, Grid, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import clsx from 'clsx';
 import React from 'react';
 import { IRouteProps } from '../dashboard';

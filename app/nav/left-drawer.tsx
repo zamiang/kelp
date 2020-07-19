@@ -1,13 +1,10 @@
-import {
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  styled,
-} from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -64,15 +61,31 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -12,
   },
   spacer: { margin: theme.spacing(2) },
-  selected: { color: theme.palette.text.primary },
+  selected: {
+    color: theme.palette.text.primary,
+  },
   unSelected: { color: theme.palette.text.hint },
+  listItem: {
+    borderRadius: `0 ${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
+    transition: theme.transitions.create('background', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
 }));
 
-const StyledListItem = styled(ListItem)({
+/**
+const ListItem = styled(ListItem)((root: any) => ({
+  borderRadius: `0 ${root.theme.spacing(3)}px ${root.theme.spacing(3)}px 0`,
+  transition: root.theme.transitions.create('background', {
+    easing: root.theme.transitions.easing.sharp,
+    duration: root.theme.transitions.duration.enteringScreen,
+  }),
   '&.Mui-selected': {
-    backgroundColor: 'white',
+    backgroundColor: root.theme.palette.secondary.main,
   },
-});
+}));
+*/
 
 export interface IProps {
   isOpen: boolean;
@@ -123,7 +136,12 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <StyledListItem button onClick={props.handleMeetingsClick} selected={isMeetingsSelected}>
+        <ListItem
+          button
+          onClick={props.handleMeetingsClick}
+          selected={isMeetingsSelected}
+          className={classes.listItem}
+        >
           <ListItemIcon>
             <DashboardIcon className={isMeetingsSelected ? classes.selected : classes.unSelected} />
           </ListItemIcon>
@@ -131,8 +149,13 @@ const LeftDrawer = (props: IProps) => {
             primary="Calendar"
             className={isMeetingsSelected ? classes.selected : classes.unSelected}
           />
-        </StyledListItem>
-        <StyledListItem button onClick={props.handleDocsClick} selected={isDocsSelected}>
+        </ListItem>
+        <ListItem
+          button
+          onClick={props.handleDocsClick}
+          selected={isDocsSelected}
+          className={classes.listItem}
+        >
           <ListItemIcon>
             <InsertDriveFileIcon
               className={isDocsSelected ? classes.selected : classes.unSelected}
@@ -142,8 +165,13 @@ const LeftDrawer = (props: IProps) => {
             primary="Docs"
             className={isDocsSelected ? classes.selected : classes.unSelected}
           />
-        </StyledListItem>
-        <StyledListItem button onClick={props.handlePeopleClick} selected={isPeopleSelected}>
+        </ListItem>
+        <ListItem
+          button
+          onClick={props.handlePeopleClick}
+          selected={isPeopleSelected}
+          className={classes.listItem}
+        >
           <ListItemIcon>
             <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
           </ListItemIcon>
@@ -151,7 +179,7 @@ const LeftDrawer = (props: IProps) => {
             primary="People"
             className={isPeopleSelected ? classes.selected : classes.unSelected}
           />
-        </StyledListItem>
+        </ListItem>
       </List>
       <div className={classes.spacer} />
       <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
