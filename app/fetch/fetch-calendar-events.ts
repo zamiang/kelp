@@ -42,6 +42,15 @@ export const getSelfResponseStatus = (attendees: attendee[]) => {
   return 'needsAction';
 };
 
+const isSelfConfirmedAttending = (attendees: attendee[]) => {
+  for (const person of attendees) {
+    if (person.self) {
+      return ['needsAction', 'declined'].indexOf(person.responseStatus || '') < 0;
+    }
+  }
+  return false;
+};
+
 const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) => any) => {
   const calendarResponse = await gapi.client.calendar.events.list({
     calendarId: 'primary',
@@ -61,7 +70,7 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
   const emailAddresses: string[] = [];
   filteredCalendarEvents.map((event) =>
     (event.attendees || []).map((attendee) => {
-      attendee.email && emailAddresses.push(attendee.email);
+      attendee.email && !attendee.resource && emailAddresses.push(attendee.email);
     }),
   );
 
@@ -71,7 +80,13 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
     calendarEvents: filteredCalendarEvents
       .filter(
         (event) =>
-          event.id && event.start && event.start.dateTime && event.end && event.end.dateTime,
+          event.id &&
+          event.start &&
+          event.start.dateTime &&
+          event.end &&
+          event.end.dateTime &&
+          (!config.SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS ||
+            isSelfConfirmedAttending(event.attendees || [])),
       )
       .map((event) => ({
         id: event.id!,
@@ -81,7 +96,9 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
         end: new Date(event.end!.dateTime!),
         // TODO: Handle lack of enum type in the google calendar library
         selfResponseStatus: getSelfResponseStatus(event.attendees || []),
-        attendees: (event.attendees || []).filter((attendee) => attendee.email),
+        attendees: (event.attendees || []).filter(
+          (attendee) => attendee.email && !attendee.resource, // filter out conference rooms
+        ),
         description: event.description,
       })),
     // calendar events return little attendee information beyond email addresses (contradicting docs)
