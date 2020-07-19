@@ -1,41 +1,37 @@
-export type DocumentType = 'UNKNOWN' | 'GOOGLE_SHEET' | 'GOOGLE_SLIDES' | 'GOOGLE_DOC';
+export type DocumentType =
+  | 'UNKNOWN'
+  | 'application/vnd.google-apps.presentation'
+  | 'application/vnd.google-apps.spreadsheet'
+  | 'application/vnd.google-apps.document';
 
 export interface IDoc {
   id: string;
   name?: string;
-  description?: string;
   viewedByMe?: boolean;
   link?: string;
   updatedAt?: Date;
-  documentType: DocumentType;
+  viewedByMeAt?: Date;
+  mimeType: DocumentType;
+  isShared: boolean;
+  isStarred: boolean;
+  iconLink?: string;
 }
 
 interface IDocById {
   [id: string]: IDoc;
 }
 
-const getDocumentTypeForUrl = (url?: string): DocumentType => {
-  if (!url) {
-    return 'UNKNOWN';
-  } else if (url.indexOf('google.com/spreadsheets') > -1) {
-    return 'GOOGLE_SHEET';
-  } else if (url.indexOf('google.com/presentation') > -1) {
-    return 'GOOGLE_SLIDES';
-  } else if (url.indexOf('google.com/document') > -1) {
-    return 'GOOGLE_DOC';
-  } else {
-    return 'UNKNOWN';
-  }
-};
-
 // handle one person w/ multiple email addresses
 export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
   id: googleDoc.id || 'wtf',
   name: googleDoc.name,
-  description: googleDoc.description,
   viewedByMe: googleDoc.viewedByMe,
+  viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
   link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
-  documentType: getDocumentTypeForUrl(googleDoc.webViewLink),
+  iconLink: googleDoc.iconLink,
+  mimeType: googleDoc.mimeType as any,
+  isStarred: !!googleDoc.starred,
+  isShared: !!googleDoc.shared,
   updatedAt: googleDoc.modifiedTime ? new Date(googleDoc.modifiedTime) : undefined,
 });
 

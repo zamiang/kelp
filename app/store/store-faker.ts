@@ -4,7 +4,7 @@ import { random, sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
-import { DocumentType, IDoc } from './doc-store';
+import { IDoc } from './doc-store';
 import { IPerson } from './person-store';
 import { ISegment } from './time-store';
 
@@ -55,9 +55,10 @@ times(EMAIL_THREAD_COUNT, () => {
 const emails: formattedEmail[] = times(EMAIL_COUNT, () => ({
   id: Faker.random.uuid(),
   snippet: Faker.lorem.paragraphs(2),
-  threadId: threadIds[random(0, EMAIL_THREAD_COUNT - 1)],
+  threadId: sample(threadIds)!,
   date: Faker.date.recent(1),
   subject: Faker.lorem.lines(1),
+  isImportant: Faker.random.boolean(),
   labelIds: [],
   from: sample(people)!.emailAddress,
   to: [sample(people)!.emailAddress],
@@ -69,11 +70,14 @@ const emails: formattedEmail[] = times(EMAIL_COUNT, () => ({
 const documents: IDoc[] = times(DOCUMENT_COUNT, () => ({
   id: Faker.random.uuid(),
   name: Faker.system.fileName(),
-  description: Faker.lorem.lines(1),
   viewedByMe: true,
+  viewedByMeAt: new Date(Faker.date.recent(1).toISOString()),
   link: Faker.internet.url(),
+  iconLink: Faker.image.image(),
+  mimeType: 'UNKNOWN',
+  isShared: Faker.random.boolean(),
+  isStarred: Faker.random.boolean(),
   updatedAt: new Date(Faker.date.recent(1).toISOString()),
-  documentType: sample(['UNKNOWN', 'GOOGLE_SHEET', 'GOOGLE_SLIDES', 'GOOGLE_DOC'])! as DocumentType,
 }));
 
 /**

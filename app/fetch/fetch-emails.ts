@@ -5,6 +5,7 @@ export type formattedEmail = {
   date: Date;
   subject: string;
   labelIds: string[];
+  isImportant: boolean;
   from: string | null;
   to: (string | null)[];
 };
@@ -40,6 +41,7 @@ export const fetchEmails = async (
         threadId: email.result.threadId!,
         labelIds: email.result.labelIds!,
         date: new Date(Number(email.result.internalDate!)),
+        isImportant: email.result.labelIds!.includes('IMPORTANT'),
         subject: '',
         from: null,
         to: [],

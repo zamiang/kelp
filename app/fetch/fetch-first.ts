@@ -1,11 +1,7 @@
-import { subDays } from 'date-fns';
 import { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import fetchCalendarEvents from './fetch-calendar-events';
 import fetchDriveFiles from './fetch-drive-files';
-
-export const NUMBER_OF_DAYS_BACK = 7;
-export const startDate = subDays(new Date(), NUMBER_OF_DAYS_BACK);
 
 export interface IProps {
   accessToken: string;
