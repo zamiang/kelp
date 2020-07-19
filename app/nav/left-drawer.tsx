@@ -64,15 +64,22 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -12,
   },
   spacer: { margin: theme.spacing(2) },
-  selected: { color: theme.palette.text.primary },
+  selected: {
+    color: theme.palette.text.primary,
+  },
   unSelected: { color: theme.palette.text.hint },
 }));
 
-const StyledListItem = styled(ListItem)({
+const StyledListItem = styled(ListItem)((root) => ({
+  borderRadius: `0 ${root.theme.spacing(3)}px ${root.theme.spacing(3)}px 0`,
+  transition: root.theme.transitions.create('background', {
+    easing: root.theme.transitions.easing.sharp,
+    duration: root.theme.transitions.duration.enteringScreen,
+  }),
   '&.Mui-selected': {
-    backgroundColor: 'white',
+    backgroundColor: root.theme.palette.secondary.main,
   },
-});
+}));
 
 export interface IProps {
   isOpen: boolean;

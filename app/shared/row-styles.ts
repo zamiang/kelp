@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',
     opacity: 1,
-    paddingLeft: 0,
     marginBottom: theme.spacing(0.5),
+    borderRadius: `${theme.spacing(4)}px 0 0 ${theme.spacing(4)}px`,
     '& > *': {
       borderBottom: 'unset',
     },
