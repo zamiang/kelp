@@ -1,4 +1,4 @@
-import { Drawer } from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
 import { sortBy } from 'lodash';
 import React, { useState } from 'react';
 import { IRouteProps } from '../dashboard';

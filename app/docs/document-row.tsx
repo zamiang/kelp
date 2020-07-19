@@ -1,4 +1,6 @@
-import { Grid, ListItem, Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import ListItem from '@material-ui/core/ListItem';
+import Typography from '@material-ui/core/Typography';
 import SlideShowIcon from '@material-ui/icons/InsertChart';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import SheetsIcon from '@material-ui/icons/ViewList';
