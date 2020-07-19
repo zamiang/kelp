@@ -64,13 +64,6 @@ const ExpandedDocument = (props: {
       )}
       <Grid container spacing={3}>
         <Grid item xs={7}>
-          {props.document.description && (
-            <Typography
-              variant="body2"
-              style={{ wordWrap: 'break-word' }}
-              dangerouslySetInnerHTML={{ __html: props.document.description }}
-            />
-          )}
           {people.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

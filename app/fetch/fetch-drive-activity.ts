@@ -1,6 +1,6 @@
 import { flatten, uniq } from 'lodash';
+import config from '../config';
 import { DriveActivity, Target } from '../types/activity';
-import { startDate } from './fetch-first';
 
 const getTargetInfo = (target: Target) => {
   if (target.drive) {
@@ -42,7 +42,7 @@ const fetchDriveActivityForDocument = async (documentId: string) => {
   // Todo: Make driveactivity types
   const activityResponse = await (gapi.client as any).driveactivity.activity.query({
     pageSize: 100,
-    filter: `detail.action_detail_case:(CREATE EDIT COMMENT) AND time >= "${startDate.toISOString()}"`,
+    filter: `detail.action_detail_case:(CREATE EDIT COMMENT) AND time >= "${config.startDate.toISOString()}"`,
     itemName: `items/${documentId}`,
   });
   const activity: DriveActivity[] =

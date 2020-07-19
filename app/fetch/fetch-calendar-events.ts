@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 import { uniq } from 'lodash';
-import { startDate } from './fetch-first';
+import config from '../config';
 
 /**
  * The attendee's response status. Possible values are:
@@ -49,7 +49,7 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
     maxResults: 80,
     singleEvents: true,
     orderBy: 'updated', // starttime does not work :shrug:
-    timeMin: startDate.toISOString(),
+    timeMin: config.startDate.toISOString(),
     timeMax: addDays(new Date(), 1).toISOString(),
   });
 
