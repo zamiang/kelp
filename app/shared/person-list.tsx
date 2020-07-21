@@ -5,10 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import PersonDataStore, { IPerson } from '../store/person-store';
 
 interface IProps {
-  handlePersonClick: (id: string) => void;
   people: IPerson[];
   personStore: PersonDataStore;
 }
@@ -37,8 +37,9 @@ const PersonRow = (props: IProps) => {
         return (
           <ListItem
             button={true}
+            component={RouterLink}
+            to={`/dashboard/people/${person.id}`}
             key={person.id}
-            onClick={() => props.handlePersonClick(person.emailAddress)}
             className={clsx(classes.person)}
           >
             <Grid container alignItems="center" spacing={1} wrap="nowrap">

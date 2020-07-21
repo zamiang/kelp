@@ -36,13 +36,7 @@ const HomepageTopBar = (props: { signIn: () => void }) => {
             Kelp
           </ListItemText>
         </ListItem>
-        <Button
-          color="primary"
-          variant="contained"
-          size="small"
-          onClick={props.signIn}
-          disableElevation={true}
-        >
+        <Button color="primary" variant="contained" onClick={props.signIn} disableElevation={true}>
           Log In
         </Button>
       </Toolbar>

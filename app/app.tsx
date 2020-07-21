@@ -99,7 +99,7 @@ const App = () => {
         <div className={clsx(classes.root, !isLoggedIn && classes.container)}>
           <CssBaseline />
           <Switch>
-            <Route path="/dashboard">
+            <Route path="/dashboard/meetings">
               {isLoggedIn ? <DashboardContainer /> : <Redirect to="/" />}
             </Route>
             <Route path="/about">About</Route>
@@ -107,7 +107,7 @@ const App = () => {
             <Route path="/terms">Terms</Route>
             <Route path="">
               {isLoggedIn ? (
-                <Redirect to="/dashboard" />
+                <Redirect to="/dashboard/meetings" />
               ) : (
                 <Homepage setGoogleLoginState={setGoogleLoginState} />
               )}

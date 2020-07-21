@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { uniqBy } from 'lodash';
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import EmailDataStore, { IEmail } from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 
@@ -26,17 +27,15 @@ const useRowStyles = makeStyles(() => ({
 
 type classesType = ReturnType<typeof useRowStyles>;
 
-const Email = (props: {
-  email: IEmail;
-  personStore: PersonDataStore;
-  classes: classesType;
-  handlePersonClick: (email?: string) => void;
-}) => {
+const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: classesType }) => {
   const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
   const person = props.personStore.getPersonById(props.email.fromPersonId);
+  if (!person) {
+    return null;
+  }
   return (
     <Grid container wrap="nowrap" spacing={2} alignItems="center">
-      <Grid item onClick={() => props.handlePersonClick(person && person.emailAddress)}>
+      <Grid item component={RouterLink} to={`/dashboard/people/${person.id}`}>
         <Avatar style={{ height: 32, width: 32 }} src={(person && person.imageUrl) || ''}>
           {person && props.personStore.getPersonDisplayName(person)[0]}
         </Avatar>
@@ -50,7 +49,8 @@ const Email = (props: {
         <Typography
           variant="caption"
           color="textSecondary"
-          onClick={() => props.handlePersonClick(person && person.emailAddress)}
+          component={RouterLink}
+          to={`/dashboard/person/${person.id}`}
         >
           {person && props.personStore.getPersonDisplayName(person)}
         </Typography>
@@ -63,7 +63,6 @@ const EmailsList = (props: {
   emailIds: string[];
   emailStore: EmailDataStore;
   personStore: PersonDataStore;
-  handlePersonClick: (email?: string) => void;
 }) => {
   const classes = useRowStyles();
   const emails = props.emailIds.map((emailId) => props.emailStore.getById(emailId));
@@ -82,7 +81,6 @@ const EmailsList = (props: {
                 email={email}
                 personStore={props.personStore}
                 classes={classes}
-                handlePersonClick={props.handlePersonClick}
               />
             ),
         )}

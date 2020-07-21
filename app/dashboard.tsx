@@ -1,15 +1,22 @@
+import Drawer from '@material-ui/core/Drawer';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import ExpandedMeeting from './calendar/expand-meeting';
 import Meetings from './calendar/meetings';
 import DocumentList from './docs/document-list';
+import ExpandedDocument from './docs/expand-document';
 import LeftDrawer from './nav/left-drawer';
-// import TopBar from './nav/top-bar';
+import ExpandPerson from './person/expand-person';
 import People from './person/people';
+import panelStyles from './shared/panel-styles';
 import DocDataStore from './store/doc-store';
 import DriveActivityDataStore from './store/drive-activity-store';
 import EmailDataStore from './store/email-store';
 import PersonDataStore from './store/person-store';
 import TimeDataStore from './store/time-store';
+
+// import TopBar from './nav/top-bar';
 
 export const drawerWidth = 240;
 
@@ -33,26 +40,10 @@ export interface IProps {
   refetch: () => void;
 }
 
-export interface IRouteProps extends IProps {
-  handlePersonClick: (id?: string) => void;
-  routeId: string | null;
-}
-
-const routes = {
-  '/': (props: IRouteProps) => <Meetings {...props} />,
-  '/docs': (props: IRouteProps) => <DocumentList {...props} />,
-  '/people': (props: IRouteProps) => <People {...props} />,
-};
-
-interface IRoute {
-  path: '/' | '/docs' | '/people';
-  id: string | null;
-}
-
 const Dashboard = (props: IProps) => {
   const classes = useStyles();
+  const panelClasses = panelStyles();
   const [isOpen, setOpen] = useState(true);
-  const [currentRoute, setRoute] = useState<IRoute>({ path: '/', id: null });
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -60,38 +51,49 @@ const Dashboard = (props: IProps) => {
     setOpen(false);
   };
 
-  const handlePeopleClick = () => setRoute({ path: '/people', id: null });
-  const handlePersonClick = (id?: string) => id && setRoute({ path: '/people', id });
-  const handleMeetingsClick = () => setRoute({ path: '/', id: null });
-  const handleDocsClick = () => setRoute({ path: '/docs', id: null });
-
   const handleRefreshClick = () => props.refetch();
 
-  const routeComponent = routes[currentRoute.path]({
-    ...props,
-    routeId: currentRoute.id,
-    handlePersonClick,
-  });
   // <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} /> --!>
   // add above route component <div className={classes.appBarSpacer} />
   return (
     <React.Fragment>
       <LeftDrawer
         lastUpdated={props.lastUpdated}
-        handleDocsClick={handleDocsClick}
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}
         people={props.personDataStore.getPeople()}
         documents={props.docDataStore.getDocs()}
         meetings={props.timeDataStore.getSegments()}
-        handlePeopleClick={handlePeopleClick}
-        handlePersonClick={handlePersonClick}
-        handleMeetingsClick={handleMeetingsClick}
         handleDrawerOpen={handleDrawerOpen}
         handleRefreshClick={handleRefreshClick}
-        currentRoute={currentRoute.path}
       />
-      <main className={classes.content}>{routeComponent}</main>
+      <main className={classes.content}>
+        <div className={panelClasses.panel}>
+          <Switch>
+            <Route path="/dashboard/docs" component={() => <DocumentList {...props} />} />
+            <Route path="/dashboard/people" component={() => <People {...props} />} />
+            <Route path="/dashboard/meetings" component={() => <Meetings {...props} />} />
+          </Switch>
+        </div>
+        <Drawer
+          open={true}
+          classes={{
+            paper: panelClasses.dockedPanel,
+          }}
+          anchor="right"
+          variant="persistent"
+        >
+          <Route
+            path="/dashboard/docs/:documentId"
+            component={() => <ExpandedDocument {...props} />}
+          />
+          <Route path="/dashboard/people/:personId" component={() => <ExpandPerson {...props} />} />
+          <Route
+            path="/dashboard/meetings/:meetingId"
+            component={() => <ExpandedMeeting {...props} />}
+          />
+        </Drawer>
+      </main>
     </React.Fragment>
   );
 };

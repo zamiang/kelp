@@ -44,13 +44,13 @@ const getAutocompleteResults = (props: IProps) => {
   return results;
 };
 
-const onAutocompleteSelect = (props: IProps, result?: IResult) => {
+const onAutocompleteSelect = (_props?: IProps, result?: IResult) => {
   if (!result) {
     return;
   }
   switch (result.type) {
     case 'person':
-      props.handlePersonClick(result.id);
+      alert(`clicked ${result.id} person`);
       break;
     case 'document':
       alert(`clicked ${result.id} document`);

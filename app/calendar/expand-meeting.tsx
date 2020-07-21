@@ -5,14 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
+import { IProps } from '../dashboard';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/drive-activity';
 import EmailsList from '../shared/emails-list';
-import DocDataStore from '../store/doc-store';
-import DriveActivityDataStore from '../store/drive-activity-store';
-import EmailDataStore from '../store/email-store';
-import PersonDataStore from '../store/person-store';
-import TimeStore, { ISegment } from '../store/time-store';
 
 const useStyles = makeStyles((theme) => ({
   // todo move into theme
@@ -38,31 +34,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedMeeting = (props: {
-  meeting: ISegment;
-  personStore: PersonDataStore;
-  docStore: DocDataStore;
-  driveActivityStore: DriveActivityDataStore;
-  emailStore: EmailDataStore;
-  timeStore: TimeStore;
-  handlePersonClick: (email?: string) => void;
-}) => {
+const ExpandedMeeting = (props: IProps) => {
   const classes = useStyles();
-  const attendees = (props.meeting.formattedAttendees || []).filter((person) => person.personId);
+  const selectedMeetingId = 'foo';
+  const meeting = props.timeDataStore.getSegmentById(selectedMeetingId)!;
+  const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
   const hasAttendees = attendees.length > 0;
-  const hasEmails = props.meeting.emailIds.length > 0;
-  const hasDescription = props.meeting.description && props.meeting.description.length > 0;
-  const hasDriveActivity = props.meeting.driveActivityIds.length > 0;
-  const attendeeIds = (props.meeting.formattedAttendees || [])
+  const hasEmails = meeting.emailIds.length > 0;
+  const hasDescription = meeting.description && meeting.description.length > 0;
+  const hasDriveActivity = meeting.driveActivityIds.length > 0;
+  const attendeeIds = (meeting.formattedAttendees || [])
     .filter((attendee) => !attendee.self)
     .map((attendee) => attendee.personId);
   const people = attendeeIds
-    .map((id) => props.personStore.getPersonById(id))
+    .map((id) => props.personDataStore.getPersonById(id))
     .filter((person) => !!person);
   const documentsCurrentUserEditedWhileMeetingWithAttendees = flatten(
     people.map((person) => {
       const segmentIds = person!.segmentIds;
-      const segments = segmentIds.map((id) => props.timeStore.getSegmentById(id)!.driveActivityIds);
+      const segments = segmentIds.map(
+        (id) => props.timeDataStore.getSegmentById(id)!.driveActivityIds,
+      );
       return flatten(segments);
     }),
   );
@@ -70,19 +62,19 @@ const ExpandedMeeting = (props: {
   const driveActivityFromAttendees = flatten(people.map((person) => person!.driveActivityIds));
   return (
     <div className={classes.container}>
-      {props.meeting.link && (
-        <Link color="secondary" target="_blank" href={props.meeting.link}>
+      {meeting.link && (
+        <Link color="secondary" target="_blank" href={meeting.link}>
           See in Google Calendar
         </Link>
       )}
       <Typography variant="h3" color="textPrimary" gutterBottom>
-        {props.meeting.summary || '(no title)'}
+        {meeting.summary || '(no title)'}
       </Typography>
       <Typography variant="subtitle2" gutterBottom>
         <i>
-          {format(props.meeting.start, 'EEEE, MMMM d')} ⋅ {format(props.meeting.start, 'p')}
+          {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')}
           {' – '}
-          {format(props.meeting.end, 'p')}
+          {format(meeting.end, 'p')}
         </i>
       </Typography>
       <Grid container spacing={3} className={classes.content}>
@@ -91,7 +83,7 @@ const ExpandedMeeting = (props: {
             <Typography
               variant="body2"
               style={{ wordWrap: 'break-word' }}
-              dangerouslySetInnerHTML={{ __html: props.meeting.description! }}
+              dangerouslySetInnerHTML={{ __html: meeting.description! }}
             />
           )}
           {hasEmails && (
@@ -100,10 +92,9 @@ const ExpandedMeeting = (props: {
                 Emails Sent or received during the meeting
               </Typography>
               <EmailsList
-                emailIds={props.meeting.emailIds}
+                emailIds={meeting.emailIds}
                 emailStore={props.emailStore}
-                personStore={props.personStore}
-                handlePersonClick={props.handlePersonClick}
+                personStore={props.personDataStore}
               />
             </React.Fragment>
           )}
@@ -113,10 +104,10 @@ const ExpandedMeeting = (props: {
                 Documents with activity during this meeting
               </Typography>
               <DriveActivityList
-                driveActivityIds={props.meeting.driveActivityIds}
+                driveActivityIds={meeting.driveActivityIds}
                 driveActivityStore={props.driveActivityStore}
-                docStore={props.docStore}
-                personStore={props.personStore}
+                docStore={props.docDataStore}
+                personStore={props.personDataStore}
               />
             </React.Fragment>
           )}
@@ -128,8 +119,8 @@ const ExpandedMeeting = (props: {
               <DriveActivityList
                 driveActivityIds={documentsCurrentUserEditedWhileMeetingWithAttendees}
                 driveActivityStore={props.driveActivityStore}
-                docStore={props.docStore}
-                personStore={props.personStore}
+                docStore={props.docDataStore}
+                personStore={props.personDataStore}
               />
             </React.Fragment>
           )}
@@ -141,8 +132,7 @@ const ExpandedMeeting = (props: {
               <EmailsList
                 emailIds={recentEmailsFromAttendees}
                 emailStore={props.emailStore}
-                personStore={props.personStore}
-                handlePersonClick={props.handlePersonClick}
+                personStore={props.personDataStore}
               />
             </React.Fragment>
           )}
@@ -154,8 +144,8 @@ const ExpandedMeeting = (props: {
               <DriveActivityList
                 driveActivityIds={driveActivityFromAttendees}
                 driveActivityStore={props.driveActivityStore}
-                docStore={props.docStore}
-                personStore={props.personStore}
+                docStore={props.docDataStore}
+                personStore={props.personDataStore}
               />
             </React.Fragment>
           )}
@@ -165,11 +155,7 @@ const ExpandedMeeting = (props: {
             <Typography variant="h6" className={classes.heading}>
               Guests
             </Typography>
-            <AttendeeList
-              personStore={props.personStore}
-              attendees={attendees}
-              handlePersonClick={props.handlePersonClick}
-            />
+            <AttendeeList personStore={props.personDataStore} attendees={attendees} />
           </Grid>
         )}
       </Grid>

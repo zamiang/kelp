@@ -6,11 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import PersonDataStore from '../store/person-store';
 import { IFormattedAttendee } from '../store/time-store';
 
 interface IProps {
-  handlePersonClick: (id: string) => void;
   attendees: IFormattedAttendee[];
   personStore: PersonDataStore;
 }
@@ -52,7 +52,8 @@ const AttendeeRow = (props: IProps) => {
           <ListItem
             button={true}
             key={person.id}
-            onClick={() => props.handlePersonClick(person.emailAddress)}
+            component={RouterLink}
+            to={`/dashboard/people/${person.id}`}
             className={clsx(
               classes.person,
               attendee.responseStatus === 'accepted' && classes.personAccepted,

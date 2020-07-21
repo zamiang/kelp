@@ -12,6 +12,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import config from '../config';
 import { drawerWidth } from '../dashboard';
 import { IDoc } from '../store/doc-store';
@@ -91,23 +92,20 @@ export interface IProps {
   isOpen: boolean;
   handleDrawerClose: () => void;
   handleDrawerOpen: () => void;
-  handlePersonClick: (personId: string) => void;
-  handleMeetingsClick: () => void;
-  handleDocsClick: () => void;
-  handlePeopleClick: () => void;
   handleRefreshClick: () => void;
   people: IPerson[];
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  currentRoute: string;
 }
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
-  const isMeetingsSelected = props.currentRoute === '/';
-  const isDocsSelected = props.currentRoute === '/docs';
-  const isPeopleSelected = props.currentRoute === '/people';
+  const currentRoute = useLocation().pathname;
+
+  const isMeetingsSelected = currentRoute.includes('/meetings');
+  const isDocsSelected = currentRoute.includes('/docs');
+  const isPeopleSelected = currentRoute.includes('/people');
   return (
     <Drawer
       variant="permanent"
@@ -138,7 +136,8 @@ const LeftDrawer = (props: IProps) => {
       <List>
         <ListItem
           button
-          onClick={props.handleMeetingsClick}
+          component={Link}
+          to="/dashboard/meetings"
           selected={isMeetingsSelected}
           className={classes.listItem}
         >
@@ -152,7 +151,8 @@ const LeftDrawer = (props: IProps) => {
         </ListItem>
         <ListItem
           button
-          onClick={props.handleDocsClick}
+          component={Link}
+          to="/dashboard/docs"
           selected={isDocsSelected}
           className={classes.listItem}
         >
@@ -168,7 +168,8 @@ const LeftDrawer = (props: IProps) => {
         </ListItem>
         <ListItem
           button
-          onClick={props.handlePeopleClick}
+          component={Link}
+          to="/dashboard/people"
           selected={isPeopleSelected}
           className={classes.listItem}
         >
