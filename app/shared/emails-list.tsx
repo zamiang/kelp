@@ -50,7 +50,7 @@ const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: cl
           variant="caption"
           color="textSecondary"
           component={RouterLink}
-          to={`/dashboard/person/${person.id}`}
+          to={`/dashboard/people/${person.id}`}
         >
           {person && props.personStore.getPersonDisplayName(person)}
         </Typography>

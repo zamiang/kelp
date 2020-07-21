@@ -92,7 +92,7 @@ const MeetingRow = (props: {
         </Grid>
       </ListItem>
       {props.shouldRenderCurrentTime && !props.selectedMeetingId && (
-        <Redirect to="/dashboard/meetings/${props.meeting.id}" />
+        <Redirect to={`/dashboard/meetings/${props.meeting.id}`} />
       )}
     </React.Fragment>
   );

@@ -6,7 +6,7 @@ import DocumentRow from './document-row';
 
 const DocumentList = (props: IProps) => {
   const docs = props.docDataStore.getDocs();
-  const selectedDocumentId = '';
+  const selectedDocumentId = 'foo';
   const styles = panelStyles();
   return (
     <React.Fragment>
