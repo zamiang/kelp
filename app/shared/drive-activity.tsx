@@ -5,8 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { formatDistanceToNow } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import DocDataStore from '../store/doc-store';
+import DocDataStore, { IDoc } from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
 import PersonDataStore from '../store/person-store';
 
@@ -22,33 +21,22 @@ const useRowStyles = makeStyles(() => ({
   },
 }));
 
-type classesType = ReturnType<typeof useRowStyles>;
-
-const Activity = (props: {
-  activity: IFormattedDriveActivity;
-  personStore: PersonDataStore;
-  docStore: DocDataStore;
-  classes: classesType;
-}) => {
-  const doc = props.docStore.getByLink(props.activity.link!);
-  if (!doc) return null;
-  return (
-    <Grid container wrap="nowrap" spacing={2}>
-      <Grid item>
-        <img src={doc.iconLink} />
-      </Grid>
-      <Grid item zeroMinWidth>
-        <Link color="textPrimary" target="_blank" href={doc.link || ''} noWrap>
-          {doc.name}
-        </Link>
-        <br />
-        <Typography variant="caption" color="textSecondary">
-          {formatDistanceToNow(new Date(doc.updatedAt!))} ago
-        </Typography>
-      </Grid>
+const Activity = (props: { document: IDoc }) => (
+  <Grid container wrap="nowrap" spacing={2}>
+    <Grid item>
+      <img src={props.document.iconLink} />
     </Grid>
-  );
-};
+    <Grid item zeroMinWidth>
+      <Link color="textPrimary" target="_blank" href={props.document.link || ''} noWrap>
+        {props.document.name}
+      </Link>
+      <br />
+      <Typography variant="caption" color="textSecondary">
+        {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
+      </Typography>
+    </Grid>
+  </Grid>
+);
 
 const DriveActivityList = (props: {
   driveActivityIds: string[];
@@ -68,12 +56,13 @@ const DriveActivityList = (props: {
   const docs = actions
     .filter((action) => action && action.link)
     .map((action) => props.docStore.getByLink(action!.link!))
-    .sort((a, b) => (a!.updatedAt > b!.updatedAt ? -1 : 1));
+    .filter((doc) => doc && doc.updatedAt)
+    .sort((a, b) => (a!.updatedAt! > b!.updatedAt! ? -1 : 1));
   return (
     <div className={classes.root}>
       <div>
         {docs.map((doc) => (
-          <Activity key={doc.id} document={doc} personStore={props.personStore} classes={classes} />
+          <Activity key={doc!.id} document={doc!} />
         ))}
       </div>
     </div>
