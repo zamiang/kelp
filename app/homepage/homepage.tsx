@@ -1,28 +1,30 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useGoogleLogin } from 'react-google-login';
 import config from '../config';
 import Copyright from './copyright';
+import HomepageTopBar from './homepage-top-bar';
 
 const useStyles = makeStyles((theme) => ({
-  centerPaper: {
+  container: {
+    width: '100%',
+  },
+  hero: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(6, 8, 6, 8),
+    backgroundColor: theme.palette.secondary.main,
+    width: '100%',
   },
   submit: {
     margin: theme.spacing(4, 0, 2),
     padding: theme.spacing(2, 6),
-  },
-  avatar: {
-    margin: theme.spacing(1),
+    color: 'white',
   },
   body: {
     marginTop: theme.spacing(1),
@@ -30,16 +32,13 @@ const useStyles = makeStyles((theme) => ({
   },
   hint: {
     marginTop: theme.spacing(2),
-    color: theme.palette.text.hint,
+    marginBottom: theme.spacing(2),
+    fontWeight: 700,
   },
-  logoImage: {
-    width: 119,
-    marginLeft: -10,
-    marginRight: -8,
+  plan: {
+    marginTop: theme.spacing(2),
   },
-  logoContainer: {
-    marginLeft: -86,
-  },
+  image: {},
 }));
 
 const HomePage = (props: { setGoogleLoginState: (response: any) => void }) => {
@@ -64,44 +63,49 @@ const HomePage = (props: { setGoogleLoginState: (response: any) => void }) => {
   });
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Paper elevation={0} className={classes.centerPaper}>
-        <ListItem className={classes.logoContainer}>
-          <ListItemIcon>
-            <img className={classes.logoImage} src={`${config.DOMAIN}/images/kelp.svg`} />
-          </ListItemIcon>
-          <ListItemText disableTypography={true}>
-            <Typography variant="h1">Kelp</Typography>
-            <Typography variant="subtitle1" style={{ fontStyle: 'italic' }}>
+    <div className={classes.container}>
+      <HomepageTopBar signIn={signIn} />
+      <Grid container className={classes.hero} alignItems="center">
+        <Grid item xs={6}>
+          <Container maxWidth="xs">
+            <Typography variant="h3" color="primary">
               Your information filtration system
             </Typography>
-          </ListItemText>
-        </ListItem>
-        <Typography variant="body1" className={classes.body}>
-          Kelp brings your data together in one place. Pivot your meetings by what documents the
-          attendees have edited recently. By associating person, a time slot and documents together,
-          Kelp infers associations between information, making the information easier to find.
-          Prepare for your next meeting in a flash!
-        </Typography>
-        <Button
-          color="secondary"
-          variant="contained"
-          size="large"
-          onClick={signIn}
-          className={classes.submit}
-        >
-          Log In with Google
-        </Button>
-      </Paper>
-      <Typography variant="body1" className={classes.hint}>
-        This application does not store your data or send your data to any third parties. Your
-        browser retrieves your data directly from the Google API and processes the data on your
-        computer.
-      </Typography>
+            <Typography variant="h6" className={classes.hint} color="primary">
+              Kelp does not store your data or send your data to any third parties.
+            </Typography>
+            <Typography variant="h6" className={classes.body}>
+              Kelp brings your data together and organizes it to be simple and easy to understand.
+              Kelp infers associations between information, such as between a person, a meeting with
+              the person and document edits by the person.
+            </Typography>
+            <Button
+              color="primary"
+              variant="contained"
+              size="large"
+              onClick={signIn}
+              className={classes.submit}
+              disableElevation={true}
+            >
+              Log In with Google
+            </Button>
+            <Typography variant="body1" className={classes.plan}>
+              View the{' '}
+              <Link underline="always" href={config.PROJECT_PLAN_LINK}>
+                project plan
+              </Link>
+              .
+            </Typography>
+          </Container>
+        </Grid>
+        <Grid item xs={6}>
+          <img className={classes.image} src={`${config.DOMAIN}/images/designer_file_case.png`} />
+        </Grid>
+      </Grid>
       <Box mt={8}>
         <Copyright />
       </Box>
-    </Container>
+    </div>
   );
 };
 
