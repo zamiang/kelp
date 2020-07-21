@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { hot } from 'react-hot-loader/root';
 import { Redirect, Route, HashRouter as Router, Switch } from 'react-router-dom';
-import DashboardContainer from './dashboard-container';
 import Homepage from './homepage/homepage';
+import DashboardContainer from './loadable-dashboard';
 // import DashboardContainer from './dashboard-fake-container';
 
 const bodyFontFamily = "'-apple-system', Arial, sans-serif;";
@@ -100,11 +100,7 @@ const App = () => {
           <CssBaseline />
           <Switch>
             <Route path="/dashboard">
-              {isLoggedIn ? (
-                <DashboardContainer accessToken={googleLoginState.accessToken} />
-              ) : (
-                <Redirect to="/" />
-              )}
+              {isLoggedIn ? <DashboardContainer /> : <Redirect to="/" />}
             </Route>
             <Route path="/about">About</Route>
             <Route path="/contact">Contact</Route>

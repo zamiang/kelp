@@ -7,13 +7,9 @@ import EmailDataStore from './store/email-store';
 import PersonDataStore, { formatPerson } from './store/person-store';
 import TimeDataStore from './store/time-store';
 
-interface IProps {
-  accessToken: string;
-}
-
-const DashboardContainer = (props: IProps) => {
+const DashboardContainer = () => {
   // TODO: Listen for log-out or token espiring and re-fetch
-  const data = FetchAll(props.accessToken);
+  const data = FetchAll('access-token');
   const people = data.personList.map((person) => formatPerson(person));
 
   // TODO: Only create the datastores once data.isLoading is false

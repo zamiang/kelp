@@ -8,6 +8,7 @@ module.exports = {
         },
       },
     ],
+    '@babel/plugin-syntax-dynamic-import',
     '@babel/preset-typescript',
     '@babel/preset-react',
   ],
