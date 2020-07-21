@@ -8,9 +8,9 @@ module.exports = {
         },
       },
     ],
-    '@babel/plugin-syntax-dynamic-import',
+
     '@babel/preset-typescript',
     '@babel/preset-react',
   ],
-  plugins: ['react-hot-loader/babel', 'lodash', 'date-fns'],
+  plugins: ['@babel/plugin-syntax-dynamic-import', 'react-hot-loader/babel', 'lodash', 'date-fns'],
 };
