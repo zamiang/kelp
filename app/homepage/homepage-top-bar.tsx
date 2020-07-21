@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
   },
   logo: {
-    color: theme.palette.primary.main,
+    color: theme.palette.primary.dark,
     fontSize: 36,
     fontWeight: 700,
   },

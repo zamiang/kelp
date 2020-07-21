@@ -1,14 +1,14 @@
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import React from 'react';
 import { useGoogleLogin } from 'react-google-login';
 import config from '../config';
-import Copyright from './copyright';
+import Footer from './footer';
 import HomepageTopBar from './homepage-top-bar';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   hero: {
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(6, 8, 6, 8),
+    marginTop: theme.spacing(9),
+    padding: theme.spacing(9),
     backgroundColor: theme.palette.secondary.main,
     width: '100%',
   },
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(4, 0, 2),
     padding: theme.spacing(2, 6),
     color: 'white',
+    textTransform: 'none',
   },
   body: {
     marginTop: theme.spacing(1),
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   image: {},
+  primaryDark: { color: theme.palette.primary.dark },
 }));
 
 const HomePage = (props: { setGoogleLoginState: (response: any) => void }) => {
@@ -68,10 +70,10 @@ const HomePage = (props: { setGoogleLoginState: (response: any) => void }) => {
       <Grid container className={classes.hero} alignItems="center">
         <Grid item xs={6}>
           <Container maxWidth="xs">
-            <Typography variant="h3" color="primary">
+            <Typography variant="h3" className={classes.primaryDark}>
               Your information filtration system
             </Typography>
-            <Typography variant="h6" className={classes.hint} color="primary">
+            <Typography variant="h6" className={clsx(classes.hint, classes.primaryDark)}>
               Kelp does not store your data or send your data to any third parties.
             </Typography>
             <Typography variant="h6" className={classes.body}>
@@ -102,9 +104,7 @@ const HomePage = (props: { setGoogleLoginState: (response: any) => void }) => {
           <img className={classes.image} src={`${config.DOMAIN}/images/designer_file_case.png`} />
         </Grid>
       </Grid>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
+      <Footer />
     </div>
   );
 };
