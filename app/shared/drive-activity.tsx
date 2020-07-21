@@ -65,17 +65,15 @@ const DriveActivityList = (props: {
   if (actions.length < 1) {
     return null;
   }
+  const docs = actions
+    .filter((action) => action && action.link)
+    .map((action) => props.docStore.getByLink(action!.link!))
+    .sort((a, b) => (a!.updatedAt > b!.updatedAt ? -1 : 1));
   return (
     <div className={classes.root}>
       <div>
-        {actions.map((action) => (
-          <Activity
-            key={action!.id}
-            activity={action!}
-            personStore={props.personStore}
-            docStore={props.docStore}
-            classes={classes}
-          />
+        {docs.map((doc) => (
+          <Activity key={doc.id} document={doc} personStore={props.personStore} classes={classes} />
         ))}
       </div>
     </div>
