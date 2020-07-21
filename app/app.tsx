@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { hot } from 'react-hot-loader/root';
+import { Redirect, Route, HashRouter as Router, Switch } from 'react-router-dom';
 import DashboardContainer from './dashboard-container';
 import Homepage from './homepage/homepage';
 // import DashboardContainer from './dashboard-fake-container';
@@ -94,14 +95,30 @@ const App = () => {
   const isLoggedIn = googleLoginState.accessToken.length > 0;
   return (
     <ThemeProvider theme={theme}>
-      <div className={clsx(classes.root, !isLoggedIn && classes.container)}>
-        <CssBaseline />
-        {isLoggedIn ? (
-          <DashboardContainer accessToken={googleLoginState.accessToken} />
-        ) : (
-          <Homepage setGoogleLoginState={setGoogleLoginState} />
-        )}
-      </div>
+      <Router>
+        <div className={clsx(classes.root, !isLoggedIn && classes.container)}>
+          <CssBaseline />
+          <Switch>
+            <Route path="/dashboard">
+              {isLoggedIn ? (
+                <DashboardContainer accessToken={googleLoginState.accessToken} />
+              ) : (
+                <Redirect to="/" />
+              )}
+            </Route>
+            <Route path="/about">About</Route>
+            <Route path="/contact">Contact</Route>
+            <Route path="/terms">Terms</Route>
+            <Route path="">
+              {isLoggedIn ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <Homepage setGoogleLoginState={setGoogleLoginState} />
+              )}
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </ThemeProvider>
   );
 };
