@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     background: 'white',
     zIndex: theme.zIndex.drawer + 1,
   },
+  button: {
+    minWidth: 100,
+  },
 }));
 
 const HomepageTopBar = (props: { signIn: () => void }) => {
@@ -36,7 +39,13 @@ const HomepageTopBar = (props: { signIn: () => void }) => {
             Kelp
           </ListItemText>
         </ListItem>
-        <Button color="primary" variant="contained" onClick={props.signIn} disableElevation={true}>
+        <Button
+          className={classes.button}
+          color="primary"
+          variant="contained"
+          onClick={props.signIn}
+          disableElevation={true}
+        >
           Log In
         </Button>
       </Toolbar>
