@@ -1,59 +1,27 @@
-import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
-import { IRouteProps } from '../dashboard';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { IProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
 import DocumentRow from './document-row';
-import ExpandedDocument from './expand-document';
 
-const DocumentList = (props: IRouteProps) => {
+const DocumentList = (props: IProps) => {
   const docs = props.docDataStore.getDocs();
-  const [selectedDocumentId, setSelectedDocumentId] = useState(
-    props.routeId || (docs[0] ? docs[0].id : null),
-  );
-  const selectedDocument = selectedDocumentId
-    ? props.docDataStore.getByLink(selectedDocumentId)
-    : null;
+  const selectedDocumentId = useLocation().pathname.replace('/dashboard/docs/', '');
   const styles = panelStyles();
   return (
     <React.Fragment>
-      <div className={styles.panel}>
-        <div className={styles.row}>
-          <Typography className={styles.title}>Documents you edited recently</Typography>
-          {docs.map((doc) => (
-            <DocumentRow
-              key={doc.id}
-              doc={doc}
-              setSelectedDocumentId={setSelectedDocumentId}
-              selectedDocumentId={selectedDocumentId}
-            />
-          ))}
-        </div>
-        <div className={styles.row}>
-          <Typography className={styles.title}>
-            Documents with activity from people you are in meetings with [today]
-          </Typography>
-        </div>
+      <div className={styles.row}>
+        <Typography className={styles.title}>Documents you edited recently</Typography>
+        {docs.map((doc) => (
+          <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
+        ))}
       </div>
-      <Drawer
-        open={selectedDocumentId ? true : false}
-        classes={{
-          paper: styles.dockedPanel,
-        }}
-        anchor="right"
-        variant="persistent"
-      >
-        {selectedDocumentId && selectedDocument && (
-          <ExpandedDocument
-            document={selectedDocument}
-            handlePersonClick={props.handlePersonClick}
-            personStore={props.personDataStore}
-            docStore={props.docDataStore}
-            emailStore={props.emailStore}
-            driveActivityStore={props.driveActivityStore}
-          />
-        )}
-      </Drawer>
+      <div className={styles.row}>
+        <Typography className={styles.title}>
+          Documents with activity from people you are in meetings with [today]
+        </Typography>
+      </div>
     </React.Fragment>
   );
 };

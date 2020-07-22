@@ -4,19 +4,17 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import useRowStyles from '../shared/row-styles';
 import { IDoc } from '../store/doc-store';
 
-const DocumentRow = (props: {
-  doc: IDoc;
-  setSelectedDocumentId: (id: string) => void;
-  selectedDocumentId: string | null;
-}) => {
+const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) => {
   const rowStyles = useRowStyles();
   return (
     <ListItem
       button={true}
-      onClick={() => props.setSelectedDocumentId(props.doc.id)}
+      component={Link}
+      to={`/dashboard/docs/${props.doc.id}`}
       className={clsx(
         rowStyles.row,
         rowStyles.rowDefault,

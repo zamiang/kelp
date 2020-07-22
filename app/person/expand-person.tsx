@@ -4,9 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { IRouteProps } from '../dashboard';
+import { IProps } from '../dashboard';
 import DriveActivity from '../shared/drive-activity';
-import { IPerson } from '../store/person-store';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -30,30 +29,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandPerson = (props: IRouteProps & { person: IPerson }) => {
+const ExpandPerson = (props: IProps & { personId: string }) => {
   const classes = useStyles();
-  if (!props.person) {
+  const person = props.personDataStore.getPersonById(props.personId);
+
+  if (!person) {
     return null;
   }
   return (
     <div className={classes.container}>
       <Box flexDirection="row" alignItems="flex-start" display="flex">
-        <Avatar className={classes.avatar} src={props.person.imageUrl || ''}>
-          {(props.person.name || props.person.id)[0]}
+        <Avatar className={classes.avatar} src={person.imageUrl || ''}>
+          {(person.name || person.id)[0]}
         </Avatar>
         <Typography className={classes.title} variant="h3" color="textPrimary" gutterBottom noWrap>
-          {props.personDataStore.getPersonDisplayName(props.person)}
+          {props.personDataStore.getPersonDisplayName(person)}
         </Typography>
       </Box>
       <Grid container spacing={3}>
         <Grid item xs={7}>
-          {props.person.driveActivityIds.length > 0 && (
+          {person.driveActivityIds.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
                 Active Documents
               </Typography>
               <DriveActivity
-                driveActivityIds={props.person.driveActivityIds}
+                driveActivityIds={person.driveActivityIds}
                 driveActivityStore={props.driveActivityStore}
                 personStore={props.personDataStore}
                 docStore={props.docDataStore}

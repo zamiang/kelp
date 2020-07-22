@@ -1,14 +1,12 @@
-import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
-import { IRouteProps } from '../dashboard';
+import { useLocation } from 'react-router-dom';
+import { IProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
-import ExpandedMeeting from './expand-meeting';
-import Meeting, { CURRENT_TIME_ELEMENT_ID } from './meeting-row';
+import Meeting from './meeting-row';
 
 const MeetingsByDay = (
-  props: IRouteProps & {
-    setSelectedMeetingId: (id: string) => void;
+  props: IProps & {
     selectedMeetingId: string | null;
   },
 ) => {
@@ -36,12 +34,10 @@ const MeetingsByDay = (
                   shouldRenderCurrentTime={shouldRenderCurrentTime}
                   key={meeting.id}
                   meeting={meeting}
-                  handlePersonClick={props.handlePersonClick}
                   personStore={props.personDataStore}
                   docStore={props.docDataStore}
                   emailStore={props.emailStore}
                   driveActivityStore={props.driveActivityStore}
-                  setSelectedMeetingId={props.setSelectedMeetingId}
                   selectedMeetingId={props.selectedMeetingId}
                 />
               );
@@ -52,13 +48,9 @@ const MeetingsByDay = (
   );
 };
 
-const Meetings = (props: IRouteProps) => {
-  const [selectedMeetingId, setSelectedMeetingId] = useState(props.routeId);
-  const selectedMeeting = selectedMeetingId
-    ? props.timeDataStore.getSegmentById(selectedMeetingId)
-    : null;
+const Meetings = (props: IProps) => {
+  const selectedMeetingId = useLocation().pathname.replace('/dashboard/meetings/', '');
   const [seconds, setSeconds] = useState(0);
-  const styles = panelStyles();
   // rerender every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,6 +59,7 @@ const Meetings = (props: IRouteProps) => {
     return () => clearInterval(interval);
   }, [seconds]);
 
+  /**
   // Scroll the 'current time' dot into view
   // TODO: This is weird and non-standard react. Ideally the meeting to scroll to on initial load would be declared in this function and passed down
   // HOWEVER I can't figure out how to have that only happen on render and not on every time selected meeting id changes
@@ -76,35 +69,10 @@ const Meetings = (props: IRouteProps) => {
       element && element.scrollIntoView(true);
     }, 100);
   }
+   */
   return (
     <React.Fragment>
-      <div className={styles.panel}>
-        <MeetingsByDay
-          selectedMeetingId={selectedMeetingId}
-          setSelectedMeetingId={setSelectedMeetingId}
-          {...props}
-        />
-      </div>
-      <Drawer
-        open={selectedMeetingId ? true : false}
-        classes={{
-          paper: styles.dockedPanel,
-        }}
-        anchor="right"
-        variant="persistent"
-      >
-        {selectedMeeting && (
-          <ExpandedMeeting
-            meeting={selectedMeeting}
-            timeStore={props.timeDataStore}
-            handlePersonClick={props.handlePersonClick}
-            personStore={props.personDataStore}
-            docStore={props.docDataStore}
-            emailStore={props.emailStore}
-            driveActivityStore={props.driveActivityStore}
-          />
-        )}
-      </Drawer>
+      <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />
     </React.Fragment>
   );
 };

@@ -3,6 +3,7 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   copyright: {
@@ -29,17 +30,17 @@ const Footer = () => {
     <div>
       <Box mt={8} className={classes.footer}>
         <div className={classes.footerItem}>
-          <Link color="inherit" href="/about">
+          <Link component={RouterLink} color="inherit" to="/about">
             About
           </Link>
         </div>
         <div className={classes.footerItem}>
-          <Link color="inherit" href="/contact">
+          <Link component={RouterLink} color="inherit" to="/contact">
             Contact
           </Link>
         </div>
         <div className={classes.footerItem}>
-          <Link color="inherit" href="/terms">
+          <Link component={RouterLink} color="inherit" to="/terms">
             Privacy & terms
           </Link>
         </div>

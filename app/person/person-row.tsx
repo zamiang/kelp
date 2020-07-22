@@ -5,16 +5,16 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import clsx from 'clsx';
 import React from 'react';
-import { IRouteProps } from '../dashboard';
+import { Link } from 'react-router-dom';
+import { IProps } from '../dashboard';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/person-store';
 
 const PersonRow = (
   props: {
-    setSelectedPersonId: (id: string) => void;
     selectedPersonId: string | null;
     person: IPerson;
-  } & IRouteProps,
+  } & IProps,
 ) => {
   const rowStyles = useRowStyles();
   return (
@@ -24,7 +24,8 @@ const PersonRow = (
         rowStyles.row,
         props.selectedPersonId === props.person.id && rowStyles.rowPrimaryMain,
       )}
-      onClick={() => props.setSelectedPersonId(props.person.id)}
+      component={Link}
+      to={`/dashboard/people/${props.person.id}`}
     >
       <Grid container spacing={1}>
         <Grid

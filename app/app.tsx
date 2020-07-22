@@ -5,8 +5,9 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import { hot } from 'react-hot-loader/root';
-import DashboardContainer from './dashboard-container';
+import { Redirect, Route, HashRouter as Router, Switch } from 'react-router-dom';
 import Homepage from './homepage/homepage';
+import DashboardContainer from './loadable-dashboard';
 // import DashboardContainer from './dashboard-fake-container';
 
 const bodyFontFamily = "'-apple-system', Arial, sans-serif;";
@@ -94,14 +95,26 @@ const App = () => {
   const isLoggedIn = googleLoginState.accessToken.length > 0;
   return (
     <ThemeProvider theme={theme}>
-      <div className={clsx(classes.root, !isLoggedIn && classes.container)}>
-        <CssBaseline />
-        {isLoggedIn ? (
-          <DashboardContainer accessToken={googleLoginState.accessToken} />
-        ) : (
-          <Homepage setGoogleLoginState={setGoogleLoginState} />
-        )}
-      </div>
+      <Router>
+        <div className={clsx(classes.root, !isLoggedIn && classes.container)}>
+          <CssBaseline />
+          <Switch>
+            <Route path="/dashboard">
+              {isLoggedIn ? <DashboardContainer /> : <Redirect to="/" />}
+            </Route>
+            <Route path="/about">About</Route>
+            <Route path="/contact">Contact</Route>
+            <Route path="/terms">Terms</Route>
+            <Route path="">
+              {isLoggedIn ? (
+                <Redirect to="/dashboard/meetings" />
+              ) : (
+                <Homepage setGoogleLoginState={setGoogleLoginState} />
+              )}
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </ThemeProvider>
   );
 };

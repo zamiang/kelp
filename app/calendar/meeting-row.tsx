@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import useRowStyles from '../shared/row-styles';
 import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
@@ -39,20 +40,13 @@ const MeetingRow = (props: {
   docStore: DocDataStore;
   driveActivityStore: DriveActivityDataStore;
   emailStore: EmailDataStore;
-  handlePersonClick: (email: string) => void;
   currentTime: Date;
-  setSelectedMeetingId: (id: string) => void;
   selectedMeetingId: string | null;
   shouldRenderCurrentTime: boolean;
 }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
   // const actionCount = props.meeting.driveActivityIds.length + props.meeting.emailIds.length;
-
-  // Set the meeting ID to the current one if none is set. Potentially is a way to do this w/o hooks?
-  if (props.shouldRenderCurrentTime && !props.selectedMeetingId) {
-    props.setSelectedMeetingId(props.meeting.id);
-  }
   return (
     <React.Fragment>
       {props.shouldRenderCurrentTime && (
@@ -71,7 +65,8 @@ const MeetingRow = (props: {
           props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
           props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
         )}
-        onClick={() => props.setSelectedMeetingId(props.meeting.id)}
+        component={Link}
+        to={`/dashboard/meetings/${props.meeting.id}`}
       >
         <Grid container spacing={1}>
           <Grid
@@ -96,6 +91,9 @@ const MeetingRow = (props: {
           </Grid>
         </Grid>
       </ListItem>
+      {props.shouldRenderCurrentTime && !props.selectedMeetingId && (
+        <Redirect to={`/dashboard/meetings/${props.meeting.id}`} />
+      )}
     </React.Fragment>
   );
 };

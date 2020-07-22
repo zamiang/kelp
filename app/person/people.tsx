@@ -1,43 +1,17 @@
-import Drawer from '@material-ui/core/Drawer';
 import { sortBy } from 'lodash';
-import React, { useState } from 'react';
-import { IRouteProps } from '../dashboard';
-import panelStyles from '../shared/panel-styles';
-import ExpandPerson from './expand-person';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { IProps } from '../dashboard';
 import PersonRow from './person-row';
 
-const People = (props: IRouteProps) => {
-  const styles = panelStyles();
+const People = (props: IProps) => {
   const people = sortBy(props.personDataStore.getPeople(), 'name');
-  const [selectedPersonId, setSelectedPersonId] = useState(
-    props.routeId || (people[0] ? people[0].id : null),
-  );
-  const selectedPerson = selectedPersonId
-    ? props.personDataStore.getPersonById(selectedPersonId)
-    : null;
+  const selectedPersonId = useLocation().pathname.replace('/dashboard/people/', '');
   return (
     <React.Fragment>
-      <div className={styles.panel}>
-        {people.map((person) => (
-          <PersonRow
-            key={person.id}
-            person={person}
-            setSelectedPersonId={setSelectedPersonId}
-            selectedPersonId={selectedPersonId}
-            {...props}
-          />
-        ))}
-      </div>
-      <Drawer
-        open={selectedPersonId ? true : false}
-        classes={{
-          paper: styles.dockedPanel,
-        }}
-        anchor="right"
-        variant="persistent"
-      >
-        {selectedPersonId && selectedPerson && <ExpandPerson {...props} person={selectedPerson} />}
-      </Drawer>
+      {people.map((person) => (
+        <PersonRow key={person.id} person={person} selectedPersonId={selectedPersonId} {...props} />
+      ))}
     </React.Fragment>
   );
 };

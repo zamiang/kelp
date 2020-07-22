@@ -5,11 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
+import { IProps } from '../dashboard';
 import PersonList from '../shared/person-list';
-import DocDataStore, { IDoc } from '../store/doc-store';
-import DriveActivityDataStore from '../store/drive-activity-store';
-import EmailDataStore from '../store/email-store';
-import PersonDataStore from '../store/person-store';
 
 const useStyles = makeStyles((theme) => ({
   // todo move into theme
@@ -32,34 +29,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedDocument = (props: {
-  document: IDoc;
-  personStore: PersonDataStore;
-  docStore: DocDataStore;
-  driveActivityStore: DriveActivityDataStore;
-  emailStore: EmailDataStore;
-  handlePersonClick: (email?: string) => void;
-}) => {
+const ExpandedDocument = (props: IProps & { documentId: string }) => {
   const classes = useStyles();
-  const activity =
-    props.driveActivityStore.getDriveActivityForDocument(props.document.link || '') || [];
+  const document = props.docDataStore.getByLink(props.documentId);
+  if (!document) {
+    return null;
+  }
+  const activity = props.driveActivityStore.getDriveActivityForDocument(document.link || '') || [];
 
   const people = uniqBy(activity, 'actorPersonId')
     .filter((activity) => activity.actorPersonId)
-    .map((activity) => props.personStore.getPersonById(activity.actorPersonId!)!);
+    .map((activity) => props.personDataStore.getPersonById(activity.actorPersonId!)!);
   return (
     <div className={classes.container}>
-      {props.document.link && (
-        <Link color="secondary" target="_blank" href={props.document.link}>
+      {document.link && (
+        <Link color="secondary" target="_blank" href={document.link}>
           See in Google Drive
         </Link>
       )}
       <Typography variant="h3" color="textPrimary" gutterBottom noWrap>
-        {props.document.name || '(no title)'}
+        {document.name || '(no title)'}
       </Typography>
-      {props.document.updatedAt && (
+      {document.updatedAt && (
         <Typography variant="subtitle2" gutterBottom>
-          <i>Updated {format(props.document.updatedAt, 'EEEE, MMMM d p')}</i>
+          <i>Updated {format(document.updatedAt, 'EEEE, MMMM d p')}</i>
         </Typography>
       )}
       <Grid container spacing={3}>
@@ -69,11 +62,7 @@ const ExpandedDocument = (props: {
               <Typography variant="h6" className={classes.smallHeading}>
                 People
               </Typography>
-              <PersonList
-                handlePersonClick={props.handlePersonClick}
-                people={people}
-                personStore={props.personStore}
-              />
+              <PersonList people={people} personStore={props.personDataStore} />
             </React.Fragment>
           )}
         </Grid>
