@@ -99,7 +99,7 @@ const App = () => {
         <div className={clsx(classes.root, !isLoggedIn && classes.container)}>
           <CssBaseline />
           <Switch>
-            <Route path="/dashboard/meetings">
+            <Route path="/dashboard">
               {isLoggedIn ? <DashboardContainer /> : <Redirect to="/" />}
             </Route>
             <Route path="/about">About</Route>

@@ -29,9 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedDocument = (props: IProps) => {
+const ExpandedDocument = (props: IProps & { documentId: string }) => {
   const classes = useStyles();
-  const document = props.docDataStore.getByLink('foo')!;
+  const document = props.docDataStore.getByLink(props.documentId);
+  if (!document) {
+    return null;
+  }
   const activity = props.driveActivityStore.getDriveActivityForDocument(document.link || '') || [];
 
   const people = uniqBy(activity, 'actorPersonId')

@@ -40,6 +40,14 @@ export interface IProps {
   refetch: () => void;
 }
 
+interface IMatch {
+  match: {
+    params: {
+      slug: string;
+    };
+  };
+}
+
 const Dashboard = (props: IProps) => {
   const classes = useStyles();
   const panelClasses = panelStyles();
@@ -84,13 +92,22 @@ const Dashboard = (props: IProps) => {
           variant="persistent"
         >
           <Route
-            path="/dashboard/docs/:documentId"
-            component={() => <ExpandedDocument {...props} />}
+            path="/dashboard/docs/:slug"
+            component={({ match }: IMatch) => (
+              <ExpandedDocument documentId={match.params.slug} {...props} />
+            )}
           />
-          <Route path="/dashboard/people/:personId" component={() => <ExpandPerson {...props} />} />
           <Route
-            path="/dashboard/meetings/:meetingId"
-            component={() => <ExpandedMeeting {...props} />}
+            path="/dashboard/people/:slug"
+            component={({ match }: IMatch) => (
+              <ExpandPerson personId={match.params.slug} {...props} />
+            )}
+          />
+          <Route
+            path="/dashboard/meetings/:slug"
+            component={({ match }: IMatch) => (
+              <ExpandedMeeting meetingId={match.params.slug} {...props} />
+            )}
           />
         </Drawer>
       </main>

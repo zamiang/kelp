@@ -34,10 +34,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedMeeting = (props: IProps) => {
+const ExpandedMeeting = (props: IProps & { meetingId: string }) => {
   const classes = useStyles();
-  const selectedMeetingId = 'foo';
-  const meeting = props.timeDataStore.getSegmentById(selectedMeetingId)!;
+  const meeting = props.timeDataStore.getSegmentById(props.meetingId);
+  if (!meeting) {
+    return null;
+  }
   const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
   const hasAttendees = attendees.length > 0;
   const hasEmails = meeting.emailIds.length > 0;

@@ -29,10 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandPerson = (props: IProps) => {
+const ExpandPerson = (props: IProps & { personId: string }) => {
   const classes = useStyles();
-  const selectedPersonId = 'foo';
-  const person = selectedPersonId ? props.personDataStore.getPersonById(selectedPersonId) : null;
+  const person = props.personDataStore.getPersonById(props.personId);
 
   if (!person) {
     return null;

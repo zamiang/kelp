@@ -1,8 +1,9 @@
 import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { IProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
-import Meeting, { CURRENT_TIME_ELEMENT_ID } from './meeting-row';
+import Meeting from './meeting-row';
 
 const MeetingsByDay = (
   props: IProps & {
@@ -48,7 +49,7 @@ const MeetingsByDay = (
 };
 
 const Meetings = (props: IProps) => {
-  const selectedMeetingId = 'foo';
+  const selectedMeetingId = useLocation().pathname.replace('/dashboard/meetings/', '');
   const [seconds, setSeconds] = useState(0);
   // rerender every 5 seconds
   useEffect(() => {
@@ -58,6 +59,7 @@ const Meetings = (props: IProps) => {
     return () => clearInterval(interval);
   }, [seconds]);
 
+  /**
   // Scroll the 'current time' dot into view
   // TODO: This is weird and non-standard react. Ideally the meeting to scroll to on initial load would be declared in this function and passed down
   // HOWEVER I can't figure out how to have that only happen on render and not on every time selected meeting id changes
@@ -67,6 +69,7 @@ const Meetings = (props: IProps) => {
       element && element.scrollIntoView(true);
     }, 100);
   }
+   */
   return (
     <React.Fragment>
       <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />

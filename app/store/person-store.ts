@@ -23,7 +23,7 @@ interface IEmailAddressToPersonIdHash {
 
 // handle one person w/ multiple email addresses
 export const formatPerson = (person: GooglePerson) => ({
-  id: person.id,
+  id: person.id.replace('people/', ''),
   name: person.name,
   emailAddress: person.emailAddress.toLocaleLowerCase(),
   imageUrl: person.imageUrl,
@@ -59,7 +59,7 @@ export default class PersonDataStore {
   }
 
   addPersonToStore(person: IPerson) {
-    this.personById[person.id] = person;
+    this.personById[person.id.replace('people/', '')] = person;
     this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
   }
 
@@ -129,7 +129,7 @@ export default class PersonDataStore {
   }
 
   getPersonById(id: string): IPerson | undefined {
-    return this.personById[id];
+    return this.personById[id.replace('people/', '')];
   }
 
   getPersonDisplayName(person: IPerson) {

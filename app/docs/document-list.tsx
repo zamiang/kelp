@@ -1,12 +1,13 @@
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { IProps } from '../dashboard';
 import panelStyles from '../shared/panel-styles';
 import DocumentRow from './document-row';
 
 const DocumentList = (props: IProps) => {
   const docs = props.docDataStore.getDocs();
-  const selectedDocumentId = 'foo';
+  const selectedDocumentId = useLocation().pathname.replace('/dashboard/docs/', '');
   const styles = panelStyles();
   return (
     <React.Fragment>
