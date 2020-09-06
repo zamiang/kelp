@@ -15,25 +15,6 @@ const App = (props: any) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
-
-  /*
-  React.useEffect(() => {
-    const loadLibraries = () => {
-      console.log('loading google libs');
-      return gapi.client.init({
-        discoveryDocs: [
-          'https://www.googleapis.com/discovery/v1/apis/people/v1/rest',
-          'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest',
-          'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
-          'https://www.googleapis.com/discovery/v1/apis/driveactivity/v2/rest',
-          'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
-        ],
-      });
-    };
-    // load libraries is callback style
-    gapi.load('client', loadLibraries as any);
-  });
-*/
   return (
     <React.Fragment>
       <Auth0Provider

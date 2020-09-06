@@ -6,6 +6,7 @@ import DriveActivityDataStore from './drive-activity-store';
 import EmailDataStore from './email-store';
 import PersonDataStore, { formatPerson } from './person-store';
 import TimeDataStore from './time-store';
+import useGAPI from './use-gapi';
 
 interface IUser {
   email: string;
@@ -24,6 +25,9 @@ const withStore = <P extends object>(Component: ComponentType<P>): FC<P> => (
   props: P,
 ): JSX.Element => {
   const user = useAuth0().user as IUser;
+  const gapiLoader = useGAPI();
+
+  console.log(gapiLoader.gapiStatus);
 
   // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll(user.email);
@@ -52,6 +56,9 @@ const withStore = <P extends object>(Component: ComponentType<P>): FC<P> => (
   console.log('EMAIL DATA STORE:', emailDataStore);
 
   // could render a loading spinner thing over the component here
+  if (data.isLoading) {
+    return <div>loading</div>;
+  }
 
   return (
     <Component

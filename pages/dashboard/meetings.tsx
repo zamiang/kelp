@@ -1,9 +1,11 @@
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Meeting from '../../components/calendar/meeting-row';
 import Container, { IProps } from '../../components/dashboard/container';
 import panelStyles from '../../components/shared/panel-styles';
+import withStore from '../../components/store/with-store';
 
 const MeetingsByDay = (
   props: IProps & {
@@ -71,10 +73,10 @@ const Meetings = (props: IProps) => {
   }
    */
   return (
-    <Container>
+    <Container {...props}>
       <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />
     </Container>
   );
 };
 
-export default Meetings;
+export default withAuthenticationRequired(withStore(Meetings));

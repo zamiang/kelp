@@ -1,4 +1,3 @@
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
@@ -13,7 +12,6 @@ import DriveActivityDataStore from '../store/drive-activity-store';
 import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 import TimeDataStore from '../store/time-store';
-import withStore from '../store/with-store';
 
 // import TopBar from './nav/top-bar';
 
@@ -49,7 +47,7 @@ const getInitialGoogleState = () =>
     const [googleLoginState, setGoogleLoginState] = useState(getInitialGoogleState());
 */
 
-interface IDashboardProps {
+interface IDashboardProps extends IProps {
   children?: ReactNode;
 }
 
@@ -102,4 +100,4 @@ const Dashboard = (props: IDashboardProps) => {
   );
 };
 
-export default withAuthenticationRequired(withStore(Dashboard));
+export default Dashboard;

@@ -135,8 +135,8 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
-          <Link href="/dashboard/meetings">
+        <Link href="/dashboard/meetings">
+          <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
             <ListItemIcon>
               <DashboardIcon
                 className={isMeetingsSelected ? classes.selected : classes.unSelected}
@@ -146,10 +146,10 @@ const LeftDrawer = (props: IProps) => {
               primary="Calendar"
               className={isMeetingsSelected ? classes.selected : classes.unSelected}
             />
-          </Link>
-        </ListItem>
-        <ListItem button selected={isDocsSelected} className={classes.listItem}>
-          <Link href="/dashboard/docs">
+          </ListItem>
+        </Link>
+        <Link href="/dashboard/docs">
+          <ListItem button selected={isDocsSelected} className={classes.listItem}>
             <ListItemIcon>
               <InsertDriveFileIcon
                 className={isDocsSelected ? classes.selected : classes.unSelected}
@@ -159,10 +159,10 @@ const LeftDrawer = (props: IProps) => {
               primary="Docs"
               className={isDocsSelected ? classes.selected : classes.unSelected}
             />
-          </Link>
-        </ListItem>
-        <ListItem button selected={isPeopleSelected} className={classes.listItem}>
-          <Link href="/dashboard/people">
+          </ListItem>
+        </Link>
+        <Link href="/dashboard/people">
+          <ListItem button selected={isPeopleSelected} className={classes.listItem}>
             <ListItemIcon>
               <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
             </ListItemIcon>
@@ -170,8 +170,8 @@ const LeftDrawer = (props: IProps) => {
               primary="People"
               className={isPeopleSelected ? classes.selected : classes.unSelected}
             />
-          </Link>
-        </ListItem>
+          </ListItem>
+        </Link>
       </List>
       <div className={classes.spacer} />
       <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
