@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import config from '../config';
+import config from '../../components/config';
 
 const useStyles = makeStyles((theme) => ({
   logoImage: {

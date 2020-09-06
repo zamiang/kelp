@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { IProps } from '../dashboard';
+import { IProps } from '../../pages/dashboard';
 import panelStyles from '../shared/panel-styles';
 import Meeting from './meeting-row';
 

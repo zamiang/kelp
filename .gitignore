@@ -16,3 +16,7 @@ npm-debug.log*
 .idea
 
 secrets.json
+
+.cache
+
+.next

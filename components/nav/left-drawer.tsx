@@ -13,7 +13,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import config from '../config';
+import config from '../../components/config';
 import { drawerWidth } from '../dashboard';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';

@@ -1,9 +1,9 @@
 import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Link from 'next/link';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   copyright: {
@@ -30,26 +30,29 @@ const Footer = () => {
     <div>
       <Box mt={8} className={classes.footer}>
         <div className={classes.footerItem}>
-          <Link component={RouterLink} color="inherit" to="/about">
-            About
+          <Link href="/about">
+            <Button color="inherit" component="a">
+              About
+            </Button>
           </Link>
         </div>
         <div className={classes.footerItem}>
-          <Link component={RouterLink} color="inherit" to="/contact">
-            Contact
+          <Link href="/contact">
+            <Button color="inherit" component="a">
+              Contact
+            </Button>
           </Link>
         </div>
         <div className={classes.footerItem}>
-          <Link component={RouterLink} color="inherit" to="/terms">
-            Privacy & terms
+          <Link href="/terms">
+            <Button color="inherit" component="a">
+              Privacy & terms
+            </Button>
           </Link>
         </div>
         <Typography variant="body2" className={classes.copyright} align="center">
           {'Copyright © '}
-          <Link color="inherit" href="https://www.zamiang.com">
-            Brennan Moore
-          </Link>{' '}
-          {new Date().getFullYear()}
+          <a href="https://www.zamiang.com">Brennan Moore</a> {new Date().getFullYear()}
           {'.'}
         </Typography>
       </Box>

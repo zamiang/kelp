@@ -15,7 +15,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
   ],
-  ignorePatterns: ['.dependabot/', '.git/', '.vscode/', 'node_modules/', 'dist/'],
+  ignorePatterns: ['.dependabot/', '.git/', '.vscode/', 'node_modules/', 'public/'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['tsconfig.json'],

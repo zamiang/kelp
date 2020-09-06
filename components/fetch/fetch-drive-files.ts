@@ -1,5 +1,5 @@
 import { differenceInCalendarDays } from 'date-fns';
-import config from '../config';
+import config from '../../components/config';
 
 const fetchDriveFiles = async () => {
   // Does not allow filtering by modified time OR deleted
