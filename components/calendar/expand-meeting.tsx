@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
-import { IProps } from '../dashboard';
+import { IProps } from '../dashboard/container';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/drive-activity';
 import EmailsList from '../shared/emails-list';

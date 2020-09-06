@@ -11,10 +11,11 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import config from '../../components/config';
-import { drawerWidth } from '../dashboard';
+import config from '../config';
+import { drawerWidth } from '../dashboard/container';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
@@ -101,7 +102,7 @@ export interface IProps {
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
-  const currentRoute = useLocation().pathname;
+  const currentRoute = useRouter().pathname;
 
   const isMeetingsSelected = currentRoute.includes('/meetings');
   const isDocsSelected = currentRoute.includes('/docs');
@@ -134,52 +135,42 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <ListItem
-          button
-          component={Link}
-          to="/dashboard/meetings"
-          selected={isMeetingsSelected}
-          className={classes.listItem}
-        >
-          <ListItemIcon>
-            <DashboardIcon className={isMeetingsSelected ? classes.selected : classes.unSelected} />
-          </ListItemIcon>
-          <ListItemText
-            primary="Calendar"
-            className={isMeetingsSelected ? classes.selected : classes.unSelected}
-          />
+        <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
+          <Link href="/dashboard/meetings">
+            <ListItemIcon>
+              <DashboardIcon
+                className={isMeetingsSelected ? classes.selected : classes.unSelected}
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary="Calendar"
+              className={isMeetingsSelected ? classes.selected : classes.unSelected}
+            />
+          </Link>
         </ListItem>
-        <ListItem
-          button
-          component={Link}
-          to="/dashboard/docs"
-          selected={isDocsSelected}
-          className={classes.listItem}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon
+        <ListItem button selected={isDocsSelected} className={classes.listItem}>
+          <Link href="/dashboard/docs">
+            <ListItemIcon>
+              <InsertDriveFileIcon
+                className={isDocsSelected ? classes.selected : classes.unSelected}
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary="Docs"
               className={isDocsSelected ? classes.selected : classes.unSelected}
             />
-          </ListItemIcon>
-          <ListItemText
-            primary="Docs"
-            className={isDocsSelected ? classes.selected : classes.unSelected}
-          />
+          </Link>
         </ListItem>
-        <ListItem
-          button
-          component={Link}
-          to="/dashboard/people"
-          selected={isPeopleSelected}
-          className={classes.listItem}
-        >
-          <ListItemIcon>
-            <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
-          </ListItemIcon>
-          <ListItemText
-            primary="People"
-            className={isPeopleSelected ? classes.selected : classes.unSelected}
-          />
+        <ListItem button selected={isPeopleSelected} className={classes.listItem}>
+          <Link href="/dashboard/people">
+            <ListItemIcon>
+              <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
+            </ListItemIcon>
+            <ListItemText
+              primary="People"
+              className={isPeopleSelected ? classes.selected : classes.unSelected}
+            />
+          </Link>
         </ListItem>
       </List>
       <div className={classes.spacer} />

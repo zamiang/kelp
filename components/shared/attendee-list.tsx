@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
+import Link from 'next/link';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import PersonDataStore from '../store/person-store';
 import { IFormattedAttendee } from '../store/time-store';
 
@@ -52,8 +52,6 @@ const AttendeeRow = (props: IProps) => {
           <ListItem
             button={true}
             key={person.id}
-            component={RouterLink}
-            to={`/dashboard/people/${person.id}`}
             className={clsx(
               classes.person,
               attendee.responseStatus === 'accepted' && classes.personAccepted,
@@ -62,18 +60,20 @@ const AttendeeRow = (props: IProps) => {
               attendee.responseStatus === 'needsAction' && classes.personNeedsAction,
             )}
           >
-            <Grid container alignItems="center" spacing={1} wrap="nowrap">
-              <Grid item>
-                <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>
-                  {(person.name || person.id)[0]}
-                </Avatar>
+            <Link href={`/dashboard/people/${person.id}`}>
+              <Grid container alignItems="center" spacing={1} wrap="nowrap">
+                <Grid item>
+                  <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>
+                    {(person.name || person.id)[0]}
+                  </Avatar>
+                </Grid>
+                <Grid item xs={10}>
+                  <Typography variant="subtitle2" noWrap>
+                    {person.name || person.id}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={10}>
-                <Typography variant="subtitle2" noWrap>
-                  {person.name || person.id}
-                </Typography>
-              </Grid>
-            </Grid>
+            </Link>
           </ListItem>
         );
       })}

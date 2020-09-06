@@ -4,8 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
+import Link from 'next/link';
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
 import useRowStyles from '../shared/row-styles';
 import DocDataStore from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
@@ -33,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
     borderTop: `2px solid ${theme.palette.secondary.main}`,
   },
 }));
+
+/*
+{props.shouldRenderCurrentTime && !props.selectedMeetingId && (
+  <Redirect to={`/dashboard/meetings/${props.meeting.id}`} />
+)}
+*/
 
 const MeetingRow = (props: {
   meeting: ISegment;
@@ -65,35 +71,33 @@ const MeetingRow = (props: {
           props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
           props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
         )}
-        component={Link}
-        to={`/dashboard/meetings/${props.meeting.id}`}
       >
-        <Grid container spacing={1}>
-          <Grid
-            item
-            className={clsx(
-              rowStyles.border,
-              props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
-              props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
-              props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
-              props.meeting.selfResponseStatus === 'needsAction' && rowStyles.borderSecondaryLight,
-              props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
-            )}
-          ></Grid>
-          <Grid item style={{ flex: 1 }}>
-            <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
+        <Link href={`/dashboard/meetings/${props.meeting.id}`}>
+          <Grid container spacing={1}>
+            <Grid
+              item
+              className={clsx(
+                rowStyles.border,
+                props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
+                props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
+                props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
+                props.meeting.selfResponseStatus === 'needsAction' &&
+                  rowStyles.borderSecondaryLight,
+                props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
+              )}
+            ></Grid>
+            <Grid item style={{ flex: 1 }}>
+              <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
+            </Grid>
+            <Grid item className={classes.time}>
+              <Typography variant="subtitle2">{format(props.meeting.start, 'p')}</Typography>
+              <Typography variant="subtitle2" style={{ opacity: 0.5 }}>
+                {format(props.meeting.end, 'p')}
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item className={classes.time}>
-            <Typography variant="subtitle2">{format(props.meeting.start, 'p')}</Typography>
-            <Typography variant="subtitle2" style={{ opacity: 0.5 }}>
-              {format(props.meeting.end, 'p')}
-            </Typography>
-          </Grid>
-        </Grid>
+        </Link>
       </ListItem>
-      {props.shouldRenderCurrentTime && !props.selectedMeetingId && (
-        <Redirect to={`/dashboard/meetings/${props.meeting.id}`} />
-      )}
     </React.Fragment>
   );
 };

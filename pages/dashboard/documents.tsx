@@ -1,16 +1,16 @@
 import Typography from '@material-ui/core/Typography';
+import { useRouter } from 'next/router';
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { IProps } from '../dashboard';
-import panelStyles from '../shared/panel-styles';
-import DocumentRow from './document-row';
+import Container, { IProps } from '../../components/dashboard/container';
+import DocumentRow from '../../components/docs/document-row';
+import panelStyles from '../../components/shared/panel-styles';
 
 const DocumentList = (props: IProps) => {
   const docs = props.docDataStore.getDocs();
-  const selectedDocumentId = useLocation().pathname.replace('/dashboard/docs/', '');
+  const selectedDocumentId = useRouter().pathname.replace('/dashboard/docs/', '');
   const styles = panelStyles();
   return (
-    <React.Fragment>
+    <Container>
       <div className={styles.row}>
         <Typography className={styles.title}>Documents you edited recently</Typography>
         {docs.map((doc) => (
@@ -22,7 +22,7 @@ const DocumentList = (props: IProps) => {
           Documents with activity from people you are in meetings with [today]
         </Typography>
       </div>
-    </React.Fragment>
+    </Container>
   );
 };
 

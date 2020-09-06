@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -5,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
-import { useGoogleLogin } from 'react-google-login';
 import config from '../components/config';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
@@ -18,9 +18,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   container: {
-    /* Modified from: https://dribbble.com/shots/2766518-Designer-s-Folder-illustration */
-    // backgroundImage: `url(${config.DOMAIN}/images/designer_file_case.png)`,
-    // backgroundSize: unset;
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
   },
@@ -65,29 +62,12 @@ const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
-  const { signIn } = useGoogleLogin({
-    // TODO: Handle GoogleOfflineResponse and remove response: any
-    onSuccess: (response: any) => console.log(response),
-    onFailure: (error: any) => {
-      console.error(error);
-    },
-    clientId: process.env.GOOGLE_CLIENT_ID || 'error!',
-    cookiePolicy: 'single_host_origin',
-    autoLoad: false,
-    fetchBasicProfile: true,
-    scope: [
-      'https://www.googleapis.com/auth/gmail.readonly', // Despite not needing the content of messages, readonly is required to filter emails by date
-      'https://www.googleapis.com/auth/contacts.readonly',
-      'https://www.googleapis.com/auth/drive.metadata.readonly',
-      'https://www.googleapis.com/auth/drive.activity.readonly',
-      'https://www.googleapis.com/auth/calendar.events.readonly',
-    ].join(' '),
-  });
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
-        <HomepageTopBar signIn={signIn} />
+        <HomepageTopBar signIn={loginWithRedirect} />
         <Grid container className={classes.hero} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="xs">
@@ -106,7 +86,7 @@ const App = () => {
                 color="primary"
                 variant="contained"
                 size="large"
-                onClick={signIn}
+                onClick={loginWithRedirect}
                 className={classes.submit}
                 disableElevation={true}
               >

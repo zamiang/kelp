@@ -1,17 +1,14 @@
-import React from 'react';
-import Dashboard from './dashboard';
-import DocDataStore from './store/doc-store';
-import DriveActivityDataStore from './store/drive-activity-store';
-import EmailDataStore from './store/email-store';
-import PersonDataStore from './store/person-store';
-import data from './store/store-faker';
-import TimeDataStore from './store/time-store';
+import React, { ComponentType, FC } from 'react';
+import DocDataStore from './doc-store';
+import DriveActivityDataStore from './drive-activity-store';
+import EmailDataStore from './email-store';
+import PersonDataStore from './person-store';
+import data from './store-faker';
+import TimeDataStore from './time-store';
 
-interface IProps {
-  accessToken: string;
-}
-
-const DashboardFakeContainer = (props: IProps) => {
+const withFakeStore = <P extends object>(Component: ComponentType<P>): FC<P> => (
+  props: P,
+): JSX.Element => {
   console.log(props);
   // TODO: Only create the datastores once data.isLoading is false
   const personDataStore = new PersonDataStore(data.people, []);
@@ -35,16 +32,17 @@ const DashboardFakeContainer = (props: IProps) => {
   console.log('EMAIL DATA STORE:', emailDataStore);
 
   return (
-    <Dashboard
+    <Component
       refetch={() => null}
       driveActivityStore={driveActivityDataStore}
-      emailStore={emailDataStore}
+      emailDataStore={emailDataStore}
       timeDataStore={timeDataStore}
       personDataStore={personDataStore}
       docDataStore={docDataStore}
       lastUpdated={new Date()}
+      {...props}
     />
   );
 };
 
-export default DashboardFakeContainer;
+export default withFakeStore;

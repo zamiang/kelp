@@ -1,9 +1,9 @@
 import Typography from '@material-ui/core/Typography';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { IProps } from '../../pages/dashboard';
-import panelStyles from '../shared/panel-styles';
-import Meeting from './meeting-row';
+import Meeting from '../../components/calendar/meeting-row';
+import Container, { IProps } from '../../components/dashboard/container';
+import panelStyles from '../../components/shared/panel-styles';
 
 const MeetingsByDay = (
   props: IProps & {
@@ -49,9 +49,9 @@ const MeetingsByDay = (
 };
 
 const Meetings = (props: IProps) => {
-  const selectedMeetingId = useLocation().pathname.replace('/dashboard/meetings/', '');
+  const selectedMeetingId = useRouter().pathname.replace('/dashboard/meetings/', '');
   const [seconds, setSeconds] = useState(0);
-  // rerender every 5 seconds
+  // rerender every 5 seconds to update the current calendar events
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds((seconds) => seconds + 1);
@@ -71,9 +71,9 @@ const Meetings = (props: IProps) => {
   }
    */
   return (
-    <React.Fragment>
+    <Container>
       <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />
-    </React.Fragment>
+    </Container>
   );
 };
 

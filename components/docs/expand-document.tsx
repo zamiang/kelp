@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
-import { IProps } from '../dashboard';
+import { IProps } from '../dashboard/container';
 import PersonList from '../shared/person-list';
 
 const useStyles = makeStyles((theme) => ({
