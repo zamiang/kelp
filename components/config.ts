@@ -1,8 +1,8 @@
 import { subDays } from 'date-fns';
 export default {
-  AUTH0_DOMAIN: process.env.AUTH0_DOMAIN || 'localhost:3000',
-  AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || 'asdfsdf',
-  AUTH0_REDIRECT_URI: process.env.AUTH0_REDIRECT_URI || 'https://foo.bar',
+  AUTH0_DOMAIN: process.env.AUTH0_DOMAIN || 'kelp.us.auth0.com',
+  AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || 'ofLQ2KZrXzTUUlQO1HwiveFQbJs4uHbm',
+  AUTH0_REDIRECT_URI: process.env.AUTH0_REDIRECT_URI || 'http://localhost:3000/dashboard/meetings',
   DOMAIN: 'https://www.kelp.nyc',
   SHOULD_FILTER_OUT_FILES_MODIFIED_BEFORE_NUMBER_OF_DAYS_BACK: true,
   SHOULD_FILTER_OUT_FILES_VIEWED_BY_ME_BEFORE_NUMBER_OF_DAYS_BACK: true,

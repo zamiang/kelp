@@ -7,14 +7,26 @@ import EmailDataStore from './email-store';
 import PersonDataStore, { formatPerson } from './person-store';
 import TimeDataStore from './time-store';
 
+interface IUser {
+  email: string;
+  email_verified: boolean;
+  family_name: string;
+  given_name: string;
+  locale: 'en';
+  name: string;
+  nickname: string;
+  picture: string; // https://lh3.googleusercontent.com/a-/AOh14GjBtaHxjkknpCtJIUVD_Xr8NBSq4mHTlbXAT7Mtjg
+  sub: string; // 'google-oauth2|100884430802346698066';
+  updated_at: string; // '2020-09-06T21:32:43.712Z';
+}
+
 const withStore = <P extends object>(Component: ComponentType<P>): FC<P> => (
   props: P,
 ): JSX.Element => {
-  const { user } = useAuth0();
-  console.log(user, '<<<<<<<<< user');
+  const user = useAuth0().user as IUser;
 
   // TODO: Listen for log-out or token espiring and re-fetch
-  const data = FetchAll(user.id);
+  const data = FetchAll(user.email);
   const people = data.personList.map((person) => formatPerson(person));
 
   // TODO: Only create the datastores once data.isLoading is false
