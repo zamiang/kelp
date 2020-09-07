@@ -2,8 +2,8 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React from 'react';
-import config from '../components/config';
-import theme from '../components/theme';
+import config from '../constants/config';
+import theme from '../constants/theme';
 
 const App = (props: any) => {
   const { Component, pageProps } = props;

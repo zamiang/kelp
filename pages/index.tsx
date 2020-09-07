@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
-import config from '../components/config';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
+import config from '../constants/config';
 
 const useStyles = makeStyles((theme) => ({
   root: {

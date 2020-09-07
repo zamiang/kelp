@@ -22,7 +22,10 @@
     "./pages/**/*.ts",
     "./components/**/*.tsx",
     "./components/**/*.ts",
-    "@types/**.*.ts"
+    "./constants/**/*.tsx",
+    "./constants/**/*.ts",
+    "@types/**.*.ts",
+    "constants/config.ts"
   ],
   "exclude": ["node_modules"]
 }

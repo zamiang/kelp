@@ -18,8 +18,8 @@
     "dev": "next dev",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
     "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
-    "prettier": "prettier --write \"{pages,components}/**/*.{ts,tsx,js}\"",
-    "prettier:check": "prettier --list-different \"{pages,components}/**/*.{ts,tsx,js}\"",
+    "prettier": "prettier --write \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
+    "prettier:check": "prettier --list-different \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
     "start": "next start",
     "typecheck": "node node_modules/.bin/tsc --project tsconfig.json --noEmit --pretty"
   },

@@ -1,5 +1,5 @@
 import { flatten, uniq } from 'lodash';
-import config from '../../components/config';
+import config from '../../constants/config';
 import { DriveActivity, Target } from '../types/activity';
 
 const getTargetInfo = (target: Target) => {

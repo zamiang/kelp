@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
-import config from '../config';
+import config from '../../constants/config';
 import useGAPI from './use-gapi';
 
 /*

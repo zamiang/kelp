@@ -15,7 +15,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { drawerWidth } from '../../pages/dashboard';
-import config from '../config';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';

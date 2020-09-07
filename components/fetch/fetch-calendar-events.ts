@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 import { uniq } from 'lodash';
-import config from '../../components/config';
+import config from '../../constants/config';
 
 /**
  * The attendee's response status. Possible values are:
