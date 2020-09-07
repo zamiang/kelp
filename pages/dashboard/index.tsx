@@ -26,16 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Note: Lots more info on this object but is unused by the app
-/*
-const getInitialGoogleState = () =>
-  gapi && gapi.auth && gapi.auth.getToken()
-    ? { accessToken: gapi.auth.getToken().access_token }
-    : { accessToken: '' };
-
-    const [googleLoginState, setGoogleLoginState] = useState(getInitialGoogleState());
-*/
-
 const DashboardContainer = () => {
   const store = useStore();
   const classes = useStyles();
