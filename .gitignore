@@ -15,4 +15,8 @@ npm-debug.log*
 # idea(s)
 .idea
 
-secrets.json
+.cache
+
+.next
+
+.env.local

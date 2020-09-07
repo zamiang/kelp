@@ -15,7 +15,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
   ],
-  ignorePatterns: ['.dependabot/', '.git/', '.vscode/', 'node_modules/', 'dist/'],
+  ignorePatterns: ['.dependabot/', '.git/', '.vscode/', 'node_modules/', 'public/'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['tsconfig.json'],
@@ -55,6 +55,7 @@ module.exports = {
     // NOTE: These no-unsafe-foo flags are needed due to the google api not having types
     '@typescript-eslint/no-unsafe-assignment': 1,
     '@typescript-eslint/no-unsafe-member-access': 1,
+    '@typescript-eslint/ban-types': 1,
     '@typescript-eslint/no-unsafe-call': 1,
     '@typescript-eslint/no-unsafe-return': 1,
     'arrow-body-style': ['error', 'as-needed'],

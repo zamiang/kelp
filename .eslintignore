@@ -1,4 +1,4 @@
-webpack.config.js
 public/*.js
-babel.config.js
 .eslintrc.js
+next.config.js
+next-env.d.ts
