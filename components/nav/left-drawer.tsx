@@ -14,8 +14,8 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { drawerWidth } from '../../pages/dashboard';
 import config from '../config';
-import { drawerWidth } from '../dashboard/container';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
@@ -135,7 +135,7 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <Link href="/dashboard/meetings">
+        <Link href="/dashboard?tab=meetings">
           <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
             <ListItemIcon>
               <DashboardIcon
@@ -148,7 +148,7 @@ const LeftDrawer = (props: IProps) => {
             />
           </ListItem>
         </Link>
-        <Link href="/dashboard/docs">
+        <Link href="/dashboard?tab=docs">
           <ListItem button selected={isDocsSelected} className={classes.listItem}>
             <ListItemIcon>
               <InsertDriveFileIcon
@@ -161,7 +161,7 @@ const LeftDrawer = (props: IProps) => {
             />
           </ListItem>
         </Link>
-        <Link href="/dashboard/people">
+        <Link href="/dashboard?tab=people">
           <ListItem button selected={isPeopleSelected} className={classes.listItem}>
             <ListItemIcon>
               <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />

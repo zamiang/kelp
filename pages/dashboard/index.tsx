@@ -1,18 +1,17 @@
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useState } from 'react';
-import ExpandedMeeting from '../calendar/expand-meeting';
-import ExpandedDocument from '../docs/expand-document';
-import LeftDrawer from '../nav/left-drawer';
-import ExpandPerson from '../person/expand-person';
-import panelStyles from '../shared/panel-styles';
-import DocDataStore from '../store/doc-store';
-import DriveActivityDataStore from '../store/drive-activity-store';
-import EmailDataStore from '../store/email-store';
-import PersonDataStore from '../store/person-store';
-import TimeDataStore from '../store/time-store';
-
+import React, { useState } from 'react';
+import ExpandedMeeting from '../../components/calendar/expand-meeting';
+import Docs from '../../components/dashboard/docs';
+import Meetings from '../../components/dashboard/meetings';
+import People from '../../components/dashboard/people';
+import ExpandedDocument from '../../components/docs/expand-document';
+import LeftDrawer from '../../components/nav/left-drawer';
+import ExpandPerson from '../../components/person/expand-person';
+import panelStyles from '../../components/shared/panel-styles';
+import useStore from '../../components/store/use-store';
 // import TopBar from './nav/top-bar';
 
 export const drawerWidth = 240;
@@ -27,16 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface IProps {
-  personDataStore: PersonDataStore;
-  timeDataStore: TimeDataStore;
-  docDataStore: DocDataStore;
-  driveActivityStore: DriveActivityDataStore;
-  emailDataStore: EmailDataStore;
-  lastUpdated: Date;
-  refetch: () => void;
-}
-
 // Note: Lots more info on this object but is unused by the app
 /*
 const getInitialGoogleState = () =>
@@ -47,12 +36,8 @@ const getInitialGoogleState = () =>
     const [googleLoginState, setGoogleLoginState] = useState(getInitialGoogleState());
 */
 
-interface IDashboardProps extends IProps {
-  children?: ReactNode;
-}
-
-const DashboardContainer = (props: IDashboardProps) => {
-  console.log(props, '<<<<<<<<<<<<<<');
+const DashboardContainer = () => {
+  const store = useStore();
   const classes = useStyles();
   const panelClasses = panelStyles();
   const [isOpen, setOpen] = useState(true);
@@ -63,26 +48,39 @@ const DashboardContainer = (props: IDashboardProps) => {
     setOpen(false);
   };
 
-  const handleRefreshClick = () => props.refetch();
+  const handleRefreshClick = () => store.refetch();
   // todo
-  const slug = useRouter().pathname;
+  const slug = useRouter().query.slug as string | null;
+  const tab = useRouter().query.tab as string;
+
+  const tabHash = {
+    meetings: <Meetings {...store} />,
+    docs: <Docs {...store} />,
+    people: <People {...store} />,
+  } as any;
+
+  const expandHash = {
+    docs: slug && <ExpandedDocument documentId={slug} {...store} />,
+    people: slug && <ExpandPerson personId={slug} {...store} />,
+    meetings: slug && <ExpandedMeeting meetingId={slug} {...store} />,
+  } as any;
 
   // <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} /> --!>
   // add above route component <div className={classes.appBarSpacer} />
   return (
     <React.Fragment>
       <LeftDrawer
-        lastUpdated={props.lastUpdated}
+        lastUpdated={store.lastUpdated}
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}
-        people={props.personDataStore.getPeople()}
-        documents={props.docDataStore.getDocs()}
-        meetings={props.timeDataStore.getSegments()}
+        people={store.personDataStore.getPeople()}
+        documents={store.docDataStore.getDocs()}
+        meetings={store.timeDataStore.getSegments()}
         handleDrawerOpen={handleDrawerOpen}
         handleRefreshClick={handleRefreshClick}
       />
       <main className={classes.content}>
-        <div className={panelClasses.panel}>{props.children}</div>
+        <div className={panelClasses.panel}>{tabHash[tab]}</div>
         <Drawer
           open={true}
           classes={{
@@ -91,13 +89,11 @@ const DashboardContainer = (props: IDashboardProps) => {
           anchor="right"
           variant="persistent"
         >
-          <ExpandedDocument documentId={slug} {...props} />
-          <ExpandPerson personId={slug} {...props} />
-          <ExpandedMeeting meetingId={slug} {...props} />
+          {expandHash[tab]}
         </Drawer>
       </main>
     </React.Fragment>
   );
 };
 
-export default DashboardContainer;
+export default withAuthenticationRequired(DashboardContainer);

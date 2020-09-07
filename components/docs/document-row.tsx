@@ -19,7 +19,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
         props.selectedDocumentId === props.doc.id && rowStyles.rowPrimaryMain,
       )}
     >
-      <Link href={`/dashboard/docs/${props.doc.id}`}>
+      <Link href={`/dashboard?tab=docs&slug=${props.doc.id}`}>
         <Grid container spacing={1}>
           <Grid
             item

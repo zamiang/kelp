@@ -1,14 +1,12 @@
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Meeting from '../../components/calendar/meeting-row';
-import Container, { IProps } from '../../components/dashboard/container';
 import panelStyles from '../../components/shared/panel-styles';
-import useStore from '../../components/store/use-store';
+import { IStore } from '../../components/store/use-store';
 
 const MeetingsByDay = (
-  props: IProps & {
+  props: IStore & {
     selectedMeetingId: string | null;
   },
 ) => {
@@ -50,9 +48,8 @@ const MeetingsByDay = (
   );
 };
 
-const Meetings = () => {
-  const store = useStore();
-  const selectedMeetingId = useRouter().pathname.replace('/dashboard/meetings/', '');
+const Meetings = (props: IStore) => {
+  const selectedMeetingId = useRouter().query.slug as string;
   const [seconds, setSeconds] = useState(0);
   // rerender every 5 seconds to update the current calendar events
   useEffect(() => {
@@ -61,10 +58,6 @@ const Meetings = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, [seconds]);
-
-  if (!store) {
-    return null;
-  }
 
   /**
   // Scroll the 'current time' dot into view
@@ -77,11 +70,7 @@ const Meetings = () => {
     }, 100);
   }
    */
-  return (
-    <Container {...store}>
-      <MeetingsByDay selectedMeetingId={selectedMeetingId} {...store} />
-    </Container>
-  );
+  return <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />;
 };
 
-export default withAuthenticationRequired(Meetings);
+export default Meetings;

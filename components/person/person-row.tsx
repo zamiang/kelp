@@ -6,15 +6,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
-import { IProps } from '../dashboard/container';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/person-store';
+import { IStore } from '../store/use-store';
 
 const PersonRow = (
   props: {
     selectedPersonId: string | null;
     person: IPerson;
-  } & IProps,
+  } & IStore,
 ) => {
   const rowStyles = useRowStyles();
   return (
@@ -25,7 +25,7 @@ const PersonRow = (
         props.selectedPersonId === props.person.id && rowStyles.rowPrimaryMain,
       )}
     >
-      <Link href={`/dashboard/people/${props.person.id}`}>
+      <Link href={`/dashboard?tab=people&slug=${props.person.id}`}>
         <Grid container spacing={1}>
           <Grid
             item

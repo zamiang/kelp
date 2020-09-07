@@ -35,7 +35,7 @@ const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: cl
   return (
     <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item>
-        <Link href={`/dashboard/people/${person.id}`}>
+        <Link href={`/dashboard?tab=people&slug=${person.id}`}>
           <Avatar style={{ height: 32, width: 32 }} src={(person && person.imageUrl) || ''}>
             {person && props.personStore.getPersonDisplayName(person)[0]}
           </Avatar>
@@ -48,7 +48,7 @@ const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: cl
           </a>
         </Typography>
         <Typography variant="caption" color="textSecondary">
-          <Link href={`/dashboard/people/${person.id}`}>
+          <Link href={`/dashboard?tab=people&slug=${person.id}`}>
             {person && props.personStore.getPersonDisplayName(person)}
           </Link>
         </Typography>

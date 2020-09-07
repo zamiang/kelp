@@ -6,7 +6,17 @@ import PersonDataStore, { formatPerson } from './person-store';
 import TimeDataStore from './time-store';
 import useAccessToken from './use-access-token';
 
-const useStore = () => {
+export interface IStore {
+  personDataStore: PersonDataStore;
+  timeDataStore: TimeDataStore;
+  docDataStore: DocDataStore;
+  driveActivityStore: DriveActivityDataStore;
+  emailDataStore: EmailDataStore;
+  lastUpdated: Date;
+  refetch: () => void;
+}
+
+const useStore = (): IStore => {
   const accessToken = useAccessToken();
   // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll(accessToken);

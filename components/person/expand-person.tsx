@@ -4,8 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { IProps } from '../dashboard/container';
 import DriveActivity from '../shared/drive-activity';
+import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandPerson = (props: IProps & { personId: string }) => {
+const ExpandPerson = (props: IStore & { personId: string }) => {
   const classes = useStyles();
   const person = props.personDataStore.getPersonById(props.personId);
 

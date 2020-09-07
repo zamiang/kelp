@@ -5,10 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
-import { IProps } from '../dashboard/container';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/drive-activity';
 import EmailsList from '../shared/emails-list';
+import { IPerson } from '../store/person-store';
+import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   // todo move into theme
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedMeeting = (props: IProps & { meetingId: string }) => {
+const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   const classes = useStyles();
   const meeting = props.timeDataStore.getSegmentById(props.meetingId);
   if (!meeting) {
@@ -48,20 +49,21 @@ const ExpandedMeeting = (props: IProps & { meetingId: string }) => {
   const attendeeIds = (meeting.formattedAttendees || [])
     .filter((attendee) => !attendee.self)
     .map((attendee) => attendee.personId);
-  const people = attendeeIds
+  // TODO: figure out filter types
+  const people: IPerson[] = attendeeIds
     .map((id) => props.personDataStore.getPersonById(id))
-    .filter((person) => !!person);
+    .filter((person) => !!person) as any;
   const documentsCurrentUserEditedWhileMeetingWithAttendees = flatten(
     people.map((person) => {
-      const segmentIds = person!.segmentIds;
+      const segmentIds = person.segmentIds;
       const segments = segmentIds.map(
         (id) => props.timeDataStore.getSegmentById(id)!.driveActivityIds,
       );
       return flatten(segments);
     }),
   );
-  const recentEmailsFromAttendees = flatten(people.map((person) => person!.emailIds));
-  const driveActivityFromAttendees = flatten(people.map((person) => person!.driveActivityIds));
+  const recentEmailsFromAttendees = flatten(people.map((person) => person.emailIds));
+  const driveActivityFromAttendees = flatten(people.map((person) => person.driveActivityIds));
   return (
     <div className={classes.container}>
       {meeting.link && (

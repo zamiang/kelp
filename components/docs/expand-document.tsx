@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
-import { IProps } from '../dashboard/container';
 import PersonList from '../shared/person-list';
+import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   // todo move into theme
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExpandedDocument = (props: IProps & { documentId: string }) => {
+const ExpandedDocument = (props: IStore & { documentId: string }) => {
   const classes = useStyles();
   const document = props.docDataStore.getByLink(props.documentId);
   if (!document) {

@@ -1,16 +1,6 @@
 module.exports = {
   poweredByHeader: false,
 
-  async redirects() {
-    return [
-      {
-        source: '/dashboard',
-        destination: '/dashboard/calendar',
-        permanent: false,
-      },
-    ];
-  },
-
   async headers() {
     return [
       {

@@ -2,7 +2,7 @@ import { subDays } from 'date-fns';
 export default {
   AUTH0_DOMAIN: process.env.AUTH0_DOMAIN || 'kelp.us.auth0.com',
   AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || 'ofLQ2KZrXzTUUlQO1HwiveFQbJs4uHbm',
-  AUTH0_REDIRECT_URI: process.env.AUTH0_REDIRECT_URI || 'http://localhost:3000/dashboard/meetings',
+  AUTH0_REDIRECT_URI: process.env.AUTH0_REDIRECT_URI || 'http://localhost:3000/dashboard',
   GOOGLE_SCOPES:
     'email profile https://www.googleapis.com/auth/drive.file openid https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://mail.google.com/ https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/docs https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.activity.readonly https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/drive',
   GOOGLE_CLIENT_ID:

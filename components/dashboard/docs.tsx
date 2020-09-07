@@ -1,19 +1,16 @@
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Container from '../../components/dashboard/container';
 import DocumentRow from '../../components/docs/document-row';
 import panelStyles from '../../components/shared/panel-styles';
-import useStore from '../../components/store/use-store';
+import { IStore } from '../store/use-store';
 
-const Documents = () => {
-  const store = useStore();
-  const docs = store.docDataStore.getDocs();
-  const selectedDocumentId = useRouter().pathname.replace('/dashboard/docs/', '');
+const Documents = (props: IStore) => {
+  const docs = props.docDataStore.getDocs();
+  const selectedDocumentId = useRouter().query.slug as string;
   const styles = panelStyles();
   return (
-    <Container {...store}>
+    <React.Fragment>
       <div className={styles.row}>
         <Typography className={styles.title}>Documents you edited recently</Typography>
         {docs.map((doc) => (
@@ -25,8 +22,8 @@ const Documents = () => {
           Documents with activity from people you are in meetings with [today]
         </Typography>
       </div>
-    </Container>
+    </React.Fragment>
   );
 };
 
-export default withAuthenticationRequired(Documents);
+export default Documents;
