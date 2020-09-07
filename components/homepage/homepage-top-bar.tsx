@@ -33,7 +33,7 @@ const HomepageTopBar = (props: { signIn: () => void }) => {
       <Toolbar>
         <ListItem>
           <ListItemIcon>
-            <img className={classes.logoImage} src={`${config.DOMAIN}/images/kelp.svg`} />
+            <img className={classes.logoImage} src="kelp.svg" />
           </ListItemIcon>
           <ListItemText disableTypography={true} className={classes.logo}>
             Kelp

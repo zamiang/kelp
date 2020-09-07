@@ -95,7 +95,7 @@ const App = () => {
             </Container>
           </Grid>
           <Grid item xs={6}>
-            <img className={classes.image} src={`${config.DOMAIN}/images/designer_file_case.png`} />
+            <img className={classes.image} src="designer_file_case.png" />
           </Grid>
         </Grid>
         <Grid container className={classes.info} alignItems="center">

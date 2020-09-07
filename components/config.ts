@@ -7,7 +7,6 @@ export default {
   GOOGLE_SCOPES:
     'email profile https://www.googleapis.com/auth/drive.file openid https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://mail.google.com/ https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/docs https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.activity.readonly https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/drive',
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-  DOMAIN: 'https://www.kelp.nyc',
   SHOULD_FILTER_OUT_FILES_MODIFIED_BEFORE_NUMBER_OF_DAYS_BACK: true,
   SHOULD_FILTER_OUT_FILES_VIEWED_BY_ME_BEFORE_NUMBER_OF_DAYS_BACK: true,
   SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS: true,
