@@ -35,9 +35,9 @@ Then proceed with your node setup steps. Ensure you are using node 14 or greater
 
 Add your google oauth app and Auth0 tokens to [.env.local]
 
-    AUTH0_DOMAIN=foo.us.auth0.com
-    AUTH0_CLIENT_ID=foo
-    GOOGLE_CLIENT_ID=foo-bar-baz.apps.googleusercontent.com
+    NEXT_PUBLIC_AUTH0_DOMAIN=foo.us.auth0.com
+    NEXT_PUBLIC_AUTH0_CLIENT_ID=foo
+    NEXT_PUBLIC_GOOGLE_CLIENT_ID=foo-bar-baz.apps.googleusercontent.com
 
 When starting the app
 
