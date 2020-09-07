@@ -13,7 +13,7 @@ export interface IPerson {
   segmentIds: string[];
 }
 
-export interface IPersonById {
+interface IPersonById {
   [id: string]: IPerson;
 }
 

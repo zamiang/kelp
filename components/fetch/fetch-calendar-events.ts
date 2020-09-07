@@ -9,7 +9,7 @@ import config from '../../constants/config';
  * - "tentative" - The attendee has tentatively accepted the invitation.
  * - "accepted" - The attendee has accepted the invitation.
  */
-export type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted';
+type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted';
 
 export interface ICalendarEvent {
   id: string;
@@ -27,7 +27,7 @@ export interface ICalendarEvent {
 }
 
 // todo move these
-export type attendee = {
+type attendee = {
   email?: string;
   responseStatus?: string;
   self?: boolean;

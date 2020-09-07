@@ -3,10 +3,6 @@ import { useAsync } from 'react-async-hook';
 import fetchCalendarEvents from './fetch-calendar-events';
 import fetchDriveFiles from './fetch-drive-files';
 
-export interface IProps {
-  accessToken: string;
-}
-
 const initialEmailList: string[] = [];
 
 /**

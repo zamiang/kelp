@@ -18,6 +18,7 @@
     "dev": "next dev",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
     "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
+    "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --showLineNumber",
     "prettier": "prettier --write \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
     "prettier:check": "prettier --list-different \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
     "start": "next start",

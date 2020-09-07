@@ -1,4 +1,4 @@
-export type DocumentType =
+type DocumentType =
   | 'UNKNOWN'
   | 'application/vnd.google-apps.presentation'
   | 'application/vnd.google-apps.spreadsheet'

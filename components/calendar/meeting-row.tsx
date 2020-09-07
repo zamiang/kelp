@@ -14,7 +14,7 @@ import EmailDataStore from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
-export const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
+const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 
 const useStyles = makeStyles((theme) => ({
   time: { textAlign: 'right' },

@@ -1,10 +1,10 @@
-// import { uniq } from 'lodash';
+import { uniq } from 'lodash';
 import { useState } from 'react';
 import { useAsync } from 'react-async-hook';
-// import { fetchCurrentUserEmailsForEmailAddresses, fetchEmails } from './fetch-emails';
+import { fetchCurrentUserEmailsForEmailAddresses, fetchEmails } from './fetch-emails';
 import batchFetchPeople, { person } from './fetch-people';
 
-export interface IProps {
+interface IProps {
   peopleIds: string[];
   emailAddresses: string[];
 }
@@ -29,7 +29,7 @@ const FetchThird = (props: IProps) => {
   personList.forEach((person) => {
     emailAddresses.push(person.emailAddress);
   });
-  /*
+
   const uniqueEmailAddresses = uniq(emailAddresses);
 
   const gmailResponse = useAsync(
@@ -39,10 +39,10 @@ const FetchThird = (props: IProps) => {
 
   const emails = gmailResponse.result || [];
   const emailsResponse = useAsync(() => fetchEmails(emails), [emails.length]);
-    */
+
   return {
-    isLoading: peopleResponse.loading, // emailsResponse.loading &&
-    emails: [], // emailsResponse.result ? emailsResponse.result : [],
+    isLoading: peopleResponse.loading && emailsResponse.loading,
+    emails: emailsResponse.result ? emailsResponse.result : [],
     personList,
     refetchPersonList: async () => null, // emailsResponse.execute,
   };
