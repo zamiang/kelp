@@ -30,7 +30,7 @@
     "@material-ui/icons": "4.9.1",
     "@material-ui/lab": "4.0.0-alpha.56",
     "@material-ui/styles": "4.10.0",
-    "@types/faker": "4.1.12",
+    "@types/faker": "5.1.0",
     "@types/gapi": "0.0.39",
     "@types/gapi.client.calendar": "3.0.8",
     "@types/gapi.client.drive": "3.0.10",
