@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import Container, { IProps } from '../../components/dashboard/container';
 import PersonRow from '../../components/person/person-row';
-import withStore from '../../components/store/with-store';
+import withStore from '../../components/store/use-store';
 
 const People = (props: IProps) => {
   const people = sortBy(props.personDataStore.getPeople(), 'name');

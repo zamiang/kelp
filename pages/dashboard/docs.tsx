@@ -5,7 +5,7 @@ import React from 'react';
 import Container, { IProps } from '../../components/dashboard/container';
 import DocumentRow from '../../components/docs/document-row';
 import panelStyles from '../../components/shared/panel-styles';
-import withStore from '../../components/store/with-store';
+import withStore from '../../components/store/use-store';
 
 const Documents = (props: IProps) => {
   const docs = props.docDataStore.getDocs();

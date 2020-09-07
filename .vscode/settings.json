@@ -15,6 +15,7 @@
     ".awcache/**": true
   },
   "stylelint.enable": true,
+  "workbench.editor.enablePreview": false,
   "typescript.tsdk": "./node_modules/typescript/lib",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

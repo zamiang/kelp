@@ -51,7 +51,7 @@ interface IDashboardProps extends IProps {
   children?: ReactNode;
 }
 
-const Dashboard = (props: IDashboardProps) => {
+const DashboardContainer = (props: IDashboardProps) => {
   console.log(props, '<<<<<<<<<<<<<<');
   const classes = useStyles();
   const panelClasses = panelStyles();
@@ -100,4 +100,4 @@ const Dashboard = (props: IDashboardProps) => {
   );
 };
 
-export default Dashboard;
+export default DashboardContainer;

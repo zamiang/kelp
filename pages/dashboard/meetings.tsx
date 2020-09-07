@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Meeting from '../../components/calendar/meeting-row';
 import Container, { IProps } from '../../components/dashboard/container';
 import panelStyles from '../../components/shared/panel-styles';
-import withStore from '../../components/store/with-store';
+import useStore from '../../components/store/use-store';
 
 const MeetingsByDay = (
   props: IProps & {
@@ -51,6 +51,8 @@ const MeetingsByDay = (
 };
 
 const Meetings = (props: IProps) => {
+  const store = useStore();
+
   const selectedMeetingId = useRouter().pathname.replace('/dashboard/meetings/', '');
   const [seconds, setSeconds] = useState(0);
   // rerender every 5 seconds to update the current calendar events
@@ -60,6 +62,10 @@ const Meetings = (props: IProps) => {
     }, 5000);
     return () => clearInterval(interval);
   }, [seconds]);
+
+  if (!store) {
+    return null;
+  }
 
   /**
   // Scroll the 'current time' dot into view
@@ -72,11 +78,12 @@ const Meetings = (props: IProps) => {
     }, 100);
   }
    */
-  return (
-    <Container {...props}>
+  return <div>yay</div>;
+  /*  return (
+    <Container {...store}>
       <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />
     </Container>
-  );
+    */
 };
 
-export default withAuthenticationRequired(withStore(Meetings));
+export default withAuthenticationRequired(Meetings);
