@@ -95,7 +95,7 @@ const ExpandedMeeting = (props: IProps & { meetingId: string }) => {
               </Typography>
               <EmailsList
                 emailIds={meeting.emailIds}
-                emailStore={props.emailStore}
+                emailStore={props.emailDataStore}
                 personStore={props.personDataStore}
               />
             </React.Fragment>
@@ -133,7 +133,7 @@ const ExpandedMeeting = (props: IProps & { meetingId: string }) => {
               </Typography>
               <EmailsList
                 emailIds={recentEmailsFromAttendees}
-                emailStore={props.emailStore}
+                emailStore={props.emailDataStore}
                 personStore={props.personDataStore}
               />
             </React.Fragment>

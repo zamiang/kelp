@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import FetchAll from '../fetch/fetch-all';
 import DocDataStore, { formatGoogleDoc } from './doc-store';
 import DriveActivityDataStore from './drive-activity-store';
@@ -35,7 +34,15 @@ const useStore = () => {
   const emailDataStore = new EmailDataStore(data.emails, personDataStore);
   console.log('EMAIL DATA STORE:', emailDataStore);
 
-  return {};
+  return {
+    driveActivityStore: driveActivityDataStore,
+    emailDataStore,
+    timeDataStore,
+    personDataStore,
+    docDataStore,
+    lastUpdated: data.lastUpdated,
+    refetch: data.refetch,
+  };
 };
 
 export default useStore;

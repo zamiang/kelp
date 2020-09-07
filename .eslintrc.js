@@ -73,7 +73,6 @@ module.exports = {
     'react/no-unknown-property': 0, // Slow and not needed
     'react/prop-types': 0,
     'security/detect-object-injection': 0,
-
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
   },
   settings: {

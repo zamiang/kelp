@@ -32,7 +32,7 @@ export interface IProps {
   timeDataStore: TimeDataStore;
   docDataStore: DocDataStore;
   driveActivityStore: DriveActivityDataStore;
-  emailStore: EmailDataStore;
+  emailDataStore: EmailDataStore;
   lastUpdated: Date;
   refetch: () => void;
 }

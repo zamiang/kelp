@@ -19,7 +19,7 @@ interface IReturnType {
   lastUpdated: Date;
 }
 
-const FetchAll = (accessToken: string): IReturnType => {
+const FetchAll = (accessToken: string | null): IReturnType => {
   const firstLayer = FetchFirst(accessToken);
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const secondLayer = FetchSecond({

@@ -12,7 +12,7 @@ const initialEmailList: string[] = [];
 /**
  * Fetches data that can be fetched in parallel and creates the person store object
  */
-const FetchFirst = (accessToken: string) => {
+const FetchFirst = (accessToken: string | null) => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
     setEmailList(emailAddresses);

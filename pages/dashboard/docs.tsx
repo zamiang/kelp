@@ -2,17 +2,18 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Container, { IProps } from '../../components/dashboard/container';
+import Container from '../../components/dashboard/container';
 import DocumentRow from '../../components/docs/document-row';
 import panelStyles from '../../components/shared/panel-styles';
-import withStore from '../../components/store/use-store';
+import useStore from '../../components/store/use-store';
 
-const Documents = (props: IProps) => {
-  const docs = props.docDataStore.getDocs();
+const Documents = () => {
+  const store = useStore();
+  const docs = store.docDataStore.getDocs();
   const selectedDocumentId = useRouter().pathname.replace('/dashboard/docs/', '');
   const styles = panelStyles();
   return (
-    <Container {...props}>
+    <Container {...store}>
       <div className={styles.row}>
         <Typography className={styles.title}>Documents you edited recently</Typography>
         {docs.map((doc) => (
@@ -28,4 +29,4 @@ const Documents = (props: IProps) => {
   );
 };
 
-export default withAuthenticationRequired(withStore(Documents));
+export default withAuthenticationRequired(Documents);

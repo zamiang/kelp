@@ -38,7 +38,7 @@ const MeetingsByDay = (
                   meeting={meeting}
                   personStore={props.personDataStore}
                   docStore={props.docDataStore}
-                  emailStore={props.emailStore}
+                  emailStore={props.emailDataStore}
                   driveActivityStore={props.driveActivityStore}
                   selectedMeetingId={props.selectedMeetingId}
                 />
@@ -50,9 +50,8 @@ const MeetingsByDay = (
   );
 };
 
-const Meetings = (props: IProps) => {
+const Meetings = () => {
   const store = useStore();
-
   const selectedMeetingId = useRouter().pathname.replace('/dashboard/meetings/', '');
   const [seconds, setSeconds] = useState(0);
   // rerender every 5 seconds to update the current calendar events
@@ -78,12 +77,11 @@ const Meetings = (props: IProps) => {
     }, 100);
   }
    */
-  return <div>yay</div>;
-  /*  return (
+  return (
     <Container {...store}>
-      <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />
+      <MeetingsByDay selectedMeetingId={selectedMeetingId} {...store} />
     </Container>
-    */
+  );
 };
 
 export default withAuthenticationRequired(Meetings);
