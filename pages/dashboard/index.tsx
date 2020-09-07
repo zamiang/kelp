@@ -11,8 +11,8 @@ import ExpandedDocument from '../../components/docs/expand-document';
 import LeftDrawer from '../../components/nav/left-drawer';
 import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
+// import useStore from '../../components/store/use-fake-store';
 import useStore from '../../components/store/use-store';
-// import TopBar from './nav/top-bar';
 
 export const drawerWidth = 240;
 

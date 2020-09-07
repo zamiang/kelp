@@ -27,17 +27,17 @@ First create a [Google Oauth] app and enable the APIs you want to use. Currently
 - [Google Calendar API]
 - [Google Drive Activity API]
 
+Second, create an [Auth0] single page React app via the Auth0 console.
+
 Then proceed with your node setup steps. Ensure you are using node 14 or greater
 
     npm install
-    touch secrets.json
 
-Add your google oauth app's tokens to secrets.json
+Add your google oauth app and Auth0 tokens to [.env.local]
 
-    {
-      "client_id": "foo",
-      "client_secret": "bar"
-    }
+    AUTH0_DOMAIN=foo.us.auth0.com
+    AUTH0_CLIENT_ID=foo
+    GOOGLE_CLIENT_ID=foo-bar-baz.apps.googleusercontent.com
 
 When starting the app
 
@@ -48,3 +48,5 @@ When starting the app
 [gmail api]: https://developers.google.com/gmail/api
 [google calendar api]: https://developers.google.com/calendar
 [google drive activity api]: https://developers.google.com/drive/activity/v2
+[.env.local]: https://nextjs.org/docs/basic-features/environment-variables
+[auth0]: https://auth0.com/docs/quickstart/spa/react

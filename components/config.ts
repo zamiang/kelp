@@ -1,4 +1,5 @@
 import { subDays } from 'date-fns';
+
 export default {
   AUTH0_DOMAIN: process.env.AUTH0_DOMAIN || 'kelp.us.auth0.com',
   AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || 'ofLQ2KZrXzTUUlQO1HwiveFQbJs4uHbm',

@@ -1,15 +1,12 @@
-import React, { ComponentType, FC } from 'react';
 import DocDataStore from './doc-store';
 import DriveActivityDataStore from './drive-activity-store';
 import EmailDataStore from './email-store';
 import PersonDataStore from './person-store';
 import data from './store-faker';
 import TimeDataStore from './time-store';
+import { IStore } from './use-store';
 
-const withFakeStore = <P extends object>(Component: ComponentType<P>): FC<P> => (
-  props: P,
-): JSX.Element => {
-  console.log(props);
+const useFakeStore = (): IStore => {
   // TODO: Only create the datastores once data.isLoading is false
   const personDataStore = new PersonDataStore(data.people, []);
   personDataStore.addEmailsToStore(data.emails || []);
@@ -31,18 +28,15 @@ const withFakeStore = <P extends object>(Component: ComponentType<P>): FC<P> => 
   const emailDataStore = new EmailDataStore(data.emails, personDataStore);
   console.log('EMAIL DATA STORE:', emailDataStore);
 
-  return (
-    <Component
-      refetch={() => null}
-      driveActivityStore={driveActivityDataStore}
-      emailDataStore={emailDataStore}
-      timeDataStore={timeDataStore}
-      personDataStore={personDataStore}
-      docDataStore={docDataStore}
-      lastUpdated={new Date()}
-      {...props}
-    />
-  );
+  return {
+    driveActivityStore: driveActivityDataStore,
+    emailDataStore,
+    timeDataStore,
+    personDataStore,
+    docDataStore,
+    lastUpdated: new Date(),
+    refetch: () => null,
+  };
 };
 
-export default withFakeStore;
+export default useFakeStore;

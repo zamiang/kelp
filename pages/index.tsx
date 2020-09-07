@@ -10,9 +10,6 @@ import config from '../components/config';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
 
-// import DashboardContainer from './loadable-dashboard';
-// import DashboardContainer from './dashboard-fake-container';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
