@@ -18,6 +18,9 @@ export const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
+  container: {
+    display: 'flex',
+  },
   content: {
     flexGrow: 1,
     height: '100vh',
@@ -58,7 +61,7 @@ const DashboardContainer = () => {
   // <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} /> --!>
   // add above route component <div className={classes.appBarSpacer} />
   return (
-    <React.Fragment>
+    <div className={classes.container}>
       <LeftDrawer
         lastUpdated={store.lastUpdated}
         handleDrawerClose={handleDrawerClose}
@@ -82,7 +85,7 @@ const DashboardContainer = () => {
           {expandHash[tab]}
         </Drawer>
       </main>
-    </React.Fragment>
+    </div>
   );
 };
 
