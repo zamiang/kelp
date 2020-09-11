@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import useRowStyles from '../shared/row-styles';
 import DocDataStore from '../store/doc-store';
@@ -45,14 +44,15 @@ const MeetingRow = (props: {
   selectedMeetingId: string | null;
   shouldRenderCurrentTime: boolean;
 }) => {
-  const router = useRouter();
   const classes = useStyles();
   const rowStyles = useRowStyles();
   // const actionCount = props.meeting.driveActivityIds.length + props.meeting.emailIds.length;
 
-  if (!props.shouldRenderCurrentTime && !props.selectedMeetingId) {
-    void router.push(`/dashboard?tab=meetings&slug=${props.meeting.id}`);
-  }
+  // note - does not work
+  // const router = useRouter();
+  //  if (!props.shouldRenderCurrentTime && !props.selectedMeetingId) {
+  //     void router.push(`?tab=meetings&slug=${props.meeting.id}`);
+  //}
 
   return (
     <React.Fragment>
@@ -73,7 +73,7 @@ const MeetingRow = (props: {
           props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
         )}
       >
-        <Link href={`/dashboard?tab=meetings&slug=${props.meeting.id}`}>
+        <Link href={`?tab=meetings&slug=${props.meeting.id}`}>
           <Grid container spacing={1}>
             <Grid
               item

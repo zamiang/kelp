@@ -36,7 +36,7 @@ const PersonRow = (props: IProps) => {
         }
         return (
           <ListItem button={true} key={person.id} className={clsx(classes.person)}>
-            <Link href={`/dashboard?tab=people&slug=${person.id}`}>
+            <Link href={`?tab=people&slug=${person.id}`}>
               <Grid container alignItems="center" spacing={1} wrap="nowrap">
                 <Grid item>
                   <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>

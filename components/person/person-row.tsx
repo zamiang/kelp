@@ -25,7 +25,7 @@ const PersonRow = (
         props.selectedPersonId === props.person.id && rowStyles.rowPrimaryMain,
       )}
     >
-      <Link href={`/dashboard?tab=people&slug=${props.person.id}`}>
+      <Link href={`?tab=people&slug=${props.person.id}`}>
         <Grid container spacing={1}>
           <Grid
             item
