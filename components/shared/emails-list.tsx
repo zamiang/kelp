@@ -36,7 +36,7 @@ const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: cl
   return (
     <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item>
-        <Link href={`/dashboard?tab=people&slug=${person.id}`}>
+        <Link href={`?tab=people&slug=${person.id}`}>
           <Avatar style={{ height: 32, width: 32 }} src={(person && person.imageUrl) || ''}>
             {person && props.personStore.getPersonDisplayName(person)[0]}
           </Avatar>
@@ -48,7 +48,7 @@ const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: cl
             <b>{props.email.subject}</b> {props.email.snippet}
           </MuiLink>
         </Typography>
-        <Link href={`/dashboard?tab=people&slug=${person.id}`} passHref>
+        <Link href={`?tab=people&slug=${person.id}`} passHref>
           <Typography variant="caption" color="textSecondary" component="a">
             {person && props.personStore.getPersonDisplayName(person)}
           </Typography>

@@ -21,22 +21,25 @@ const useRowStyles = makeStyles(() => ({
   },
 }));
 
-const Activity = (props: { document: IDoc }) => (
-  <Grid container wrap="nowrap" spacing={2}>
-    <Grid item>
-      <img src={props.document.iconLink} />
+const Activity = (props: { document: IDoc }) => {
+  const classes = useRowStyles();
+  return (
+    <Grid container wrap="nowrap" spacing={2}>
+      <Grid item>
+        <img src={props.document.iconLink} className={classes.icon} />
+      </Grid>
+      <Grid item zeroMinWidth>
+        <MuiLink color="textPrimary" target="_blank" href={props.document.link || ''} noWrap>
+          {props.document.name}
+        </MuiLink>
+        <br />
+        <Typography variant="caption" color="textSecondary">
+          {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
+        </Typography>
+      </Grid>
     </Grid>
-    <Grid item zeroMinWidth>
-      <MuiLink color="textPrimary" target="_blank" href={props.document.link || ''} noWrap>
-        {props.document.name}
-      </MuiLink>
-      <br />
-      <Typography variant="caption" color="textSecondary">
-        {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
-      </Typography>
-    </Grid>
-  </Grid>
-);
+  );
+};
 
 const DriveActivityList = (props: {
   driveActivityIds: string[];

@@ -134,7 +134,7 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <Link href="/dashboard?tab=meetings">
+        <Link href="?tab=meetings">
           <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
             <ListItemIcon>
               <DashboardIcon
@@ -147,7 +147,7 @@ const LeftDrawer = (props: IProps) => {
             />
           </ListItem>
         </Link>
-        <Link href="/dashboard?tab=docs">
+        <Link href="?tab=docs">
           <ListItem button selected={isDocsSelected} className={classes.listItem}>
             <ListItemIcon>
               <InsertDriveFileIcon
@@ -160,7 +160,7 @@ const LeftDrawer = (props: IProps) => {
             />
           </ListItem>
         </Link>
-        <Link href="/dashboard?tab=people">
+        <Link href="?tab=people">
           <ListItem button selected={isPeopleSelected} className={classes.listItem}>
             <ListItemIcon>
               <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />

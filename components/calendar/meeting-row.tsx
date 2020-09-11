@@ -50,8 +50,9 @@ const MeetingRow = (props: {
   const rowStyles = useRowStyles();
   // const actionCount = props.meeting.driveActivityIds.length + props.meeting.emailIds.length;
 
+  // note - does not work
   if (!props.shouldRenderCurrentTime && !props.selectedMeetingId) {
-    void router.push(`/dashboard?tab=meetings&slug=${props.meeting.id}`);
+    void router.push(`?tab=meetings&slug=${props.meeting.id}`);
   }
 
   return (
@@ -73,7 +74,7 @@ const MeetingRow = (props: {
           props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
         )}
       >
-        <Link href={`/dashboard?tab=meetings&slug=${props.meeting.id}`}>
+        <Link href={`?tab=meetings&slug=${props.meeting.id}`}>
           <Grid container spacing={1}>
             <Grid
               item
