@@ -13,6 +13,20 @@ export interface IFormattedAttendee {
   self?: boolean;
 }
 
+interface IEvent {
+  start: Date;
+  end: Date;
+}
+
+export const getStateForMeeting = (event: IEvent): SegmentState => {
+  const currentTime = new Date();
+  if (event.end > currentTime && event.start < currentTime) {
+    return 'current';
+  } else if (event.end > currentTime) {
+    return 'upcoming';
+  } else return 'past';
+};
+
 export interface ISegment extends ICalendarEvent {
   driveActivityIds: string[];
   emailIds: string[];
@@ -58,18 +72,9 @@ export default class TimeStore {
           formattedAttendees,
           emailIds: [],
           driveActivityIds: [],
-          state: this.getStateForMeeting(event),
+          state: getStateForMeeting(event),
         };
       });
-  }
-
-  getStateForMeeting(event: ICalendarEvent): SegmentState {
-    const currentTime = new Date();
-    if (event.end > currentTime && event.start < currentTime) {
-      return 'current';
-    } else if (event.end > currentTime) {
-      return 'upcoming';
-    } else return 'past';
   }
 
   addEmailsToStore(emails: formattedEmail[]) {

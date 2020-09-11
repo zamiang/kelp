@@ -6,7 +6,7 @@ import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
 import { IDoc } from './doc-store';
 import { IPerson } from './person-store';
-import { ISegment } from './time-store';
+import { ISegment, getStateForMeeting } from './time-store';
 
 const PEOPLE_COUNT = 10;
 const EMAIL_THREAD_COUNT = 10;
@@ -97,6 +97,18 @@ documents.map((document) => {
   });
 });
 
+const getRandomResponseStatus = () =>
+  sample<string>([
+    'accepted',
+    'accepted',
+    'accepted',
+    'accepted',
+    'accepted',
+    'needsAction',
+    'declined',
+    'tentative',
+  ]);
+
 /**
  * 24 thirty minute meetings back to back
  * Cover the entire day - 'Faker.date.recent(1)`
@@ -105,28 +117,39 @@ let startDate = addMinutes(new Date(), 300);
 const segments: ISegment[] = times(HOURS_COVERED, () => {
   startDate = subMinutes(startDate, 30);
 
-  const attendees = sampleSize(people, 5).map((person) => ({
-    email: person.emailAddress,
-    self: person.emailAddress === CURRENT_USER_EMAIL,
-    responseStatus: sample<any>(['needsAction', 'declined', 'tentative', 'accepted']),
-  }));
+  const attendees = sampleSize(people, 5)
+    .filter((person) => person.emailAddress !== CURRENT_USER_EMAIL)
+    .map((person) => ({
+      email: person.emailAddress,
+      self: false,
+      // Adds accepted many times to weight it higher in the sample
+      responseStatus: getRandomResponseStatus(),
+    }));
+
+  attendees.push({
+    email: CURRENT_USER_EMAIL,
+    self: true,
+    // Adds accepted many times to weight it higher in the sample
+    responseStatus: getRandomResponseStatus(),
+  });
+
   const formattedAttendees = attendees.map((attendee) => ({
     personId: attendee.email, // TODO: Simulate google person ids
     self: attendee.self,
     responseStatus: attendee.responseStatus,
   }));
-
+  const endDate = addMinutes(startDate, 30);
   return {
     id: Faker.random.uuid(),
     link: Faker.internet.url(),
     summary: `${Faker.commerce.productName()} meeting`,
     description: Faker.lorem.paragraphs(3),
     start: startDate,
-    end: addMinutes(startDate, 30),
+    end: endDate,
     attendees,
     formattedAttendees,
     selfResponseStatus: getSelfResponseStatus(attendees),
-    state: sample<any>(['current', 'upcoming', 'past']),
+    state: getStateForMeeting({ start: startDate, end: endDate }),
     driveActivityIds: [],
     emailIds: [],
   };
