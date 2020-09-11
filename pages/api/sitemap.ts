@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
-export default async (req: any, res: any) => {
+export default async (_req: Request, res: Response) => {
   const smStream = new SitemapStream({
     hostname: 'https://www.kelp.nyc',
   });
