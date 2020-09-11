@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
@@ -67,9 +67,9 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   return (
     <div className={classes.container}>
       {meeting.link && (
-        <Link color="secondary" target="_blank" href={meeting.link}>
+        <MuiLink color="secondary" target="_blank" href={meeting.link}>
           See in Google Calendar
-        </Link>
+        </MuiLink>
       )}
       <Typography variant="h3" color="textPrimary" gutterBottom>
         {meeting.summary || '(no title)'}

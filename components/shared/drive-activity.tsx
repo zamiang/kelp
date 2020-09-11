@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { formatDistanceToNow } from 'date-fns';
@@ -27,9 +27,9 @@ const Activity = (props: { document: IDoc }) => (
       <img src={props.document.iconLink} />
     </Grid>
     <Grid item zeroMinWidth>
-      <Link color="textPrimary" target="_blank" href={props.document.link || ''} noWrap>
+      <MuiLink color="textPrimary" target="_blank" href={props.document.link || ''} noWrap>
         {props.document.name}
-      </Link>
+      </MuiLink>
       <br />
       <Typography variant="caption" color="textSecondary">
         {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
