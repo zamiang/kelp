@@ -1,5 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
@@ -52,7 +53,7 @@ const Footer = () => {
         </div>
         <Typography variant="body2" className={classes.copyright} align="center">
           {'Copyright © '}
-          <a href="https://www.zamiang.com">Brennan Moore</a> {new Date().getFullYear()}
+          <MuiLink href="https://www.zamiang.com">Brennan Moore</MuiLink> {new Date().getFullYear()}
           {'.'}
         </Typography>
       </Box>

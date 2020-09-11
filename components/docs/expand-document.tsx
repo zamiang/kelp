@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
@@ -43,9 +43,9 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
   return (
     <div className={classes.container}>
       {document.link && (
-        <Link color="secondary" target="_blank" href={document.link}>
+        <MuiLink color="secondary" target="_blank" href={document.link}>
           See in Google Drive
-        </Link>
+        </MuiLink>
       )}
       <Typography variant="h3" color="textPrimary" gutterBottom noWrap>
         {document.name || '(no title)'}

@@ -1,5 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { uniqBy } from 'lodash';
@@ -43,15 +44,15 @@ const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: cl
       </Grid>
       <Grid item zeroMinWidth>
         <Typography variant="body2" noWrap>
-          <a color="textPrimary" target="_blank" rel="noreferrer" href={emailLink}>
+          <MuiLink color="textPrimary" target="_blank" rel="noreferrer" href={emailLink}>
             <b>{props.email.subject}</b> {props.email.snippet}
-          </a>
+          </MuiLink>
         </Typography>
-        <Typography variant="caption" color="textSecondary">
-          <Link href={`/dashboard?tab=people&slug=${person.id}`}>
+        <Link href={`/dashboard?tab=people&slug=${person.id}`} passHref>
+          <Typography variant="caption" color="textSecondary" component="a">
             {person && props.personStore.getPersonDisplayName(person)}
-          </Link>
-        </Typography>
+          </Typography>
+        </Link>
       </Grid>
     </Grid>
   );
