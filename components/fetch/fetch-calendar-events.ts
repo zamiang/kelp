@@ -9,7 +9,7 @@ import config from '../../constants/config';
  * - "tentative" - The attendee has tentatively accepted the invitation.
  * - "accepted" - The attendee has accepted the invitation.
  */
-type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted';
+type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted' | 'notAttending';
 
 export interface ICalendarEvent {
   id: string;
@@ -18,7 +18,7 @@ export interface ICalendarEvent {
   start: Date;
   end: Date;
   description?: string;
-  selfResponseStatus: responseStatus | 'needsAction';
+  selfResponseStatus: responseStatus;
   attendees: {
     email?: string;
     responseStatus?: string;
@@ -39,7 +39,7 @@ export const getSelfResponseStatus = (attendees: attendee[]) => {
       return person.responseStatus as responseStatus;
     }
   }
-  return 'needsAction';
+  return 'notAttending';
 };
 
 const isSelfConfirmedAttending = (attendees: attendee[]) => {
