@@ -20,8 +20,6 @@
   "include": [
     "./pages/**/*.tsx",
     "./pages/**/*.ts",
-    "pages/api/**/*.tsx",
-    "pages/api/**/*.ts",
     "./components/**/*.tsx",
     "./components/**/*.ts",
     "./constants/**/*.tsx",
