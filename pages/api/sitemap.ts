@@ -1,0 +1,24 @@
+import { SitemapStream, streamToPromise } from 'sitemap';
+
+export default async (req: any, res: any) => {
+  const smStream = new SitemapStream({
+    hostname: 'https://www.kelp.nyc',
+  });
+
+  smStream.write({
+    url: '/',
+  });
+  smStream.write({
+    url: '/about',
+  });
+
+  // tell sitemap that there is nothing more to add to the sitemap
+  smStream.end();
+
+  // generate a sitemap and add the XML feed to a url which will be used later on.
+  const sitemap = await streamToPromise(smStream).then((sm) => sm.toString());
+
+  res.setHeader('Content-Type', 'text/xml');
+  res.write(sitemap);
+  res.end();
+};
