@@ -78,9 +78,10 @@ const Security = () => {
               <Typography variant="h6" className={classes.body}>
                 Kelp only stores information that helps authenticate you, such as your account ID,
                 email and a token that grants the Kelp website application access to your data. This
-                is the same as when you click ‘sign in with Google’ or ‘sign in with Facebook' on
-                other websites, however when you make changes or add information, your changes are
-                stored at the source and do not pass through Kelp’s website.
+                is the same as when you click &lsquo;sign in with Google&rsquo; or &lsquo;sign in
+                with Facebook&rsquo; on other websites, however when you make changes or add
+                information, your changes are stored at the source and do not pass through Kelp’s
+                website.
               </Typography>
               <Button
                 variant="contained"
