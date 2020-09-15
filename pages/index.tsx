@@ -5,10 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
-import config from '../constants/config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   hero: {
     marginTop: theme.spacing(9),
     padding: theme.spacing(9),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
     width: '100%',
   },
   info: {
@@ -32,15 +32,20 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(9),
     width: '100%',
   },
-  submit: {
+  login: {
     margin: theme.spacing(4, 0, 2),
     padding: theme.spacing(2, 6),
+    backgroundColor: theme.palette.primary.dark,
     color: 'white',
-    textTransform: 'none',
+  },
+
+  loginTry: {
+    margin: theme.spacing(4, 0, 2, 4),
+    padding: theme.spacing(2, 6),
   },
   body: {
-    marginTop: theme.spacing(1),
-    color: theme.palette.text.primary,
+    marginTop: theme.spacing(3),
+    fontWeight: 400,
   },
   hint: {
     marginTop: theme.spacing(2),
@@ -50,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   plan: {
     marginTop: theme.spacing(2),
   },
-  image: { width: '100%', maxWidth: '586px' },
+  image: { width: '100%', maxWidth: '586px', mixBlendMode: 'multiply' },
   primaryDark: { color: theme.palette.primary.dark },
   row: {
     borderBottom: `1px solid ${theme.palette.primary.dark}`,
@@ -67,35 +72,46 @@ const App = () => {
         <HomepageTopBar signIn={loginWithRedirect} />
         <Grid container className={classes.hero} alignItems="center">
           <Grid item xs={6}>
-            <Container maxWidth="xs">
-              <Typography variant="h3" className={classes.primaryDark}>
-                Your information filtration system
-              </Typography>
-              <Typography variant="h6" className={clsx(classes.hint, classes.primaryDark)}>
-                Kelp does not store your data or send your data to any third parties.
-              </Typography>
+            <Container maxWidth="sm">
+              <Typography variant="h3">Your information filtration system</Typography>
               <Typography variant="h6" className={classes.body}>
                 Kelp brings your data together and organizes it to be simple and easy to understand.
                 Kelp infers associations between information, such as between a person, a meeting
                 with the person and document edits by the person.
               </Typography>
               <Button
-                color="primary"
                 variant="contained"
                 size="large"
+                color="primary"
                 onClick={loginWithRedirect}
-                className={classes.submit}
+                className={classes.login}
                 disableElevation={true}
               >
-                Log In with Google
+                Log In
               </Button>
-              <Typography variant="body1" className={classes.plan}>
-                View the <a href={config.PROJECT_PLAN_LINK}>project plan</a>.
-              </Typography>
+              <Link href="/test-dashboard">
+                <Button
+                  variant="outlined"
+                  size="large"
+                  className={classes.loginTry}
+                  disableElevation={true}
+                >
+                  Try it out
+                </Button>
+              </Link>
             </Container>
           </Grid>
           <Grid item xs={6}>
             <img className={classes.image} src="designer_file_case.png" />
+          </Grid>
+        </Grid>
+        <Grid container className={classes.info} alignItems="center">
+          <Grid item xs={6}>
+            <Container maxWidth="xs">
+              <Typography variant="h3" className={clsx(classes.hint, classes.primaryDark)}>
+                Kelp does not store your data or send your data to any third parties.
+              </Typography>
+            </Container>
           </Grid>
         </Grid>
         <Grid container className={classes.info} alignItems="center">

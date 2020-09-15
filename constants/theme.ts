@@ -4,9 +4,8 @@ const bodyFontFamily = "'-apple-system', Arial, sans-serif;";
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: '#0061ff', dark: '#0d2f81' },
+    primary: { main: '#2aceff', dark: '#0d2f81' },
     secondary: { main: '#e8eaf6', light: '#ffffff', dark: '#b6b8c3' },
-
     info: { main: '#D6F9F5' },
   },
   typography: {
