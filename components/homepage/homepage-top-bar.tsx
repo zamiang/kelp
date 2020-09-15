@@ -6,6 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
 import config from '../../constants/config';
@@ -21,12 +22,15 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
+  yellowBackground: {
+    backgroundColor: config.YELLOW_BACKGROUND,
+  },
   button: {
     minWidth: 100,
     marginLeft: 'auto',
   },
   link: {
-    color: 'black', // theme.palette.primary.dark,
+    color: 'black',
     fontSize: theme.typography.body1.fontSize,
   },
   menuItem: {
@@ -39,19 +43,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HomepageTopBar = (props: { signIn: () => void }) => {
+const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
   const classes = useStyles();
   return (
-    <AppBar elevation={0} position="absolute" className={classes.appBar}>
+    <AppBar
+      elevation={0}
+      position="absolute"
+      className={clsx(classes.appBar, props.color === 'security' && classes.yellowBackground)}
+    >
       <Toolbar>
-        <ListItem className={classes.logoContainer}>
-          <ListItemIcon>
-            <img className={classes.logoImage} src="kelp.svg" />
-          </ListItemIcon>
-          <ListItemText disableTypography={true} className={classes.logo}>
-            Kelp
-          </ListItemText>
-        </ListItem>
+        <Link href="/">
+          <ListItem className={classes.logoContainer}>
+            <ListItemIcon>
+              <img className={classes.logoImage} src="kelp.svg" />
+            </ListItemIcon>
+            <ListItemText disableTypography={true} className={classes.logo}>
+              Kelp
+            </ListItemText>
+          </ListItem>
+        </Link>
         <div className={classes.menuItem}>
           <Link href="/security" passHref>
             <MuiLink className={classes.link}>How we keep your data safe</MuiLink>
