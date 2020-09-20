@@ -1,4 +1,3 @@
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
@@ -12,8 +11,6 @@ import LeftDrawer from '../../components/nav/left-drawer';
 import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
 import useStore from '../../components/store/use-fake-store';
-
-export const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -88,4 +85,4 @@ const DashboardContainer = () => {
   );
 };
 
-export default withAuthenticationRequired(DashboardContainer);
+export default DashboardContainer;
