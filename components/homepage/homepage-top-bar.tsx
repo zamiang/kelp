@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   yellowBackground: {
     backgroundColor: config.YELLOW_BACKGROUND,
   },
+  orangeBackground: {
+    backgroundColor: config.ORANGE_BACKGROUND,
+  },
   button: {
     minWidth: 100,
     marginLeft: 'auto',
@@ -49,7 +52,11 @@ const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
     <AppBar
       elevation={0}
       position="absolute"
-      className={clsx(classes.appBar, props.color === 'security' && classes.yellowBackground)}
+      className={clsx(
+        classes.appBar,
+        props.color === 'security' && classes.yellowBackground,
+        props.color === 'about' && classes.orangeBackground,
+      )}
     >
       <Toolbar>
         <Link href="/">
