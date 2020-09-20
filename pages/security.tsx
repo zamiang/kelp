@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import SecurityIcon from '@material-ui/icons/Security';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
@@ -58,7 +59,7 @@ const Security = () => {
             </Container>
           </Grid>
           <Grid item xs={6}>
-            <img className={classes.image} src="designer_file_case.png" />
+            <SecurityIcon className={clsx(classes.heroImage, classes.heroImageIcon)} />
           </Grid>
         </Grid>
         <Grid container className={classes.info} alignItems="center">

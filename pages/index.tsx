@@ -75,7 +75,15 @@ export const useStyles = makeStyles((theme) => ({
   plan: {
     marginTop: theme.spacing(2),
   },
-  image: { width: '100%', maxWidth: '586px', mixBlendMode: 'multiply' },
+  heroImage: {
+    width: '100%',
+    height: 'auto',
+    maxWidth: '586px',
+    mixBlendMode: 'multiply',
+  },
+  heroImageIcon: {
+    maxHeight: '200px',
+  },
   row: {
     borderBottom: `1px solid ${theme.palette.primary.dark}`,
   },
@@ -121,7 +129,7 @@ const App = () => {
             </Container>
           </Grid>
           <Grid item xs={6}>
-            <img className={classes.image} src="designer_file_case.png" />
+            <img className={classes.heroImage} src="designer_file_case.png" />
           </Grid>
         </Grid>
         <Grid

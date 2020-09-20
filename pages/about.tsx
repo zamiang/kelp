@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import BookIcon from '@material-ui/icons/Book';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
@@ -58,7 +59,7 @@ const About = () => {
             </Container>
           </Grid>
           <Grid item xs={6}>
-            <img className={classes.image} src="designer_file_case.png" />
+            <BookIcon className={clsx(classes.heroImage, classes.heroImageIcon)} />
           </Grid>
         </Grid>
         <Grid
