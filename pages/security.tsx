@@ -4,64 +4,12 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
-import config from '../constants/config';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  container: {
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-  },
-  containerWidth: {
-    width: '100%',
-  },
-  hero: {
-    marginTop: theme.spacing(9),
-    padding: theme.spacing(9),
-    backgroundColor: config.YELLOW_BACKGROUND,
-    width: '100%',
-  },
-  info: {
-    marginTop: theme.spacing(9),
-    padding: theme.spacing(9),
-    width: '100%',
-  },
-  login: {
-    margin: theme.spacing(4, 0, 2),
-    padding: theme.spacing(2, 6),
-    backgroundColor: theme.palette.primary.dark,
-    color: 'white',
-  },
-
-  loginTry: {
-    margin: theme.spacing(4, 0, 2, 4),
-    padding: theme.spacing(2, 6),
-  },
-  body: {
-    marginTop: theme.spacing(3),
-    fontWeight: 400,
-  },
-  hint: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    fontWeight: 700,
-  },
-  plan: {
-    marginTop: theme.spacing(2),
-  },
-  image: { width: '100%', maxWidth: '586px', mixBlendMode: 'multiply' },
-  row: {
-    borderBottom: `1px solid ${theme.palette.primary.dark}`,
-  },
-}));
+import { useStyles } from './index';
 
 const Security = () => {
   const classes = useStyles();
@@ -71,10 +19,14 @@ const Security = () => {
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
         <HomepageTopBar signIn={loginWithRedirect} color="security" />
-        <Grid container className={classes.hero} alignItems="center">
+        <Grid
+          container
+          className={clsx(classes.hero, classes.yellowBackground)}
+          alignItems="center"
+        >
           <Grid item xs={6}>
             <Container maxWidth="sm">
-              <Typography variant="h3">About Kelp Security</Typography>
+              <Typography variant="h3">Security</Typography>
               <Typography variant="h6" className={classes.body}>
                 Kelp only stores information that helps authenticate you, such as your account ID,
                 email and a token that grants the Kelp website application access to your data. This

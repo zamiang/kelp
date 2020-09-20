@@ -9,8 +9,9 @@ import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
+import config from '../constants/config';
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
@@ -27,6 +28,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     width: '100%',
   },
+  yellowBackground: {
+    backgroundColor: config.YELLOW_BACKGROUND,
+  },
+  orangeBackground: {
+    backgroundColor: config.ORANGE_BACKGROUND,
+  },
   info: {
     marginTop: theme.spacing(9),
     padding: theme.spacing(9),
@@ -38,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.dark,
     color: 'white',
   },
-
   loginTry: {
     margin: theme.spacing(4, 0, 2, 4),
     padding: theme.spacing(2, 6),
