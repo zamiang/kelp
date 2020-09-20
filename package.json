@@ -18,7 +18,7 @@
     "dev": "next dev",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
     "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
-    "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --showLineNumber",
+    "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport=pages",
     "prettier": "prettier --write \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
     "prettier:check": "prettier --list-different \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
     "start": "next start",
@@ -63,6 +63,7 @@
     "eslint-plugin-react-hooks": "4.1.2",
     "eslint-plugin-security": "1.4.0",
     "prettier": "2.1.2",
+    "ts-unused-exports": "6.2.4",
     "tslint": "6.1.3"
   },
   "engines": {
