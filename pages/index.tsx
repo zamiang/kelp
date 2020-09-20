@@ -53,6 +53,20 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     fontWeight: 400,
   },
+  largeAvatar: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    height: 120,
+    width: 120,
+    marginBottom: theme.spacing(2),
+  },
+  center: {
+    textAlign: 'center',
+  },
+  listItem: {
+    fontSize: '1rem',
+    color: 'black',
+  },
   hint: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
