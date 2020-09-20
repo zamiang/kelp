@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.dark,
     color: 'white',
   },
+
   loginTry: {
     margin: theme.spacing(4, 0, 2, 4),
     padding: theme.spacing(2, 6),
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Security = () => {
+const About = () => {
   const classes = useStyles();
   const { loginWithRedirect } = useAuth0();
 
@@ -73,7 +74,7 @@ const Security = () => {
         <Grid container className={classes.hero} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="sm">
-              <Typography variant="h3">Security</Typography>
+              <Typography variant="h3">About Kelp</Typography>
               <Typography variant="h6" className={classes.body}>
                 Kelp only stores information that helps authenticate you, such as your account ID,
                 email and a token that grants the Kelp website application access to your data. This
@@ -176,4 +177,4 @@ const Security = () => {
   );
 };
 
-export default Security;
+export default About;

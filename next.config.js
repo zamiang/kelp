@@ -19,6 +19,7 @@ module.exports = {
             directives: {
               defaultSrc: "'self'",
               styleSrc: ["'self'", "'unsafe-inline'"],
+              imgSrc: ["'self'", 'https://placeimg.com'],
               scriptSrc: ["'unsafe-eval'"],
               scriptSrcElem: ["'self'", 'https://apis.google.com'],
               frameSrc: [

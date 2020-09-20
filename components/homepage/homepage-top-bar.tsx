@@ -68,14 +68,14 @@ const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
           </Link>
         </div>
         <div className={classes.menuItem}>
-          <Link href="/test-dashboard" passHref>
+          <Link href="/test-dashboard?tab=meetings" passHref>
             <MuiLink className={classes.link}>Try with test data</MuiLink>
           </Link>
         </div>
         <div className={classes.menuItem}>
-          <MuiLink className={classes.link} href={config.PROJECT_PLAN_LINK}>
-            Read the project plan
-          </MuiLink>
+          <Link href="/about" passHref>
+            <MuiLink className={classes.link}>Learn about Kelp</MuiLink>
+          </Link>
         </div>
         <Button
           className={classes.button}

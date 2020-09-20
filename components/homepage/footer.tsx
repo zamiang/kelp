@@ -33,7 +33,7 @@ const Footer = () => {
         <div className={classes.footerItem}>
           <Link href="/about">
             <Button color="inherit" component="a">
-              About
+              About Kelp
             </Button>
           </Link>
         </div>
@@ -47,7 +47,7 @@ const Footer = () => {
         <div className={classes.footerItem}>
           <Link href="/terms">
             <Button color="inherit" component="a">
-              Privacy & terms
+              Privacy & Terms
             </Button>
           </Link>
         </div>
