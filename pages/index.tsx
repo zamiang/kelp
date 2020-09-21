@@ -2,8 +2,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
@@ -144,7 +149,7 @@ const App = () => {
           justify="center"
         >
           <Grid item xs={6}>
-            <Container maxWidth="sm">
+            <Container maxWidth="sm" className={classes.center}>
               <Typography variant="h3">
                 Kelp does not store your personal data or send your data to third parties.
               </Typography>
@@ -159,38 +164,35 @@ const App = () => {
           </Grid>
           <Grid item xs={6}>
             <Container maxWidth="xs">
-              <Grid container spacing={5}>
-                <Grid item className={classes.row}>
-                  <Typography variant="h6">
-                    Kelp does not store your data or send your data to any third parties.
-                  </Typography>
-                  <Typography variant="body1">
-                    Kelp brings your data together and organizes it to be simple and easy to
-                    understand. Kelp infers associations between information, such as between a
-                    person, a meeting with the person and document edits by the person.
-                  </Typography>
-                </Grid>
-                <Grid item className={classes.row}>
-                  <Typography variant="h6">
-                    Kelp does not store your data or send your data to any third parties.
-                  </Typography>
-                  <Typography variant="body1">
-                    Kelp brings your data together and organizes it to be simple and easy to
-                    understand. Kelp infers associations between information, such as between a
-                    person, a meeting with the person and document edits by the person.
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="h6">
-                    Kelp does not store your data or send your data to any third parties.
-                  </Typography>
-                  <Typography variant="body1">
-                    Kelp brings your data together and organizes it to be simple and easy to
-                    understand. Kelp infers associations between information, such as between a
-                    person, a meeting with the person and document edits by the person.
-                  </Typography>
-                </Grid>
-              </Grid>
+              <List>
+                <ListItem divider>
+                  <ListItemIcon>
+                    <LocationCityIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Architecture"
+                    secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
+                  />
+                </ListItem>
+                <ListItem divider>
+                  <ListItemIcon>
+                    <LocationCityIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Architecture"
+                    secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <LocationCityIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Architecture"
+                    secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
+                  />
+                </ListItem>
+              </List>
             </Container>
           </Grid>
         </Grid>
