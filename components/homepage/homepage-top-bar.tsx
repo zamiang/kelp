@@ -70,6 +70,11 @@ const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
           </ListItem>
         </Link>
         <div className={classes.menuItem}>
+          <Link href="/about" passHref>
+            <MuiLink className={classes.link}>Learn about Kelp</MuiLink>
+          </Link>
+        </div>
+        <div className={classes.menuItem}>
           <Link href="/security" passHref>
             <MuiLink className={classes.link}>How we keep your data safe</MuiLink>
           </Link>
@@ -77,11 +82,6 @@ const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
         <div className={classes.menuItem}>
           <Link href="/test-dashboard?tab=meetings" passHref>
             <MuiLink className={classes.link}>Try with test data</MuiLink>
-          </Link>
-        </div>
-        <div className={classes.menuItem}>
-          <Link href="/about" passHref>
-            <MuiLink className={classes.link}>Learn about Kelp</MuiLink>
           </Link>
         </div>
         <Button
