@@ -82,7 +82,11 @@ export const useStyles = makeStyles((theme) => ({
     mixBlendMode: 'multiply',
   },
   heroImageIcon: {
-    maxHeight: '200px',
+    height: '120px',
+    width: '120px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block',
   },
   row: {
     borderBottom: `1px solid ${theme.palette.primary.dark}`,

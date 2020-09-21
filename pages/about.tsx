@@ -1,13 +1,11 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import BookIcon from '@material-ui/icons/Book';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import clsx from 'clsx';
-import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
@@ -25,42 +23,14 @@ const About = () => {
           className={clsx(classes.hero, classes.orangeBackground)}
           alignItems="center"
         >
-          <Grid item xs={6}>
-            <Container maxWidth="sm">
-              <Typography variant="h3">About Kelp</Typography>
-              <Typography variant="h6" className={classes.body}>
-                Kelp only stores information that helps authenticate you, such as your account ID,
-                email and a token that grants the Kelp website application access to your data. This
-                is the same as when you click &lsquo;sign in with Google&rsquo; or &lsquo;sign in
-                with Facebook&rsquo; on other websites, however when you make changes or add
-                information, your changes are stored at the source and do not pass through Kelp’s
-                website.
-              </Typography>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                onClick={loginWithRedirect}
-                className={classes.login}
-                disableElevation={true}
-              >
-                Log In
-              </Button>
-              <Link href="/test-dashboard">
-                <Button
-                  variant="outlined"
-                  size="large"
-                  className={classes.loginTry}
-                  disableElevation={true}
-                >
-                  Try it out
-                </Button>
-              </Link>
-            </Container>
-          </Grid>
-          <Grid item xs={6}>
-            <BookIcon className={clsx(classes.heroImage, classes.heroImageIcon)} />
-          </Grid>
+          <Container>
+            <ScheduleIcon className={clsx(classes.heroImage, classes.heroImageIcon)} />
+            <Typography variant="h2" className={classes.center}>
+              Information at your fingertips
+              <br />
+              &hellip;but actually
+            </Typography>
+          </Container>
         </Grid>
         <Grid
           container
@@ -113,14 +83,14 @@ const About = () => {
                 My name is <MuiLink href="http://www.zamiang.com/">Brennan Moore</MuiLink>.
                 I&rsquo;ve been professionally building software on the internet for the past 12
                 years. I&rsquo;ve built tools for non-profits, art collectors, bike share companies,
-                e-commerce and for individuals in healthcare.
+                e-commerce startups and for healthcare enterprise.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Across all of those experiences, I&rsquo;ve lost documents, missed emails, created
-                events with the wrong set of attendees and I&rsquo;ve had relationships languish.
-                While we all are responsible for our actions, we are not well suited to dealing with
-                the amount of information and notifications we receive every day across an
-                increasingly vast set of sources.
+                Across all of those experiences, I&rsquo;ve made a lot of simple mistakes.
+                I&rsquo;ve lost documents, missed emails, created events with the wrong attendees
+                and I&rsquo;ve had coworker relationships languish. While we are responsible for our
+                actions, we are not well suited to dealing with the amount of information and
+                notifications we receive every day across an increasingly vast set of sources.
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 I hope to use my experience to build tools that help people take back their time and
