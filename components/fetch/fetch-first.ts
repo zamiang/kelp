@@ -24,15 +24,12 @@ interface IResponse {
 const FetchFirst = (accessToken: string): IResponse => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
-    console.log('adding emails', emailAddresses);
-    console.log('current emails', emailList);
     setEmailList(sortedUniq(emailAddresses.concat(emailList)));
   };
   const driveResponse = useAsyncAbortable(fetchDriveFiles, [accessToken] as any);
   const calendarResponse = useAsyncAbortable(() => fetchCalendarEvents(addEmailAddressesToStore), [
     accessToken,
   ] as any);
-  console.log('email list returned from fetch first', emailList);
   return {
     isLoading: driveResponse.loading && calendarResponse.loading,
     error: driveResponse.error || calendarResponse.error,

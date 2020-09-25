@@ -17,7 +17,6 @@ export interface IStore {
 }
 
 const useStore = (accessToken: string): IStore => {
-  console.log('use store running');
   // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll(accessToken);
 
