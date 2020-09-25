@@ -28,7 +28,9 @@ const FetchThird = (props: IProps) => {
 
   const emailAddresses = clone(props.emailAddresses);
   personList.forEach((person) => {
-    emailAddresses.push(person.emailAddress);
+    if (person.emailAddress) {
+      emailAddresses.push(person.emailAddress);
+    }
   });
 
   const uniqueEmailAddresses = sortedUniq(emailAddresses);

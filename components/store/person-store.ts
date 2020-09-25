@@ -5,7 +5,7 @@ import { person as GooglePerson } from '../fetch/fetch-people';
 
 export interface IPerson {
   id: string;
-  name?: string;
+  name: string;
   emailAddress?: string;
   imageUrl?: string | null;
   emailIds: string[];
@@ -34,6 +34,7 @@ export const formatPerson = (person: GooglePerson) => ({
 
 const createNewPersonFromEmail = (email: string) => ({
   id: email,
+  name: email,
   emailAddress: email,
   imageUrl: null,
   emailIds: [],
@@ -135,7 +136,7 @@ export default class PersonDataStore {
   }
 
   getPersonDisplayName(person: IPerson) {
-    return person.name || person.emailAddress;
+    return person.name;
   }
 
   getLength() {

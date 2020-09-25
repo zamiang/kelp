@@ -36,8 +36,8 @@ const getAutocompleteResults = (props: IProps) => {
 
   props.people.map((person) =>
     results.push({
-      id: person.emailAddress,
-      title: person.name || person.emailAddress,
+      id: person.id,
+      title: person.name,
       type: 'person',
     }),
   );

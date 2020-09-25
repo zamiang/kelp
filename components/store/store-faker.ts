@@ -60,8 +60,8 @@ const emails: formattedEmail[] = times(EMAIL_COUNT, () => ({
   subject: Faker.lorem.lines(1),
   isImportant: Faker.random.boolean(),
   labelIds: [],
-  from: sample(people)!.emailAddress,
-  to: [sample(people)!.emailAddress],
+  from: sample(people)!.emailAddress!,
+  to: [sample(people)!.emailAddress!],
 }));
 
 /**
@@ -134,7 +134,7 @@ const segments: ISegment[] = times(HOURS_COVERED, () => {
   });
 
   const formattedAttendees = attendees.map((attendee) => ({
-    personId: attendee.email, // TODO: Simulate google person ids
+    personId: attendee.email!, // TODO: Simulate google person ids
     self: attendee.self,
     responseStatus: attendee.responseStatus,
   }));
