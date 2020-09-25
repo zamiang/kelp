@@ -6,7 +6,7 @@ import { person as GooglePerson } from '../fetch/fetch-people';
 export interface IPerson {
   id: string;
   name?: string;
-  emailAddress: string;
+  emailAddress?: string;
   imageUrl?: string | null;
   emailIds: string[];
   driveActivityIds: string[];
@@ -25,7 +25,7 @@ interface IEmailAddressToPersonIdHash {
 export const formatPerson = (person: GooglePerson) => ({
   id: person.id.replace('people/', ''),
   name: person.name,
-  emailAddress: person.emailAddress.toLocaleLowerCase(),
+  emailAddress: person.emailAddress?.toLocaleLowerCase(),
   imageUrl: person.imageUrl,
   emailIds: [],
   driveActivityIds: [],
@@ -60,7 +60,9 @@ export default class PersonDataStore {
 
   addPersonToStore(person: IPerson) {
     this.personById[person.id.replace('people/', '')] = person;
-    this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
+    if (person.emailAddress) {
+      this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
+    }
   }
 
   addPeopleToStore(people: IPerson[]) {
