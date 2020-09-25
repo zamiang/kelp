@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import config from '../../constants/config';
 
-export const connection = 'google-oauth2';
+const connection = 'google-oauth2';
 
 export const useLoginWithRedirect = () => {
   const { loginWithRedirect } = useAuth0();
