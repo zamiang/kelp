@@ -24,7 +24,6 @@ const FetchAll = (accessToken: string): IReturnType => {
   const firstLayer = FetchFirst(accessToken);
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const secondLayer = FetchSecond({
-    isLoading: firstLayer.isLoading,
     googleDocIds,
   });
   const peopleIds = uniq(

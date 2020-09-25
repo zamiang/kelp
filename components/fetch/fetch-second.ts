@@ -3,7 +3,6 @@ import fetchDriveActivityForDocumentIds from './fetch-drive-activity';
 
 interface IProps {
   googleDocIds: string[];
-  isLoading: boolean;
 }
 /**
  * Fetches 2nd layer of information.

@@ -32,12 +32,12 @@ const FetchThird = (props: IProps) => {
   });
 
   const uniqueEmailAddresses = sortedUniq(emailAddresses);
+  const gmailResponse = useAsyncAbortable(
+    () => fetchCurrentUserEmailsForEmailAddresses(uniqueEmailAddresses),
+    [uniqueEmailAddresses.length] as any,
+  );
 
-  const gmailResponse = useAsyncAbortable(fetchCurrentUserEmailsForEmailAddresses, [
-    uniqueEmailAddresses.join('|'),
-  ]);
-
-  const emails = gmailResponse.result;
+  const emails = sortedUniq(gmailResponse.result);
   const emailsResponse = useAsyncAbortable(() => fetchEmails(emails || []), [
     emails ? emails.length : 'error',
   ] as any);

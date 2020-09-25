@@ -62,16 +62,11 @@ export const fetchEmails = async (
     });
 };
 
-export const fetchCurrentUserEmailsForEmailAddresses = async (
-  _abortSignal: any,
-  emailAddresses?: string,
-) => {
-  console.log(emailAddresses, '<<<<<<<<<<<<<<<<<<<<');
-  const addresses = emailAddresses?.split('|');
-  if (!addresses || addresses.length < 1) {
+export const fetchCurrentUserEmailsForEmailAddresses = async (emailAddresses: string[]) => {
+  if (!emailAddresses || emailAddresses.length < 1) {
     return;
   }
-  const formattedEmails = addresses.map((email) => `from:${email}`);
+  const formattedEmails = emailAddresses.map((email) => `from:${email}`);
   const response = await gapi.client.gmail.users.messages.list({
     userId: 'me',
     q: `newer_than:30d ${formattedEmails.join(' OR ')}`,
