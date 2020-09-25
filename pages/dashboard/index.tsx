@@ -1,6 +1,7 @@
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Drawer from '@material-ui/core/Drawer';
 import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import ExpandedMeeting from '../../components/calendar/expand-meeting';
@@ -11,6 +12,7 @@ import ExpandedDocument from '../../components/docs/expand-document';
 import LeftDrawer from '../../components/nav/left-drawer';
 import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
+import useAccessToken from '../../components/store/use-access-token';
 import useStore from '../../components/store/use-store';
 
 export const drawerWidth = 240;
@@ -28,8 +30,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardContainer = () => {
-  const store = useStore();
+const LoadingDashboardContainer = () => {
+  const accessToken = useAccessToken();
+  if (!accessToken) {
+    return <div>loading</div>;
+  }
+  return <DashboardContainer accessToken={accessToken} />;
+};
+
+interface IProps {
+  accessToken: string;
+}
+
+const DashboardContainer = ({ accessToken }: IProps) => {
+  const store = useStore(accessToken);
   const classes = useStyles();
   const panelClasses = panelStyles();
   const [isOpen, setOpen] = useState(true);
@@ -70,9 +84,13 @@ const DashboardContainer = () => {
         meetings={store.timeDataStore.getSegments()}
         handleDrawerOpen={handleDrawerOpen}
         handleRefreshClick={handleRefreshClick}
+        tab={tab as any}
       />
       <main className={classes.content}>
-        <div className={panelClasses.panel}>{tabHash[tab]}</div>
+        <div className={panelClasses.panel}>
+          {store.error && <Alert severity="error">{JSON.stringify(store.error)}</Alert>}
+          {tabHash[tab]}
+        </div>
         <Drawer
           open={true}
           classes={{
@@ -88,4 +106,4 @@ const DashboardContainer = () => {
   );
 };
 
-export default withAuthenticationRequired(DashboardContainer);
+export default withAuthenticationRequired(LoadingDashboardContainer);

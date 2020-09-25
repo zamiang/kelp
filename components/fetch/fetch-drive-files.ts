@@ -4,10 +4,10 @@ import config from '../../constants/config';
 const fetchDriveFiles = async () => {
   // Does not allow filtering by modified time OR deleted
   const driveResponse = await gapi.client.drive.files.list({
-    includeItemsFromAllDrives: true,
-    includeTeamDriveItems: true,
-    supportsAllDrives: true,
-    supportsTeamDrives: true,
+    // includeItemsFromAllDrives: true,
+    // includeTeamDriveItems: true,
+    // supportsAllDrives: true,
+    // supportsTeamDrives: true,
     orderBy: 'modifiedTime desc',
     pageSize: 30,
     fields:

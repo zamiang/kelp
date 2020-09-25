@@ -59,6 +59,7 @@ const DashboardContainer = () => {
   return (
     <div className={classes.container}>
       <LeftDrawer
+        tab={tab as any}
         lastUpdated={store.lastUpdated}
         handleDrawerClose={handleDrawerClose}
         isOpen={isOpen}

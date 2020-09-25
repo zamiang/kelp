@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
@@ -14,11 +13,12 @@ import clsx from 'clsx';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
+import { useLoginWithRedirect } from '../components/store/login';
 import { useStyles } from './index';
 
 const Security = () => {
   const classes = useStyles();
-  const { loginWithRedirect } = useAuth0();
+  const loginWithRedirect = useLoginWithRedirect();
   return (
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>

@@ -63,8 +63,8 @@ export const fetchEmails = async (
 };
 
 export const fetchCurrentUserEmailsForEmailAddresses = async (emailAddresses: string[]) => {
-  if (emailAddresses.length < 1) {
-    return null;
+  if (!emailAddresses || emailAddresses.length < 1) {
+    return;
   }
   const formattedEmails = emailAddresses.map((email) => `from:${email}`);
   const response = await gapi.client.gmail.users.messages.list({

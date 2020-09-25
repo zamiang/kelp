@@ -8,18 +8,19 @@ import FetchSecond from './fetch-second';
 import FetchThird from './fetch-third';
 
 interface IReturnType {
-  personList: person[];
-  emailAddresses: string[];
-  emails: formattedEmail[];
-  calendarEvents: ICalendarEvent[];
-  driveFiles: gapi.client.drive.File[];
-  driveActivity: IFormattedDriveActivity[];
-  isLoading: boolean;
-  refetch: () => void;
-  lastUpdated: Date;
+  readonly personList: person[];
+  readonly emailAddresses: string[];
+  readonly emails: formattedEmail[];
+  readonly calendarEvents: ICalendarEvent[];
+  readonly driveFiles: gapi.client.drive.File[];
+  readonly driveActivity: IFormattedDriveActivity[];
+  readonly isLoading: boolean;
+  readonly refetch: () => void;
+  readonly lastUpdated: Date;
+  readonly error: Error | undefined;
 }
 
-const FetchAll = (accessToken: string | null): IReturnType => {
+const FetchAll = (accessToken: string): IReturnType => {
   const firstLayer = FetchFirst(accessToken);
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const secondLayer = FetchSecond({
@@ -44,6 +45,7 @@ const FetchAll = (accessToken: string | null): IReturnType => {
       await thirdLayer.refetchPersonList();
     },
     isLoading: firstLayer.isLoading && secondLayer.isLoading && thirdLayer.isLoading,
+    error: firstLayer.error || secondLayer.error || thirdLayer.error,
   };
 };
 
