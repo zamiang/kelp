@@ -19,7 +19,12 @@ module.exports = {
             directives: {
               defaultSrc: "'self'",
               styleSrc: ["'self'", "'unsafe-inline'"],
-              imgSrc: ["'self'", 'https://placeimg.com'],
+              imgSrc: [
+                "'self'",
+                'https://placeimg.com',
+                'https://drive-thirdparty.googleusercontent.com/',
+                'https://*.googleusercontent.com',
+              ],
               scriptSrc: ["'unsafe-eval'"],
               scriptSrcElem: ["'self'", 'https://apis.google.com'],
               frameSrc: [
@@ -27,6 +32,8 @@ module.exports = {
                 'https://content.googleapis.com/',
                 'https://accounts.google.com/',
                 'https://content-gmail.googleapis.com/',
+                'https://content-driveactivity.googleapis.com/',
+                'https://content-people.googleapis.com/',
               ],
               connectSrc: ["'self'", 'https://kelp.us.auth0.com/oauth/token'],
             },

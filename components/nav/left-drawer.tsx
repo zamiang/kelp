@@ -12,7 +12,6 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { drawerWidth } from '../../pages/dashboard';
 import { IDoc } from '../store/doc-store';
@@ -97,15 +96,14 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
+  tab: 'meetings' | 'docs' | 'people';
 }
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
-  const currentRoute = useRouter().pathname;
-
-  const isMeetingsSelected = currentRoute.includes('/meetings');
-  const isDocsSelected = currentRoute.includes('/docs');
-  const isPeopleSelected = currentRoute.includes('/people');
+  const isMeetingsSelected = props.tab === 'meetings';
+  const isDocsSelected = props.tab === 'docs';
+  const isPeopleSelected = props.tab === 'people';
   return (
     <Drawer
       variant="permanent"

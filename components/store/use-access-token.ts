@@ -1,9 +1,9 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import useGAPI from './use-gapi';
 
 /*
+// user returned from Auth0
 interface IOauth0User {
   email: string;
   email_verified: boolean;
@@ -18,26 +18,35 @@ interface IOauth0User {
 }
  */
 
+/**
+ * Ideally would be able to get the google token from auth0
+ *  const token = await getAccessTokenSilently({
+ *   scope,
+ *   connection,
+ *  });
+ *  setAccessToken(token);
+ *  gapi.auth.setToken({
+ *   access_token: token,
+ *  });
+ */
+
 const useStore = () => {
-  const { getAccessTokenSilently } = useAuth0();
   const gapiLoaded = useGAPI();
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
     void (async () => {
       if (gapiLoaded.isLoaded) {
-        /*
-        // NOTE: Unsure why I can't get the access token from here
-        const token = await getAccessTokenSilently({
-          // audience: 'https://www.googleapis.com/',
-          // google-oauth2
-          scope: GOOGLE_SCOPES,
-        });
-        */
-        // NOTE: I have no idea why this works
-        // From https://gist.github.com/woloski/190f10d0d120318082a2
+        /**
+         * This works because the user is logged in with google and has authenticated the google app already via auth0
+         * From https://gist.github.com/woloski/190f10d0d120318082a2
+         */
         gapi.auth.authorize(
-          { client_id: config.GOOGLE_CLIENT_ID, scope: config.GOOGLE_SCOPES, immediate: true },
+          {
+            client_id: config.GOOGLE_CLIENT_ID,
+            scope: config.GOOGLE_SCOPES.join(' '),
+            immediate: true,
+          },
           function (authResult) {
             if (authResult) {
               setAccessToken(authResult.access_token);
@@ -46,7 +55,7 @@ const useStore = () => {
         );
       }
     })();
-  }, [getAccessTokenSilently, gapiLoaded.isLoaded, accessToken]);
+  }, [gapiLoaded.isLoaded, accessToken]);
 
   return accessToken;
 };

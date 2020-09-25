@@ -4,45 +4,46 @@ import DriveActivityDataStore from './drive-activity-store';
 import EmailDataStore from './email-store';
 import PersonDataStore, { formatPerson } from './person-store';
 import TimeDataStore from './time-store';
-import useAccessToken from './use-access-token';
 
 export interface IStore {
-  personDataStore: PersonDataStore;
-  timeDataStore: TimeDataStore;
-  docDataStore: DocDataStore;
-  driveActivityStore: DriveActivityDataStore;
-  emailDataStore: EmailDataStore;
-  lastUpdated: Date;
-  refetch: () => void;
+  readonly personDataStore: PersonDataStore;
+  readonly timeDataStore: TimeDataStore;
+  readonly docDataStore: DocDataStore;
+  readonly driveActivityStore: DriveActivityDataStore;
+  readonly emailDataStore: EmailDataStore;
+  readonly lastUpdated: Date;
+  readonly refetch: () => void;
+  readonly error?: Error;
 }
 
-const useStore = (): IStore => {
-  const accessToken = useAccessToken();
+const useStore = (accessToken: string): IStore => {
+  console.log('use store running');
   // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll(accessToken);
-  const people = data.personList.map((person) => formatPerson(person));
+
+  const people = (data.personList || []).map((person) => formatPerson(person));
 
   // TODO: Only create the datastores once data.isLoading is false
-  const personDataStore = new PersonDataStore(people, data.emailAddresses);
+  const personDataStore = new PersonDataStore(people, data.emailAddresses || []);
   personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
   personDataStore.addGoogleCalendarEventsIdsToStore(data.calendarEvents || []);
-  console.log('PERSON DATA STORE:', personDataStore);
+  // console.log('PERSON DATA STORE:', personDataStore);
 
   const timeDataStore = new TimeDataStore(data.calendarEvents || [], personDataStore);
   timeDataStore.addEmailsToStore(data.emails || []);
   timeDataStore.addDriveActivityToStore(data.driveActivity);
-  console.log('TIME DATA STORE:', timeDataStore);
+  // console.log('TIME DATA STORE:', timeDataStore);
 
   const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));
   const docDataStore = new DocDataStore(docs);
-  console.log('DOC DATA STORE:', docDataStore);
+  // console.log('DOC DATA STORE:', docDataStore);
 
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
-  console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
+  // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
 
   const emailDataStore = new EmailDataStore(data.emails, personDataStore);
-  console.log('EMAIL DATA STORE:', emailDataStore);
+  // console.log('EMAIL DATA STORE:', emailDataStore);
 
   return {
     driveActivityStore: driveActivityDataStore,
@@ -52,6 +53,7 @@ const useStore = (): IStore => {
     docDataStore,
     lastUpdated: data.lastUpdated,
     refetch: data.refetch,
+    error: data.error,
   };
 };
 
