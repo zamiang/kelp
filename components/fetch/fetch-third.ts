@@ -5,8 +5,8 @@ import { fetchCurrentUserEmailsForEmailAddresses, fetchEmails } from './fetch-em
 import batchFetchPeople, { person } from './fetch-people';
 
 interface IProps {
-  peopleIds: string[];
-  emailAddresses: string[];
+  readonly peopleIds: string[];
+  readonly emailAddresses: string[];
 }
 
 /**

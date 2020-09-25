@@ -2,7 +2,7 @@ import { useAsyncAbortable } from 'react-async-hook';
 import fetchDriveActivityForDocumentIds from './fetch-drive-activity';
 
 interface IProps {
-  googleDocIds: string[];
+  readonly googleDocIds: string[];
 }
 /**
  * Fetches 2nd layer of information.
