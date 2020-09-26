@@ -64,6 +64,10 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   );
   const recentEmailsFromAttendees = flatten(people.map((person) => person.emailIds));
   const driveActivityFromAttendees = flatten(people.map((person) => person.driveActivityIds));
+  const shouldShowCreator = meeting.creator ? true : false;
+  const shouldShowOrganizer = meeting.organizer ? true : false;
+  const organizer = meeting.formattedOrganizer;
+  const creator = meeting.formattedCreator;
   return (
     <div className={classes.container}>
       {meeting.link && (
@@ -154,14 +158,32 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
             </React.Fragment>
           )}
         </Grid>
-        {hasAttendees && (
-          <Grid item xs={5}>
-            <Typography variant="h6" className={classes.heading}>
-              Guests
-            </Typography>
-            <AttendeeList personStore={props.personDataStore} attendees={attendees} />
-          </Grid>
-        )}
+        <Grid item xs={5}>
+          {shouldShowOrganizer && organizer && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.heading}>
+                Organizer
+              </Typography>
+              <AttendeeList personStore={props.personDataStore} attendees={[organizer]} />
+            </React.Fragment>
+          )}
+          {shouldShowCreator && creator && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.heading}>
+                Creator
+              </Typography>
+              <AttendeeList personStore={props.personDataStore} attendees={[creator]} />
+            </React.Fragment>
+          )}
+          {hasAttendees && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.heading}>
+                Guests
+              </Typography>
+              <AttendeeList personStore={props.personDataStore} attendees={attendees} />
+            </React.Fragment>
+          )}
+        </Grid>
       </Grid>
     </div>
   );

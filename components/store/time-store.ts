@@ -67,9 +67,27 @@ export default class TimeStore {
             responseStatus: attendee.responseStatus,
             self: attendee.self,
           }));
+        const formattedOrganizer =
+          event.organizer && event.organizer.email
+            ? {
+                personId: personStore.getPersonIdForEmailAddress(event.organizer.email),
+                responseStatus: 'attending' as any,
+                self: event.organizer.self,
+              }
+            : null;
+        const formattedCreator =
+          event.creator && event.creator.email
+            ? {
+                personId: personStore.getPersonIdForEmailAddress(event.creator.email),
+                responseStatus: 'attending' as any,
+                self: event.creator.self,
+              }
+            : null;
         return {
           ...event,
           formattedAttendees,
+          formattedOrganizer,
+          formattedCreator,
           emailIds: [],
           driveActivityIds: [],
           state: getStateForMeeting(event),

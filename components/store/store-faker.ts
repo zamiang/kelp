@@ -27,6 +27,7 @@ times(PEOPLE_COUNT, () => {
     emailAddress,
     name,
     imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
+    isMissingProfile: false,
     emailIds: [],
     driveActivityIds: [],
     segmentIds: [],
@@ -39,6 +40,7 @@ people.push({
   emailAddress: CURRENT_USER_EMAIL,
   name: 'current user',
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
+  isMissingProfile: false,
   emailIds: [],
   driveActivityIds: [],
   segmentIds: [],
@@ -148,6 +150,12 @@ const segments: ISegment[] = times(HOURS_COVERED, () => {
     end: endDate,
     attendees,
     formattedAttendees,
+    creator: {
+      email: sample(people)?.emailAddress,
+    },
+    organizer: {
+      email: sample(people)?.emailAddress,
+    },
     selfResponseStatus: getSelfResponseStatus(attendees),
     state: getStateForMeeting({ start: startDate, end: endDate }),
     driveActivityIds: [],
