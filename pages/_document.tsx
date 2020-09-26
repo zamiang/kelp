@@ -13,10 +13,6 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
           <script src="https://apis.google.com/js/api.js"></script>
-          <meta
-            name="insight-app-sec-validation"
-            content="0f24f35d-7983-4cb6-a5d3-bd2450cb36e1"
-          ></meta>
         </Head>
         <body>
           <Main />
