@@ -1,9 +1,10 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { formatDistanceToNow } from 'date-fns';
 import { uniqBy } from 'lodash';
+import Link from 'next/link';
 import React from 'react';
 import DocDataStore, { IDoc } from '../store/doc-store';
 import DriveActivityDataStore from '../store/drive-activity-store';
@@ -19,6 +20,11 @@ const useRowStyles = makeStyles(() => ({
     width: 24,
     display: 'block',
   },
+  link: {
+    textTransform: 'none',
+    padding: 0,
+    marginTop: 0,
+  },
 }));
 
 const Activity = (props: { document: IDoc }) => {
@@ -29,9 +35,11 @@ const Activity = (props: { document: IDoc }) => {
         <img src={props.document.iconLink} className={classes.icon} />
       </Grid>
       <Grid item zeroMinWidth>
-        <MuiLink color="textPrimary" target="_blank" href={props.document.link || ''} noWrap>
-          {props.document.name}
-        </MuiLink>
+        <Link href={`?tab=docs&slug=${props.document.id}`}>
+          <Button className={classes.link} component="a">
+            {props.document.name}
+          </Button>
+        </Link>
         <br />
         <Typography variant="caption" color="textSecondary">
           {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
@@ -63,11 +71,9 @@ const DriveActivityList = (props: {
     .sort((a, b) => (a!.updatedAt! > b!.updatedAt! ? -1 : 1));
   return (
     <div className={classes.root}>
-      <div>
-        {docs.map((doc) => (
-          <Activity key={doc!.id} document={doc!} />
-        ))}
-      </div>
+      {docs.map((doc) => (
+        <Activity key={doc!.id} document={doc!} />
+      ))}
     </div>
   );
 };

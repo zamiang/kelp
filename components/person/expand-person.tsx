@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import DriveActivity from '../shared/drive-activity';
+import EmailsList from '../shared/emails-list';
+import MeetingList from '../shared/meeting-list';
 import { IStore } from '../store/use-store';
 
 const ADD_SENDER_LINK =
@@ -36,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 const ExpandPerson = (props: IStore & { personId: string }) => {
   const classes = useStyles();
   const person = props.personDataStore.getPersonById(props.personId);
-
   if (!person) {
     return null;
   }
@@ -69,6 +70,30 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
                 driveActivityStore={props.driveActivityStore}
                 personStore={props.personDataStore}
                 docStore={props.docDataStore}
+              />
+            </React.Fragment>
+          )}
+          {person.segmentIds.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Meetings
+              </Typography>
+              <MeetingList
+                segmentIds={person.segmentIds}
+                timeStore={props.timeDataStore}
+                personStore={props.personDataStore}
+              />
+            </React.Fragment>
+          )}
+          {person.emailIds.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Emails
+              </Typography>
+              <EmailsList
+                emailIds={person.emailIds}
+                emailStore={props.emailDataStore}
+                personStore={props.personDataStore}
               />
             </React.Fragment>
           )}

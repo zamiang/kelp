@@ -1,3 +1,4 @@
+import { uniq } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
@@ -115,6 +116,19 @@ export default class PersonDataStore {
 
   addGoogleCalendarEventsIdsToStore(events: ICalendarEvent[]) {
     events.forEach((event) => {
+      if (event.creator?.email) {
+        const personId = this.emailAddressToPersonIdHash[event.creator.email];
+        if (personId) {
+          this.personById[personId].segmentIds.push(event.id);
+        }
+      }
+      if (event.organizer?.email) {
+        const personId = this.emailAddressToPersonIdHash[event.organizer.email];
+        if (personId) {
+          this.personById[personId].segmentIds.push(event.id);
+        }
+      }
+
       (event.attendees || []).forEach((attendee) => {
         if (attendee && attendee.email) {
           const personId = this.emailAddressToPersonIdHash[attendee.email];
@@ -124,6 +138,12 @@ export default class PersonDataStore {
         }
       });
     });
+    // There will be many dupes
+    this.cleanupDuplicateSegmentIds();
+  }
+
+  cleanupDuplicateSegmentIds() {
+    this.getPeople().map((person) => (person.segmentIds = uniq(person.segmentIds)));
   }
 
   getEmailAddresses() {
