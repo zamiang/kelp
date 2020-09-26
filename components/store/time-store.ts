@@ -32,6 +32,8 @@ export interface ISegment extends ICalendarEvent {
   emailIds: string[];
   state: SegmentState;
   formattedAttendees: IFormattedAttendee[];
+  formattedOrganizer?: IFormattedAttendee;
+  formattedCreator?: IFormattedAttendee;
 }
 
 interface ISegmentsByID {
@@ -74,7 +76,7 @@ export default class TimeStore {
                 responseStatus: 'attending' as any,
                 self: event.organizer.self,
               }
-            : null;
+            : undefined;
         const formattedCreator =
           event.creator && event.creator.email
             ? {
@@ -82,7 +84,7 @@ export default class TimeStore {
                 responseStatus: 'attending' as any,
                 self: event.creator.self,
               }
-            : null;
+            : undefined;
         return {
           ...event,
           formattedAttendees,

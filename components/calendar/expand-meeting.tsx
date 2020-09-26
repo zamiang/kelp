@@ -64,6 +64,8 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   );
   const recentEmailsFromAttendees = flatten(people.map((person) => person.emailIds));
   const driveActivityFromAttendees = flatten(people.map((person) => person.driveActivityIds));
+
+  // TODO: Improve creator/organizer logic
   const shouldShowCreator = meeting.creator ? true : false;
   const shouldShowOrganizer = meeting.organizer ? true : false;
   const organizer = meeting.formattedOrganizer;
