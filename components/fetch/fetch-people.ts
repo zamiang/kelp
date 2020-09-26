@@ -1,7 +1,7 @@
 export interface person {
   id: string;
   name: string;
-  emailAddress: string;
+  emailAddress?: string;
   imageUrl?: string | null;
 }
 
@@ -12,38 +12,31 @@ const batchFetchPeople = async (
   if (peopleIds.length < 1) {
     return { people: [] };
   }
+
+  // for debugging
+  // const allPersonFields =
+  ('addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined');
+  const usedPersonFields = 'names,nicknames,emailAddresses,photos';
+
   const people = await gapi.client.people.people.getBatchGet({
-    personFields: 'names,nicknames,emailAddresses,photos',
+    personFields: usedPersonFields,
     resourceNames: peopleIds,
   });
   // NOTE: unsure why, but this rarely returns anything beyond email address
-  const formattedPeople =
-    people.result &&
-    people.result.responses &&
-    people.result.responses.map((person) => {
-      const emailAddress =
-        person.person &&
-        person.person.emailAddresses &&
-        person.person.emailAddresses[0] &&
-        person.person.emailAddresses[0].value
-          ? person.person.emailAddresses[0].value
-          : 'unknown';
-      return {
-        id: person.requestedResourceName || 'unknown',
-        name:
-          person.person && person.person.names && person.person.names[0].displayName
-            ? person.person.names[0].displayName
-            : emailAddress,
-        emailAddress,
-        imageUrl:
-          person.person &&
-          person.person.photos &&
-          person.person.photos[0] &&
-          person.person.photos[0].url
-            ? person.person.photos[0].url
-            : null,
-      };
-    });
+  const formattedPeople = people.result?.responses?.map((person) => {
+    const emailAddress =
+      person.person?.emailAddresses &&
+      person.person.emailAddresses[0] &&
+      person.person.emailAddresses[0].value;
+    const displayName = person.person?.names && person?.person?.names[0]?.displayName;
+    return {
+      id: person.requestedResourceName!,
+      name: displayName || emailAddress || person.requestedResourceName!,
+      emailAddress,
+      imageUrl:
+        person.person?.photos && person.person.photos[0].url ? person.person.photos[0].url : null,
+    };
+  });
 
   if (formattedPeople) {
     addPeopleToStore(formattedPeople);
