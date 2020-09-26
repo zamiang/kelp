@@ -8,7 +8,10 @@ import { IStore } from './use-store';
 
 const useFakeStore = (): IStore => {
   // TODO: Only create the datastores once data.isLoading is false
-  const personDataStore = new PersonDataStore(data.people, []);
+  const personDataStore = new PersonDataStore(data.people, [], {
+    contactsByEmail: {},
+    contactsByPeopleId: {},
+  });
   personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
   personDataStore.addGoogleCalendarEventsIdsToStore(data.segments);
