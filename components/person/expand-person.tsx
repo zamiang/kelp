@@ -1,11 +1,15 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import DriveActivity from '../shared/drive-activity';
 import { IStore } from '../store/use-store';
+
+const ADD_SENDER_LINK =
+  'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -47,6 +51,13 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
         </Typography>
       </Box>
       <Grid container spacing={3}>
+        {person.isMissingProfile && (
+          <Grid item xs={7}>
+            <MuiLink target="_blank" href={ADD_SENDER_LINK}>
+              Add this person to your google contacts for more info
+            </MuiLink>
+          </Grid>
+        )}
         <Grid item xs={7}>
           {person.driveActivityIds.length > 0 && (
             <React.Fragment>

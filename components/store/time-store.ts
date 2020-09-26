@@ -8,9 +8,9 @@ import PersonDataStore from './person-store';
 type SegmentState = 'current' | 'upcoming' | 'past';
 
 export interface IFormattedAttendee {
-  personId: string; // for lookup in the person store
-  responseStatus?: string;
-  self?: boolean;
+  readonly personId: string; // for lookup in the person store
+  readonly responseStatus?: string;
+  readonly self?: boolean;
 }
 
 interface IEvent {
@@ -28,10 +28,12 @@ export const getStateForMeeting = (event: IEvent): SegmentState => {
 };
 
 export interface ISegment extends ICalendarEvent {
-  driveActivityIds: string[];
-  emailIds: string[];
-  state: SegmentState;
-  formattedAttendees: IFormattedAttendee[];
+  readonly driveActivityIds: string[];
+  readonly emailIds: string[];
+  readonly state: SegmentState;
+  readonly formattedAttendees: IFormattedAttendee[];
+  readonly formattedOrganizer?: IFormattedAttendee;
+  readonly formattedCreator?: IFormattedAttendee;
 }
 
 interface ISegmentsByID {
@@ -67,9 +69,27 @@ export default class TimeStore {
             responseStatus: attendee.responseStatus,
             self: attendee.self,
           }));
+        const formattedOrganizer =
+          event.organizer && event.organizer.email
+            ? {
+                personId: personStore.getPersonIdForEmailAddress(event.organizer.email),
+                responseStatus: 'attending' as any,
+                self: event.organizer.self,
+              }
+            : undefined;
+        const formattedCreator =
+          event.creator && event.creator.email
+            ? {
+                personId: personStore.getPersonIdForEmailAddress(event.creator.email),
+                responseStatus: 'attending' as any,
+                self: event.creator.self,
+              }
+            : undefined;
         return {
           ...event,
           formattedAttendees,
+          formattedOrganizer,
+          formattedCreator,
           emailIds: [],
           driveActivityIds: [],
           state: getStateForMeeting(event),

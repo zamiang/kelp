@@ -1,6 +1,7 @@
 export interface person {
   id: string;
   name: string;
+  isMissingProfile: boolean;
   emailAddress?: string;
   imageUrl?: string | null;
 }
@@ -14,8 +15,7 @@ const batchFetchPeople = async (
   }
 
   // for debugging
-  // const allPersonFields =
-  ('addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined');
+  // const allPersonFields = 'addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined';
   const usedPersonFields = 'names,nicknames,emailAddresses,photos';
 
   const people = await gapi.client.people.people.getBatchGet({
@@ -32,6 +32,7 @@ const batchFetchPeople = async (
     return {
       id: person.requestedResourceName!,
       name: displayName || emailAddress || person.requestedResourceName!,
+      isMissingProfile: person.person?.names ? false : true,
       emailAddress,
       imageUrl:
         person.person?.photos && person.person.photos[0].url ? person.person.photos[0].url : null,

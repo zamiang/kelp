@@ -9,6 +9,7 @@ export interface IPerson {
   emailAddress?: string;
   imageUrl?: string | null;
   emailIds: string[];
+  isMissingProfile: boolean;
   driveActivityIds: string[];
   segmentIds: string[];
 }
@@ -27,6 +28,7 @@ export const formatPerson = (person: GooglePerson) => ({
   name: person.name,
   emailAddress: person.emailAddress?.toLocaleLowerCase(),
   imageUrl: person.imageUrl,
+  isMissingProfile: person.isMissingProfile,
   emailIds: [],
   driveActivityIds: [],
   segmentIds: [],
@@ -37,6 +39,7 @@ const createNewPersonFromEmail = (email: string) => ({
   name: email,
   emailAddress: email,
   imageUrl: null,
+  isMissingProfile: false,
   emailIds: [],
   driveActivityIds: [],
   segmentIds: [],

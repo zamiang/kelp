@@ -11,27 +11,35 @@ import config from '../../constants/config';
  */
 type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted' | 'notAttending';
 
-export interface ICalendarEvent {
-  id: string;
-  link?: string;
-  summary?: string;
-  start: Date;
-  end: Date;
-  description?: string;
-  selfResponseStatus: responseStatus;
-  attendees: {
-    email?: string;
-    responseStatus?: string;
-    self?: boolean;
-  }[];
-}
-
-// todo move these
 type attendee = {
-  email?: string;
-  responseStatus?: string;
-  self?: boolean;
+  readonly email?: string;
+  readonly responseStatus?: string;
+  readonly self?: boolean;
 };
+
+export interface ICalendarEvent {
+  readonly id: string;
+  readonly link?: string;
+  readonly summary?: string;
+  readonly start: Date;
+  readonly end: Date;
+  readonly description?: string;
+  readonly selfResponseStatus: responseStatus;
+  readonly creator?: {
+    readonly email?: string;
+    // NOTE: these are null ~100% of the time
+    readonly displayName?: string;
+    readonly id?: string;
+    readonly self?: boolean;
+  };
+  readonly organizer?: {
+    readonly email?: string;
+    readonly displayName?: string;
+    readonly id?: string;
+    readonly self?: boolean;
+  };
+  readonly attendees: attendee[];
+}
 
 export const getSelfResponseStatus = (attendees: attendee[]) => {
   for (const person of attendees) {
@@ -68,11 +76,17 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
       : [];
 
   const emailAddresses: string[] = [];
-  filteredCalendarEvents.map((event) =>
-    (event.attendees || []).map((attendee) => {
+  filteredCalendarEvents.map((event) => {
+    if (event.creator?.email) {
+      emailAddresses.push(event.creator.email);
+    }
+    if (event.organizer?.email) {
+      emailAddresses.push(event.organizer.email);
+    }
+    return (event.attendees || []).map((attendee) => {
       attendee.email && !attendee.resource && emailAddresses.push(attendee.email);
-    }),
-  );
+    });
+  });
 
   const uniqueAttendeeEmails = uniq(emailAddresses);
   addEmailAddressesToStore(uniqueAttendeeEmails);
@@ -96,6 +110,8 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
         end: new Date(event.end!.dateTime!),
         // TODO: Handle lack of enum type in the google calendar library
         selfResponseStatus: getSelfResponseStatus(event.attendees || []),
+        creator: event.creator,
+        organizer: event.organizer,
         attendees: (event.attendees || []).filter(
           (attendee) => attendee.email && !attendee.resource, // filter out conference rooms
         ),
