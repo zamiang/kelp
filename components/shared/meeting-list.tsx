@@ -62,8 +62,8 @@ const MeetingList = (props: {
   const classes = useRowStyles();
   const segments = props.segmentIds
     .map((id) => props.timeStore.getSegmentById(id))
-    .filter((item) => (item ? true : false))
-    .sort((a, b) => (a.start < b.start ? -1 : 1));
+    .filter((item) => !!item)
+    .sort((a, b) => (a!.start < b!.start ? -1 : 1));
   return (
     <div className={classes.root}>
       {segments.map((segment) => (
