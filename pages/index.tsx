@@ -11,6 +11,7 @@ import LocationCityIcon from '@material-ui/icons/LocationCity';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
+import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
 import { useLoginWithRedirect } from '../components/store/login';
@@ -149,17 +150,16 @@ const App = () => {
           justify="center"
         >
           <Grid item xs={6}>
-            <Container maxWidth="sm" className={classes.center}>
-              <Typography variant="h3">
-                Kelp does not store your personal data or send your data to third parties.
-              </Typography>
-            </Container>
+            <EmailSignup />
           </Grid>
         </Grid>
         <Grid container className={classes.info} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="xs">
               <Typography variant="h3">Your meeting helper</Typography>
+              <Typography variant="h6">
+                Kelp does not store your personal data or send your data to third parties.
+              </Typography>
             </Container>
           </Grid>
           <Grid item xs={6}>
