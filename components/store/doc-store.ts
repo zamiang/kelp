@@ -39,7 +39,7 @@ export default class DocDataStore {
   private docsById: IDocById;
 
   constructor(docsList: IDoc[]) {
-    console.warn('setting up person store');
+    // console.warn('setting up person store');
     this.docsById = {};
     this.addDocsToStore(docsList);
   }

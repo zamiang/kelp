@@ -1,6 +1,9 @@
 const { createSecureHeaders } = require('next-secure-headers');
 
 module.exports = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+
   async rewrites() {
     return [
       {

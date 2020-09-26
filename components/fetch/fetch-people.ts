@@ -22,7 +22,7 @@ const batchFetchPeople = async (
     personFields: usedPersonFields,
     resourceNames: peopleIds,
   });
-  // NOTE: unsure why, but this rarely returns anything beyond email address
+  // NOTE: This returns very little unless the person is in the user's contacts
   const formattedPeople = people.result?.responses?.map((person) => {
     const emailAddress =
       person.person?.emailAddresses &&
