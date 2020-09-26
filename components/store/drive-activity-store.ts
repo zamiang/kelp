@@ -13,7 +13,7 @@ export default class DriveActivityDataStore {
   private driveActivityByDocumentId: driveActivityByDocumentId;
 
   constructor(driveActivity: IFormattedDriveActivity[]) {
-    console.warn('setting up drive activity store');
+    // console.warn('setting up drive activity store');
     this.driveActivityById = {};
     this.driveActivityByDocumentId = {};
 

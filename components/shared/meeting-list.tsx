@@ -28,11 +28,9 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
   const iconLink = personId ? props.personStore.getPersonById(personId)?.imageUrl : null;
   return (
     <Grid container wrap="nowrap" spacing={2}>
-      {iconLink && (
-        <Grid item>
-          <Avatar style={{ height: 32, width: 32 }} src={iconLink || ''} />
-        </Grid>
-      )}
+      <Grid item>
+        <Avatar style={{ height: 32, width: 32 }} src={iconLink || ''} />
+      </Grid>
       <Grid item zeroMinWidth>
         <Link href={`?tab=meetings&slug=${props.segment.id}`}>
           <Button className={classes.link} component="a">

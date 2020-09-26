@@ -23,7 +23,7 @@ const useStore = (accessToken: string): IStore => {
   const people = (data.personList || []).map((person) => formatPerson(person));
 
   // TODO: Only create the datastores once data.isLoading is false
-  const personDataStore = new PersonDataStore(people, data.emailAddresses || []);
+  const personDataStore = new PersonDataStore(people, data.emailAddresses || [], data.contacts);
   personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
   personDataStore.addGoogleCalendarEventsIdsToStore(data.calendarEvents || []);

@@ -11,6 +11,10 @@ interface IReturnType {
   readonly personList: person[];
   readonly emailAddresses: string[];
   readonly emails: formattedEmail[];
+  readonly contacts: {
+    contactsByEmail: { [id: string]: person };
+    contactsByPeopleId: { [id: string]: person };
+  };
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
   readonly driveActivity: IFormattedDriveActivity[];
@@ -27,13 +31,14 @@ const FetchAll = (accessToken: string): IReturnType => {
     googleDocIds,
   });
   const peopleIds = uniq(
-    secondLayer.driveActivity.map((activity) => activity.actorPersonId).filter((id) => !!id),
+    secondLayer.driveActivity
+      .map((activity) => activity.actorPersonId)
+      .filter((id) => !!id && !firstLayer.contacts?.contactsByPeopleId[id]),
   ) as string[];
   const thirdLayer = FetchThird({
     peopleIds,
     emailAddresses: firstLayer.emailAddresses,
   });
-
   return {
     ...firstLayer,
     ...secondLayer,

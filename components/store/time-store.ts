@@ -45,7 +45,7 @@ export default class TimeStore {
   private segmentsById: ISegmentsByID;
 
   constructor(calendarEvents: ICalendarEvent[], personStore: PersonDataStore) {
-    console.warn('setting up time store');
+    // console.warn('setting up time store');
     // sort by asc to support later optimizations
     this.segments = this.createInitialSegments(calendarEvents, personStore).sort((a, b) =>
       a.start > b.start ? -1 : 1,

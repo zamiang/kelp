@@ -38,7 +38,6 @@ const FetchThird = (props: IProps) => {
     () => fetchCurrentUserEmailsForEmailAddresses(uniqueEmailAddresses),
     [uniqueEmailAddresses.length] as any,
   );
-
   const emails = sortedUniq(gmailResponse.result);
   const emailsResponse = useAsyncAbortable(() => fetchEmails(emails || []), [
     emails ? emails.length : 'error',

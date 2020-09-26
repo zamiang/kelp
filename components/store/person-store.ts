@@ -23,7 +23,7 @@ interface IEmailAddressToPersonIdHash {
   [emailAddress: string]: string;
 }
 
-// handle one person w/ multiple email addresses
+// TODO: handle one person w/ multiple email addresses
 export const formatPerson = (person: GooglePerson) => ({
   id: person.id.replace('people/', ''),
   name: person.name,
@@ -46,14 +46,21 @@ const createNewPersonFromEmail = (email: string) => ({
   segmentIds: [],
 });
 
+interface IContacts {
+  contactsByEmail: { [id: string]: GooglePerson };
+  contactsByPeopleId: { [id: string]: GooglePerson };
+}
+
 export default class PersonDataStore {
   private personById: IPersonById;
   private emailAddressToPersonIdHash: IEmailAddressToPersonIdHash;
+  private contacts: IContacts;
 
-  constructor(personList: IPerson[], emailAddresses: string[]) {
-    console.warn('setting up person store');
+  constructor(personList: IPerson[], emailAddresses: string[], contacts: IContacts) {
+    // console.warn('setting up person store');
     this.personById = {};
     this.emailAddressToPersonIdHash = {};
+    this.contacts = contacts;
 
     this.addPeopleToStore(personList);
     this.addEmailAddressessToStore(emailAddresses);
@@ -64,6 +71,13 @@ export default class PersonDataStore {
   }
 
   addPersonToStore(person: IPerson) {
+    if (
+      person.emailAddress &&
+      this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()]
+    ) {
+      // Already in the store
+      return;
+    }
     this.personById[person.id.replace('people/', '')] = person;
     if (person.emailAddress) {
       this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
@@ -81,7 +95,12 @@ export default class PersonDataStore {
       const formattedEmailAddress = emailAddress.toLocaleLowerCase();
       const person = this.emailAddressToPersonIdHash[formattedEmailAddress];
       if (!person) {
-        this.addPersonToStore(createNewPersonFromEmail(formattedEmailAddress));
+        const contact = this.contacts.contactsByEmail[formattedEmailAddress];
+        if (contact) {
+          this.addPersonToStore(formatPerson(contact));
+        } else {
+          this.addPersonToStore(createNewPersonFromEmail(formattedEmailAddress));
+        }
       }
     });
   }
@@ -98,16 +117,28 @@ export default class PersonDataStore {
   addEmailsToStore(emails: formattedEmail[]) {
     (emails || []).forEach((email) => {
       if (email.from) {
-        const personId = this.emailAddressToPersonIdHash[email.from];
+        const formattedEmailAddress = email.from.toLocaleLowerCase();
+        const contact = this.contacts.contactsByEmail[formattedEmailAddress];
+        if (contact) {
+          this.addPersonToStore(formatPerson(contact));
+        }
+        const personId = this.emailAddressToPersonIdHash[formattedEmailAddress];
         if (personId) {
           this.personById[personId] && this.personById[personId].emailIds.push(email.id);
         }
       }
       if (email.to) {
         email.to.map((emailTo) => {
-          const personId = emailTo && this.emailAddressToPersonIdHash[emailTo];
-          if (personId) {
-            this.personById[personId] && this.personById[personId].emailIds.push(email.id);
+          if (emailTo) {
+            const formattedEmailAddress = emailTo.toLocaleLowerCase();
+            const contact = this.contacts.contactsByEmail[formattedEmailAddress];
+            if (contact) {
+              this.addPersonToStore(formatPerson(contact));
+            }
+            const personId = emailTo && this.emailAddressToPersonIdHash[emailTo];
+            if (personId) {
+              this.personById[personId] && this.personById[personId].emailIds.push(email.id);
+            }
           }
         });
       }
