@@ -6,8 +6,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
@@ -96,7 +97,7 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people';
+  tab: 'meetings' | 'docs' | 'people' | 'week';
 }
 
 const LeftDrawer = (props: IProps) => {
@@ -104,6 +105,7 @@ const LeftDrawer = (props: IProps) => {
   const isMeetingsSelected = props.tab === 'meetings';
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
+  const isWeekSelected = props.tab === 'week';
   return (
     <Drawer
       variant="permanent"
@@ -132,15 +134,26 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
+        <Link href="?tab=week">
+          <ListItem button selected={isWeekSelected} className={classes.listItem}>
+            <ListItemIcon>
+              <DateRangeIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
+            </ListItemIcon>
+            <ListItemText
+              primary="Week"
+              className={isWeekSelected ? classes.selected : classes.unSelected}
+            />
+          </ListItem>
+        </Link>
         <Link href="?tab=meetings">
           <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
             <ListItemIcon>
-              <DashboardIcon
+              <CalendarViewDayIcon
                 className={isMeetingsSelected ? classes.selected : classes.unSelected}
               />
             </ListItemIcon>
             <ListItemText
-              primary="Calendar"
+              primary="Events"
               className={isMeetingsSelected ? classes.selected : classes.unSelected}
             />
           </ListItem>
