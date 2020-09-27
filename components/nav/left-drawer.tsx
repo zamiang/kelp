@@ -6,8 +6,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
@@ -132,15 +133,28 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <Link href="?tab=meetings">
+        <Link href="?tab=week">
           <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
             <ListItemIcon>
-              <DashboardIcon
+              <DateRangeIcon
                 className={isMeetingsSelected ? classes.selected : classes.unSelected}
               />
             </ListItemIcon>
             <ListItemText
-              primary="Calendar"
+              primary="Calendar week"
+              className={isMeetingsSelected ? classes.selected : classes.unSelected}
+            />
+          </ListItem>
+        </Link>
+        <Link href="?tab=meetings">
+          <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
+            <ListItemIcon>
+              <CalendarViewDayIcon
+                className={isMeetingsSelected ? classes.selected : classes.unSelected}
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary="Events"
               className={isMeetingsSelected ? classes.selected : classes.unSelected}
             />
           </ListItem>
