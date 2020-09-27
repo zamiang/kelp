@@ -1,10 +1,11 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { addDays, format, startOfWeek } from 'date-fns';
+import { addDays, differenceInMinutes, format, startOfWeek } from 'date-fns';
 import { times } from 'lodash';
 import React from 'react';
 import config from '../../constants/config';
+import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
 const topNavHeight = 100;
@@ -56,7 +57,7 @@ const useTitleRowStyles = makeStyles((theme) => ({
   },
   item: {
     paddingTop: theme.spacing(2),
-    flexGrow: 1,
+    flex: 1,
     textAlign: 'center',
     borderBottom: `1px solid ${borderColor}`,
   },
@@ -65,38 +66,38 @@ const useTitleRowStyles = makeStyles((theme) => ({
   },
 }));
 
-const TitleRow = () => {
+const TitleRow = (props: { start: Date }) => {
   const classes = useTitleRowStyles();
-  const start = startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any });
+
   return (
     <Grid container className={classes.container}>
       <Grid item className={classes.spacer}></Grid>
       <Grid item className={classes.item}>
-        <DayTitle day={start} />
+        <DayTitle day={props.start} />
         <div className={classes.border}></div>
       </Grid>
       <Grid item className={classes.item}>
-        <DayTitle day={addDays(start, 1)} />
+        <DayTitle day={addDays(props.start, 1)} />
         <div className={classes.border}></div>
       </Grid>
       <Grid item className={classes.item}>
-        <DayTitle day={addDays(start, 2)} />
+        <DayTitle day={addDays(props.start, 2)} />
         <div className={classes.border}></div>
       </Grid>
       <Grid item className={classes.item}>
-        <DayTitle day={addDays(start, 3)} />
+        <DayTitle day={addDays(props.start, 3)} />
         <div className={classes.border}></div>
       </Grid>
       <Grid item className={classes.item}>
-        <DayTitle day={addDays(start, 4)} />
+        <DayTitle day={addDays(props.start, 4)} />
         <div className={classes.border}></div>
       </Grid>
       <Grid item className={classes.item}>
-        <DayTitle day={addDays(start, 5)} />
+        <DayTitle day={addDays(props.start, 5)} />
         <div className={classes.border}></div>
       </Grid>
       <Grid item className={classes.item}>
-        <DayTitle day={addDays(start, 6)} />
+        <DayTitle day={addDays(props.start, 6)} />
         <div className={classes.border}></div>
       </Grid>
     </Grid>
@@ -119,11 +120,12 @@ const useHourLabelStyles = makeStyles((theme) => ({
     width: 5,
     height: 1,
     display: 'flex',
+    marginTop: -1,
   },
   text: {
     background: '#fff', // Odd this is not white: theme.palette.background.default,
     paddingRight: 3,
-    marginTop: -5,
+    marginTop: -7,
     fontSize: 10,
     display: 'flex',
   },
@@ -148,32 +150,88 @@ const HourLabels = () => {
   );
 };
 
+interface ICalendarItemProps {
+  onClick: () => void;
+  title: string;
+  subtitle: string;
+  start: Date;
+  end?: Date;
+}
+
+const useCalendarItemStyles = makeStyles((theme) => ({
+  container: {
+    position: 'absolute',
+    left: 1,
+    borderRadius: theme.shape.borderRadius,
+    display: 'flex',
+    flex: 1,
+    overflow: 'hidden',
+    background: theme.palette.primary.light,
+    width: '90%',
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
+}));
+
+const CalendarItem = (props: ICalendarItemProps) => {
+  const classes = useCalendarItemStyles();
+  const minuteHeight = hourHeight / 60;
+  const height = props.end
+    ? Math.abs(differenceInMinutes(props.start, props.end) * minuteHeight)
+    : 100;
+  const top = ;
+  return (
+    <div className={classes.container} style={{ height, top }}>
+      <Typography>{props.title}</Typography>
+      <Typography>{props.subtitle}</Typography>
+    </div>
+  );
+};
+
+const DayContent = (props: { timeStore: IStore['timeDataStore']; day: Date }) => {
+  const segments = props.timeStore.getSegmentsForDay(props.day);
+  const segmentHtml = segments.map((segment) => (
+    <CalendarItem
+      key={segment.id}
+      title={segment.summary || segment.id}
+      subtitle={'foo'}
+      start={segment.start}
+      end={segment.end}
+      onClick={() => alert('clicked')}
+    />
+  ));
+  return <div>{segmentHtml}</div>;
+};
+
 const useStyles = makeStyles(() => ({
   container: {},
   calendar: {
     height: `calc(100vh - ${topNavHeight}px)`,
     overflow: 'scroll',
   },
-  hourRow: {
+  dayColumn: {
     flex: 1,
+    position: 'relative',
   },
 }));
 
-const Calendar = () => {
+const Calendar = (props: IStore) => {
   const classes = useStyles();
-  const hourRows = times(7).map((day) => (
-    <Grid item key={day} className={classes.hourRow}>
+  const start = startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any });
+  const dayColumn = times(7).map((day) => (
+    <Grid item key={day} className={classes.dayColumn}>
       <HourRows />
+      <DayContent timeStore={props.timeDataStore} day={addDays(start, day)} />
     </Grid>
   ));
   return (
     <div className={classes.container}>
-      <TitleRow />
+      <TitleRow start={start} />
       <Grid container className={classes.calendar}>
         <Grid item>
           <HourLabels />
         </Grid>
-        {hourRows}
+        {dayColumn}
       </Grid>
     </div>
   );

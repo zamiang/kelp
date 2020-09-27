@@ -1,4 +1,4 @@
-import { format, isAfter, isBefore } from 'date-fns';
+import { format, isAfter, isBefore, isSameDay } from 'date-fns';
 import { groupBy } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -141,6 +141,10 @@ export default class TimeStore {
   getSegmentsByDay() {
     const segments = this.getSegments();
     return groupBy(segments, (segment) => format(segment.start, 'EEEE, MMM d'));
+  }
+
+  getSegmentsForDay(day: Date) {
+    return this.getSegments().filter((segment) => isSameDay(segment.start, day));
   }
 
   getupcomingSegments(filterOutSegmentId?: string) {
