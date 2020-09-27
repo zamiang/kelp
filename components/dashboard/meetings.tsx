@@ -1,9 +1,9 @@
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import Meeting from '../../components/calendar/meeting-row';
 import panelStyles from '../../components/shared/panel-styles';
 import { IStore } from '../../components/store/use-store';
+import Meeting from '../meeting/meeting-row';
 
 const MeetingsByDay = (
   props: IStore & {

@@ -6,11 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import ExpandedMeeting from '../../components/calendar/expand-meeting';
+import WeekCalendar from '../../components/calendar/week-calendar';
 import Docs from '../../components/dashboard/docs';
 import Meetings from '../../components/dashboard/meetings';
 import People from '../../components/dashboard/people';
 import ExpandedDocument from '../../components/docs/expand-document';
+import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import LeftDrawer from '../../components/nav/left-drawer';
 import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
@@ -74,6 +75,7 @@ const DashboardContainer = ({ accessToken }: IProps) => {
   const tab = useRouter().query.tab as string;
 
   const tabHash = {
+    week: <WeekCalendar {...store} />,
     meetings: <Meetings {...store} />,
     docs: <Docs {...store} />,
     people: <People {...store} />,
@@ -85,6 +87,7 @@ const DashboardContainer = ({ accessToken }: IProps) => {
     meetings: slug && <ExpandedMeeting meetingId={slug} {...store} />,
   } as any;
 
+  const isDrawerOpen = tab !== 'week';
   // <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} /> --!>
   // add above route component <div className={classes.appBarSpacer} />
   return (
@@ -101,12 +104,15 @@ const DashboardContainer = ({ accessToken }: IProps) => {
         tab={tab as any}
       />
       <main className={classes.content}>
-        <div className={panelClasses.panel}>
-          {store.error && <Alert severity="error">{JSON.stringify(store.error)}</Alert>}
-          {tabHash[tab]}
-        </div>
+        {isDrawerOpen && (
+          <div className={panelClasses.panel}>
+            {store.error && <Alert severity="error">{JSON.stringify(store.error)}</Alert>}
+            {tabHash[tab]}
+          </div>
+        )}
+        {!isDrawerOpen && tabHash[tab]}
         <Drawer
-          open={true}
+          open={isDrawerOpen}
           classes={{
             paper: panelClasses.dockedPanel,
           }}

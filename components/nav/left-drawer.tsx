@@ -97,7 +97,7 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people';
+  tab: 'meetings' | 'docs' | 'people' | 'week';
 }
 
 const LeftDrawer = (props: IProps) => {
@@ -105,6 +105,7 @@ const LeftDrawer = (props: IProps) => {
   const isMeetingsSelected = props.tab === 'meetings';
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
+  const isWeekSelected = props.tab === 'week';
   return (
     <Drawer
       variant="permanent"
@@ -134,15 +135,13 @@ const LeftDrawer = (props: IProps) => {
       <div className={classes.spacer} />
       <List>
         <Link href="?tab=week">
-          <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
+          <ListItem button selected={isWeekSelected} className={classes.listItem}>
             <ListItemIcon>
-              <DateRangeIcon
-                className={isMeetingsSelected ? classes.selected : classes.unSelected}
-              />
+              <DateRangeIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
             </ListItemIcon>
             <ListItemText
-              primary="Calendar week"
-              className={isMeetingsSelected ? classes.selected : classes.unSelected}
+              primary="Week"
+              className={isWeekSelected ? classes.selected : classes.unSelected}
             />
           </ListItem>
         </Link>
