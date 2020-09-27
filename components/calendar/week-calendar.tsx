@@ -194,6 +194,12 @@ const CalendarItem = (props: ICalendarItemProps) => {
   );
 };
 
+/**
+ *
+ * This should manage intersections
+ * Potentially, it could have an array of all items that each calendar item adds to
+ * each item would then check if it is inside a prior box, and if so, add a class/move them
+ */
 const DayContent = (props: { timeStore: IStore['timeDataStore']; day: Date }) => {
   const segments = props.timeStore.getSegmentsForDay(props.day);
   const segmentHtml = segments.map((segment) => (
