@@ -163,13 +163,19 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     position: 'absolute',
     left: 1,
     borderRadius: theme.shape.borderRadius,
-    display: 'flex',
     flex: 1,
     overflow: 'hidden',
     background: theme.palette.primary.light,
     width: '90%',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+  },
+  title: {
+    fontSize: theme.typography.caption.fontSize,
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    fontSize: theme.typography.caption.fontSize,
   },
 }));
 
@@ -179,11 +185,11 @@ const CalendarItem = (props: ICalendarItemProps) => {
   const height = props.end
     ? Math.abs(differenceInMinutes(props.start, props.end) * minuteHeight)
     : 100;
-  const top = ;
+  const top = hourHeight * props.start.getHours();
   return (
-    <div className={classes.container} style={{ height, top }}>
-      <Typography>{props.title}</Typography>
-      <Typography>{props.subtitle}</Typography>
+    <div className={classes.container} style={{ height, top, minHeight: hourHeight / 4 }}>
+      <Typography className={classes.title}>{props.title}</Typography>
+      <Typography className={classes.subtitle}>{props.subtitle}</Typography>
     </div>
   );
 };
