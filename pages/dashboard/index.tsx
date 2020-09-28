@@ -43,7 +43,7 @@ const useBackdropStyles = makeStyles((theme) => ({
 const LoadingDashboardContainer = () => {
   const accessToken = useAccessToken();
   const classes = useBackdropStyles();
-  const store = useStore(accessToken);
+  const store = useStore(accessToken || '');
   return (
     <React.Fragment>
       <Backdrop className={classes.backdrop} open={!accessToken}>
