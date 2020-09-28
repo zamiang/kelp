@@ -16,7 +16,7 @@ import LeftDrawer from '../../components/nav/left-drawer';
 import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
 import useAccessToken from '../../components/store/use-access-token';
-import useStore from '../../components/store/use-store';
+import useStore, { IStore } from '../../components/store/use-store';
 
 export const drawerWidth = 240;
 
@@ -43,23 +43,22 @@ const useBackdropStyles = makeStyles((theme) => ({
 const LoadingDashboardContainer = () => {
   const accessToken = useAccessToken();
   const classes = useBackdropStyles();
+  const store = useStore(accessToken || '');
   return (
     <React.Fragment>
       <Backdrop className={classes.backdrop} open={!accessToken}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      {accessToken && <DashboardContainer accessToken={accessToken} />}
+      {accessToken && <DashboardContainer store={store} />}
     </React.Fragment>
   );
 };
 
 interface IProps {
-  accessToken: string;
+  store: IStore;
 }
 
-const DashboardContainer = ({ accessToken }: IProps) => {
-  const store = useStore(accessToken);
-  console.log(store);
+export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const panelClasses = panelStyles();
   const [isOpen, setOpen] = useState(true);
