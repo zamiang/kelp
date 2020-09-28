@@ -59,6 +59,7 @@ interface IProps {
 
 const DashboardContainer = ({ accessToken }: IProps) => {
   const store = useStore(accessToken);
+  console.log(store);
   const classes = useStyles();
   const panelClasses = panelStyles();
   const [isOpen, setOpen] = useState(true);
