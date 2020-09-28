@@ -150,7 +150,7 @@ export default class PersonDataStore {
 
   addCurrentUserFlag(events: ICalendarEvent[]) {
     (events[0]?.attendees || []).forEach((attendee) => {
-      if (attendee && attendee.self) {
+      if (attendee && attendee.self && attendee.email) {
         const personId = this.emailAddressToPersonIdHash[attendee.email];
         if (personId) {
           this.personById[personId].isCurrentUser = true;
