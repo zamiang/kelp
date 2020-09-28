@@ -1,10 +1,13 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { addDays, differenceInMinutes, format, startOfWeek } from 'date-fns';
+import { addDays, differenceInMinutes, format, isSameDay, startOfWeek } from 'date-fns';
 import { times } from 'lodash';
+import { useRouter } from 'next/router';
 import React from 'react';
 import config from '../../constants/config';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
@@ -12,7 +15,9 @@ const topNavHeight = 100;
 const hourHeight = 48;
 const scrollBarWidth = 15;
 const borderColor = '#dadce0';
-
+const shouldShowSentEmails = true;
+const shouldShowDocumentActivity = true;
+const shouldShowCalendarEvents = true;
 /**
  * titlerow    || day-title | day-title
  *  --------------
@@ -150,14 +155,6 @@ const HourLabels = () => {
   );
 };
 
-interface ICalendarItemProps {
-  onClick: () => void;
-  title: string;
-  subtitle: string;
-  start: Date;
-  end?: Date;
-}
-
 const useCalendarItemStyles = makeStyles((theme) => ({
   container: {
     position: 'absolute',
@@ -169,6 +166,7 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     width: '90%',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    minHeight: hourHeight / 4,
   },
   title: {
     fontSize: theme.typography.caption.fontSize,
@@ -179,6 +177,14 @@ const useCalendarItemStyles = makeStyles((theme) => ({
   },
 }));
 
+interface ICalendarItemProps {
+  onClick: () => void;
+  title: string;
+  subtitle: string;
+  start: Date;
+  end?: Date;
+}
+
 const CalendarItem = (props: ICalendarItemProps) => {
   const classes = useCalendarItemStyles();
   const minuteHeight = hourHeight / 60;
@@ -187,9 +193,41 @@ const CalendarItem = (props: ICalendarItemProps) => {
     : 100;
   const top = hourHeight * props.start.getHours();
   return (
-    <div className={classes.container} style={{ height, top, minHeight: hourHeight / 4 }}>
+    <div className={classes.container} style={{ height, top }} onClick={props.onClick}>
       <Typography className={classes.title}>{props.title}</Typography>
       <Typography className={classes.subtitle}>{props.subtitle}</Typography>
+    </div>
+  );
+};
+
+interface IEmailItemProps {
+  onClick: () => void;
+  email: IEmail;
+}
+
+const EmailItem = (props: IEmailItemProps) => {
+  const classes = useCalendarItemStyles();
+  const top = hourHeight * props.email.date.getHours();
+  return (
+    <div className={classes.container} style={{ top }} onClick={props.onClick}>
+      <Typography className={classes.title}>{props.email.subject}</Typography>
+      <Typography className={classes.subtitle}>{props.email.to}</Typography>
+    </div>
+  );
+};
+
+interface IDocumentItemProps {
+  onClick: () => void;
+  document: IFormattedDriveActivity;
+}
+
+const DocumentItem = (props: IDocumentItemProps) => {
+  const classes = useCalendarItemStyles();
+  const top = hourHeight * props.document.time.getHours();
+  return (
+    <div className={classes.container} style={{ top }} onClick={props.onClick}>
+      <Typography className={classes.title}>{props.document.title}</Typography>
+      <Typography className={classes.subtitle}>{props.document.action}</Typography>
     </div>
   );
 };
@@ -200,19 +238,70 @@ const CalendarItem = (props: ICalendarItemProps) => {
  * Potentially, it could have an array of all items that each calendar item adds to
  * each item would then check if it is inside a prior box, and if so, add a class/move them
  */
-const DayContent = (props: { timeStore: IStore['timeDataStore']; day: Date }) => {
-  const segments = props.timeStore.getSegmentsForDay(props.day);
-  const segmentHtml = segments.map((segment) => (
-    <CalendarItem
-      key={segment.id}
-      title={segment.summary || segment.id}
-      subtitle={'foo'}
-      start={segment.start}
-      end={segment.end}
-      onClick={() => alert('clicked')}
-    />
-  ));
-  return <div>{segmentHtml}</div>;
+interface IDayContentProps {
+  shouldShowSentEmails: boolean;
+  shouldShowDocumentActivity: boolean;
+  shouldShowCalendarEvents: boolean;
+  personStore: IStore['personDataStore'];
+  activityStore: IStore['driveActivityStore'];
+  timeStore: IStore['timeDataStore'];
+  emailStore: IStore['emailDataStore'];
+  day: Date;
+}
+
+const DayContent = (props: IDayContentProps) => {
+  let emailsHtml = '' as any;
+  let documentsHtml = '' as any;
+  let segmentsHtml = '' as any;
+  const router = useRouter();
+  const currentUser = props.personStore.getSelf();
+
+  if (props.shouldShowCalendarEvents) {
+    const segments = props.timeStore.getSegmentsForDay(props.day);
+    segmentsHtml = segments.map((segment) => (
+      <CalendarItem
+        key={segment.id}
+        title={segment.summary || segment.id}
+        subtitle={'foo'}
+        start={segment.start}
+        end={segment.end}
+        onClick={() => router.push(`?tab=meetings&slug=${segment.id}`)}
+      />
+    ));
+  }
+
+  if (props.shouldShowSentEmails && currentUser && currentUser.emailAddress) {
+    const emails = props.emailStore
+      .getEmailsFrom([currentUser.emailAddress])
+      .filter((email) => isSameDay(email.date, props.day));
+    emailsHtml = emails.map((email) => (
+      <EmailItem key={email.id} email={email} onClick={() => alert(`clicked ${email.id}`)} />
+    ));
+  }
+
+  if (props.shouldShowDocumentActivity && currentUser) {
+    // Hm... this is done too many times
+    // Not correctly associating to me :-/
+    const documentIds = currentUser.driveActivityIds
+      .map((id) => props.activityStore.getById(id))
+      .filter((activity) => activity && isSameDay(activity.time, props.day));
+
+    documentsHtml = documentIds.map((document) => (
+      <DocumentItem
+        key={document!.id}
+        document={document!}
+        onClick={() => router.push(`?tab=docs&slug=${document!.id}`)}
+      />
+    ));
+  }
+
+  return (
+    <div>
+      {segmentsHtml}
+      {emailsHtml}
+      {documentsHtml}
+    </div>
+  );
 };
 
 const useStyles = makeStyles(() => ({
@@ -233,7 +322,16 @@ const Calendar = (props: IStore) => {
   const dayColumn = times(7).map((day) => (
     <Grid item key={day} className={classes.dayColumn}>
       <HourRows />
-      <DayContent timeStore={props.timeDataStore} day={addDays(start, day)} />
+      <DayContent
+        shouldShowSentEmails={shouldShowSentEmails}
+        shouldShowDocumentActivity={shouldShowDocumentActivity}
+        shouldShowCalendarEvents={shouldShowCalendarEvents}
+        personStore={props.personDataStore}
+        activityStore={props.driveActivityStore}
+        timeStore={props.timeDataStore}
+        emailStore={props.emailDataStore}
+        day={addDays(start, day)}
+      />
     </Grid>
   ));
   return (

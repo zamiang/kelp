@@ -27,6 +27,7 @@ const useStore = (accessToken: string): IStore => {
   personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
   personDataStore.addGoogleCalendarEventsIdsToStore(data.calendarEvents || []);
+  personDataStore.addCurrentUserFlag(data.calendarEvents);
   // console.log('PERSON DATA STORE:', personDataStore);
 
   const timeDataStore = new TimeDataStore(data.calendarEvents || [], personDataStore);

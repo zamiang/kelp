@@ -1,4 +1,4 @@
-import { uniq } from 'lodash';
+import { first, uniq } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
@@ -10,6 +10,7 @@ export interface IPerson {
   emailAddress?: string;
   imageUrl?: string | null;
   emailIds: string[];
+  isCurrentUser: boolean;
   isMissingProfile: boolean;
   driveActivityIds: string[];
   segmentIds: string[];
@@ -29,6 +30,7 @@ export const formatPerson = (person: GooglePerson) => ({
   name: person.name,
   emailAddress: person.emailAddress?.toLocaleLowerCase(),
   imageUrl: person.imageUrl,
+  isCurrentUser: false,
   isMissingProfile: person.isMissingProfile,
   emailIds: [],
   driveActivityIds: [],
@@ -40,6 +42,7 @@ const createNewPersonFromEmail = (email: string) => ({
   name: email,
   emailAddress: email,
   imageUrl: null,
+  isCurrentUser: false,
   isMissingProfile: false,
   emailIds: [],
   driveActivityIds: [],
@@ -145,6 +148,17 @@ export default class PersonDataStore {
     });
   }
 
+  addCurrentUserFlag(events: ICalendarEvent[]) {
+    (events[0]?.attendees || []).forEach((attendee) => {
+      if (attendee && attendee.self) {
+        const personId = this.emailAddressToPersonIdHash[attendee.email];
+        if (personId) {
+          this.personById[personId].isCurrentUser = true;
+        }
+      }
+    });
+  }
+
   addGoogleCalendarEventsIdsToStore(events: ICalendarEvent[]) {
     events.forEach((event) => {
       if (event.creator?.email) {
@@ -183,6 +197,10 @@ export default class PersonDataStore {
 
   getPeople() {
     return Object.values(this.personById);
+  }
+
+  getSelf(): IPerson | undefined {
+    return first(this.getPeople().filter((person) => person.isCurrentUser));
   }
 
   getPersonById(id: string): IPerson | undefined {
