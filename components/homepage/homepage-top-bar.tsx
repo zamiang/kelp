@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logoContainer: {
     maxWidth: 200,
+    cursor: 'pointer',
   },
 }));
 

@@ -1,6 +1,7 @@
 import { clone, sortedUniq } from 'lodash';
 import { useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
+import config from '../../constants/config';
 import { fetchCurrentUserEmailsForEmailAddresses, fetchEmails } from './fetch-emails';
 import batchFetchPeople, { person } from './fetch-people';
 
@@ -34,18 +35,26 @@ const FetchThird = (props: IProps) => {
   });
 
   const uniqueEmailAddresses = sortedUniq(emailAddresses);
-  const gmailResponse = useAsyncAbortable(
-    () => fetchCurrentUserEmailsForEmailAddresses(uniqueEmailAddresses),
-    [uniqueEmailAddresses.length] as any,
-  );
-  const emails = sortedUniq(gmailResponse.result);
-  const emailsResponse = useAsyncAbortable(() => fetchEmails(emails || []), [
-    emails ? emails.length : 'error',
-  ] as any);
+  // eslint-ignore-next-line
+  const gmailResponse =
+    config.IS_GMAIL_ENABLED &&
+    // eslint-disable-next-line
+    useAsyncAbortable(() => fetchCurrentUserEmailsForEmailAddresses(uniqueEmailAddresses), [
+      uniqueEmailAddresses.length,
+    ] as any);
+
+  const emails = gmailResponse ? sortedUniq(gmailResponse.result) : [];
+  const emailsResponse =
+    config.IS_GMAIL_ENABLED &&
+    // eslint-disable-next-line
+    useAsyncAbortable(() => fetchEmails(emails || []), [emails ? emails.length : 'error'] as any);
   return {
-    isLoading: peopleResponse.loading && emailsResponse.loading,
-    emails: emailsResponse.result ? emailsResponse.result : [],
-    error: gmailResponse.error || peopleResponse.error || emailsResponse.error,
+    isLoading: peopleResponse.loading && emailsResponse && emailsResponse.loading,
+    emails: emailsResponse && emailsResponse.result ? emailsResponse.result : [],
+    error:
+      gmailResponse &&
+      emailsResponse &&
+      (gmailResponse.error || peopleResponse.error || emailsResponse.error),
     personList,
     refetchPersonList: async () => null, // emailsResponse.execute,
   };
