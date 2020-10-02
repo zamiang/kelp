@@ -48,13 +48,16 @@ const FetchThird = (props: IProps) => {
     config.IS_GMAIL_ENABLED &&
     // eslint-disable-next-line
     useAsyncAbortable(() => fetchEmails(emails || []), [emails ? emails.length : 'error'] as any);
+
+  const error =
+    gmailResponse && emailsResponse && peopleResponse
+      ? gmailResponse.error || peopleResponse.error || emailsResponse.error
+      : undefined;
+
   return {
     isLoading: peopleResponse.loading && emailsResponse && emailsResponse.loading,
     emails: emailsResponse && emailsResponse.result ? emailsResponse.result : [],
-    error:
-      gmailResponse && emailsResponse
-        ? gmailResponse.error || peopleResponse.error || emailsResponse.error
-        : false,
+    error,
     personList,
     refetchPersonList: async () => null, // emailsResponse.execute,
   };
