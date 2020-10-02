@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body2.fontSize,
     textTransform: 'uppercase',
   },
+  link: {
+    color: theme.palette.primary.dark,
+  },
 }));
 
 const ExpandedDocument = (props: IStore & { documentId: string }) => {
@@ -43,7 +46,7 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
   return (
     <div className={classes.container}>
       {document.link && (
-        <MuiLink color="secondary" target="_blank" href={document.link}>
+        <MuiLink className={classes.link} target="_blank" href={document.link}>
           See in Google Drive
         </MuiLink>
       )}
