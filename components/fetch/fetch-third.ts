@@ -52,9 +52,9 @@ const FetchThird = (props: IProps) => {
     isLoading: peopleResponse.loading && emailsResponse && emailsResponse.loading,
     emails: emailsResponse && emailsResponse.result ? emailsResponse.result : [],
     error:
-      gmailResponse &&
-      emailsResponse &&
-      (gmailResponse.error || peopleResponse.error || emailsResponse.error),
+      gmailResponse && emailsResponse
+        ? gmailResponse.error || peopleResponse.error || emailsResponse.error
+        : false,
     personList,
     refetchPersonList: async () => null, // emailsResponse.execute,
   };
