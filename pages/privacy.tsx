@@ -371,6 +371,58 @@ const Terms = () => {
               Service Providers have access to Your Personal Data only to perform their tasks on Our
               behalf and are obligated not to disclose or use it for any other purpose.
             </p>
+            <h2>Registration and authentication</h2>
+            <p>
+              By registering or authenticating, Users allow this Application to identify them and
+              give them access to dedicated services. Depending on what is described below, third
+              parties may provide registration and authentication services. In this case, this
+              Application will be able to access some Data, stored by these third-party services,
+              for registration or identification purposes. Some of the services listed below may
+              also collect Personal Data for targeting and profiling purposes; to find out more,
+              please refer to the description of each service.
+            </p>
+            <ul>
+              <li>
+                <p>
+                  <strong>Google OAuth (Google LLC)</strong>
+                </p>
+                <p>
+                  Google OAuth is a registration and authentication service provided by Google LLC
+                  and is connected to the Google network. Personal Data processed: various types of
+                  Data as specified in the privacy policy of the service. Place of processing:
+                  United States –{' '}
+                  <a
+                    rel="external nofollow noopener noreferrer"
+                    href="https://policies.google.com/privacy"
+                    target="_blank"
+                  >
+                    Privacy Policy
+                  </a>
+                  . Privacy Shield participant.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <strong>Auth0 (Auth0, Inc)</strong>
+                </p>
+                <p>
+                  Auth0 is a registration and authentication service provided by Auth0, Inc. To
+                  simplify the registration and authentication process, Auth0 can make use of
+                  third-party identity providers and save the information on its platform. Personal
+                  Data processed: Cookies; email address; first name; last name; password; picture;
+                  various types of Data as specified in the privacy policy of the service. Place of
+                  processing: United States –{' '}
+                  <a
+                    rel="external nofollow noopener noreferrer"
+                    target="_blank"
+                    href="https://auth0.com/privacy"
+                  >
+                    Privacy Policy
+                  </a>
+                  . Privacy Shield participant.
+                </p>
+              </li>
+            </ul>
             <h2>Email Marketing</h2>
             <p>
               We may use Your Personal Data to contact You with newsletters, marketing or
