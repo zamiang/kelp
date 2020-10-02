@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { NextRouter, Router, useRouter } from 'next/router';
 import React from 'react';
 import { IProps } from './left-drawer';
 
@@ -44,29 +45,24 @@ const getAutocompleteResults = (props: IProps) => {
   return results;
 };
 
-const onAutocompleteSelect = (_props?: IProps, result?: IResult) => {
-  if (!result) {
-    return;
-  }
+const onAutocompleteSelect = (result: IResult, router: NextRouter) => {
   switch (result.type) {
     case 'person':
-      alert(`clicked ${result.id} person`);
-      break;
+      return router.push(`?tab=people&slug=${result.id}`);
     case 'document':
-      alert(`clicked ${result.id} document`);
-      break;
+      return router.push(`?tab=docs&slug=${result.id}`);
     case 'meeting':
-      alert(`clicked ${result.id} meeting`);
-      break;
+      return router.push(`?tab=meetings&slug=${result.id}`);
   }
 };
 
 const Search = (props: IProps) => {
   const classes = useStyles();
   const options = getAutocompleteResults(props);
+  const router = useRouter();
 
-  const handleAutocompleteSelect = (_: React.ChangeEvent<unknown>, result: IResult) =>
-    onAutocompleteSelect(props, result);
+  const handleAutocompleteSelect = (_: React.ChangeEvent<unknown>, result: IResult | null) =>
+    result && onAutocompleteSelect(result, router);
   return (
     <ListItem button onClick={props.handleDrawerOpen} className={classes.listItem}>
       <ListItemIcon>
@@ -84,7 +80,7 @@ const Search = (props: IProps) => {
             <TextField placeholder="Search…" className={classes.inputInput} {...params} />
           )}
           // Typings are wrong for this library
-          onChange={handleAutocompleteSelect as any}
+          onChange={handleAutocompleteSelect}
         />
       )}
     </ListItem>
