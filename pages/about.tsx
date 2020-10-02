@@ -46,10 +46,10 @@ const About = () => {
                 About Kelp
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Much like a fixer-upper house, where the true value of the home is unclear, our data
-                is un-renovated. We have communication tools separate from collaboration tools
-                separate from scheduling tools. Each of these individual tools could benefit from
-                information in the other tools.
+                Much like a fixer-upper house, where the true value of the home is unclear, our
+                personal data is not rennovated for our use. We have communication tools separate
+                from collaboration tools separate from scheduling tools. Each of these individual
+                tools could benefit from information in the other tools.
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 Messages both contain information, are signals about relationships and link a person

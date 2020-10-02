@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import clsx from 'clsx';
-import Link from 'next/link';
 import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
@@ -54,6 +53,9 @@ export const useStyles = makeStyles((theme) => ({
   loginTry: {
     margin: theme.spacing(4, 0, 2, 4),
     padding: theme.spacing(2, 6),
+  },
+  loginTryLink: {
+    textDecoration: 'none',
   },
   body: {
     marginTop: theme.spacing(3),
@@ -126,7 +128,11 @@ const App = () => {
               >
                 Log In
               </Button>
-              <Link href="/test-dashboard">
+              <a
+                href="/test-dashboard?tab=meetings"
+                target="_blank"
+                className={classes.loginTryLink}
+              >
                 <Button
                   variant="outlined"
                   size="large"
@@ -135,7 +141,7 @@ const App = () => {
                 >
                   Try it out
                 </Button>
-              </Link>
+              </a>
             </Container>
           </Grid>
           <Grid item xs={6}>
