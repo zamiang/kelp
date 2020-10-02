@@ -45,9 +45,16 @@ const Footer = () => {
           </Link>
         </div>
         <div className={classes.footerItem}>
+          <Link href="/privacy">
+            <Button color="inherit" component="a">
+              Privacy Policy
+            </Button>
+          </Link>
+        </div>
+        <div className={classes.footerItem}>
           <Link href="/terms">
             <Button color="inherit" component="a">
-              Privacy & Terms
+              Terms & Conditions
             </Button>
           </Link>
         </div>

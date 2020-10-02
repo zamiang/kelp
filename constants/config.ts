@@ -3,7 +3,7 @@ import { subDays } from 'date-fns';
 const scopes = [
   'https://www.googleapis.com/auth/calendar.events.owned.readonly',
   'https://www.googleapis.com/auth/contacts.readonly', // not sure about this one
-  'https://www.googleapis.com/auth/gmail.readonly', // cannot use the 'q' parameter
+  // 'https://www.googleapis.com/auth/gmail.readonly', // cannot use the 'q' parameter
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/drive.metadata.readonly',
   'https://www.googleapis.com/auth/drive.activity.readonly',
@@ -26,4 +26,6 @@ export default {
   startDate: subDays(new Date(), 7),
   YELLOW_BACKGROUND: '#deff2a', // TODO: Add to theme somehow?
   ORANGE_BACKGROUND: '#ffd12a',
+  PURPLE_BACKGROUND: '#722aff',
+  PINK_BACKGROUND: '#ff2ab4',
 };

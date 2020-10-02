@@ -3,7 +3,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import ScheduleIcon from '@material-ui/icons/Schedule';
 import clsx from 'clsx';
 import React from 'react';
 import Footer from '../components/homepage/footer';
@@ -24,7 +23,10 @@ const About = () => {
           alignItems="center"
         >
           <Container>
-            <ScheduleIcon className={clsx(classes.heroImage, classes.heroImageIcon)} />
+            <img
+              src="/icons/success-line.svg"
+              className={clsx(classes.heroImage, classes.heroImageIcon)}
+            />
             <Typography variant="h2" className={classes.center}>
               Information at your fingertips
               <br />

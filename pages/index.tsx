@@ -39,6 +39,12 @@ export const useStyles = makeStyles((theme) => ({
   orangeBackground: {
     backgroundColor: config.ORANGE_BACKGROUND,
   },
+  purpleBackground: {
+    backgroundColor: config.PURPLE_BACKGROUND,
+  },
+  pinkBackground: {
+    backgroundColor: config.PINK_BACKGROUND,
+  },
   info: {
     marginTop: theme.spacing(9),
     padding: theme.spacing(9),
