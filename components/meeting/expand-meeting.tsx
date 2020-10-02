@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   content: {
     marginTop: theme.spacing(1),
   },
+  link: {
+    color: theme.palette.primary.dark,
+  },
 }));
 
 const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
@@ -73,7 +76,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   return (
     <div className={classes.container}>
       {meeting.link && (
-        <MuiLink color="secondary" target="_blank" href={meeting.link}>
+        <MuiLink className={classes.link} target="_blank" href={meeting.link}>
           See in Google Calendar
         </MuiLink>
       )}

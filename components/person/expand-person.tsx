@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body2.fontSize,
     textTransform: 'uppercase',
   },
+  link: {
+    color: theme.palette.primary.dark,
+    display: 'block',
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const ExpandPerson = (props: IStore & { personId: string }) => {
@@ -54,7 +59,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
       <Grid container spacing={3}>
         {person.isMissingProfile && (
           <Grid item xs={7}>
-            <MuiLink target="_blank" href={ADD_SENDER_LINK}>
+            <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
               Add this person to your google contacts for more info
             </MuiLink>
           </Grid>
