@@ -26,4 +26,6 @@ export default {
   startDate: subDays(new Date(), 7),
   YELLOW_BACKGROUND: '#deff2a', // TODO: Add to theme somehow?
   ORANGE_BACKGROUND: '#ffd12a',
+  PURPLE_BACKGROUND: '#722aff',
+  PINK_BACKGROUND: '#ff2ab4',
 };

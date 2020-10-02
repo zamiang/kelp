@@ -28,6 +28,12 @@ const useStyles = makeStyles((theme) => ({
   orangeBackground: {
     backgroundColor: config.ORANGE_BACKGROUND,
   },
+  purpleBackground: {
+    backgroundColor: config.PURPLE_BACKGROUND,
+  },
+  pinkBackground: {
+    backgroundColor: config.PINK_BACKGROUND,
+  },
   button: {
     minWidth: 100,
     marginLeft: 'auto',
@@ -56,6 +62,8 @@ const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
         classes.appBar,
         props.color === 'security' && classes.yellowBackground,
         props.color === 'about' && classes.orangeBackground,
+        props.color === 'privacy' && classes.purpleBackground,
+        props.color === 'terms' && classes.pinkBackground,
       )}
     >
       <Toolbar>

@@ -7,7 +7,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import HttpsIcon from '@material-ui/icons/Https';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
-import SecurityIcon from '@material-ui/icons/Security';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import clsx from 'clsx';
 import React from 'react';
@@ -30,7 +29,10 @@ const Security = () => {
           alignContent="center"
         >
           <Container>
-            <SecurityIcon className={clsx(classes.heroImage, classes.heroImageIcon)} />
+            <img
+              src="/icons/locked-line.svg"
+              className={clsx(classes.heroImage, classes.heroImageIcon)}
+            />
             <Typography variant="h2" className={classes.center}>
               Kelp keeps your personal data secure
               <br />
