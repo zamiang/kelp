@@ -40,9 +40,9 @@ Add your google oauth app and Auth0 tokens to [.env.local]
     NEXT_PUBLIC_GOOGLE_CLIENT_ID=foo-bar-baz.apps.googleusercontent.com
     (optional if not at localhost:3000) NEXT_PUBLIC_AUTH0_REDIRECT_URI=http://localhost:8080/dashboard
 
-When starting the app
+When starting the app in development mode
 
-    npm run start
+    npm run dev
 
 [google oauth]: https://developers.google.com/identity/protocols/oauth2
 [google drive api]: https://developers.google.com/drive
