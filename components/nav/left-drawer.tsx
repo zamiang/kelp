@@ -18,8 +18,10 @@ import { drawerWidth } from '../../pages/dashboard';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
+import LogoutButton from './logout-button';
 import RefreshButton from './refresh-button';
 import Search from './search';
+import UserProfile from './user-profile';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -184,7 +186,9 @@ const LeftDrawer = (props: IProps) => {
         </Link>
       </List>
       <div className={classes.spacer} />
+      <UserProfile />
       <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
+      <LogoutButton />
     </Drawer>
   );
 };

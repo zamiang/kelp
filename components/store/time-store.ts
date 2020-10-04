@@ -7,6 +7,7 @@ import PersonDataStore from './person-store';
 
 type SegmentState = 'current' | 'upcoming' | 'past';
 
+// todo: https://en.wikipedia.org/wiki/ICalendar#:~:text=The%20file%20format%20is%20specified,formerly%20Lotus%20Notes)%2C%20Yahoo!
 export interface IFormattedAttendee {
   readonly personId: string; // for lookup in the person store
   readonly responseStatus?: string;
