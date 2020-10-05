@@ -126,4 +126,6 @@ export const DashboardContainer = ({ store }: IProps) => {
   );
 };
 
-export default withAuthenticationRequired(LoadingDashboardContainer);
+export default withAuthenticationRequired(LoadingDashboardContainer, {
+  onRedirecting: () => <div>Logging you in to Auth0</div>,
+});

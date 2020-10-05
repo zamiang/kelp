@@ -28,8 +28,7 @@ module.exports = {
                 'https://drive-thirdparty.googleusercontent.com/',
                 'https://*.googleusercontent.com',
               ],
-              scriptSrc: ["'unsafe-eval'"],
-              scriptSrcElem: ["'self'", 'https://apis.google.com'],
+              scriptSrc: ["'self'", "'unsafe-eval'", 'https://apis.google.com'],
               frameSrc: [
                 'https://auth.kelp.nyc/',
                 'https://content.googleapis.com/',
