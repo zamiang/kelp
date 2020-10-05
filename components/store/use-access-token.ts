@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import useGAPI from './use-gapi';
@@ -28,10 +29,12 @@ interface IOauth0User {
  *  gapi.auth.setToken({
  *   access_token: token,
  *  });
+ * // https://github.com/auth0/auth0-react/blob/master/EXAMPLES.md#4-create-a-useapi-hook-for-accessing-protected-apis-with-an-access-token
  */
 
 const useStore = () => {
   const gapiLoaded = useGAPI();
+  const { logout } = useAuth0();
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -48,6 +51,10 @@ const useStore = () => {
             immediate: true,
           },
           function (authResult) {
+            if (authResult.error) {
+              alert(JSON.stringify(authResult));
+              logout();
+            }
             if (authResult) {
               setAccessToken(authResult.access_token);
             }
