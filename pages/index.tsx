@@ -9,11 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import clsx from 'clsx';
+import Link from 'next/link';
 import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
-import { useLoginWithRedirect } from '../components/store/login';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -109,12 +109,10 @@ export const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
-  const loginWithRedirect = useLoginWithRedirect();
-
   return (
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
-        <HomepageTopBar signIn={loginWithRedirect} color="home" />
+        <HomepageTopBar color="home" />
         <Grid container className={classes.hero} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="sm">
@@ -124,16 +122,17 @@ const App = () => {
                 Kelp infers associations between information, such as between a person, a meeting
                 with the person and document edits by the person.
               </Typography>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                onClick={loginWithRedirect}
-                className={classes.login}
-                disableElevation={true}
-              >
-                Log In
-              </Button>
+              <Link href="/dashboard">
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  className={classes.login}
+                  disableElevation={true}
+                >
+                  Log In
+                </Button>
+              </Link>
               <a
                 href="/test-dashboard?tab=meetings"
                 target="_blank"
