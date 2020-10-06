@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -29,6 +30,20 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  chevronRight: {
+    transform: 'rotate(180deg)',
+    transition: theme.transitions.create('transition', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  chevronLeft: {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transition', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerPaper: {
     border: '0px',
@@ -113,11 +128,15 @@ const LeftDrawer = (props: IProps) => {
       }}
       open={props.isOpen}
     >
-      <div className={classes.toolbarIcon}>
-        <IconButton onClick={props.handleDrawerClose}>
-          <ChevronLeftIcon />
-        </IconButton>
-      </div>
+      <ListItem className={classes.toolbarIcon}>
+        <ListItemIcon>
+          <IconButton onClick={props.isOpen ? props.handleDrawerClose : props.handleDrawerOpen}>
+            <ChevronLeftIcon
+              className={props.isOpen ? classes.chevronLeft : classes.chevronRight}
+            />
+          </IconButton>
+        </ListItemIcon>
+      </ListItem>
       <div className={classes.spacer} />
       <Search {...props} />
       <div className={classes.spacer} />
