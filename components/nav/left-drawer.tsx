@@ -1,4 +1,3 @@
-import { Typography } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -110,7 +109,7 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people' | 'week';
+  tab: 'meetings' | 'docs' | 'people' | 'week' | 'profile';
 }
 
 const LeftDrawer = (props: IProps) => {
