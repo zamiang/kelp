@@ -44,7 +44,7 @@ const PersonRow = (
               )}
             </ListItemIcon>
           </Grid>
-          <Grid item style={{ flex: 1 }}>
+          <Grid item style={{ flex: 1, overflow: 'hidden' }}>
             <ListItemText primary={props.person.name || props.person.id} />
           </Grid>
         </Grid>
