@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +14,6 @@ import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
-import { useLoginWithRedirect } from '../components/store/login';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -109,12 +109,11 @@ export const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
-  const loginWithRedirect = useLoginWithRedirect();
-
+  const { loginWithRedirect } = useAuth0();
   return (
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
-        <HomepageTopBar signIn={loginWithRedirect} color="home" />
+        <HomepageTopBar color="home" />
         <Grid container className={classes.hero} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="sm">
@@ -128,8 +127,8 @@ const App = () => {
                 variant="contained"
                 size="large"
                 color="primary"
-                onClick={loginWithRedirect}
                 className={classes.login}
+                onClick={loginWithRedirect}
                 disableElevation={true}
               >
                 Log In

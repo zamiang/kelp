@@ -12,16 +12,14 @@ import clsx from 'clsx';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
-import { useLoginWithRedirect } from '../components/store/login';
 import { useStyles } from './index';
 
 const Security = () => {
   const classes = useStyles();
-  const loginWithRedirect = useLoginWithRedirect();
   return (
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
-        <HomepageTopBar signIn={loginWithRedirect} color="security" />
+        <HomepageTopBar color="security" />
         <Grid
           container
           className={clsx(classes.hero, classes.yellowBackground)}

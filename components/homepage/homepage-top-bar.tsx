@@ -1,5 +1,4 @@
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import MuiLink from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -10,6 +9,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
 import config from '../../constants/config';
+import LoginButton from './login-button';
 
 const useStyles = makeStyles((theme) => ({
   logoImage: {
@@ -34,10 +34,6 @@ const useStyles = makeStyles((theme) => ({
   pinkBackground: {
     backgroundColor: config.PINK_BACKGROUND,
   },
-  button: {
-    minWidth: 100,
-    marginLeft: 'auto',
-  },
   link: {
     color: 'black',
     fontSize: theme.typography.body1.fontSize,
@@ -53,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
+const HomepageTopBar = (props: { color: string }) => {
   const classes = useStyles();
   return (
     <AppBar
@@ -95,14 +91,7 @@ const HomepageTopBar = (props: { color: string; signIn: () => void }) => {
             </MuiLink>
           </Link>
         </div>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          onClick={props.signIn}
-          disableElevation={true}
-        >
-          Log In
-        </Button>
+        <LoginButton />
       </Toolbar>
     </AppBar>
   );
