@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -9,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import clsx from 'clsx';
-import Link from 'next/link';
 import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
@@ -109,6 +109,7 @@ export const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
+  const { loginWithRedirect } = useAuth0();
   return (
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
@@ -122,17 +123,16 @@ const App = () => {
                 Kelp infers associations between information, such as between a person, a meeting
                 with the person and document edits by the person.
               </Typography>
-              <Link href="/dashboard">
-                <Button
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  className={classes.login}
-                  disableElevation={true}
-                >
-                  Log In
-                </Button>
-              </Link>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                className={classes.login}
+                onClick={loginWithRedirect}
+                disableElevation={true}
+              >
+                Log In
+              </Button>
               <a
                 href="/test-dashboard?tab=meetings"
                 target="_blank"

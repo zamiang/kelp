@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginButton = () => {
-  const { isLoading, isAuthenticated, error, user, loginWithPopup } = useAuth0();
+  const { isLoading, isAuthenticated, error, user, loginWithRedirect } = useAuth0();
   const classes = useStyles();
   if (isLoading) {
     return <CircularProgress size={22} className={classes.avatar} color="inherit" />;
@@ -41,7 +41,7 @@ const LoginButton = () => {
   }
   return (
     <Button
-      onClick={loginWithPopup}
+      onClick={loginWithRedirect}
       className={classes.button}
       variant="outlined"
       disableElevation={true}
