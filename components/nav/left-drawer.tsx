@@ -4,7 +4,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -21,18 +20,29 @@ import { ISegment } from '../store/time-store';
 import LogoutButton from './logout-button';
 import RefreshButton from './refresh-button';
 import Search from './search';
-import UserProfile from './user-profile';
+import UserProfile from './user-profile-row';
 
-const useStyles = makeStyles((theme) => ({
-  logo: {
-    fontWeight: 700,
-  },
+export const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  chevronRight: {
+    transform: 'rotate(180deg)',
+    transition: theme.transitions.create('transition', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  chevronLeft: {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transition', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerPaper: {
     border: '0px',
@@ -59,11 +69,6 @@ const useStyles = makeStyles((theme) => ({
   date: {
     color: theme.palette.text.hint,
   },
-  logoImage: {
-    width: 93,
-    marginLeft: -28,
-    marginRight: -12,
-  },
   spacer: { margin: theme.spacing(2) },
   selected: {
     color: theme.palette.text.primary,
@@ -75,6 +80,10 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+  },
+  avatar: {
+    width: 22,
+    height: 22,
   },
 }));
 
@@ -100,7 +109,7 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people' | 'week';
+  tab: 'meetings' | 'docs' | 'people' | 'week' | 'profile';
 }
 
 const LeftDrawer = (props: IProps) => {
@@ -109,6 +118,7 @@ const LeftDrawer = (props: IProps) => {
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
   const isWeekSelected = props.tab === 'week';
+  const isProfileSelected = props.tab === 'profile';
   return (
     <Drawer
       variant="permanent"
@@ -117,26 +127,22 @@ const LeftDrawer = (props: IProps) => {
       }}
       open={props.isOpen}
     >
-      <div className={classes.toolbarIcon}>
-        <IconButton onClick={props.handleDrawerClose}>
-          <ChevronLeftIcon />
-        </IconButton>
-      </div>
-      <div className={classes.spacer} />
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <img className={classes.logoImage} src="kelp.svg" />
-          </ListItemIcon>
-          <Typography variant="h4" className={classes.logo}>
-            Kelp
-          </Typography>
-        </ListItem>
-      </List>
+      <ListItem className={classes.toolbarIcon}>
+        <ListItemIcon>
+          <IconButton onClick={props.isOpen ? props.handleDrawerClose : props.handleDrawerOpen}>
+            <ChevronLeftIcon
+              className={props.isOpen ? classes.chevronLeft : classes.chevronRight}
+            />
+          </IconButton>
+        </ListItemIcon>
+      </ListItem>
       <div className={classes.spacer} />
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
+        <Link href="?tab=settings">
+          <UserProfile isSelected={isProfileSelected} />
+        </Link>
         <Link href="?tab=week">
           <ListItem button selected={isWeekSelected} className={classes.listItem}>
             <ListItemIcon>
@@ -187,7 +193,6 @@ const LeftDrawer = (props: IProps) => {
         </Link>
       </List>
       <div className={classes.spacer} />
-      <UserProfile />
       <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
       <LogoutButton />
     </Drawer>
