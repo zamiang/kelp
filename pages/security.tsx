@@ -5,9 +5,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import HttpsIcon from '@material-ui/icons/Https';
-import LocationCityIcon from '@material-ui/icons/LocationCity';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import clsx from 'clsx';
 import React from 'react';
 import Footer from '../components/homepage/footer';
@@ -46,21 +43,25 @@ const Security = () => {
           justify="center"
         >
           <Grid item xs={6}>
+            <img src="/icons/Key.svg" />
             <Typography variant="h3">What data does Kelp store?</Typography>
             <Typography variant="h6" className={classes.body}>
-              Kelp stores minimum amount of information needed to contact you. This contact
-              information, your name and email, is stored in a secure intermediate named Auth0 where
-              you can edit or remove that data at any time. Data displayed in Kelp, such as your
-              calendar events, contacts and document names are not stored by Kelp. That data is
-              retrieved directly by your web browser from Google’s APIs fresh each time you open
-              Kelp. Your calendar events, contacts and document names do not pass through Kelp or
-              Auth0 web servers.
+              Kelp stores minimum amount of information needed to contact you.
+            </Typography>
+            <Typography variant="h6" className={classes.body}>
+              This contact information, your name and email, is stored in a secure intermediate
+              named Auth0 where you can edit or remove that data at any time. Data displayed in
+              Kelp, such as your calendar events, contacts and document names are not stored by
+              Kelp. That data is retrieved directly by your web browser from Google’s APIs fresh
+              each time you open Kelp. Your calendar events, contacts and document names do not pass
+              through Kelp or Auth0 web servers.
             </Typography>
           </Grid>
         </Grid>
         <Grid container className={classes.info} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="xs">
+              <img className={classes.centerIcon} src="/icons/lock-color.svg" />
               <Typography variant="h3">Security Practices</Typography>
               <Typography variant="h6" className={classes.body}>
                 Kelp puts your privacy and security first. Kelp makes money by providing you a tool
@@ -71,33 +72,45 @@ const Security = () => {
             </Container>
           </Grid>
           <Grid item xs={6}>
-            <Container maxWidth="xs">
+            <Container maxWidth="sm">
               <List>
                 <ListItem divider>
-                  <ListItemIcon>
-                    <LocationCityIcon />
+                  <ListItemIcon className={classes.smallIconContainer}>
+                    <img src="/icons/cloud-color.svg" className={classes.smallIcon} />
                   </ListItemIcon>
                   <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                      secondary: classes.largeListItemText,
+                    }}
                     primary="Architecture"
                     secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
                   />
                 </ListItem>
                 <ListItem divider>
-                  <ListItemIcon>
-                    <VpnKeyIcon />
+                  <ListItemIcon className={classes.smallIconContainer}>
+                    <img src="/icons/key-color.svg" className={classes.smallIcon} />
                   </ListItemIcon>
                   <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                      secondary: classes.largeListItemText,
+                    }}
                     primary="Authentication"
-                    secondary="Kelp uses a secure intermediate, Auth0, to authenticate you with Google and other integrations. This keeps you in control of your data (or at least as in control as you were before using Kelp). With this control, you can revoke access to your data from Auth0 or Kelp at any time."
+                    secondary="Kelp uses a secure intermediate, Auth0, to authenticate you with Google and other integrations. In doing so, we keep you in control of your data (or at least as in control as you were before using Kelp). With this control, you can revoke access to your data from Auth0 or Google at any time."
                   />
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <HttpsIcon />
+                  <ListItemIcon className={classes.smallIconContainer}>
+                    <img src="/icons/present-color.svg" className={classes.smallIcon} />
                   </ListItemIcon>
                   <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                      secondary: classes.largeListItemText,
+                    }}
                     primary="Data Access"
-                    secondary="By using this intermediary, we ensure that Kelp cannot access your data - only your web browser then can use this token to request your data directly from Google."
+                    secondary="By using Auth0, we ensure that Kelp cannot access your data - only your web browser then can use this token to request your data directly from Google."
                   />
                 </ListItem>
               </List>
@@ -113,23 +126,39 @@ const Security = () => {
         >
           <Grid item xs={6}>
             <Container maxWidth="sm">
-              <Typography variant="h3">Methods</Typography>
-              <Typography variant="body1">
+              <img src="/icons/Relax.svg" />
+              <Typography variant="h3">You can relax</Typography>
+              <Typography variant="h6" className={classes.body}>
                 Neither Kelp or Auth0 store passwords or personal data. However, we do take security
-                seriously. We take security very seriously. Kelp’s security pactices include but are
-                not limited to:
+                seriously and apply experience from e-commerce, and healthcare data security. Kelp’s
+                security practices include but are not limited to
               </Typography>
               <List>
                 <ListItem>
+                  <ListItemIcon>
+                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
+                  </ListItemIcon>
                   <ListItemText primary="Static code analysis" />
                 </ListItem>
                 <ListItem>
+                  <ListItemIcon>
+                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
+                  </ListItemIcon>
+
                   <ListItemText primary="Static dependency checking" />
                 </ListItem>
                 <ListItem>
+                  <ListItemIcon>
+                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
+                  </ListItemIcon>
+
                   <ListItemText primary="Web vulnerability scanning" />
                 </ListItem>
                 <ListItem>
+                  <ListItemIcon>
+                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
+                  </ListItemIcon>
+
                   <ListItemText primary="End to end encryption" />
                 </ListItem>
               </List>
