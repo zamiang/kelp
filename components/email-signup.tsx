@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const EmailSignup = () => {
   const classes = useStyles();
   return (
-    <div>
+    <React.Fragment>
       <Typography variant="h3">Subscribe</Typography>
       <Typography variant="h6">
         Sign up with your email address to receive news and updates.
@@ -62,7 +62,7 @@ const EmailSignup = () => {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </React.Fragment>
   );
 };
 

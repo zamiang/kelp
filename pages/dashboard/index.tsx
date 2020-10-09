@@ -84,7 +84,6 @@ export const DashboardContainer = ({ store }: IProps) => {
   };
 
   const handleRefreshClick = () => store.refetch();
-  // todo
   const slug = useRouter().query.slug as string | null;
   const tab = useRouter().query.tab as string;
 
@@ -102,8 +101,6 @@ export const DashboardContainer = ({ store }: IProps) => {
   } as any;
 
   const isDrawerOpen = tab !== 'week';
-  // <TopBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} /> --!>
-  // add above route component <div className={classes.appBarSpacer} />
   return (
     <div className={classes.container}>
       <LeftDrawer
