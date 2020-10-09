@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
   input: {
     minWidth: 220,
   },
+  body: {
+    marginTop: theme.spacing(3),
+    fontWeight: 400,
+  },
 }));
 
 const EmailSignup = () => {
@@ -24,7 +28,7 @@ const EmailSignup = () => {
   return (
     <React.Fragment>
       <Typography variant="h3">Subscribe</Typography>
-      <Typography variant="h6">
+      <Typography variant="h6" className={classes.body}>
         Sign up with your email address to receive news and updates.
       </Typography>
       <form
