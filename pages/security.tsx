@@ -138,28 +138,45 @@ const Security = () => {
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
-                  <ListItemText primary="Static code analysis" />
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                    }}
+                    primary="Static code analysis"
+                  />
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
-
-                  <ListItemText primary="Static dependency checking" />
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                    }}
+                    primary="Static dependency checking"
+                  />
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
-
-                  <ListItemText primary="Web vulnerability scanning" />
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                    }}
+                    primary="Web vulnerability scanning"
+                  />
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
-
-                  <ListItemText primary="End to end encryption" />
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                    }}
+                    primary="End to end encryption"
+                  />
                 </ListItem>
               </List>
             </Container>
