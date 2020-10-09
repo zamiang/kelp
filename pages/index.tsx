@@ -168,7 +168,7 @@ const App = () => {
           <Grid item xs={6}>
             <Container maxWidth="xs">
               <Typography variant="h3">Your meeting helper</Typography>
-              <Typography variant="h6">
+              <Typography variant="h6" className={classes.body}>
                 Kelp does not store your personal data or send your data to third parties.
               </Typography>
             </Container>

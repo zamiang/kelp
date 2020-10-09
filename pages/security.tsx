@@ -38,17 +38,35 @@ const Security = () => {
             </Typography>
           </Container>
         </Grid>
+        <Grid
+          container
+          className={classes.info}
+          alignItems="center"
+          alignContent="center"
+          justify="center"
+        >
+          <Grid item xs={6}>
+            <Typography variant="h3">What data does Kelp store?</Typography>
+            <Typography variant="h6" className={classes.body}>
+              Kelp stores minimum amount of information needed to contact you. This contact
+              information, your name and email, is stored in a secure intermediate named Auth0 where
+              you can edit or remove that data at any time. Data displayed in Kelp, such as your
+              calendar events, contacts and document names are not stored by Kelp. That data is
+              retrieved directly by your web browser from Google’s APIs fresh each time you open
+              Kelp. Your calendar events, contacts and document names do not pass through Kelp or
+              Auth0 web servers.
+            </Typography>
+          </Grid>
+        </Grid>
         <Grid container className={classes.info} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="xs">
               <Typography variant="h3">Security Practices</Typography>
               <Typography variant="h6" className={classes.body}>
-                Kelp only stores information that helps authenticate you, such as your account ID,
-                email and a token that grants the Kelp website application access to your data. This
-                is the same as when you click &lsquo;sign in with Google&rsquo; or &lsquo;sign in
-                with Facebook&rsquo; on other websites, however when you make changes or add
-                information, your changes are stored at the source and do not pass through Kelp’s
-                website.
+                Kelp puts your privacy and security first. Kelp makes money by providing you a tool
+                that you find useful, not by selling your data. We deeply believe that limiting
+                Kelp’s access to your data is both our best interest and your best interest and hope
+                to be an example of privacy forward companies.
               </Typography>
             </Container>
           </Grid>
