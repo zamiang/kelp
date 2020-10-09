@@ -1,3 +1,5 @@
+import { useAuth0 } from '@auth0/auth0-react';
+import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -8,7 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -20,7 +25,6 @@ import { ISegment } from '../store/time-store';
 import LogoutButton from './logout-button';
 import RefreshButton from './refresh-button';
 import Search from './search';
-import UserProfile from './user-profile-row';
 
 export const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
@@ -114,6 +118,8 @@ export interface IProps {
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
+  const { user, isAuthenticated, isLoading, error } = useAuth0();
+
   const isMeetingsSelected = props.tab === 'meetings';
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
@@ -140,9 +146,40 @@ const LeftDrawer = (props: IProps) => {
       <Search {...props} />
       <div className={classes.spacer} />
       <List>
-        <Link href="?tab=settings">
-          <UserProfile isSelected={isProfileSelected} />
-        </Link>
+        {isAuthenticated && !isLoading && (
+          <Link href="?tab=settings">
+            <ListItem button selected={isProfileSelected} className={classes.listItem}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
+              </ListItemIcon>
+              <ListItemText>{user.name}</ListItemText>
+            </ListItem>
+          </Link>
+        )}
+        {isLoading && (
+          <ListItem>
+            <ListItemIcon>
+              <LoopIcon className={classes.avatar} />
+            </ListItemIcon>
+            <ListItemText>Loading</ListItemText>
+          </ListItem>
+        )}
+        {!isAuthenticated && (
+          <ListItem>
+            <ListItemIcon>
+              <LockOpenIcon className={classes.avatar} />
+            </ListItemIcon>
+            <ListItemText>Not Authenticated</ListItemText>
+          </ListItem>
+        )}
+        {error && (
+          <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon className={classes.avatar} />
+            </ListItemIcon>
+            <ListItemText>{error}</ListItemText>
+          </ListItem>
+        )}
         <Link href="?tab=week">
           <ListItem button selected={isWeekSelected} className={classes.listItem}>
             <ListItemIcon>
