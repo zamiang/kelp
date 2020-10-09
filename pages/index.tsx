@@ -105,6 +105,20 @@ export const useStyles = makeStyles((theme) => ({
   row: {
     borderBottom: `1px solid ${theme.palette.primary.dark}`,
   },
+  smallIcon: {
+    maxWidth: 60,
+  },
+  smallIconContainer: {
+    marginRight: 20,
+  },
+  largeListItemText: {
+    fontSize: theme.typography.h6.fontSize,
+  },
+  centerIcon: {
+    maxWidth: '50%',
+    margin: '0px auto',
+    display: 'block',
+  },
 }));
 
 const App = () => {
