@@ -25,7 +25,7 @@ import { ISegment } from '../store/time-store';
 import RefreshButton from './refresh-button';
 import Search from './search';
 
-export const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
