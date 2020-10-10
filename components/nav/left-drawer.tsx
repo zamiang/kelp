@@ -22,7 +22,6 @@ import { drawerWidth } from '../../pages/dashboard';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
-import LogoutButton from './logout-button';
 import RefreshButton from './refresh-button';
 import Search from './search';
 
@@ -57,6 +56,8 @@ export const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    display: 'flex',
+    justifyContent: 'space-between',
     height: '100vh',
   },
   drawerPaperClose: {
@@ -113,7 +114,7 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people' | 'week' | 'profile';
+  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings';
 }
 
 const LeftDrawer = (props: IProps) => {
@@ -124,7 +125,7 @@ const LeftDrawer = (props: IProps) => {
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
   const isWeekSelected = props.tab === 'week';
-  const isProfileSelected = props.tab === 'profile';
+  const isProfileSelected = props.tab === 'settings';
   return (
     <Drawer
       variant="permanent"
@@ -133,29 +134,16 @@ const LeftDrawer = (props: IProps) => {
       }}
       open={props.isOpen}
     >
-      <ListItem className={classes.toolbarIcon}>
-        <ListItemIcon>
-          <IconButton onClick={props.isOpen ? props.handleDrawerClose : props.handleDrawerOpen}>
-            <ChevronLeftIcon
-              className={props.isOpen ? classes.chevronLeft : classes.chevronRight}
-            />
-          </IconButton>
-        </ListItemIcon>
-      </ListItem>
-      <div className={classes.spacer} />
-      <Search {...props} />
-      <div className={classes.spacer} />
       <List>
-        {isAuthenticated && !isLoading && (
-          <Link href="?tab=settings">
-            <ListItem button selected={isProfileSelected} className={classes.listItem}>
-              <ListItemIcon>
-                <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
-              </ListItemIcon>
-              <ListItemText>{user.name}</ListItemText>
-            </ListItem>
-          </Link>
-        )}
+        <ListItem className={classes.toolbarIcon}>
+          <ListItemIcon>
+            <IconButton onClick={props.isOpen ? props.handleDrawerClose : props.handleDrawerOpen}>
+              <ChevronLeftIcon
+                className={props.isOpen ? classes.chevronLeft : classes.chevronRight}
+              />
+            </IconButton>
+          </ListItemIcon>
+        </ListItem>
         {isLoading && (
           <ListItem>
             <ListItemIcon>
@@ -180,6 +168,7 @@ const LeftDrawer = (props: IProps) => {
             <ListItemText>{error}</ListItemText>
           </ListItem>
         )}
+        <Search {...props} />
         <Link href="?tab=week">
           <ListItem button selected={isWeekSelected} className={classes.listItem}>
             <ListItemIcon>
@@ -229,9 +218,19 @@ const LeftDrawer = (props: IProps) => {
           </ListItem>
         </Link>
       </List>
-      <div className={classes.spacer} />
-      <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
-      <LogoutButton />
+      <List>
+        <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
+        {isAuthenticated && !isLoading && (
+          <Link href="?tab=settings">
+            <ListItem button selected={isProfileSelected} className={classes.listItem}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
+              </ListItemIcon>
+              <ListItemText>{user.name}</ListItemText>
+            </ListItem>
+          </Link>
+        )}
+      </List>
     </Drawer>
   );
 };

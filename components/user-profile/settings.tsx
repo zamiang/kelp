@@ -1,13 +1,67 @@
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import React from 'react';
+import config from '../../constants/config';
 import panelStyles from '../shared/panel-styles';
+import LogoutButton from '../user-profile/logout-button';
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: '25ch',
+  },
+}));
 
 const Settings = () => {
   const styles = panelStyles();
+  const formClasses = useStyles();
   return (
     <React.Fragment>
       <div className={styles.row}>
         <Typography className={styles.title}>Settings</Typography>
+      </div>
+      <div className={styles.row}>
+        <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
+          <InputLabel htmlFor="days-back">Number of days to look back</InputLabel>
+          <Input
+            id="days-back"
+            type={'text'}
+            value={config.NUMBER_OF_DAYS_BACK}
+            // onChange={handleChange('days-back')}
+          />
+        </FormControl>
+        <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
+          <InputLabel htmlFor="week-starts-on">Week starts on</InputLabel>
+          <Input
+            id="week-starts-on"
+            type={'text'}
+            value={config.WEEK_STARTS_ON}
+            // onChange={handleChange('days-back')}
+          />
+        </FormControl>
+
+        <div className={styles.row}>
+          <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
+            <Button variant="contained" color="primary" disableElevation>
+              Save
+            </Button>
+          </FormControl>
+        </div>
+        <div className={styles.row}>
+          <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
+            <LogoutButton />
+          </FormControl>
+        </div>
       </div>
     </React.Fragment>
   );
