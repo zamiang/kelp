@@ -93,7 +93,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     meetings: <Meetings {...store} />,
     docs: <Docs {...store} />,
     people: <People {...store} />,
-    settings: <Settings {...store} />,
+    settings: <Settings />,
   } as any;
 
   const expandHash = {
