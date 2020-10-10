@@ -1,3 +1,5 @@
+import { useAuth0 } from '@auth0/auth0-react';
+import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -8,7 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -17,12 +22,10 @@ import { drawerWidth } from '../../pages/dashboard';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
-import LogoutButton from './logout-button';
 import RefreshButton from './refresh-button';
 import Search from './search';
-import UserProfile from './user-profile-row';
 
-export const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
@@ -53,6 +56,8 @@ export const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    display: 'flex',
+    justifyContent: 'space-between',
     height: '100vh',
   },
   drawerPaperClose: {
@@ -109,16 +114,18 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people' | 'week' | 'profile';
+  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings';
 }
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
+  const { user, isAuthenticated, isLoading, error } = useAuth0();
+
   const isMeetingsSelected = props.tab === 'meetings';
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
   const isWeekSelected = props.tab === 'week';
-  const isProfileSelected = props.tab === 'profile';
+  const isProfileSelected = props.tab === 'settings';
   return (
     <Drawer
       variant="permanent"
@@ -127,22 +134,41 @@ const LeftDrawer = (props: IProps) => {
       }}
       open={props.isOpen}
     >
-      <ListItem className={classes.toolbarIcon}>
-        <ListItemIcon>
-          <IconButton onClick={props.isOpen ? props.handleDrawerClose : props.handleDrawerOpen}>
-            <ChevronLeftIcon
-              className={props.isOpen ? classes.chevronLeft : classes.chevronRight}
-            />
-          </IconButton>
-        </ListItemIcon>
-      </ListItem>
-      <div className={classes.spacer} />
-      <Search {...props} />
-      <div className={classes.spacer} />
       <List>
-        <Link href="?tab=settings">
-          <UserProfile isSelected={isProfileSelected} />
-        </Link>
+        <ListItem className={classes.toolbarIcon}>
+          <ListItemIcon>
+            <IconButton onClick={props.isOpen ? props.handleDrawerClose : props.handleDrawerOpen}>
+              <ChevronLeftIcon
+                className={props.isOpen ? classes.chevronLeft : classes.chevronRight}
+              />
+            </IconButton>
+          </ListItemIcon>
+        </ListItem>
+        {isLoading && (
+          <ListItem>
+            <ListItemIcon>
+              <LoopIcon className={classes.avatar} />
+            </ListItemIcon>
+            <ListItemText>Loading</ListItemText>
+          </ListItem>
+        )}
+        {!isAuthenticated && (
+          <ListItem>
+            <ListItemIcon>
+              <LockOpenIcon className={classes.avatar} />
+            </ListItemIcon>
+            <ListItemText>Not Authenticated</ListItemText>
+          </ListItem>
+        )}
+        {error && (
+          <ListItem>
+            <ListItemIcon>
+              <ErrorOutlineIcon className={classes.avatar} />
+            </ListItemIcon>
+            <ListItemText>{error}</ListItemText>
+          </ListItem>
+        )}
+        <Search {...props} />
         <Link href="?tab=week">
           <ListItem button selected={isWeekSelected} className={classes.listItem}>
             <ListItemIcon>
@@ -192,9 +218,19 @@ const LeftDrawer = (props: IProps) => {
           </ListItem>
         </Link>
       </List>
-      <div className={classes.spacer} />
-      <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
-      <LogoutButton />
+      <List>
+        <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
+        {isAuthenticated && !isLoading && (
+          <Link href="?tab=settings">
+            <ListItem button selected={isProfileSelected} className={classes.listItem}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
+              </ListItemIcon>
+              <ListItemText>{user.name}</ListItemText>
+            </ListItem>
+          </Link>
+        )}
+      </List>
     </Drawer>
   );
 };

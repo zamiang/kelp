@@ -19,6 +19,7 @@ import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
 import useAccessToken from '../../components/store/use-access-token';
 import useStore, { IStore } from '../../components/store/use-store';
+import Settings from '../../components/user-profile/settings';
 
 export const drawerWidth = 240;
 
@@ -92,6 +93,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     meetings: <Meetings {...store} />,
     docs: <Docs {...store} />,
     people: <People {...store} />,
+    settings: <Settings />,
   } as any;
 
   const expandHash = {
