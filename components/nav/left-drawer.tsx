@@ -1,14 +1,12 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
@@ -26,27 +24,6 @@ import RefreshButton from './refresh-button';
 import Search from './search';
 
 const useStyles = makeStyles((theme) => ({
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  chevronRight: {
-    transform: 'rotate(180deg)',
-    transition: theme.transitions.create('transition', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  chevronLeft: {
-    transform: 'rotate(0deg)',
-    transition: theme.transitions.create('transition', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
   drawerPaper: {
     border: '0px',
     position: 'relative',
@@ -90,20 +67,11 @@ const useStyles = makeStyles((theme) => ({
     width: 22,
     height: 22,
   },
-}));
-
-/**
-const ListItem = styled(ListItem)((root: any) => ({
-  borderRadius: `0 ${root.theme.spacing(3)}px ${root.theme.spacing(3)}px 0`,
-  transition: root.theme.transitions.create('background', {
-    easing: root.theme.transitions.easing.sharp,
-    duration: root.theme.transitions.duration.enteringScreen,
-  }),
-  '&.Mui-selected': {
-    backgroundColor: root.theme.palette.secondary.main,
+  logo: {
+    width: 60,
+    marginLeft: -15,
   },
 }));
-*/
 
 export interface IProps {
   isOpen: boolean;
@@ -135,14 +103,13 @@ const LeftDrawer = (props: IProps) => {
       open={props.isOpen}
     >
       <List>
-        <ListItem className={classes.toolbarIcon}>
+        <ListItem>
           <ListItemIcon>
-            <IconButton onClick={props.isOpen ? props.handleDrawerClose : props.handleDrawerOpen}>
-              <ChevronLeftIcon
-                className={props.isOpen ? classes.chevronLeft : classes.chevronRight}
-              />
-            </IconButton>
+            <img className={classes.logo} src="/kelp.svg" />
           </ListItemIcon>
+          <ListItemText>
+            <b>Kelp</b>
+          </ListItemText>
         </ListItem>
         {isLoading && (
           <ListItem>
