@@ -30,739 +30,386 @@ const Terms = () => {
         </Grid>
         <Grid container className={classes.info} justify="center">
           <Grid item sm={6}>
-            <h1>Privacy Policy</h1>
-            <p>Last updated: October 02, 2020</p>
-            <p>
-              This Privacy Policy describes Our policies and procedures on the collection, use and
-              disclosure of Your information when You use the Service and tells You about Your
-              privacy rights and how the law protects You.
-            </p>
-            <p>
-              We use Your Personal data to provide and improve the Service. By using the Service,
-              You agree to the collection and use of information in accordance with this Privacy
-              Policy.
-            </p>
-            <h1>Interpretation and Definitions</h1>
-            <h2>Interpretation</h2>
-            <p>
-              The words of which the initial letter is capitalized have meanings defined under the
-              following conditions. The following definitions shall have the same meaning regardless
-              of whether they appear in singular or in plural.
-            </p>
-            <h2>Definitions</h2>
-            <p>For the purposes of this Privacy Policy:</p>
-            <ul>
-              <li>
-                <p>
-                  <strong>Account</strong> means a unique account created for You to access our
-                  Service or parts of our Service.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Affiliate</strong> means an entity that controls, is controlled by or is
-                  under common control with a party, where &quot;control&quot; means ownership of
-                  50% or more of the shares, equity interest or other securities entitled to vote
-                  for election of directors or other managing authority.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Application</strong> means the software program provided by the Company
-                  downloaded by You on any electronic device, named Kelp
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Business</strong>, for the purpose of the CCPA (California Consumer
-                  Privacy Act), refers to the Company as the legal entity that collects
-                  Consumers&apos; personal information and determines the purposes and means of the
-                  processing of Consumers&apos; personal information, or on behalf of which such
-                  information is collected and that alone, or jointly with others, determines the
-                  purposes and means of the processing of consumers&apos; personal information, that
-                  does business in the State of California.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Company</strong> (referred to as either &quot;the Company&quot;,
-                  &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to
-                  Kelp.
-                </p>
-                <p>For the purpose of the GDPR, the Company is the Data Controller.</p>
-              </li>
-              <li>
-                <p>
-                  <strong>Consumer</strong>, for the purpose of the CCPA (California Consumer
-                  Privacy Act), means a natural person who is a California resident. A resident, as
-                  defined in the law, includes (1) every individual who is in the USA for other than
-                  a temporary or transitory purpose, and (2) every individual who is domiciled in
-                  the USA who is outside the USA for a temporary or transitory purpose.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Country</strong> refers to: New York, United States
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Data Controller</strong>, for the purposes of the GDPR (General Data
-                  Protection Regulation), refers to the Company as the legal person which alone or
-                  jointly with others determines the purposes and means of the processing of
-                  Personal Data.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Device</strong> means any device that can access the Service such as a
-                  computer, a cellphone or a digital tablet.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Do Not Track</strong> (DNT) is a concept that has been promoted by US
-                  regulatory authorities, in particular the U.S. Federal Trade Commission (FTC), for
-                  the Internet industry to develop and implement a mechanism for allowing internet
-                  users to control the tracking of their online activities across websites.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Personal Data</strong> is any information that relates to an identified or
-                  identifiable individual.
-                </p>
-                <p>
-                  For the purposes for GDPR, Personal Data means any information relating to You
-                  such as a name, an identification number, location data, online identifier or to
-                  one or more factors specific to the physical, physiological, genetic, mental,
-                  economic, cultural or social identity.
-                </p>
-                <p>
-                  For the purposes of the CCPA, Personal Data means any information that identifies,
-                  relates to, describes or is capable of being associated with, or could reasonably
-                  be linked, directly or indirectly, with You.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Sale</strong>, for the purpose of the CCPA (California Consumer Privacy
-                  Act), means selling, renting, releasing, disclosing, disseminating, making
-                  available, transferring, or otherwise communicating orally, in writing, or by
-                  electronic or other means, a Consumer&apos;s Personal information to another
-                  business or a third party for monetary or other valuable consideration.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Service</strong> refers to the Application.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Service Provider</strong> means any natural or legal person who processes
-                  the data on behalf of the Company. It refers to third-party companies or
-                  individuals employed by the Company to facilitate the Service, to provide the
-                  Service on behalf of the Company, to perform services related to the Service or to
-                  assist the Company in analyzing how the Service is used. For the purpose of the
-                  GDPR, Service Providers are considered Data Processors.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Third-party Social Media Service</strong> refers to any website or any
-                  social network website through which a User can log in or create an account to use
-                  the Service.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Usage Data</strong> refers to data collected automatically, either
-                  generated by the use of the Service or from the Service infrastructure itself (for
-                  example, the duration of a page visit).
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>You</strong> means the individual accessing or using the Service, or the
-                  company, or other legal entity on behalf of which such individual is accessing or
-                  using the Service, as applicable.
-                </p>
-                <p>
-                  Under GDPR (General Data Protection Regulation), You can be referred to as the
-                  Data Subject or as the User as you are the individual using the Service.
-                </p>
-              </li>
-            </ul>
-            <h1>Collecting and Using Your Personal Data</h1>
-            <h2>Types of Data Collected</h2>
-            <h3>Personal Data</h3>
-            <p>
-              While using Our Service, We may ask You to provide Us with certain personally
-              identifiable information that can be used to contact or identify You. Personally
-              identifiable information may include, but is not limited to:
-            </p>
-            <ul>
-              <li>
-                <p>Email address</p>
-              </li>
-              <li>
-                <p>Usage Data</p>
-              </li>
-            </ul>
-            <h3>Usage Data</h3>
-            <p>Usage Data is collected automatically when using the Service.</p>
-            <p>
-              Usage Data may include information such as Your Device&apos;s Internet Protocol
-              address (e.g. IP address), browser type, browser version, the pages of our Service
-              that You visit, the time and date of Your visit, the time spent on those pages, unique
-              device identifiers and other diagnostic data.
-            </p>
-            <p>
-              When You access the Service by or through a mobile device, We may collect certain
-              information automatically, including, but not limited to, the type of mobile device
-              You use, Your mobile device unique ID, the IP address of Your mobile device, Your
-              mobile operating system, the type of mobile Internet browser You use, unique device
-              identifiers and other diagnostic data.
-            </p>
-            <p>
-              We may also collect information that Your browser sends whenever You visit our Service
-              or when You access the Service by or through a mobile device.
-            </p>
-            <h2>Use of Your Personal Data</h2>
-            <p>The Company may use Personal Data for the following purposes:</p>
-            <ul>
-              <li>
-                <strong>To provide and maintain our Service</strong>, including to monitor the usage
-                of our Service.
-              </li>
-              <li>
-                <strong>To manage Your Account:</strong> to manage Your registration as a user of
-                the Service. The Personal Data You provide can give You access to different
-                functionalities of the Service that are available to You as a registered user.
-              </li>
-              <li>
-                <strong>For the performance of a contract:</strong> the development, compliance and
-                undertaking of the purchase contract for the products, items or services You have
-                purchased or of any other contract with Us through the Service.
-              </li>
-              <li>
-                <strong>To contact You:</strong> To contact You by email, telephone calls, SMS, or
-                other equivalent forms of electronic communication, such as a mobile
-                application&apos;s push notifications regarding updates or informative
-                communications related to the functionalities, products or contracted services,
-                including the security updates, when necessary or reasonable for their
-                implementation.
-              </li>
-              <li>
-                <strong>To provide You</strong> with news, special offers and general information
-                about other goods, services and events which we offer that are similar to those that
-                you have already purchased or enquired about unless You have opted not to receive
-                such information.
-              </li>
-              <li>
-                <strong>To manage Your requests:</strong> To attend and manage Your requests to Us.
-              </li>
-            </ul>
-            <p>We may share your personal information in the following situations:</p>
-            <ul>
-              <li>
-                <strong>With Service Providers:</strong> We may share Your personal information with
-                Service Providers to monitor and analyze the use of our Service, for payment
-                processing, to contact You.
-              </li>
-              <li>
-                <strong>For Business transfers:</strong> We may share or transfer Your personal
-                information in connection with, or during negotiations of, any merger, sale of
-                Company assets, financing, or acquisition of all or a portion of our business to
-                another company.
-              </li>
-              <li>
-                <strong>With Affiliates:</strong> We may share Your information with Our affiliates,
-                in which case we will require those affiliates to honor this Privacy Policy.
-                Affiliates include Our parent company and any other subsidiaries, joint venture
-                partners or other companies that We control or that are under common control with
-                Us.
-              </li>
-              <li>
-                <strong>With Business partners:</strong> We may share Your information with Our
-                business partners to offer You certain products, services or promotions.
-              </li>
-              <li>
-                <strong>With other users:</strong> when You share personal information or otherwise
-                interact in the public areas with other users, such information may be viewed by all
-                users and may be publicly distributed outside. If You interact with other users or
-                register through a Third-Party Social Media Service, Your contacts on the
-                Third-Party Social Media Service may see Your name, profile, pictures and
-                description of Your activity. Similarly, other users will be able to view
-                descriptions of Your activity, communicate with You and view Your profile.
-              </li>
-            </ul>
-            <h2>Retention of Your Personal Data</h2>
-            <p>
-              The Company will retain Your Personal Data only for as long as is necessary for the
-              purposes set out in this Privacy Policy. We will retain and use Your Personal Data to
-              the extent necessary to comply with our legal obligations (for example, if we are
-              required to retain your data to comply with applicable laws), resolve disputes, and
-              enforce our legal agreements and policies.
-            </p>
-            <p>
-              The Company will also retain Usage Data for internal analysis purposes. Usage Data is
-              generally retained for a shorter period of time, except when this data is used to
-              strengthen the security or to improve the functionality of Our Service, or We are
-              legally obligated to retain this data for longer time periods.
-            </p>
-            <h2>Transfer of Your Personal Data</h2>
-            <p>
-              Your information, including Personal Data, is processed at the Company&apos;s
-              operating offices and in any other places where the parties involved in the processing
-              are located. It means that this information may be transferred to — and maintained on
-              — computers located outside of Your state, province, country or other governmental
-              jurisdiction where the data protection laws may differ than those from Your
-              jurisdiction.
-            </p>
-            <p>
-              Your consent to this Privacy Policy followed by Your submission of such information
-              represents Your agreement to that transfer.
-            </p>
-            <p>
-              The Company will take all steps reasonably necessary to ensure that Your data is
-              treated securely and in accordance with this Privacy Policy and no transfer of Your
-              Personal Data will take place to an organization or a country unless there are
-              adequate controls in place including the security of Your data and other personal
-              information.
-            </p>
-            <h2>Disclosure of Your Personal Data</h2>
-            <h3>Business Transactions</h3>
-            <p>
-              If the Company is involved in a merger, acquisition or asset sale, Your Personal Data
-              may be transferred. We will provide notice before Your Personal Data is transferred
-              and becomes subject to a different Privacy Policy.
-            </p>
-            <h3>Law enforcement</h3>
-            <p>
-              Under certain circumstances, the Company may be required to disclose Your Personal
-              Data if required to do so by law or in response to valid requests by public
-              authorities (e.g. a court or a government agency).
-            </p>
-            <h3>Other legal requirements</h3>
-            <p>
-              The Company may disclose Your Personal Data in the good faith belief that such action
-              is necessary to:
-            </p>
-            <ul>
-              <li>Comply with a legal obligation</li>
-              <li>Protect and defend the rights or property of the Company</li>
-              <li>Prevent or investigate possible wrongdoing in connection with the Service</li>
-              <li>Protect the personal safety of Users of the Service or the public</li>
-              <li>Protect against legal liability</li>
-            </ul>
-            <h2>Security of Your Personal Data</h2>
-            <p>
-              The security of Your Personal Data is important to Us, but remember that no method of
-              transmission over the Internet, or method of electronic storage is 100% secure. While
-              We strive to use commercially acceptable means to protect Your Personal Data, We
-              cannot guarantee its absolute security.
-            </p>
-            <h1>Detailed Information on the Processing of Your Personal Data</h1>
-            <p>
-              Service Providers have access to Your Personal Data only to perform their tasks on Our
-              behalf and are obligated not to disclose or use it for any other purpose.
-            </p>
-            <h2>Registration and authentication</h2>
-            <p>
-              By registering or authenticating, Users allow this Application to identify them and
-              give them access to dedicated services. Depending on what is described below, third
-              parties may provide registration and authentication services. In this case, this
-              Application will be able to access some Data, stored by these third-party services,
-              for registration or identification purposes. Some of the services listed below may
-              also collect Personal Data for targeting and profiling purposes; to find out more,
-              please refer to the description of each service.
-            </p>
-            <ul>
-              <li>
-                <p>
-                  <strong>Google OAuth (Google LLC)</strong>
-                </p>
-                <p>
-                  Google OAuth is a registration and authentication service provided by Google LLC
-                  and is connected to the Google network. Personal Data processed: various types of
-                  Data as specified in the privacy policy of the service. Place of processing:
-                  United States –{' '}
-                  <a
-                    rel="external nofollow noopener noreferrer"
-                    href="https://policies.google.com/privacy"
-                    target="_blank"
-                  >
-                    Privacy Policy
+            <header>
+              <h1>Privacy Policy</h1>
+            </header>
+            <div>
+              <p id="1bad6135-8468-452b-932d-9f512d6cbdc9">
+                Kelp does not own your data, nor do we sell it to others or use it for advertising.
+                It’s your data, period.
+              </p>
+              <p id="175c5e55-fb44-4180-8772-a757f28f13e9">
+                This policy applies to all information collected or submitted on Kelp’s website and
+                any other devices and platforms.
+              </p>
+              <h1 id="b5b682cf-0692-42d0-bde1-9d55882b101c">
+                <strong>Information we collect</strong>
+              </h1>
+              <p id="c549f30c-5e94-4571-8959-45ac04d93553">
+                When creating an account, you will be asked to Sign in with Auth0. Email addresses
+                are <strong>only</strong> used for logging in, password resets, responding to emails
+                that you initiate, notifications that you request and notifying you about product
+                updates or changes.
+              </p>
+              <p id="d3ea54f1-2b64-4bb5-8ec6-258f2f92177d">
+                After account creation, you will be asked to connect external accounts like email,
+                calendar and contacts. These integrations are optional. Each integration has special
+                protections to ensure Kelp only uses data that is necessary for the product, and
+                that sensitive fields are protected.
+              </p>
+              <h1 id="01bd148c-b374-4295-9bb8-208d2459ad12">
+                <strong>Calendar</strong>
+              </h1>
+              <p id="ef4e0c22-d3f4-4d6f-a0a2-b8b9d50f2d99">
+                <strong>What does Kelp do with my calendar?</strong>
+              </p>
+              <p id="09b745da-affa-46ee-8292-d39436c1b33b">
+                Connected calendars are <strong>only</strong> used to create contacts and show your
+                meeting history.
+              </p>
+              <p id="ae3782c6-a69b-4734-989b-183ed8cb3187">
+                <strong>How do you protect my privacy?</strong>
+              </p>
+              <ul id="b0e2be77-3dce-4208-aa1e-1e1a4dba7de1">
+                <li>
+                  Kelp asks for the most restricted access that Google allows, which is read-only.
+                  Kelp cannot create new events, change any existing events, delete your calendar,
+                  or access any other data within your Google account, including Gmail.
+                </li>
+              </ul>
+              <ul id="06bf6e5a-f858-4130-9377-02adf259dfc7">
+                <li>
+                  Calendar data does not pass through Kelp. Your device requests the data directly
+                  from Google.
+                </li>
+              </ul>
+              <ul id="b78c2a13-78a9-4b7a-97d0-faf813321cbc">
+                <li>
+                  You can revoke access to your calendar at any time at{' '}
+                  <a href="https://myaccount.google.com/permissions">
+                    https://myaccount.google.com/permissions
                   </a>
-                  . Privacy Shield participant.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>Auth0 (Auth0, Inc)</strong>
-                </p>
-                <p>
-                  Auth0 is a registration and authentication service provided by Auth0, Inc. To
-                  simplify the registration and authentication process, Auth0 can make use of
-                  third-party identity providers and save the information on its platform. Personal
-                  Data processed: Cookies; email address; first name; last name; password; picture;
-                  various types of Data as specified in the privacy policy of the service. Place of
-                  processing: United States –{' '}
-                  <a
-                    rel="external nofollow noopener noreferrer"
-                    target="_blank"
-                    href="https://auth0.com/privacy"
-                  >
-                    Privacy Policy
+                </li>
+              </ul>
+              <h1 id="c2551862-e727-47b8-a878-ccc96523fcc2">
+                <strong>Contacts</strong>
+              </h1>
+              <p id="15872062-ecc0-4221-bf64-5a3c4f537e0f">
+                <strong>What does Kelp do with my contacts?</strong>
+              </p>
+              <p id="0d6975f5-495c-4755-8784-320b88e3955a">
+                Connected contacts are <strong>only</strong> used to display names and photos from
+                contacts from your calendar events and documents.
+              </p>
+              <p id="09b5bca9-a374-47ed-8483-cf7d6e7fa551">
+                <strong>How do you protect my privacy?</strong>
+              </p>
+              <ul id="45abd295-c77e-421a-a8ec-26ed8c0f4cdb">
+                <li>
+                  Kelp asks for the most restricted access that Google allows, which is read-only.
+                  Kelp cannot create new contacts, change any existing contacts, delete your
+                  contacts, or access any other data within your Google account, including Gmail.
+                </li>
+              </ul>
+              <ul id="963d0578-3378-428a-bdcb-7db191e7d77a">
+                <li>
+                  Contacts data does not pass through Kelp. Your device requests the data directly
+                  from Google.
+                </li>
+              </ul>
+              <ul id="1b01a9ab-63e8-48e5-8afb-b60e8c88920b">
+                <li>
+                  You can revoke access to your calendar at any time at 
+                  <a href="https://myaccount.google.com/permissions">
+                    https://myaccount.google.com/permissions
                   </a>
-                  . Privacy Shield participant.
-                </p>
-              </li>
-            </ul>
-            <h2>Email Marketing</h2>
-            <p>
-              We may use Your Personal Data to contact You with newsletters, marketing or
-              promotional materials and other information that may be of interest to You. You may
-              opt-out of receiving any, or all, of these communications from Us by following the
-              unsubscribe link or instructions provided in any email We send or by contacting Us.
-            </p>
-            <p>We may use Email Marketing Service Providers to manage and send emails to You.</p>
-            <ul>
-              <li>
-                <p>
-                  <strong>https://www.flodesk.com</strong>
-                </p>
-                <p>
-                  Their Privacy Policy can be viewed at{' '}
-                  <a
-                    href="https://help.flodesk.com/en/articles/3186402-flodesk-terms-of-service"
-                    rel="external nofollow noopener noreferrer"
-                    target="_blank"
-                  >
-                    https://help.flodesk.com/en/articles/3186402-flodesk-terms-of-service
+                </li>
+              </ul>
+              <h1 id="7f19518d-04b6-457a-98fe-7049fb370236">Documents</h1>
+              <p id="21ab180a-481a-474f-bd00-bede3cfa5f0c">
+                <strong>What does Kelp do with my documents?</strong>
+              </p>
+              <p id="a3c5643a-84ff-492a-8d05-692d5c8c294e">
+                Documents are <strong>only</strong> used to display them with associated upcoming
+                meetings.
+              </p>
+              <p id="206c1cc7-788c-41d3-9474-f6df6ea8b407">
+                <strong>How do you protect my privacy?</strong>
+              </p>
+              <ul id="9cbf1b19-4699-4995-9412-3939029cb0cf">
+                <li>
+                  Kelp asks for the most restricted access that Google allows, which is read-only.
+                  Kelp cannot create new documents, change any existing documents, delete your
+                  documents, or access any other data within your Google account, including Gmail.
+                </li>
+              </ul>
+              <ul id="b0759fd7-d5b7-4924-b8b4-7119fce407da">
+                <li>
+                  Documents data does not pass through Kelp. Your device requests the data directly
+                  from Google.
+                </li>
+              </ul>
+              <ul id="1c9ff12c-b5ae-4b27-b2b0-c25592215e42">
+                <li>
+                  You can revoke access to your calendar at any time at 
+                  <a href="https://myaccount.google.com/permissions">
+                    https://myaccount.google.com/permissions
                   </a>
-                </p>
-              </li>
-            </ul>
-            <h2>Payments</h2>
-            <p>
-              We may provide paid products and/or services within the Service. In that case, we may
-              use third-party services for payment processing (e.g. payment processors).
-            </p>
-            <p>
-              We will not store or collect Your payment card details. That information is provided
-              directly to Our third-party payment processors whose use of Your personal information
-              is governed by their Privacy Policy. These payment processors adhere to the standards
-              set by PCI-DSS as managed by the PCI Security Standards Council, which is a joint
-              effort of brands like Visa, Mastercard, American Express and Discover. PCI-DSS
-              requirements help ensure the secure handling of payment information.
-            </p>
-            <ul>
-              <li>
-                <p>
-                  <strong>Stripe</strong>
-                </p>
-                <p>
-                  Their Privacy Policy can be viewed at{' '}
-                  <a
-                    href="https://stripe.com/us/privacy"
-                    rel="external nofollow noopener noreferrer"
-                    target="_blank"
-                  >
-                    https://stripe.com/us/privacy
-                  </a>
-                </p>
-              </li>
-            </ul>
-            <h1>GDPR Privacy</h1>
-            <h2>Legal Basis for Processing Personal Data under GDPR</h2>
-            <p>We may process Personal Data under the following conditions:</p>
-            <ul>
-              <li>
-                <strong>Consent:</strong> You have given Your consent for processing Personal Data
-                for one or more specific purposes.
-              </li>
-              <li>
-                <strong>Performance of a contract:</strong> Provision of Personal Data is necessary
-                for the performance of an agreement with You and/or for any pre-contractual
-                obligations thereof.
-              </li>
-              <li>
-                <strong>Legal obligations:</strong> Processing Personal Data is necessary for
-                compliance with a legal obligation to which the Company is subject.
-              </li>
-              <li>
-                <strong>Vital interests:</strong> Processing Personal Data is necessary in order to
-                protect Your vital interests or of another natural person.
-              </li>
-              <li>
-                <strong>Public interests:</strong> Processing Personal Data is related to a task
-                that is carried out in the public interest or in the exercise of official authority
-                vested in the Company.
-              </li>
-              <li>
-                <strong>Legitimate interests:</strong> Processing Personal Data is necessary for the
-                purposes of the legitimate interests pursued by the Company.
-              </li>
-            </ul>
-            <p>
-              In any case, the Company will gladly help to clarify the specific legal basis that
-              applies to the processing, and in particular whether the provision of Personal Data is
-              a statutory or contractual requirement, or a requirement necessary to enter into a
-              contract.
-            </p>
-            <h2>Your Rights under the GDPR</h2>
-            <p>
-              The Company undertakes to respect the confidentiality of Your Personal Data and to
-              guarantee You can exercise Your rights.
-            </p>
-            <p>
-              You have the right under this Privacy Policy, and by law if You are within the EU, to:
-            </p>
-            <ul>
-              <li>
-                <strong>Request access to Your Personal Data.</strong> The right to access, update
-                or delete the information We have on You. Whenever made possible, you can access,
-                update or request deletion of Your Personal Data directly within Your account
-                settings section. If you are unable to perform these actions yourself, please
-                contact Us to assist You. This also enables You to receive a copy of the Personal
-                Data We hold about You.
-              </li>
-              <li>
-                <strong>Request correction of the Personal Data that We hold about You.</strong> You
-                have the right to to have any incomplete or inaccurate information We hold about You
-                corrected.
-              </li>
-              <li>
-                <strong>Object to processing of Your Personal Data.</strong> This right exists where
-                We are relying on a legitimate interest as the legal basis for Our processing and
-                there is something about Your particular situation, which makes You want to object
-                to our processing of Your Personal Data on this ground. You also have the right to
-                object where We are processing Your Personal Data for direct marketing purposes.
-              </li>
-              <li>
-                <strong>Request erasure of Your Personal Data.</strong> You have the right to ask Us
-                to delete or remove Personal Data when there is no good reason for Us to continue
-                processing it.
-              </li>
-              <li>
-                <strong>Request the transfer of Your Personal Data.</strong> We will provide to You,
-                or to a third-party You have chosen, Your Personal Data in a structured, commonly
-                used, machine-readable format. Please note that this right only applies to automated
-                information which You initially provided consent for Us to use or where We used the
-                information to perform a contract with You.
-              </li>
-              <li>
-                <strong>Withdraw Your consent.</strong> You have the right to withdraw Your consent
-                on using your Personal Data. If You withdraw Your consent, We may not be able to
-                provide You with access to certain specific functionalities of the Service.
-              </li>
-            </ul>
-            <h2>Exercising of Your GDPR Data Protection Rights</h2>
-            <p>
-              You may exercise Your rights of access, rectification, cancellation and opposition by
-              contacting Us. Please note that we may ask You to verify Your identity before
-              responding to such requests. If You make a request, We will try our best to respond to
-              You as soon as possible.
-            </p>
-            <p>
-              You have the right to complain to a Data Protection Authority about Our collection and
-              use of Your Personal Data. For more information, if You are in the European Economic
-              Area (EEA), please contact Your local data protection authority in the EEA.
-            </p>
-            <h1>CCPA Privacy</h1>
-            <h2>Your Rights under the CCPA</h2>
-            <p>
-              Under this Privacy Policy, and by law if You are a resident of California, You have
-              the following rights:
-            </p>
-            <ul>
-              <li>
-                <strong>The right to notice.</strong> You must be properly notified which categories
-                of Personal Data are being collected and the purposes for which the Personal Data is
-                being used.
-              </li>
-              <li>
-                <strong>The right to access / the right to request.</strong> The CCPA permits You to
-                request and obtain from the Company information regarding the disclosure of Your
-                Personal Data that has been collected in the past 12 months by the Company or its
-                subsidiaries to a third-party for the third party&apos;s direct marketing purposes.
-              </li>
-              <li>
-                <strong>The right to say no to the sale of Personal Data.</strong> You also have the
-                right to ask the Company not to sell Your Personal Data to third parties. You can
-                submit such a request by visiting our &quot;Do Not Sell My Personal
-                Information&quot; section or web page.
-              </li>
-              <li>
-                <strong>The right to know about Your Personal Data.</strong> You have the right to
-                request and obtain from the Company information regarding the disclosure of the
-                following:
-                <ul>
-                  <li>The categories of Personal Data collected</li>
-                  <li>The sources from which the Personal Data was collected</li>
-                  <li>
-                    The business or commercial purpose for collecting or selling the Personal Data
-                  </li>
-                  <li>Categories of third parties with whom We share Personal Data</li>
-                  <li>The specific pieces of Personal Data we collected about You</li>
-                </ul>
-              </li>
-              <li>
-                <strong>The right to delete Personal Data.</strong> You also have the right to
-                request the deletion of Your Personal Data that have been collected in the past 12
-                months.
-              </li>
-              <li>
-                <strong>The right not to be discriminated against.</strong> You have the right not
-                to be discriminated against for exercising any of Your Consumer&apos;s rights,
-                including by:
-                <ul>
-                  <li>Denying goods or services to You</li>
-                  <li>
-                    Charging different prices or rates for goods or services, including the use of
-                    discounts or other benefits or imposing penalties
-                  </li>
-                  <li>Providing a different level or quality of goods or services to You</li>
-                  <li>
-                    Suggesting that You will receive a different price or rate for goods or services
-                    or a different level or quality of goods or services.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            <h2>Exercising Your CCPA Data Protection Rights</h2>
-            <p>
-              In order to exercise any of Your rights under the CCPA, and if you are a California
-              resident, You can email or call us or visit our &quot;Do Not Sell My Personal
-              Information&quot; section or web page.
-            </p>
-            <p>
-              The Company will disclose and deliver the required information free of charge within
-              45 days of receiving Your verifiable request. The time period to provide the required
-              information may be extended once by an additional 45 days when reasonable necessary
-              and with prior notice.
-            </p>
-            <h2>Do Not Sell My Personal Information</h2>
-            <p>
-              We do not sell personal information. However, the Service Providers we partner with
-              (for example, our advertising partners) may use technology on the Service that
-              &quot;sells&quot; personal information as defined by the CCPA law.
-            </p>
-            <p>
-              If you wish to opt out of the use of your personal information for interest-based
-              advertising purposes and these potential sales as defined under CCPA law, you may do
-              so by following the instructions below.
-            </p>
-            <p>
-              Please note that any opt out is specific to the browser You use. You may need to opt
-              out on every browser that you use.
-            </p>
-            <h3>Website</h3>
-            <p>
-              You can opt out of receiving ads that are personalized as served by our Service
-              Providers by following our instructions presented on the Service:
-            </p>
-            <ul>
-              <li>From Our &quot;Cookie Consent&quot; notice banner</li>
-              <li>Or from Our &quot;CCPA Opt-out&quot; notice banner</li>
-              <li>Or from Our &quot;Do Not Sell My Personal Information&quot; notice banner</li>
-              <li>Or from Our &quot;Do Not Sell My Personal Information&quot; link</li>
-            </ul>
-            <p>
-              The opt out will place a cookie on Your computer that is unique to the browser You use
-              to opt out. If you change browsers or delete the cookies saved by your browser, you
-              will need to opt out again.
-            </p>
-            <h3>Mobile Devices</h3>
-            <p>
-              Your mobile device may give you the ability to opt out of the use of information about
-              the apps you use in order to serve you ads that are targeted to your interests:
-            </p>
-            <ul>
-              <li>
-                &quot;Opt out of Interest-Based Ads&quot; or &quot;Opt out of Ads
-                Personalization&quot; on Android devices
-              </li>
-              <li>&quot;Limit Ad Tracking&quot; on iOS devices</li>
-            </ul>
-            <p>
-              You can also stop the collection of location information from Your mobile device by
-              changing the preferences on your mobile device.
-            </p>
-            <h1>
-              &quot;Do Not Track&quot; Policy as Required by California Online Privacy Protection
-              Act (CalOPPA)
-            </h1>
-            <p>Our Service does not respond to Do Not Track signals.</p>
-            <p>
-              However, some third party websites do keep track of Your browsing activities. If You
-              are visiting such websites, You can set Your preferences in Your web browser to inform
-              websites that You do not want to be tracked. You can enable or disable DNT by visiting
-              the preferences or settings page of Your web browser.
-            </p>
-            <h1>Your California Privacy Rights (California&apos;s Shine the Light law)</h1>
-            <p>
-              Under California Civil Code Section 1798 (California&apos;s Shine the Light law),
-              California residents with an established business relationship with us can request
-              information once a year about sharing their Personal Data with third parties for the
-              third parties&apos; direct marketing purposes.
-            </p>
-            <p>
-              If you&apos;d like to request more information under the California Shine the Light
-              law, and if you are a California resident, You can contact Us using the contact
-              information provided below.
-            </p>
-            <h1>
-              California Privacy Rights for Minor Users (California Business and Professions Code
-              Section 22581)
-            </h1>
-            <p>
-              California Business and Professions Code section 22581 allow California residents
-              under the age of 18 who are registered users of online sites, services or applications
-              to request and obtain removal of content or information they have publicly posted.
-            </p>
-            <p>
-              To request removal of such data, and if you are a California resident, You can contact
-              Us using the contact information provided below, and include the email address
-              associated with Your account.
-            </p>
-            <p>
-              Be aware that Your request does not guarantee complete or comprehensive removal of
-              content or information posted online and that the law may not permit or require
-              removal in certain circumstances.
-            </p>
-            <h1>Links to Other Websites</h1>
-            <p>
-              Our Service may contain links to other websites that are not operated by Us. If You
-              click on a third party link, You will be directed to that third party&apos;s site. We
-              strongly advise You to review the Privacy Policy of every site You visit.
-            </p>
-            <p>
-              We have no control over and assume no responsibility for the content, privacy policies
-              or practices of any third party sites or services.
-            </p>
-            <h1>Changes to this Privacy Policy</h1>
-            <p>
-              We may update our Privacy Policy from time to time. We will notify You of any changes
-              by posting the new Privacy Policy on this page.
-            </p>
-            <p>
-              We will let You know via email and/or a prominent notice on Our Service, prior to the
-              change becoming effective and update the &quot;Last updated&quot; date at the top of
-              this Privacy Policy.
-            </p>
-            <p>
-              You are advised to review this Privacy Policy periodically for any changes. Changes to
-              this Privacy Policy are effective when they are posted on this page.
-            </p>
-            <h1>Contact Us</h1>
-            <p>If you have any questions about this Privacy Policy, You can contact us:</p>
-            <ul>
-              <li>By email: support@kelp.nyc</li>
-            </ul>
+                </li>
+              </ul>
+              <h1 id="d886474f-e8b8-4e94-b279-cfe945e16baf">
+                <strong>Technical basics</strong>
+              </h1>
+              <p id="6c786247-64ea-4614-9efd-dfae890576fe">
+                If you enable notifications, we must store a token to send them. We{' '}
+                <strong>never</strong> use notifications for marketing.
+              </p>
+              <p id="195f56fa-033c-494c-8bd9-c325b309e456">
+                We use cookies on the site to keep you logged in. Our server software may also store
+                basic technical information, such as your IP address, in temporary memory or logs.
+              </p>
+              <p id="8f45e739-b057-4e75-939c-d683894dd797">
+                For performance and overload protection, we direct your traffic through Vercel. They
+                have access to some basic technical information to perform this role, such as your
+                IP address.
+                <a href="https://vercel.com/legal/privacy-policy">
+                  Vercel&#x27;s privacy policy is here
+                </a>
+                .
+              </p>
+              <h1 id="874e477a-d0cd-4ad9-ad1d-9085a3560063">Registration and authentication</h1>
+              <p id="bc4e2c32-bc8f-4edb-950c-9fe93c52554f">
+                Third parties may provide registration and authentication services. In this case,
+                they will be able to access some data, stored by these third-party services, for
+                registration or identification purposes. The services listed below may also collect
+                Personal Data for targeting and profiling purposes; to find out more, please refer
+                to the description of each service.
+              </p>
+              <p id="d37abe70-0c94-413a-b48b-e9daa6925b6a">
+                <strong>Google OAuth (Google LLC)</strong>
+              </p>
+              <p id="a8aa06a4-f296-4461-a4c4-82db4b328e6c">
+                Google OAuth is a registration and authentication service provided by Google LLC and
+                is connected to the Google network. Personal Data processed: various types of Data
+                as specified in the privacy policy of the service. Place of processing: United
+                States – <a href="https://policies.google.com/privacy">Privacy Policy</a>. Privacy
+                Shield participant.
+              </p>
+              <p id="d9869bc8-c2dd-4f17-86d5-cce71738bd4e">
+                <strong>Auth0 (Auth0, Inc)</strong>
+              </p>
+              <p id="2b0333d9-d95c-4efe-aa47-3088e1548dce">
+                Auth0 is a registration and authentication service provided by Auth0, Inc. To
+                simplify the registration and authentication process, Auth0 can make use of
+                third-party identity providers and save the information on its platform. Personal
+                Data processed: Cookies; email address; first name; last name; password; picture;
+                various types of Data as specified in the privacy policy of the service. Place of
+                processing: United States – <a href="https://auth0.com/privacy">Privacy Policy</a>.
+                Privacy Shield participant.
+              </p>
+              <h1 id="f69625a1-ef0e-40cb-af26-74a4b3db82d6">Email Marketing</h1>
+              <p id="c0ed4c51-ef08-4fd1-82d3-8f38095094ca">
+                We may to contact you with product updates. You may opt-out of receiving any, or
+                all, of these communications from Kelp by following the unsubscribe link or
+                instructions provided in any email we send or by contacting us.
+              </p>
+              <p id="c707dabf-daf1-4554-a033-381a1f6e9a99">
+                <strong>
+                  We may use Email Marketing Service Providers to manage and send emails to you.
+                </strong>
+              </p>
+              <p id="47fe45d0-c532-4a9b-9407-bce45855cd3f">
+                <strong>Flodesk</strong> (Flodesk Inc)
+              </p>
+              <p id="ab868a21-4ef7-4821-86dc-c4441ff6d243">
+                <a href="https://help.flodesk.com/en/articles/3186402-flodesk-terms-of-service">
+                  Privacy Policy
+                </a>
+              </p>
+              <h2 id="df0204d4-a810-457c-b59c-b77aa5fc00e5">Payments</h2>
+              <p id="f4b8401e-30f6-4ba3-aba7-ed358b3ff0a3">
+                We may provide paid products within Kelp. In that case, we may use third-party
+                services for payment processing (e.g. payment processors).
+              </p>
+              <p id="d2250a4c-b192-4203-877a-2996e270c143">
+                We will not store or collect your payment card details. That information is provided
+                directly to our third-party payment processors whose use of your personal
+                information is governed by their Privacy Policy. These payment processors adhere to
+                the standards set by PCI-DSS as managed by the PCI Security Standards Council, which
+                is a joint effort of brands like Visa, Mastercard, American Express and Discover.
+                PCI-DSS requirements help ensure the secure handling of payment information.
+              </p>
+              <p id="7f328583-f1a8-464e-8bb0-3b6e6670d547">
+                <strong>Stripe</strong>
+              </p>
+              <p id="9db05fda-9420-460f-b379-d4823e5a48af">
+                <a href="https://stripe.com/us/privacy">Privacy Policy</a>
+              </p>
+              <h1 id="fcd1c65f-76f7-4611-a7dd-965c8d872e4f">
+                <strong>Ads and analytics</strong>
+              </h1>
+              <p id="abe6ab68-85ae-45b5-9d8d-af53fc51e150">
+                The Kelp web apps collect various usage metrics, such as the percentage of users who
+                use particular features or when users sign in, 
+                <strong>for the sole purpose</strong> of improving the app.
+              </p>
+              <h1 id="0fc13a51-23f6-4270-a678-50615bd94b64">
+                <strong>Information usage</strong>
+              </h1>
+              <p id="8a00172b-1f81-4809-b6be-bbd1f974e784">
+                We use the information we collect to operate and improve our website, apps, and
+                customer support.
+              </p>
+              <p id="e529f888-2741-4efd-bfcd-e5e914ba2b15">
+                We do not share personal information with outside parties except to the extent
+                necessary to accomplish Kelp’s functionality.
+              </p>
+              <p id="d7528e36-63e5-48b7-936c-6ab6f6fe689e">
+                We may disclose your information in response to subpoenas, court orders, or other
+                legal requirements; to exercise our legal rights or defend against legal claims; to
+                investigate, prevent, or take action regarding illegal activities, suspected fraud
+                or abuse, violations of our policies; or to protect our rights and property.
+              </p>
+              <p id="f5afc65e-d5d1-47be-a3dd-44ed47be109d">
+                In the future, we may sell to, buy, merge with, or partner with other businesses. In
+                such transactions, user information may be among the transferred assets.
+              </p>
+              <h1 id="eda19e62-5c24-484d-aa5e-5ae445f8b010">
+                <strong>Information isolation</strong>
+              </h1>
+              <p id="e6c29dd6-3050-43b5-bb4e-394883f3b910">
+                Contact information (i.e. an email address) is <strong>only</strong> accessible to a
+                user who explicitly added that information, either via one of the above integrations
+                or manually. This information isolation is reinforced with software safeguards to
+                ensure contact information has appropriate visibility.
+              </p>
+              <h1 id="b3f3c10d-3b54-4189-bea8-51ca899c50e7">
+                <strong>Security Vulnerability Disclosure</strong>
+              </h1>
+              <p id="9b935272-c9b1-4a9d-9567-064135514702">
+                If you believe you have discovered a security or privacy vulnerability that affects
+                Kelp’s software, please report it to us. We welcome reports from everyone, including
+                security researchers, developers, and customers.
+              </p>
+              <p id="e7f2691f-4747-4daf-9daf-ad397de219ef">
+                You can report a security or privacy vulnerability:
+              </p>
+              <ul id="d2f61506-d94d-4672-9c1b-26294ef29e1e">
+                <li>
+                  Email us at <a href="mailto:security@kelp.nyc">security@kelp.nyc</a>
+                </li>
+              </ul>
+              <p id="1514f8e0-db44-43b6-a742-7f4b7d99e049">In your message, please include:</p>
+              <ul id="1baaa435-7ef2-4162-92c6-a5e87b5de52f">
+                <li>The specific product and software version(s) which you believe are affected</li>
+              </ul>
+              <ul id="60703559-ecf1-4b22-8def-d66dd47c7a9c">
+                <li>
+                  A description of the behavior you observed as well as the behavior that you
+                  expected
+                </li>
+              </ul>
+              <ul id="f6caea35-a302-4938-b1db-a2fc24dfb7cb">
+                <li>
+                  A numbered list of steps required to reproduce the issue and a video
+                  demonstration, if the steps may be hard to follow
+                </li>
+              </ul>
+              <p id="de721faa-d496-45af-80fa-4e4ce3ae727b">
+                You’ll receive a reply from us to acknowledge that we received your report, and
+                we’ll contact you if we need more information.
+              </p>
+              <p id="042e72c2-3eb0-4a15-a597-ce571ac5ef43">
+                For the protection of our members, Kelp doesn’t disclose, discuss, or confirm
+                security issues until our investigation is complete and any necessary updates are
+                generally available.
+              </p>
+              <h1 id="e0c09afd-b7d0-4625-9a4e-62972cc898af">
+                <strong>Accessing, changing, or deleting information</strong>
+              </h1>
+              <p id="056e16f1-72ac-48be-812b-39b5f11a7a50">
+                You may access or change your information or delete your account by
+                emailing support@kelp.nyc.
+              </p>
+              <p id="600357df-16ba-46fd-b4e5-6fe855298c5f">
+                Kelp may delete your information at any time and for any reason, such as technical
+                needs, legal concerns, abuse prevention, removal of idle accounts, data loss, or any
+                other reason.
+              </p>
+              <h1 id="0141dfc4-f540-44b0-9e97-1019ab7b4404">
+                <strong>Third-party links and content</strong>
+              </h1>
+              <p id="d1611218-4ef7-46b3-81ed-e7f16524fa13">
+                Kelp displays content from third-party social sites and APIs. These have their own
+                independent privacy policies, and we have no responsibility or liability for their
+                content or activities.
+              </p>
+              <h1 id="daa04e5a-3574-48e2-a3f6-d255c58a44c1">
+                <strong>California Online Privacy Protection Act Compliance</strong>
+              </h1>
+              <p id="a45ff7b0-a478-498a-9594-7f17ca94724a">
+                We comply with the California Online Privacy Protection Act. We therefore will not
+                distribute your personal information to outside parties without your consent.
+              </p>
+              <h1 id="d755d216-50e2-412d-b36a-923fcaaba76d">
+                <strong>Children’s Online Privacy Protection Act Compliance</strong>
+              </h1>
+              <p id="245f989e-9972-4ff4-b207-d4e295520df4">
+                We never collect or maintain information at our website from those we actually know
+                are under 13, and no part of our website is structured to attract anyone under 13.
+              </p>
+              <h1 id="0fd7430b-dcb8-4a65-a2dd-e315529499db">
+                <strong>Information for European Union Customers</strong>
+              </h1>
+              <p id="63309640-4427-4a27-b83f-87e039c4caaa">
+                By using Kelp and providing your information, you authorize us to collect, use, and
+                store your information outside of the European Union.
+              </p>
+              <h1 id="631d6c68-f828-4444-9ab1-7db47f36f241">
+                <strong>International Transfers of Information</strong>
+              </h1>
+              <p id="46af72ee-a037-4d27-9b36-d77257a5225a">
+                Information may be processed, stored, and used outside of the country in which you
+                are located. Data privacy laws vary across jurisdictions, and different laws may be
+                applicable to your data depending on where it is processed, stored, or used.
+              </p>
+              <h1 id="78119a9d-8a82-451f-9138-0f824187f67f">Links to Other Websites</h1>
+              <p id="77478c82-957a-47d8-9aa2-973139324043">
+                Kelp may contain links to other websites that are not operated by Kelp. If You click
+                on a third party link, You will be directed to that third party&#x27;s site. We
+                strongly advise you to review the Privacy Policy of every site you visit.
+              </p>
+              <p id="415cf866-ae00-4d11-b08c-5bfec8693c8a">
+                We have no control over and assume no responsibility for the content, privacy
+                policies or practices of any third party sites or services.
+              </p>
+              <h1 id="2616777b-303a-40c1-b0ef-62845040b17d">
+                <strong>Your Consent</strong>
+              </h1>
+              <p id="5823bba9-df2f-4199-90c3-113955076c2b">
+                By using our site, you consent to our privacy policy.
+              </p>
+              <h1 id="be5afb20-3d37-4a14-af63-69f56b1110dc">
+                <strong>Changes to this policy</strong>
+              </h1>
+              <p id="c1fa4772-2575-42ed-ae31-b18536848782">
+                If we decide to change our privacy policy, we will post those changes on this page.
+                Summary of changes so far:
+              </p>
+              <ul id="464a1252-24fc-4da2-b1f2-0297ea1214a2">
+                <li>
+                  October<strong> 11, 2020:</strong> First published.
+                </li>
+              </ul>
+              <h1 id="81987b8c-86ff-47af-8b01-a7bfbe08eb9c">
+                <strong>Questions or Concerns</strong>
+              </h1>
+              <p id="60849061-52e9-4e86-bed3-85020714d06f">
+                If you have questions or concerns regarding these terms, privacy, or security,
+                please contact us at <a href="mailto:support@kelp.nyc">support@kelp.nyc.</a>
+              </p>
+              <p id="3d958e5a-535f-449e-be97-51bc85e039d4"></p>
+            </div>
           </Grid>
         </Grid>
         <Footer />

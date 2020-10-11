@@ -16,9 +16,6 @@ export default async (_req: Request, res: Response) => {
     url: '/security',
   });
   smStream.write({
-    url: '/terms',
-  });
-  smStream.write({
     url: '/privacy',
   });
 
