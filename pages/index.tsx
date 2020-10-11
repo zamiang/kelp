@@ -27,6 +27,7 @@ export const useStyles = makeStyles((theme) => ({
   heading: {
     [theme.breakpoints.down('sm')]: {
       fontSize: theme.typography.h4.fontSize,
+      marginBottom: theme.spacing(2),
     },
   },
   hero: {
