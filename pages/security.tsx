@@ -80,11 +80,11 @@ const Security = () => {
                   </ListItemIcon>
                   <ListItemText
                     classes={{
-                      primary: classes.largeListItemText,
+                      primary: classes.largeListItemTextBold,
                       secondary: classes.largeListItemText,
                     }}
                     primary="Architecture"
-                    secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
+                    secondary="Kelp is a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
                   />
                 </ListItem>
                 <ListItem divider>
@@ -93,7 +93,7 @@ const Security = () => {
                   </ListItemIcon>
                   <ListItemText
                     classes={{
-                      primary: classes.largeListItemText,
+                      primary: classes.largeListItemTextBold,
                       secondary: classes.largeListItemText,
                     }}
                     primary="Authentication"
@@ -106,7 +106,7 @@ const Security = () => {
                   </ListItemIcon>
                   <ListItemText
                     classes={{
-                      primary: classes.largeListItemText,
+                      primary: classes.largeListItemTextBold,
                       secondary: classes.largeListItemText,
                     }}
                     primary="Data Access"

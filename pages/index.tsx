@@ -8,7 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import Link from 'next/link';
 import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
@@ -61,13 +60,12 @@ export const useStyles = makeStyles((theme) => ({
     color: 'white',
   },
   loginTryLink: {
-    padding: theme.spacing(2, 6),
+    margin: theme.spacing(0, 3),
     cursor: 'pointer',
     display: 'inline-block',
-    color: theme.palette.primary.dark,
+    color: theme.palette.text.secondary,
     fontSize: theme.typography.h6.fontSize,
     textDecoration: 'none',
-    margin: 0,
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -120,6 +118,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   smallIconContainer: {
     marginRight: 20,
+  },
+  homepageFooterSpacer: {
+    marginTop: theme.spacing(6),
   },
   largeListItemText: {
     fontSize: theme.typography.h6.fontSize,
@@ -194,9 +195,13 @@ const App = () => {
                 >
                   Log In With Google
                 </Button>
-                <Link href="/test-dashboard?tab=meetings">
-                  <span className={classes.loginTryLink}>Try Kelp with fake data ›</span>
-                </Link>
+                <a
+                  className={classes.loginTryLink}
+                  href="/test-dashboard?tab=meetings"
+                  target="_blank"
+                >
+                  Try Kelp with fake data ›
+                </a>
               </div>
               <div className={classes.hint}>
                 Kelp is currently free but may add a paid version in the future.
@@ -206,7 +211,7 @@ const App = () => {
           <Grid item xs={6}>
             <img className={classes.heroImage} src="designer_file_case.png" />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classes.homepageFooterSpacer}>
             <Footer />
           </Grid>
         </Grid>

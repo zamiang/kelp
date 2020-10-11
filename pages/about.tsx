@@ -1,7 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
