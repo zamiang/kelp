@@ -24,7 +24,7 @@ const About = () => {
               src="/icons/success-line.svg"
               className={clsx(classes.heroImage, classes.heroImageIcon)}
             />
-            <Typography variant="h2" className={classes.center}>
+            <Typography variant="h2" className={clsx(classes.center, classes.heading)}>
               Information at your fingertips
               <br />
               &hellip;but actually

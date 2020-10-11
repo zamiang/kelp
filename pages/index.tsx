@@ -24,6 +24,12 @@ export const useStyles = makeStyles((theme) => ({
   containerWidth: {
     width: '100%',
   },
+  heading: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.typography.h4.fontSize,
+      marginBottom: theme.spacing(2),
+    },
+  },
   hero: {
     marginTop: theme.spacing(9),
     padding: theme.spacing(9),
@@ -54,6 +60,7 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
+      marginTop: theme.spacing(1),
     },
   },
   buttonContainer: {
@@ -112,6 +119,9 @@ export const useStyles = makeStyles((theme) => ({
     height: 'auto',
     maxWidth: '586px',
     mixBlendMode: 'multiply',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   heroImageIcon: {
     height: '120px',
@@ -157,7 +167,9 @@ const App = () => {
           <Grid item sm={6}>
             <Container maxWidth="sm">
               <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
-              <Typography variant="h3">Your information filtration system</Typography>
+              <Typography variant="h3" className={classes.heading}>
+                Your information filtration system
+              </Typography>
               <Typography variant="h6" className={classes.body}>
                 Kelp brings your data together and organizes it to be simple and easy to understand.
               </Typography>
@@ -203,7 +215,7 @@ const App = () => {
                   onClick={loginWithRedirect}
                   disableElevation={true}
                 >
-                  Log In With Google
+                  Log In
                 </Button>
                 <a
                   className={classes.loginTryLink}

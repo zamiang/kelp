@@ -16,8 +16,11 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
   },
   logo: {
-    fontSize: 36,
-    fontWeight: 700,
+    fontSize: theme.typography.h3.fontSize,
+    fontWeight: theme.typography.fontWeightBold,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.typography.h5.fontSize,
+    },
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -52,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     [theme.breakpoints.down('sm')]: {
       maxWidth: 167,
+      marginLeft: -16,
+      flex: 0.5,
     },
   },
 }));
