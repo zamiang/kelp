@@ -9,7 +9,7 @@ const theme = createMuiTheme({
     info: { main: '#D6F9F5' },
     text: {
       secondary: 'rgba(0, 0, 0, 0.70)',
-    }
+    },
   },
   typography: {
     fontSize: 13,
