@@ -110,7 +110,7 @@ const Terms = () => {
                 from Google.
               </li>
               <li>
-                You can revoke access to your calendar at any time at
+                You can revoke access to your calendar at any time at{' '}
                 <a href="https://myaccount.google.com/permissions">
                   https://myaccount.google.com/permissions
                 </a>
@@ -138,7 +138,7 @@ const Terms = () => {
                 from Google.
               </li>
               <li>
-                You can revoke access to your calendar at any time at
+                You can revoke access to your calendar at any time at{' '}
                 <a href="https://myaccount.google.com/permissions">
                   https://myaccount.google.com/permissions
                 </a>
@@ -158,7 +158,7 @@ const Terms = () => {
             <p id="8f45e739-b057-4e75-939c-d683894dd797">
               For performance and overload protection, we direct your traffic through Vercel. They
               have access to some basic technical information to perform this role, such as your IP
-              address.
+              address.{' '}
               <a href="https://vercel.com/legal/privacy-policy">Vercel&#x27;s Privacy Policy.</a>
             </p>
             <h1 id="874e477a-d0cd-4ad9-ad1d-9085a3560063">Registration and authentication</h1>
