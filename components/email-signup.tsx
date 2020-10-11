@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 180,
     [theme.breakpoints.down('sm')]: {
       minWidth: 0,
+      width: 120,
     },
   },
 }));
@@ -39,12 +40,7 @@ const EmailSignup = () => {
         />
         <Grid container alignItems="center" justify="flex-start">
           <Grid item>
-            <TextField
-              name="email"
-              placeholder="Email address"
-              required
-              className={classes.input}
-            />
+            <TextField name="email" placeholder="Email" required className={classes.input} />
           </Grid>
           <Grid item>
             <Button
@@ -55,7 +51,7 @@ const EmailSignup = () => {
               color="primary"
               className={classes.signup}
             >
-              Stay Informed
+              Subscribe
             </Button>
           </Grid>
         </Grid>

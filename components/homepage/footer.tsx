@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(1),
+    },
   },
 }));
 
