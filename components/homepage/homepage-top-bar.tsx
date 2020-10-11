@@ -42,10 +42,17 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginRight: theme.spacing(4),
     marginLeft: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   logoContainer: {
     maxWidth: 200,
     cursor: 'pointer',
+    paddingLeft: 0,
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 167,
+    },
   },
 }));
 

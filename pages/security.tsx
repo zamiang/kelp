@@ -42,7 +42,7 @@ const Security = () => {
           alignContent="center"
           justify="center"
         >
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <img src="/icons/Key.svg" />
             <Typography variant="h3">What data does Kelp store?</Typography>
             <Typography variant="h6" className={classes.body}>
@@ -59,7 +59,7 @@ const Security = () => {
           </Grid>
         </Grid>
         <Grid container className={classes.info} alignItems="center">
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <Container maxWidth="xs">
               <img className={classes.centerIcon} src="/icons/lock-color.svg" />
               <Typography variant="h3">Security Practices</Typography>
@@ -71,7 +71,7 @@ const Security = () => {
               </Typography>
             </Container>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <Container maxWidth="sm">
               <List>
                 <ListItem divider>
@@ -124,7 +124,7 @@ const Security = () => {
           alignContent="center"
           justify="center"
         >
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <Container maxWidth="sm">
               <img src="/icons/Relax.svg" />
               <Typography variant="h3">You can relax</Typography>

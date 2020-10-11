@@ -52,6 +52,9 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(9),
     padding: theme.spacing(9),
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1),
+    },
   },
   buttonContainer: {
     marginTop: theme.spacing(2),

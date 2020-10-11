@@ -29,7 +29,7 @@ const Terms = () => {
           </Container>
         </Grid>
         <Grid container className={classes.info} justify="center">
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <h1>Privacy Policy</h1>
             <p>Last updated: October 02, 2020</p>
             <p>
