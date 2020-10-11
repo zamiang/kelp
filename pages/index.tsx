@@ -4,16 +4,13 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import LocationCityIcon from '@material-ui/icons/LocationCity';
 import clsx from 'clsx';
 import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
-import HomepageTopBar from '../components/homepage/homepage-top-bar';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -33,6 +30,9 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     width: '100%',
   },
+  heroNoMarginTop: {
+    marginTop: 0,
+  },
   yellowBackground: {
     backgroundColor: config.YELLOW_BACKGROUND,
   },
@@ -50,18 +50,25 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(9),
     width: '100%',
   },
+  buttonContainer: {
+    marginTop: theme.spacing(2),
+  },
   login: {
-    margin: theme.spacing(4, 0, 2),
+    margin: 0,
     padding: theme.spacing(2, 6),
     backgroundColor: theme.palette.primary.dark,
     color: 'white',
   },
-  loginTry: {
-    margin: theme.spacing(4, 0, 2, 4),
-    padding: theme.spacing(2, 6),
-  },
   loginTryLink: {
+    margin: theme.spacing(0, 3),
+    cursor: 'pointer',
+    display: 'inline-block',
+    color: theme.palette.text.secondary,
+    fontSize: theme.typography.h6.fontSize,
     textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   body: {
     marginTop: theme.spacing(3),
@@ -78,13 +85,14 @@ export const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   listItem: {
-    fontSize: '1rem',
-    color: 'black',
+    paddingLeft: 0,
+  },
+  list: {
+    marginTop: theme.spacing(2),
   },
   hint: {
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    fontWeight: 700,
+    fontStyle: 'italic',
   },
   plan: {
     marginTop: theme.spacing(2),
@@ -111,8 +119,16 @@ export const useStyles = makeStyles((theme) => ({
   smallIconContainer: {
     marginRight: 20,
   },
+  homepageFooterSpacer: {
+    marginTop: theme.spacing(6),
+  },
   largeListItemText: {
     fontSize: theme.typography.h6.fontSize,
+  },
+  largeListItemTextBold: {
+    fontSize: theme.typography.h6.fontSize,
+    fontWeight: theme.typography.fontWeightBold,
+    marginBottom: theme.spacing(1),
   },
   centerIcon: {
     maxWidth: '50%',
@@ -127,101 +143,78 @@ const App = () => {
   return (
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
-        <HomepageTopBar color="home" />
-        <Grid container className={classes.hero} alignItems="center">
+        <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
           <Grid item xs={6}>
             <Container maxWidth="sm">
+              <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               <Typography variant="h3">Your information filtration system</Typography>
               <Typography variant="h6" className={classes.body}>
                 Kelp brings your data together and organizes it to be simple and easy to understand.
-                Kelp infers associations between information, such as between a person, a meeting
-                with the person and document edits by the person.
               </Typography>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.login}
-                onClick={loginWithRedirect}
-                disableElevation={true}
-              >
-                Log In
-              </Button>
-              <a
-                href="/test-dashboard?tab=meetings"
-                target="_blank"
-                className={classes.loginTryLink}
-              >
+              <EmailSignup />
+              <List className={classes.list}>
+                <ListItem className={classes.listItem}>
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemTextBold,
+                      secondary: classes.largeListItemText,
+                    }}
+                    primary="Stay Informed"
+                    secondary="Kelp infers associations between information, such as between a person, a meeting with the person and document edits by the person."
+                  />
+                </ListItem>
+                <ListItem className={classes.listItem}>
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemTextBold,
+                      secondary: classes.largeListItemText,
+                    }}
+                    primary="Less Busy Work"
+                    secondary="Kelp scans your calendar and documents to automatically to collect the documents you need. We then magically populate you calendar. Easy."
+                  />
+                </ListItem>
+                <ListItem className={classes.listItem}>
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemTextBold,
+                      secondary: classes.largeListItemText,
+                    }}
+                    primary="Your Data"
+                    secondary="Kelp is a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
+                  />
+                </ListItem>
+              </List>
+              <div className={classes.buttonContainer}>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="large"
-                  className={classes.loginTry}
+                  color="primary"
+                  className={classes.login}
+                  onClick={loginWithRedirect}
                   disableElevation={true}
                 >
-                  Try it out
+                  Log In With Google
                 </Button>
-              </a>
+                <a
+                  className={classes.loginTryLink}
+                  href="/test-dashboard?tab=meetings"
+                  target="_blank"
+                >
+                  Try Kelp with fake data ›
+                </a>
+              </div>
+              <div className={classes.hint}>
+                Kelp is currently free but may add a paid version in the future.
+              </div>
             </Container>
           </Grid>
           <Grid item xs={6}>
             <img className={classes.heroImage} src="designer_file_case.png" />
           </Grid>
-        </Grid>
-        <Grid
-          container
-          className={classes.info}
-          alignItems="center"
-          alignContent="center"
-          justify="center"
-        >
-          <Grid item xs={6}>
-            <EmailSignup />
+          <Grid item xs={12} className={classes.homepageFooterSpacer}>
+            <Footer />
           </Grid>
         </Grid>
-        <Grid container className={classes.info} alignItems="center">
-          <Grid item xs={6}>
-            <Container maxWidth="xs">
-              <Typography variant="h3">Your meeting helper</Typography>
-              <Typography variant="h6" className={classes.body}>
-                Kelp does not store your personal data or send your data to third parties.
-              </Typography>
-            </Container>
-          </Grid>
-          <Grid item xs={6}>
-            <Container maxWidth="xs">
-              <List>
-                <ListItem divider>
-                  <ListItemIcon>
-                    <LocationCityIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Architecture"
-                    secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
-                  />
-                </ListItem>
-                <ListItem divider>
-                  <ListItemIcon>
-                    <LocationCityIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Architecture"
-                    secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <LocationCityIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Architecture"
-                    secondary="Kelp is a what is called a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
-                  />
-                </ListItem>
-              </List>
-            </Container>
-          </Grid>
-        </Grid>
-        <Footer />
       </div>
     </div>
   );

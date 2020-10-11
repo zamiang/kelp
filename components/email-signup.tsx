@@ -1,4 +1,3 @@
-import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -15,11 +14,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   },
   input: {
-    minWidth: 220,
-  },
-  body: {
-    marginTop: theme.spacing(3),
-    fontWeight: 400,
+    minWidth: 180,
   },
 }));
 
@@ -27,10 +22,6 @@ const EmailSignup = () => {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Typography variant="h3">Subscribe</Typography>
-      <Typography variant="h6" className={classes.body}>
-        Sign up with your email address to receive news and updates.
-      </Typography>
       <form
         className={classes.form}
         action="https://form.flodesk.com/submit"
@@ -61,7 +52,7 @@ const EmailSignup = () => {
               color="primary"
               className={classes.signup}
             >
-              Subscribe
+              Stay Informed
             </Button>
           </Grid>
         </Grid>

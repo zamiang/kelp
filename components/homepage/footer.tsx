@@ -42,22 +42,27 @@ const Footer = () => {
       <Box mt={8} className={classes.footer}>
         <div className={classes.footerItem}>
           <Link href="/about">
-            <span className={classes.footerLink}>About Kelp</span>
+            <span className={classes.footerLink}>About</span>
           </Link>
         </div>
         <div className={classes.footerItem}>
-          <a href="mailto:support@kelp.nyc" className={classes.footerLink}>
+          <a
+            rel="noreferrer"
+            href="mailto:support@kelp.nyc"
+            className={classes.footerLink}
+            target="_blank"
+          >
             Contact
           </a>
         </div>
         <div className={classes.footerItem}>
-          <Link href="/privacy">
-            <span className={classes.footerLink}>Privacy Policy</span>
+          <Link href="/security">
+            <span className={classes.footerLink}>Security</span>
           </Link>
         </div>
         <div className={classes.footerItem}>
-          <Link href="/terms">
-            <span className={classes.footerLink}>Terms & Conditions</span>
+          <Link href="/privacy">
+            <span className={classes.footerLink}>Privacy</span>
           </Link>
         </div>
         <Typography variant="body2" className={classes.copyright} align="center">
