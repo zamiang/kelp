@@ -76,14 +76,10 @@ const Terms = () => {
                   Kelp cannot create new events, change any existing events, delete your calendar,
                   or access any other data within your Google account, including Gmail.
                 </li>
-              </ul>
-              <ul id="06bf6e5a-f858-4130-9377-02adf259dfc7">
                 <li>
                   Calendar data does not pass through Kelp. Your device requests the data directly
                   from Google.
                 </li>
-              </ul>
-              <ul id="b78c2a13-78a9-4b7a-97d0-faf813321cbc">
                 <li>
                   You can revoke access to your calendar at any time at{' '}
                   <a href="https://myaccount.google.com/permissions">
@@ -110,14 +106,10 @@ const Terms = () => {
                   Kelp cannot create new contacts, change any existing contacts, delete your
                   contacts, or access any other data within your Google account, including Gmail.
                 </li>
-              </ul>
-              <ul id="963d0578-3378-428a-bdcb-7db191e7d77a">
                 <li>
                   Contacts data does not pass through Kelp. Your device requests the data directly
                   from Google.
                 </li>
-              </ul>
-              <ul id="1b01a9ab-63e8-48e5-8afb-b60e8c88920b">
                 <li>
                   You can revoke access to your calendar at any time at
                   <a href="https://myaccount.google.com/permissions">
@@ -142,14 +134,10 @@ const Terms = () => {
                   Kelp cannot create new documents, change any existing documents, delete your
                   documents, or access any other data within your Google account, including Gmail.
                 </li>
-              </ul>
-              <ul id="b0759fd7-d5b7-4924-b8b4-7119fce407da">
                 <li>
                   Documents data does not pass through Kelp. Your device requests the data directly
                   from Google.
                 </li>
-              </ul>
-              <ul id="1c9ff12c-b5ae-4b27-b2b0-c25592215e42">
                 <li>
                   You can revoke access to your calendar at any time at
                   <a href="https://myaccount.google.com/permissions">
@@ -172,10 +160,7 @@ const Terms = () => {
                 For performance and overload protection, we direct your traffic through Vercel. They
                 have access to some basic technical information to perform this role, such as your
                 IP address.
-                <a href="https://vercel.com/legal/privacy-policy">
-                  Vercel&#x27;s privacy policy is here
-                </a>
-                .
+                <a href="https://vercel.com/legal/privacy-policy">Vercel&#x27;s Privacy Policy.</a>
               </p>
               <h1 id="874e477a-d0cd-4ad9-ad1d-9085a3560063">Registration and authentication</h1>
               <p id="bc4e2c32-bc8f-4edb-950c-9fe93c52554f">
@@ -191,9 +176,12 @@ const Terms = () => {
               <p id="a8aa06a4-f296-4461-a4c4-82db4b328e6c">
                 Google OAuth is a registration and authentication service provided by Google LLC and
                 is connected to the Google network. Personal Data processed: various types of Data
-                as specified in the privacy policy of the service. Place of processing: United
-                States – <a href="https://policies.google.com/privacy">Privacy Policy</a>. Privacy
-                Shield participant.
+                as specified in the privacy policy of the service.
+              </p>
+              <p>
+                Place of processing: United States –{' '}
+                <a href="https://policies.google.com/privacy">Privacy Policy</a>. Privacy Shield
+                participant.
               </p>
               <p id="d9869bc8-c2dd-4f17-86d5-cce71738bd4e">
                 <strong>Auth0 (Auth0, Inc)</strong>
@@ -203,20 +191,18 @@ const Terms = () => {
                 simplify the registration and authentication process, Auth0 can make use of
                 third-party identity providers and save the information on its platform. Personal
                 Data processed: Cookies; email address; first name; last name; password; picture;
-                various types of Data as specified in the privacy policy of the service. Place of
-                processing: United States – <a href="https://auth0.com/privacy">Privacy Policy</a>.
-                Privacy Shield participant.
+                various types of Data as specified in the privacy policy of the service.
+              </p>
+              <p>
+                Place of processing: United States –{' '}
+                <a href="https://auth0.com/privacy">Privacy Policy</a>. Privacy Shield participant.
               </p>
               <h1 id="f69625a1-ef0e-40cb-af26-74a4b3db82d6">Email Marketing</h1>
               <p id="c0ed4c51-ef08-4fd1-82d3-8f38095094ca">
                 We may to contact you with product updates. You may opt-out of receiving any, or
                 all, of these communications from Kelp by following the unsubscribe link or
-                instructions provided in any email we send or by contacting us.
-              </p>
-              <p id="c707dabf-daf1-4554-a033-381a1f6e9a99">
-                <strong>
-                  We may use Email Marketing Service Providers to manage and send emails to you.
-                </strong>
+                instructions provided in any email we send or by contacting us. We may use Email
+                Marketing Service Providers to manage and send emails to you.
               </p>
               <p id="47fe45d0-c532-4a9b-9407-bce45855cd3f">
                 <strong>Flodesk</strong> (Flodesk Inc)
@@ -302,14 +288,10 @@ const Terms = () => {
               <p id="1514f8e0-db44-43b6-a742-7f4b7d99e049">In your message, please include:</p>
               <ul id="1baaa435-7ef2-4162-92c6-a5e87b5de52f">
                 <li>The specific product and software version(s) which you believe are affected</li>
-              </ul>
-              <ul id="60703559-ecf1-4b22-8def-d66dd47c7a9c">
                 <li>
                   A description of the behavior you observed as well as the behavior that you
                   expected
                 </li>
-              </ul>
-              <ul id="f6caea35-a302-4938-b1db-a2fc24dfb7cb">
                 <li>
                   A numbered list of steps required to reproduce the issue and a video
                   demonstration, if the steps may be hard to follow
@@ -329,7 +311,7 @@ const Terms = () => {
               </h1>
               <p id="056e16f1-72ac-48be-812b-39b5f11a7a50">
                 You may access or change your information or delete your account by emailing
-                support@kelp.nyc.
+                <a href="mailto:support@kelp.nyc">support@kelp.nyc</a>.
               </p>
               <p id="600357df-16ba-46fd-b4e5-6fe855298c5f">
                 Kelp may delete your information at any time and for any reason, such as technical
@@ -372,16 +354,6 @@ const Terms = () => {
                 Information may be processed, stored, and used outside of the country in which you
                 are located. Data privacy laws vary across jurisdictions, and different laws may be
                 applicable to your data depending on where it is processed, stored, or used.
-              </p>
-              <h1 id="78119a9d-8a82-451f-9138-0f824187f67f">Links to Other Websites</h1>
-              <p id="77478c82-957a-47d8-9aa2-973139324043">
-                Kelp may contain links to other websites that are not operated by Kelp. If You click
-                on a third party link, You will be directed to that third party&#x27;s site. We
-                strongly advise you to review the Privacy Policy of every site you visit.
-              </p>
-              <p id="415cf866-ae00-4d11-b08c-5bfec8693c8a">
-                We have no control over and assume no responsibility for the content, privacy
-                policies or practices of any third party sites or services.
               </p>
               <h1 id="2616777b-303a-40c1-b0ef-62845040b17d">
                 <strong>Your Consent</strong>
