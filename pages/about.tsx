@@ -38,7 +38,7 @@ const About = () => {
           alignContent="center"
           justify="center"
         >
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <Container maxWidth="sm">
               <img style={{ maxWidth: 120, margin: '0 auto', display: 'block' }} src="kelp.svg" />
               <Typography variant="h3" className={classes.center}>
@@ -72,7 +72,7 @@ const About = () => {
           alignContent="center"
           justify="center"
         >
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <Container maxWidth="sm">
               <Avatar alt="Brennan Moore" src="/brennan.jpg" className={classes.largeAvatar} />
               <Typography variant="h3" className={classes.center}>
