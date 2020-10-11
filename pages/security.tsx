@@ -178,6 +178,17 @@ const Security = () => {
                     primary="End to end encryption"
                   />
                 </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{
+                      primary: classes.largeListItemText,
+                    }}
+                    primary="Security Bug Bounty program"
+                  />
+                </ListItem>
               </List>
             </Container>
           </Grid>

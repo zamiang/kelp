@@ -41,7 +41,7 @@ const About = () => {
         >
           <Grid item xs={6}>
             <Container maxWidth="sm">
-              <Avatar alt="Brennan Moore" src="/kelp.svg" className={classes.largeAvatar} />
+              <img style={{ maxWidth: 120, margin: '0 auto', display: 'block' }} src="kelp.svg" />
               <Typography variant="h3" className={classes.center}>
                 About Kelp
               </Typography>
@@ -80,8 +80,11 @@ const About = () => {
                 About Me
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                My name is <MuiLink href="http://www.zamiang.com/">Brennan Moore</MuiLink>.
-                I&rsquo;ve been professionally building software on the internet for the past 12
+                My name is{' '}
+                <a href="http://www.zamiang.com/" target="_blank" rel="noreferrer">
+                  Brennan Moore
+                </a>
+                . I&rsquo;ve been professionally building software on the internet for the past 12
                 years. I&rsquo;ve built tools for non-profits, art collectors, bike share companies,
                 e-commerce startups and for healthcare enterprise.
               </Typography>
