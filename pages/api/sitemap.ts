@@ -12,6 +12,16 @@ export default async (_req: Request, res: Response) => {
   smStream.write({
     url: '/about',
   });
+  smStream.write({
+    url: '/security',
+  });
+  smStream.write({
+    url: '/terms',
+  });
+  smStream.write({
+    url: '/privacy',
+  });
+
 
   // tell sitemap that there is nothing more to add to the sitemap
   smStream.end();
