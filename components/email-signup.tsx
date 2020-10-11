@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     minWidth: 180,
+    [theme.breakpoints.down('sm')]: {
+      minWidth: 0,
+    },
   },
 }));
 

@@ -29,6 +29,9 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(9),
     backgroundColor: theme.palette.primary.main,
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1),
+    },
   },
   heroNoMarginTop: {
     marginTop: 0,
@@ -68,6 +71,10 @@ export const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline',
+    },
+    [theme.breakpoints.down('sm')]: {
+      display: 'block',
+      margin: theme.spacing(3, 0),
     },
   },
   body: {
@@ -144,7 +151,7 @@ const App = () => {
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
         <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <Container maxWidth="sm">
               <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               <Typography variant="h3">Your information filtration system</Typography>
@@ -208,10 +215,10 @@ const App = () => {
               </div>
             </Container>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item sm={6}>
             <img className={classes.heroImage} src="designer_file_case.png" />
           </Grid>
-          <Grid item xs={12} className={classes.homepageFooterSpacer}>
+          <Grid item sm={12} className={classes.homepageFooterSpacer}>
             <Footer />
           </Grid>
         </Grid>
