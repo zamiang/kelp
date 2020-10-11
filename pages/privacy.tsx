@@ -47,7 +47,7 @@ const Terms = () => {
               </h1>
               <p id="c549f30c-5e94-4571-8959-45ac04d93553">
                 When creating an account, you will be asked to Sign in with Auth0. Email addresses
-                are <strong>only</strong> used for logging in, password resets, responding to emails
+                are <strong>only</strong> used for logging in, password resets, responding to emails
                 that you initiate, notifications that you request and notifying you about product
                 updates or changes.
               </p>
@@ -98,7 +98,7 @@ const Terms = () => {
                 <strong>What does Kelp do with my contacts?</strong>
               </p>
               <p id="0d6975f5-495c-4755-8784-320b88e3955a">
-                Connected contacts are <strong>only</strong> used to display names and photos from
+                Connected contacts are <strong>only</strong> used to display names and photos from
                 contacts from your calendar events and documents.
               </p>
               <p id="09b5bca9-a374-47ed-8483-cf7d6e7fa551">
@@ -119,7 +119,7 @@ const Terms = () => {
               </ul>
               <ul id="1b01a9ab-63e8-48e5-8afb-b60e8c88920b">
                 <li>
-                  You can revoke access to your calendar at any time at 
+                  You can revoke access to your calendar at any time at
                   <a href="https://myaccount.google.com/permissions">
                     https://myaccount.google.com/permissions
                   </a>
@@ -130,7 +130,7 @@ const Terms = () => {
                 <strong>What does Kelp do with my documents?</strong>
               </p>
               <p id="a3c5643a-84ff-492a-8d05-692d5c8c294e">
-                Documents are <strong>only</strong> used to display them with associated upcoming
+                Documents are <strong>only</strong> used to display them with associated upcoming
                 meetings.
               </p>
               <p id="206c1cc7-788c-41d3-9474-f6df6ea8b407">
@@ -151,7 +151,7 @@ const Terms = () => {
               </ul>
               <ul id="1c9ff12c-b5ae-4b27-b2b0-c25592215e42">
                 <li>
-                  You can revoke access to your calendar at any time at 
+                  You can revoke access to your calendar at any time at
                   <a href="https://myaccount.google.com/permissions">
                     https://myaccount.google.com/permissions
                   </a>
@@ -192,7 +192,7 @@ const Terms = () => {
                 Google OAuth is a registration and authentication service provided by Google LLC and
                 is connected to the Google network. Personal Data processed: various types of Data
                 as specified in the privacy policy of the service. Place of processing: United
-                States – <a href="https://policies.google.com/privacy">Privacy Policy</a>. Privacy
+                States – <a href="https://policies.google.com/privacy">Privacy Policy</a>. Privacy
                 Shield participant.
               </p>
               <p id="d9869bc8-c2dd-4f17-86d5-cce71738bd4e">
@@ -204,7 +204,7 @@ const Terms = () => {
                 third-party identity providers and save the information on its platform. Personal
                 Data processed: Cookies; email address; first name; last name; password; picture;
                 various types of Data as specified in the privacy policy of the service. Place of
-                processing: United States – <a href="https://auth0.com/privacy">Privacy Policy</a>.
+                processing: United States – <a href="https://auth0.com/privacy">Privacy Policy</a>.
                 Privacy Shield participant.
               </p>
               <h1 id="f69625a1-ef0e-40cb-af26-74a4b3db82d6">Email Marketing</h1>
@@ -250,8 +250,8 @@ const Terms = () => {
               </h1>
               <p id="abe6ab68-85ae-45b5-9d8d-af53fc51e150">
                 The Kelp web apps collect various usage metrics, such as the percentage of users who
-                use particular features or when users sign in, 
-                <strong>for the sole purpose</strong> of improving the app.
+                use particular features or when users sign in,
+                <strong>for the sole purpose</strong> of improving the app.
               </p>
               <h1 id="0fc13a51-23f6-4270-a678-50615bd94b64">
                 <strong>Information usage</strong>
@@ -278,7 +278,7 @@ const Terms = () => {
                 <strong>Information isolation</strong>
               </h1>
               <p id="e6c29dd6-3050-43b5-bb4e-394883f3b910">
-                Contact information (i.e. an email address) is <strong>only</strong> accessible to a
+                Contact information (i.e. an email address) is <strong>only</strong> accessible to a
                 user who explicitly added that information, either via one of the above integrations
                 or manually. This information isolation is reinforced with software safeguards to
                 ensure contact information has appropriate visibility.
@@ -296,7 +296,7 @@ const Terms = () => {
               </p>
               <ul id="d2f61506-d94d-4672-9c1b-26294ef29e1e">
                 <li>
-                  Email us at <a href="mailto:security@kelp.nyc">security@kelp.nyc</a>
+                  Email us at <a href="mailto:security@kelp.nyc">security@kelp.nyc</a>
                 </li>
               </ul>
               <p id="1514f8e0-db44-43b6-a742-7f4b7d99e049">In your message, please include:</p>
@@ -328,8 +328,8 @@ const Terms = () => {
                 <strong>Accessing, changing, or deleting information</strong>
               </h1>
               <p id="056e16f1-72ac-48be-812b-39b5f11a7a50">
-                You may access or change your information or delete your account by
-                emailing support@kelp.nyc.
+                You may access or change your information or delete your account by emailing
+                support@kelp.nyc.
               </p>
               <p id="600357df-16ba-46fd-b4e5-6fe855298c5f">
                 Kelp may delete your information at any time and for any reason, such as technical
@@ -406,7 +406,7 @@ const Terms = () => {
               </h1>
               <p id="60849061-52e9-4e86-bed3-85020714d06f">
                 If you have questions or concerns regarding these terms, privacy, or security,
-                please contact us at <a href="mailto:support@kelp.nyc">support@kelp.nyc.</a>
+                please contact us at <a href="mailto:support@kelp.nyc">support@kelp.nyc.</a>
               </p>
               <p id="3d958e5a-535f-449e-be97-51bc85e039d4"></p>
             </div>
