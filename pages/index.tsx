@@ -132,6 +132,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   smallIcon: {
     maxWidth: 60,
+    maxHeight: 60,
   },
   smallIconContainer: {
     marginRight: 20,
