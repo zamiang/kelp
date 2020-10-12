@@ -77,7 +77,7 @@ export const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     display: 'inline-block',
     color: theme.palette.text.secondary,
-    fontSize: theme.typography.h6.fontSize,
+    fontSize: theme.typography.body1.fontSize,
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline',
@@ -100,9 +100,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   center: {
     textAlign: 'center',
-  },
-  listItem: {
-    paddingLeft: 0,
   },
   list: {
     marginTop: theme.spacing(2),
@@ -143,10 +140,10 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(6),
   },
   largeListItemText: {
-    fontSize: theme.typography.h6.fontSize,
+    fontSize: theme.typography.body1.fontSize,
   },
   largeListItemTextBold: {
-    fontSize: theme.typography.h6.fontSize,
+    fontSize: theme.typography.body1.fontSize,
     fontWeight: theme.typography.fontWeightBold,
     marginBottom: theme.spacing(1),
   },
@@ -164,7 +161,7 @@ const App = () => {
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
         <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
-          <Grid item sm={6}>
+          <Grid item sm={7}>
             <Container maxWidth="sm">
               <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               <Typography variant="h3" className={classes.heading}>
@@ -174,38 +171,40 @@ const App = () => {
                 Kelp brings your data together and organizes it to be simple and easy to understand.
               </Typography>
               <EmailSignup />
-              <List className={classes.list}>
-                <ListItem className={classes.listItem}>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemTextBold,
-                      secondary: classes.largeListItemText,
-                    }}
-                    primary="Stay Informed"
-                    secondary="Kelp infers associations between information, such as between a person, a meeting with the person and document edits by the person."
-                  />
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemTextBold,
-                      secondary: classes.largeListItemText,
-                    }}
-                    primary="Less Busy Work"
-                    secondary="Kelp scans your calendar and documents to automatically to collect the documents you need. We then magically populate you calendar. Easy."
-                  />
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemTextBold,
-                      secondary: classes.largeListItemText,
-                    }}
-                    primary="Your Data"
-                    secondary="Kelp is a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
-                  />
-                </ListItem>
-              </List>
+              <Grid item sm={10}>
+                <List className={classes.list}>
+                  <ListItem disableGutters={true}>
+                    <ListItemText
+                      classes={{
+                        primary: classes.largeListItemTextBold,
+                        secondary: classes.largeListItemText,
+                      }}
+                      primary="Stay Informed"
+                      secondary="Kelp infers associations between information, such as between a person, a meeting with the person and document edits by the person."
+                    />
+                  </ListItem>
+                  <ListItem disableGutters={true}>
+                    <ListItemText
+                      classes={{
+                        primary: classes.largeListItemTextBold,
+                        secondary: classes.largeListItemText,
+                      }}
+                      primary="Less Busy Work"
+                      secondary="Kelp scans your calendar and documents to automatically to collect the documents you need. We then magically populate you calendar. Easy."
+                    />
+                  </ListItem>
+                  <ListItem disableGutters={true}>
+                    <ListItemText
+                      classes={{
+                        primary: classes.largeListItemTextBold,
+                        secondary: classes.largeListItemText,
+                      }}
+                      primary="Your Data"
+                      secondary="Kelp is a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
+                    />
+                  </ListItem>
+                </List>
+              </Grid>
               <div className={classes.buttonContainer}>
                 <Button
                   variant="contained"
@@ -228,13 +227,11 @@ const App = () => {
               <div className={classes.hint}>
                 Kelp is currently free but may add a paid version in the future.
               </div>
+              <Footer shouldAlignLeft={true} />
             </Container>
           </Grid>
-          <Grid item sm={6}>
+          <Grid item sm={5}>
             <img className={classes.heroImage} src="designer_file_case.png" />
-          </Grid>
-          <Grid item sm={12} className={classes.homepageFooterSpacer}>
-            <Footer />
           </Grid>
         </Grid>
       </div>
