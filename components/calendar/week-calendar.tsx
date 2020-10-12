@@ -16,7 +16,7 @@ const topNavHeight = 94;
 const hourHeight = 48;
 const scrollBarWidth = 15;
 const borderColor = '#dadce0';
-const shouldShowSentEmails = true;
+const shouldShowSentEmails = false;
 const shouldShowDocumentActivity = true;
 const shouldShowCalendarEvents = true;
 /**
@@ -215,6 +215,9 @@ const useCalendarItemStyles = makeStyles((theme) => ({
   subtitle: {
     fontSize: theme.typography.caption.fontSize,
   },
+  documentBackground: {
+    background: config.PINK_BACKGROUND,
+  },
 }));
 
 interface ICalendarItemProps {
@@ -265,7 +268,11 @@ const DocumentItem = (props: IDocumentItemProps) => {
   const classes = useCalendarItemStyles();
   const top = hourHeight * props.document.time.getHours();
   return (
-    <div className={classes.container} style={{ top }} onClick={props.onClick}>
+    <div
+      className={clsx(classes.container, classes.documentBackground)}
+      style={{ top }}
+      onClick={props.onClick}
+    >
       <Typography className={classes.title}>{props.document.title}</Typography>
       <Typography className={classes.subtitle}>{props.document.action}</Typography>
     </div>
