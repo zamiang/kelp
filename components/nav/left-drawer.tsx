@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import { Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -109,7 +110,9 @@ const LeftDrawer = (props: IProps) => {
             <img className={classes.logo} src="/kelp.svg" />
           </ListItemIcon>
           <ListItemText>
-            <b>Kelp</b>
+            <Typography variant="h4">
+              <b>Kelp</b>
+            </Typography>
           </ListItemText>
         </ListItem>
         {isLoading && (
