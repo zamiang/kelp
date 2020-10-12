@@ -1,6 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import { addDays, differenceInMinutes, format, isSameDay, startOfWeek } from 'date-fns';
 import { times } from 'lodash';
 import { useRouter } from 'next/router';
@@ -11,11 +12,11 @@ import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
-const topNavHeight = 100;
+const topNavHeight = 94;
 const hourHeight = 48;
 const scrollBarWidth = 15;
 const borderColor = '#dadce0';
-const shouldShowSentEmails = true;
+const shouldShowSentEmails = false;
 const shouldShowDocumentActivity = true;
 const shouldShowCalendarEvents = true;
 /**
@@ -42,26 +43,50 @@ const HourRows = () => {
   return <React.Fragment>{hours}</React.Fragment>;
 };
 
-const DayTitle = (props: { day: Date }) => (
-  <React.Fragment>
-    <Typography variant="h6">{format(props.day, 'EEE')}</Typography>
-    <Typography variant="h3">{format(props.day, 'd')}</Typography>
-  </React.Fragment>
-);
+const useDayTitleStyles = makeStyles((theme) => ({
+  currentDay: {
+    borderRadius: '50%',
+    background: config.YELLOW_BACKGROUND,
+    marginLeft: theme.spacing(0.5),
+  },
+  day: {
+    width: 35,
+    height: 35,
+    display: 'inline-block',
+    padding: 3,
+  },
+  dayOfWeek: {
+    display: 'inline-block',
+  },
+}));
+
+const DayTitle = (props: { day: Date }) => {
+  const isToday = isSameDay(props.day, new Date());
+  const classes = useDayTitleStyles();
+  return (
+    <React.Fragment>
+      <Typography className={classes.dayOfWeek} variant="h6">
+        {format(props.day, 'EEE')}
+      </Typography>
+      <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">
+        {format(props.day, 'd')}
+      </Typography>
+    </React.Fragment>
+  );
+};
 
 const useTitleRowStyles = makeStyles((theme) => ({
   container: {
-    height: topNavHeight,
     width: `calc(100% - ${scrollBarWidth}px)`,
+    height: topNavHeight,
   },
   border: {
     width: 1,
-    height: 30,
-    background: borderColor,
-    marginTop: -22,
+    height: 19,
+    background: theme.palette.secondary.light,
+    marginTop: -15,
   },
   item: {
-    paddingTop: theme.spacing(2),
     flex: 1,
     textAlign: 'center',
     borderBottom: `1px solid ${borderColor}`,
@@ -69,43 +94,52 @@ const useTitleRowStyles = makeStyles((theme) => ({
   spacer: {
     width: leftSpacer,
   },
+  heading: {
+    padding: theme.spacing(2),
+    paddingBottom: 0,
+  },
 }));
 
 const TitleRow = (props: { start: Date }) => {
   const classes = useTitleRowStyles();
 
   return (
-    <Grid container className={classes.container}>
-      <Grid item className={classes.spacer}></Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={props.start} />
-        <div className={classes.border}></div>
+    <div className={classes.container}>
+      <Typography variant="h4" className={classes.heading}>
+        <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
+      </Typography>
+      <Grid container>
+        <Grid item className={classes.spacer}></Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={props.start} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 1)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 2)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 3)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 4)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 5)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 6)} />
+          <div className={classes.border}></div>
+        </Grid>
       </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 1)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 2)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 3)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 4)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 5)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 6)} />
-        <div className={classes.border}></div>
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 
@@ -167,6 +201,12 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     minHeight: hourHeight / 4,
+    cursor: 'pointer',
+    opacity: 1,
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      opacity: 0.8,
+    },
   },
   title: {
     fontSize: theme.typography.caption.fontSize,
@@ -174,6 +214,9 @@ const useCalendarItemStyles = makeStyles((theme) => ({
   },
   subtitle: {
     fontSize: theme.typography.caption.fontSize,
+  },
+  documentBackground: {
+    background: config.PINK_BACKGROUND,
   },
 }));
 
@@ -225,7 +268,11 @@ const DocumentItem = (props: IDocumentItemProps) => {
   const classes = useCalendarItemStyles();
   const top = hourHeight * props.document.time.getHours();
   return (
-    <div className={classes.container} style={{ top }} onClick={props.onClick}>
+    <div
+      className={clsx(classes.container, classes.documentBackground)}
+      style={{ top }}
+      onClick={props.onClick}
+    >
       <Typography className={classes.title}>{props.document.title}</Typography>
       <Typography className={classes.subtitle}>{props.document.action}</Typography>
     </div>

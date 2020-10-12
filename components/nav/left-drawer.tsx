@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import { Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    background: 'none',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -57,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   unSelected: { color: theme.palette.text.hint },
   listItem: {
-    borderRadius: `0 ${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
+    borderRadius: `${theme.spacing(3)}px 0 0 ${theme.spacing(3)}px`,
     transition: theme.transitions.create('background', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -108,7 +110,9 @@ const LeftDrawer = (props: IProps) => {
             <img className={classes.logo} src="/kelp.svg" />
           </ListItemIcon>
           <ListItemText>
-            <b>Kelp</b>
+            <Typography variant="h4">
+              <b>Kelp</b>
+            </Typography>
           </ListItemText>
         </ListItem>
         {isLoading && (

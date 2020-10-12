@@ -30,7 +30,7 @@ const RefreshButton = (props: IProps) => {
     <List>
       <ListItem button dense onClick={props.refresh}>
         <ListItemIcon>
-          <RefreshIcon color="secondary" />
+          <RefreshIcon />
         </ListItemIcon>
         <ListItemText
           primary={`${formatDistanceToNow(props.lastUpdated)} ago`}

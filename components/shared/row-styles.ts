@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import config from '../../constants/config';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -48,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
   },
   rowLineThrough: {
     textDecoration: 'line-through',
-
     '&.MuiListItem-button:hover': {
       textDecoration: 'line-through',
     },
@@ -57,6 +57,30 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.primary.main,
     '&.MuiListItem-button:hover': {
       borderColor: theme.palette.info.main,
+    },
+  },
+  yellowBackground: {
+    backgroundColor: config.YELLOW_BACKGROUND,
+    '&.MuiListItem-button:hover': {
+      borderColor: config.YELLOW_BACKGROUND,
+    },
+  },
+  orangeBackground: {
+    backgroundColor: config.ORANGE_BACKGROUND,
+    '&.MuiListItem-button:hover': {
+      borderColor: config.ORANGE_BACKGROUND,
+    },
+  },
+  purpleBackground: {
+    backgroundColor: config.PURPLE_BACKGROUND,
+    '&.MuiListItem-button:hover': {
+      borderColor: config.PURPLE_BACKGROUND,
+    },
+  },
+  pinkBackground: {
+    backgroundColor: config.PINK_BACKGROUND,
+    '&.MuiListItem-button:hover': {
+      borderColor: config.PINK_BACKGROUND,
     },
   },
 }));

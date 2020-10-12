@@ -6,6 +6,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
+import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import WeekCalendar from '../../components/calendar/week-calendar';
@@ -20,6 +21,7 @@ import panelStyles from '../../components/shared/panel-styles';
 import useAccessToken from '../../components/store/use-access-token';
 import useStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
+import config from '../../constants/config';
 
 export const drawerWidth = 240;
 
@@ -27,12 +29,29 @@ const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   container: {
     display: 'flex',
+    transition: 'background 0.3s',
   },
   content: {
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
     background: 'white',
+    borderRadius: theme.spacing(2),
+  },
+  yellowBackground: {
+    backgroundColor: config.YELLOW_BACKGROUND,
+  },
+  orangeBackground: {
+    backgroundColor: config.ORANGE_BACKGROUND,
+  },
+  purpleBackground: {
+    backgroundColor: config.PURPLE_BACKGROUND,
+  },
+  pinkBackground: {
+    backgroundColor: config.PINK_BACKGROUND,
+  },
+  blueBackground: {
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
@@ -96,6 +115,14 @@ export const DashboardContainer = ({ store }: IProps) => {
     settings: <Settings />,
   } as any;
 
+  const colorHash = {
+    week: classes.yellowBackground,
+    meetings: classes.blueBackground,
+    docs: classes.pinkBackground,
+    people: classes.orangeBackground,
+    settings: classes.purpleBackground,
+  } as any;
+
   const expandHash = {
     docs: slug && <ExpandedDocument documentId={slug} {...store} />,
     people: slug && <ExpandPerson personId={slug} {...store} />,
@@ -104,7 +131,7 @@ export const DashboardContainer = ({ store }: IProps) => {
 
   const isDrawerOpen = tab !== 'week';
   return (
-    <div className={classes.container}>
+    <div className={clsx(classes.container, colorHash[tab])}>
       <LeftDrawer
         lastUpdated={store.lastUpdated}
         handleDrawerClose={handleDrawerClose}

@@ -22,7 +22,7 @@ const PersonRow = (
       button={true}
       className={clsx(
         rowStyles.row,
-        props.selectedPersonId === props.person.id && rowStyles.rowPrimaryMain,
+        props.selectedPersonId === props.person.id && rowStyles.orangeBackground,
       )}
     >
       <Link href={`?tab=people&slug=${props.person.id}`}>

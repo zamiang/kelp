@@ -28,7 +28,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
       className={clsx(
         rowStyles.row,
         rowStyles.rowDefault,
-        props.selectedDocumentId === props.doc.id && rowStyles.rowPrimaryMain,
+        props.selectedDocumentId === props.doc.id && rowStyles.pinkBackground,
       )}
     >
       <Link href={`?tab=docs&slug=${props.doc.id}`}>
