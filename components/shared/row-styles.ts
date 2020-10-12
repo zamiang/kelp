@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   orangeBackground: {
     backgroundColor: config.ORANGE_BACKGROUND,
     '&.MuiListItem-button:hover': {
-      borderColor:  config.ORANGE_BACKGROUND,
+      borderColor: config.ORANGE_BACKGROUND,
     },
   },
   purpleBackground: {
