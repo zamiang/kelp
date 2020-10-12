@@ -37,7 +37,7 @@
     "@types/gapi.client.drive": "3.0.11",
     "@types/gapi.client.gmail": "1.0.2",
     "@types/gapi.client.people": "1.0.2",
-    "@types/lodash": "4.14.161",
+    "@types/lodash": "4.14.162",
     "clsx": "1.1.1",
     "date-fns": "2.16.1",
     "express": "4.17.1",
