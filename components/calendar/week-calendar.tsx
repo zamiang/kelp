@@ -1,6 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import { addDays, differenceInMinutes, format, isSameDay, startOfWeek } from 'date-fns';
 import { times } from 'lodash';
 import { useRouter } from 'next/router';
@@ -42,12 +43,37 @@ const HourRows = () => {
   return <React.Fragment>{hours}</React.Fragment>;
 };
 
-const DayTitle = (props: { day: Date }) => (
-  <React.Fragment>
-    <Typography variant="h6">{format(props.day, 'EEE')}</Typography>
-    <Typography variant="h3">{format(props.day, 'd')}</Typography>
-  </React.Fragment>
-);
+const useDayTitleStyles = makeStyles((theme) => ({
+  currentDay: {
+    borderRadius: '50%',
+    background: config.YELLOW_BACKGROUND,
+    marginLeft: theme.spacing(0.5),
+  },
+  day: {
+    width: 35,
+    height: 35,
+    display: 'inline-block',
+    padding: 3,
+  },
+  dayOfWeek: {
+    display: 'inline-block',
+  },
+}));
+
+const DayTitle = (props: { day: Date }) => {
+  const isToday = isSameDay(props.day, new Date());
+  const classes = useDayTitleStyles();
+  return (
+    <React.Fragment>
+      <Typography className={classes.dayOfWeek} variant="h6">
+        {format(props.day, 'EEE')}
+      </Typography>
+      <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">
+        {format(props.day, 'd')}
+      </Typography>
+    </React.Fragment>
+  );
+};
 
 const useTitleRowStyles = makeStyles((theme) => ({
   container: {
@@ -56,12 +82,12 @@ const useTitleRowStyles = makeStyles((theme) => ({
   },
   border: {
     width: 1,
-    height: 30,
-    background: borderColor,
-    marginTop: -22,
+    height: 19,
+    background: theme.palette.secondary.light,
+    marginTop: -15,
   },
   item: {
-    paddingTop: theme.spacing(2),
+    paddingTop: 60, // theme.spacing(2),
     flex: 1,
     textAlign: 'center',
     borderBottom: `1px solid ${borderColor}`,

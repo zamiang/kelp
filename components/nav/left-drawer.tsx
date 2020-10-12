@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    background: 'none',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   unSelected: { color: theme.palette.text.hint },
   listItem: {
-    borderRadius: `0 ${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
+    borderRadius: `${theme.spacing(3)}px 0 0 ${theme.spacing(3)}px`,
     transition: theme.transitions.create('background', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,

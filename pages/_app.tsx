@@ -15,6 +15,7 @@ const App = (props: any) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+
   return (
     <React.Fragment>
       <Auth0Provider
