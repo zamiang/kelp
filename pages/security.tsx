@@ -134,7 +134,7 @@ const Security = () => {
                 security practices include but are not limited to
               </Typography>
               <List>
-                <ListItem>
+                <ListItem disableGutters={true}>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
@@ -145,7 +145,7 @@ const Security = () => {
                     primary="Static code analysis"
                   />
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters={true}>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
@@ -156,7 +156,7 @@ const Security = () => {
                     primary="Static dependency checking"
                   />
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters={true}>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
@@ -167,7 +167,7 @@ const Security = () => {
                     primary="Web vulnerability scanning"
                   />
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters={true}>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
@@ -178,7 +178,7 @@ const Security = () => {
                     primary="End to end encryption"
                   />
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters={true}>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
                   </ListItemIcon>
