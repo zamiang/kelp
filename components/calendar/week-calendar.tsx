@@ -12,7 +12,7 @@ import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
-const topNavHeight = 100;
+const topNavHeight = 94;
 const hourHeight = 48;
 const scrollBarWidth = 15;
 const borderColor = '#dadce0';
@@ -77,8 +77,8 @@ const DayTitle = (props: { day: Date }) => {
 
 const useTitleRowStyles = makeStyles((theme) => ({
   container: {
-    height: topNavHeight,
     width: `calc(100% - ${scrollBarWidth}px)`,
+    height: topNavHeight,
   },
   border: {
     width: 1,
@@ -87,7 +87,6 @@ const useTitleRowStyles = makeStyles((theme) => ({
     marginTop: -15,
   },
   item: {
-    paddingTop: 60, // theme.spacing(2),
     flex: 1,
     textAlign: 'center',
     borderBottom: `1px solid ${borderColor}`,
@@ -95,43 +94,52 @@ const useTitleRowStyles = makeStyles((theme) => ({
   spacer: {
     width: leftSpacer,
   },
+  heading: {
+    padding: theme.spacing(2),
+    paddingBottom: 0,
+  },
 }));
 
 const TitleRow = (props: { start: Date }) => {
   const classes = useTitleRowStyles();
 
   return (
-    <Grid container className={classes.container}>
-      <Grid item className={classes.spacer}></Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={props.start} />
-        <div className={classes.border}></div>
+    <div className={classes.container}>
+      <Typography variant="h4" className={classes.heading}>
+        <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
+      </Typography>
+      <Grid container>
+        <Grid item className={classes.spacer}></Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={props.start} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 1)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 2)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 3)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 4)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 5)} />
+          <div className={classes.border}></div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <DayTitle day={addDays(props.start, 6)} />
+          <div className={classes.border}></div>
+        </Grid>
       </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 1)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 2)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 3)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 4)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 5)} />
-        <div className={classes.border}></div>
-      </Grid>
-      <Grid item className={classes.item}>
-        <DayTitle day={addDays(props.start, 6)} />
-        <div className={classes.border}></div>
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 
@@ -193,6 +201,12 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     minHeight: hourHeight / 4,
+    cursor: 'pointer',
+    opacity: 1,
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      opacity: 0.8,
+    },
   },
   title: {
     fontSize: theme.typography.caption.fontSize,
