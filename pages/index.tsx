@@ -31,8 +31,8 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   hero: {
-    marginTop: theme.spacing(9),
-    padding: theme.spacing(9),
+    marginTop: theme.spacing(6),
+    padding: theme.spacing(6),
     backgroundColor: theme.palette.primary.main,
     width: '100%',
     [theme.breakpoints.down('sm')]: {
@@ -58,6 +58,7 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(9),
     padding: theme.spacing(9),
     width: '100%',
+    fontSize: theme.typography.body1.fontSize,
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
       marginTop: theme.spacing(1),
@@ -159,7 +160,7 @@ const App = () => {
   const classes = useStyles();
   const { loginWithRedirect } = useAuth0();
   return (
-    <div className={clsx(classes.root, classes.container)}>
+    <div className={classes.container}>
       <div className={classes.containerWidth}>
         <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
           <Grid item sm={7}>
