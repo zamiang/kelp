@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { IDoc } from '../store/doc-store';
 import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
@@ -204,16 +205,23 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     opacity: 1,
     transition: 'opacity 0.3s',
+
     '&:hover': {
       opacity: 0.8,
     },
   },
+  containerRight: {
+    left: 'auto',
+    right: 1,
+    width: '45%',
+  },
   title: {
     fontSize: theme.typography.caption.fontSize,
-    fontWeight: 'bold',
+    fontWeight: theme.typography.fontWeightBold,
   },
   subtitle: {
     fontSize: theme.typography.caption.fontSize,
+    fontWeight: theme.typography.fontWeightRegular,
   },
   documentBackground: {
     background: config.PINK_BACKGROUND,
@@ -223,7 +231,6 @@ const useCalendarItemStyles = makeStyles((theme) => ({
 interface ICalendarItemProps {
   onClick: () => void;
   title: string;
-  subtitle: string;
   start: Date;
   end?: Date;
 }
@@ -237,8 +244,10 @@ const CalendarItem = (props: ICalendarItemProps) => {
   const top = hourHeight * props.start.getHours();
   return (
     <div className={classes.container} style={{ height, top }} onClick={props.onClick}>
-      <Typography className={classes.title}>{props.title}</Typography>
-      <Typography className={classes.subtitle}>{props.subtitle}</Typography>
+      <Typography className={classes.title}>
+        {props.title}
+        <Typography className={classes.subtitle}>{format(props.start, 'HH:MM')}</Typography>
+      </Typography>
     </div>
   );
 };
@@ -260,21 +269,25 @@ const EmailItem = (props: IEmailItemProps) => {
 };
 
 interface IDocumentItemProps {
-  onClick: () => void;
-  document: IFormattedDriveActivity;
+  document?: IDoc;
+  activity?: IFormattedDriveActivity;
 }
 
 const DocumentItem = (props: IDocumentItemProps) => {
   const classes = useCalendarItemStyles();
-  const top = hourHeight * props.document.time.getHours();
+  const router = useRouter();
+  if (!props.activity || !props.document) {
+    return null;
+  }
+  const onClick = () => props.document && router.push(`?tab=docs&slug=${props.document.id}`);
+  const top = hourHeight * props.activity.time.getHours();
   return (
     <div
-      className={clsx(classes.container, classes.documentBackground)}
+      className={clsx(classes.container, classes.containerRight, classes.documentBackground)}
       style={{ top }}
-      onClick={props.onClick}
+      onClick={onClick}
     >
-      <Typography className={classes.title}>{props.document.title}</Typography>
-      <Typography className={classes.subtitle}>{props.document.action}</Typography>
+      <Typography className={classes.title}>{props.document.name}</Typography>
     </div>
   );
 };
@@ -293,6 +306,7 @@ interface IDayContentProps {
   activityStore: IStore['driveActivityStore'];
   timeStore: IStore['timeDataStore'];
   emailStore: IStore['emailDataStore'];
+  documentsStore: IStore['docDataStore'];
   day: Date;
 }
 
@@ -309,7 +323,6 @@ const DayContent = (props: IDayContentProps) => {
       <CalendarItem
         key={segment.id}
         title={segment.summary || segment.id}
-        subtitle={'foo'}
         start={segment.start}
         end={segment.end}
         onClick={() => router.push(`?tab=meetings&slug=${segment.id}`)}
@@ -327,17 +340,19 @@ const DayContent = (props: IDayContentProps) => {
   }
 
   if (props.shouldShowDocumentActivity && currentUser) {
-    // Hm... this is done too many times
-    // Not correctly associating to me :-/
-    const documentIds = currentUser.driveActivityIds
+    const documentActivityPairs = currentUser.driveActivityIds
       .map((id) => props.activityStore.getById(id))
-      .filter((activity) => activity && isSameDay(activity.time, props.day));
+      .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
+      .map((activity) => ({
+        activity,
+        document: props.documentsStore.getByLink(activity!.link!),
+      }));
 
-    documentsHtml = documentIds.map((document) => (
+    documentsHtml = documentActivityPairs.map((pairs) => (
       <DocumentItem
-        key={document!.id}
-        document={document!}
-        onClick={() => router.push(`?tab=docs&slug=${document!.id}`)}
+        key={pairs.document ? pairs.document.id : 'key'}
+        document={pairs.document}
+        activity={pairs.activity}
       />
     ));
   }
@@ -377,6 +392,7 @@ const Calendar = (props: IStore) => {
         activityStore={props.driveActivityStore}
         timeStore={props.timeDataStore}
         emailStore={props.emailDataStore}
+        documentsStore={props.docDataStore}
         day={addDays(start, day)}
       />
     </Grid>
