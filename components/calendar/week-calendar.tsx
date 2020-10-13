@@ -205,16 +205,23 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     opacity: 1,
     transition: 'opacity 0.3s',
+
     '&:hover': {
       opacity: 0.8,
     },
   },
+  containerRight: {
+    left: 'auto',
+    right: 1,
+    width: '45%',
+  },
   title: {
     fontSize: theme.typography.caption.fontSize,
-    fontWeight: 'bold',
+    fontWeight: theme.typography.fontWeightBold,
   },
   subtitle: {
     fontSize: theme.typography.caption.fontSize,
+    fontWeight: theme.typography.fontWeightRegular,
   },
   documentBackground: {
     background: config.PINK_BACKGROUND,
@@ -224,7 +231,6 @@ const useCalendarItemStyles = makeStyles((theme) => ({
 interface ICalendarItemProps {
   onClick: () => void;
   title: string;
-  subtitle: string;
   start: Date;
   end?: Date;
 }
@@ -238,8 +244,10 @@ const CalendarItem = (props: ICalendarItemProps) => {
   const top = hourHeight * props.start.getHours();
   return (
     <div className={classes.container} style={{ height, top }} onClick={props.onClick}>
-      <Typography className={classes.title}>{props.title}</Typography>
-      <Typography className={classes.subtitle}>{props.subtitle}</Typography>
+      <Typography className={classes.title}>
+        {props.title}
+        <Typography className={classes.subtitle}>{format(props.start, 'HH:MM')}</Typography>
+      </Typography>
     </div>
   );
 };
@@ -271,16 +279,15 @@ const DocumentItem = (props: IDocumentItemProps) => {
   if (!props.activity || !props.document) {
     return null;
   }
-  const onClick = () => router.push(`?tab=docs&slug=${props.document.id}`);
+  const onClick = () => props.document && router.push(`?tab=docs&slug=${props.document.id}`);
   const top = hourHeight * props.activity.time.getHours();
   return (
     <div
-      className={clsx(classes.container, classes.documentBackground)}
+      className={clsx(classes.container, classes.containerRight, classes.documentBackground)}
       style={{ top }}
       onClick={onClick}
     >
       <Typography className={classes.title}>{props.document.name}</Typography>
-      <Typography className={classes.subtitle}>{props.activity.action}</Typography>
     </div>
   );
 };
@@ -316,7 +323,6 @@ const DayContent = (props: IDayContentProps) => {
       <CalendarItem
         key={segment.id}
         title={segment.summary || segment.id}
-        subtitle={'foo'}
         start={segment.start}
         end={segment.end}
         onClick={() => router.push(`?tab=meetings&slug=${segment.id}`)}
@@ -343,7 +349,11 @@ const DayContent = (props: IDayContentProps) => {
       }));
 
     documentsHtml = documentActivityPairs.map((pairs) => (
-      <DocumentItem key={document.id} document={pairs.document} activity={pairs.activity} />
+      <DocumentItem
+        key={pairs.document ? pairs.document.id : 'key'}
+        document={pairs.document}
+        activity={pairs.activity}
+      />
     ));
   }
 
