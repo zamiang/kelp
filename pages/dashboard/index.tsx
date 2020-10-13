@@ -51,13 +51,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: config.PINK_BACKGROUND,
   },
   blueBackground: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: config.BLUE_BACKGROUND,
   },
 }));
 
 const useBackdropStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: config.BLUE_BACKGROUND,
   },
 }));
 

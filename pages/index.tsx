@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
+import LoginButton from '../components/homepage/login-button';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -154,6 +155,11 @@ export const useStyles = makeStyles((theme) => ({
     margin: '0px auto',
     display: 'block',
   },
+  loginButton: {
+    position: 'absolute',
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+  },
 }));
 
 const App = () => {
@@ -161,10 +167,18 @@ const App = () => {
   const { loginWithRedirect } = useAuth0();
   return (
     <div className={classes.container}>
+      <style jsx global>{`
+        html body {
+          background-color: ${config.BLUE_BACKGROUND};
+        }
+      `}</style>
       <div className={classes.containerWidth}>
         <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">
+              <div className={classes.loginButton}>
+                <LoginButton />
+              </div>
               <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               <Typography variant="h3" className={classes.heading}>
                 Your information filtration system
