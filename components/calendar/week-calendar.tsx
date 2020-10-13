@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { IDoc } from '../store/doc-store';
 import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
@@ -260,21 +261,26 @@ const EmailItem = (props: IEmailItemProps) => {
 };
 
 interface IDocumentItemProps {
-  onClick: () => void;
-  document: IFormattedDriveActivity;
+  document?: IDoc;
+  activity?: IFormattedDriveActivity;
 }
 
 const DocumentItem = (props: IDocumentItemProps) => {
   const classes = useCalendarItemStyles();
-  const top = hourHeight * props.document.time.getHours();
+  const router = useRouter();
+  if (!props.activity || !props.document) {
+    return null;
+  }
+  const onClick = () => router.push(`?tab=docs&slug=${props.document.id}`);
+  const top = hourHeight * props.activity.time.getHours();
   return (
     <div
       className={clsx(classes.container, classes.documentBackground)}
       style={{ top }}
-      onClick={props.onClick}
+      onClick={onClick}
     >
-      <Typography className={classes.title}>{props.document.title}</Typography>
-      <Typography className={classes.subtitle}>{props.document.action}</Typography>
+      <Typography className={classes.title}>{props.document.name}</Typography>
+      <Typography className={classes.subtitle}>{props.activity.action}</Typography>
     </div>
   );
 };
@@ -293,6 +299,7 @@ interface IDayContentProps {
   activityStore: IStore['driveActivityStore'];
   timeStore: IStore['timeDataStore'];
   emailStore: IStore['emailDataStore'];
+  documentsStore: IStore['docDataStore'];
   day: Date;
 }
 
@@ -327,18 +334,16 @@ const DayContent = (props: IDayContentProps) => {
   }
 
   if (props.shouldShowDocumentActivity && currentUser) {
-    // Hm... this is done too many times
-    // Not correctly associating to me :-/
-    const documentIds = currentUser.driveActivityIds
+    const documentActivityPairs = currentUser.driveActivityIds
       .map((id) => props.activityStore.getById(id))
-      .filter((activity) => activity && isSameDay(activity.time, props.day));
+      .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
+      .map((activity) => ({
+        activity,
+        document: props.documentsStore.getByLink(activity!.link!),
+      }));
 
-    documentsHtml = documentIds.map((document) => (
-      <DocumentItem
-        key={document!.id}
-        document={document!}
-        onClick={() => router.push(`?tab=docs&slug=${document!.id}`)}
-      />
+    documentsHtml = documentActivityPairs.map((pairs) => (
+      <DocumentItem key={document.id} document={pairs.document} activity={pairs.activity} />
     ));
   }
 
@@ -377,6 +382,7 @@ const Calendar = (props: IStore) => {
         activityStore={props.driveActivityStore}
         timeStore={props.timeDataStore}
         emailStore={props.emailDataStore}
+        documentsStore={props.docDataStore}
         day={addDays(start, day)}
       />
     </Grid>

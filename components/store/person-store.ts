@@ -110,9 +110,14 @@ export default class PersonDataStore {
 
   addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
     (driveActivity || []).map((driveActivity) => {
-      const person = driveActivity.actorPersonId && this.personById[driveActivity.actorPersonId];
-      if (person) {
-        person.driveActivityIds.push(driveActivity.id);
+      if (driveActivity.actorPersonId) {
+        const personId = driveActivity.actorPersonId
+          ? driveActivity.actorPersonId.replace('people/', '')
+          : null;
+        const person = personId && this.personById[personId];
+        if (person) {
+          person.driveActivityIds.push(driveActivity.id);
+        }
       }
     });
   }
