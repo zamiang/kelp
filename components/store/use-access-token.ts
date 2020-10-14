@@ -60,6 +60,7 @@ const useStore = () => {
               } else {
                 alert(JSON.stringify(authResult.error));
               }
+              // Unsure if logging out is helpful
               logout();
             }
             if (authResult) {
