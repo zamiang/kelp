@@ -50,8 +50,8 @@ export const getSelfResponseStatus = (attendees: attendee[]) => {
   return 'notAttending';
 };
 
-const isSelfConfirmedAttending = (attendees: attendee[], creator: attendee) => {
-  if (attendees.length < 1 && creator.self) {
+const isSelfConfirmedAttending = (attendees: attendee[], creator?: attendee) => {
+  if (attendees.length < 1 && creator && creator.self) {
     return true;
   }
 
