@@ -1,5 +1,4 @@
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,15 +8,19 @@ import React from 'react';
 import PersonDataStore from '../store/person-store';
 import TimeStore, { ISegment } from '../store/time-store';
 
-const useRowStyles = makeStyles(() => ({
+const useRowStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     overflow: 'hidden',
   },
   link: {
-    textTransform: 'none',
     padding: 0,
     marginTop: 0,
+    fontWeight: theme.typography.fontWeightBold,
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
 }));
 
@@ -33,9 +36,7 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
       </Grid>
       <Grid item zeroMinWidth>
         <Link href={`?tab=meetings&slug=${props.segment.id}`}>
-          <Button className={classes.link} component="a">
-            {props.segment.summary}
-          </Button>
+          <span className={classes.link}>{props.segment.summary}</span>
         </Link>
         <br />
         <Typography variant="caption" color="textSecondary">

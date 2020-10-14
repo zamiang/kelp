@@ -50,7 +50,11 @@ export const getSelfResponseStatus = (attendees: attendee[]) => {
   return 'notAttending';
 };
 
-const isSelfConfirmedAttending = (attendees: attendee[]) => {
+const isSelfConfirmedAttending = (attendees: attendee[], creator: attendee) => {
+  if (attendees.length < 1 && creator.self) {
+    return true;
+  }
+
   for (const person of attendees) {
     if (person.self) {
       return ['needsAction', 'declined'].indexOf(person.responseStatus || '') < 0;
@@ -100,7 +104,7 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
           event.end &&
           event.end.dateTime &&
           (!config.SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS ||
-            isSelfConfirmedAttending(event.attendees || [])),
+            isSelfConfirmedAttending(event.attendees || [], event.creator)),
       )
       .map((event) => ({
         id: event.id!,
