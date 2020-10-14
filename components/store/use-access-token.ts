@@ -36,23 +36,31 @@ const useStore = () => {
   const gapiLoaded = useGAPI();
   const { logout } = useAuth0();
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     void (async () => {
-      if (gapiLoaded.isLoaded) {
+      if (gapiLoaded.isLoaded && !isLoading) {
         /**
          * This works because the user is logged in with google and has authenticated the google app already via auth0
          * From https://gist.github.com/woloski/190f10d0d120318082a2
          */
+        setIsLoading(true);
         gapi.auth.authorize(
           {
             client_id: config.GOOGLE_CLIENT_ID,
             scope: config.GOOGLE_SCOPES.join(' '),
-            immediate: true,
+            // Does not work well in Safari
+            // immediate: true,
           },
           function (authResult) {
             if (authResult.error) {
-              alert(JSON.stringify(authResult));
+              if (authResult.error == 'popup_blocked_by_browser') {
+                alert('Please allow popups for Kelp');
+              } else {
+                alert(JSON.stringify(authResult.error));
+              }
+              // Unsure if logging out is helpful
               logout();
             }
             if (authResult) {

@@ -38,7 +38,7 @@ Add your google oauth app and Auth0 tokens to [.env.local]
     NEXT_PUBLIC_AUTH0_DOMAIN=foo.us.auth0.com
     NEXT_PUBLIC_AUTH0_CLIENT_ID=foo
     NEXT_PUBLIC_GOOGLE_CLIENT_ID=foo-bar-baz.apps.googleusercontent.com
-    (optional if not at localhost:3000) NEXT_PUBLIC_AUTH0_REDIRECT_URI=http://localhost:8080/dashboard
+    (optional if not at localhost:3000) NEXT_PUBLIC_AUTH0_REDIRECT_URI=http://localhost:8080/dashboard?tab=meetings
 
 When starting the app in development mode
 

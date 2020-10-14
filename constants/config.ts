@@ -22,8 +22,6 @@ export default {
   NUMBER_OF_DAYS_BACK: 7,
   WEEK_STARTS_ON: 1,
   IS_GMAIL_ENABLED: false,
-  PROJECT_PLAN_LINK:
-    'https://paper.dropbox.com/doc/PRD-Kelp--A4JorXdRzV~85B02WO_LKxvxAQ-BYyp9SN4nRnibg3Rl20th',
   startDate: subDays(new Date(), 7),
   YELLOW_BACKGROUND: '#deff2a', // TODO: Add to theme somehow?
   ORANGE_BACKGROUND: '#ffd12a',
