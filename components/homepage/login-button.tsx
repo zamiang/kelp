@@ -5,6 +5,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 import React from 'react';
+import config from '../../constants/config';
+
+export const loginWithRedirectArgs = {
+  connection: 'google-oauth2',
+  connection_scope: config.GOOGLE_SCOPES.join(', '),
+};
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -41,7 +47,7 @@ const LoginButton = () => {
   }
   return (
     <Button
-      onClick={loginWithRedirect}
+      onClick={() => loginWithRedirect(loginWithRedirectArgs)}
       className={classes.button}
       variant="outlined"
       disableElevation={true}

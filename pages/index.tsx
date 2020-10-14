@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import React from 'react';
 import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
-import LoginButton from '../components/homepage/login-button';
+import LoginButton, { loginWithRedirectArgs } from '../components/homepage/login-button';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -227,7 +227,7 @@ const App = () => {
                   size="large"
                   color="primary"
                   className={classes.login}
-                  onClick={loginWithRedirect}
+                  onClick={() => loginWithRedirect(loginWithRedirectArgs)}
                   disableElevation={true}
                 >
                   Log In
