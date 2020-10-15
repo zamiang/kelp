@@ -1,11 +1,14 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
-import { addDays, differenceInMinutes, format, isSameDay, startOfWeek } from 'date-fns';
+import { addDays, differenceInMinutes, format, isSameDay, startOfWeek, subDays } from 'date-fns';
 import { times } from 'lodash';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { IDoc } from '../store/doc-store';
@@ -101,14 +104,31 @@ const useTitleRowStyles = makeStyles((theme) => ({
   },
 }));
 
-const TitleRow = (props: { start: Date }) => {
+const TitleRow = (props: {
+  start: Date;
+  onTodayClick: () => void;
+  onBackClick: () => void;
+  onForwardClick: () => void;
+}) => {
   const classes = useTitleRowStyles();
-
   return (
     <div className={classes.container}>
-      <Typography variant="h4" className={classes.heading}>
-        <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
-      </Typography>
+      <Grid container justify="space-between" alignContent="center" alignItems="center">
+        <Grid item>
+          <Typography variant="h4" className={classes.heading}>
+            <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button onClick={props.onBackClick}>
+            <ChevronLeftIcon />
+          </Button>
+          <Button onClick={props.onTodayClick}>Today</Button>
+          <Button onClick={props.onForwardClick}>
+            <ChevronRightIcon />
+          </Button>
+        </Grid>
+      </Grid>
       <Grid container>
         <Grid item className={classes.spacer}></Grid>
         <Grid item className={classes.item}>
@@ -380,7 +400,18 @@ const useStyles = makeStyles(() => ({
 
 const Calendar = (props: IStore) => {
   const classes = useStyles();
-  const start = startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any });
+  const [start, setStart] = useState<Date>(
+    startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any }),
+  );
+  const onTodayClick = () => {
+    setStart(startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any }));
+  };
+  const onForwardClick = () => {
+    setStart(addDays(start, 7));
+  };
+  const onBackClick = () => {
+    setStart(subDays(start, 7));
+  };
   const dayColumn = times(7).map((day) => (
     <Grid item key={day} className={classes.dayColumn}>
       <HourRows />
@@ -399,7 +430,12 @@ const Calendar = (props: IStore) => {
   ));
   return (
     <div className={classes.container}>
-      <TitleRow start={start} />
+      <TitleRow
+        start={start}
+        onBackClick={onBackClick}
+        onForwardClick={onForwardClick}
+        onTodayClick={onTodayClick}
+      />
       <Grid container className={classes.calendar}>
         <Grid item>
           <HourLabels />
