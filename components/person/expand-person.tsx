@@ -48,7 +48,7 @@ const getAssociates = (
   person: IPerson,
   timeDataStore: IStore['timeDataStore'],
 ) => {
-  const attendeeLookup = {};
+  const attendeeLookup = {} as any;
   const associates = {} as any;
   person.segmentIds.map((segmentId) => {
     const segment = timeDataStore.getSegmentById(segmentId);
@@ -71,7 +71,7 @@ const getAssociates = (
     }
   });
 
-  const attendees = Object.entries(associates).sort((a, b) => b[1] - a[1]);
+  const attendees = Object.entries(associates).sort((a: any, b: any) => b[1] - a[1]);
   return attendees.map((a) => attendeeLookup[a[0]]);
 };
 
