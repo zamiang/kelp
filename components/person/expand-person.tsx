@@ -4,10 +4,13 @@ import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { formatDuration, intervalToDuration } from 'date-fns';
 import React from 'react';
+import AttendeeList from '../shared/attendee-list';
 import DriveActivity from '../shared/drive-activity';
 import EmailsList from '../shared/emails-list';
 import MeetingList from '../shared/meeting-list';
+import { IPerson } from '../store/person-store';
 import { IStore } from '../store/use-store';
 
 const ADD_SENDER_LINK =
@@ -40,12 +43,58 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getAssociates = (
+  personId: string,
+  person: IPerson,
+  timeDataStore: IStore['timeDataStore'],
+) => {
+  const attendeeLookup = {};
+  const associates = {} as any;
+  person.segmentIds.map((segmentId) => {
+    const segment = timeDataStore.getSegmentById(segmentId);
+    if (segment) {
+      segment?.formattedAttendees.map((attendee) => {
+        if (
+          attendee.personId &&
+          attendee.personId !== personId &&
+          !attendee.self &&
+          attendee.responseStatus === 'accepted'
+        ) {
+          if (associates[attendee.personId]) {
+            associates[attendee.personId]++;
+          } else {
+            attendeeLookup[attendee.personId] = attendee;
+            associates[attendee.personId] = 1;
+          }
+        }
+      });
+    }
+  });
+
+  const attendees = Object.entries(associates).sort((a, b) => b[1] - a[1]);
+  return attendees.map((a) => attendeeLookup[a[0]]);
+};
+
 const ExpandPerson = (props: IStore & { personId: string }) => {
   const classes = useStyles();
   const person = props.personDataStore.getPersonById(props.personId);
   if (!person) {
     return null;
   }
+  const timeInMeetingsInMs = person.segmentIds
+    ? person.segmentIds
+        .map((segmentId) => {
+          const segment = props.timeDataStore.getSegmentById(segmentId);
+          return segment ? segment.end.valueOf() - segment.start.valueOf() : 0;
+        })
+        .reduce((a, b) => a + b, 0)
+    : 0;
+  const duration = intervalToDuration({
+    start: new Date(0),
+    end: new Date(timeInMeetingsInMs),
+  });
+  const timeInMeetings = formatDuration(duration);
+  const associates = getAssociates(props.personId, person, props.timeDataStore);
   return (
     <div className={classes.container}>
       <Box flexDirection="row" alignItems="flex-start" display="flex">
@@ -102,6 +151,16 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
               />
             </React.Fragment>
           )}
+        </Grid>
+        <Grid item xs={5}>
+          <Typography variant="h6" className={classes.smallHeading}>
+            Time in meetings this week
+          </Typography>
+          <div>{timeInMeetings}</div>
+          <Typography variant="h6" className={classes.smallHeading}>
+            Common associates
+          </Typography>
+          <AttendeeList personStore={props.personDataStore} attendees={associates} />
         </Grid>
       </Grid>
     </div>

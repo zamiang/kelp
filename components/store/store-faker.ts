@@ -10,11 +10,11 @@ import { ISegment, getStateForMeeting } from './time-store';
 
 const PEOPLE_COUNT = 10;
 const EMAIL_THREAD_COUNT = 10;
-const EMAIL_COUNT = 50;
+const EMAIL_COUNT = 0;
 const DOCUMENT_COUNT = 50;
 const CURRENT_USER_EMAIL = 'brennanmoore@gmail.com';
-const HOURS_COVERED = 24;
-
+const NUMBER_OF_MEETINGS = 16;
+const NUMBER_OF_DRIVE_ACTIVITY = 20;
 /**
  * create name/email pairs to be used across the fake data
  */
@@ -89,12 +89,12 @@ const documents: IDoc[] = times(DOCUMENT_COUNT, () => ({
  */
 const driveActivity: IFormattedDriveActivity[] = [];
 documents.map((document) => {
-  times(10, () => {
+  times(NUMBER_OF_DRIVE_ACTIVITY, () => {
     driveActivity.push({
       id: Faker.random.uuid(),
       time: Faker.date.recent(1),
       action: 'comment', // TODO
-      actorPersonId: people[random(0, PEOPLE_COUNT - 1)].emailAddress, // TODO use person id
+      actorPersonId: people[random(0, PEOPLE_COUNT)].id, // TODO use person id
       title: Faker.lorem.lines(1),
       link: document.id,
     });
@@ -114,11 +114,11 @@ const getRandomResponseStatus = () =>
   ]);
 
 /**
- * 24 thirty minute meetings back to back
+ * thirty minute meetings back to back
  * Cover the entire day - 'Faker.date.recent(1)`
  */
-let startDate = addMinutes(new Date(), 300);
-const segments: ISegment[] = times(HOURS_COVERED, () => {
+let startDate = new Date(new Date().setHours(17));
+const segments: ISegment[] = times(NUMBER_OF_MEETINGS, () => {
   startDate = subMinutes(startDate, 30);
 
   const attendees = sampleSize(people, 5)
