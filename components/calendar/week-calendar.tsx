@@ -6,7 +6,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
 import { addDays, differenceInMinutes, format, isSameDay, startOfWeek, subDays } from 'date-fns';
-import { times } from 'lodash';
+import { times, uniq } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
@@ -370,7 +370,7 @@ const DayContent = (props: IDayContentProps) => {
 
     documentsHtml = documentActivityPairs.map((pairs) => (
       <DocumentItem
-        key={pairs.document ? pairs.document.id : 'key'}
+        key={pairs.activity ? pairs.activity.id : 'key'}
         document={pairs.document}
         activity={pairs.activity}
       />
