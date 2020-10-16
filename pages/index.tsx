@@ -130,7 +130,7 @@ export const useStyles = makeStyles((theme) => ({
     display: 'block',
   },
   row: {
-    borderBottom: `1px solid ${theme.palette.primary.dark}`,
+    borderBottom: `1px solid ${theme.palette.text.primary}`,
   },
   smallIcon: {
     maxWidth: 60,

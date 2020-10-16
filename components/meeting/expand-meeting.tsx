@@ -1,45 +1,18 @@
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/drive-activity';
 import EmailsList from '../shared/emails-list';
+import useExpandStyles from '../shared/expand-styles';
 import { IPerson } from '../store/person-store';
 import { IStore } from '../store/use-store';
 
-const useStyles = makeStyles((theme) => ({
-  // todo move into theme
-  container: {
-    padding: theme.spacing(5),
-    margin: 0,
-    width: 'auto',
-  },
-  heading: {
-    borderBottom: `2px solid ${theme.palette.secondary.main}`,
-    marginBottom: theme.spacing(2),
-    display: 'inline-block',
-    marginLeft: theme.spacing(1),
-  },
-  smallHeading: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    fontSize: theme.typography.body2.fontSize,
-    textTransform: 'uppercase',
-  },
-  content: {
-    marginTop: theme.spacing(1),
-  },
-  link: {
-    color: theme.palette.primary.dark,
-  },
-}));
-
 const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
-  const classes = useStyles();
+  const classes = useExpandStyles();
   const meeting = props.timeDataStore.getSegmentById(props.meetingId);
   if (!meeting) {
     return null;
@@ -168,7 +141,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
         <Grid item xs={5}>
           {shouldShowOrganizer && organizer && (
             <React.Fragment>
-              <Typography variant="h6" className={classes.heading}>
+              <Typography variant="h6" className={classes.smallHeading}>
                 Organizer
               </Typography>
               <AttendeeList personStore={props.personDataStore} attendees={[organizer]} />
@@ -176,7 +149,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
           )}
           {shouldShowCreator && creator && (
             <React.Fragment>
-              <Typography variant="h6" className={classes.heading}>
+              <Typography variant="h6" className={classes.smallHeading}>
                 Creator
               </Typography>
               <AttendeeList personStore={props.personDataStore} attendees={[creator]} />
@@ -184,7 +157,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
           )}
           {hasAttendees && (
             <React.Fragment>
-              <Typography variant="h6" className={classes.heading}>
+              <Typography variant="h6" className={classes.smallHeading}>
                 Guests
               </Typography>
               <AttendeeList personStore={props.personDataStore} attendees={attendees} />

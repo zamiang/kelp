@@ -23,13 +23,13 @@ const useStyles = makeStyles((theme) => ({
   },
   dockedPanel: {
     width: `calc((100vw - ${drawerWidth}px) * 0.618)`,
-    // top: TOP_BAR_HEIGHT,
+    borderRadius: `${theme.spacing(2)}px 0 0 ${theme.spacing(2)}px`,
   },
   title: {
     fontSize: theme.typography.body2.fontSize,
     textTransform: 'uppercase',
     marginBottom: theme.spacing(2),
-    borderBottom: `1px solid ${theme.palette.primary.dark}`,
+    borderBottom: `1px solid ${theme.palette.text.secondary}`,
   },
   row: {
     marginBottom: theme.spacing(4),
