@@ -30,7 +30,7 @@ times(PEOPLE_COUNT, () => {
     isMissingProfile: false,
     isCurrentUser: false,
     emailIds: [],
-    driveActivityIds: [],
+    driveActivity: {},
     segmentIds: [],
   });
 });
@@ -44,7 +44,7 @@ people.push({
   isMissingProfile: false,
   isCurrentUser: true,
   emailIds: [],
-  driveActivityIds: [],
+  driveActivity: {},
   segmentIds: [],
 });
 

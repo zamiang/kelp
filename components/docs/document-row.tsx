@@ -11,17 +11,20 @@ import { IDoc } from '../store/doc-store';
 
 const useStyles = makeStyles({
   imageContainer: {
-    maxWidth: 40,
+    flex: '0 0 40px',
   },
   image: {
     width: '100%',
+  },
+  text: {
+    flex: '1 1 30%;',
+    overflow: 'hidden',
   },
 });
 
 const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
-
   return (
     <ListItem
       button={true}
@@ -44,7 +47,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
           <Grid item className={classes.imageContainer}>
             <img src={props.doc.iconLink} className={classes.image} />
           </Grid>
-          <Grid item style={{ flex: 1 }}>
+          <Grid item className={classes.text}>
             <Typography variant="body1">{props.doc.name}</Typography>
             <Typography variant="caption" color="textSecondary">
               Last updated on {format(new Date(props.doc.updatedAt!), "MMMM do, yyyy 'at' hh:mm a")}

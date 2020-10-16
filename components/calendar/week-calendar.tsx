@@ -6,7 +6,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
 import { addDays, differenceInMinutes, format, isSameDay, startOfWeek, subDays } from 'date-fns';
-import { times, uniq } from 'lodash';
+import { times } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
@@ -360,12 +360,11 @@ const DayContent = (props: IDayContentProps) => {
   }
 
   if (props.shouldShowDocumentActivity && currentUser) {
-    const documentActivityPairs = currentUser.driveActivityIds
-      .map((id) => props.activityStore.getById(id))
+    const documentActivityPairs = Object.values(currentUser.driveActivity)
       .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
       .map((activity) => ({
         activity,
-        document: props.documentsStore.getByLink(activity!.link!),
+        document: props.documentsStore.getByLink(activity.link!),
       }));
 
     documentsHtml = documentActivityPairs.map((pairs) => (

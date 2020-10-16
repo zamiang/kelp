@@ -12,7 +12,7 @@ export interface IPerson {
   emailIds: string[];
   isCurrentUser: boolean;
   isMissingProfile: boolean;
-  driveActivityIds: string[];
+  driveActivity: { [id: string]: IFormattedDriveActivity };
   segmentIds: string[];
 }
 
@@ -33,7 +33,7 @@ export const formatPerson = (person: GooglePerson) => ({
   isCurrentUser: false,
   isMissingProfile: person.isMissingProfile,
   emailIds: [],
-  driveActivityIds: [],
+  driveActivity: {},
   segmentIds: [],
 });
 
@@ -45,7 +45,7 @@ const createNewPersonFromEmail = (email: string) => ({
   isCurrentUser: false,
   isMissingProfile: false,
   emailIds: [],
-  driveActivityIds: [],
+  driveActivity: {},
   segmentIds: [],
 });
 
@@ -116,7 +116,7 @@ export default class PersonDataStore {
           : null;
         const person = personId && this.personById[personId];
         if (person) {
-          person.driveActivityIds.push(driveActivity.id);
+          person.driveActivity[driveActivity.id] = driveActivity;
         }
       }
     });

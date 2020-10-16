@@ -49,6 +49,9 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   const hasEmails = meeting.emailIds.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
   const hasDriveActivity = meeting.driveActivityIds.length > 0;
+  const meetingDriveActivity = meeting.driveActivityIds.map(
+    (id) => props.driveActivityStore.getById(id)!,
+  );
   const attendeeIds = (meeting.formattedAttendees || [])
     .filter((attendee) => !attendee.self)
     .map((attendee) => attendee.personId);
@@ -64,9 +67,11 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
       );
       return flatten(segments);
     }),
-  );
+  ).map((id) => props.driveActivityStore.getById(id)!);
   const recentEmailsFromAttendees = flatten(people.map((person) => person.emailIds));
-  const driveActivityFromAttendees = flatten(people.map((person) => person.driveActivityIds));
+  const driveActivityFromAttendees = flatten(
+    people.map((person) => Object.values(person.driveActivity)),
+  );
 
   // TODO: Improve creator/organizer logic
   const shouldShowCreator = meeting.creator ? true : false;
@@ -117,8 +122,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
                 Documents with activity during this meeting
               </Typography>
               <DriveActivityList
-                driveActivityIds={meeting.driveActivityIds}
-                driveActivityStore={props.driveActivityStore}
+                driveActivity={meetingDriveActivity}
                 docStore={props.docDataStore}
                 personStore={props.personDataStore}
               />
@@ -130,8 +134,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
                 Documents you edited while meeting with these attendees recently
               </Typography>
               <DriveActivityList
-                driveActivityIds={documentsCurrentUserEditedWhileMeetingWithAttendees}
-                driveActivityStore={props.driveActivityStore}
+                driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
                 docStore={props.docDataStore}
                 personStore={props.personDataStore}
               />
@@ -155,8 +158,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
                 Documents recently edited by people in this meeting
               </Typography>
               <DriveActivityList
-                driveActivityIds={driveActivityFromAttendees}
-                driveActivityStore={props.driveActivityStore}
+                driveActivity={driveActivityFromAttendees}
                 docStore={props.docDataStore}
                 personStore={props.personDataStore}
               />

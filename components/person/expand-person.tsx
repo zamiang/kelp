@@ -5,6 +5,7 @@ import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { formatDuration, intervalToDuration } from 'date-fns';
+import { isEmpty } from 'lodash';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivity from '../shared/drive-activity';
@@ -114,14 +115,13 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
           </Grid>
         )}
         <Grid item xs={7}>
-          {person.driveActivityIds.length > 0 && (
+          {!isEmpty(person.driveActivity) && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
                 Active Documents
               </Typography>
               <DriveActivity
-                driveActivityIds={person.driveActivityIds}
-                driveActivityStore={props.driveActivityStore}
+                driveActivity={Object.values(person.driveActivity)}
                 personStore={props.personDataStore}
                 docStore={props.docDataStore}
               />
