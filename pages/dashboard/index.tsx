@@ -122,6 +122,9 @@ const RightDrawer = (props: {
   );
 };
 
+// https://github.com/Pomax/react-onclickoutside/issues/327
+RightDrawer.prototype = {};
+
 const clickOutsideConfig = {
   handleClickOutside: () => (RightDrawer as any).handleClickOutside,
 };
