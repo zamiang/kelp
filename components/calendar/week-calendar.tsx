@@ -360,17 +360,16 @@ const DayContent = (props: IDayContentProps) => {
   }
 
   if (props.shouldShowDocumentActivity && currentUser) {
-    const documentActivityPairs = currentUser.driveActivityIds
-      .map((id) => props.activityStore.getById(id))
+    const documentActivityPairs = Object.values(currentUser.driveActivity)
       .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
       .map((activity) => ({
         activity,
-        document: props.documentsStore.getByLink(activity!.link!),
+        document: props.documentsStore.getByLink(activity.link!),
       }));
 
     documentsHtml = documentActivityPairs.map((pairs) => (
       <DocumentItem
-        key={pairs.document ? pairs.document.id : 'key'}
+        key={pairs.activity ? pairs.activity.id : 'key'}
         document={pairs.document}
         activity={pairs.activity}
       />

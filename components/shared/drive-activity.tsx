@@ -6,8 +6,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { uniqBy } from 'lodash';
 import Link from 'next/link';
 import React from 'react';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import DocDataStore, { IDoc } from '../store/doc-store';
-import DriveActivityDataStore from '../store/drive-activity-store';
 import PersonDataStore from '../store/person-store';
 
 const useRowStyles = makeStyles(() => ({
@@ -50,15 +50,13 @@ const Activity = (props: { document: IDoc }) => {
 };
 
 const DriveActivityList = (props: {
-  driveActivityIds: string[];
-  driveActivityStore: DriveActivityDataStore;
+  driveActivity: IFormattedDriveActivity[];
   personStore: PersonDataStore;
   docStore: DocDataStore;
 }) => {
   const classes = useRowStyles();
-  const driveActivity = props.driveActivityIds.map((id) => props.driveActivityStore.getById(id));
   const actions = uniqBy(
-    driveActivity.filter((action) => action && action.link),
+    props.driveActivity.filter((action) => action && action.link),
     'link',
   );
   if (actions.length < 1) {
@@ -66,7 +64,7 @@ const DriveActivityList = (props: {
   }
   const docs = actions
     .filter((action) => action && action.link)
-    .map((action) => props.docStore.getByLink(action!.link!))
+    .map((action) => props.docStore.getByLink(action.link!))
     .filter((doc) => doc && doc.updatedAt)
     .sort((a, b) => (a!.updatedAt! > b!.updatedAt! ? -1 : 1));
   return (

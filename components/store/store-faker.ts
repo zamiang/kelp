@@ -1,4 +1,4 @@
-import { addMinutes, subMinutes } from 'date-fns';
+import { addDays, addMinutes, getDay, setDay, setHours } from 'date-fns';
 import Faker from 'faker';
 import { random, sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
@@ -30,7 +30,7 @@ times(PEOPLE_COUNT, () => {
     isMissingProfile: false,
     isCurrentUser: false,
     emailIds: [],
-    driveActivityIds: [],
+    driveActivity: {},
     segmentIds: [],
   });
 });
@@ -44,7 +44,7 @@ people.push({
   isMissingProfile: false,
   isCurrentUser: true,
   emailIds: [],
-  driveActivityIds: [],
+  driveActivity: {},
   segmentIds: [],
 });
 
@@ -84,23 +84,6 @@ const documents: IDoc[] = times(DOCUMENT_COUNT, () => ({
   updatedAt: new Date(Faker.date.recent(1).toISOString()),
 }));
 
-/**
- * create 10 drive activity per document
- */
-const driveActivity: IFormattedDriveActivity[] = [];
-documents.map((document) => {
-  times(NUMBER_OF_DRIVE_ACTIVITY, () => {
-    driveActivity.push({
-      id: Faker.random.uuid(),
-      time: Faker.date.recent(1),
-      action: 'comment', // TODO
-      actorPersonId: people[random(0, PEOPLE_COUNT)].id, // TODO use person id
-      title: Faker.lorem.lines(1),
-      link: document.id,
-    });
-  });
-});
-
 const getRandomResponseStatus = () =>
   sample<string>([
     'accepted',
@@ -117,52 +100,85 @@ const getRandomResponseStatus = () =>
  * thirty minute meetings back to back
  * Cover the entire day - 'Faker.date.recent(1)`
  */
-let startDate = new Date(new Date().setHours(17));
-const segments: ISegment[] = times(NUMBER_OF_MEETINGS, () => {
-  startDate = subMinutes(startDate, 30);
 
-  const attendees = sampleSize(people, 5)
-    .filter((person) => person.emailAddress !== CURRENT_USER_EMAIL)
-    .map((person) => ({
-      email: person.emailAddress,
-      self: false,
-      // Adds accepted many times to weight it higher in the sample
-      responseStatus: getRandomResponseStatus(),
-    }));
+const segments: ISegment[] = [];
+const DAYS_IN_WEEK = 7;
+const WEEKS_TO_CREATE = 3;
+const START_HOUR = 9;
+const startDate = setDay(new Date(new Date().setHours(9)), -(DAYS_IN_WEEK * WEEKS_TO_CREATE));
 
-  attendees.push({
-    email: CURRENT_USER_EMAIL,
-    self: true,
-    // Adds accepted many times to weight it higher in the sample
-    responseStatus: getRandomResponseStatus(),
+/**
+ * create drive activity per document
+ */
+const driveActivity: IFormattedDriveActivity[] = [];
+documents.map((document) => {
+  times(NUMBER_OF_DRIVE_ACTIVITY, () => {
+    driveActivity.push({
+      id: Faker.random.uuid(),
+      time: Faker.date.recent(DAYS_IN_WEEK * WEEKS_TO_CREATE),
+      action: 'comment', // TODO
+      actorPersonId: people[random(0, PEOPLE_COUNT)].id, // TODO use person id
+      title: Faker.lorem.lines(1),
+      link: document.id,
+    });
   });
+});
 
-  const formattedAttendees = attendees.map((attendee) => ({
-    personId: attendee.email!, // TODO: Simulate google person ids
-    self: attendee.self,
-    responseStatus: attendee.responseStatus,
-  }));
-  const endDate = addMinutes(startDate, 30);
-  return {
-    id: Faker.random.uuid(),
-    link: Faker.internet.url(),
-    summary: `${Faker.commerce.productName()} meeting`,
-    description: Faker.lorem.paragraphs(3),
-    start: startDate,
-    end: endDate,
-    attendees,
-    formattedAttendees,
-    creator: {
-      email: sample(people)?.emailAddress,
-    },
-    organizer: {
-      email: sample(people)?.emailAddress,
-    },
-    selfResponseStatus: getSelfResponseStatus(attendees),
-    state: getStateForMeeting({ start: startDate, end: endDate }),
-    driveActivityIds: [],
-    emailIds: [],
-  };
+times(WEEKS_TO_CREATE, (week: number) => {
+  let date = setDay(startDate, DAYS_IN_WEEK * (week + 1));
+  times(DAYS_IN_WEEK, () => {
+    date = setHours(addDays(date, 1), START_HOUR);
+    times(NUMBER_OF_MEETINGS, () => {
+      const currentDayOfWeek = getDay(date);
+      if (currentDayOfWeek > 5 || currentDayOfWeek < 1) {
+        return;
+      }
+      date = addMinutes(date, 30);
+      const endDate = addMinutes(date, 30);
+      const attendees = sampleSize(people, 5)
+        .filter((person) => person.emailAddress !== CURRENT_USER_EMAIL)
+        .map((person) => ({
+          email: person.emailAddress,
+          self: false,
+          // Adds accepted many times to weight it higher in the sample
+          responseStatus: getRandomResponseStatus(),
+        }));
+
+      attendees.push({
+        email: CURRENT_USER_EMAIL,
+        self: true,
+        // Adds accepted many times to weight it higher in the sample
+        responseStatus: getRandomResponseStatus(),
+      });
+
+      const formattedAttendees = attendees.map((attendee) => ({
+        personId: attendee.email!, // TODO: Simulate google person ids
+        self: attendee.self,
+        responseStatus: attendee.responseStatus,
+      }));
+
+      segments.push({
+        id: Faker.random.uuid(),
+        link: Faker.internet.url(),
+        summary: `${Faker.commerce.productName()} meeting`,
+        description: Faker.lorem.paragraphs(3),
+        start: date,
+        end: endDate,
+        attendees,
+        formattedAttendees,
+        creator: {
+          email: sample(people)?.emailAddress,
+        },
+        organizer: {
+          email: sample(people)?.emailAddress,
+        },
+        selfResponseStatus: getSelfResponseStatus(attendees),
+        state: getStateForMeeting({ start: startDate, end: endDate }),
+        driveActivityIds: [],
+        emailIds: [],
+      });
+    });
+  });
 });
 
 export default { people, documents, segments, emails, driveActivity };

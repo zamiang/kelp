@@ -12,13 +12,14 @@ const useFakeStore = (): IStore => {
     contactsByEmail: {},
     contactsByPeopleId: {},
   });
-  personDataStore.addEmailsToStore(data.emails || []);
+  // personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
   personDataStore.addGoogleCalendarEventsIdsToStore(data.segments);
+  // personDataStore.addCurrentUserFlag(data.calendarEvents);
   // console.log('PERSON DATA STORE:', personDataStore);
 
   const timeDataStore = new TimeDataStore(data.segments, personDataStore);
-  timeDataStore.addEmailsToStore(data.emails);
+  // timeDataStore.addEmailsToStore(data.emails);
   timeDataStore.addDriveActivityToStore(data.driveActivity);
   // console.log('TIME DATA STORE:', timeDataStore);
 
