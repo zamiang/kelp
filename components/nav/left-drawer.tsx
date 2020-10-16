@@ -16,7 +16,6 @@ import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { drawerWidth } from '../../pages/dashboard';
 import { IDoc } from '../store/doc-store';

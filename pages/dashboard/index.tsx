@@ -99,7 +99,10 @@ const RightDrawer = (props: {
   const router = useRouter();
   const isRightDrawerOpen = !!props.slug;
   const panelClasses = panelStyles();
-  RightDrawer.handleClickOutside = () => router.push(`?tab=${props.tab}`);
+  (RightDrawer as any).handleClickOutside = async () => {
+    const tab = new URLSearchParams(window.location.search).get('tab');
+    return router.push(`?tab=${tab}`);
+  };
   const expandHash = {
     docs: props.slug && <ExpandedDocument documentId={props.slug} {...props.store} />,
     people: props.slug && <ExpandPerson personId={props.slug} {...props.store} />,
@@ -120,7 +123,7 @@ const RightDrawer = (props: {
 };
 
 const clickOutsideConfig = {
-  handleClickOutside: () => RightDrawer.handleClickOutside,
+  handleClickOutside: () => (RightDrawer as any).handleClickOutside,
 };
 
 const OnClickOutsideRightDrawer = onClickOutside(RightDrawer, clickOutsideConfig);
@@ -186,7 +189,7 @@ export const DashboardContainer = ({ store }: IProps) => {
           store={store}
           shouldRenderPanel={shouldRenderPanel}
           slug={slug as any}
-          tab={tab}
+          tab={tab as any}
         />
       </main>
     </div>
