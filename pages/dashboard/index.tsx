@@ -100,7 +100,7 @@ const RightDrawer = (props: {
   const isRightDrawerOpen = !!props.slug;
   const panelClasses = panelStyles();
   (RightDrawer as any).handleClickOutside = async () => {
-    const tab = new URLSearchParams(window.location.search).get('tab');
+    const tab = new URLSearchParams(window.location.search).get('tab')!;
     return router.push(`?tab=${tab}`);
   };
   const expandHash = {
