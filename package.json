@@ -45,7 +45,7 @@
     "lodash": "4.17.20",
     "next": "9.5.5",
     "next-secure-headers": "2.0.0",
-    "react": "16.13.1",
+    "react": "16.14.0",
     "react-async-hook": "3.6.2",
     "react-dom": "16.13.1",
     "sitemap": "6.3.2",
