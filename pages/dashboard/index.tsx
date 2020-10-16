@@ -9,6 +9,7 @@ import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import onClickOutside from 'react-onclickoutside';
 import WeekCalendar from '../../components/calendar/week-calendar';
 import Docs from '../../components/dashboard/docs';
 import Meetings from '../../components/dashboard/meetings';
@@ -89,6 +90,41 @@ const Loading = (props: { isOpen: boolean; message: string }) => {
   );
 };
 
+const RightDrawer = (props: {
+  shouldRenderPanel: boolean;
+  tab: 'docs' | 'people' | 'meetings';
+  slug: string;
+  store: IStore;
+}) => {
+  const router = useRouter();
+  const isRightDrawerOpen = !!props.slug;
+  const panelClasses = panelStyles();
+  RightDrawer.handleClickOutside = () => router.push(`?tab=${props.tab}`);
+  const expandHash = {
+    docs: props.slug && <ExpandedDocument documentId={props.slug} {...props.store} />,
+    people: props.slug && <ExpandPerson personId={props.slug} {...props.store} />,
+    meetings: props.slug && <ExpandedMeeting meetingId={props.slug} {...props.store} />,
+  } as any;
+  return (
+    <Drawer
+      open={props.shouldRenderPanel && isRightDrawerOpen}
+      classes={{
+        paper: panelClasses.dockedPanel,
+      }}
+      anchor="right"
+      variant="persistent"
+    >
+      {expandHash[props.tab]}
+    </Drawer>
+  );
+};
+
+const clickOutsideConfig = {
+  handleClickOutside: () => RightDrawer.handleClickOutside,
+};
+
+const OnClickOutsideRightDrawer = onClickOutside(RightDrawer, clickOutsideConfig);
+
 interface IProps {
   store: IStore;
 }
@@ -96,17 +132,17 @@ interface IProps {
 export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const panelClasses = panelStyles();
+  const handleRefreshClick = () => store.refetch();
+  const router = useRouter();
+  const slug = router.query.slug as string | null;
+  const tab = router.query.tab as string;
   const [isOpen, setOpen] = useState(true);
-  const handleDrawerOpen = () => {
+  const handleLeftDrawerOpen = () => {
     setOpen(true);
   };
-  const handleDrawerClose = () => {
+  const handleLeftDrawerClose = () => {
     setOpen(false);
   };
-
-  const handleRefreshClick = () => store.refetch();
-  const slug = useRouter().query.slug as string | null;
-  const tab = useRouter().query.tab as string;
 
   const tabHash = {
     week: <WeekCalendar {...store} />,
@@ -124,44 +160,34 @@ export const DashboardContainer = ({ store }: IProps) => {
     settings: classes.purpleBackground,
   } as any;
 
-  const expandHash = {
-    docs: slug && <ExpandedDocument documentId={slug} {...store} />,
-    people: slug && <ExpandPerson personId={slug} {...store} />,
-    meetings: slug && <ExpandedMeeting meetingId={slug} {...store} />,
-  } as any;
-
-  const isDrawerOpen = tab !== 'week';
+  const shouldRenderPanel = tab !== 'week';
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
       <LeftDrawer
         lastUpdated={store.lastUpdated}
-        handleDrawerClose={handleDrawerClose}
+        handleDrawerClose={handleLeftDrawerOpen}
         isOpen={isOpen}
         people={store.personDataStore.getPeople()}
         documents={store.docDataStore.getDocs()}
         meetings={store.timeDataStore.getSegments()}
-        handleDrawerOpen={handleDrawerOpen}
+        handleDrawerOpen={handleLeftDrawerClose}
         handleRefreshClick={handleRefreshClick}
         tab={tab as any}
       />
       <main className={classes.content}>
-        {isDrawerOpen && (
+        {shouldRenderPanel && (
           <div className={panelClasses.panel}>
             {store.error && <Alert severity="error">{JSON.stringify(store.error)}</Alert>}
             {tabHash[tab]}
           </div>
         )}
-        {!isDrawerOpen && tabHash[tab]}
-        <Drawer
-          open={isDrawerOpen}
-          classes={{
-            paper: panelClasses.dockedPanel,
-          }}
-          anchor="right"
-          variant="persistent"
-        >
-          {expandHash[tab]}
-        </Drawer>
+        {!shouldRenderPanel && tabHash[tab]}
+        <OnClickOutsideRightDrawer
+          store={store}
+          shouldRenderPanel={shouldRenderPanel}
+          slug={slug as any}
+          tab={tab}
+        />
       </main>
     </div>
   );
