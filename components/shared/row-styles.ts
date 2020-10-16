@@ -57,30 +57,35 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.primary.main,
     '&.MuiListItem-button:hover': {
       borderColor: theme.palette.info.main,
+      background: theme.palette.primary.main,
     },
   },
   yellowBackground: {
     backgroundColor: config.YELLOW_BACKGROUND,
     '&.MuiListItem-button:hover': {
       borderColor: config.YELLOW_BACKGROUND,
+      backgroundColor: config.YELLOW_BACKGROUND,
     },
   },
   orangeBackground: {
     backgroundColor: config.ORANGE_BACKGROUND,
     '&.MuiListItem-button:hover': {
       borderColor: config.ORANGE_BACKGROUND,
+      backgroundColor: config.ORANGE_BACKGROUND,
     },
   },
   purpleBackground: {
     backgroundColor: config.PURPLE_BACKGROUND,
     '&.MuiListItem-button:hover': {
       borderColor: config.PURPLE_BACKGROUND,
+      backgroundColor: config.PURPLE_BACKGROUND,
     },
   },
   pinkBackground: {
     backgroundColor: config.PINK_BACKGROUND,
     '&.MuiListItem-button:hover': {
       borderColor: config.PINK_BACKGROUND,
+      backgroundColor: config.PINK_BACKGROUND,
     },
   },
 }));
