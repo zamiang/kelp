@@ -21,6 +21,7 @@ const PersonRow = (
     <ListItem
       button={true}
       className={clsx(
+        'ignore-react-onclickoutside',
         rowStyles.row,
         props.selectedPersonId === props.person.id && rowStyles.orangeBackground,
       )}

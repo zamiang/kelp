@@ -28,7 +28,7 @@ const RefreshButton = (props: IProps) => {
   }, [seconds]);
   return (
     <List>
-      <ListItem button dense onClick={props.refresh}>
+      <ListItem button dense onClick={props.refresh} className={'ignore-react-onclickoutside'}>
         <ListItemIcon>
           <RefreshIcon />
         </ListItemIcon>

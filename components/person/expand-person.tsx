@@ -86,13 +86,13 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
       </Box>
       <Grid container spacing={3} className={classes.content}>
         {person.isMissingProfile && (
-          <Grid item xs={7}>
+          <Grid item sm={7}>
             <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
               Add this person to your google contacts for more info
             </MuiLink>
           </Grid>
         )}
-        <Grid item xs={7}>
+        <Grid item sm={7}>
           {!isEmpty(person.driveActivity) && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
@@ -130,7 +130,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
             </React.Fragment>
           )}
         </Grid>
-        <Grid item xs={5}>
+        <Grid item sm={5}>
           {timeInMeetingsInMs > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

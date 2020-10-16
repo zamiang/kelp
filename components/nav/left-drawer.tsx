@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     height: '100vh',
+    [theme.breakpoints.down('sm')]: {
+      width: theme.spacing(7),
+    },
   },
   drawerPaperClose: {
     overflowX: 'hidden',
@@ -142,7 +145,11 @@ const LeftDrawer = (props: IProps) => {
         )}
         <Search {...props} />
         <Link href="?tab=week">
-          <ListItem button selected={isWeekSelected} className={classes.listItem}>
+          <ListItem
+            button
+            selected={isWeekSelected}
+            className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+          >
             <ListItemIcon>
               <DateRangeIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
             </ListItemIcon>
@@ -153,7 +160,11 @@ const LeftDrawer = (props: IProps) => {
           </ListItem>
         </Link>
         <Link href="?tab=meetings">
-          <ListItem button selected={isMeetingsSelected} className={classes.listItem}>
+          <ListItem
+            button
+            selected={isMeetingsSelected}
+            className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+          >
             <ListItemIcon>
               <CalendarViewDayIcon
                 className={isMeetingsSelected ? classes.selected : classes.unSelected}
@@ -166,7 +177,11 @@ const LeftDrawer = (props: IProps) => {
           </ListItem>
         </Link>
         <Link href="?tab=docs">
-          <ListItem button selected={isDocsSelected} className={classes.listItem}>
+          <ListItem
+            button
+            selected={isDocsSelected}
+            className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+          >
             <ListItemIcon>
               <InsertDriveFileIcon
                 className={isDocsSelected ? classes.selected : classes.unSelected}
@@ -179,7 +194,11 @@ const LeftDrawer = (props: IProps) => {
           </ListItem>
         </Link>
         <Link href="?tab=people">
-          <ListItem button selected={isPeopleSelected} className={classes.listItem}>
+          <ListItem
+            button
+            selected={isPeopleSelected}
+            className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+          >
             <ListItemIcon>
               <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
             </ListItemIcon>
@@ -194,7 +213,11 @@ const LeftDrawer = (props: IProps) => {
         <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
         {isAuthenticated && !isLoading && (
           <Link href="?tab=settings">
-            <ListItem button selected={isProfileSelected} className={classes.listItem}>
+            <ListItem
+              button
+              selected={isProfileSelected}
+              className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+            >
               <ListItemIcon>
                 <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
               </ListItemIcon>

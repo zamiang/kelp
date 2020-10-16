@@ -65,6 +65,7 @@ const MeetingRow = (props: {
       <ListItem
         button={true}
         className={clsx(
+          'ignore-react-onclickoutside',
           rowStyles.row,
           props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
           props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,

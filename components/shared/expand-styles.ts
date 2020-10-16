@@ -5,6 +5,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(5),
     margin: 0,
     width: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(2),
+    },
   },
   title: {
     paddingTop: 5,

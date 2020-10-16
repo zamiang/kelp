@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
     width: 4,
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.spacing(1),
+    },
   },
   borderSecondaryMain: {
     background: theme.palette.secondary.main,
@@ -41,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
       borderColor: theme.palette.secondary.main,
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(1),
+      borderRadius: `${theme.spacing(1)}px 0 0 ${theme.spacing(1)}px`,
     },
   },
   rowDefault: {},

@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 0,
     position: 'relative',
     width: `calc((100vw - ${drawerWidth}px) * 0.382)`,
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+      padding: theme.spacing(1),
+    },
   },
   topRightButton: {
     marginLeft: 'auto',
@@ -24,12 +28,18 @@ const useStyles = makeStyles((theme) => ({
   dockedPanel: {
     width: `calc((100vw - ${drawerWidth}px) * 0.618)`,
     borderRadius: `${theme.spacing(2)}px 0 0 ${theme.spacing(2)}px`,
+    [theme.breakpoints.down('sm')]: {
+      width: `calc(100vw - ${theme.spacing(7)}px)`,
+    },
   },
   title: {
     fontSize: theme.typography.body2.fontSize,
     textTransform: 'uppercase',
     marginBottom: theme.spacing(2),
     borderBottom: `1px solid ${theme.palette.text.secondary}`,
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(1),
+    },
   },
   row: {
     marginBottom: theme.spacing(4),

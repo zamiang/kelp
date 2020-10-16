@@ -69,7 +69,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
         </i>
       </Typography>
       <Grid container spacing={3} className={classes.content}>
-        <Grid item xs={7}>
+        <Grid item sm={7}>
           {hasDescription && (
             <Typography
               variant="body2"
@@ -138,7 +138,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
             </React.Fragment>
           )}
         </Grid>
-        <Grid item xs={5}>
+        <Grid item sm={5}>
           {shouldShowOrganizer && organizer && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

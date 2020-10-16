@@ -9,9 +9,12 @@ import React from 'react';
 import useRowStyles from '../shared/row-styles';
 import { IDoc } from '../store/doc-store';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   imageContainer: {
     flex: '0 0 40px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   image: {
     width: '100%',
@@ -20,7 +23,7 @@ const useStyles = makeStyles({
     flex: '1 1 30%;',
     overflow: 'hidden',
   },
-});
+}));
 
 const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) => {
   const rowStyles = useRowStyles();
@@ -29,6 +32,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
     <ListItem
       button={true}
       className={clsx(
+        'ignore-react-onclickoutside',
         rowStyles.row,
         rowStyles.rowDefault,
         props.selectedDocumentId === props.doc.id && rowStyles.pinkBackground,
