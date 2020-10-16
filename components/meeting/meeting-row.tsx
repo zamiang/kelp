@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   currentTimeBorder: {
     marginTop: 0,
     width: '100%',
-    borderTop: `2px solid ${theme.palette.secondary.main}`,
+    borderTop: `2px solid ${theme.palette.text.primary}`,
   },
 }));
 
