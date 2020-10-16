@@ -184,7 +184,7 @@ const App = () => {
                 Your information filtration system
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Kelp brings your data together and organizes it to be simple and easy to understand.
+                Kelp organizes your documents, events and contacts to make work make sense.
               </Typography>
               <EmailSignup />
               <Grid item sm={10}>
@@ -195,7 +195,17 @@ const App = () => {
                         primary: classes.largeListItemTextBold,
                         secondary: classes.largeListItemText,
                       }}
-                      primary="Stay Informed"
+                      primary="Quickly Prepare For Meetings"
+                      secondary="Kelp scans your calendar and documents to automatically to collect the documents you need. It then magically annotates your calendar. Easy."
+                    />
+                  </ListItem>
+                  <ListItem disableGutters={true}>
+                    <ListItemText
+                      classes={{
+                        primary: classes.largeListItemTextBold,
+                        secondary: classes.largeListItemText,
+                      }}
+                      primary="Manage Work Relationships"
                       secondary="Kelp infers associations between information, such as between a person, a meeting with the person and document edits by the person."
                     />
                   </ListItem>
@@ -205,18 +215,8 @@ const App = () => {
                         primary: classes.largeListItemTextBold,
                         secondary: classes.largeListItemText,
                       }}
-                      primary="Less Busy Work"
-                      secondary="Kelp scans your calendar and documents to automatically to collect the documents you need. We then magically populate you calendar. Easy."
-                    />
-                  </ListItem>
-                  <ListItem disableGutters={true}>
-                    <ListItemText
-                      classes={{
-                        primary: classes.largeListItemTextBold,
-                        secondary: classes.largeListItemText,
-                      }}
                       primary="Your Data"
-                      secondary="Kelp is a ‘static website’. This means that it does not have any kind of data processing capability or data storage capability. When visiting the Kelp website, your computer is storing and processing your data."
+                      secondary="When visiting the Kelp website, your computer is storing and processing your data. Kelp is a ‘static website’ that does not have any kind of data processing or data storage capability."
                     />
                   </ListItem>
                 </List>
@@ -230,7 +230,7 @@ const App = () => {
                   onClick={() => loginWithRedirect(loginWithRedirectArgs)}
                   disableElevation={true}
                 >
-                  Log In
+                  Log In with Google
                 </Button>
                 <a
                   className={classes.loginTryLink}
@@ -242,6 +242,11 @@ const App = () => {
               </div>
               <div className={classes.hint}>
                 Kelp is currently free but may add a paid version in the future.
+              </div>
+              <div className={classes.hint}>
+                Kelp currently works with Google and will expand to other integrations.
+                <br />
+                <a href="https://twitter.com/kelpnyc">Let us know what you are looking for!</a>
               </div>
               <Footer shouldAlignLeft={true} />
             </Container>
