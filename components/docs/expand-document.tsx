@@ -26,7 +26,7 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
           See in Google Drive
         </MuiLink>
       )}
-      <Typography variant="h3" color="textPrimary" gutterBottom noWrap>
+      <Typography variant="h3" color="textPrimary" gutterBottom>
         {document.name || '(no title)'}
       </Typography>
       {document.updatedAt && (
@@ -35,7 +35,7 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
         </Typography>
       )}
       <Grid container spacing={3} className={classes.content}>
-        <Grid item xs={7}>
+        <Grid item sm={7}>
           {people.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
