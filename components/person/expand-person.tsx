@@ -65,11 +65,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
               <Typography variant="h6" className={classes.smallHeading}>
                 Meetings
               </Typography>
-              <MeetingList
-                segmentIds={person.segmentIds}
-                timeStore={props.timeDataStore}
-                personStore={props.personDataStore}
-              />
+              <MeetingList segments={segments} personStore={props.personDataStore} />
             </React.Fragment>
           )}
           {person.emailIds.length > 0 && (

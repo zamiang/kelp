@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
 import PersonDataStore from '../store/person-store';
-import TimeStore, { ISegment } from '../store/time-store';
+import { ISegment } from '../store/time-store';
 
 const useRowStyles = makeStyles((theme) => ({
   root: {
@@ -47,20 +47,19 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
  * Intended to be used with the 'expand' views for each entity type
  */
 const MeetingList = (props: {
-  segmentIds: string[];
-  timeStore: TimeStore;
+  segments: (ISegment | undefined)[];
   personStore: PersonDataStore;
 }) => {
   const classes = useRowStyles();
-  const segments = props.segmentIds
-    .map((id) => props.timeStore.getSegmentById(id))
+  const sortedSegments = props.segments
     .filter((item) => !!item)
-    .sort((a, b) => (a!.start < b!.start ? -1 : 1));
+    .sort((a, b) => (a.start < b.start ? -1 : 1));
   return (
     <div className={classes.root}>
-      {segments.map((segment) => (
-        <Meeting key={segment!.id} segment={segment!} personStore={props.personStore} />
-      ))}
+      {sortedSegments.map(
+        (segment) =>
+          segment && <Meeting key={segment.id} segment={segment} personStore={props.personStore} />,
+      )}
     </div>
   );
 };

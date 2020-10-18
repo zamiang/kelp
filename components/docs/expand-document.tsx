@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
 import useExpandStyles from '../shared/expand-styles';
+import MeetingList from '../shared/meeting-list';
 import PersonList from '../shared/person-list';
 import { IPerson } from '../store/person-store';
 import { IStore } from '../store/use-store';
@@ -20,6 +21,8 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
     .filter((activity) => !!activity.actorPersonId)
     .map((activity) => props.personDataStore.getPersonById(activity.actorPersonId!))
     .filter((person) => person && person.id) as IPerson[];
+  const driveActivityIds = activity.map((item) => item.id);
+  const meetings = props.timeDataStore.getSegmentsForDriveActivity(driveActivityIds);
   return (
     <div className={classes.container}>
       {document.link && (
@@ -31,7 +34,16 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
         {document.name || '(no title)'}
       </Typography>
       <Grid container spacing={3} className={classes.content}>
-        <Grid item sm={7}></Grid>
+        <Grid item sm={7}>
+          {meetings.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Meetings
+              </Typography>
+              <MeetingList segments={meetings} personStore={props.personDataStore} />
+            </React.Fragment>
+          )}
+        </Grid>
         <Grid item sm={5}>
           {document.updatedAt && (
             <React.Fragment>
@@ -39,6 +51,14 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
                 Last Edited
               </Typography>
               <div>{format(document.updatedAt, 'EEEE, MMMM d p')}</div>
+            </React.Fragment>
+          )}
+          {document.viewedByMeAt && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                You Last Viewed
+              </Typography>
+              <div>{format(document.viewedByMeAt, 'EEEE, MMMM d p')}</div>
             </React.Fragment>
           )}
           {people.length > 0 && (
