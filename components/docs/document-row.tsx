@@ -11,7 +11,8 @@ import { IDoc } from '../store/doc-store';
 
 const useStyles = makeStyles((theme) => ({
   imageContainer: {
-    flex: '0 0 40px',
+    flex: '0 0 24px',
+    marginTop: 2,
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },

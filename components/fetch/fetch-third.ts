@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import config from '../../constants/config';
 import { fetchCurrentUserEmailsForEmailAddresses, fetchEmails } from './fetch-emails';
-import batchFetchPeople, { person } from './fetch-people';
+import { batchFetchPeople, person } from './fetch-people';
+import { fetchSelf } from './fetch-self';
 
 interface IProps {
   readonly peopleIds: string[];
@@ -17,10 +18,13 @@ interface IProps {
 const FetchThird = (props: IProps) => {
   const initialPersonList: person[] = [];
   const [personList, setPersonList] = useState(initialPersonList);
+
   const addPeopleToStore = (people: person[]) => {
     // TODO: Add and diff here
-    setPersonList(people);
+    const self = fetchSelf();
+    setPersonList(people.concat(self));
   };
+
   // this has a sideffect of updating the store
   const peopleResponse = useAsyncAbortable(
     () => batchFetchPeople(props.peopleIds, addPeopleToStore),

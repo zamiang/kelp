@@ -24,8 +24,8 @@ interface IReturnType {
   readonly error: Error | undefined;
 }
 
-const FetchAll = (accessToken: string): IReturnType => {
-  const firstLayer = FetchFirst(accessToken);
+const FetchAll = (signedIn: boolean): IReturnType => {
+  const firstLayer = FetchFirst(signedIn);
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const secondLayer = FetchSecond({
     googleDocIds,

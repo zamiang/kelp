@@ -6,7 +6,7 @@ export interface person {
   imageUrl?: string | null;
 }
 
-const batchFetchPeople = async (
+export const batchFetchPeople = async (
   peopleIds: string[],
   addPeopleToStore: (people: person[]) => void,
 ) => {
@@ -16,12 +16,13 @@ const batchFetchPeople = async (
 
   // for debugging
   // const allPersonFields = 'addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined';
-  const usedPersonFields = 'names,nicknames,emailAddresses,photos';
+  const usedPersonFields = 'names,nicknames,emailAddresses,photos,externalIds';
 
   const people = await gapi.client.people.people.getBatchGet({
     personFields: usedPersonFields,
     resourceNames: peopleIds,
   });
+
   // NOTE: This returns very little unless the person is in the user's contacts
   const formattedPeople = people.result?.responses?.map((person) => {
     const emailAddress =
@@ -45,5 +46,3 @@ const batchFetchPeople = async (
 
   return { people: formattedPeople };
 };
-
-export default batchFetchPeople;

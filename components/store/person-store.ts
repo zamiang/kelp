@@ -1,8 +1,11 @@
+import { intervalToDuration, subDays } from 'date-fns';
 import { first, uniq } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
 import { person as GooglePerson } from '../fetch/fetch-people';
+import { getWeek } from '../shared/date-helpers';
+import { ISegment } from './time-store';
 
 export interface IPerson {
   id: string;
@@ -69,6 +72,70 @@ export default class PersonDataStore {
     this.addEmailAddressessToStore(emailAddresses);
   }
 
+  // TODO: Cache this?
+  getMeetingTime(segments: (ISegment | undefined)[]) {
+    const currentWeek = getWeek(new Date());
+    const previousWeek = getWeek(subDays(new Date(), 7));
+    const timeInMeetingsInMs = segments
+      .map((segment) =>
+        segment && getWeek(segment.start) === currentWeek
+          ? segment.end.valueOf() - segment.start.valueOf()
+          : 0,
+      )
+      .reduce((a, b) => a + b, 0);
+    const timeInMeetingsPriorWeekInMs = segments
+      .map((segment) =>
+        segment && getWeek(segment.start) === previousWeek
+          ? segment.end.valueOf() - segment.start.valueOf()
+          : 0,
+      )
+      .reduce((a, b) => a + b, 0);
+
+    const duration = intervalToDuration({
+      start: new Date(0),
+      end: new Date(timeInMeetingsInMs),
+    });
+
+    const durationPriorWeek = intervalToDuration({
+      start: new Date(0),
+      end: new Date(timeInMeetingsPriorWeekInMs),
+    });
+
+    return {
+      thisWeek: duration,
+      thisWeekMs: timeInMeetingsInMs,
+      lastWeek: durationPriorWeek,
+      lastWeekMs: timeInMeetingsPriorWeekInMs,
+    };
+  }
+
+  getAssociates(personId: string, segments: (ISegment | undefined)[]) {
+    const attendeeLookup = {} as any;
+    const associates = {} as any;
+    segments.map((segment) => {
+      if (segment) {
+        segment?.formattedAttendees.map((attendee) => {
+          if (
+            attendee.personId &&
+            attendee.personId !== personId &&
+            !attendee.self &&
+            attendee.responseStatus === 'accepted'
+          ) {
+            if (associates[attendee.personId]) {
+              associates[attendee.personId]++;
+            } else {
+              attendeeLookup[attendee.personId] = attendee;
+              associates[attendee.personId] = 1;
+            }
+          }
+        });
+      }
+    });
+
+    const attendees = Object.entries(associates).sort((a: any, b: any) => b[1] - a[1]);
+    return attendees.map((a) => attendeeLookup[a[0]]);
+  }
+
   getPersonIdForEmailAddress(emailAddress: string) {
     return this.emailAddressToPersonIdHash[emailAddress];
   }
@@ -81,7 +148,7 @@ export default class PersonDataStore {
       // Already in the store
       return;
     }
-    this.personById[person.id.replace('people/', '')] = person;
+    this.personById[person.id.replace('people/', '')] = { ...person };
     if (person.emailAddress) {
       this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
     }

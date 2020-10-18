@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import { formatDuration, getWeek, intervalToDuration } from 'date-fns';
+import { formatDuration } from 'date-fns';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
@@ -11,43 +11,10 @@ import DriveActivity from '../shared/drive-activity';
 import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
-import { IPerson } from '../store/person-store';
 import { IStore } from '../store/use-store';
 
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
-
-const getAssociates = (
-  personId: string,
-  person: IPerson,
-  timeDataStore: IStore['timeDataStore'],
-) => {
-  const attendeeLookup = {} as any;
-  const associates = {} as any;
-  person.segmentIds.map((segmentId) => {
-    const segment = timeDataStore.getSegmentById(segmentId);
-    if (segment) {
-      segment?.formattedAttendees.map((attendee) => {
-        if (
-          attendee.personId &&
-          attendee.personId !== personId &&
-          !attendee.self &&
-          attendee.responseStatus === 'accepted'
-        ) {
-          if (associates[attendee.personId]) {
-            associates[attendee.personId]++;
-          } else {
-            attendeeLookup[attendee.personId] = attendee;
-            associates[attendee.personId] = 1;
-          }
-        }
-      });
-    }
-  });
-
-  const attendees = Object.entries(associates).sort((a: any, b: any) => b[1] - a[1]);
-  return attendees.map((a) => attendeeLookup[a[0]]);
-};
 
 const ExpandPerson = (props: IStore & { personId: string }) => {
   const classes = useExpandStyles();
@@ -58,22 +25,10 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
   const segments = (person.segmentIds || []).map((segmentId) =>
     props.timeDataStore.getSegmentById(segmentId),
   );
-
-  const currentWeek = getWeek(new Date());
-  const timeInMeetingsInMs = segments
-    .map((segment) =>
-      segment && getWeek(segment.start) === currentWeek
-        ? segment.end.valueOf() - segment.start.valueOf()
-        : 0,
-    )
-    .reduce((a, b) => a + b, 0);
-
-  const duration = intervalToDuration({
-    start: new Date(0),
-    end: new Date(timeInMeetingsInMs),
-  });
-  const timeInMeetings = formatDuration(duration);
-  const associates = getAssociates(props.personId, person, props.timeDataStore);
+  const meetingTime = props.personDataStore.getMeetingTime(segments);
+  const timeInMeetings = formatDuration(meetingTime.thisWeek);
+  const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek);
+  const associates = props.personDataStore.getAssociates(props.personId, segments);
   return (
     <div className={classes.container}>
       <Box flexDirection="row" alignItems="flex-start" display="flex">
@@ -131,12 +86,19 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
           )}
         </Grid>
         <Grid item sm={5}>
-          {timeInMeetingsInMs > 0 && (
+          {meetingTime.lastWeekMs > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
-                Time in meetings this week
+                Time in meetings
               </Typography>
-              <div>{timeInMeetings}</div>
+              <div>
+                <i>This week:</i> {timeInMeetings}
+              </div>
+              {meetingTime.lastWeekMs > 0 && (
+                <div>
+                  <i>Last week:</i> {timeInMeetingsLastWeek}
+                </div>
+              )}
             </React.Fragment>
           )}
           {associates.length > 0 && (

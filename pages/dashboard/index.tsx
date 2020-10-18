@@ -19,7 +19,7 @@ import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import LeftDrawer from '../../components/nav/left-drawer';
 import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
-import useAccessToken from '../../components/store/use-access-token';
+import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
@@ -64,12 +64,12 @@ const useBackdropStyles = makeStyles((theme) => ({
 }));
 
 const LoadingDashboardContainer = () => {
-  const accessToken = useAccessToken();
-  const store = useStore(accessToken || '');
+  const isSignedIn = useGapi();
+  const store = useStore(isSignedIn);
   return (
     <React.Fragment>
-      <Loading isOpen={!accessToken} message="Loading" />
-      {accessToken && <DashboardContainer store={store} />}
+      <Loading isOpen={!isSignedIn} message="Loading" />
+      {isSignedIn && <DashboardContainer store={store} />}
     </React.Fragment>
   );
 };

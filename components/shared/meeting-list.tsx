@@ -1,4 +1,3 @@
-import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,14 +25,8 @@ const useRowStyles = makeStyles((theme) => ({
 
 const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => {
   const classes = useRowStyles();
-  const email = props.segment.organizer?.email || props.segment.creator?.email;
-  const personId = email && props.personStore.getPersonIdForEmailAddress(email);
-  const iconLink = personId ? props.personStore.getPersonById(personId)?.imageUrl : null;
   return (
     <Grid container wrap="nowrap" spacing={2}>
-      <Grid item>
-        <Avatar style={{ height: 32, width: 32 }} src={iconLink || ''} />
-      </Grid>
       <Grid item zeroMinWidth>
         <Link href={`?tab=meetings&slug=${props.segment.id}`}>
           <span className={classes.link}>{props.segment.summary}</span>
