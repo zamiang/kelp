@@ -6,17 +6,7 @@ export interface person {
   imageUrl?: string | null;
 }
 
-export const fetchSelf = async (addPeopleToStore: (people: person[]) => void) => {
-  const self = await gapi.client.user.people.get({
-    resourceName: 'people/me',
-    personFields: usedPersonFields,
-  });
-  if (self.result) {
-    addPeopleToStore([self.result]);
-  }
-};
-
-const batchFetchPeople = async (
+export const batchFetchPeople = async (
   peopleIds: string[],
   addPeopleToStore: (people: person[]) => void,
 ) => {
@@ -56,5 +46,3 @@ const batchFetchPeople = async (
 
   return { people: formattedPeople };
 };
-
-export default batchFetchPeople;

@@ -6,6 +6,7 @@ import { uniqBy } from 'lodash';
 import React from 'react';
 import useExpandStyles from '../shared/expand-styles';
 import PersonList from '../shared/person-list';
+import { IPerson } from '../store/person-store';
 import { IStore } from '../store/use-store';
 
 const ExpandedDocument = (props: IStore & { documentId: string }) => {
@@ -18,7 +19,7 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
   const people = uniqBy(activity, 'actorPersonId')
     .filter((activity) => !!activity.actorPersonId)
     .map((activity) => props.personDataStore.getPersonById(activity.actorPersonId!))
-    .filter((person) => person && person.id);
+    .filter((person) => person && person.id) as IPerson[];
   return (
     <div className={classes.container}>
       {document.link && (

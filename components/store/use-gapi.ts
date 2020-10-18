@@ -47,7 +47,7 @@ const useGAPI = () => {
     gapi.load('client:auth2', loadLibraries as any);
   }, []);
 
-  return  isLoaded;
+  return isLoaded;
 };
 
 export default useGAPI;
