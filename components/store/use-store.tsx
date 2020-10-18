@@ -16,10 +16,9 @@ export interface IStore {
   readonly error?: Error;
 }
 
-const useStore = (accessToken: string): IStore => {
+const useStore = (signedIn: boolean): IStore => {
   // TODO: Listen for log-out or token espiring and re-fetch
-  const data = FetchAll(accessToken);
-
+    const data = FetchAll(signedIn);
   const people = (data.personList || []).map((person) => formatPerson(person));
 
   // TODO: Only create the datastores once data.isLoading is false

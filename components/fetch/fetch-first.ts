@@ -27,15 +27,15 @@ interface IResponse {
 /**
  * Fetches data that can be fetched in parallel and creates the person store object
  */
-const FetchFirst = (accessToken: string): IResponse => {
+const FetchFirst = (signedIn: boolean): IResponse => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
     setEmailList(sortedUniq(emailAddresses.concat(emailList)));
   };
-  const driveResponse = useAsyncAbortable(fetchDriveFiles, [accessToken] as any);
-  const contactsResponse = useAsyncAbortable(fetchContacts, [accessToken] as any);
+  const driveResponse = useAsyncAbortable(fetchDriveFiles, [signedIn] as any);
+  const contactsResponse = useAsyncAbortable(fetchContacts, [signedIn] as any);
   const calendarResponse = useAsyncAbortable(() => fetchCalendarEvents(addEmailAddressesToStore), [
-    accessToken,
+    signedIn,
   ] as any);
   return {
     isLoading: driveResponse.loading && calendarResponse.loading && contactsResponse.loading,

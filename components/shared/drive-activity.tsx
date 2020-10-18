@@ -16,9 +16,10 @@ const useRowStyles = makeStyles(() => ({
     overflow: 'hidden',
   },
   icon: {
-    height: 24,
-    width: 24,
+    height: 16,
+    width: 16,
     display: 'block',
+    marginTop: 4,
   },
   link: {
     textTransform: 'none',

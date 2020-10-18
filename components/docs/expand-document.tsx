@@ -15,10 +15,10 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
     return null;
   }
   const activity = props.driveActivityStore.getDriveActivityForDocument(document.link || '') || [];
-
   const people = uniqBy(activity, 'actorPersonId')
-    .filter((activity) => activity.actorPersonId)
-    .map((activity) => props.personDataStore.getPersonById(activity.actorPersonId!)!);
+    .filter((activity) => !!activity.actorPersonId)
+    .map((activity) => props.personDataStore.getPersonById(activity.actorPersonId!))
+    .filter((person) => person && person.id);
   return (
     <div className={classes.container}>
       {document.link && (
@@ -29,19 +29,23 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
       <Typography variant="h3" color="textPrimary" gutterBottom>
         {document.name || '(no title)'}
       </Typography>
-      {document.updatedAt && (
-        <Typography variant="subtitle2" gutterBottom>
-          <i>Updated {format(document.updatedAt, 'EEEE, MMMM d p')}</i>
-        </Typography>
-      )}
       <Grid container spacing={3} className={classes.content}>
-        <Grid item sm={7}>
+        <Grid item sm={7}></Grid>
+        <Grid item sm={5}>
+          {document.updatedAt && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Last Edited
+              </Typography>
+              <div>{format(document.updatedAt, 'EEEE, MMMM d p')}</div>
+            </React.Fragment>
+          )}
           {people.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
-                People
+                Participants
               </Typography>
-              <PersonList people={people} personStore={props.personDataStore} />
+              <PersonList personStore={props.personDataStore} people={people} />
             </React.Fragment>
           )}
         </Grid>
