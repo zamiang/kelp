@@ -3,17 +3,21 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import DocumentRow from '../../components/docs/document-row';
 import panelStyles from '../../components/shared/panel-styles';
+import { IDoc } from '../store/doc-store';
 import { IStore } from '../store/use-store';
 
 const Documents = (props: IStore) => {
+  const styles = panelStyles();
   const docs = props.docDataStore.getDocs();
   const selectedDocumentId = useRouter().query.slug as string;
   const driveActivityIdsForToday = props.timeDataStore.getDriveActivityIdsForToday();
   const docsForToday = driveActivityIdsForToday
     .map((id) => id && props.driveActivityStore.getById(id))
-    .filter((driveActivity) => driveActivity && driveActivity.link)
-    .map((driveActivity) => props.docDataStore.getByLink(driveActivity!.link!)!);
-  const styles = panelStyles();
+    .map(
+      (driveActivity) =>
+        driveActivity && driveActivity.link && props.docDataStore.getByLink(driveActivity.link),
+    )
+    .filter((doc) => doc && doc.id) as IDoc[];
   return (
     <React.Fragment>
       {docsForToday.length > 0 && (
