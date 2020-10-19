@@ -15,6 +15,7 @@ const MeetingsByDay = (
   const styles = panelStyles();
   const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
   let hasRenderedCurrentTime = false;
+
   return (
     <React.Fragment>
       {days.map((day) => (
