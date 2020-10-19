@@ -1,5 +1,5 @@
 import { format, isAfter, isBefore, isSameDay } from 'date-fns';
-import { groupBy } from 'lodash';
+import { groupBy, intersection } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
@@ -166,6 +166,12 @@ export default class TimeStore {
     const currentTime = new Date();
     return this.segments.filter(
       (segment) => segment.end < currentTime && segment.id !== filterOutSegmentId,
+    );
+  }
+
+  getSegmentsForDriveActivity(driveActivityIds: string[]) {
+    return this.segments.filter(
+      (segment) => intersection(driveActivityIds, segment.driveActivityIds).length > 0,
     );
   }
 }
