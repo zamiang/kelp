@@ -3,25 +3,39 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import DocumentRow from '../../components/docs/document-row';
 import panelStyles from '../../components/shared/panel-styles';
+import { IDoc } from '../store/doc-store';
 import { IStore } from '../store/use-store';
 
 const Documents = (props: IStore) => {
+  const styles = panelStyles();
   const docs = props.docDataStore.getDocs();
   const selectedDocumentId = useRouter().query.slug as string;
-  const styles = panelStyles();
+  const driveActivityIdsForToday = props.timeDataStore.getDriveActivityIdsForToday();
+  const docsForToday = driveActivityIdsForToday
+    .map((id) => id && props.driveActivityStore.getById(id))
+    .map(
+      (driveActivity) =>
+        driveActivity && driveActivity.link && props.docDataStore.getByLink(driveActivity.link),
+    )
+    .filter((doc) => doc && doc.id) as IDoc[];
   return (
     <React.Fragment>
-      <div className={styles.row}>
-        <Typography className={styles.title}>Documents you edited recently</Typography>
-        {docs.map((doc) => (
-          <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
-        ))}
-      </div>
-      <div className={styles.row}>
-        <Typography className={styles.title}>
-          Documents with activity from people you are in meetings with [today]
-        </Typography>
-      </div>
+      {docsForToday.length > 0 && (
+        <div className={styles.row}>
+          <Typography className={styles.title}>Documents for Today</Typography>
+          {docsForToday.map((doc) => (
+            <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
+          ))}
+        </div>
+      )}
+      {docs.length > 0 && (
+        <div className={styles.row}>
+          <Typography className={styles.title}>Documents you edited recently</Typography>
+          {docs.map((doc) => (
+            <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
+          ))}
+        </div>
+      )}
     </React.Fragment>
   );
 };
