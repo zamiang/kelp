@@ -53,7 +53,7 @@ const MeetingList = (props: {
   const classes = useRowStyles();
   const sortedSegments = props.segments
     .filter((item) => !!item)
-    .sort((a, b) => (a.start < b.start ? -1 : 1));
+    .sort((a, b) => (a!.start < b!.start ? -1 : 1));
   return (
     <div className={classes.root}>
       {sortedSegments.map(
