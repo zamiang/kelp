@@ -12,7 +12,7 @@ const Documents = (props: IStore) => {
   const docsForToday = driveActivityIdsForToday
     .map((id) => id && props.driveActivityStore.getById(id))
     .filter((driveActivity) => driveActivity && driveActivity.link)
-    .map((driveActivity) => props.docDataStore.getByLink(driveActivity.link!)!);
+    .map((driveActivity) => props.docDataStore.getByLink(driveActivity!.link!)!);
   const styles = panelStyles();
   return (
     <React.Fragment>
