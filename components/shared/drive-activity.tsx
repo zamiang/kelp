@@ -48,7 +48,7 @@ const Activity = (props: {
           {person && (person.name || person.id)}
         </Typography>
         <Typography variant="subtitle2" noWrap>
-          {props.driveActivity.action}
+          <i>{props.driveActivity.action}</i>
         </Typography>
         <Typography variant="caption" color="textSecondary">
           {formatDistanceToNow(new Date(props.driveActivity.time))} ago

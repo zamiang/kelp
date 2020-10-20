@@ -2,6 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -246,7 +247,13 @@ const App = () => {
               <div className={classes.hint}>
                 Kelp currently works with Google and will expand to other integrations.
                 <br />
-                <a href="https://twitter.com/kelpnyc">Let us know what you would like us to add!</a>
+                <MuiLink
+                  target="_blank"
+                  color={'primary.dark' as any}
+                  href="https://twitter.com/kelpnyc"
+                >
+                  Let us know what you would like us to add!
+                </MuiLink>
               </div>
               <Footer shouldAlignLeft={true} />
             </Container>

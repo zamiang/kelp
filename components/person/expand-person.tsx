@@ -29,6 +29,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
   const timeInMeetings = formatDuration(meetingTime.thisWeek);
   const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek);
   const associates = props.personDataStore.getAssociates(props.personId, segments);
+  const hasName = !person.name.includes('people/') && !person.name.includes('@');
   return (
     <div className={classes.container}>
       <Box flexDirection="row" alignItems="flex-start" display="flex">
@@ -103,6 +104,17 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
                 Associates
               </Typography>
               <AttendeeList personStore={props.personDataStore} attendees={associates} />
+            </React.Fragment>
+          )}
+          {hasName && (
+            <React.Fragment>
+              <MuiLink
+                target="_blank"
+                color={'primary.dark' as any}
+                href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
+              >
+                LinkedIn
+              </MuiLink>
             </React.Fragment>
           )}
         </Grid>
