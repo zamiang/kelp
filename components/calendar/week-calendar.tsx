@@ -342,7 +342,7 @@ const DayContent = (props: IDayContentProps) => {
     segmentsHtml = segments.map((segment) => (
       <CalendarItem
         key={segment.id}
-        title={segment.summary || segment.id}
+        title={segment.summary || '(no title)'}
         start={segment.start}
         end={segment.end}
         onClick={() => router.push(`?tab=meetings&slug=${segment.id}`)}
