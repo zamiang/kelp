@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
-import DriveActivityList from '../shared/drive-activity';
+import DriveActivityList from '../shared/documents-from-drive-activity';
 import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import { IPerson } from '../store/person-store';

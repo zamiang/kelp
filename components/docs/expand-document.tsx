@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
+import DriveActivity from '../shared/drive-activity';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import PersonList from '../shared/person-list';
@@ -35,6 +36,14 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
       </Typography>
       <Grid container spacing={3} className={classes.content}>
         <Grid item sm={7}>
+          {activity.length > 0 && (
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Activity
+              </Typography>
+              <DriveActivity driveActivity={activity} personStore={props.personDataStore} />
+            </React.Fragment>
+          )}
           {meetings.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

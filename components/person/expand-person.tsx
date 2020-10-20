@@ -7,7 +7,7 @@ import { formatDuration } from 'date-fns';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
-import DriveActivity from '../shared/drive-activity';
+import DriveActivity from '../shared/documents-from-drive-activity';
 import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
