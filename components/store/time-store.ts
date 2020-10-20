@@ -1,4 +1,4 @@
-import { format, isAfter, isBefore, isSameDay, isToday } from 'date-fns';
+import { format, getWeek, isAfter, isBefore, isSameDay, isToday } from 'date-fns';
 import { flatten, groupBy, intersection } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -146,6 +146,10 @@ export default class TimeStore {
 
   getSegmentsForDay(day: Date) {
     return this.getSegments().filter((segment) => isSameDay(segment.start, day));
+  }
+
+  getSegmentsForWeek(week: number) {
+    return this.getSegments().filter((segment) => getWeek(segment.start) == week);
   }
 
   getupcomingSegments(filterOutSegmentId?: string) {
