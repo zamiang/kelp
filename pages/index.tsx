@@ -196,7 +196,7 @@ const App = () => {
                         secondary: classes.largeListItemText,
                       }}
                       primary="Quickly Prepare For Meetings"
-                      secondary="Kelp scans your calendar and documents to automatically to collect the documents you need. It then magically annotates your calendar. Easy."
+                      secondary="Kelp scans your calendar and documents to automatically collect the documents you need. It then magically annotates your calendar. Easy."
                     />
                   </ListItem>
                   <ListItem disableGutters={true}>
@@ -216,7 +216,7 @@ const App = () => {
                         secondary: classes.largeListItemText,
                       }}
                       primary="Your Data"
-                      secondary="When visiting the Kelp website, your computer is storing and processing your data. Kelp is a ‘static website’ that does not have any kind of data processing or data storage capability."
+                      secondary="When visiting the Kelp website, your computer is storing and processing your data. Kelp is a static website that does not have any kind of data processing or data storage capability."
                     />
                   </ListItem>
                 </List>
@@ -246,7 +246,7 @@ const App = () => {
               <div className={classes.hint}>
                 Kelp currently works with Google and will expand to other integrations.
                 <br />
-                <a href="https://twitter.com/kelpnyc">Let us know what you are looking for!</a>
+                <a href="https://twitter.com/kelpnyc">Let us know what you would like us to add!</a>
               </div>
               <Footer shouldAlignLeft={true} />
             </Container>
