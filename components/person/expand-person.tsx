@@ -3,6 +3,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { formatDuration } from 'date-fns';
 import { isEmpty } from 'lodash';
 import React from 'react';
@@ -108,13 +109,13 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
           )}
           {hasName && (
             <React.Fragment>
-              <MuiLink
+              <a
                 target="_blank"
-                color={'primary.dark' as any}
+                rel="noreferrer"
                 href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
               >
-                LinkedIn
-              </MuiLink>
+                <LinkedInIcon />
+              </a>
             </React.Fragment>
           )}
         </Grid>

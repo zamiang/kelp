@@ -63,6 +63,16 @@ const Footer = (props: { shouldAlignLeft?: boolean }) => {
           </a>
         </Grid>
         <Grid item className={classes.footerItem}>
+          <a
+            rel="noreferrer"
+            href="https://www.notion.so/brennanmoore/Kelp-Updates-e55083674f9e4abaa880524ed14033b1"
+            className={classes.footerLink}
+            target="_blank"
+          >
+            Updates
+          </a>
+        </Grid>
+        <Grid item className={classes.footerItem}>
           <Link href="/security">
             <span className={classes.footerLink}>Security</span>
           </Link>
