@@ -16,7 +16,6 @@ const People = (props: IStore) => {
     flatten(meetingsThisWeek.map((segment) => segment.attendees)),
     'id',
   );
-  console.log(peopleMeetingWithThisWeek);
   return (
     <React.Fragment>
       {peopleMeetingWithThisWeek.length > 0 && (
