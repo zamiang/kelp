@@ -1,9 +1,11 @@
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { formatDistanceToNow } from 'date-fns';
 import { uniqBy } from 'lodash';
+import Link from 'next/link';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import PersonDataStore from '../store/person-store';
@@ -38,15 +40,25 @@ const Activity = (props: {
     <Grid container wrap="nowrap" spacing={2}>
       <Grid item>
         {person && person.imageUrl && (
-          <Avatar src={person?.imageUrl} style={{ height: 24, width: 24 }} className={classes.icon}>
-            {(person.name || person.id)[0]}
-          </Avatar>
+          <Link href={`?tab=people&slug=${person.id}`}>
+            <Avatar
+              src={person?.imageUrl}
+              style={{ height: 24, width: 24 }}
+              className={classes.icon}
+            >
+              {(person.name || person.id)[0]}
+            </Avatar>
+          </Link>
         )}
       </Grid>
       <Grid item>
-        <Typography variant="subtitle2" noWrap>
-          {person && (person.name || person.id)}
-        </Typography>
+        {person && (
+          <Link href={`?tab=people&slug=${person.id}`}>
+            <Button className={classes.link} component="a">
+              {person && (person.name || person.id)}
+            </Button>
+          </Link>
+        )}
         <Typography variant="subtitle2" noWrap>
           <i>{props.driveActivity.action}</i>
         </Typography>
