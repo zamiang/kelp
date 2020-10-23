@@ -7,7 +7,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
 import { addDays, addMonths, format, isSameDay, startOfWeek, subDays, subMonths } from 'date-fns';
 import { times } from 'lodash';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { IStore } from '../store/use-store';
@@ -144,15 +143,15 @@ const useDayContentStyles = makeStyles((theme) => ({
 }));
 
 const DayContent = (props: IDayContentProps) => {
-  const router = useRouter();
   const isToday = isSameDay(props.day, new Date());
   const classes = useDayContentStyles();
+  const terms = props.tfidfStore.getForDay(props.day).map((term) => <div>{term.term}</div>);
   return (
     <div className={classes.container}>
       <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">
         {format(props.day, 'd')}
       </Typography>
-      <div>content</div>
+      <div>{terms}</div>
     </div>
   );
 };

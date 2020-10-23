@@ -14,10 +14,6 @@ const buildDocument = (text: string, key: string): IDocument =>
     .split(' ')
     .reduce(
       (document: IDocument, term: string) => {
-        if (typeof document[term] === 'function') {
-          console.log('wat', document, '<<<<<<<<<');
-          document[term] = 0;
-        }
         if (!stopwords.includes(term)) document[term] = document[term] ? document[term] + 1 : 1;
         return document;
       },
@@ -39,7 +35,7 @@ export default class Tfidf {
     documentsToAdd.map((doc) => this.addDocument(doc.text, doc.key, false));
   }
 
-  idf(term: string, shouldForce: boolean) {
+  idf = (term: string, shouldForce: boolean) => {
     // Lookup the term in the New term-IDF caching,
     // this will cut search times down exponentially on large document sets.
     if (this.idfCache[term] && shouldForce !== true) return this.idfCache[term];
@@ -54,7 +50,7 @@ export default class Tfidf {
     // Add the idf to the term cache and return it
     this.idfCache[term] = idf;
     return idf;
-  }
+  };
 
   // If restoreCache is set to true, all terms idf scores currently cached will be recomputed.
   // Otherwise, the cache will just be wiped clean
@@ -89,7 +85,6 @@ export default class Tfidf {
 
   listTerms(documentIndex: number) {
     const terms = [];
-
     for (const term in this.documents[documentIndex]) {
       if (term != '__key')
         terms.push({

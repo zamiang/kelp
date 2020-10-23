@@ -41,6 +41,10 @@ export default class DriveActivityDataStore {
     return this.driveActivityById[id];
   }
 
+  getAll() {
+    return Object.values(this.driveActivityById);
+  }
+
   getLength() {
     return Object.keys(this.driveActivityById).length;
   }
