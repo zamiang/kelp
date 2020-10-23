@@ -12,7 +12,7 @@ export interface IStore {
   readonly docDataStore: DocDataStore;
   readonly driveActivityStore: DriveActivityDataStore;
   readonly emailDataStore: EmailDataStore;
-  readonly tfidfStore: TfidfStore;
+  readonly tfidfStore: TfidfDataStore;
   readonly lastUpdated: Date;
   readonly refetch: () => void;
   readonly error?: Error;
@@ -48,7 +48,6 @@ const useStore = (signedIn: boolean): IStore => {
 
   const tfidfStore = new TfidfDataStore({
     driveActivityStore: driveActivityDataStore,
-    emailDataStore,
     timeDataStore,
     personDataStore,
     docDataStore,

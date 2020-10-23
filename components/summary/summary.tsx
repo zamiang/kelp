@@ -79,7 +79,6 @@ const TitleRow = (props: {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item className={classes.spacer}></Grid>
         <Grid item className={classes.item}>
           <DayTitle day={props.start} />
           <div className={classes.border}></div>
@@ -145,7 +144,9 @@ const useDayContentStyles = makeStyles((theme) => ({
 const DayContent = (props: IDayContentProps) => {
   const isToday = isSameDay(props.day, new Date());
   const classes = useDayContentStyles();
-  const terms = props.tfidfStore.getForDay(props.day).map((term) => <div>{term.term}</div>);
+  const terms = props.tfidfStore
+    .getForDay(props.day)
+    .map((document) => <div key={document.term}>{document.term}</div>);
   return (
     <div className={classes.container}>
       <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">

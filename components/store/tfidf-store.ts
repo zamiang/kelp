@@ -7,12 +7,22 @@ import { IStore } from './use-store';
 export default class TfidfStore {
   private tfidf: Tfidf;
 
-  constructor(store: IStore) {
+  constructor(store: {
+    docDataStore: IStore['docDataStore'];
+    driveActivityStore: IStore['driveActivityStore'];
+    timeDataStore: IStore['timeDataStore'];
+    personDataStore: IStore['personDataStore'];
+  }) {
     // console.warn('setting up tfidf store');
     this.tfidf = new Tfidf(this.getDocumentsByDay(store));
   }
 
-  getDocumentsByDay(store: IStore) {
+  getDocumentsByDay(store: {
+    docDataStore: IStore['docDataStore'];
+    driveActivityStore: IStore['driveActivityStore'];
+    timeDataStore: IStore['timeDataStore'];
+    personDataStore: IStore['personDataStore'];
+  }) {
     const documentsByDay = new Array(config.NUMBER_OF_DAYS_BACK);
     const currentDate = new Date();
     times(config.NUMBER_OF_DAYS_BACK).map((day) => {

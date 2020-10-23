@@ -3,6 +3,7 @@ import DriveActivityDataStore from './drive-activity-store';
 import EmailDataStore from './email-store';
 import PersonDataStore from './person-store';
 import data from './store-faker';
+import TfidfDataStore from './tfidf-store';
 import TimeDataStore from './time-store';
 import { IStore } from './use-store';
 
@@ -32,12 +33,20 @@ const useFakeStore = (): IStore => {
   const emailDataStore = new EmailDataStore(data.emails, personDataStore);
   // console.log('EMAIL DATA STORE:', emailDataStore);
 
+  const tfidfStore = new TfidfDataStore({
+    driveActivityStore: driveActivityDataStore,
+    timeDataStore,
+    personDataStore,
+    docDataStore,
+  });
+
   return {
     driveActivityStore: driveActivityDataStore,
     emailDataStore,
     timeDataStore,
     personDataStore,
     docDataStore,
+    tfidfStore,
     lastUpdated: new Date(),
     refetch: () => null,
   };
