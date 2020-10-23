@@ -16,6 +16,15 @@ const App = (props: any) => {
     }
   }, []);
 
+  React.useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    (gtag as any)('js', new Date());
+    (gtag as any)('config', 'G-2QP6D4R28C');
+  }, []);
+
   return (
     <React.Fragment>
       <Auth0Provider

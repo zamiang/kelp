@@ -3,14 +3,6 @@ import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 import theme from '../constants/theme';
 
-const scriptString = `
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-2QP6D4R28C');
-`;
-
 export default class MyDocument extends Document {
   render() {
     return (
@@ -21,7 +13,6 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-2QP6D4R28C"></script>
-          <script>{scriptString}</script>
           <script src="https://apis.google.com/js/api.js"></script>
         </Head>
         <body>
