@@ -21,6 +21,7 @@ import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
 import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
+import Summary from '../../components/summary/summary';
 import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
 
@@ -147,6 +148,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     meetings: <Meetings {...store} />,
     docs: <Docs {...store} />,
     people: <People {...store} />,
+    summary: <Summary {...store} />,
     settings: <Settings />,
   } as any;
 
@@ -156,9 +158,10 @@ export const DashboardContainer = ({ store }: IProps) => {
     docs: classes.pinkBackground,
     people: classes.orangeBackground,
     settings: classes.purpleBackground,
+    summary: classes.blueBackground,
   } as any;
 
-  const shouldRenderPanel = tab !== 'week';
+  const shouldRenderPanel = !['week', 'summary'].includes(tab);
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
       <LeftDrawer

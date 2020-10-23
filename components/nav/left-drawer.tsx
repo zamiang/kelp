@@ -151,7 +151,7 @@ const LeftDrawer = (props: IProps) => {
         <Link href="?tab=summary">
           <ListItem
             button
-            selected={isWeekSelected}
+            selected={isSummarySelected}
             className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
           >
             <ListItemIcon>
