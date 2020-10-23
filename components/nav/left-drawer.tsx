@@ -14,6 +14,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
+import PublicIcon from '@material-ui/icons/Public';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
@@ -80,21 +81,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export interface IProps {
-  isOpen: boolean;
-  handleDrawerClose: () => void;
-  handleDrawerOpen: () => void;
   handleRefreshClick: () => void;
   people: IPerson[];
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings';
+  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary';
 }
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
   const { user, isAuthenticated, isLoading, error } = useAuth0();
 
+  const isMobile = typeof document !== 'undefined' && document.body.clientWidth < 500;
+  const isOpen = isMobile ? false : true;
+  const anchor = isMobile ? 'top' : 'left';
+
+  const isSummarySelected = props.tab === 'summary';
   const isMeetingsSelected = props.tab === 'meetings';
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
@@ -104,9 +107,10 @@ const LeftDrawer = (props: IProps) => {
     <Drawer
       variant="permanent"
       classes={{
-        paper: clsx(classes.drawerPaper, !props.isOpen && classes.drawerPaperClose),
+        paper: clsx(classes.drawerPaper),
       }}
-      open={props.isOpen}
+      anchor={anchor}
+      open={isOpen}
     >
       <List>
         <ListItem>
@@ -144,6 +148,21 @@ const LeftDrawer = (props: IProps) => {
           </ListItem>
         )}
         <Search {...props} />
+        <Link href="?tab=summary">
+          <ListItem
+            button
+            selected={isWeekSelected}
+            className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+          >
+            <ListItemIcon>
+              <PublicIcon className={isSummarySelected ? classes.selected : classes.unSelected} />
+            </ListItemIcon>
+            <ListItemText
+              primary="Summary"
+              className={isSummarySelected ? classes.selected : classes.unSelected}
+            />
+          </ListItem>
+        </Link>
         <Link href="?tab=week">
           <ListItem
             button

@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import clsx from 'clsx';
 import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import { IProps } from './left-drawer';
@@ -64,24 +65,22 @@ const Search = (props: IProps) => {
   const handleAutocompleteSelect = (_: React.ChangeEvent<unknown>, result: IResult | null) =>
     result && onAutocompleteSelect(result, router);
   return (
-    <ListItem button onClick={props.handleDrawerOpen} className={classes.listItem}>
+    <ListItem button className={clsx(classes.listItem, 'ignore-react-onclickoutside')}>
       <ListItemIcon>
         <SearchIcon />
       </ListItemIcon>
-      {props.isOpen && (
-        <Autocomplete
-          options={options.sort((a, b) => -(b.type + b.title).localeCompare(a.type + a.title))}
-          groupBy={(option: IResult) => option.type}
-          getOptionLabel={(option: IResult) => option.title}
-          clearOnEscape
-          blurOnSelect
-          autoHighlight
-          renderInput={(params) => (
-            <TextField placeholder="Search…" className={classes.inputInput} {...params} />
-          )}
-          onChange={handleAutocompleteSelect}
-        />
-      )}
+      <Autocomplete
+        options={options.sort((a, b) => -(b.type + b.title).localeCompare(a.type + a.title))}
+        groupBy={(option: IResult) => option.type}
+        getOptionLabel={(option: IResult) => option.title}
+        clearOnEscape
+        blurOnSelect
+        autoHighlight
+        renderInput={(params) => (
+          <TextField placeholder="Search…" className={classes.inputInput} {...params} />
+        )}
+        onChange={handleAutocompleteSelect}
+      />
     </ListItem>
   );
 };
