@@ -136,6 +136,8 @@ interface IProps {
   store: IStore;
 }
 
+const is500Error = (error: Error) => (error as any).status === 500;
+
 export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const panelClasses = panelStyles();
@@ -175,7 +177,9 @@ export const DashboardContainer = ({ store }: IProps) => {
       <main className={classes.content}>
         {shouldRenderPanel && (
           <div className={panelClasses.panel}>
-            {store.error && <Alert severity="error">{JSON.stringify(store.error)}</Alert>}
+            {store.error && !is500Error(store.error) && (
+              <Alert severity="error">{JSON.stringify(store.error)}</Alert>
+            )}
             {tabHash[tab]}
           </div>
         )}
