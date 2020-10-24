@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import onClickOutside from 'react-onclickoutside';
 import WeekCalendar from '../../components/calendar/week-calendar';
 import Docs from '../../components/dashboard/docs';
@@ -162,6 +162,11 @@ export const DashboardContainer = ({ store }: IProps) => {
     settings: classes.purpleBackground,
     summary: classes.blueBackground,
   } as any;
+
+  useEffect(() => {
+    const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
+    return () => clearInterval(interval);
+  }, []);
 
   const shouldRenderPanel = !['week', 'summary'].includes(tab);
   return (
