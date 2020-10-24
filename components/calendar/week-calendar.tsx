@@ -264,7 +264,7 @@ const CalendarItem = (props: ICalendarItemProps) => {
   const top = hourHeight * props.start.getHours();
   return (
     <div className={classes.container} style={{ height, top }} onClick={props.onClick}>
-      <Typography className={classes.title}>
+      <Typography className={classes.title} variant="h6">
         {props.title}
         <Typography className={classes.subtitle}>{format(props.start, 'HH:MM')}</Typography>
       </Typography>
