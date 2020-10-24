@@ -1,3 +1,4 @@
+import { flatten, max, min } from 'lodash';
 import stopwords from './stop-words';
 
 interface IDocument {
@@ -100,5 +101,13 @@ export default class Tfidf {
 
   tfidfs(terms: string) {
     return this.documents.map((_document, index) => this.tfidf(terms, index));
+  }
+
+  getMin() {
+    return min(flatten(this.documents.map((document) => Object.values(document))));
+  }
+
+  getMax() {
+    return max(flatten(this.documents.map((document) => Object.values(document))));
   }
 }

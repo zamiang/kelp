@@ -13,8 +13,10 @@ import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
 const daysInWeek = 7;
-const topNavHeight = 94;
+const topNavHeight = 85;
 const scrollBarWidth = 15;
+const fontMin = 12;
+const fontMax = 22;
 const borderColor = '#dadce0';
 /**
  * titlerow    || day-title | day-title
@@ -138,22 +140,44 @@ const useDayContentStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
     textAlign: 'center',
+    flex: 1,
+    position: 'relative',
+    borderLeft: `1px solid ${borderColor}`,
+    height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
+    overflow: 'hidden',
+  },
+  term: {
+    display: 'inline-block',
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
   },
 }));
 
 const DayContent = (props: IDayContentProps) => {
   const isToday = isSameDay(props.day, new Date());
   const classes = useDayContentStyles();
-  const terms = props.tfidfStore
-    .getForDay(props.day)
-    .map((document) => <div key={document.term}>{document.term}</div>);
+
+  // interpolation yay
+  const scaleX = props.tfidfStore.tfidfMax - props.tfidfStore.tfidfMin;
+  const scaleY = fontMax - fontMin;
+  const scale = scaleX / scaleY;
+
+  const terms = props.tfidfStore.getForDay(props.day).map((document) => (
+    <Typography
+      className={classes.term}
+      key={document.term}
+      style={{ fontSize: document.tfidf / scale + fontMin }}
+    >
+      {document.term}
+    </Typography>
+  ));
   return (
-    <div className={classes.container}>
+    <Grid item className={classes.container}>
       <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">
         {format(props.day, 'd')}
       </Typography>
       <div>{terms}</div>
-    </div>
+    </Grid>
   );
 };
 
@@ -161,14 +185,10 @@ const useStyles = makeStyles(() => ({
   container: {},
   weeks: {},
   days: {
-    height: `calc(100vh / 4)`,
+    height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
     width: '100%',
-    overflow: 'scroll',
-  },
-  day: {
-    flex: 1,
-    position: 'relative',
-    borderLeft: `1px solid ${borderColor}`,
+    overflow: 'hidden',
+    borderBottom: `1px solid ${borderColor}`,
   },
   week: {
     flex: 1,
@@ -193,18 +213,18 @@ const Summary = (props: IStore) => {
   const onBackClick = () => {
     setStart(subMonths(start, 1));
   };
-  const getDayColumn = (week: number) =>
-    times(daysInWeek).map((day) => (
-      <Grid item key={day} className={classes.day}>
-        <DayContent tfidfStore={props.tfidfStore} day={addDays(start, day + week * daysInWeek)} />
-      </Grid>
+  const getDayColumn = (week: number) => {
+    const days = times(daysInWeek).map((day) => addDays(start, day + week * daysInWeek));
+    return days.map((day) => (
+      <DayContent tfidfStore={props.tfidfStore} day={day} key={day.toISOString()} />
     ));
+  };
   const dayRows = times(numberWeeks).map((week) => (
-    <Grid item key={week} className={classes.week}>
+    <div key={week} className={classes.week}>
       <Grid container className={classes.days}>
         {getDayColumn(week)}
       </Grid>
-    </Grid>
+    </div>
   ));
   return (
     <div className={classes.container}>

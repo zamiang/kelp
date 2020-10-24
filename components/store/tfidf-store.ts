@@ -1,4 +1,4 @@
-import { differenceInDays } from 'date-fns';
+import { differenceInCalendarDays } from 'date-fns';
 import { times } from 'lodash';
 import config from '../../constants/config';
 import Tfidf from '../shared/tfidf/tfidf';
@@ -6,6 +6,8 @@ import { IStore } from './use-store';
 
 export default class TfidfStore {
   private tfidf: Tfidf;
+  tfidfMin: number;
+  tfidfMax: number;
 
   constructor(store: {
     docDataStore: IStore['docDataStore'];
@@ -15,6 +17,8 @@ export default class TfidfStore {
   }) {
     // console.warn('setting up tfidf store');
     this.tfidf = new Tfidf(this.getDocumentsByDay(store));
+    this.tfidfMin = this.tfidf.getMin() || 0;
+    this.tfidfMax = this.tfidf.getMax() || 10;
   }
 
   getDocumentsByDay(store: {
@@ -32,7 +36,7 @@ export default class TfidfStore {
     store.driveActivityStore.getAll().map((activity) => {
       if (activity.link) {
         const doc = store.docDataStore.getByLink(activity.link);
-        const day = differenceInDays(currentDate, activity.time);
+        const day = differenceInCalendarDays(currentDate, activity.time);
         if (doc && doc.name) {
           documentsByDay[day].push(doc?.name);
         }
@@ -40,7 +44,7 @@ export default class TfidfStore {
     });
     // Meetings
     store.timeDataStore.getSegments().map((segment) => {
-      const day = differenceInDays(currentDate, segment.start);
+      const day = differenceInCalendarDays(currentDate, segment.start);
       if (segment.summary) {
         documentsByDay[day].push(segment.summary);
       }
@@ -48,7 +52,7 @@ export default class TfidfStore {
       segment.formattedAttendees.map((attendee) => {
         const person = store.personDataStore.getPersonById(attendee.personId);
         // TODO: Remove need to do indexof
-        if (person && person.name.indexOf('person') < 0) {
+        if (person && person.name.indexOf('person') < 0 && person.name.indexOf('@') < 0) {
           documentsByDay[day].push(person.name);
         }
       });
@@ -61,7 +65,7 @@ export default class TfidfStore {
 
   getForDay(day: Date) {
     const currentDate = new Date();
-    const diff = differenceInDays(currentDate, day);
+    const diff = differenceInCalendarDays(currentDate, day);
     return this.tfidf.listTerms(diff);
   }
 }
