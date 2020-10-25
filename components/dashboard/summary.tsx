@@ -10,6 +10,7 @@ import { times } from 'lodash';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import config from '../../constants/config';
+import { uncommonPunctuation } from '../store/tfidf-store';
 import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
@@ -170,7 +171,7 @@ const DayContent = (props: IDayContentProps) => {
   const terms = props.tfidfStore.getForDay(props.day).map((document) => (
     <Link href={`?tab=search&query=${document.term}`} key={document.term}>
       <Typography className={classes.term} style={{ fontSize: document.tfidf / scale + fontMin }}>
-        {document.term}
+        {document.term.split(uncommonPunctuation).join(' ')}
       </Typography>
     </Link>
   ));

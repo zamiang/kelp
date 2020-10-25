@@ -4,6 +4,11 @@ import config from '../../constants/config';
 import Tfidf from '../shared/tfidf';
 import { IStore } from './use-store';
 
+/**
+ * Used so that a person's unique first+last name combo makes it through TFIDF and common first or last names are not misrepresented
+ */
+export const uncommonPunctuation = 'æ';
+
 export default class TfidfStore {
   private tfidf: Tfidf;
   tfidfMin: number;
@@ -59,7 +64,7 @@ export default class TfidfStore {
           person.name.indexOf('person') < 0 &&
           person.name.indexOf('@') < 0
         ) {
-          documentsByDay[day].push(person.name);
+          documentsByDay[day].push(person.name.split(' ').join(uncommonPunctuation));
         }
       });
     });
