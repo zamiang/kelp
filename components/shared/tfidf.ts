@@ -1,5 +1,5 @@
 import { flatten, max, min } from 'lodash';
-import stopwords from './stop-words';
+import { removeStopwords } from 'stopword';
 
 interface IDocument {
   [text: string]: number;
@@ -10,9 +10,11 @@ interface IIdfCache {
 }
 
 const buildDocument = (text: string, key: string): IDocument =>
-  text.split(' ').reduce(
+  removeStopwords(text.split(' ')).reduce(
     (document: IDocument, term: string) => {
-      if (!stopwords.includes(term)) document[term] = document[term] ? document[term] + 1 : 1;
+      const formattedTerm = term.replace('(', '').replace(')', '');
+      if (formattedTerm)
+        document[formattedTerm] = document[formattedTerm] ? document[formattedTerm] + 1 : 1;
       return document;
     },
     {
