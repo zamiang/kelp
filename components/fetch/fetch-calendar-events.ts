@@ -66,12 +66,11 @@ const isSelfConfirmedAttending = (attendees: attendee[], creator?: attendee) => 
 const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) => any) => {
   const calendarResponse = await gapi.client.calendar.events.list({
     calendarId: 'primary',
-    maxAttendees: 10,
-    maxResults: 80,
+    maxResults: 250,
     singleEvents: true,
     orderBy: 'updated', // starttime does not work :shrug:
-    timeMin: config.startDate.toISOString(),
-    timeMax: addDays(new Date(), 1).toISOString(),
+    // timeMin: config.startDate.toISOString(),
+    // timeMax: addDays(new Date(), 1).toISOString(),
   });
 
   const filteredCalendarEvents =
