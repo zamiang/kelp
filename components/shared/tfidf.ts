@@ -10,10 +10,10 @@ interface IIdfCache {
 }
 
 const buildDocument = (text: string, key: string): IDocument =>
-  removeStopwords(text.replace(/[.,/#|!$<>%^&*;:{}=\-_`~()]/g, '').split(' ')).reduce(
+  removeStopwords(text.replace(/[.,/#|!$<>[\]%^&*;:{}=\-_`~()]/g, '').split(' ')).reduce(
     (document: IDocument, term: string) => {
       const formattedTerm = term.replace('(', '').replace(')', '');
-      if (formattedTerm)
+      if (formattedTerm.length > 1)
         document[formattedTerm] = document[formattedTerm] ? document[formattedTerm] + 1 : 1;
       return document;
     },

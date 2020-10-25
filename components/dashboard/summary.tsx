@@ -149,8 +149,8 @@ const useDayContentStyles = makeStyles((theme) => ({
   },
   term: {
     display: 'inline-block',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
     cursor: 'pointer',
     '&:hover': {
       textDecoration: 'underline',
