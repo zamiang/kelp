@@ -55,6 +55,7 @@ export default class TfidfStore {
         if (
           documentsByDay[day] &&
           person &&
+          !person.isCurrentUser &&
           person.name.indexOf('person') < 0 &&
           person.name.indexOf('@') < 0
         ) {
