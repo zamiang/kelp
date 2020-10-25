@@ -70,7 +70,7 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
     singleEvents: true,
     orderBy: 'updated', // starttime does not work :shrug:
     timeMin: config.startDate.toISOString(),
-    timeMax: addDays(new Date(), 1).toISOString(),
+    timeMax: addDays(new Date(), 2).toISOString(),
   });
 
   const filteredCalendarEvents =
