@@ -10,18 +10,15 @@ interface IIdfCache {
 }
 
 const buildDocument = (text: string, key: string): IDocument =>
-  text
-    .toLowerCase()
-    .split(' ')
-    .reduce(
-      (document: IDocument, term: string) => {
-        if (!stopwords.includes(term)) document[term] = document[term] ? document[term] + 1 : 1;
-        return document;
-      },
-      {
-        __key: key,
-      } as any,
-    );
+  text.split(' ').reduce(
+    (document: IDocument, term: string) => {
+      if (!stopwords.includes(term)) document[term] = document[term] ? document[term] + 1 : 1;
+      return document;
+    },
+    {
+      __key: key,
+    } as any,
+  );
 
 const tf = (term: string, document: IDocument) => (document[term] ? document[term] : 0);
 const documentHasTerm = (term: string, document: IDocument) => document[term] && document[term] > 0;
@@ -74,14 +71,11 @@ export default class Tfidf {
   tfidf(term: string, documentIndex: number) {
     const getIdf = this.idf;
     const documents = this.documents;
-    return term
-      .toLowerCase()
-      .split(' ')
-      .reduce(function (value, term) {
-        let idf = getIdf(term, false);
-        idf = idf === Infinity ? 0 : idf;
-        return value + tf(term, documents[documentIndex]) * idf;
-      }, 0.0);
+    return term.split(' ').reduce(function (value, term) {
+      let idf = getIdf(term, false);
+      idf = idf === Infinity ? 0 : idf;
+      return value + tf(term, documents[documentIndex]) * idf;
+    }, 0.0);
   }
 
   listTerms(documentIndex: number) {
