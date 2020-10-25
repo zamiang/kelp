@@ -1,7 +1,7 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { times } from 'lodash';
 import config from '../../constants/config';
-import Tfidf from '../shared/tfidf/tfidf';
+import Tfidf from '../shared/tfidf';
 import { IStore } from './use-store';
 
 export default class TfidfStore {
