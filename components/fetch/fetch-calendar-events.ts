@@ -57,7 +57,7 @@ const isSelfConfirmedAttending = (attendees: attendee[], creator?: attendee) => 
 
   for (const person of attendees) {
     if (person.self) {
-      return ['needsAction', 'declined'].indexOf(person.responseStatus || '') < 0;
+      return config.GOOGLE_CALENDAR_FILTER.indexOf(person.responseStatus || '') < 0;
     }
   }
   return false;
