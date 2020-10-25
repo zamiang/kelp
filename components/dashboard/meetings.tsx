@@ -35,10 +35,6 @@ const MeetingsByDay = (
                   shouldRenderCurrentTime={shouldRenderCurrentTime}
                   key={meeting.id}
                   meeting={meeting}
-                  personStore={props.personDataStore}
-                  docStore={props.docDataStore}
-                  emailStore={props.emailDataStore}
-                  driveActivityStore={props.driveActivityStore}
                   selectedMeetingId={props.selectedMeetingId}
                 />
               );

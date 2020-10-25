@@ -8,14 +8,8 @@ import Link from 'next/link';
 import React from 'react';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/person-store';
-import { IStore } from '../store/use-store';
 
-const PersonRow = (
-  props: {
-    selectedPersonId: string | null;
-    person: IPerson;
-  } & IStore,
-) => {
+const PersonRow = (props: { selectedPersonId: string | null; person: IPerson }) => {
   const rowStyles = useRowStyles();
   return (
     <ListItem
