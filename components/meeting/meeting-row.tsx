@@ -7,10 +7,6 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
 import useRowStyles from '../shared/row-styles';
-import DocDataStore from '../store/doc-store';
-import DriveActivityDataStore from '../store/drive-activity-store';
-import EmailDataStore from '../store/email-store';
-import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
@@ -36,10 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 const MeetingRow = (props: {
   meeting: ISegment;
-  personStore: PersonDataStore;
-  docStore: DocDataStore;
-  driveActivityStore: DriveActivityDataStore;
-  emailStore: EmailDataStore;
   currentTime: Date;
   selectedMeetingId: string | null;
   shouldRenderCurrentTime: boolean;

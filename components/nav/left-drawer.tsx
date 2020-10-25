@@ -23,7 +23,7 @@ import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
 import RefreshButton from './refresh-button';
-import Search from './search';
+import Search from './search-bar';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {

@@ -7,6 +7,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
 import { addDays, addMonths, format, isSameDay, startOfWeek, subDays, subMonths } from 'date-fns';
 import { times } from 'lodash';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { IStore } from '../store/use-store';
@@ -150,6 +151,10 @@ const useDayContentStyles = makeStyles((theme) => ({
     display: 'inline-block',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
 }));
 
@@ -163,13 +168,11 @@ const DayContent = (props: IDayContentProps) => {
   const scale = scaleX / scaleY;
 
   const terms = props.tfidfStore.getForDay(props.day).map((document) => (
-    <Typography
-      className={classes.term}
-      key={document.term}
-      style={{ fontSize: document.tfidf / scale + fontMin }}
-    >
-      {document.term}
-    </Typography>
+    <Link href={`?tab=search&query=${document.term}`} key={document.term}>
+      <Typography className={classes.term} style={{ fontSize: document.tfidf / scale + fontMin }}>
+        {document.term}
+      </Typography>
+    </Link>
   ));
   return (
     <Grid item className={classes.container}>

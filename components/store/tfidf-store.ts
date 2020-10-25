@@ -38,7 +38,7 @@ export default class TfidfStore {
         const doc = store.docDataStore.getByLink(activity.link);
         const day = differenceInCalendarDays(currentDate, activity.time);
         if (doc && doc.name) {
-          documentsByDay[day].push(doc?.name);
+          documentsByDay[day].push(doc?.name.toLowerCase());
         }
       }
     });
@@ -46,14 +46,14 @@ export default class TfidfStore {
     store.timeDataStore.getSegments().map((segment) => {
       const day = differenceInCalendarDays(currentDate, segment.start);
       if (segment.summary) {
-        documentsByDay[day].push(segment.summary);
+        documentsByDay[day].push(segment.summary.toLowerCase());
       }
 
       segment.formattedAttendees.map((attendee) => {
         const person = store.personDataStore.getPersonById(attendee.personId);
         // TODO: Remove need to do indexof
         if (person && person.name.indexOf('person') < 0 && person.name.indexOf('@') < 0) {
-          documentsByDay[day].push(person.name);
+          documentsByDay[day].push(person.name.toLowerCase());
         }
       });
     });

@@ -10,10 +10,12 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import onClickOutside from 'react-onclickoutside';
-import WeekCalendar from '../../components/calendar/week-calendar';
 import Docs from '../../components/dashboard/docs';
 import Meetings from '../../components/dashboard/meetings';
 import People from '../../components/dashboard/people';
+import Search from '../../components/dashboard/search';
+import Summary from '../../components/dashboard/summary';
+import WeekCalendar from '../../components/dashboard/week-calendar';
 import ExpandedDocument from '../../components/docs/expand-document';
 import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import LeftDrawer from '../../components/nav/left-drawer';
@@ -21,7 +23,6 @@ import ExpandPerson from '../../components/person/expand-person';
 import panelStyles from '../../components/shared/panel-styles';
 import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
-import Summary from '../../components/summary/summary';
 import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
 
@@ -152,6 +153,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     people: <People {...store} />,
     summary: <Summary {...store} />,
     settings: <Settings />,
+    search: <Search {...store} />,
   } as any;
 
   const colorHash = {
@@ -160,6 +162,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     docs: classes.pinkBackground,
     people: classes.orangeBackground,
     settings: classes.purpleBackground,
+    search: classes.purpleBackground,
     summary: classes.blueBackground,
   } as any;
 
