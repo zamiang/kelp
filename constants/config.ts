@@ -25,6 +25,7 @@ export default {
   WEEK_STARTS_ON: 1,
   IS_GMAIL_ENABLED: false,
   GOOGLE_CALENDAR_FILTER: ['declined'], // Could be ['needsAction', 'declined']
+  MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,
   startDate: subDays(new Date(), NUMBER_OF_DAYS_BACK),
   YELLOW_BACKGROUND: '#deff2a', // TODO: Add to theme somehow?
   ORANGE_BACKGROUND: '#ffd12a',

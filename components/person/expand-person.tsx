@@ -13,6 +13,7 @@ import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import { IStore } from '../store/use-store';
+import PersonNotes from './person-notes';
 
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
@@ -50,6 +51,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
           </Grid>
         )}
         <Grid item sm={7}>
+          <PersonNotes person={person} refetch={props.refetch} />
           {!isEmpty(person.driveActivity) && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
@@ -114,7 +116,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
                 rel="noreferrer"
                 href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
               >
-                <LinkedInIcon />
+                <LinkedInIcon fontSize="large" />
               </a>
             </React.Fragment>
           )}

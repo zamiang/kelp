@@ -9,6 +9,14 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   },
+  relativeContainer: {
+    position: 'relative',
+  },
+  topRight: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
   title: {
     paddingTop: 5,
     paddingLeft: theme.spacing(2),
@@ -33,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 77,
     width: 77,
+  },
+  textarea: {
+    border: `1px solid #dadce0`,
+    borderRadius: 0,
+    marginBottom: theme.spacing(1),
   },
 }));
 

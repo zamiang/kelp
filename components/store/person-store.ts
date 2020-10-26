@@ -1,5 +1,6 @@
 import { intervalToDuration, subDays } from 'date-fns';
 import { first, uniq } from 'lodash';
+import config from '../../constants/config';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { formattedEmail } from '../fetch/fetch-emails';
@@ -13,6 +14,8 @@ export interface IPerson {
   emailAddress?: string;
   imageUrl?: string | null;
   emailIds: string[];
+  notes?: string;
+  googleId: string | null;
   isCurrentUser: boolean;
   isMissingProfile: boolean;
   driveActivity: { [id: string]: IFormattedDriveActivity };
@@ -31,10 +34,12 @@ interface IEmailAddressToPersonIdHash {
 export const formatPerson = (person: GooglePerson) => ({
   id: person.id.replace('people/', ''),
   name: person.name,
+  googleId: person.id,
   emailAddress: person.emailAddress?.toLocaleLowerCase(),
   imageUrl: person.imageUrl,
   isCurrentUser: false,
   isMissingProfile: person.isMissingProfile,
+  notes: person.notes,
   emailIds: [],
   driveActivity: {},
   segmentIds: [],
@@ -43,6 +48,7 @@ export const formatPerson = (person: GooglePerson) => ({
 const createNewPersonFromEmail = (email: string) => ({
   id: email,
   name: email,
+  googleId: null,
   emailAddress: email,
   imageUrl: null,
   isCurrentUser: false,
@@ -113,7 +119,10 @@ export default class PersonDataStore {
     const attendeeLookup = {} as any;
     const associates = {} as any;
     segments.map((segment) => {
-      if (segment) {
+      if (
+        segment &&
+        segment.formattedAttendees.length < config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION
+      ) {
         segment?.formattedAttendees.map((attendee) => {
           if (
             attendee.personId &&

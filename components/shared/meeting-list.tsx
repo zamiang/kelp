@@ -29,7 +29,7 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
     <Grid container wrap="nowrap" spacing={2}>
       <Grid item zeroMinWidth>
         <Link href={`?tab=meetings&slug=${props.segment.id}`}>
-          <span className={classes.link}>{props.segment.summary}</span>
+          <span className={classes.link}>{props.segment.summary || '(No title)'}</span>
         </Link>
         <br />
         <Typography variant="caption" color="textSecondary">
