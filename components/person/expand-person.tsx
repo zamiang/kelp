@@ -51,7 +51,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
           </Grid>
         )}
         <Grid item sm={7}>
-          <PersonNotes person={person} />
+          <PersonNotes person={person} refetch={props.refetch} />
           {!isEmpty(person.driveActivity) && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

@@ -46,5 +46,4 @@ export const updateContactNotes = async (googleId: string, note: string, person:
     resourceName: currentPerson.result.resourceName!,
   });
   person.notes = note;
-  return person;
 };

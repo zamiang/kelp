@@ -268,10 +268,6 @@ export default class PersonDataStore {
     this.cleanupDuplicateSegmentIds();
   }
 
-  updatePersonFromGoogleAPI(person: GooglePerson) {
-    this.personById[person.id.replace('people/', '')] = formatPerson(person);
-  }
-
   cleanupDuplicateSegmentIds() {
     this.getPeople().map((person) => (person.segmentIds = uniq(person.segmentIds)));
   }

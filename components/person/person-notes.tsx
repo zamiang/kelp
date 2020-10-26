@@ -47,18 +47,19 @@ const NotesEditForm = (props: { person: IPerson; onCloseEdit: () => void }) => {
   );
 };
 
-const PersonNotes = (props: { person: IPerson }) => {
+const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
   const classes = useExpandStyles();
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const onEdit = () => setIsEditing(true);
   const onCloseEdit = () => setIsEditing(false);
-
   return (
     <div className={classes.relativeContainer}>
-      <Typography variant="h6" className={classes.smallHeading}>
-        Notes
-      </Typography>
+      {props.person.googleId && (
+        <Typography variant="h6" className={classes.smallHeading}>
+          Notes
+        </Typography>
+      )}
       {!isEditing && props.person.notes && (
         <Typography variant="body2">{props.person.notes}</Typography>
       )}
