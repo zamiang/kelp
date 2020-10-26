@@ -7,7 +7,7 @@ export interface person {
   imageUrl?: string | null;
 }
 
-export const formatGooglePeopleResponse = (
+const formatGooglePeopleResponse = (
   person: gapi.client.people.PersonResponse['person'],
   requestedResourceName?: string | null,
 ) => {
