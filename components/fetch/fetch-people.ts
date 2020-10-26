@@ -3,6 +3,7 @@ export interface person {
   name: string;
   isMissingProfile: boolean;
   emailAddress?: string;
+  notes?: string;
   imageUrl?: string | null;
 }
 
@@ -34,6 +35,7 @@ export const batchFetchPeople = async (
       id: person.requestedResourceName!,
       name: displayName || emailAddress || person.requestedResourceName!,
       isMissingProfile: person.person?.names ? false : true,
+      notes: person.person?.biographies?.map((b) => b.value).join('<br />'),
       emailAddress,
       imageUrl:
         person.person?.photos && person.person.photos[0].url ? person.person.photos[0].url : null,

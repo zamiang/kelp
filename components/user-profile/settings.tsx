@@ -49,6 +49,17 @@ const Settings = () => {
             // onChange={handleChange('days-back')}
           />
         </FormControl>
+        <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
+          <InputLabel htmlFor="week-starts-on">
+            Max meeting attendees to count as interactions in Contact Associates
+          </InputLabel>
+          <Input
+            id="max-meeting-attendees"
+            type={'text'}
+            value={config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION}
+            // onChange={handleChange('days-back')}
+          />
+        </FormControl>
 
         <div className={styles.row}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>

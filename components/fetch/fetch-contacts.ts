@@ -1,5 +1,12 @@
 import { person } from './fetch-people';
 
+const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
+  biographies
+    .filter((bio) => bio.metadata?.primary)
+    .map((bio) => bio.value)
+    .join('<br />');
+
+export const userPersonFields = 'names,nicknames,emailAddresses,photos,biographies'; // NOTE: Google Contacts has a field called 'notes' that edits the 'biographies' field
 /**
  * There is no way to lookup contacts via the Google Contacts API,
  * so here we make our own lookups by ID and email
@@ -7,10 +14,8 @@ import { person } from './fetch-people';
  * We do not want to add all contacts to the store, just ones with recent activity
  */
 const fetchContacts = async () => {
-  const usedPersonFields = 'names,nicknames,emailAddresses,photos';
-
   const people = await gapi.client.people.people.connections.list({
-    personFields: usedPersonFields,
+    personFields: userPersonFields,
     resourceName: 'people/me',
     sortOrder: 'LAST_MODIFIED_DESCENDING',
   });
@@ -34,6 +39,7 @@ const fetchContacts = async () => {
       isMissingProfile: person?.names ? false : true,
       emailAddress,
       imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
+      notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
     };
     contactsByPeopleId[person.resourceName] = formattedContact;
     contactsByEmail[emailAddress] = formattedContact;
