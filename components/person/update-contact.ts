@@ -1,6 +1,28 @@
 import { userPersonFields } from '../fetch/fetch-contacts';
+import { IPerson } from '../store/person-store';
 
-export const updateContactNotes = async (googleId: string, note: string) => {
+const contactEditScope = 'https://www.googleapis.com/auth/contacts';
+
+const addScope = async () => {
+  const grantedScopes = gapi.auth2.getAuthInstance().currentUser.get().getGrantedScopes();
+  if (grantedScopes.includes(contactEditScope + ' ')) {
+    return;
+  }
+
+  const option = new gapi.auth2.SigninOptionsBuilder();
+  option.setScope(contactEditScope);
+
+  const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+  try {
+    await googleUser.grant(option);
+  } catch (e) {
+    alert(e);
+  }
+};
+
+export const updateContactNotes = async (googleId: string, note: string, person: IPerson) => {
+  await addScope();
+
   const currentPerson = await gapi.client.people.people.get({
     personFields: userPersonFields,
     resourceName: googleId,
@@ -11,24 +33,18 @@ export const updateContactNotes = async (googleId: string, note: string) => {
     return alert('no etag');
   }
 
-  const person = await gapi.client.people.people.updateContact({
+  await gapi.client.people.people.updateContact({
     updatePersonFields: 'biographies',
     resource: {
-      metadata: {
-        sources: [
-          {
-            etag,
-          },
-        ],
-      },
+      etag,
       biographies: [
         {
           value: note,
         },
       ],
     },
-    resourceName: googleId,
+    resourceName: currentPerson.result.resourceName!,
   });
-  console.log('person', person);
+  person.notes = note;
   return person;
 };

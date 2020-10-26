@@ -7,6 +7,23 @@ export interface person {
   imageUrl?: string | null;
 }
 
+export const formatGooglePeopleResponse = (
+  person: gapi.client.people.PersonResponse['person'],
+  requestedResourceName?: string | null,
+) => {
+  const emailAddress =
+    person?.emailAddresses && person.emailAddresses[0] && person.emailAddresses[0].value;
+  const displayName = person?.names && person?.names[0]?.displayName;
+  return {
+    id: requestedResourceName!,
+    name: displayName || emailAddress || requestedResourceName!,
+    isMissingProfile: person?.names ? false : true,
+    notes: person?.biographies?.map((b) => b.value).join('<br />'),
+    emailAddress,
+    imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
+  };
+};
+
 export const batchFetchPeople = async (
   peopleIds: string[],
   addPeopleToStore: (people: person[]) => void,
@@ -25,22 +42,9 @@ export const batchFetchPeople = async (
   });
 
   // NOTE: This returns very little unless the person is in the user's contacts
-  const formattedPeople = people.result?.responses?.map((person) => {
-    const emailAddress =
-      person.person?.emailAddresses &&
-      person.person.emailAddresses[0] &&
-      person.person.emailAddresses[0].value;
-    const displayName = person.person?.names && person?.person?.names[0]?.displayName;
-    return {
-      id: person.requestedResourceName!,
-      name: displayName || emailAddress || person.requestedResourceName!,
-      isMissingProfile: person.person?.names ? false : true,
-      notes: person.person?.biographies?.map((b) => b.value).join('<br />'),
-      emailAddress,
-      imageUrl:
-        person.person?.photos && person.person.photos[0].url ? person.person.photos[0].url : null,
-    };
-  });
+  const formattedPeople = people.result?.responses?.map((personResponse) =>
+    formatGooglePeopleResponse(personResponse.person, personResponse.requestedResourceName),
+  );
 
   if (formattedPeople) {
     addPeopleToStore(formattedPeople);

@@ -16,12 +16,17 @@ type FormValues = {
   note: string;
 };
 
-const NotesEditForm = (props: { person: IPerson }) => {
-  const { handleSubmit, register } = useForm<FormValues>();
+const NotesEditForm = (props: { person: IPerson; onCloseEdit: () => void }) => {
+  const { handleSubmit, register, setValue } = useForm<FormValues>();
   const classes = useExpandStyles();
-  const onSubmit = handleSubmit(
-    async (data) => await updateContactNotes(props.person.googleId!, data.note),
-  );
+  const onSubmit = handleSubmit(async (data) => {
+    await updateContactNotes(props.person.googleId!, data.note, props.person);
+    props.onCloseEdit();
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue('note', e.target.value);
+  };
   return (
     <Grid container>
       <FormControl fullWidth>
@@ -30,6 +35,8 @@ const NotesEditForm = (props: { person: IPerson }) => {
           className={classes.textarea}
           placeholder="Add a contact note. This is saved in Google Contacts."
           defaultValue={props.person.notes || ''}
+          onChange={handleChange}
+          name="note"
           ref={register({ required: 'Required' })}
         />
         <Button variant="contained" color="primary" disableElevation onClick={onSubmit}>
@@ -55,12 +62,12 @@ const PersonNotes = (props: { person: IPerson }) => {
       {!isEditing && props.person.notes && (
         <Typography variant="body2">{props.person.notes}</Typography>
       )}
-      {!isEditing && props.person.googleId && (
+      {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
         <IconButton onClick={onEdit} className={classes.topRight} size="small">
           <EditIcon />
         </IconButton>
       )}
-      {isEditing && <NotesEditForm person={props.person} />}
+      {isEditing && <NotesEditForm person={props.person} onCloseEdit={onCloseEdit} />}
       {isEditing && (
         <IconButton onClick={onCloseEdit} className={classes.topRight} size="small">
           <CloseIcon />

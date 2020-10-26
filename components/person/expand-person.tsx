@@ -116,7 +116,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
                 rel="noreferrer"
                 href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
               >
-                <LinkedInIcon width={40} height={40} />
+                <LinkedInIcon fontSize="large" />
               </a>
             </React.Fragment>
           )}
