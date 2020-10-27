@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   textField: {
-    width: '25ch',
+    width: '100%',
   },
 }));
 
@@ -33,21 +33,11 @@ const Settings = () => {
       <div className={styles.row}>
         <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
           <InputLabel htmlFor="days-back">Number of days to look back</InputLabel>
-          <Input
-            id="days-back"
-            type={'text'}
-            value={config.NUMBER_OF_DAYS_BACK}
-            // onChange={handleChange('days-back')}
-          />
+          <Input id="days-back" type={'text'} value={config.NUMBER_OF_DAYS_BACK} />
         </FormControl>
         <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
           <InputLabel htmlFor="week-starts-on">Week starts on</InputLabel>
-          <Input
-            id="week-starts-on"
-            type={'text'}
-            value={config.WEEK_STARTS_ON}
-            // onChange={handleChange('days-back')}
-          />
+          <Input id="week-starts-on" type={'text'} value={config.WEEK_STARTS_ON} />
         </FormControl>
         <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
           <InputLabel htmlFor="week-starts-on">
@@ -57,10 +47,8 @@ const Settings = () => {
             id="max-meeting-attendees"
             type={'text'}
             value={config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION}
-            // onChange={handleChange('days-back')}
           />
         </FormControl>
-
         <div className={styles.row}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
             <Button variant="contained" color="primary" disableElevation>

@@ -41,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 77,
     width: 77,
+    [theme.breakpoints.down('sm')]: {
+      height: 50,
+      width: 50,
+    },
   },
   textarea: {
     border: `1px solid #dadce0`,

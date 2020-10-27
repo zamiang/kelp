@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   footerItem: {
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(1),
+      padding: '0px',
     },
   },
 }));
@@ -51,16 +52,6 @@ const Footer = (props: { shouldAlignLeft?: boolean }) => {
           <Link href="/about">
             <span className={classes.footerLink}>About</span>
           </Link>
-        </Grid>
-        <Grid item className={classes.footerItem}>
-          <a
-            rel="noreferrer"
-            href="mailto:support@kelp.nyc"
-            className={classes.footerLink}
-            target="_blank"
-          >
-            Contact
-          </a>
         </Grid>
         <Grid item className={classes.footerItem}>
           <a

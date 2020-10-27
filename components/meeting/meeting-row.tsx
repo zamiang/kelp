@@ -40,7 +40,8 @@ const MeetingRow = (props: {
   const rowStyles = useRowStyles();
   const fieldRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
-    if (props.meeting.id === props.selectedMeetingId && fieldRef.current) {
+    const isCurrentMeeting = props.meeting.id === props.selectedMeetingId;
+    if ((isCurrentMeeting || props.shouldRenderCurrentTime) && fieldRef.current) {
       fieldRef.current.scrollIntoView();
     }
   }, []);
