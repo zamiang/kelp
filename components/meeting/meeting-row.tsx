@@ -38,14 +38,12 @@ const MeetingRow = (props: {
 }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
-  // const actionCount = props.meeting.driveActivityIds.length + props.meeting.emailIds.length;
-
-  // note - does not work
-  // const router = useRouter();
-  //  if (!props.shouldRenderCurrentTime && !props.selectedMeetingId) {
-  //     void router.push(`?tab=meetings&slug=${props.meeting.id}`);
-  //}
-
+  const fieldRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    if (props.meeting.id === props.selectedMeetingId && fieldRef.current) {
+      fieldRef.current.scrollIntoView();
+    }
+  }, []);
   return (
     <React.Fragment>
       {props.shouldRenderCurrentTime && (
@@ -55,6 +53,7 @@ const MeetingRow = (props: {
         </ListItem>
       )}
       <ListItem
+        ref={fieldRef}
         button={true}
         className={clsx(
           'ignore-react-onclickoutside',

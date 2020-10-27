@@ -55,18 +55,6 @@ const Meetings = (props: IStore) => {
     }, 5000);
     return () => clearInterval(interval);
   }, [seconds]);
-
-  /**
-  // Scroll the 'current time' dot into view
-  // TODO: This is weird and non-standard react. Ideally the meeting to scroll to on initial load would be declared in this function and passed down
-  // HOWEVER I can't figure out how to have that only happen on render and not on every time selected meeting id changes
-  if (!selectedMeetingId) {
-    setTimeout(() => {
-      const element = document.getElementById(CURRENT_TIME_ELEMENT_ID);
-      element && element.scrollIntoView(true);
-    }, 100);
-  }
-   */
   return <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />;
 };
 

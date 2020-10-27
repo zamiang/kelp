@@ -9,7 +9,7 @@ const scopes = [
   'https://www.googleapis.com/auth/drive.activity.readonly',
 ];
 
-const NUMBER_OF_DAYS_BACK = 28;
+const NUMBER_OF_DAYS_BACK = 56;
 
 export default {
   AUTH0_DOMAIN: process.env.NEXT_PUBLIC_AUTH0_DOMAIN || 'test.auth0.com',
