@@ -28,7 +28,13 @@ module.exports = {
                 'https://drive-thirdparty.googleusercontent.com/',
                 'https://*.googleusercontent.com',
               ],
-              scriptSrc: ["'self'", "'unsafe-eval'", 'https://apis.google.com', 'https://www.googletagmanager.com',],
+              scriptSrc: [
+                "'self'",
+                "'unsafe-eval'",
+                'https://apis.google.com',
+                'https://www.googletagmanager.com',
+                'https://vitals.vercel-analytics.com',
+              ],
               frameSrc: [
                 'https://auth.kelp.nyc/',
                 'https://content.googleapis.com/',
@@ -37,7 +43,11 @@ module.exports = {
                 'https://content-driveactivity.googleapis.com/',
                 'https://content-people.googleapis.com/',
               ],
-              connectSrc: ["'self'", 'https://auth.kelp.nyc/oauth/token', 'https://www.google-analytics.com/'],
+              connectSrc: [
+                "'self'",
+                'https://auth.kelp.nyc/oauth/token',
+                'https://www.google-analytics.com/',
+              ],
             },
           },
           forceHTTPSRedirect: true,
