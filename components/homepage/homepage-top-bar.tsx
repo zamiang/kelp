@@ -92,11 +92,6 @@ const HomepageTopBar = (props: { color: string }) => {
           </Link>
         </div>
         <div className={classes.menuItem}>
-          <Link href="/security" passHref>
-            <MuiLink className={classes.link}>How we keep your data safe</MuiLink>
-          </Link>
-        </div>
-        <div className={classes.menuItem}>
           <Link href="/test-dashboard?tab=meetings" passHref>
             <MuiLink className={classes.link} target="_blank">
               Try with test data

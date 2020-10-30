@@ -64,13 +64,13 @@ const Footer = (props: { shouldAlignLeft?: boolean }) => {
           </a>
         </Grid>
         <Grid item className={classes.footerItem}>
-          <Link href="/security">
-            <span className={classes.footerLink}>Security</span>
+          <Link href="/privacy">
+            <span className={classes.footerLink}>Privacy</span>
           </Link>
         </Grid>
         <Grid item className={classes.footerItem}>
-          <Link href="/privacy">
-            <span className={classes.footerLink}>Privacy</span>
+          <Link href="/terms">
+            <span className={classes.footerLink}>Terms</span>
           </Link>
         </Grid>
       </Grid>
