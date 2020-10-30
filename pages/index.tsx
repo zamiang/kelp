@@ -161,6 +161,9 @@ export const useStyles = makeStyles((theme) => ({
     top: theme.spacing(2),
     right: theme.spacing(2),
   },
+  link: {
+    color: theme.palette.primary.dark,
+  },
 }));
 
 const App = () => {
