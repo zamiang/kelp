@@ -8,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import LoginButton from '../components/homepage/login-button';
@@ -30,9 +31,11 @@ const About = () => {
               <div className={classes.loginButton}>
                 <LoginButton />
               </div>
-              <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
+              <Link href="/">
+                <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
+              </Link>
               <Typography variant="h3" className={classes.heading}>
-                About Kelp
+                About <Link href="/">Kelp</Link>
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 In a time when we download new software every day, it’s important for us to take a
@@ -94,12 +97,34 @@ const About = () => {
                 Everything you do in Kelp is anonymous and your data stays on your computer.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                The credentials for third party services are stored securely in Auth0. All
-                extensions communicate directly via HTTPS over TLS to third party APIs. Kelp does
-                not operate intermediary servers to process or store your data. We use OAuth for
-                authentication and authorization where possible and access as little information as
-                necessary. None of the data fetched from third party services leaves your computer.
-                Data is fetched when you have Kelp open and gone when you close Kelp.
+                The credentials for third party services are stored securely in{' '}
+                <MuiLink href="https://auth0.com/" target="_blank" className={classes.link}>
+                  Auth0
+                </MuiLink>
+                . All extensions communicate directly via{' '}
+                <MuiLink
+                  href="https://en.wikipedia.org/wiki/HTTPS"
+                  target="_blank"
+                  className={classes.link}
+                >
+                  HTTPS
+                </MuiLink>{' '}
+                over{' '}
+                <MuiLink
+                  href="https://en.wikipedia.org/wiki/Transport_Layer_Security"
+                  className={classes.link}
+                  target="_blank"
+                >
+                  TLS{' '}
+                </MuiLink>{' '}
+                to third party APIs. Kelp does not operate intermediary servers to process or store
+                your data. We use{' '}
+                <MuiLink href="https://oauth.net/" target="_blank" className={classes.link}>
+                  OAuth
+                </MuiLink>{' '}
+                for authentication and authorization where possible and access as little information
+                as necessary. None of the data fetched from third party services leaves your
+                computer. Data is fetched when you have Kelp open and gone when you close Kelp.
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 Kelp does not don’t track any sensitive data. Only completely anonymous usage
@@ -118,9 +143,9 @@ const About = () => {
               <Typography variant="h6" className={classes.body}>
                 Neither Kelp or Auth0 store your passwords or personal data. We take security
                 seriously and apply experience from e-commerce, and healthcare data security. Kelp’s
-                security practices include but are not limited to
+                security practices include but are not limited to:
               </Typography>
-              <List>
+              <List dense={true}>
                 <ListItem disableGutters={true}>
                   <ListItemIcon>
                     <img className={classes.smallIcon} src="/icons/positive-color.svg" />
@@ -183,7 +208,7 @@ const About = () => {
               <Typography variant="h4">About Me</Typography>
               <Typography variant="h6" className={classes.body}>
                 My name is{' '}
-                <MuiLink href="http://www.zamiang.com/" target="_blank" rel="noreferrer">
+                <MuiLink href="http://www.zamiang.com/" target="_blank" className={classes.link}>
                   Brennan Moore
                 </MuiLink>
                 . I&rsquo;ve been professionally building software on the internet for the past 12
