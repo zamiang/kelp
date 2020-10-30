@@ -1,6 +1,8 @@
 import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -9,42 +11,39 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
 import Footer from '../components/homepage/footer';
-import HomepageTopBar from '../components/homepage/homepage-top-bar';
+import LoginButton from '../components/homepage/login-button';
+import config from '../constants/config';
 import { useStyles } from './index';
 
 const About = () => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.root, classes.container)}>
+      <style jsx global>{`
+        html body {
+          background-color: ${config.BLUE_BACKGROUND};
+        }
+      `}</style>
       <div className={classes.containerWidth}>
-        <HomepageTopBar color="about" />
-        <Grid
-          container
-          className={clsx(classes.hero, classes.orangeBackground)}
-          alignItems="center"
-        >
-          <Container>
-            <img
-              src="/icons/success-line.svg"
-              className={clsx(classes.heroImage, classes.heroImageIcon)}
-            />
-            <Typography variant="h2" className={clsx(classes.center, classes.heading)}>
-              Information at your fingertips
+        <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
+          <Grid item sm={7}>
+            <Container maxWidth="sm">
+              <div className={classes.loginButton}>
+                <LoginButton />
+              </div>
+              <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
+              <Typography variant="h3" className={classes.heading}>
+                About Kelp
+              </Typography>
+              <Typography variant="h6" className={classes.body}>
+                In a time when we download new software every day, it’s important for us to take a
+                step back and define why we are building another piece of software and define what
+                we stand for.
+              </Typography>
+            </Container>
+            <Container maxWidth="sm">
               <br />
-              &hellip;but actually
-            </Typography>
-          </Container>
-        </Grid>
-        <Container maxWidth="md">
-          <Grid container className={classes.info} justify="flex-start">
-            <Grid item>
-              <img
-                style={{ width: 120, margin: '-38px auto 0', display: 'block' }}
-                src="kelp.svg"
-              />
-            </Grid>
-            <Grid item sm={10}>
-              <Typography variant="h3">Kelp</Typography>
+              <Divider />
               <Typography variant="h6" className={classes.body}>
                 Kelp organizes your documents, events and contacts to make work make sense.
               </Typography>
@@ -62,16 +61,9 @@ const About = () => {
               <Typography variant="h6" className={classes.body}>
                 Use your data to help you do your job rather than to sell you things you don't need.
               </Typography>
-            </Grid>
-          </Grid>
-          <Grid container className={classes.info}>
-            <Grid item>
-              <img
-                style={{ width: 120, margin: '-38px auto 0', display: 'block' }}
-                src="kelp.svg"
-              />
-            </Grid>
-            <Grid item sm={10}>
+              <br />
+              <Divider />
+              <br />
               <Typography variant="h4">
                 Our data can be used for so much more than selling us stuff we don't need
               </Typography>
@@ -94,16 +86,9 @@ const About = () => {
                 The mission of Kelp is to figure out how to link that information together in a way
                 that provides meaningful value to working professionals.
               </Typography>
-            </Grid>
-          </Grid>
-          <Grid container className={classes.info}>
-            <Grid item>
-              <img
-                style={{ width: 120, margin: '-38px auto 0', display: 'block' }}
-                src="kelp.svg"
-              />
-            </Grid>
-            <Grid item sm={10}>
+              <br />
+              <Divider />
+              <br />
               <Typography variant="h4">We put your privacy first</Typography>
               <Typography variant="h6" className={classes.body}>
                 Everything you do in Kelp is anonymous and your data stays on your computer.
@@ -126,16 +111,9 @@ const About = () => {
                 access to your data is both our best interest and your best interest and hope to be
                 an example of privacy forward companies.
               </Typography>
-            </Grid>
-          </Grid>
-          <Grid container className={classes.info}>
-            <Grid item>
-              <img
-                style={{ width: 120, margin: '-38px auto 0', display: 'block' }}
-                src="/icons/Relax.svg"
-              />
-            </Grid>
-            <Grid item sm={10}>
+              <br />
+              <Divider />
+              <br />
               <Typography variant="h4">We value secuirty</Typography>
               <Typography variant="h6" className={classes.body}>
                 Neither Kelp or Auth0 store your passwords or personal data. We take security
@@ -199,19 +177,15 @@ const About = () => {
                   />
                 </ListItem>
               </List>
-            </Grid>
-          </Grid>
-          <Grid container className={classes.info}>
-            <Grid item>
-              <Avatar alt="Brennan Moore" src="/brennan.jpg" className={classes.largeAvatar} />
-            </Grid>
-            <Grid item sm={10}>
-              <Typography variant="h3">About Me</Typography>
+              <br />
+              <Divider />
+              <br />
+              <Typography variant="h4">About Me</Typography>
               <Typography variant="h6" className={classes.body}>
                 My name is{' '}
-                <a href="http://www.zamiang.com/" target="_blank" rel="noreferrer">
+                <MuiLink href="http://www.zamiang.com/" target="_blank" rel="noreferrer">
                   Brennan Moore
-                </a>
+                </MuiLink>
                 . I&rsquo;ve been professionally building software on the internet for the past 12
                 years. I&rsquo;ve built tools for non-profits, art collectors, bike share companies,
                 e-commerce startups and for healthcare enterprise.
@@ -227,10 +201,10 @@ const About = () => {
                 I hope to use my experience to build tools that help people take back their time and
                 attention to focus on what is most important rather than what appears urgent.
               </Typography>
-            </Grid>
+              <Footer shouldAlignLeft={true} />
+            </Container>
           </Grid>
-        </Container>
-        <Footer />
+        </Grid>
       </div>
     </div>
   );
