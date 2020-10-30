@@ -1,4 +1,3 @@
-import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -59,20 +58,21 @@ const About = () => {
                 environments and ROI negative for most individuals.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Use your data to help you do your job rather than to sell you things you don't need.
+                Use your data to help you do your job rather than to sell you things you don&rsquo;t
+                need.
               </Typography>
               <br />
               <Divider />
               <br />
               <Typography variant="h4">
-                Our data can be used for so much more than selling us stuff we don't need
+                Our data can be used for so much more than selling us stuff we don&rsquo;t need
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 Much like a fixer-upper house, our data is not renovated for our use — it has mostly
                 been used to sell us products. Our communication tools are separate from our
                 collaboration tools which are separate from our scheduling tools. Each of these
                 individual tools could benefit from information in the other but there is also data
-                in each that we just don't yet use.
+                in each that we just don&rsquo;t yet use.
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 For example, a Slack message contains the text and serves as a signal about
