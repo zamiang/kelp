@@ -105,11 +105,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
       <Grid container spacing={3} className={classes.content}>
         <Grid item sm={7}>
           {hasDescription && (
-            <Typography
-              variant="body2"
-              className={classes.description}
-              style={{ wordWrap: 'break-word' }}
-            >
+            <Typography variant="body2" className={classes.description}>
               <Linkify>{meeting.description}</Linkify>
             </Typography>
           )}

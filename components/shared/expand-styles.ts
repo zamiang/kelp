@@ -60,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   description: {
+    wordWrap: 'break-word',
+    whiteSpace: 'pre-wrap',
     '& a': {
       color: theme.palette.primary.dark,
       textDecoration: 'none',
