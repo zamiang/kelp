@@ -9,13 +9,16 @@ import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import { IProps } from './left-drawer';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   inputInput: {
-    width: '18ch',
+    width: '22ch',
   },
   listItem: {
     // don't want the height to change with or w/o the input
     height: 48,
+  },
+  iconContainer: {
+    minWidth: theme.spacing(5),
   },
 }));
 
@@ -66,7 +69,7 @@ const Search = (props: IProps) => {
     result && onAutocompleteSelect(result, router);
   return (
     <ListItem button className={clsx(classes.listItem, 'ignore-react-onclickoutside')}>
-      <ListItemIcon>
+      <ListItemIcon className={classes.iconContainer}>
         <SearchIcon />
       </ListItemIcon>
       <Autocomplete

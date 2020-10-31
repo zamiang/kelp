@@ -10,7 +10,7 @@ import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import PersonDataStore from '../store/person-store';
 
-const useRowStyles = makeStyles(() => ({
+const useRowStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     overflow: 'hidden',
@@ -19,6 +19,8 @@ const useRowStyles = makeStyles(() => ({
     height: 16,
     width: 16,
     display: 'block',
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
     marginTop: 4,
   },
   link: {

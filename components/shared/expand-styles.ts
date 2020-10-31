@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   avatar: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
     height: 77,
     width: 77,
     [theme.breakpoints.down('sm')]: {

@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   rowHint: {
     color: theme.palette.text.hint,
   },
+  avatar: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
   rowLineThrough: {
     textDecoration: 'line-through',
     '&.MuiListItem-button:hover': {
@@ -61,10 +65,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rowPrimaryMain: {
-    background: theme.palette.primary.main,
+    background: config.BLUE_BACKGROUND,
     '&.MuiListItem-button:hover': {
-      borderColor: theme.palette.info.main,
-      background: theme.palette.primary.main,
+      borderColor: config.BLUE_BACKGROUND,
+      background: config.BLUE_BACKGROUND,
     },
   },
   yellowBackground: {

@@ -9,7 +9,7 @@ import React from 'react';
 import EmailDataStore, { IEmail } from '../store/email-store';
 import PersonDataStore from '../store/person-store';
 
-const useRowStyles = makeStyles(() => ({
+const useRowStyles = makeStyles((theme) => ({
   from: {
     minWidth: 180,
     overflow: 'hidden',
@@ -23,11 +23,16 @@ const useRowStyles = makeStyles(() => ({
     flexGrow: 1,
     overflow: 'hidden',
   },
+  avatar: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
 }));
 
 type classesType = ReturnType<typeof useRowStyles>;
 
 const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: classesType }) => {
+  const classes = useRowStyles();
   const emailLink = `https://mail.google.com/mail/u/0/#inbox/${props.email.id}`;
   const person = props.personStore.getPersonById(props.email.fromPersonId);
   if (!person) {
@@ -37,7 +42,11 @@ const Email = (props: { email: IEmail; personStore: PersonDataStore; classes: cl
     <Grid container wrap="nowrap" spacing={2} alignItems="center">
       <Grid item>
         <Link href={`?tab=people&slug=${person.id}`}>
-          <Avatar style={{ height: 32, width: 32 }} src={(person && person.imageUrl) || ''}>
+          <Avatar
+            style={{ height: 32, width: 32 }}
+            src={(person && person.imageUrl) || ''}
+            className={classes.avatar}
+          >
             {person && props.personStore.getPersonDisplayName(person)[0]}
           </Avatar>
         </Link>

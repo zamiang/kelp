@@ -34,7 +34,6 @@ export const useStyles = makeStyles((theme) => ({
   hero: {
     marginTop: theme.spacing(6),
     padding: theme.spacing(6),
-    backgroundColor: theme.palette.primary.main,
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),

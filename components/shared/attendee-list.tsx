@@ -15,7 +15,7 @@ interface IProps {
   personStore: PersonDataStore;
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   person: {
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
@@ -37,6 +37,10 @@ const useStyles = makeStyles(() => ({
     },
   },
   personNeedsAction: {},
+  avatar: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
 }));
 
 const AttendeeRow = (props: IProps) => {
@@ -63,7 +67,11 @@ const AttendeeRow = (props: IProps) => {
             <Link href={`?tab=people&slug=${person.id}`}>
               <Grid container alignItems="center" spacing={1} wrap="nowrap">
                 <Grid item>
-                  <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>
+                  <Avatar
+                    style={{ height: 24, width: 24 }}
+                    src={person.imageUrl || ''}
+                    className={classes.avatar}
+                  >
                     {(person.name || person.id)[0]}
                   </Avatar>
                 </Grid>

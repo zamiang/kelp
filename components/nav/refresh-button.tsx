@@ -1,9 +1,9 @@
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import clsx from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 
@@ -14,6 +14,16 @@ interface IProps {
 
 const useStyles = makeStyles((theme) => ({
   text: { color: theme.palette.text.hint },
+  iconContainer: {
+    minWidth: theme.spacing(5),
+  },
+  listItem: {
+    borderRadius: `${theme.spacing(3)}px 0 0 ${theme.spacing(3)}px`,
+    transition: theme.transitions.create('background', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
 }));
 
 const RefreshButton = (props: IProps) => {
@@ -27,17 +37,20 @@ const RefreshButton = (props: IProps) => {
     return () => clearInterval(interval);
   }, [seconds]);
   return (
-    <List>
-      <ListItem button dense onClick={props.refresh} className={'ignore-react-onclickoutside'}>
-        <ListItemIcon>
-          <RefreshIcon />
-        </ListItemIcon>
-        <ListItemText
-          primary={`${formatDistanceToNow(props.lastUpdated)} ago`}
-          className={classes.text}
-        />
-      </ListItem>
-    </List>
+    <ListItem
+      button
+      dense
+      onClick={props.refresh}
+      className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+    >
+      <ListItemIcon className={classes.iconContainer}>
+        <RefreshIcon />
+      </ListItemIcon>
+      <ListItemText
+        primary={`${formatDistanceToNow(props.lastUpdated)} ago`}
+        className={classes.text}
+      />
+    </ListItem>
   );
 };
 

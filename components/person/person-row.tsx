@@ -10,32 +10,26 @@ import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/person-store';
 
 const PersonRow = (props: { selectedPersonId: string | null; person: IPerson }) => {
-  const rowStyles = useRowStyles();
+  const classes = useRowStyles();
   return (
     <ListItem
       button={true}
       className={clsx(
         'ignore-react-onclickoutside',
-        rowStyles.row,
-        props.selectedPersonId === props.person.id && rowStyles.orangeBackground,
+        classes.row,
+        props.selectedPersonId === props.person.id && classes.orangeBackground,
       )}
     >
       <Link href={`?tab=people&slug=${props.person.id}`}>
         <Grid container spacing={1}>
-          <Grid
-            item
-            className={clsx(
-              rowStyles.border,
-              rowStyles.borderSecondaryMain,
-              props.selectedPersonId === props.person.id && rowStyles.borderInfoMain,
-            )}
-          ></Grid>
           <Grid item>
             <ListItemIcon>
               {props.person.imageUrl ? (
-                <Avatar src={props.person.imageUrl} />
+                <Avatar className={classes.avatar} src={props.person.imageUrl} />
               ) : (
-                <Avatar>{(props.person.name || props.person.id)[0]}</Avatar>
+                <Avatar className={classes.avatar}>
+                  {(props.person.name || props.person.id)[0]}
+                </Avatar>
               )}
             </ListItemIcon>
           </Grid>

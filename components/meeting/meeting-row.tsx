@@ -84,9 +84,8 @@ const MeetingRow = (props: {
               <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
             </Grid>
             <Grid item className={classes.time}>
-              <Typography variant="subtitle2">{format(props.meeting.start, 'p')}</Typography>
-              <Typography variant="subtitle2" style={{ opacity: 0.5 }}>
-                {format(props.meeting.end, 'p')}
+              <Typography variant="subtitle2">
+                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
               </Typography>
             </Grid>
           </Grid>
