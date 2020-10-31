@@ -139,65 +139,57 @@ const About = () => {
               <Typography variant="h6" className={classes.body}>
                 Neither Kelp or Auth0 store your passwords or personal data. We take security
                 seriously and apply experience from e-commerce, and healthcare data security. Kelp’s
-                security practices include but are not limited to:
+                security practices include but are not limited to:{' '}
+                <MuiLink
+                  className={classes.link}
+                  target="_blank"
+                  href="https://en.wikipedia.org/wiki/Static_program_analysis"
+                >
+                  static code analysis
+                </MuiLink>
+                ,{' '}
+                <MuiLink
+                  className={classes.link}
+                  target="_blank"
+                  href="https://docs.github.com/en/free-pro-team@latest/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies"
+                >
+                  static dependency checking
+                </MuiLink>
+                ,{' '}
+                <MuiLink
+                  className={classes.link}
+                  target="_blank"
+                  href="https://en.wikipedia.org/wiki/Vulnerability_scanner"
+                >
+                  web vulnerability scanning
+                </MuiLink>
+                ,{' '}
+                <MuiLink
+                  href="https://en.wikipedia.org/wiki/Transport_Layer_Security"
+                  className={classes.link}
+                  target="_blank"
+                >
+                  end-to-end encryption
+                </MuiLink>
+                , and a{' '}
+                <MuiLink href="mailto:security@kelp.nyc" className={classes.link} target="_blank">
+                  bug bounty program
+                </MuiLink>
+                .
               </Typography>
-              <List dense={true}>
-                <ListItem disableGutters={true}>
-                  <ListItemIcon>
-                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemText,
-                    }}
-                    primary="Static code analysis"
-                  />
-                </ListItem>
-                <ListItem disableGutters={true}>
-                  <ListItemIcon>
-                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemText,
-                    }}
-                    primary="Static dependency checking"
-                  />
-                </ListItem>
-                <ListItem disableGutters={true}>
-                  <ListItemIcon>
-                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemText,
-                    }}
-                    primary="Web vulnerability scanning"
-                  />
-                </ListItem>
-                <ListItem disableGutters={true}>
-                  <ListItemIcon>
-                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemText,
-                    }}
-                    primary="End to end encryption"
-                  />
-                </ListItem>
-                <ListItem disableGutters={true}>
-                  <ListItemIcon>
-                    <img className={classes.smallIcon} src="/icons/positive-color.svg" />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{
-                      primary: classes.largeListItemText,
-                    }}
-                    primary="Security Bug Bounty program"
-                  />
-                </ListItem>
-              </List>
+              <br />
+              <Divider />
+              <br />
+              <Typography variant="h4">We are building a business for the long term</Typography>
+              <Typography variant="h6" className={classes.body}>
+                We are self funded with the goal of building a sustainable product. Our vision is to
+                create a useful tool with an active community paired with a clear business model.
+              </Typography>
+              <Typography variant="h6" className={classes.body}>
+                During our public beta, Kelp is free to use. Eventually, we’ll add paid features and
+                integrations. The clear monetization guarantees that we are able to maintain the
+                tool for the long term.
+              </Typography>
               <br />
               <Divider />
               <br />
