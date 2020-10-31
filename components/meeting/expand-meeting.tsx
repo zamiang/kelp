@@ -182,7 +182,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
             <MuiLink href={meeting.link} target="_blank" className={classes.link}>
               Google Calendar{' '}
               <sub>
-                <ExitToAppIcon fontSize="small" className={classes.iconDown} />
+                <ExitToAppIcon fontSize="small" />
               </sub>
             </MuiLink>
           )}
