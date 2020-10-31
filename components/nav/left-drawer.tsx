@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
     width: drawerWidth,
     background: 'none',
+    paddingLeft: theme.spacing(1),
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -72,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: 22,
     height: 22,
+  },
+  iconContainer: {
+    minWidth: theme.spacing(5),
   },
   logo: {
     width: 60,
@@ -114,7 +118,7 @@ const LeftDrawer = (props: IProps) => {
     >
       <List>
         <ListItem>
-          <ListItemIcon>
+          <ListItemIcon className={classes.iconContainer}>
             <img className={classes.logo} src="/kelp.svg" />
           </ListItemIcon>
           <ListItemText>
@@ -125,7 +129,7 @@ const LeftDrawer = (props: IProps) => {
         </ListItem>
         {isLoading && (
           <ListItem>
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <LoopIcon className={classes.avatar} />
             </ListItemIcon>
             <ListItemText>Loading</ListItemText>
@@ -133,7 +137,7 @@ const LeftDrawer = (props: IProps) => {
         )}
         {!isAuthenticated && (
           <ListItem>
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <LockOpenIcon className={classes.avatar} />
             </ListItemIcon>
             <ListItemText>Not Authenticated</ListItemText>
@@ -141,7 +145,7 @@ const LeftDrawer = (props: IProps) => {
         )}
         {error && (
           <ListItem>
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <ErrorOutlineIcon className={classes.avatar} />
             </ListItemIcon>
             <ListItemText>{error}</ListItemText>
@@ -154,7 +158,7 @@ const LeftDrawer = (props: IProps) => {
             selected={isSummarySelected}
             className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
           >
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <PublicIcon className={isSummarySelected ? classes.selected : classes.unSelected} />
             </ListItemIcon>
             <ListItemText
@@ -169,7 +173,7 @@ const LeftDrawer = (props: IProps) => {
             selected={isWeekSelected}
             className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
           >
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <DateRangeIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
             </ListItemIcon>
             <ListItemText
@@ -184,7 +188,7 @@ const LeftDrawer = (props: IProps) => {
             selected={isMeetingsSelected}
             className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
           >
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <CalendarViewDayIcon
                 className={isMeetingsSelected ? classes.selected : classes.unSelected}
               />
@@ -201,7 +205,7 @@ const LeftDrawer = (props: IProps) => {
             selected={isDocsSelected}
             className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
           >
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <InsertDriveFileIcon
                 className={isDocsSelected ? classes.selected : classes.unSelected}
               />
@@ -218,7 +222,7 @@ const LeftDrawer = (props: IProps) => {
             selected={isPeopleSelected}
             className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
           >
-            <ListItemIcon>
+            <ListItemIcon className={classes.iconContainer}>
               <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
             </ListItemIcon>
             <ListItemText
@@ -237,7 +241,7 @@ const LeftDrawer = (props: IProps) => {
               selected={isProfileSelected}
               className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
             >
-              <ListItemIcon>
+              <ListItemIcon className={classes.iconContainer}>
                 <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
               </ListItemIcon>
               <ListItemText>{user.name}</ListItemText>
