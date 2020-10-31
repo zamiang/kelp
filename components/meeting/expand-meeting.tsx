@@ -1,12 +1,10 @@
 import Grid from '@material-ui/core/Grid';
-import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import ScheduleIcon from '@material-ui/icons/Schedule';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
