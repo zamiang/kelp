@@ -53,24 +53,26 @@ const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
 
   const onEdit = () => setIsEditing(true);
   const onCloseEdit = () => setIsEditing(false);
+  if (!props.person.googleId) {
+    return null;
+  }
   return (
     <div className={classes.relativeContainer}>
-      {props.person.googleId && (
-        <Typography variant="h6" className={classes.smallHeading}>
-          Notes
-        </Typography>
-      )}
+      <Typography variant="h6" className={classes.smallHeading}>
+        Notes
+      </Typography>
       {!isEditing && props.person.notes && (
         <Typography variant="body2">{props.person.notes}</Typography>
       )}
       {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
-        <IconButton onClick={onEdit} className={classes.topRight} size="small">
+        <Button onClick={onEdit} className={classes.edit} size="small">
           <EditIcon />
-        </IconButton>
+          <Typography variant="subtitle2">Edit</Typography>
+        </Button>
       )}
       {isEditing && <NotesEditForm person={props.person} onCloseEdit={onCloseEdit} />}
       {isEditing && (
-        <IconButton onClick={onCloseEdit} className={classes.topRight} size="small">
+        <IconButton onClick={onCloseEdit} size="small">
           <CloseIcon />
         </IconButton>
       )}

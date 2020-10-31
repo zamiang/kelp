@@ -36,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'line-through',
     },
   },
-  personNeedsAction: {},
+  personNeedsAction: {
+    opacity: 0.8,
+  },
   avatar: {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,

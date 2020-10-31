@@ -23,6 +23,7 @@ export interface ICalendarEvent {
   readonly summary?: string;
   readonly start: Date;
   readonly end: Date;
+  readonly location?: string;
   readonly description?: string;
   readonly selfResponseStatus: responseStatus;
   readonly creator?: {
@@ -111,6 +112,7 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
         summary: event.summary,
         start: new Date(event.start!.dateTime!),
         end: new Date(event.end!.dateTime!),
+        location: event.location,
         // TODO: Handle lack of enum type in the google calendar library
         selfResponseStatus: getSelfResponseStatus(event.attendees || []),
         creator: event.creator,

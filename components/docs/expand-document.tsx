@@ -5,7 +5,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
@@ -31,15 +30,15 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
   const meetings = props.timeDataStore.getSegmentsForDriveActivity(driveActivityIds);
   return (
     <div className={classes.container}>
-      <Typography variant="h4" color="textPrimary" gutterBottom noWrap className={classes.title}>
+      <Typography variant="h4" color="textPrimary" gutterBottom className={classes.title}>
         {document.name || '(no title)'}
       </Typography>
       <List dense={true} className={classes.inlineList} disablePadding={true}>
         {document.link && (
-          <MuiLink target="_blank" rel="noreferrer" href={document.link}>
+          <MuiLink target="_blank" rel="noreferrer" href={document.link} className={classes.link}>
             <ListItem button={true}>
               <ListItemIcon>
-                <InsertDriveFileIcon fontSize="small" />
+                <img src={document.iconLink} />
               </ListItemIcon>
               <ListItemText primary="Google Drive" />
             </ListItem>

@@ -12,11 +12,7 @@ const useStyles = makeStyles((theme) => ({
   relativeContainer: {
     position: 'relative',
   },
-  topRight: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
+  edit: {},
   title: {
     paddingTop: 5,
     paddingLeft: theme.spacing(2),
@@ -31,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  smallCaption: {
+    marginTop: theme.spacing(-1),
+    color: theme.palette.text.hint,
+    display: 'block',
+  },
   inlineList: {
     display: 'flex',
     flexDirection: 'row',
@@ -42,8 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.primary.dark,
-    display: 'block',
-    marginTop: theme.spacing(2),
   },
   avatar: {
     backgroundColor: theme.palette.secondary.main,
@@ -59,6 +58,15 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid #dadce0`,
     borderRadius: 0,
     marginBottom: theme.spacing(1),
+  },
+  description: {
+    '& a': {
+      color: theme.palette.primary.dark,
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
   },
 }));
 

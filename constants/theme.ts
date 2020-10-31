@@ -82,6 +82,21 @@ const theme = createMuiTheme({
         minWidth: 0,
       },
     },
+    MuiListItem: {
+      root: {
+        paddingTop: 6,
+        paddingBottom: 6,
+      },
+    },
+    MuiAvatar: {
+      root: {
+        height: 36,
+        width: 36,
+        fontSize: '1rem',
+        textTransform: 'uppercase',
+        color: '#ffffffcf',
+      },
+    },
   },
 });
 

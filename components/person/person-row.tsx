@@ -1,8 +1,7 @@
+import { Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
@@ -21,20 +20,18 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson }) 
       )}
     >
       <Link href={`?tab=people&slug=${props.person.id}`}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item>
-            <ListItemIcon>
-              {props.person.imageUrl ? (
-                <Avatar className={classes.avatar} src={props.person.imageUrl} />
-              ) : (
-                <Avatar className={classes.avatar}>
-                  {(props.person.name || props.person.id)[0]}
-                </Avatar>
-              )}
-            </ListItemIcon>
+            {props.person.imageUrl ? (
+              <Avatar className={classes.avatar} src={props.person.imageUrl} />
+            ) : (
+              <Avatar className={classes.avatar}>
+                {(props.person.name || props.person.id)[0]}
+              </Avatar>
+            )}
           </Grid>
           <Grid item style={{ flex: 1, overflow: 'hidden' }}>
-            <ListItemText primary={props.person.name || props.person.id} />
+            <Typography>{props.person.name || props.person.id}</Typography>
           </Grid>
         </Grid>
       </Link>

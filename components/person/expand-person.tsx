@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import EmailIcon from '@material-ui/icons/Email';
 import EventIcon from '@material-ui/icons/Event';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { formatDistance, formatDuration } from 'date-fns';
@@ -56,10 +57,26 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
             {props.personDataStore.getPersonDisplayName(person)}
           </Typography>
           <List dense={true} className={classes.inlineList} disablePadding={true}>
+            {person.emailAddress && (
+              <MuiLink
+                target="_blank"
+                className={classes.link}
+                rel="noreferrer"
+                href={`mailto:${person.emailAddress}`}
+              >
+                <ListItem button={true}>
+                  <ListItemIcon>
+                    <EmailIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary={person.emailAddress} />
+                </ListItem>
+              </MuiLink>
+            )}
             {hasName && (
               <MuiLink
                 target="_blank"
                 rel="noreferrer"
+                className={classes.link}
                 href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
               >
                 <ListItem button={true}>
