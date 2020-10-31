@@ -41,14 +41,6 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
     >
       <Link href={`?tab=docs&slug=${props.doc.id}`}>
         <Grid container spacing={1}>
-          <Grid
-            item
-            className={clsx(
-              rowStyles.border,
-              rowStyles.borderSecondaryMain,
-              props.selectedDocumentId === props.doc.id && rowStyles.borderInfoMain,
-            )}
-          ></Grid>
           <Grid item className={classes.imageContainer}>
             <img src={props.doc.iconLink} className={classes.image} />
           </Grid>

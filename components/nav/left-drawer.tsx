@@ -190,7 +190,7 @@ const LeftDrawer = (props: IProps) => {
               />
             </ListItemIcon>
             <ListItemText
-              primary="Events"
+              primary="Schedule"
               className={isMeetingsSelected ? classes.selected : classes.unSelected}
             />
           </ListItem>

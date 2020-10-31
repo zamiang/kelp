@@ -24,6 +24,10 @@ const useStyles = makeStyles(() => ({
       opacity: 0.8,
     },
   },
+  avatar: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
 }));
 
 const PersonRow = (props: IProps) => {
@@ -39,7 +43,11 @@ const PersonRow = (props: IProps) => {
             <Link href={`?tab=people&slug=${person.id}`}>
               <Grid container alignItems="center" spacing={1} wrap="nowrap">
                 <Grid item>
-                  <Avatar style={{ height: 24, width: 24 }} src={person.imageUrl || ''}>
+                  <Avatar
+                    style={{ height: 24, width: 24 }}
+                    src={person.imageUrl || ''}
+                    className={classes.avatar}
+                  >
                     {(person.name || person.id)[0]}
                   </Avatar>
                 </Grid>
