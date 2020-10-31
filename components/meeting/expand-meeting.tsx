@@ -2,10 +2,9 @@ import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
@@ -181,12 +180,10 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
         <Grid item sm={5}>
           {meeting.link && (
             <MuiLink href={meeting.link} target="_blank" className={classes.link}>
-              <ListItem disableGutters={true}>
-                <ListItemIcon>
-                  <CalendarTodayIcon />
-                </ListItemIcon>
-                <ListItemText primary="Google Calendar" />
-              </ListItem>
+              Google Calendar{' '}
+              <sub>
+                <ExitToAppIcon fontSize="small" className={classes.iconDown} />
+              </sub>
             </MuiLink>
           )}
           {hasAttendees && (

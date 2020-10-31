@@ -94,7 +94,7 @@ const theme = createMuiTheme({
         width: 36,
         fontSize: '1rem',
         textTransform: 'uppercase',
-        color: '#ffffffcf',
+        color: '#ffffffcf !important',
       },
     },
   },
