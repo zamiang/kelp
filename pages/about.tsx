@@ -51,7 +51,7 @@ const About = () => {
               <Typography variant="h6" className={classes.body}>
                 Kelp solves this problem through passively organizing information. This passive
                 organization reduces the time working professionals spend searching for information
-                and helps them see bigger picture.
+                and helps them see the bigger picture.
               </Typography>
               <br />
               <Divider />
@@ -64,14 +64,14 @@ const About = () => {
                 </b>
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Much like a fixer-upper house, our data is not renovated for our use — it has mostly
-                been used to sell us products. Our communication tools are separate from our
+                Much like a fixer-upper house, our data is not renovated for our use. Our data has
+                mostly been used to sell us products. Our communication tools are separate from our
                 collaboration tools which are separate from our scheduling tools. Each of these
                 individual tools could benefit from information in the other but there is also data
                 in each that we just don&rsquo;t yet use.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                For example, a Slack message contains the text and serves as a signal about
+                For example, a Slack message contains the text and serves as a signal about the
                 relationship between two people, a piece of information and a point in time. Events
                 organize information as they have a topic, and involve a group of people working to
                 produce some artifact. The meeting name and attendees are signals in addition to the
@@ -131,7 +131,7 @@ const About = () => {
               <br />
               <Divider />
               <br />
-              <Typography variant="h4">We value secuirty</Typography>
+              <Typography variant="h4">We value security</Typography>
               <Typography variant="h6" className={classes.body}>
                 Neither Kelp or Auth0 store your passwords or personal data. We take security
                 seriously and apply experience from e-commerce, and healthcare data security. Kelp’s
@@ -214,7 +214,7 @@ const About = () => {
                 >
                   MIT CSAIL Haystack group
                 </MuiLink>{' '}
-                building tools to automate tasks
+                building tools to automate tasks{' '}
                 <sup>
                   <MuiLink
                     target="_blank"
