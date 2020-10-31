@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
-import EmailSignup from '../components/email-signup';
 import Footer from '../components/homepage/footer';
 import LoginButton, { loginWithRedirectArgs } from '../components/homepage/login-button';
 import config from '../constants/config';
@@ -123,13 +122,6 @@ export const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  heroImageIcon: {
-    height: '120px',
-    width: '120px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    display: 'block',
-  },
   row: {
     borderBottom: `1px solid ${theme.palette.text.primary}`,
   },
@@ -190,7 +182,6 @@ const App = () => {
               <Typography variant="h6" className={classes.body}>
                 Kelp organizes your documents, events and contacts to make work make sense.
               </Typography>
-              <EmailSignup />
               <Grid item sm={10}>
                 <List className={classes.list}>
                   <ListItem disableGutters={true}>

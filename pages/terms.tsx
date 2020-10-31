@@ -2,6 +2,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import Image from 'next/image';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
@@ -13,12 +14,11 @@ const Terms = () => {
     <div className={clsx(classes.root, classes.container)}>
       <div className={classes.containerWidth}>
         <HomepageTopBar color="terms" />
-        <Grid container className={clsx(classes.hero, classes.pinkBackground)} alignItems="center">
+        <Grid container className={clsx(classes.hero, classes.pinkBackground)}>
           <Container>
-            <img
-              src="/icons/pencil-line.svg"
-              className={clsx(classes.heroImage, classes.heroImageIcon)}
-            />
+            <div style={{ width: '120px', margin: '0 auto' }}>
+              <Image src="/icons/pencil-line.svg" alt="pencil line" height={120} width={120} />
+            </div>
             <Typography variant="h2" className={classes.center}>
               Terms And Conditions
             </Typography>

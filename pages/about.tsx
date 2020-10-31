@@ -32,15 +32,14 @@ const About = () => {
                 <LoginButton />
               </div>
               <Link href="/">
-                <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
+                <img alt="kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               </Link>
               <Typography variant="h3" className={classes.heading}>
-                About <Link href="/">Kelp</Link>
+                About Kelp
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                In a time when we download new software every day, it’s important for us to take a
-                step back and define why we are building another piece of software and define what
-                we stand for.
+                It is important for us to take a step back and define why we are building another
+                piece of software and define what we stand for.
               </Typography>
             </Container>
             <Container maxWidth="sm">
@@ -56,19 +55,17 @@ const About = () => {
               <Typography variant="h6" className={classes.body}>
                 Kelp solves this problem through passively organizing information. This passive
                 organization reduces the time working professionals spend searching for information
-                and helps them see bigger picture. This stands in stark contrast to the arduous
-                process of folder organization and tagging that is hopeless in most collaborative
-                environments and ROI negative for most individuals.
-              </Typography>
-              <Typography variant="h6" className={classes.body}>
-                Use your data to help you do your job rather than to sell you things you don&rsquo;t
-                need.
+                and helps them see bigger picture.
               </Typography>
               <br />
               <Divider />
               <br />
-              <Typography variant="h4">
-                Our data can be used for so much more than selling us stuff we don&rsquo;t need
+              <Typography variant="h4">We make your data work for you</Typography>
+              <br />
+              <Typography variant="h6">
+                <b>
+                  Our data can be used for so much more than selling us stuff we don&rsquo;t need.
+                </b>
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 Much like a fixer-upper house, our data is not renovated for our use — it has mostly
@@ -129,12 +126,11 @@ const About = () => {
               <Typography variant="h6" className={classes.body}>
                 Kelp does not don’t track any sensitive data. Only completely anonymous usage
                 statistics and error logging are sent to us. We interpret the usage data in order to
-                improve Kelp. None of the data is sold and we don’t use it for advertisement.
+                improve Kelp. None of the data is sold and we don’t use it for advertisements.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Kelp puts your privacy and security first. We deeply believe that limiting Kelp’s
-                access to your data is both our best interest and your best interest and hope to be
-                an example of privacy forward companies.
+                We deeply believe that limiting Kelp’s access to your data is both our best interest
+                and your best interest and hope to be an example of privacy forward companies.
               </Typography>
               <br />
               <Divider />
@@ -213,7 +209,44 @@ const About = () => {
                 </MuiLink>
                 . I&rsquo;ve been professionally building software on the internet for the past 12
                 years. I&rsquo;ve built tools for non-profits, art collectors, bike share companies,
-                e-commerce startups and for healthcare enterprise.
+                e-commerce startups and for healthcare enterprise. Before being a professional
+                software engineer, I collaborated with{' '}
+                <MuiLink
+                  href="https://www.cs.ox.ac.uk/people/max.vankleek/"
+                  target="_blank"
+                  className={classes.link}
+                >
+                  Max Van Kleek
+                </MuiLink>{' '}
+                and others at the{' '}
+                <MuiLink
+                  href="http://haystack.csail.mit.edu/"
+                  target="_blank"
+                  className={classes.link}
+                >
+                  MIT CSAIL Haystack group
+                </MuiLink>{' '}
+                building tools to automate tasks
+                <sup>
+                  <MuiLink
+                    target="_blank"
+                    className={classes.link}
+                    href="http://people.csail.mit.edu/emax/papers/atomate-www2010.pdf"
+                  >
+                    pdf
+                  </MuiLink>
+                </sup>{' '}
+                and assist self reflection{' '}
+                <sup>
+                  <MuiLink
+                    target="_blank"
+                    className={classes.link}
+                    href="https://chi2010.personalinformatics.org/publications/515"
+                  >
+                    pdf
+                  </MuiLink>
+                </sup>
+                .
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 Across all of those experiences, I&rsquo;ve made a lot of simple mistakes.

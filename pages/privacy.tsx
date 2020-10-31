@@ -2,6 +2,8 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import Image from 'next/image';
+
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import HomepageTopBar from '../components/homepage/homepage-top-bar';
@@ -19,10 +21,9 @@ const Terms = () => {
           alignItems="center"
         >
           <Container>
-            <img
-              src="/icons/key-line.svg"
-              className={clsx(classes.heroImage, classes.heroImageIcon)}
-            />
+            <div style={{ width: '120px', margin: '0 auto' }}>
+              <Image alt="key" height={120} width={120} src="/icons/key-line.svg" />
+            </div>
             <Typography variant="h2" className={classes.center}>
               Privacy Policy
             </Typography>
