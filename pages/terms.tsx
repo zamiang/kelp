@@ -411,10 +411,10 @@ const Terms = () => {
               <ul>
                 <li>By email: support@kelp.nyc</li>
               </ul>
+              <Footer shouldAlignLeft={true} />
             </Container>
           </Grid>
         </Grid>
-        <Footer />
       </div>
     </div>
   );

@@ -378,10 +378,10 @@ const Terms = () => {
                 If you have questions or concerns regarding these terms, privacy, or security,
                 please contact us at <a href="mailto:support@kelp.nyc">support@kelp.nyc.</a>
               </p>
+              <Footer shouldAlignLeft={true} />
             </Container>
           </Grid>
         </Grid>
-        <Footer />
       </div>
     </div>
   );
