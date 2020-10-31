@@ -40,43 +40,47 @@ export interface IFormattedDriveActivity {
 
 const fetchDriveActivityForDocument = async (documentId: string) => {
   // Todo: Make driveactivity types
-  const activityResponse = await (gapi.client as any).driveactivity.activity.query({
-    pageSize: 100,
-    filter: `detail.action_detail_case:(CREATE EDIT COMMENT) AND time >= "${config.startDate.toISOString()}"`,
-    itemName: `items/${documentId}`,
-  });
-  const activity: DriveActivity[] =
-    activityResponse && activityResponse.result && activityResponse.result.activities
-      ? activityResponse.result.activities.filter(
-          (activity: DriveActivity) =>
-            activity.actors && activity.actors[0] && activity.actors[0].user,
-        )
-      : [];
+  try {
+    const activityResponse = await (gapi.client as any).driveactivity.activity.query({
+      pageSize: 100,
+      filter: `detail.action_detail_case:(CREATE EDIT COMMENT) AND time >= "${config.startDate.toISOString()}"`,
+      itemName: `items/${documentId}`,
+    });
+    const activity: DriveActivity[] =
+      activityResponse && activityResponse.result && activityResponse.result.activities
+        ? activityResponse.result.activities.filter(
+            (activity: DriveActivity) =>
+              activity.actors && activity.actors[0] && activity.actors[0].user,
+          )
+        : [];
 
-  const formattedDriveActivity: IFormattedDriveActivity[] = activity.map((activity) => {
-    const action = activity.primaryActionDetail
-      ? Object.keys(activity.primaryActionDetail)[0]
-      : 'unknown';
-    const targetInfo = activity.targets ? getTargetInfo(activity.targets[0]) : null;
-    const actor = activity.actors && activity.actors[0];
-    const actorPersonId =
-      actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
-    return {
-      id: targetInfo && targetInfo.title ? targetInfo.title : 'no id',
-      time: activity.timestamp ? new Date(activity.timestamp) : new Date(),
-      action,
-      actorPersonId,
-      title: targetInfo && targetInfo.title,
-      link: targetInfo && targetInfo.link,
-    };
-  });
+    const formattedDriveActivity: IFormattedDriveActivity[] = activity.map((activity) => {
+      const action = activity.primaryActionDetail
+        ? Object.keys(activity.primaryActionDetail)[0]
+        : 'unknown';
+      const targetInfo = activity.targets ? getTargetInfo(activity.targets[0]) : null;
+      const actor = activity.actors && activity.actors[0];
+      const actorPersonId =
+        actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
+      return {
+        id: targetInfo && targetInfo.title ? targetInfo.title : 'no id',
+        time: activity.timestamp ? new Date(activity.timestamp) : new Date(),
+        action,
+        actorPersonId,
+        title: targetInfo && targetInfo.title,
+        link: targetInfo && targetInfo.link,
+      };
+    });
 
-  // these are returned as 'people ids'
-  const peopleIds = formattedDriveActivity
-    .filter((activity) => activity.actorPersonId)
-    .map((activity) => activity.actorPersonId!);
+    // these are returned as 'people ids'
+    const peopleIds = formattedDriveActivity
+      .filter((activity) => activity.actorPersonId)
+      .map((activity) => activity.actorPersonId!);
 
-  return { peopleIds, activity: formattedDriveActivity };
+    return { peopleIds, activity: formattedDriveActivity };
+  } catch (e) {
+    return { peopleIds: [], activity: [] };
+  }
 };
 
 const fetchDriveActivityForDocumentIds = async (ids: string[]) => {
