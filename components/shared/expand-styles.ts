@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     paddingTop: 5,
     paddingLeft: theme.spacing(2),
+    marginBottom: -1,
   },
   smallHeading: {
     marginTop: theme.spacing(3),
@@ -29,6 +30,12 @@ const useStyles = makeStyles((theme) => ({
     '&:first-child': {
       marginTop: 0,
     },
+  },
+  inlineList: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 0,
+    width: '100%',
   },
   content: {
     marginTop: theme.spacing(1),

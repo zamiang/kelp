@@ -2,10 +2,16 @@ import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import EventIcon from '@material-ui/icons/Event';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import { formatDuration } from 'date-fns';
-import { isEmpty } from 'lodash';
+import { formatDistance, formatDuration } from 'date-fns';
+import { isEmpty, last } from 'lodash';
+import Link from 'next/link';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivity from '../shared/documents-from-drive-activity';
@@ -27,6 +33,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
   const segments = (person.segmentIds || []).map((segmentId) =>
     props.timeDataStore.getSegmentById(segmentId),
   );
+  const lastMeeting = last(segments);
   const meetingTime = props.personDataStore.getMeetingTime(segments);
   const timeInMeetings = formatDuration(meetingTime.thisWeek);
   const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek);
@@ -38,9 +45,45 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
         <Avatar className={classes.avatar} src={person.imageUrl || ''}>
           {(person.name || person.id)[0]}
         </Avatar>
-        <Typography className={classes.title} variant="h3" color="textPrimary" gutterBottom noWrap>
-          {props.personDataStore.getPersonDisplayName(person)}
-        </Typography>
+        <Box flexDirection="column" alignItems="flex-start" display="flex">
+          <Typography
+            className={classes.title}
+            variant="h4"
+            color="textPrimary"
+            gutterBottom
+            noWrap
+          >
+            {props.personDataStore.getPersonDisplayName(person)}
+          </Typography>
+          <List dense={true} className={classes.inlineList} disablePadding={true}>
+            {hasName && (
+              <MuiLink
+                target="_blank"
+                rel="noreferrer"
+                href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
+              >
+                <ListItem button={true}>
+                  <ListItemIcon>
+                    <LinkedInIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary="LinkedIn" />
+                </ListItem>
+              </MuiLink>
+            )}
+            {lastMeeting && (
+              <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
+                <ListItem button={true}>
+                  <ListItemIcon>
+                    <EventIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
+                  />
+                </ListItem>
+              </Link>
+            )}
+          </List>
+        </Box>
       </Box>
       <Grid container spacing={3} className={classes.content}>
         {person.isMissingProfile && (
@@ -107,17 +150,6 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
                 Associates
               </Typography>
               <AttendeeList personStore={props.personDataStore} attendees={associates} />
-            </React.Fragment>
-          )}
-          {hasName && (
-            <React.Fragment>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
-              >
-                <LinkedInIcon fontSize="large" />
-              </a>
             </React.Fragment>
           )}
         </Grid>

@@ -1,6 +1,12 @@
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
@@ -53,21 +59,19 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   const creator = meeting.formattedCreator;
   return (
     <div className={classes.container}>
-      {meeting.link && (
-        <MuiLink className={classes.link} target="_blank" href={meeting.link}>
-          See in Google Calendar
-        </MuiLink>
-      )}
       <Typography variant="h3" color="textPrimary" gutterBottom>
         {meeting.summary || '(no title)'}
       </Typography>
-      <Typography variant="subtitle2" gutterBottom>
-        <i>
-          {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')}
-          {' – '}
-          {format(meeting.end, 'p')}
-        </i>
-      </Typography>
+      <List dense={true} disablePadding={true}>
+        <ListItem disableGutters={true}>
+          <ListItemText
+            primary={`${format(meeting.start, 'EEEE, MMMM d')} ⋅ ${format(
+              meeting.start,
+              'p',
+            )} – ${format(meeting.end, 'p')}`}
+          />
+        </ListItem>
+      </List>
       <Grid container spacing={3} className={classes.content}>
         <Grid item sm={7}>
           {hasDescription && (
@@ -139,6 +143,15 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
           )}
         </Grid>
         <Grid item sm={5}>
+          {meeting.link && (
+            <ListItem disableGutters={true}>
+              <ListItemIcon>
+                <CalendarTodayIcon />
+              </ListItemIcon>
+              <ListItemText primary="Google Calendar" />
+            </ListItem>
+          )}
+
           {shouldShowOrganizer && organizer && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
