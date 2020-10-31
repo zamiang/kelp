@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     background: 'white',
     borderRadius: `${theme.spacing(2)}px 0 0 ${theme.spacing(2)}px`,
+    overscrollBehavior: 'contain',
   },
   yellowBackground: {
     backgroundColor: config.YELLOW_BACKGROUND,

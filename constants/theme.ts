@@ -75,6 +75,14 @@ const theme = createMuiTheme({
       fontWeight: 700,
     },
   },
+  overrides: {
+    MuiListItemIcon: {
+      root: {
+        paddingRight: 8,
+        minWidth: 0,
+      },
+    },
+  },
 });
 
 export default responsiveFontSizes(theme);
