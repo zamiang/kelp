@@ -16,7 +16,6 @@ import { IStore } from '../store/use-store';
 const numberWeeks = 4;
 const daysInWeek = 7;
 const topNavHeight = 85;
-const scrollBarWidth = 15;
 const fontMin = 12;
 const fontMax = 22;
 const borderColor = '#dadce0';
@@ -37,7 +36,7 @@ const DayTitle = (props: { day: Date }) => (
 
 const useTitleRowStyles = makeStyles((theme) => ({
   container: {
-    width: `calc(100% - ${scrollBarWidth}px)`,
+    width: `100%`,
     height: topNavHeight,
   },
   border: {
