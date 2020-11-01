@@ -1,7 +1,7 @@
-import { Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
+import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';

@@ -1,10 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
@@ -21,7 +18,7 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
   if (!document) {
     return null;
   }
-  const activity = props.driveActivityStore.getDriveActivityForDocument(document.link || '') || [];
+  const activity = props.driveActivityStore.getDriveActivityForDocument(document.id) || [];
   const people = uniqBy(activity, 'actorPersonId')
     .filter((activity) => !!activity.actorPersonId)
     .map((activity) => props.personDataStore.getPersonById(activity.actorPersonId!))
@@ -33,18 +30,6 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
       <Typography variant="h4" color="textPrimary" gutterBottom className={classes.title}>
         {document.name || '(no title)'}
       </Typography>
-      <List dense={true} className={classes.inlineList} disablePadding={true}>
-        {document.link && (
-          <MuiLink target="_blank" rel="noreferrer" href={document.link} className={classes.link}>
-            <ListItem button={true}>
-              <ListItemIcon>
-                <img src={document.iconLink} />
-              </ListItemIcon>
-              <ListItemText primary="Google Drive" />
-            </ListItem>
-          </MuiLink>
-        )}
-      </List>
       <Grid container spacing={3} className={classes.content}>
         <Grid item sm={7}>
           {activity.length > 0 && (
@@ -65,10 +50,18 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
           )}
         </Grid>
         <Grid item sm={5}>
+          {document.link && (
+            <MuiLink href={document.link} target="_blank" className={classes.link}>
+              Google Docs{' '}
+              <sub>
+                <ExitToAppIcon fontSize="small" />
+              </sub>
+            </MuiLink>
+          )}
           {document.updatedAt && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
-                Last Edited
+                Last Modified
               </Typography>
               <div>{format(document.updatedAt, 'EEEE, MMMM d p')}</div>
             </React.Fragment>
@@ -84,7 +77,7 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
           {people.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
-                Participants
+                Contributors
               </Typography>
               <PersonList personStore={props.personDataStore} people={people} />
             </React.Fragment>

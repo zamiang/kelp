@@ -1,4 +1,5 @@
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { getGoogleDocsIdFromLink } from './doc-store';
 
 interface driveActivityById {
   [id: string]: IFormattedDriveActivity;
@@ -24,10 +25,11 @@ export default class DriveActivityDataStore {
     driveActivity.forEach((driveActivityItem) => {
       this.driveActivityById[driveActivityItem.id] = driveActivityItem;
       if (driveActivityItem.link) {
-        if (this.driveActivityByDocumentId[driveActivityItem.link]) {
-          this.driveActivityByDocumentId[driveActivityItem.link].push(driveActivityItem);
+        const id = getGoogleDocsIdFromLink(driveActivityItem.link);
+        if (this.driveActivityByDocumentId[id]) {
+          this.driveActivityByDocumentId[id].push(driveActivityItem);
         } else {
-          this.driveActivityByDocumentId[driveActivityItem.link] = [driveActivityItem];
+          this.driveActivityByDocumentId[id] = [driveActivityItem];
         }
       }
     });

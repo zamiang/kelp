@@ -21,6 +21,9 @@ interface IDocById {
   [id: string]: IDoc;
 }
 
+export const getGoogleDocsIdFromLink = (link: string) =>
+  link.replace('https://docs.google.com/document/d/', '');
+
 // handle one person w/ multiple email addresses
 export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
   id: googleDoc.id || 'wtf',
@@ -62,7 +65,7 @@ export default class DocDataStore {
    * @param link link: "https://docs.google.com/document/d/1xgblKX2-5BAbmGwaERTREP6OhXPv9BOjnPXF1Ohgvrw"
    */
   getByLink(link: string): IDoc | undefined {
-    return this.docsById[link.replace('https://docs.google.com/document/d/', '')];
+    return this.docsById[getGoogleDocsIdFromLink(link)];
   }
 
   getDocs() {
