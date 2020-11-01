@@ -104,7 +104,9 @@ const RightDrawer = (props: {
   const panelClasses = panelStyles();
   (RightDrawer as any).handleClickOutside = async () => {
     const tab = new URLSearchParams(window.location.search).get('tab')!;
-    return router.push(`?tab=${tab}`);
+    if (tab) {
+      return router.push(`?tab=${tab}`);
+    }
   };
   const expandHash = {
     docs: props.slug && <ExpandedDocument documentId={props.slug} {...props.store} />,
