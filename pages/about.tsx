@@ -18,9 +18,10 @@ const About = () => {
     <div className={clsx(classes.root, classes.container)}>
       <Head>
         <title>About - Kelp</title>
-        <meta name="description">
-          Why we are building another piece of software what Kelp stands for.
-        </meta>
+        <meta
+          name="description"
+          content="Why we are building another piece of software what Kelp stands for."
+        />
       </Head>
       <style jsx global>{`
         html body {
