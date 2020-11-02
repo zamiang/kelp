@@ -17,6 +17,9 @@ const Terms = () => {
     <div className={clsx(classes.root, classes.container)}>
       <Head>
         <title>Terms And Conditions - Kelp</title>
+        <meta name="description">
+          Please read these terms and conditions carefully before using Our Service.
+        </meta>
       </Head>
       <style jsx global>{`
         html body {

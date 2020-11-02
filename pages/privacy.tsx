@@ -17,6 +17,10 @@ const Terms = () => {
     <div className={clsx(classes.root, classes.container)}>
       <Head>
         <title>Privacy Policy - Kelp</title>
+        <meta name="description">
+          Kelp does not own your data, nor do we sell it to others or use it for advertising. It’s
+          your data, period.
+        </meta>
       </Head>
       <style jsx global>{`
         html body {
