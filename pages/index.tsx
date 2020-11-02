@@ -245,7 +245,12 @@ const App = () => {
               <div className={classes.hint}>
                 Kelp currently works with Google and will expand to other integrations.
                 <br />
-                <MuiLink target="_blank" color="primary" href="https://twitter.com/kelpnyc">
+                <MuiLink
+                  target="_blank"
+                  color="primary"
+                  rel="noopener noreferrer"
+                  href="https://twitter.com/kelpnyc"
+                >
                   Let us know what you would like us to add!
                 </MuiLink>
               </div>
