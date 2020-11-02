@@ -109,6 +109,11 @@ const Terms = () => {
                   contacts, or access any other data within your Google account, including Gmail.
                 </li>
                 <li>
+                  Optioanlly, you can enable write access to contacts which Kelp uses to allow you
+                  to edit your contact notes from Kelp. Kelp does not edit any other contact related
+                  data.
+                </li>
+                <li>
                   Contacts data does not pass through Kelp. Your device requests the data directly
                   from Google.
                 </li>
@@ -371,6 +376,10 @@ const Terms = () => {
                 Summary of changes so far:
               </p>
               <ul id="464a1252-24fc-4da2-b1f2-0297ea1214a2">
+                <li>
+                  November<strong> 2, 2020:</strong> Add ability to optionally edit Google Contact
+                  notes from Kelp.
+                </li>
                 <li>
                   October<strong> 11, 2020:</strong> First published.
                 </li>
