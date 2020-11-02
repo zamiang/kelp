@@ -166,9 +166,10 @@ const App = () => {
     <div className={classes.container}>
       <Head>
         <title>Kelp - Your information filtration system</title>
-        <meta name="description">
-          Kelp organizes your documents, events and contacts to make work make sense.
-        </meta>
+        <meta
+          name="description"
+          content="Kelp organizes your documents, events and contacts to make work make sense."
+        />
       </Head>
       <style jsx global>{`
         html body {
