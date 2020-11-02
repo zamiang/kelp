@@ -2,6 +2,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -14,6 +15,9 @@ const Terms = () => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.root, classes.container)}>
+      <Head>
+        <title>Privacy Policy - Kelp</title>
+      </Head>
       <style jsx global>{`
         html body {
           background-color: ${config.BLUE_BACKGROUND};

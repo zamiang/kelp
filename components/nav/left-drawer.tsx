@@ -119,7 +119,7 @@ const LeftDrawer = (props: IProps) => {
       <List>
         <ListItem>
           <ListItemIcon className={classes.iconContainer}>
-            <img className={classes.logo} src="/kelp.svg" />
+            <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
           </ListItemIcon>
           <ListItemText>
             <Typography variant="h4">

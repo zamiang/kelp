@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
@@ -15,6 +16,9 @@ const About = () => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.root, classes.container)}>
+      <Head>
+        <title>About - Kelp</title>
+      </Head>
       <style jsx global>{`
         html body {
           background-color: ${config.BLUE_BACKGROUND};
@@ -28,7 +32,7 @@ const About = () => {
                 <LoginButton />
               </div>
               <Link href="/">
-                <img alt="kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
+                <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               </Link>
               <Typography variant="h3" className={classes.heading}>
                 About Kelp

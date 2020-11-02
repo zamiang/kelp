@@ -47,6 +47,7 @@ module.exports = {
                 "'self'",
                 'https://auth.kelp.nyc/oauth/token',
                 'https://www.google-analytics.com/',
+                'https://vitals.vercel-analytics.com',
               ],
             },
           },

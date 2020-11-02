@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import onClickOutside from 'react-onclickoutside';
@@ -104,7 +105,8 @@ const RightDrawer = (props: {
   const panelClasses = panelStyles();
   (RightDrawer as any).handleClickOutside = async () => {
     const tab = new URLSearchParams(window.location.search).get('tab')!;
-    if (tab) {
+    // TODO: Build search tab
+    if (tab && tab !== 'search') {
       return router.push(`?tab=${tab}`);
     }
   };
@@ -177,6 +179,9 @@ export const DashboardContainer = ({ store }: IProps) => {
   const shouldRenderPanel = !['week', 'summary'].includes(tab);
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
+      <Head>
+        <title> Dashboard - Kelp</title>
+      </Head>
       <LeftDrawer
         lastUpdated={store.lastUpdated}
         people={store.personDataStore.getPeople()}

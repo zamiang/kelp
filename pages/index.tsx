@@ -9,6 +9,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import Head from 'next/head';
+import Image from 'next/image';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import LoginButton, { loginWithRedirectArgs } from '../components/homepage/login-button';
@@ -162,6 +164,9 @@ const App = () => {
   const { loginWithRedirect } = useAuth0();
   return (
     <div className={classes.container}>
+      <Head>
+        <title>Kelp - Your information filtration system</title>
+      </Head>
       <style jsx global>{`
         html body {
           background-color: ${config.BLUE_BACKGROUND};
@@ -174,7 +179,7 @@ const App = () => {
               <div className={classes.loginButton}>
                 <LoginButton />
               </div>
-              <img style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
+              <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               <Typography variant="h3" className={classes.heading}>
                 Your information filtration system
               </Typography>
@@ -248,7 +253,13 @@ const App = () => {
             </Container>
           </Grid>
           <Grid item sm={5}>
-            <img className={classes.heroImage} src="designer_file_case.png" />
+            <Image
+              alt="kelp marketing image"
+              className={classes.heroImage}
+              src="/designer_file_case.png"
+              width="586"
+              height="416"
+            />
           </Grid>
         </Grid>
       </div>
