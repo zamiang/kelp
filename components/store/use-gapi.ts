@@ -12,7 +12,6 @@ const googleAPIRefs = [
 // https://github.com/google/google-api-javascript-client/blob/master/samples/authSample.html
 const useGAPI = () => {
   const [isLoaded, setStatus] = useState(false);
-
   useEffect(() => {
     const loadLibraries = async () => {
       await gapi.client.init({
