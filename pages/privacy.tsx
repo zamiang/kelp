@@ -367,8 +367,8 @@ const Terms = () => {
               </p>
               <ul id="464a1252-24fc-4da2-b1f2-0297ea1214a2">
                 <li>
-                  November<strong> 2, 2020:</strong> Add ability to optionally edit Google Contact
-                  notes from Kelp.
+                  November<strong> 2, 2020:</strong> Remove references to Auth0. Add ability to
+                  optionally edit Google Contact notes from Kelp
                 </li>
                 <li>
                   October<strong> 11, 2020:</strong> First published.

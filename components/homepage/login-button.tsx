@@ -7,10 +7,6 @@ import Link from 'next/link';
 import React from 'react';
 import config from '../../constants/config';
 
-export const loginWithRedirectArgs = {
-  connection: 'google-oauth2',
-};
-
 const useStyles = makeStyles((theme) => ({
   button: {
     minWidth: 100,
