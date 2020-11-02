@@ -113,7 +113,7 @@ const Terms = () => {
                   from Google.
                 </li>
                 <li>
-                  You can revoke access to your calendar at any time at{' '}
+                  You can revoke access to your contacts at any time at{' '}
                   <a href="https://myaccount.google.com/permissions">
                     https://myaccount.google.com/permissions
                   </a>
@@ -141,7 +141,7 @@ const Terms = () => {
                   from Google.
                 </li>
                 <li>
-                  You can revoke access to your calendar at any time at{' '}
+                  You can revoke access to your documents at any time at{' '}
                   <a href="https://myaccount.google.com/permissions">
                     https://myaccount.google.com/permissions
                   </a>
