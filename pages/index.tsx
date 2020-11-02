@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -9,11 +8,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { signIn } from 'next-auth/client';
 import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
 import Footer from '../components/homepage/footer';
-import LoginButton, { loginWithRedirectArgs } from '../components/homepage/login-button';
+import LoginButton from '../components/homepage/login-button';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -161,7 +161,6 @@ export const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
-  const { loginWithRedirect } = useAuth0();
   return (
     <div className={classes.container}>
       <Head>
@@ -170,6 +169,7 @@ const App = () => {
           name="description"
           content="Kelp organizes your documents, events and contacts to make work make sense."
         />
+        <meta name="slack-app-id" content="A01E5A9263B" />
       </Head>
       <style jsx global>{`
         html body {
@@ -230,7 +230,7 @@ const App = () => {
                   size="large"
                   color="primary"
                   className={classes.login}
-                  onClick={() => loginWithRedirect(loginWithRedirectArgs)}
+                  onClick={() => signIn('google', { callbackUrl: config.REDIRECT_URI })}
                   disableElevation={true}
                 >
                   Log In with Google

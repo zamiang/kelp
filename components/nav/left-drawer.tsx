@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -9,13 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import DateRangeIcon from '@material-ui/icons/DateRange';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import PublicIcon from '@material-ui/icons/Public';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/client';
 import Link from 'next/link';
 import React from 'react';
 import { drawerWidth } from '../../pages/dashboard';
@@ -95,8 +94,8 @@ export interface IProps {
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
-  const { user, isAuthenticated, isLoading, error } = useAuth0();
-
+  const [session, isLoading] = useSession();
+  const user = session && session.user;
   const isMobile = typeof document !== 'undefined' && document.body.clientWidth < 500;
   const isOpen = isMobile ? false : true;
   const anchor = isMobile ? 'top' : 'left';
@@ -135,20 +134,12 @@ const LeftDrawer = (props: IProps) => {
             <ListItemText>Loading</ListItemText>
           </ListItem>
         )}
-        {!isAuthenticated && (
+        {!session && (
           <ListItem>
             <ListItemIcon className={classes.iconContainer}>
               <LockOpenIcon className={classes.avatar} />
             </ListItemIcon>
             <ListItemText>Not Authenticated</ListItemText>
-          </ListItem>
-        )}
-        {error && (
-          <ListItem>
-            <ListItemIcon className={classes.iconContainer}>
-              <ErrorOutlineIcon className={classes.avatar} />
-            </ListItemIcon>
-            <ListItemText>{error}</ListItemText>
           </ListItem>
         )}
         <Search {...props} />
@@ -234,7 +225,7 @@ const LeftDrawer = (props: IProps) => {
       </List>
       <List>
         <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
-        {isAuthenticated && !isLoading && (
+        {!isLoading && user && (
           <Link href="?tab=settings">
             <ListItem
               button
@@ -242,9 +233,9 @@ const LeftDrawer = (props: IProps) => {
               className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
             >
               <ListItemIcon className={classes.iconContainer}>
-                <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
+                <Avatar className={classes.avatar} src={user.image} alt={user.name || user.email} />
               </ListItemIcon>
-              <ListItemText>{user.name}</ListItemText>
+              <ListItemText>{user.name || user.email}</ListItemText>
             </ListItem>
           </Link>
         )}

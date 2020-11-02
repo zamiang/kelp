@@ -30,7 +30,7 @@ const useGAPI = () => {
         }
         const result = await gapi.auth2.getAuthInstance().signIn({
           scope: config.GOOGLE_SCOPES.join(' '),
-          redirect_uri: config.AUTH0_REDIRECT_URI,
+          redirect_uri: config.REDIRECT_URI,
           // isSignedIn is always false in safari, even after the redirect login method
           ux_mode: isSafari ? 'popup' : 'redirect',
         });

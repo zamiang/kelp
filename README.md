@@ -27,18 +27,26 @@ First create a [Google Oauth] app and enable the APIs you want to use. Currently
 - [Google Calendar API]
 - [Google Drive Activity API]
 
-Second, create an [Auth0] single page React app via the Auth0 console.
-
 Then proceed with your node setup steps. Ensure you are using node 14 or greater
 
     npm install
 
-Add your google oauth app and Auth0 tokens to [.env.local]
+Generate a signingKey
 
-    NEXT_PUBLIC_AUTH0_DOMAIN=foo.us.auth0.com
-    NEXT_PUBLIC_AUTH0_CLIENT_ID=foo
+    npx node-jose-tools newkey -s 256 -t oct -a HS512
+
+Generate an encryptionKey
+
+    npx node-jose-tools newkey -s 256 -t oct -a A256GCM
+
+Add these keys and your your google oauth app tokens to [.env.local]
+
     NEXT_PUBLIC_GOOGLE_CLIENT_ID=foo-bar-baz.apps.googleusercontent.com
-    (optional if not at localhost:3000) NEXT_PUBLIC_AUTH0_REDIRECT_URI=http://localhost:8080/dashboard?tab=meetings
+    GOOGLE_CLIENT_SECRET=foo
+    NEXTAUTH_URL=http://localhost:3000
+    JWT_SECRET=foo-bar-change-me
+    JWT_SIGNING_KEY=signingKeyHere
+    JWT_ENCRYPTION_KEY=encryptionKeyHere
 
 When starting the app in development mode
 
@@ -50,4 +58,3 @@ When starting the app in development mode
 [google calendar api]: https://developers.google.com/calendar
 [google drive activity api]: https://developers.google.com/drive/activity/v2
 [.env.local]: https://nextjs.org/docs/basic-features/environment-variables
-[auth0]: https://auth0.com/docs/quickstart/spa/react

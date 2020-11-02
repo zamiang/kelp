@@ -1,16 +1,11 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import { signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import React from 'react';
 import config from '../../constants/config';
-
-export const loginWithRedirectArgs = {
-  connection: 'google-oauth2',
-  connection_scope: config.GOOGLE_SCOPES.join(', '),
-};
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -26,20 +21,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginButton = () => {
-  const { isLoading, isAuthenticated, error, user, loginWithRedirect } = useAuth0();
+  const [session, isLoading] = useSession();
   const classes = useStyles();
+  const user = session && session.user;
   if (isLoading) {
     return <CircularProgress size={22} className={classes.avatar} color="inherit" />;
   }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
-  }
 
-  if (isAuthenticated) {
+  if (user) {
     return (
       <Link href="/dashboard?tab=meetings">
         <Button className={classes.button} variant="outlined" disableElevation={true}>
-          <Avatar className={classes.avatar} src={user.picture} alt={user.name} />
+          <Avatar className={classes.avatar} src={user.image} alt={user.email} />
           My Dashboard
         </Button>
       </Link>
@@ -47,7 +40,7 @@ const LoginButton = () => {
   }
   return (
     <Button
-      onClick={() => loginWithRedirect(loginWithRedirectArgs)}
+      onClick={() => signIn('google', { callbackUrl: config.REDIRECT_URI })}
       className={classes.button}
       variant="outlined"
       disableElevation={true}
