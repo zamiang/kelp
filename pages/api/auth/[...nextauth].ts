@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import NextAuth from 'next-auth';
+import Providers from 'next-auth/providers';
 import config from '../../../constants/config';
 
 const options = {
@@ -30,6 +31,10 @@ const options = {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
+    Providers.Slack({
+      clientId: process.env.SLACK_CLIENT_ID!,
+      clientSecret: process.env.SLACK_CLIENT_SECRET!,
+    }),
   ],
 };
 
