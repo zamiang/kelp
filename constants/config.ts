@@ -12,10 +12,8 @@ const scopes = [
 const NUMBER_OF_DAYS_BACK = 56;
 
 export default {
-  AUTH0_DOMAIN: process.env.NEXT_PUBLIC_AUTH0_DOMAIN || 'test.auth0.com',
-  AUTH0_CLIENT_ID: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID || 'test-client-id',
-  AUTH0_REDIRECT_URI:
-    process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URI || 'http://localhost:3000/dashboard?tab=meetings',
+  REDIRECT_URI:
+    process.env.NEXT_PUBLIC_REDIRECT_URI || 'http://localhost:3000/dashboard?tab=meetings',
   GOOGLE_SCOPES: scopes,
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   SHOULD_FILTER_OUT_FILES_MODIFIED_BEFORE_NUMBER_OF_DAYS_BACK: true,

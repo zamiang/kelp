@@ -27,6 +27,7 @@ module.exports = {
                 'https://placeimg.com',
                 'https://drive-thirdparty.googleusercontent.com/',
                 'https://*.googleusercontent.com',
+                'https://platform.slack-edge.com',
               ],
               scriptSrc: [
                 "'self'",

@@ -25,11 +25,11 @@
     "typecheck": "node node_modules/.bin/tsc --project tsconfig.json --noEmit --pretty"
   },
   "dependencies": {
-    "@auth0/auth0-react": "1.1.0",
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
     "@material-ui/lab": "4.0.0-alpha.56",
     "@material-ui/styles": "4.10.0",
+    "@slack/web-api": "5.13.0",
     "@types/express": "4.17.8",
     "@types/faker": "5.1.4",
     "@types/gapi": "0.0.39",
@@ -48,6 +48,7 @@
     "faker": "5.1.0",
     "lodash": "4.17.20",
     "next": "10.0.0",
+    "next-auth": "3.1.0",
     "next-secure-headers": "2.0.0",
     "react": "17.0.1",
     "react-async-hook": "3.6.2",
@@ -60,6 +61,7 @@
     "typescript": "4.0.5"
   },
   "devDependencies": {
+    "@types/next-auth": "3.1.14",
     "@types/node": "14.14.6",
     "@typescript-eslint/eslint-plugin": "4.6.0",
     "@typescript-eslint/eslint-plugin-tslint": "4.6.0",

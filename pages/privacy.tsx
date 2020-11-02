@@ -52,7 +52,7 @@ const Terms = () => {
                 <strong>Information we collect</strong>
               </h1>
               <p id="c549f30c-5e94-4571-8959-45ac04d93553">
-                When creating an account, you will be asked to Sign in with Auth0. Email addresses
+                When creating an account, you will be asked to Sign in with Google. Email addresses
                 are <strong>only</strong> used for logging in, password resets, responding to emails
                 that you initiate, notifications that you request and notifying you about product
                 updates or changes.
@@ -193,20 +193,6 @@ const Terms = () => {
                 Place of processing: United States –{' '}
                 <a href="https://policies.google.com/privacy">Privacy Policy</a>. Privacy Shield
                 participant.
-              </p>
-              <p id="d9869bc8-c2dd-4f17-86d5-cce71738bd4e">
-                <strong>Auth0 (Auth0, Inc)</strong>
-              </p>
-              <p id="2b0333d9-d95c-4efe-aa47-3088e1548dce">
-                Auth0 is a registration and authentication service provided by Auth0, Inc. To
-                simplify the registration and authentication process, Auth0 can make use of
-                third-party identity providers and save the information on its platform. Personal
-                Data processed: Cookies; email address; first name; last name; password; picture;
-                various types of Data as specified in the privacy policy of the service.
-              </p>
-              <p>
-                Place of processing: United States –{' '}
-                <a href="https://auth0.com/privacy">Privacy Policy</a>. Privacy Shield participant.
               </p>
               <h1 id="f69625a1-ef0e-40cb-af26-74a4b3db82d6">Email Marketing</h1>
               <p id="c0ed4c51-ef08-4fd1-82d3-8f38095094ca">

@@ -1,4 +1,3 @@
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { Typography } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -7,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -69,10 +69,18 @@ const useBackdropStyles = makeStyles((theme) => ({
 
 const LoadingDashboardContainer = () => {
   const isSignedIn = useGapi();
+  const router = useRouter();
+
   const store = useStore(isSignedIn);
+  const [session, isLoading] = useSession();
+
+  if (!isLoading && !session?.user) {
+    void router.push('/');
+  }
+
   return (
     <React.Fragment>
-      <Loading isOpen={!isSignedIn} message="Loading" />
+      <Loading isOpen={!isSignedIn || isLoading} message="Loading" />
       {isSignedIn && <DashboardContainer store={store} />}
     </React.Fragment>
   );
@@ -211,6 +219,4 @@ export const DashboardContainer = ({ store }: IProps) => {
   );
 };
 
-export default withAuthenticationRequired(LoadingDashboardContainer, {
-  onRedirecting: () => <Loading isOpen={true} message="Authenticating" />,
-});
+export default LoadingDashboardContainer;

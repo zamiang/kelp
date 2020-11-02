@@ -98,11 +98,8 @@ const About = () => {
                 Everything you do in Kelp is anonymous and your data stays on your computer.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                The credentials for third party services are stored securely in{' '}
-                <MuiLink href="https://auth0.com/" target="_blank" className={classes.link}>
-                  Auth0
-                </MuiLink>
-                . All extensions communicate directly via{' '}
+                The credentials for third party services are stored securely. All extensions
+                communicate directly via{' '}
                 <MuiLink
                   href="https://en.wikipedia.org/wiki/HTTPS"
                   target="_blank"
@@ -141,9 +138,9 @@ const About = () => {
               <br />
               <Typography variant="h4">We value security</Typography>
               <Typography variant="h6" className={classes.body}>
-                Neither Kelp or Auth0 store your passwords or personal data. We take security
-                seriously and apply experience from e-commerce, and healthcare data security. Kelp’s
-                security practices include but are not limited to:{' '}
+                Kelp does not store your passwords or personal data. We take security seriously and
+                apply experience from e-commerce, and healthcare data security. Kelp’s security
+                practices include but are not limited to:{' '}
                 <MuiLink
                   className={classes.link}
                   target="_blank"
