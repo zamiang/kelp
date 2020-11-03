@@ -2,11 +2,13 @@ import { Response } from 'express';
 import NextAuth from 'next-auth';
 import config from '../../../constants/config';
 
+console.log(process.env.MONGO_URL, 'mongo url');
+
 const options = {
-  database: process.env.MONGO_URL,
   pages: {
     signIn: '/auth/signin',
   },
+  database: `${process.env.MONGO_URL!}/kelp`,
   jwt: {
     secret: process.env.JWT_SECRET,
     encryption: true,
