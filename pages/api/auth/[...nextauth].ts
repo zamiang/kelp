@@ -6,7 +6,7 @@ const options = {
   pages: {
     signIn: '/auth/signin',
   },
-  database: `${process.env.MONGO_URL!.replace('<database-name>', 'kelp')}`,
+  database: process.env.MONGO_URL,
   jwt: {
     secret: process.env.JWT_SECRET,
     encryption: true,
