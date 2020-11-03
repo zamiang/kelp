@@ -14,19 +14,18 @@ const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 const useStyles = makeStyles((theme) => ({
   time: { minWidth: 140, maxWidth: 180 },
   currentTime: {
-    marginLeft: -theme.spacing(3),
-    marginTop: -theme.spacing(1),
+    marginTop: -6,
   },
   currentTimeDot: {
     borderRadius: '50%',
-    height: 8,
-    width: 8,
-    background: theme.palette.secondary.main,
+    height: 12,
+    width: 12,
+    background: theme.palette.primary.dark,
   },
   currentTimeBorder: {
     marginTop: 0,
     width: '100%',
-    borderTop: `2px solid ${theme.palette.text.primary}`,
+    borderTop: `2px solid ${theme.palette.primary.dark}`,
   },
   noOverflow: {
     overflow: 'hidden',

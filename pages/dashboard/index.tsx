@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     overflow: 'auto',
     background: 'white',
-    borderRadius: `${theme.spacing(2)}px 0 0 ${theme.spacing(2)}px`,
+
     overscrollBehavior: 'contain',
   },
   yellowBackground: {
