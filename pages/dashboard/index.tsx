@@ -1,7 +1,6 @@
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import Popper from '@material-ui/core/Popper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
@@ -10,17 +9,13 @@ import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import onClickOutside from 'react-onclickoutside';
 import Docs from '../../components/dashboard/docs';
 import Meetings from '../../components/dashboard/meetings';
 import People from '../../components/dashboard/people';
 import Search from '../../components/dashboard/search';
 import Summary from '../../components/dashboard/summary';
 import WeekCalendar from '../../components/dashboard/week-calendar';
-import ExpandedDocument from '../../components/docs/expand-document';
-import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import LeftDrawer from '../../components/nav/left-drawer';
-import ExpandPerson from '../../components/person/expand-person';
 import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
@@ -99,35 +94,6 @@ const Loading = (props: { isOpen: boolean; message: string }) => {
   );
 };
 
-const RightDrawer = (props: {
-  slugType?: 'docs' | 'people' | 'meetings';
-  slug?: string;
-  store: IStore;
-  anchorEl: any;
-}) => {
-  const isRightDrawerOpen = !!props.slug;
-  const id = isRightDrawerOpen ? 'spring-popper' : undefined;
-  const expandHash = {
-    docs: props.slug && <ExpandedDocument documentId={props.slug} {...props.store} />,
-    people: props.slug && <ExpandPerson personId={props.slug} {...props.store} />,
-    meetings: props.slug && <ExpandedMeeting meetingId={props.slug} {...props.store} />,
-  } as any;
-  return (
-    <Popper id={id} open={isRightDrawerOpen} placement="left" anchorEl={props.anchorEl}>
-      {props.slugType && expandHash[props.slugType]}
-    </Popper>
-  );
-};
-
-// https://github.com/Pomax/react-onclickoutside/issues/327
-RightDrawer.prototype = {};
-
-const clickOutsideConfig = {
-  handleClickOutside: () => (RightDrawer as any).handleClickOutside,
-};
-
-const OnClickOutsideRightDrawer = onClickOutside(RightDrawer, clickOutsideConfig);
-
 interface IProps {
   store: IStore;
 }
@@ -157,6 +123,7 @@ export const DashboardContainer = ({ store }: IProps) => {
   const handleRefreshClick = () => store.refetch();
   const router = useRouter();
   const tab = router.query.tab as string;
+  const slug = router.query.slug as string;
   const tabHash = {
     week: <WeekCalendar {...store} />,
     meetings: <Meetings openPopper={setPopper} {...store} />,
@@ -181,6 +148,15 @@ export const DashboardContainer = ({ store }: IProps) => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
   }, []);
+
+  (RightDrawer as any).handleClickOutside = async () => {
+    setPopper({
+      anchorEl: undefined,
+      slug: undefined,
+      slugType: undefined,
+    });
+  };
+
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
       <Head>
@@ -201,6 +177,8 @@ export const DashboardContainer = ({ store }: IProps) => {
         {tabHash[tab]}
         <OnClickOutsideRightDrawer
           store={store}
+          routerSlug={slug}
+          routerTab={tab}
           slug={popperInfo.slug}
           slugType={popperInfo.slugType}
           anchorEl={popperInfo.anchorEl}
