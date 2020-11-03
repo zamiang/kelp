@@ -27,11 +27,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     borderTop: `2px solid ${theme.palette.primary.dark}`,
   },
-  noOverflow: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
   row: {
     paddingLeft: 0,
     marginLeft: theme.spacing(3),
