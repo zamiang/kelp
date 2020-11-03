@@ -2,7 +2,10 @@ import { Response } from 'express';
 import NextAuth from 'next-auth';
 import config from '../../../constants/config';
 
+console.log(process.env.MONGO_URL, '<<<<<<<<<< mongo url'
+
 const options = {
+
   pages: {
     signIn: '/auth/signin',
   },
