@@ -3,10 +3,10 @@ import NextAuth from 'next-auth';
 import config from '../../../constants/config';
 
 const options = {
+  database: process.env.MONGO_URL,
   pages: {
     signIn: '/auth/signin',
   },
-  database: process.env.MONGO_URL,
   jwt: {
     secret: process.env.JWT_SECRET,
     encryption: true,
