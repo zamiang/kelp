@@ -13,10 +13,13 @@ const People = (props: IStore) => {
   const people = sortBy(props.personDataStore.getPeople(), 'name');
   const selectedPersonId = useRouter().query.slug as string;
   const meetingsThisWeek = props.timeDataStore.getSegmentsForWeek(getWeek(new Date()));
-  const peopleMeetingWithThisWeek = uniqBy(
-    flatten(meetingsThisWeek.map((segment) => segment.formattedAttendees)),
-    'personId',
-  ).map((attendee) => props.personDataStore.getPersonById(attendee.personId));
+  const peopleMeetingWithThisWeek = sortBy(
+    uniqBy(
+      flatten(meetingsThisWeek.map((segment) => segment.formattedAttendees)),
+      'personId',
+    ).map((attendee) => props.personDataStore.getPersonById(attendee.personId)),
+    'name',
+  );
   return (
     <div className={classes.panel}>
       <div className={classes.section}>
