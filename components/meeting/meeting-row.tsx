@@ -12,7 +12,7 @@ import { ISegment } from '../store/time-store';
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 
 const useStyles = makeStyles((theme) => ({
-  time: { minWidth: 140, maxWidth: 180 },
+  time: { minWidth: 150, maxWidth: 180 },
   currentTime: {
     marginTop: -6,
   },

@@ -4,13 +4,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { uniqBy } from 'lodash';
 import Link from 'next/link';
 import React from 'react';
-import Avatars from '../person/avatars';
 import useRowStyles from '../shared/row-styles';
 import { IDoc } from '../store/doc-store';
-import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   imageContainer: {
@@ -35,20 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocumentRow = (props: {
-  doc: IDoc;
-  selectedDocumentId: string | null;
-  driveActivityStore: IStore['driveActivityStore'];
-  personDataStore: IStore['personDataStore'];
-}) => {
+const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
-  const activity = props.driveActivityStore.getDriveActivityForDocument(props.doc.id) || [];
-  const people = uniqBy(activity, 'actorPersonId')
-    .filter((activity) => !!activity.actorPersonId)
-    .map((activity) => props.personDataStore.getPersonById(activity.actorPersonId!))
-    .filter((person) => person && person.id)
-    .slice(0, 5);
   return (
     <Link href={`?tab=docs&slug=${props.doc.id}`}>
       <ListItem
@@ -69,11 +55,6 @@ const DocumentRow = (props: {
             <Typography noWrap variant="body2">
               <b>{props.doc.name}</b>
             </Typography>
-          </Grid>
-          <Grid item sm={2}>
-            <Grid container spacing={1} alignItems="center">
-              <Avatars people={people as any} />
-            </Grid>
           </Grid>
           <Grid item className={classes.time}>
             <Typography variant="caption" color="textSecondary">

@@ -2,8 +2,8 @@ import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
-import DocumentRow from '../docs/document-row';
-import MeetingRow from '../meeting/meeting-search-result';
+import DocumentSearchResult from '../docs/document-search-result';
+import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonRow from '../person/person-row';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
@@ -61,11 +61,11 @@ const renderSearchResults = (searchResults: ISearchItem[]) =>
   searchResults.map((result) => {
     switch (result.type) {
       case 'document':
-        return <DocumentRow doc={result.item as IDoc} selectedDocumentId={null} />;
+        return <DocumentSearchResult doc={result.item as IDoc} selectedDocumentId={null} />;
       case 'person':
         return <PersonRow person={result.item as IPerson} selectedPersonId={null} />;
       case 'segment':
-        return <MeetingRow meeting={result.item as ISegment} selectedMeetingId={null} />;
+        return <MeetingSearchResult meeting={result.item as ISegment} selectedMeetingId={null} />;
     }
   });
 

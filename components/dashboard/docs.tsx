@@ -23,9 +23,17 @@ const Documents = (props: IStore) => {
       <div className={classes.section}>
         {docsForToday.length > 0 && (
           <div className={classes.rowNoBorder}>
-            <Typography variant="caption">Documents for Today</Typography>
+            <Typography variant="caption" className={classes.title}>
+              Documents for Today
+            </Typography>
             {docsForToday.map((doc) => (
-              <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
+              <DocumentRow
+                key={doc.id}
+                doc={doc}
+                selectedDocumentId={selectedDocumentId}
+                driveActivityStore={props.driveActivityStore}
+                personDataStore={props.personDataStore}
+              />
             ))}
           </div>
         )}
@@ -37,7 +45,13 @@ const Documents = (props: IStore) => {
               Documents with recent activity
             </Typography>
             {docs.map((doc) => (
-              <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
+              <DocumentRow
+                key={doc.id}
+                doc={doc}
+                selectedDocumentId={selectedDocumentId}
+                driveActivityStore={props.driveActivityStore}
+                personDataStore={props.personDataStore}
+              />
             ))}
           </div>
         )}
