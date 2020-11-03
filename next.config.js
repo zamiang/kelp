@@ -34,7 +34,6 @@ module.exports = {
                 "'unsafe-eval'",
                 'https://apis.google.com',
                 'https://www.googletagmanager.com',
-                'https://vitals.vercel-analytics.com',
               ],
               frameSrc: [
                 'https://auth.kelp.nyc/',
@@ -48,7 +47,7 @@ module.exports = {
                 "'self'",
                 'https://auth.kelp.nyc/oauth/token',
                 'https://www.google-analytics.com/',
-                'https://vitals.vercel-analytics.com',
+                'https://slack.com/api/conversations.list',
               ],
             },
           },

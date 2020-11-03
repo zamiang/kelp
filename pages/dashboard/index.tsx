@@ -70,9 +70,8 @@ const useBackdropStyles = makeStyles((theme) => ({
 const LoadingDashboardContainer = () => {
   const isSignedIn = useGapi();
   const router = useRouter();
-
-  const store = useStore(isSignedIn);
   const [session, isLoading] = useSession();
+  const store = useStore(isSignedIn, session);
 
   if (!isLoading && !session?.user) {
     void router.push('/');

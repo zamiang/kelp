@@ -75,6 +75,9 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.dark,
     color: 'white',
   },
+  loginMargin: {
+    margin: theme.spacing(1),
+  },
   loginTryLink: {
     margin: theme.spacing(0, 3),
     cursor: 'pointer',
@@ -156,6 +159,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.primary.dark,
+  },
+  loginPaper: {
+    padding: theme.spacing(2),
   },
 }));
 
