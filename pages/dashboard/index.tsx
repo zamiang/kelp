@@ -1,21 +1,27 @@
+import { Typography } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import onClickOutside from 'react-onclickoutside';
 import Docs from '../../components/dashboard/docs';
 import Meetings from '../../components/dashboard/meetings';
 import People from '../../components/dashboard/people';
 import Search from '../../components/dashboard/search';
 import Summary from '../../components/dashboard/summary';
 import WeekCalendar from '../../components/dashboard/week-calendar';
+import ExpandedDocument from '../../components/docs/expand-document';
+import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import LeftDrawer from '../../components/nav/left-drawer';
+import ExpandPerson from '../../components/person/expand-person';
+import panelStyles from '../../components/shared/panel-styles';
 import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
@@ -94,44 +100,71 @@ const Loading = (props: { isOpen: boolean; message: string }) => {
   );
 };
 
+const RightDrawer = (props: {
+  shouldRenderPanel: boolean;
+  tab: 'docs' | 'people' | 'meetings';
+  slug: string;
+  store: IStore;
+}) => {
+  const router = useRouter();
+  const isRightDrawerOpen = !!props.slug;
+  const panelClasses = panelStyles();
+  (RightDrawer as any).handleClickOutside = async () => {
+    const tab = new URLSearchParams(window.location.search).get('tab')!;
+    // TODO: Build search tab
+    if (tab && tab !== 'search') {
+      return router.push(`?tab=${tab}`);
+    }
+  };
+  const expandHash = {
+    docs: props.slug && <ExpandedDocument documentId={props.slug} {...props.store} />,
+    people: props.slug && <ExpandPerson personId={props.slug} {...props.store} />,
+    meetings: props.slug && <ExpandedMeeting meetingId={props.slug} {...props.store} />,
+  } as any;
+  return (
+    <Drawer
+      open={props.shouldRenderPanel && isRightDrawerOpen}
+      elevation={3}
+      classes={{
+        paper: panelClasses.dockedPanel,
+      }}
+      anchor="right"
+      variant="persistent"
+    >
+      {expandHash[props.tab]}
+    </Drawer>
+  );
+};
+
+// https://github.com/Pomax/react-onclickoutside/issues/327
+RightDrawer.prototype = {};
+
+const clickOutsideConfig = {
+  handleClickOutside: () => (RightDrawer as any).handleClickOutside,
+};
+
+const OnClickOutsideRightDrawer = onClickOutside(RightDrawer, clickOutsideConfig);
+
 interface IProps {
   store: IStore;
 }
 
 const is500Error = (error: Error) => (error as any).status === 500;
 
-interface IPopperState {
-  anchorEl?: any;
-  slug?: string;
-  slugType?: 'docs' | 'people' | 'meetings';
-}
-
-export type openPopper = (props: IPopperState) => void;
-
-export interface IStorePopper extends IStore {
-  openPopper: openPopper;
-}
-
 export const DashboardContainer = ({ store }: IProps) => {
-  const [popperInfo, setPopper] = useState<IPopperState>({
-    anchorEl: undefined,
-    slug: undefined,
-    slugType: undefined,
-  });
-
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
   const router = useRouter();
+  const slug = router.query.slug as string | null;
   const tab = router.query.tab as string;
-  const slug = router.query.slug as string;
   const tabHash = {
     week: <WeekCalendar {...store} />,
-    meetings: <Meetings openPopper={setPopper} {...store} />,
-    docs: <Docs openPopper={setPopper} {...store} />,
-    people: <People openPopper={setPopper} {...store} />,
+    meetings: <Meetings {...store} />,
+    docs: <Docs {...store} />,
+    people: <People {...store} />,
     summary: <Summary {...store} />,
     settings: <Settings />,
-    search: <Search openPopper={setPopper} {...store} />,
+    search: <Search {...store} />,
   } as any;
 
   const colorHash = {
@@ -149,14 +182,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     return () => clearInterval(interval);
   }, []);
 
-  (RightDrawer as any).handleClickOutside = async () => {
-    setPopper({
-      anchorEl: undefined,
-      slug: undefined,
-      slugType: undefined,
-    });
-  };
-
+  const shouldRenderPanel = !['week', 'summary'].includes(tab);
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
       <Head>
@@ -177,11 +203,9 @@ export const DashboardContainer = ({ store }: IProps) => {
         {tabHash[tab]}
         <OnClickOutsideRightDrawer
           store={store}
-          routerSlug={slug}
-          routerTab={tab}
-          slug={popperInfo.slug}
-          slugType={popperInfo.slugType}
-          anchorEl={popperInfo.anchorEl}
+          shouldRenderPanel={shouldRenderPanel}
+          slug={slug as any}
+          tab={tab as any}
         />
       </main>
     </div>

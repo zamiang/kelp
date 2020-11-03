@@ -2,13 +2,13 @@ import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
-import { IStorePopper } from '../../pages/dashboard/index';
 import DocumentSearchResult from '../docs/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonSearchResult from '../person/person-search-result';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
+import { IStore } from '../store/use-store';
 
 interface ISearchItem {
   text: string;
@@ -17,10 +17,10 @@ interface ISearchItem {
 }
 
 const buildSearchIndex = (store: {
-  docDataStore: IStorePopper['docDataStore'];
-  driveActivityStore: IStorePopper['driveActivityStore'];
-  timeDataStore: IStorePopper['timeDataStore'];
-  personDataStore: IStorePopper['personDataStore'];
+  docDataStore: IStore['docDataStore'];
+  driveActivityStore: IStore['driveActivityStore'];
+  timeDataStore: IStore['timeDataStore'];
+  personDataStore: IStore['personDataStore'];
 }) => {
   const searchIndex = [] as ISearchItem[];
   // Docs
@@ -57,7 +57,7 @@ const buildSearchIndex = (store: {
   return searchIndex;
 };
 
-const renderSearchResults = (searchResults: ISearchItem[], openPopper: any) =>
+const renderSearchResults = (searchResults: ISearchItem[]) =>
   searchResults.map((result) => {
     switch (result.type) {
       case 'document':
@@ -66,7 +66,6 @@ const renderSearchResults = (searchResults: ISearchItem[], openPopper: any) =>
             key={result.item.id}
             doc={result.item as IDoc}
             selectedDocumentId={null}
-            openPopper={openPopper}
           />
         );
       case 'person':
@@ -88,7 +87,7 @@ const renderSearchResults = (searchResults: ISearchItem[], openPopper: any) =>
     }
   });
 
-const Search = (props: IStorePopper) => {
+const Search = (props: IStore) => {
   const classes = panelStyles();
   const router = useRouter();
   const searchIndex = buildSearchIndex(props);
@@ -101,7 +100,7 @@ const Search = (props: IStorePopper) => {
           <Typography variant="caption" className={classes.title}>
             Search Results for: {searchQuery}
           </Typography>
-          {renderSearchResults(results || [], props.openPopper)}
+          {renderSearchResults(results || [])}
         </div>
       </div>
     </div>

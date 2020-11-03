@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   dockedPanel: {
+    maxWidth: 600,
     width: `calc((100vw - ${drawerWidth}px) * 0.618)`,
     [theme.breakpoints.down('sm')]: {
       width: `calc(100vw - ${theme.spacing(7)}px)`,

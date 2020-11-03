@@ -27,7 +27,7 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
   const meetings = props.timeDataStore.getSegmentsForDriveActivity(driveActivityIds);
   return (
     <div className={classes.container}>
-      <Typography variant="h4" color="textPrimary" gutterBottom>
+      <Typography variant="h5" color="textPrimary" gutterBottom>
         {document.name || '(no title)'}
       </Typography>
       <Grid container spacing={3} className={classes.content}>
