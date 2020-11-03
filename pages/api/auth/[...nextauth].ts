@@ -36,12 +36,17 @@ const options = {
       requestTokenUrl: 'https://accounts.google.com/o/oauth2/auth',
       authorizationUrl: 'https://accounts.google.com/o/oauth2/auth?response_type=code',
       profileUrl: 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json',
-      profile: (profile: any) => ({
-        id: profile.id,
-        name: profile.name,
-        email: profile.email,
-        image: profile.picture,
-      }),
+      profile: (profile: any) => {
+        const user = {
+          id: profile.id,
+          email: profile.email,
+          image: profile.picture,
+        };
+        if (profile.name) {
+          user.name = profile.name;
+        }
+        return user;
+      },
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
