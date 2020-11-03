@@ -96,7 +96,7 @@ const MeetingRow = (props: {
               </Typography>
             </Grid>
             <Grid item zeroMinWidth xs>
-              <Typography variant="body1" noWrap>
+              <Typography variant="body2" noWrap>
                 <b>{props.meeting.summary || '(no title)'}</b> {props.meeting.description || ''}
               </Typography>
             </Grid>

@@ -28,14 +28,13 @@ const useStyles = makeStyles((theme) => ({
       width: `calc(100vw - ${theme.spacing(7)}px)`,
     },
   },
+  section: {
+    marginTop: theme.spacing(2),
+  },
   title: {
-    fontSize: theme.typography.body2.fontSize,
-    textTransform: 'uppercase',
     marginBottom: theme.spacing(2),
-    borderBottom: `1px solid ${theme.palette.text.secondary}`,
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(1),
-    },
+    textTransform: 'uppercase',
+    fontWeight: theme.typography.fontWeightBold,
   },
   row: {
     marginBottom: theme.spacing(4),
@@ -45,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
     '&:last-child': {
       borderbottom: '0px solid',
     },
+  },
+  rowNoBorder: {
+    marginBottom: theme.spacing(4),
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
   },
 }));
 

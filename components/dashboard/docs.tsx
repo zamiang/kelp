@@ -7,7 +7,7 @@ import { IDoc } from '../store/doc-store';
 import { IStore } from '../store/use-store';
 
 const Documents = (props: IStore) => {
-  const styles = panelStyles();
+  const classes = panelStyles();
   const docs = props.docDataStore.getDocs();
   const selectedDocumentId = useRouter().query.slug as string;
   const driveActivityIdsForToday = props.timeDataStore.getDriveActivityIdsForToday();
@@ -19,24 +19,30 @@ const Documents = (props: IStore) => {
     )
     .filter((doc) => doc && doc.id) as IDoc[];
   return (
-    <React.Fragment>
-      {docsForToday.length > 0 && (
-        <div className={styles.row}>
-          <Typography className={styles.title}>Documents for Today</Typography>
-          {docsForToday.map((doc) => (
-            <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
-          ))}
-        </div>
-      )}
-      {docs.length > 0 && (
-        <div className={styles.row}>
-          <Typography className={styles.title}>Documents you edited recently</Typography>
-          {docs.map((doc) => (
-            <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
-          ))}
-        </div>
-      )}
-    </React.Fragment>
+    <div className={classes.panel}>
+      <div className={classes.section}>
+        {docsForToday.length > 0 && (
+          <div className={classes.rowNoBorder}>
+            <Typography variant="caption">Documents for Today</Typography>
+            {docsForToday.map((doc) => (
+              <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
+            ))}
+          </div>
+        )}
+      </div>
+      <div className={classes.section}>
+        {docs.length > 0 && (
+          <div className={classes.rowNoBorder}>
+            <Typography variant="caption" className={classes.title}>
+              Documents with recent activity
+            </Typography>
+            {docs.map((doc) => (
+              <DocumentRow key={doc.id} doc={doc} selectedDocumentId={selectedDocumentId} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
