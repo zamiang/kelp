@@ -124,7 +124,6 @@ const RightDrawer = (props: {
   return (
     <Drawer
       open={props.shouldRenderPanel && isRightDrawerOpen}
-      elevation={3}
       classes={{
         paper: panelClasses.dockedPanel,
       }}

@@ -4,6 +4,7 @@ import React from 'react';
 
 const PopperContainer = (props: { anchorEl: any; children: any; isOpen: boolean }) => {
   const id = 'spring-popper';
+  console.log(props.anchorEl);
   return (
     <Popper id={id} open={props.isOpen} placement="left" anchorEl={props.anchorEl}>
       <Paper style={{ maxWidth: 500 }}>{props.children}</Paper>

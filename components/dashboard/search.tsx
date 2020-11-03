@@ -57,7 +57,7 @@ const buildSearchIndex = (store: {
   return searchIndex;
 };
 
-const renderSearchResults = (searchResults: ISearchItem[]) =>
+const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
   searchResults.map((result) => {
     switch (result.type) {
       case 'document':
@@ -65,6 +65,7 @@ const renderSearchResults = (searchResults: ISearchItem[]) =>
           <DocumentSearchResult
             key={result.item.id}
             doc={result.item as IDoc}
+            store={store}
             selectedDocumentId={null}
           />
         );
@@ -100,7 +101,7 @@ const Search = (props: IStore) => {
           <Typography variant="caption" className={classes.title}>
             Search Results for: {searchQuery}
           </Typography>
-          {renderSearchResults(results || [])}
+          {renderSearchResults(results || [], props)}
         </div>
       </div>
     </div>
