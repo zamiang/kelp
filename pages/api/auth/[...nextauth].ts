@@ -3,14 +3,10 @@ import NextAuth from 'next-auth';
 import config from '../../../constants/config';
 
 const options = {
-  database: process.env.MONGO_URL,
   pages: {
     signIn: '/auth/signin',
   },
-<<<<<<< Updated upstream
-=======
   database: `${process.env.MONGO_URL!}/kelp`,
->>>>>>> Stashed changes
   jwt: {
     secret: process.env.JWT_SECRET,
     encryption: true,
