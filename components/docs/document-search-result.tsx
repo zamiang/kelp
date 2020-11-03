@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
+import { openPopper } from '../../pages/dashboard';
 import useRowStyles from '../shared/row-styles';
 import { IDoc } from '../store/doc-store';
 
@@ -32,13 +33,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) => {
+const DocumentSearchResult = (props: {
+  doc: IDoc;
+  openPopper: openPopper;
+  selectedDocumentId: string | null;
+}) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   return (
     <Link href={`?tab=docs&slug=${props.doc.id}`}>
       <ListItem
         button={true}
+        onClick={(event) =>
+          props.openPopper({
+            anchorEl: event.target,
+            slugType: 'docs',
+            slug: props.doc.id,
+          })
+        }
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,
@@ -67,4 +79,4 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
   );
 };
 
-export default DocumentRow;
+export default DocumentSearchResult;

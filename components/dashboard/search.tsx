@@ -2,13 +2,13 @@ import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
+import { IStorePopper } from '../../pages/dashboard/index';
 import DocumentSearchResult from '../docs/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonSearchResult from '../person/person-search-result';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
-import { IStore } from '../store/use-store';
 
 interface ISearchItem {
   text: string;
@@ -17,10 +17,10 @@ interface ISearchItem {
 }
 
 const buildSearchIndex = (store: {
-  docDataStore: IStore['docDataStore'];
-  driveActivityStore: IStore['driveActivityStore'];
-  timeDataStore: IStore['timeDataStore'];
-  personDataStore: IStore['personDataStore'];
+  docDataStore: IStorePopper['docDataStore'];
+  driveActivityStore: IStorePopper['driveActivityStore'];
+  timeDataStore: IStorePopper['timeDataStore'];
+  personDataStore: IStorePopper['personDataStore'];
 }) => {
   const searchIndex = [] as ISearchItem[];
   // Docs
@@ -57,11 +57,17 @@ const buildSearchIndex = (store: {
   return searchIndex;
 };
 
-const renderSearchResults = (searchResults: ISearchItem[]) =>
+const renderSearchResults = (searchResults: ISearchItem[], openPopper: any) =>
   searchResults.map((result) => {
     switch (result.type) {
       case 'document':
-        return <DocumentSearchResult doc={result.item as IDoc} selectedDocumentId={null} />;
+        return (
+          <DocumentSearchResult
+            doc={result.item as IDoc}
+            selectedDocumentId={null}
+            openPopper={openPopper}
+          />
+        );
       case 'person':
         return <PersonSearchResult person={result.item as IPerson} selectedPersonId={null} />;
       case 'segment':
@@ -69,7 +75,7 @@ const renderSearchResults = (searchResults: ISearchItem[]) =>
     }
   });
 
-const Search = (props: IStore) => {
+const Search = (props: IStorePopper) => {
   const classes = panelStyles();
   const router = useRouter();
   const searchIndex = buildSearchIndex(props);
