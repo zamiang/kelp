@@ -4,7 +4,7 @@ import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../docs/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
-import PersonRow from '../person/person-row';
+import PersonSearchResult from '../person/person-search-result';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
@@ -63,23 +63,29 @@ const renderSearchResults = (searchResults: ISearchItem[]) =>
       case 'document':
         return <DocumentSearchResult doc={result.item as IDoc} selectedDocumentId={null} />;
       case 'person':
-        return <PersonRow person={result.item as IPerson} selectedPersonId={null} />;
+        return <PersonSearchResult person={result.item as IPerson} selectedPersonId={null} />;
       case 'segment':
         return <MeetingSearchResult meeting={result.item as ISegment} selectedMeetingId={null} />;
     }
   });
 
 const Search = (props: IStore) => {
-  const styles = panelStyles();
+  const classes = panelStyles();
   const router = useRouter();
   const searchIndex = buildSearchIndex(props);
   const searchQuery = (router.query.query as string).toLowerCase();
   const results = searchIndex.filter((item) => item.text.includes(searchQuery));
   return (
-    <React.Fragment>
-      <Typography className={styles.title}>Search Results for: {searchQuery}</Typography>
-      {renderSearchResults(results || [])}
-    </React.Fragment>
+    <div className={classes.panel}>
+      <div className={classes.section}>
+        <div className={classes.rowNoBorder}>
+          <Typography variant="caption" className={classes.title}>
+            Search Results for: {searchQuery}
+          </Typography>
+          {renderSearchResults(results || [])}
+        </div>
+      </div>
+    </div>
   );
 };
 

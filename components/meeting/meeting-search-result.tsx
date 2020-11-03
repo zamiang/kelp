@@ -9,34 +9,45 @@ import React from 'react';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/time-store';
 
-const useStyles = makeStyles(() => ({
-  time: { textAlign: 'right' },
+const useStyles = makeStyles((theme) => ({
+  time: {},
+  paddingLeft: { paddingLeft: theme.spacing(1), marginLeft: 8 },
+  row: {
+    margin: 0,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    borderTop: `1px solid ${theme.palette.divider}`,
+    borderRadius: 0,
+    '&.MuiListItem-button:hover': {
+      borderColor: theme.palette.divider,
+    },
+  },
 }));
 
 const MeetingRow = (props: { meeting: ISegment; selectedMeetingId: string | null }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
-  const fieldRef = React.useRef<HTMLInputElement>(null);
   return (
-    <ListItem
-      ref={fieldRef}
-      button={true}
-      className={clsx(
-        'ignore-react-onclickoutside',
-        rowStyles.row,
-        props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
-        props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
-        props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
-        props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
-        props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
-      )}
-    >
-      <Link href={`?tab=meetings&slug=${props.meeting.id}`}>
-        <Grid container spacing={1}>
+    <Link href={`?tab=meetings&slug=${props.meeting.id}`}>
+      <ListItem
+        button={true}
+        className={clsx(
+          'ignore-react-onclickoutside',
+          rowStyles.row,
+          classes.row,
+          props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
+          props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
+          props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
+          props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
+          props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
+        )}
+      >
+        <Grid container spacing={1} alignItems="center">
           <Grid
             item
             className={clsx(
               rowStyles.border,
+              classes.paddingLeft,
               props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
               props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
               props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
@@ -44,17 +55,19 @@ const MeetingRow = (props: { meeting: ISegment; selectedMeetingId: string | null
               props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
             )}
           ></Grid>
-          <Grid item style={{ flex: 1 }}>
-            <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
+          <Grid item zeroMinWidth xs>
+            <Typography variant="body2">
+              <b>{props.meeting.summary || '(no title)'}</b>
+            </Typography>
           </Grid>
           <Grid item className={classes.time}>
-            <Typography variant="subtitle2">
+            <Typography variant="caption" color="textSecondary">
               {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
             </Typography>
           </Grid>
         </Grid>
-      </Link>
-    </ListItem>
+      </ListItem>
+    </Link>
   );
 };
 

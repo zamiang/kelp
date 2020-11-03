@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     width: '100%',
   },
-  time: { minWidth: 160, maxWidth: 180 },
+  time: { minWidth: 160, maxWidth: 180, textAlign: 'right' },
   row: {
     margin: 0,
     paddingTop: theme.spacing(2),
