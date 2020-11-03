@@ -71,7 +71,7 @@ const LoadingDashboardContainer = () => {
   const isSignedIn = useGapi();
   const router = useRouter();
   const [session, isLoading] = useSession();
-  const store = useStore(isSignedIn, session);
+  const store = useStore(isSignedIn);
 
   if (!isLoading && !session?.user) {
     void router.push('/');

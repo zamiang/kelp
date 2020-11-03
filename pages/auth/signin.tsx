@@ -8,7 +8,16 @@ import { providers, signIn } from 'next-auth/client';
 import React from 'react';
 import { useStyles } from '../index';
 
-export default function SignIn({ providers }) {
+interface IProvider {
+  id: string;
+  name: string;
+}
+
+interface IProps {
+  providers: IProvider[];
+}
+
+export default function SignIn({ providers }: IProps) {
   const classes = useStyles();
   return (
     <Grid
@@ -47,6 +56,6 @@ export default function SignIn({ providers }) {
   );
 }
 
-SignIn.getInitialProps = async (context: any) => ({
-  providers: await providers(context),
+SignIn.getInitialProps = async () => ({
+  providers: await providers(),
 });

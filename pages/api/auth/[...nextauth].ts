@@ -16,7 +16,7 @@ const options = {
   callbacks: {
     session: async (session: any, user: any) =>
       Promise.resolve({ ...session, slackOauthToken: user.slackOauthToken }),
-    jwt: async (token: any, user: any, account: any) => {
+    jwt: async (token: any, _user: any, account: any) => {
       const result = { ...token };
       if (account && account.provider === 'slack') {
         result.slackOauthToken = account.accessToken;
@@ -41,7 +41,7 @@ const options = {
           id: profile.id,
           email: profile.email,
           image: profile.picture,
-        };
+        } as any;
         if (profile.name) {
           user.name = profile.name;
         }

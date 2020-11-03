@@ -1,4 +1,3 @@
-import { WebClient } from '@slack/web-api';
 import FetchAll from '../fetch/fetch-all';
 import DocDataStore, { formatGoogleDoc } from './doc-store';
 import DriveActivityDataStore from './drive-activity-store';
@@ -19,15 +18,9 @@ export interface IStore {
   readonly error?: Error;
 }
 
-const useStore = (signedIn: boolean, session?: { slackOauthToken: string }): IStore => {
+const useStore = (signedIn: boolean): IStore => {
   // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll(signedIn);
-
-  // Initialize
-  if (typeof window !== 'undefined' && session?.slackOauthToken) {
-    const web = new WebClient(session?.slackOauthToken);
-    window.webClient = web;
-  }
 
   const people = (data.personList || []).map((person) => formatPerson(person));
 
