@@ -5,6 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { signIn } from 'next-auth/client';
 import React from 'react';
 import config from '../../constants/config';
 import panelStyles from '../shared/panel-styles';
@@ -49,15 +50,15 @@ const Settings = () => {
             value={config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION}
           />
         </FormControl>
-        <a href="https://slack.com/oauth/v2/authorize?client_id=1468714661298.1481349074113&scope=&user_scope=channels:history,groups:history">
-          <img
-            alt="Add to Slack"
-            height="40"
-            width="139"
-            src="https://platform.slack-edge.com/img/add_to_slack.png"
-            srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
-          />
-        </a>
+        <Button
+          variant="contained"
+          color="primary"
+          disableElevation
+          onClick={() => signIn('slack', { callbackUrl: config.REDIRECT_URI })}
+        >
+          Add Slack
+        </Button>
+
         <div className={styles.row}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
             <Button variant="contained" color="primary" disableElevation>

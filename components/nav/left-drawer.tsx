@@ -81,6 +81,11 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
     marginLeft: -15,
   },
+  noOverflow: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
 }));
 
 export interface IProps {
@@ -235,7 +240,7 @@ const LeftDrawer = (props: IProps) => {
               <ListItemIcon className={classes.iconContainer}>
                 <Avatar className={classes.avatar} src={user.image} alt={user.name || user.email} />
               </ListItemIcon>
-              <ListItemText>{user.name || user.email}</ListItemText>
+              <ListItemText className={classes.noOverflow}>{user.name || user.email}</ListItemText>
             </ListItem>
           </Link>
         )}

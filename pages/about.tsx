@@ -36,7 +36,7 @@ const About = () => {
                 <LoginButton />
               </div>
               <Link href="/">
-                <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
+                <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="/kelp.svg" />
               </Link>
               <Typography variant="h3" className={classes.heading}>
                 About Kelp
