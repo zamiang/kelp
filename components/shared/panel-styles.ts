@@ -8,12 +8,9 @@ const useStyles = makeStyles((theme) => ({
   panel: {
     overflowX: 'auto',
     minHeight: '100vh',
-    padding: theme.spacing(3),
     paddingRight: 0,
     position: 'relative',
-    width: `calc((100vw - ${drawerWidth}px) * 0.382)`,
     [theme.breakpoints.down('sm')]: {
-      width: 'auto',
       padding: theme.spacing(1),
     },
   },
@@ -43,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     marginBottom: theme.spacing(4),
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    '&:last-child': {
+      borderbottom: '0px solid',
+    },
   },
 }));
 

@@ -12,7 +12,7 @@ import { ISegment } from '../store/time-store';
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 
 const useStyles = makeStyles((theme) => ({
-  time: { textAlign: 'right' },
+  time: { minWidth: 140, maxWidth: 180 },
   currentTime: {
     marginLeft: -theme.spacing(3),
     marginTop: -theme.spacing(1),
@@ -27,6 +27,15 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 0,
     width: '100%',
     borderTop: `2px solid ${theme.palette.text.primary}`,
+  },
+  noOverflow: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  row: {
+    paddingLeft: 0,
+    marginLeft: theme.spacing(3),
   },
 }));
 
@@ -59,6 +68,7 @@ const MeetingRow = (props: {
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,
+          classes.row,
           props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
           props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
           props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
@@ -67,9 +77,10 @@ const MeetingRow = (props: {
         )}
       >
         <Link href={`?tab=meetings&slug=${props.meeting.id}`}>
-          <Grid container spacing={1}>
+          <Grid container spacing={1} alignItems="center">
             <Grid
               item
+              zeroMinWidth={true}
               className={clsx(
                 rowStyles.border,
                 props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
@@ -80,12 +91,14 @@ const MeetingRow = (props: {
                 props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
               )}
             ></Grid>
-            <Grid item style={{ flex: 1 }}>
-              <Typography variant="body1">{props.meeting.summary || '(no title)'}</Typography>
-            </Grid>
             <Grid item className={classes.time}>
               <Typography variant="subtitle2">
                 {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+              </Typography>
+            </Grid>
+            <Grid item zeroMinWidth xs>
+              <Typography variant="body1" noWrap>
+                <b>{props.meeting.summary || '(no title)'}</b> {props.meeting.description || ''}
               </Typography>
             </Grid>
           </Grid>

@@ -153,7 +153,6 @@ const is500Error = (error: Error) => (error as any).status === 500;
 
 export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
-  const panelClasses = panelStyles();
   const handleRefreshClick = () => store.refetch();
   const router = useRouter();
   const slug = router.query.slug as string | null;
@@ -198,15 +197,10 @@ export const DashboardContainer = ({ store }: IProps) => {
         tab={tab as any}
       />
       <main className={classes.content}>
-        {shouldRenderPanel && (
-          <div className={panelClasses.panel}>
-            {store.error && !is500Error(store.error) && (
-              <Alert severity="error">{JSON.stringify(store.error)}</Alert>
-            )}
-            {tabHash[tab]}
-          </div>
+        {store.error && !is500Error(store.error) && (
+          <Alert severity="error">{JSON.stringify(store.error)}</Alert>
         )}
-        {!shouldRenderPanel && tabHash[tab]}
+        {tabHash[tab]}
         <OnClickOutsideRightDrawer
           store={store}
           shouldRenderPanel={shouldRenderPanel}

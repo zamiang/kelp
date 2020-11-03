@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentRow from '../docs/document-row';
-import MeetingRow from '../meeting/meeting-row';
+import MeetingRow from '../meeting/meeting-search-result';
 import PersonRow from '../person/person-row';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';

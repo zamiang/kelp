@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.secondary.main,
     padding: '0px !important',
     transition: 'background 0.3s',
-    width: 4,
+    width: 9,
+    height: 9,
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
