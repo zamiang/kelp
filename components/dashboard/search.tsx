@@ -65,14 +65,7 @@ const renderSearchResults = (searchResults: ISearchItem[]) =>
       case 'person':
         return <PersonRow person={result.item as IPerson} selectedPersonId={null} />;
       case 'segment':
-        return (
-          <MeetingRow
-            meeting={result.item as ISegment}
-            selectedMeetingId={null}
-            shouldRenderCurrentTime={false}
-            currentTime={new Date()}
-          />
-        );
+        return <MeetingRow meeting={result.item as ISegment} selectedMeetingId={null} />;
     }
   });
 
