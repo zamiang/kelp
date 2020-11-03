@@ -7,6 +7,10 @@ const options = {
   pages: {
     signIn: '/auth/signin',
   },
+<<<<<<< Updated upstream
+=======
+  database: `${process.env.MONGO_URL!}/kelp`,
+>>>>>>> Stashed changes
   jwt: {
     secret: process.env.JWT_SECRET,
     encryption: true,
