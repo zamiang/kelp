@@ -3,7 +3,7 @@ import NextAuth from 'next-auth';
 import config from '../../../constants/config';
 
 const options = {
-  database: process.env.DATABASE_URL,
+  database: process.env.MONGO_URL,
   pages: {
     signIn: '/auth/signin',
   },
