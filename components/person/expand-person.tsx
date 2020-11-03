@@ -49,7 +49,7 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
         <Box flexDirection="column" alignItems="flex-start" display="flex">
           <Typography
             className={classes.title}
-            variant="h4"
+            variant="h5"
             color="textPrimary"
             gutterBottom
             noWrap

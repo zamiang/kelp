@@ -57,15 +57,34 @@ const buildSearchIndex = (store: {
   return searchIndex;
 };
 
-const renderSearchResults = (searchResults: ISearchItem[]) =>
+const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
   searchResults.map((result) => {
     switch (result.type) {
       case 'document':
-        return <DocumentSearchResult doc={result.item as IDoc} selectedDocumentId={null} />;
+        return (
+          <DocumentSearchResult
+            key={result.item.id}
+            doc={result.item as IDoc}
+            store={store}
+            selectedDocumentId={null}
+          />
+        );
       case 'person':
-        return <PersonSearchResult person={result.item as IPerson} selectedPersonId={null} />;
+        return (
+          <PersonSearchResult
+            key={result.item.id}
+            person={result.item as IPerson}
+            selectedPersonId={null}
+          />
+        );
       case 'segment':
-        return <MeetingSearchResult meeting={result.item as ISegment} selectedMeetingId={null} />;
+        return (
+          <MeetingSearchResult
+            key={result.item.id}
+            meeting={result.item as ISegment}
+            selectedMeetingId={null}
+          />
+        );
     }
   });
 
@@ -82,7 +101,7 @@ const Search = (props: IStore) => {
           <Typography variant="caption" className={classes.title}>
             Search Results for: {searchQuery}
           </Typography>
-          {renderSearchResults(results || [])}
+          {renderSearchResults(results || [], props)}
         </div>
       </div>
     </div>

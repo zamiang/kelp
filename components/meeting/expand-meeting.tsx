@@ -88,7 +88,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   const guestStats = getFormattedGuestStats(meeting.formattedAttendees);
   return (
     <div className={classes.container}>
-      <Typography variant="h4" color="textPrimary">
+      <Typography variant="h5" color="textPrimary">
         {meeting.summary || '(no title)'}
       </Typography>
       <List dense={true} disablePadding={true}>

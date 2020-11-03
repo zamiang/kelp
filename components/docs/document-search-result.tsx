@@ -1,13 +1,16 @@
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import Link from 'next/link';
 import React from 'react';
+import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { IDoc } from '../store/doc-store';
+import { IStore } from '../store/use-store';
+import ExpandedDocument from './expand-document';
 
 const useStyles = makeStyles((theme) => ({
   imageContainer: {
@@ -32,13 +35,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) => {
+const DocumentSearchResult = (props: {
+  doc: IDoc;
+  selectedDocumentId: string | null;
+  store: IStore;
+}) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event: any) => {
+    setAnchorEl(anchorEl ? null : event?.currentTarget);
+  };
+  const isOpen = Boolean(anchorEl);
   return (
-    <Link href={`?tab=docs&slug=${props.doc.id}`}>
+    <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
       <ListItem
         button={true}
+        onClick={handleClick}
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,
@@ -48,6 +62,9 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
         )}
       >
         <Grid container spacing={1} alignItems="center">
+          <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
+            <ExpandedDocument documentId={props.doc.id} {...props.store} />
+          </PopperContainer>
           <Grid item className={classes.imageContainer}>
             <img src={props.doc.iconLink} className={classes.image} />
           </Grid>
@@ -63,8 +80,8 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null }) =>
           </Grid>
         </Grid>
       </ListItem>
-    </Link>
+    </ClickAwayListener>
   );
 };
 
-export default DocumentRow;
+export default DocumentSearchResult;
