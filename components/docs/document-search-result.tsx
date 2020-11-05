@@ -35,17 +35,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocumentSearchResult = (props: {
-  doc: IDoc;
-  selectedDocumentId: string | null;
-  store: IStore;
-}) => {
+const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event: any) => {
-    setAnchorEl(anchorEl ? null : event?.currentTarget);
+    if (!anchorEl) {
+      setAnchorEl(anchorEl ? null : event?.currentTarget);
+    }
   };
   const isOpen = Boolean(anchorEl);
   return (
@@ -58,7 +56,6 @@ const DocumentSearchResult = (props: {
           rowStyles.row,
           rowStyles.rowDefault,
           classes.row,
-          props.selectedDocumentId === props.doc.id && rowStyles.pinkBackground,
         )}
       >
         <Grid container spacing={1} alignItems="center">

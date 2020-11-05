@@ -1,13 +1,16 @@
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import Link from 'next/link';
 import React from 'react';
+import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/time-store';
+import { IStore } from '../store/use-store';
+import ExpandedMeeting from './expand-meeting';
 
 const useStyles = makeStyles((theme) => ({
   time: {},
@@ -24,12 +27,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MeetingRow = (props: { meeting: ISegment; selectedMeetingId: string | null }) => {
+const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event: any) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+  const isOpen = Boolean(anchorEl);
   return (
-    <Link href={`?tab=meetings&slug=${props.meeting.id}`}>
+    <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
       <ListItem
+        onClick={handleClick}
         button={true}
         className={clsx(
           'ignore-react-onclickoutside',
@@ -39,10 +49,12 @@ const MeetingRow = (props: { meeting: ISegment; selectedMeetingId: string | null
           props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
           props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
           props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
-          props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
         )}
       >
         <Grid container spacing={1} alignItems="center">
+          <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
+            <ExpandedMeeting meetingId={props.meeting.id} {...props.store} />
+          </PopperContainer>
           <Grid
             item
             className={clsx(
@@ -52,7 +64,6 @@ const MeetingRow = (props: { meeting: ISegment; selectedMeetingId: string | null
               props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
               props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
               props.meeting.selfResponseStatus === 'needsAction' && rowStyles.borderSecondaryLight,
-              props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
             )}
           ></Grid>
           <Grid item zeroMinWidth xs>
@@ -67,8 +78,8 @@ const MeetingRow = (props: { meeting: ISegment; selectedMeetingId: string | null
           </Grid>
         </Grid>
       </ListItem>
-    </Link>
+    </ClickAwayListener>
   );
 };
 
-export default MeetingRow;
+export default MeetingSearchResult;

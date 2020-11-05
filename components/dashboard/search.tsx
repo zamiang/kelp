@@ -62,27 +62,18 @@ const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
     switch (result.type) {
       case 'document':
         return (
-          <DocumentSearchResult
-            key={result.item.id}
-            doc={result.item as IDoc}
-            store={store}
-            selectedDocumentId={null}
-          />
+          <DocumentSearchResult key={result.item.id} doc={result.item as IDoc} store={store} />
         );
       case 'person':
         return (
-          <PersonSearchResult
-            key={result.item.id}
-            person={result.item as IPerson}
-            selectedPersonId={null}
-          />
+          <PersonSearchResult key={result.item.id} person={result.item as IPerson} store={store} />
         );
       case 'segment':
         return (
           <MeetingSearchResult
             key={result.item.id}
             meeting={result.item as ISegment}
-            selectedMeetingId={null}
+            store={store}
           />
         );
     }
