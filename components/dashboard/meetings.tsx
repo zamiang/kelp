@@ -81,6 +81,7 @@ const MeetingsByDay = (
                   key={meeting.id}
                   meeting={meeting}
                   selectedMeetingId={props.selectedMeetingId}
+                  store={props}
                 />
               );
             })}

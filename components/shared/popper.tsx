@@ -4,7 +4,7 @@ import React from 'react';
 
 const PopperContainer = (props: { anchorEl: any; children: any; isOpen: boolean }) => (
   <Popper open={props.isOpen} anchorEl={props.anchorEl}>
-    <Paper elevation={5} style={{ maxWidth: 500 }}>
+    <Paper elevation={5} style={{ maxWidth: 500, maxHeight: '80vh', overflow: 'auto' }}>
       {props.children}
     </Paper>
   </Popper>

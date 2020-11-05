@@ -1,13 +1,17 @@
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useRef } from 'react';
+import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/time-store';
+import { IStore } from '../store/use-store';
+import ExpandedMeeting from './expand-meeting';
 
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 
@@ -38,16 +42,28 @@ const MeetingRow = (props: {
   currentTime: Date;
   selectedMeetingId: string | null;
   shouldRenderCurrentTime: boolean;
+  store: IStore;
 }) => {
+  const isSelected = props.selectedMeetingId === props.meeting.id;
   const classes = useStyles();
+  const router = useRouter();
   const rowStyles = useRowStyles();
-  const fieldRef = React.useRef<HTMLInputElement>(null);
+  const fieldRef = useRef<HTMLInputElement>(null);
   React.useEffect(() => {
     const isCurrentMeeting = props.meeting.id === props.selectedMeetingId;
     if ((isCurrentMeeting || props.shouldRenderCurrentTime) && fieldRef.current) {
       fieldRef.current.scrollIntoView();
     }
   }, []);
+
+  const [anchorEl, setAnchorEl] = React.useState(isSelected ? fieldRef : null);
+  const handleClick = (event: any) => {
+    if (!anchorEl) {
+      setAnchorEl(anchorEl ? null : event?.currentTarget);
+      return router.push(`?tab=meetings`);
+    }
+  };
+  const isOpen = Boolean(anchorEl);
   return (
     <React.Fragment>
       {props.shouldRenderCurrentTime && (
@@ -56,22 +72,26 @@ const MeetingRow = (props: {
           <div className={classes.currentTimeBorder}></div>
         </ListItem>
       )}
-      <ListItem
-        ref={fieldRef}
-        button={true}
-        className={clsx(
-          'ignore-react-onclickoutside',
-          rowStyles.row,
-          classes.row,
-          props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
-          props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
-          props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
-          props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
-          props.selectedMeetingId === props.meeting.id && rowStyles.rowPrimaryMain,
-        )}
-      >
-        <Link href={`?tab=meetings&slug=${props.meeting.id}`}>
+      <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+        <ListItem
+          ref={fieldRef}
+          button={true}
+          onClick={handleClick}
+          className={clsx(
+            'ignore-react-onclickoutside',
+            rowStyles.row,
+            classes.row,
+            props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
+            props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
+            props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
+            props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
+            isSelected && rowStyles.rowPrimaryMain,
+          )}
+        >
           <Grid container spacing={1} alignItems="center">
+            <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
+              <ExpandedMeeting meetingId={props.meeting.id} {...props.store} />
+            </PopperContainer>
             <Grid
               item
               zeroMinWidth={true}
@@ -96,8 +116,8 @@ const MeetingRow = (props: {
               </Typography>
             </Grid>
           </Grid>
-        </Link>
-      </ListItem>
+        </ListItem>
+      </ClickAwayListener>
     </React.Fragment>
   );
 };
