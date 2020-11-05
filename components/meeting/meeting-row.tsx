@@ -48,22 +48,21 @@ const MeetingRow = (props: {
   const classes = useStyles();
   const router = useRouter();
   const rowStyles = useRowStyles();
-  const fieldRef = useRef<HTMLInputElement>(null);
+  const anchorRef = useRef<HTMLInputElement>(null);
   React.useEffect(() => {
-    const isCurrentMeeting = props.meeting.id === props.selectedMeetingId;
-    if ((isCurrentMeeting || props.shouldRenderCurrentTime) && fieldRef.current) {
-      fieldRef.current.scrollIntoView();
+    if ((isSelected || props.shouldRenderCurrentTime) && anchorRef.current) {
+      anchorRef.current.scrollIntoView();
     }
   }, []);
 
-  const [anchorEl, setAnchorEl] = React.useState(isSelected ? fieldRef : null);
+  const [anchorEl, setAnchorEl] = React.useState(isSelected ? anchorRef : null);
   const handleClick = (event: any) => {
     if (!anchorEl) {
       setAnchorEl(anchorEl ? null : event?.currentTarget);
-      return router.push(`?tab=meetings`);
+      return router.push(`?tab=meetings&slug=${props.meeting.id}`);
     }
   };
-  const isOpen = Boolean(anchorEl);
+  const isOpen = Boolean(anchorRef.current) && Boolean(anchorEl);
   return (
     <React.Fragment>
       {props.shouldRenderCurrentTime && (
@@ -74,7 +73,7 @@ const MeetingRow = (props: {
       )}
       <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
         <ListItem
-          ref={fieldRef}
+          ref={anchorRef}
           button={true}
           onClick={handleClick}
           className={clsx(

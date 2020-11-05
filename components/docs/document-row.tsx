@@ -43,6 +43,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
   const router = useRouter();
   const rowStyles = useRowStyles();
   const classes = useStyles();
+  const anchorRef = useRef<HTMLInputElement>(null);
   const activity = props.store.driveActivityStore.getDriveActivityForDocument(props.doc.id) || [];
 
   const people = uniqBy(activity, 'actorPersonId')
@@ -51,15 +52,20 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
     .filter((person) => person && person.id)
     .slice(0, 5);
 
-  const anchorRef = useRef(null);
+  React.useEffect(() => {
+    if (isSelected && anchorRef.current) {
+      anchorRef.current.scrollIntoView();
+    }
+  }, []);
+
   const [anchorEl, setAnchorEl] = React.useState(isSelected ? anchorRef : null);
   const handleClick = (event: any) => {
     if (!anchorEl) {
       setAnchorEl(anchorEl ? null : event?.currentTarget);
-      return router.push(`?tab=docs`);
+      return router.push(`?tab=docs&slug=${props.doc.id}`);
     }
   };
-  const isOpen = Boolean(anchorEl);
+  const isOpen = Boolean(anchorRef.current) && Boolean(anchorEl);
   return (
     <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
       <ListItem
