@@ -36,7 +36,7 @@ const People = (props: IStore) => {
                     key={person.id}
                     person={person}
                     selectedPersonId={selectedPersonId}
-                    {...props}
+                    store={{ ...props }}
                   />
                 ),
             )}
@@ -52,7 +52,7 @@ const People = (props: IStore) => {
               key={person.id}
               person={person}
               selectedPersonId={selectedPersonId}
-              {...props}
+              store={{ ...props }}
             />
           ))}
         </div>
