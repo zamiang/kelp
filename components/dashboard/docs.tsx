@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography';
+import { uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
 import DocumentRow from '../../components/docs/document-row';
@@ -11,13 +12,16 @@ const Documents = (props: IStore) => {
   const docs = props.docDataStore.getDocs();
   const selectedDocumentId = useRouter().query.slug as string;
   const driveActivityIdsForToday = props.timeDataStore.getDriveActivityIdsForToday();
-  const docsForToday = driveActivityIdsForToday
-    .map((id) => id && props.driveActivityStore.getById(id))
-    .map(
-      (driveActivity) =>
-        driveActivity && driveActivity.link && props.docDataStore.getByLink(driveActivity.link),
-    )
-    .filter((doc) => doc && doc.id) as IDoc[];
+  const docsForToday = uniqBy(
+    driveActivityIdsForToday
+      .map((id) => id && props.driveActivityStore.getById(id))
+      .map(
+        (driveActivity) =>
+          driveActivity && driveActivity.link && props.docDataStore.getByLink(driveActivity.link),
+      )
+      .filter((doc) => doc && doc.id),
+    'id',
+  ) as IDoc[];
   return (
     <div className={classes.panel}>
       <div className={classes.section}>
@@ -30,9 +34,8 @@ const Documents = (props: IStore) => {
               <DocumentRow
                 key={doc.id}
                 doc={doc}
+                store={props}
                 selectedDocumentId={selectedDocumentId}
-                driveActivityStore={props.driveActivityStore}
-                personDataStore={props.personDataStore}
               />
             ))}
           </div>
@@ -48,9 +51,8 @@ const Documents = (props: IStore) => {
               <DocumentRow
                 key={doc.id}
                 doc={doc}
+                store={props}
                 selectedDocumentId={selectedDocumentId}
-                driveActivityStore={props.driveActivityStore}
-                personDataStore={props.personDataStore}
               />
             ))}
           </div>
