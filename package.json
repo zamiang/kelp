@@ -15,13 +15,13 @@
   "scripts": {
     "audit-dependencies": "npm audit --audit-level=high",
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next -p ${PORT:-3000}",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
-    "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
     "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport=pages",
+    "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
     "prettier": "prettier --write \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
     "prettier:check": "prettier --list-different \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
-    "start": "next start -p $PORT",
+    "start": "next start -p ${PORT:-3000}",
     "typecheck": "node node_modules/.bin/tsc --project tsconfig.json --noEmit --pretty"
   },
   "dependencies": {
@@ -39,9 +39,11 @@
     "@types/gapi.client.gmail": "1.0.2",
     "@types/gapi.client.people": "1.0.2",
     "@types/lodash": "4.14.164",
+    "@types/next-auth": "3.1.14",
     "@types/react-linkify": "1.0.0",
     "@types/react-onclickoutside": "6.7.3",
     "@types/stopword": "0.3.0",
+    "babel-plugin-styled-components": "1.11.1",
     "clsx": "1.1.1",
     "date-fns": "2.16.1",
     "express": "4.17.1",
@@ -63,12 +65,10 @@
     "typescript": "4.0.5"
   },
   "devDependencies": {
-    "@types/next-auth": "3.1.14",
     "@types/node": "14.14.6",
     "@typescript-eslint/eslint-plugin": "4.6.1",
     "@typescript-eslint/eslint-plugin-tslint": "4.6.1",
     "@typescript-eslint/parser": "4.6.1",
-    "babel-plugin-styled-components": "1.11.1",
     "eslint": "7.12.1",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-react": "7.21.5",
