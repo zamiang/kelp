@@ -19,12 +19,17 @@ const useGAPI = () => {
         clientId: config.GOOGLE_CLIENT_ID,
         scope: config.GOOGLE_SCOPES.join(' '),
       });
+
       try {
-        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+        const authInstance = await gapi.auth2.getAuthInstance();
+        authInstance.isSignedIn.listen((signedIn: boolean) => {
+          setStatus(signedIn);
+        });
+        const isSignedIn = await authInstance.isSignedIn.get();
         if (isSignedIn) {
-          return setStatus(isSignedIn);
+          return setStatus(true);
         }
-        const result = await gapi.auth2.getAuthInstance().signIn({
+        const result = await authInstance.signIn({
           scope: config.GOOGLE_SCOPES.join(' '),
           redirect_uri: config.REDIRECT_URI,
         });
@@ -32,16 +37,13 @@ const useGAPI = () => {
           setStatus(true);
         }
       } catch (error) {
-        alert(error);
-        if (error) {
-          if (error == 'popup_blocked_by_browser') {
-            alert('Please allow popups for Kelp');
-          } else {
-            alert(JSON.stringify(error));
-          }
-          // Unsure if logging out is helpful
-          // return logout();
+        if (error == 'popup_blocked_by_browser') {
+          alert('Please allow popups for Kelp');
+        } else {
+          alert(JSON.stringify(error));
         }
+        // Unsure if logging out is helpful
+        // return logout();
       }
     };
     gapi.load('client:auth2', loadLibraries as any);
