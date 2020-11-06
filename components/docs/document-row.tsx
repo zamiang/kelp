@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import Avatars from '../person/avatars';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
@@ -43,7 +43,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
   const router = useRouter();
   const rowStyles = useRowStyles();
   const classes = useStyles();
-  const anchorRef = useRef<HTMLInputElement>(null);
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const activity = props.store.driveActivityStore.getDriveActivityForDocument(props.doc.id) || [];
 
   const people = uniqBy(activity, 'actorPersonId')
@@ -53,25 +53,23 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
     .slice(0, 5);
 
   React.useEffect(() => {
-    if (isSelected && anchorRef.current) {
-      anchorRef.current.scrollIntoView();
+    if (isSelected && referenceElement) {
+      referenceElement.scrollIntoView();
     }
-  }, []);
+  }, [referenceElement]);
 
-  const [anchorEl, setAnchorEl] = React.useState(isSelected ? anchorRef : null);
-  const handleClick = (event: any) => {
-    if (!anchorEl) {
-      setAnchorEl(anchorEl ? null : event?.currentTarget);
-      return router.push(`?tab=docs&slug=${props.doc.id}`);
-    }
+  const [isOpen, setIsOpen] = React.useState(isSelected);
+  const handleClick = () => {
+    setIsOpen(true);
+    void router.push(`?tab=docs&slug=${props.doc.id}`);
+    return false;
   };
-  const isOpen = Boolean(anchorRef.current) && Boolean(anchorEl);
   return (
-    <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+    <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <ListItem
         button={true}
         onClick={handleClick}
-        ref={anchorRef}
+        ref={setReferenceElement as any}
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,
@@ -81,7 +79,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
         )}
       >
         <Grid container spacing={1} alignItems="center">
-          <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
+          <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
             <ExpandedDocument documentId={props.doc.id} {...props.store} />
           </PopperContainer>
           <Grid item className={classes.imageContainer}>

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/time-store';
@@ -48,21 +48,19 @@ const MeetingRow = (props: {
   const classes = useStyles();
   const router = useRouter();
   const rowStyles = useRowStyles();
-  const anchorRef = useRef<HTMLInputElement>(null);
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   React.useEffect(() => {
-    if ((isSelected || props.shouldRenderCurrentTime) && anchorRef.current) {
-      anchorRef.current.scrollIntoView();
+    if ((isSelected || props.shouldRenderCurrentTime) && referenceElement) {
+      referenceElement.scrollIntoView();
     }
-  }, []);
+  }, [referenceElement]);
 
-  const [anchorEl, setAnchorEl] = React.useState(isSelected ? anchorRef : null);
-  const handleClick = (event: any) => {
-    if (!anchorEl) {
-      setAnchorEl(anchorEl ? null : event?.currentTarget);
-      return router.push(`?tab=meetings&slug=${props.meeting.id}`);
-    }
+  const [isOpen, setIsOpen] = React.useState(isSelected);
+  const handleClick = () => {
+    setIsOpen(true);
+    void router.push(`?tab=meetings&slug=${props.meeting.id}`);
+    return false;
   };
-  const isOpen = Boolean(anchorRef.current) && Boolean(anchorEl);
   return (
     <React.Fragment>
       {props.shouldRenderCurrentTime && (
@@ -71,10 +69,9 @@ const MeetingRow = (props: {
           <div className={classes.currentTimeBorder}></div>
         </ListItem>
       )}
-      <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+      <ClickAwayListener onClickAway={() => setIsOpen(false)}>
         <ListItem
-          ref={anchorRef}
-          button={true}
+          ref={setReferenceElement as any}
           onClick={handleClick}
           className={clsx(
             'ignore-react-onclickoutside',
@@ -88,7 +85,7 @@ const MeetingRow = (props: {
           )}
         >
           <Grid container spacing={1} alignItems="center">
-            <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
+            <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
               <ExpandedMeeting meetingId={props.meeting.id} {...props.store} />
             </PopperContainer>
             <Grid

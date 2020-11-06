@@ -36,9 +36,13 @@ const useStyles = makeStyles((theme) => ({
   row: {
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',
+    cursor: 'pointer',
     opacity: 1,
     marginBottom: theme.spacing(0.5),
     borderRadius: `${theme.spacing(4)}px 0 0 ${theme.spacing(4)}px`,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.light,
+    },
     '& > *': {
       borderBottom: 'unset',
     },

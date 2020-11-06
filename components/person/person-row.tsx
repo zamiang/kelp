@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/person-store';
@@ -23,28 +23,26 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
   const classes = useStyles();
   const rowStyles = useRowStyles();
   const router = useRouter();
-  const anchorRef = useRef<HTMLInputElement>(null);
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    if (isSelected && anchorRef.current) {
-      anchorRef.current.scrollIntoView();
+    if (isSelected && referenceElement) {
+      referenceElement.scrollIntoView();
     }
-  }, []);
+  }, [referenceElement]);
 
-  const [anchorEl, setAnchorEl] = React.useState(isSelected ? anchorRef : null);
-  const handleClick = (event: any) => {
-    if (!anchorEl) {
-      setAnchorEl(anchorEl ? null : event?.currentTarget);
-      return router.push(`?tab=people&slug=${props.person.id}`);
-    }
+  const [isOpen, setIsOpen] = React.useState(isSelected);
+  const handleClick = () => {
+    setIsOpen(true);
+    void router.push(`?tab=people&slug=${props.person.id}`);
+    return false;
   };
-  const isOpen = Boolean(anchorRef.current) && Boolean(anchorEl);
   return (
-    <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+    <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <ListItem
         button={true}
         onClick={handleClick}
-        ref={anchorRef}
+        ref={setReferenceElement as any}
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,
@@ -52,7 +50,7 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
         )}
       >
         <Grid container spacing={2} alignItems="center">
-          <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
+          <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
             <ExpandedPerson personId={props.person.id} {...props.store} />
           </PopperContainer>
           <Grid item>
