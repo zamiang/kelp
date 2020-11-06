@@ -17,9 +17,12 @@ const options = {
     password: connectionOptions.password,
     database: connectionOptions.database,
     synchronize: true,
-    extra: {
-      ssl: Boolean(process.env.SSL_ENABLED),
-    },
+    ssl: Boolean(process.env.SSL_ENABLED),
+    extra: process.env.SSL_ENABLED
+      ? {
+          ssl: { rejectUnauthorized: false },
+        }
+      : null,
   },
   jwt: {
     secret: process.env.JWT_SECRET,
