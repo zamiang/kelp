@@ -53,7 +53,11 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
       >
         <Grid container spacing={1} alignItems="center">
           <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
-            <ExpandedMeeting meetingId={props.meeting.id} {...props.store} />
+            <ExpandedMeeting
+              meetingId={props.meeting.id}
+              close={() => setAnchorEl(null)}
+              {...props.store}
+            />
           </PopperContainer>
           <Grid
             item

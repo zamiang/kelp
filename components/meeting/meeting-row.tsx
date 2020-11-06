@@ -86,7 +86,11 @@ const MeetingRow = (props: {
         >
           <Grid container spacing={1} alignItems="center">
             <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
-              <ExpandedMeeting meetingId={props.meeting.id} {...props.store} />
+              <ExpandedMeeting
+                meetingId={props.meeting.id}
+                close={() => setIsOpen(false)}
+                {...props.store}
+              />
             </PopperContainer>
             <Grid
               item

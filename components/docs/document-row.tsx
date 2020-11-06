@@ -67,7 +67,6 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
   return (
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <ListItem
-        button={true}
         onClick={handleClick}
         ref={setReferenceElement as any}
         className={clsx(
@@ -80,7 +79,11 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
       >
         <Grid container spacing={1} alignItems="center">
           <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
-            <ExpandedDocument documentId={props.doc.id} {...props.store} />
+            <ExpandedDocument
+              documentId={props.doc.id}
+              close={() => setIsOpen(false)}
+              {...props.store}
+            />
           </PopperContainer>
           <Grid item className={classes.imageContainer}>
             <img src={props.doc.iconLink} className={classes.image} />

@@ -1,9 +1,11 @@
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
@@ -50,7 +52,7 @@ const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {
     .join(', ');
 };
 
-const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
+const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const meeting = props.timeDataStore.getSegmentById(props.meetingId);
   if (!meeting) {
@@ -88,6 +90,18 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
   const guestStats = getFormattedGuestStats(meeting.formattedAttendees);
   return (
     <div className={classes.container}>
+      <div className={classes.navBar}>
+        {meeting.link && (
+          <MuiLink href={meeting.link} target="_blank" className={classes.link}>
+            <IconButton>
+              <ExitToAppIcon fontSize="small" />
+            </IconButton>
+          </MuiLink>
+        )}
+        <IconButton onClick={props.close}>
+          <CloseIcon />
+        </IconButton>
+      </div>
       <Typography variant="h5" color="textPrimary">
         {meeting.summary || '(no title)'}
       </Typography>
@@ -178,14 +192,6 @@ const ExpandedMeeting = (props: IStore & { meetingId: string }) => {
           )}
         </Grid>
         <Grid item sm={5}>
-          {meeting.link && (
-            <MuiLink href={meeting.link} target="_blank" className={classes.link}>
-              Google Calendar{' '}
-              <sub>
-                <ExitToAppIcon fontSize="small" />
-              </sub>
-            </MuiLink>
-          )}
           {hasAttendees && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

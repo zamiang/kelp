@@ -1,6 +1,8 @@
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
@@ -12,7 +14,7 @@ import PersonList from '../shared/person-list';
 import { IPerson } from '../store/person-store';
 import { IStore } from '../store/use-store';
 
-const ExpandedDocument = (props: IStore & { documentId: string }) => {
+const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const document = props.docDataStore.getByLink(props.documentId);
   if (!document) {
@@ -27,6 +29,18 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
   const meetings = props.timeDataStore.getSegmentsForDriveActivity(driveActivityIds);
   return (
     <div className={classes.container}>
+      <div className={classes.navBar}>
+        {document.link && (
+          <MuiLink target="_blank" rel="noreferrer" className={classes.link} href={document.link}>
+            <IconButton>
+              <ExitToAppIcon fontSize="small" />
+            </IconButton>
+          </MuiLink>
+        )}
+        <IconButton onClick={props.close}>
+          <CloseIcon />
+        </IconButton>
+      </div>
       <Typography variant="h5" color="textPrimary" gutterBottom>
         {document.name || '(no title)'}
       </Typography>
@@ -50,14 +64,6 @@ const ExpandedDocument = (props: IStore & { documentId: string }) => {
           )}
         </Grid>
         <Grid item sm={5}>
-          {document.link && (
-            <MuiLink href={document.link} target="_blank" className={classes.link}>
-              Google Docs{' '}
-              <sub>
-                <ExitToAppIcon fontSize="small" />
-              </sub>
-            </MuiLink>
-          )}
           {document.updatedAt && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

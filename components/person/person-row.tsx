@@ -40,7 +40,6 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
   return (
     <ClickAwayListener onClickAway={() => setIsOpen(false)}>
       <ListItem
-        button={true}
         onClick={handleClick}
         ref={setReferenceElement as any}
         className={clsx(
@@ -51,7 +50,11 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
       >
         <Grid container spacing={2} alignItems="center">
           <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
-            <ExpandedPerson personId={props.person.id} {...props.store} />
+            <ExpandedPerson
+              personId={props.person.id}
+              close={() => setIsOpen(false)}
+              {...props.store}
+            />
           </PopperContainer>
           <Grid item>
             {props.person.imageUrl ? (

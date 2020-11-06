@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    padding: theme.spacing(5),
+    padding: theme.spacing(4),
+    paddingTop: theme.spacing(6),
     margin: 0,
     width: 'auto',
     [theme.breakpoints.down('sm')]: {
@@ -69,6 +70,11 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'underline',
       },
     },
+  },
+  navBar: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
   },
 }));
 

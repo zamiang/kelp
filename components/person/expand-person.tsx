@@ -1,12 +1,14 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import EventIcon from '@material-ui/icons/Event';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -25,7 +27,7 @@ import PersonNotes from './person-notes';
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
 
-const ExpandPerson = (props: IStore & { personId: string }) => {
+const ExpandPerson = (props: IStore & { personId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const person = props.personDataStore.getPersonById(props.personId);
   if (!person) {
@@ -42,6 +44,23 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
   const hasName = !person.name.includes('people/') && !person.name.includes('@');
   return (
     <div className={classes.container}>
+      <div className={classes.navBar}>
+        {hasName && (
+          <MuiLink
+            target="_blank"
+            rel="noreferrer"
+            className={classes.link}
+            href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
+          >
+            <IconButton>
+              <LinkedInIcon fontSize="small" />
+            </IconButton>
+          </MuiLink>
+        )}
+        <IconButton onClick={props.close}>
+          <CloseIcon />
+        </IconButton>
+      </div>
       <Box flexDirection="row" alignItems="flex-start" display="flex">
         <Avatar className={classes.avatar} src={person.imageUrl || ''}>
           {(person.name || person.id)[0]}
@@ -69,21 +88,6 @@ const ExpandPerson = (props: IStore & { personId: string }) => {
                     <EmailIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary={person.emailAddress} />
-                </ListItem>
-              </MuiLink>
-            )}
-            {hasName && (
-              <MuiLink
-                target="_blank"
-                rel="noreferrer"
-                className={classes.link}
-                href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
-              >
-                <ListItem button={true}>
-                  <ListItemIcon>
-                    <LinkedInIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary="LinkedIn" />
                 </ListItem>
               </MuiLink>
             )}

@@ -60,7 +60,11 @@ const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
       >
         <Grid container spacing={1} alignItems="center">
           <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
-            <ExpandedDocument documentId={props.doc.id} {...props.store} />
+            <ExpandedDocument
+              documentId={props.doc.id}
+              close={() => setAnchorEl(null)}
+              {...props.store}
+            />
           </PopperContainer>
           <Grid item className={classes.imageContainer}>
             <img src={props.doc.iconLink} className={classes.image} />
