@@ -21,8 +21,6 @@ const useGAPI = () => {
       });
       try {
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-        const isSafari =
-          navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome');
 
         if (isSignedIn) {
           return setStatus(isSignedIn);
@@ -31,7 +29,7 @@ const useGAPI = () => {
           scope: config.GOOGLE_SCOPES.join(' '),
           redirect_uri: config.REDIRECT_URI,
           // isSignedIn is always false in safari, even after the redirect login method
-          ux_mode: isSafari ? 'popup' : 'redirect',
+          ux_mode: 'redirect',
         });
         if (result) {
           setStatus(true);
