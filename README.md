@@ -47,6 +47,7 @@ Add these keys and your your google oauth app tokens to [.env.local]
     JWT_SECRET=foo-bar-change-me
     JWT_SIGNING_KEY=signingKeyHere
     JWT_ENCRYPTION_KEY=encryptionKeyHere
+    DATABASE_URL=postgresql://{whoami}@localhost/kelp
 
 When starting the app in development mode
 

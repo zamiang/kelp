@@ -1,12 +1,26 @@
 import { Response } from 'express';
 import NextAuth from 'next-auth';
+import PostgressConnectionStringParser from 'pg-connection-string';
 import config from '../../../constants/config';
+
+const connectionOptions = PostgressConnectionStringParser.parse(process.env.DATABASE_URL!);
 
 const options = {
   pages: {
     signIn: '/auth/signin',
   },
-  // database: `${process.env.MONGO_URL!}/kelp`,
+  database: {
+    type: 'postgres',
+    host: connectionOptions.host,
+    port: connectionOptions.port,
+    username: connectionOptions.user,
+    password: connectionOptions.password,
+    database: connectionOptions.database,
+    synchronize: true,
+    extra: {
+      ssl: Boolean(process.env.SSL_ENABLED),
+    },
+  },
   jwt: {
     secret: process.env.JWT_SECRET,
     encryption: true,
