@@ -21,11 +21,11 @@ const useGAPI = () => {
       });
 
       try {
-        const authInstance = await gapi.auth2.getAuthInstance();
+        const authInstance = gapi.auth2.getAuthInstance();
         authInstance.isSignedIn.listen((signedIn: boolean) => {
           setStatus(signedIn);
         });
-        const isSignedIn = await authInstance.isSignedIn.get();
+        const isSignedIn = authInstance.isSignedIn.get();
         if (isSignedIn) {
           return setStatus(true);
         }
