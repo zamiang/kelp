@@ -89,4 +89,4 @@ const options = {
   ],
 };
 
-export default (req: any, res: Response) => NextAuth(req, res, options);
+export default (req: any, res: Response) => NextAuth(req, res, options as any);
