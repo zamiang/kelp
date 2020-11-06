@@ -50,7 +50,6 @@ Add these keys and your your google oauth app tokens to [.env.local]
 
 When starting the app in development mode
 
-    brew services start mongodb-community@4.4
     npm run dev
 
 [google oauth]: https://developers.google.com/identity/protocols/oauth2

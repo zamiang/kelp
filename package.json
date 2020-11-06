@@ -21,7 +21,7 @@
     "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport=pages",
     "prettier": "prettier --write \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
     "prettier:check": "prettier --list-different \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "typecheck": "node node_modules/.bin/tsc --project tsconfig.json --noEmit --pretty"
   },
   "dependencies": {
