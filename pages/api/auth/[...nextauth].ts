@@ -16,13 +16,15 @@ const options = {
     username: connectionOptions.user,
     password: connectionOptions.password,
     database: connectionOptions.database,
-    synchronize: true,
     ssl: Boolean(process.env.SSL_ENABLED),
     extra: process.env.SSL_ENABLED
       ? {
           ssl: { rejectUnauthorized: false },
         }
       : null,
+  },
+  session: {
+    jwt: true,
   },
   jwt: {
     secret: process.env.JWT_SECRET,
@@ -32,13 +34,29 @@ const options = {
   },
   callbacks: {
     session: async (session: any, user: any) =>
-      Promise.resolve({ ...session, slackOauthToken: user.slackOauthToken }),
-    jwt: async (token: any, _user: any, account: any) => {
-      const result = { ...token };
-      if (account && account.provider === 'slack') {
-        result.slackOauthToken = account.accessToken;
+      Promise.resolve({
+        ...session,
+        slackOauthToken: user.slackOauthToken,
+        googleOauthToken: user.googleOauthToken,
+      }),
+    jwt: async (token: any, user: any, account: any) => {
+      const isSignIn = user ? true : false;
+
+      // https://github.com/nextauthjs/next-auth/issues/625
+      if (isSignIn) {
+        token.user = { id: user.id };
       }
-      return Promise.resolve(result);
+      if (account && account.provider === 'slack') {
+        token.slackOauthToken = account.accessToken;
+      }
+      if (account && account.provider === 'google') {
+        token.googleOauthToken = account.accessToken;
+      }
+      // Add auth_time to token on signin in
+      if (isSignIn) {
+        token.auth_time = Math.floor(Date.now() / 1000);
+      }
+      return Promise.resolve(token);
     },
   },
   providers: [

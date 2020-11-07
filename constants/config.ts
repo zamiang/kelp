@@ -12,6 +12,7 @@ const scopes = [
 const NUMBER_OF_DAYS_BACK = 56;
 
 export default {
+  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   REDIRECT_URI:
     process.env.NEXT_PUBLIC_REDIRECT_URI || 'http://localhost:3000/dashboard?tab=meetings',
   GOOGLE_SCOPES: scopes,
