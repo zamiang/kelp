@@ -63,7 +63,7 @@ const fetchDriveActivityForDocument = async (documentId: string) => {
       const actorPersonId =
         actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
       return {
-        id: targetInfo && targetInfo.title ? targetInfo.title : 'no id',
+        id: activity.timestamp || 'noid',
         time: activity.timestamp ? new Date(activity.timestamp) : new Date(),
         action,
         actorPersonId,

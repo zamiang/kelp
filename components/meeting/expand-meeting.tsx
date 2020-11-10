@@ -12,7 +12,6 @@ import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/documents-from-drive-activity';
 import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
-import { IPerson } from '../store/person-store';
 import { IFormattedAttendee } from '../store/time-store';
 import { IStore } from '../store/use-store';
 
@@ -68,18 +67,16 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
     .map((attendee) => attendee.personId);
 
   // TODO: figure out filter types
-  const people: IPerson[] = attendeeIds
-    .map((id) => props.personDataStore.getPersonById(id))
-    .filter((person) => !!person) as any;
-  const documentsCurrentUserEditedWhileMeetingWithAttendees = flatten(
-    people.map((person) => {
-      const segmentIds = person.segmentIds;
-      const segments = segmentIds.map(
-        (id) => props.timeDataStore.getSegmentById(id)!.driveActivityIds,
-      );
-      return flatten(segments);
-    }),
-  ).map((id) => props.driveActivityStore.getById(id)!);
+  const people = attendeeIds
+    .map((id) => props.personDataStore.getPersonById(id)!)
+    .filter((person) => !!person);
+  const currentUser = props.personDataStore.getSelf();
+  const documentsCurrentUserEditedWhileMeetingWithAttendees = props.personDataStore.getDriveActivityWhileMeetingWith(
+    people,
+    props.timeDataStore,
+    props.driveActivityStore,
+    currentUser && currentUser.id,
+  );
   const recentEmailsFromAttendees = flatten(people.map((person) => person.emailIds));
   const driveActivityFromAttendees = flatten(
     people.map((person) => Object.values(person.driveActivity)),

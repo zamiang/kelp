@@ -1,5 +1,5 @@
 import { intervalToDuration, subDays } from 'date-fns';
-import { first, uniq } from 'lodash';
+import { first, flatten, uniq } from 'lodash';
 import config from '../../constants/config';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -7,6 +7,7 @@ import { formattedEmail } from '../fetch/fetch-emails';
 import { person as GooglePerson } from '../fetch/fetch-people';
 import { getWeek } from '../shared/date-helpers';
 import { ISegment } from './time-store';
+import { IStore } from './use-store';
 
 export interface IPerson {
   id: string;
@@ -113,6 +114,27 @@ export default class PersonDataStore {
       lastWeek: durationPriorWeek,
       lastWeekMs: timeInMeetingsPriorWeekInMs,
     };
+  }
+
+  // TODO: Cache this?
+  getDriveActivityWhileMeetingWith(
+    people: IPerson[],
+    timeDataStore: IStore['timeDataStore'],
+    driveActivityStore: IStore['driveActivityStore'],
+    currentUserId?: string,
+  ) {
+    const activityIds = flatten(
+      people.map((person) => {
+        const segmentIds = person.segmentIds;
+        const driveActivityIds = segmentIds.map(
+          (id) => timeDataStore.getSegmentById(id)!.driveActivityIds,
+        );
+        return flatten(driveActivityIds);
+      }),
+    );
+    return activityIds
+      .map((id) => driveActivityStore.getById(id)!)
+      .filter((activity) => activity.actorPersonId === currentUserId);
   }
 
   getAssociates(personId: string, segments: (ISegment | undefined)[]) {
