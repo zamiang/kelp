@@ -7,6 +7,7 @@ import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonSearchResult from '../person/person-search-result';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
+import { uncommonPunctuation } from '../store/tfidf-store';
 import { ISegment } from '../store/time-store';
 import { IStore } from '../store/use-store';
 
@@ -83,7 +84,9 @@ const Search = (props: IStore) => {
   const classes = panelStyles();
   const router = useRouter();
   const searchIndex = buildSearchIndex(props);
-  const searchQuery = (router.query.query as string).toLowerCase();
+  const searchQuery = (router.query.query as string)
+    .toLowerCase()
+    .replace(uncommonPunctuation, ' ');
   const results = searchIndex.filter((item) => item.text.includes(searchQuery));
   return (
     <div className={classes.panel}>
