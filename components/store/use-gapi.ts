@@ -29,9 +29,13 @@ const useGAPI = () => {
         if (isSignedIn) {
           return setStatus(true);
         }
+        const isSafari =
+          navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome');
+
         const result = await authInstance.signIn({
           scope: config.GOOGLE_SCOPES.join(' '),
           redirect_uri: config.REDIRECT_URI,
+          ux_mode: isSafari ? 'popup' : 'redirect',
         });
         if (result) {
           setStatus(true);
