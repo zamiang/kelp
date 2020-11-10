@@ -1,9 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -103,19 +100,13 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
           <CloseIcon />
         </IconButton>
       </div>
-      <Typography variant="h5" color="textPrimary">
+      <Typography variant="h5" color="textPrimary" gutterBottom>
         {meeting.summary || '(no title)'}
       </Typography>
-      <List dense={true} disablePadding={true}>
-        <ListItem disableGutters={true}>
-          <ListItemText
-            primary={`${format(meeting.start, 'EEEE, MMMM d')} ⋅ ${format(
-              meeting.start,
-              'p',
-            )} – ${format(meeting.end, 'p')}`}
-          />
-        </ListItem>
-      </List>
+      <i>
+        {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
+        {format(meeting.end, 'p')}
+      </i>
       <Grid container spacing={3} className={classes.content}>
         <Grid item sm={7}>
           {hasDescription && !isHtml && (
@@ -135,7 +126,9 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
               <Typography variant="h6" className={classes.smallHeading}>
                 Location
               </Typography>
-              <Typography variant="subtitle2">{meeting.location}</Typography>
+              <Typography variant="subtitle2" className={classes.overflowEllipsis}>
+                {meeting.location}
+              </Typography>
             </React.Fragment>
           )}
           {hasEmails && (

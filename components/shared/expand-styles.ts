@@ -28,6 +28,12 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  overflowEllipsis: {
+    textOverflow: 'ellipsis',
+    width: '100%',
+    display: 'block',
+    overflow: 'hidden',
+  },
   smallCaption: {
     marginTop: theme.spacing(-1),
     color: theme.palette.text.hint,

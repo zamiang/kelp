@@ -44,8 +44,9 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
       <Typography variant="h5" color="textPrimary" gutterBottom>
         {document.name || '(no title)'}
       </Typography>
+      {document.updatedAt && <i>Modified: {format(document.updatedAt, 'EEEE, MMMM d p')}</i>}
       <Grid container spacing={3} className={classes.content}>
-        <Grid item sm={7}>
+        <Grid item>
           {activity.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
@@ -62,24 +63,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
               <MeetingList segments={meetings} personStore={props.personDataStore} />
             </React.Fragment>
           )}
-        </Grid>
-        <Grid item sm={5}>
-          {document.updatedAt && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Last Modified
-              </Typography>
-              <div>{format(document.updatedAt, 'EEEE, MMMM d p')}</div>
-            </React.Fragment>
-          )}
-          {document.viewedByMeAt && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                You Last Viewed
-              </Typography>
-              <div>{format(document.viewedByMeAt, 'EEEE, MMMM d p')}</div>
-            </React.Fragment>
-          )}
+
           {people.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>
