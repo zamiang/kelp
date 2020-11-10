@@ -127,7 +127,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
             <Typography
               variant="body2"
               className={classes.description}
-              dangerouslySetInnerHTML={{ __html: meeting.description?.trim() }}
+              dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
             />
           )}
           {meeting.location && (
