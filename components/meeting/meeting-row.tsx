@@ -112,7 +112,8 @@ const MeetingRow = (props: {
             </Grid>
             <Grid item zeroMinWidth xs>
               <Typography variant="body2" noWrap>
-                <b>{props.meeting.summary || '(no title)'}</b> {props.meeting.description || ''}
+                <b>{props.meeting.summary || '(no title)'}</b>{' '}
+                {props.meeting.description ? props.meeting.description.replace(/<[^>]+>/g, '') : ''}
               </Typography>
             </Grid>
           </Grid>

@@ -41,10 +41,10 @@ const Activity = (props: {
   return (
     <Grid container wrap="nowrap" spacing={2}>
       <Grid item>
-        {person && person.imageUrl && (
+        {person && (
           <Link href={`?tab=people&slug=${person.id}`}>
             <Avatar
-              src={person?.imageUrl}
+              src={person.imageUrl || ''}
               style={{ height: 24, width: 24 }}
               className={classes.icon}
             >
