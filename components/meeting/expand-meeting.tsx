@@ -88,6 +88,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
     people.map((person) => Object.values(person.driveActivity)),
   );
   const guestStats = getFormattedGuestStats(meeting.formattedAttendees);
+  const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
   return (
     <div className={classes.container}>
       <div className={classes.navBar}>
@@ -117,10 +118,17 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
       </List>
       <Grid container spacing={3} className={classes.content}>
         <Grid item sm={7}>
-          {hasDescription && (
+          {hasDescription && !isHtml && (
             <Typography variant="body2" className={classes.description}>
               <Linkify>{meeting.description?.trim()}</Linkify>
             </Typography>
+          )}
+          {hasDescription && isHtml && (
+            <Typography
+              variant="body2"
+              className={classes.description}
+              dangerouslySetInnerHTML={{ __html: meeting.description?.trim() }}
+            />
           )}
           {meeting.location && (
             <React.Fragment>

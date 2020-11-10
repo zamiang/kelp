@@ -6,7 +6,9 @@
   "homepage": "https://www.kelp.nyc",
   "repository": "https://github.com/zamiang/kelp",
   "license": "SEE LICENSE IN LICENSE",
-  "cacheDirectories": [".next/cache"],
+  "cacheDirectories": [
+    ".next/cache"
+  ],
   "author": {
     "name": "Brennan Moore",
     "email": "brennanmoore@gmail.com",
