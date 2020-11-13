@@ -17,7 +17,7 @@ const PopperContainer = (props: { anchorEl: any; children: any; isOpen: boolean 
       modifiers={{
         offset: {
           enabled: true,
-          offset: '0, -150',
+          offset: '0, -50',
         },
       }}
     >

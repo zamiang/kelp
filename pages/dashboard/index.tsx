@@ -130,6 +130,10 @@ export const DashboardContainer = ({ store }: IProps) => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  }, []);
+
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
       <Head>
