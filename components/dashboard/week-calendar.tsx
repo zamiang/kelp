@@ -342,7 +342,7 @@ const useDayContentStyles = makeStyles((theme) => ({
     position: 'absolute',
     padding: 0,
     margin: 0,
-    marginTop: -12,
+    marginTop: -6,
     marginLeft: -6,
   },
   currentTimeDot: {
