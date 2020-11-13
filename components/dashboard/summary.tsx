@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
-import { addDays, addMonths, format, isSameDay, startOfWeek, subDays, subMonths } from 'date-fns';
+import { addDays, addWeeks, format, isSameDay, startOfWeek, subDays, subWeeks } from 'date-fns';
 import { times } from 'lodash';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -199,22 +199,29 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const getStart = () =>
+  subDays(
+    startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any }),
+    (numberWeeks - 1) * daysInWeek,
+  );
+
 const Summary = (props: IStore) => {
   const classes = useStyles();
-  const [start, setStart] = useState<Date>(
-    subDays(
-      startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any }),
-      (numberWeeks - 1) * daysInWeek,
-    ),
-  );
-  const onTodayClick = () => {
-    setStart(startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any }));
-  };
+  const [start, setStart] = useState<Date>(getStart());
+  const onTodayClick = () => setStart(getStart());
   const onForwardClick = () => {
-    setStart(addMonths(start, 1));
+    setStart(
+      startOfWeek(addWeeks(start, numberWeeks), {
+        weekStartsOn: Number(config.WEEK_STARTS_ON) as any,
+      }),
+    );
   };
   const onBackClick = () => {
-    setStart(subMonths(start, 1));
+    setStart(
+      startOfWeek(subWeeks(start, numberWeeks), {
+        weekStartsOn: Number(config.WEEK_STARTS_ON) as any,
+      }),
+    );
   };
   const getDayColumn = (week: number) => {
     const days = times(daysInWeek).map((day) => addDays(start, day + week * daysInWeek));
