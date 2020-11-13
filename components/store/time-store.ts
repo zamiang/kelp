@@ -152,27 +152,6 @@ export default class TimeStore {
     return this.getSegments().filter((segment) => getWeek(segment.start) == week);
   }
 
-  getupcomingSegments(filterOutSegmentId?: string) {
-    const currentTime = new Date();
-    return this.segments.filter(
-      (segment) => segment.end > currentTime && segment.id !== filterOutSegmentId,
-    );
-  }
-
-  getCurrentOrUpNextSegments() {
-    const currentTime = new Date();
-    return this.segments.filter(
-      (segment) => segment.end > currentTime && segment.start < currentTime,
-    );
-  }
-
-  getPastSegments(filterOutSegmentId?: string) {
-    const currentTime = new Date();
-    return this.segments.filter(
-      (segment) => segment.end < currentTime && segment.id !== filterOutSegmentId,
-    );
-  }
-
   getDriveActivityIdsForToday() {
     return flatten(
       this.segments

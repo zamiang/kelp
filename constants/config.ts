@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 
 const scopes = [
   'https://www.googleapis.com/auth/calendar.events.readonly',
@@ -10,6 +10,7 @@ const scopes = [
 ];
 
 const NUMBER_OF_DAYS_BACK = 56;
+const NUMBER_OF_DAYS_FORWARD = 7;
 
 export default {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -26,6 +27,7 @@ export default {
   GOOGLE_CALENDAR_FILTER: ['declined'], // Could be ['needsAction', 'declined']
   MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,
   startDate: subDays(new Date(), NUMBER_OF_DAYS_BACK),
+  endDate: addDays(new Date(), NUMBER_OF_DAYS_FORWARD),
   YELLOW_BACKGROUND: '#deff2a', // TODO: Add to theme somehow?
   ORANGE_BACKGROUND: '#ffd12a',
   PURPLE_BACKGROUND: '#722aff',

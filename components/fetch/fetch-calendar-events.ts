@@ -61,7 +61,9 @@ const isSelfConfirmedAttending = (attendees: attendee[], creator?: attendee) => 
       return config.GOOGLE_CALENDAR_FILTER.indexOf(person.responseStatus || '') < 0;
     }
   }
-  return false;
+  // NOTE: Events created programatically may have a non-self user as the only guest.
+  // We default to 'attending' and only filter out not attending if the user is confirmed not attending above.
+  return true;
 };
 
 const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) => any) => {
@@ -71,9 +73,8 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
     singleEvents: true,
     orderBy: 'updated', // starttime does not work :shrug:
     timeMin: config.startDate.toISOString(),
-    timeMax: addDays(new Date(), 2).toISOString(),
+    timeMax: config.endDate.toISOString(),
   });
-
   const filteredCalendarEvents =
     calendarResponse && calendarResponse.result && calendarResponse.result.items
       ? calendarResponse.result.items
