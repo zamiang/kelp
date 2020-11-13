@@ -141,7 +141,7 @@ export default class TimeStore {
 
   getSegmentsByDay() {
     const segments = this.getSegments();
-    return groupBy(segments, (segment) => format(segment.start, 'EEEE, MMM d'));
+    return groupBy(segments, (segment) => format(segment.start, 'EEEE, MMM d yyyy'));
   }
 
   getSegmentsForDay(day: Date) {

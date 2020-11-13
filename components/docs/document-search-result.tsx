@@ -49,7 +49,6 @@ const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
   return (
     <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
       <ListItem
-        button={true}
         onClick={handleClick}
         className={clsx(
           'ignore-react-onclickoutside',

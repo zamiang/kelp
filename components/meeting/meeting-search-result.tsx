@@ -40,7 +40,6 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
     <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
       <ListItem
         onClick={handleClick}
-        button={true}
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,

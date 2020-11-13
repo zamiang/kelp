@@ -33,7 +33,6 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   const dayNumber = getDate(props.day);
   const monthNumber = getMonth(props.day);
   const dayInfo = format(props.day, 'MMM, EEE');
-
   const currentDayNumber = getDate(props.currentDay);
   const currentMonthNumber = getMonth(props.currentDay);
   const isToday = currentDayNumber == dayNumber && currentMonthNumber == monthNumber;
