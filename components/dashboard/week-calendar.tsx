@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -23,6 +24,11 @@ const borderColor = '#dadce0';
 const shouldShowSentEmails = false;
 const shouldShowDocumentActivity = true;
 const shouldShowCalendarEvents = true;
+const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
+
+const getTopForTime = (date: Date) =>
+  hourHeight * date.getHours() + hourHeight * (date.getMinutes() / 60);
+
 /**
  * titlerow    || day-title | day-title
  *  --------------
@@ -261,12 +267,12 @@ const CalendarItem = (props: ICalendarItemProps) => {
   const height = props.end
     ? Math.abs(differenceInMinutes(props.start, props.end) * minuteHeight)
     : 100;
-  const top = hourHeight * props.start.getHours();
+  const top = getTopForTime(props.start);
   return (
     <div className={classes.container} style={{ height, top }} onClick={props.onClick}>
       <Typography className={classes.title} variant="h6">
         {props.title}
-        <Typography className={classes.subtitle}>{format(props.start, 'HH:MM')}</Typography>
+        <Typography className={classes.subtitle}>{format(props.start, 'HH:mm')}</Typography>
       </Typography>
     </div>
   );
@@ -279,7 +285,7 @@ interface IEmailItemProps {
 
 const EmailItem = (props: IEmailItemProps) => {
   const classes = useCalendarItemStyles();
-  const top = hourHeight * props.email.date.getHours();
+  const top = getTopForTime(props.email.date);
   return (
     <div className={classes.container} style={{ top }} onClick={props.onClick}>
       <Typography className={classes.title}>{props.email.subject}</Typography>
@@ -300,7 +306,7 @@ const DocumentItem = (props: IDocumentItemProps) => {
     return null;
   }
   const onClick = () => props.document && router.push(`?tab=docs&slug=${props.document.id}`);
-  const top = hourHeight * props.activity.time.getHours();
+  const top = getTopForTime(props.activity.time);
   return (
     <div
       className={clsx(classes.container, classes.containerRight, classes.documentBackground)}
@@ -330,12 +336,53 @@ interface IDayContentProps {
   day: Date;
 }
 
+const useDayContentStyles = makeStyles((theme) => ({
+  currentTime: {
+    left: 1,
+    position: 'absolute',
+    padding: 0,
+    margin: 0,
+    marginTop: -12,
+    marginLeft: -6,
+  },
+  currentTimeDot: {
+    borderRadius: '50%',
+    height: 12,
+    width: 12,
+    background: theme.palette.primary.dark,
+  },
+  currentTimeBorder: {
+    marginTop: 0,
+    width: '100%',
+    borderTop: `2px solid ${theme.palette.primary.dark}`,
+  },
+}));
+
 const DayContent = (props: IDayContentProps) => {
   let emailsHtml = '' as any;
   let documentsHtml = '' as any;
   let segmentsHtml = '' as any;
+  let currentTimeHtml = '' as any;
   const router = useRouter();
   const currentUser = props.personStore.getSelf();
+  const currentDay = new Date();
+  const classes = useDayContentStyles();
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+
+  if (isSameDay(currentDay, props.day)) {
+    const top = getTopForTime(currentDay);
+    currentTimeHtml = (
+      <ListItem
+        style={{ top }}
+        ref={setReferenceElement as any}
+        className={classes.currentTime}
+        id={CURRENT_TIME_ELEMENT_ID}
+      >
+        <div className={classes.currentTimeDot}></div>
+        <div className={classes.currentTimeBorder}></div>
+      </ListItem>
+    );
+  }
 
   if (props.shouldShowCalendarEvents) {
     const segments = props.timeStore.getSegmentsForDay(props.day);
@@ -376,11 +423,19 @@ const DayContent = (props: IDayContentProps) => {
     ));
   }
 
+  // Scroll the current time thing into view
+  React.useEffect(() => {
+    if (isSameDay && referenceElement) {
+      referenceElement.scrollIntoView();
+    }
+  }, [referenceElement]);
+
   return (
     <div>
       {segmentsHtml}
       {emailsHtml}
       {documentsHtml}
+      {currentTimeHtml}
     </div>
   );
 };
