@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface IProps {
+interface IProps {
   handleRefreshClick: () => void;
   people: IPerson[];
   lastUpdated: Date;
