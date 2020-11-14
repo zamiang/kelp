@@ -194,7 +194,8 @@ const App = () => {
                 Your information filtration system
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Kelp organizes your documents, events and contacts to make work make sense.
+                Kelp automatically organizes your documents, events and contacts to make work make
+                sense.
               </Typography>
               <Grid item sm={10}>
                 <List className={classes.list}>

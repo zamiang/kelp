@@ -13,6 +13,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import PublicIcon from '@material-ui/icons/Public';
+import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
@@ -22,7 +23,6 @@ import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
 import RefreshButton from './refresh-button';
-import Search from './search-bar';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -94,7 +94,7 @@ export interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary';
+  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search';
 }
 
 const LeftDrawer = (props: IProps) => {
@@ -106,6 +106,7 @@ const LeftDrawer = (props: IProps) => {
   const anchor = isMobile ? 'top' : 'left';
 
   const isSummarySelected = props.tab === 'summary';
+  const isSearchSelected = props.tab === 'search';
   const isMeetingsSelected = props.tab === 'meetings';
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
@@ -147,7 +148,21 @@ const LeftDrawer = (props: IProps) => {
             <ListItemText>Not Authenticated</ListItemText>
           </ListItem>
         )}
-        <Search {...props} />
+        <Link href="?tab=search">
+          <ListItem
+            button
+            selected={isSearchSelected}
+            className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+          >
+            <ListItemIcon className={classes.iconContainer}>
+              <SearchIcon className={isSearchSelected ? classes.selected : classes.unSelected} />
+            </ListItemIcon>
+            <ListItemText
+              primary="Search"
+              className={isSearchSelected ? classes.selected : classes.unSelected}
+            />
+          </ListItem>
+        </Link>
         <Link href="?tab=summary">
           <ListItem
             button

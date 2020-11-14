@@ -5,6 +5,7 @@ import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../docs/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonSearchResult from '../person/person-search-result';
+import SearchBar from '../shared/search-bar';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { uncommonPunctuation } from '../store/tfidf-store';
@@ -84,13 +85,16 @@ const Search = (props: IStore) => {
   const classes = panelStyles();
   const router = useRouter();
   const searchIndex = buildSearchIndex(props);
-  const searchQuery = (router.query.query as string)
-    .toLowerCase()
-    .replace(uncommonPunctuation, ' ');
-  const results = searchIndex.filter((item) => item.text.includes(searchQuery));
+  const searchQuery =
+    router.query?.query &&
+    (router.query.query as string).toLowerCase().replace(uncommonPunctuation, ' ');
+  const results = searchQuery ? searchIndex.filter((item) => item.text.includes(searchQuery)) : [];
   return (
     <div className={classes.panel}>
       <div className={classes.section}>
+        <div className={classes.rowNoBorder}>
+          <SearchBar query={searchQuery} {...props} />
+        </div>
         <div className={classes.rowNoBorder}>
           <Typography variant="caption" className={classes.title}>
             Search Results for: {searchQuery}
