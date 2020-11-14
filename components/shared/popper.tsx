@@ -3,8 +3,15 @@ import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 
-const useStyles = makeStyles(() => ({
-  paper: { maxWidth: 500, maxHeight: '80vh', overflow: 'auto' },
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    maxWidth: 500,
+    maxHeight: '80vh',
+    overflow: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: `calc(100vw - 90px)`,
+    },
+  },
 }));
 
 const PopperContainer = (props: { anchorEl: any; children: any; isOpen: boolean }) => {

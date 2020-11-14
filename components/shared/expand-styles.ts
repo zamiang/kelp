@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
   },
   edit: {},
   title: {
-    paddingTop: 5,
-    paddingLeft: theme.spacing(2),
-    marginBottom: -1,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(3),
+    },
   },
   smallHeading: {
     marginTop: theme.spacing(3),
@@ -81,6 +81,14 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: 5,
     right: 5,
+  },
+  center: {
+    textAlign: 'center',
+  },
+  hideForMobile: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
 }));
 

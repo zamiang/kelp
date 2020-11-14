@@ -25,7 +25,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     width: '100%',
   },
-  time: { minWidth: 160, maxWidth: 180 },
+  time: {
+    minWidth: 160,
+    maxWidth: 180,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
   row: {
     margin: 0,
     paddingTop: theme.spacing(2),

@@ -65,20 +65,22 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
               </Avatar>
             )}
           </Grid>
-          <Grid item className={classes.name} zeroMinWidth>
-            <Typography variant="body2" noWrap>
-              <b>{props.person.name || props.person.id}</b>
-            </Typography>
-          </Grid>
-          <Grid item className={classes.email}>
-            <Typography variant="body2" noWrap>
-              {props.person.emailAddress}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" noWrap>
-              {props.person.notes}
-            </Typography>
+          <Grid item xs={8} sm container>
+            <Grid item className={classes.name} zeroMinWidth>
+              <Typography variant="body2" noWrap>
+                <b>{props.person.name || props.person.id}</b>
+              </Typography>
+            </Grid>
+            <Grid item className={classes.email}>
+              <Typography variant="body2" noWrap>
+                {props.person.emailAddress}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body2" noWrap>
+                {props.person.notes}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
       </ListItem>

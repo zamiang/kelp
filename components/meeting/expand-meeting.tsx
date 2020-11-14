@@ -97,7 +97,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
           <CloseIcon />
         </IconButton>
       </div>
-      <Typography variant="h5" color="textPrimary" gutterBottom>
+      <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
         {meeting.summary || '(no title)'}
       </Typography>
       <i>
@@ -105,7 +105,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
         {format(meeting.end, 'p')}
       </i>
       <Grid container spacing={3} className={classes.content}>
-        <Grid item sm={7}>
+        <Grid item xs={12} sm={7}>
           {hasDescription && !isHtml && (
             <Typography variant="body2" className={classes.description}>
               <Linkify>{meeting.description?.trim()}</Linkify>

@@ -1,15 +1,11 @@
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IStore } from '../store/use-store';
 
@@ -18,13 +14,15 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '44ch',
     borderBottom: '0px solid',
     marginRight: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+      minWidth: 0,
+    },
   },
-  listItem: {
+  form: {
     // don't want the height to change with or w/o the input
-    height: 48,
-  },
-  iconContainer: {
-    minWidth: theme.spacing(5),
+    display: 'flex',
+    alignItems: 'center',
   },
 }));
 
@@ -33,6 +31,7 @@ type FormValues = {
 };
 
 const Search = (props: { query?: string } & IStore) => {
+  const [isClearVisible, setClearVisible] = useState(!!props.query && props.query.length > 0);
   const { handleSubmit, register, setValue } = useForm<FormValues>({
     defaultValues: {
       query: props.query || '',
@@ -46,38 +45,42 @@ const Search = (props: { query?: string } & IStore) => {
   });
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue('query', e.target.value);
+    setClearVisible(e.target.value.length > 0);
   };
-  return (
-    <ListItem className={clsx(classes.listItem, 'ignore-react-onclickoutside')}>
-      <ListItemIcon className={classes.iconContainer}>
-        <SearchIcon />
-      </ListItemIcon>
-      <FormControl fullWidth>
-        <form onSubmit={onSubmit}>
-          <TextField
-            id="search-input"
-            type="text"
-            placeholder="Search…"
-            autoComplete={undefined}
-            defaultValue={props.query || ''}
-            onChange={handleChange}
-            name="query"
-            className={classes.inputInput}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={() => setValue('query', '')}>
-                  <ClearIcon />
-                </IconButton>
-              ),
+  const inputProps = isClearVisible
+    ? {
+        endAdornment: (
+          <IconButton
+            size="small"
+            onClick={() => {
+              setClearVisible(false);
+              return setValue('query', '');
             }}
-            inputRef={register}
-          />
-          <Button variant="contained" color="primary" disableElevation onClick={onSubmit}>
-            Search
-          </Button>
-        </form>
-      </FormControl>
-    </ListItem>
+          >
+            <ClearIcon />
+          </IconButton>
+        ),
+      }
+    : undefined;
+  return (
+    <form onSubmit={onSubmit} className={clsx(classes.form, 'ignore-react-onclickoutside')}>
+      <TextField
+        id="search-input"
+        autoFocus={true}
+        type="text"
+        placeholder="Search…"
+        autoComplete={undefined}
+        defaultValue={props.query || ''}
+        onChange={handleChange}
+        name="query"
+        className={classes.inputInput}
+        InputProps={inputProps}
+        inputRef={register}
+      />
+      <Button variant="contained" color="primary" disableElevation onClick={onSubmit}>
+        Search
+      </Button>
+    </form>
   );
 };
 

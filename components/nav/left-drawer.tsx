@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     [theme.breakpoints.down('sm')]: {
       width: theme.spacing(7),
+      paddingLeft: 0,
     },
   },
   drawerPaperClose: {

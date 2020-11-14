@@ -41,7 +41,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
           <CloseIcon />
         </IconButton>
       </div>
-      <Typography variant="h5" color="textPrimary" gutterBottom>
+      <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
         {document.name || '(no title)'}
       </Typography>
       {document.updatedAt && <i>Modified: {format(document.updatedAt, 'EEEE, MMMM d p')}</i>}

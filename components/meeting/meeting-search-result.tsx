@@ -13,7 +13,11 @@ import { IStore } from '../store/use-store';
 import ExpandedMeeting from './expand-meeting';
 
 const useStyles = makeStyles((theme) => ({
-  time: {},
+  time: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
   paddingLeft: { paddingLeft: theme.spacing(1), marginLeft: 8 },
   row: {
     margin: 0,
@@ -76,7 +80,8 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
           </Grid>
           <Grid item className={classes.time}>
             <Typography variant="caption" color="textSecondary">
-              {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+              {format(props.meeting.start, 'MM dd yyyy')} {format(props.meeting.start, 'p')} –{' '}
+              {format(props.meeting.end, 'p')}
             </Typography>
           </Grid>
         </Grid>

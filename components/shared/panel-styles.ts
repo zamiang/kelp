@@ -45,11 +45,19 @@ const useStyles = makeStyles((theme) => ({
     '&:last-child': {
       borderbottom: '0px solid',
     },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
   },
   rowNoBorder: {
     marginBottom: theme.spacing(4),
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
   },
 }));
 

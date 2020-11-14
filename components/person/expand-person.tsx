@@ -61,50 +61,42 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           <CloseIcon />
         </IconButton>
       </div>
-      <Box flexDirection="row" alignItems="flex-start" display="flex">
+      <Box flexDirection="column" alignItems="center" display="flex">
         <Avatar className={classes.avatar} src={person.imageUrl || ''}>
           {(person.name || person.id)[0]}
         </Avatar>
-        <Box flexDirection="column" alignItems="flex-start" display="flex">
-          <Typography
-            className={classes.title}
-            variant="h5"
-            color="textPrimary"
-            gutterBottom
-            noWrap
-          >
-            {props.personDataStore.getPersonDisplayName(person)}
-          </Typography>
-          <List dense={true} className={classes.inlineList} disablePadding={true}>
-            {person.emailAddress && (
-              <MuiLink
-                target="_blank"
-                className={classes.link}
-                rel="noreferrer"
-                href={`mailto:${person.emailAddress}`}
-              >
-                <ListItem button={true}>
-                  <ListItemIcon>
-                    <EmailIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary={person.emailAddress} />
-                </ListItem>
-              </MuiLink>
-            )}
-            {lastMeeting && (
-              <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
-                <ListItem button={true}>
-                  <ListItemIcon>
-                    <EventIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
-                  />
-                </ListItem>
-              </Link>
-            )}
-          </List>
-        </Box>
+        <Typography className={classes.title} variant="h5" color="textPrimary" gutterBottom noWrap>
+          {props.personDataStore.getPersonDisplayName(person)}
+        </Typography>
+        <List dense={true} className={classes.inlineList} disablePadding={true}>
+          {person.emailAddress && (
+            <MuiLink
+              target="_blank"
+              className={classes.link}
+              rel="noreferrer"
+              href={`mailto:${person.emailAddress}`}
+            >
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <EmailIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={person.emailAddress} />
+              </ListItem>
+            </MuiLink>
+          )}
+          {lastMeeting && (
+            <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
+              <ListItem button={true} className={classes.hideForMobile}>
+                <ListItemIcon>
+                  <EventIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
+                />
+              </ListItem>
+            </Link>
+          )}
+        </List>
       </Box>
       <Grid container spacing={3} className={classes.content}>
         {person.isMissingProfile && (
