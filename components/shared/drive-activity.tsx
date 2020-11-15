@@ -80,7 +80,8 @@ const DriveActivity = (props: {
   // BADD
   const activity = uniqBy(props.driveActivity, 'id')
     .filter((action) => action && action.link)
-    .sort((a, b) => (a.time > b.time ? -1 : 1));
+    .sort((a, b) => (a.time > b.time ? -1 : 1))
+    .slice(0, 5);
   return (
     <div className={classes.root}>
       {activity.map((item) => (
