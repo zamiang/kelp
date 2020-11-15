@@ -47,12 +47,15 @@ const useStore = (signedIn: boolean): IStore => {
   const emailDataStore = new EmailDataStore(data.emails, personDataStore);
   // console.log('EMAIL DATA STORE:', emailDataStore);
 
-  const tfidfStore = new TfidfDataStore({
-    driveActivityStore: driveActivityDataStore,
-    timeDataStore,
-    personDataStore,
-    docDataStore,
-  });
+  const tfidfStore = new TfidfDataStore(
+    {
+      driveActivityStore: driveActivityDataStore,
+      timeDataStore,
+      personDataStore,
+      docDataStore,
+    },
+    { meetings: true, people: true, docs: true },
+  );
 
   return {
     driveActivityStore: driveActivityDataStore,

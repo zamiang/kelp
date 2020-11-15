@@ -1,23 +1,30 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import { addDays, addWeeks, format, isSameDay, startOfWeek, subDays, subWeeks } from 'date-fns';
 import { times } from 'lodash';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import config from '../../constants/config';
-import { uncommonPunctuation } from '../store/tfidf-store';
+import { IFilters, uncommonPunctuation } from '../store/tfidf-store';
 import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
 const daysInWeek = 7;
 const topNavHeight = 85;
 const fontMin = 12;
-const fontMax = 22;
+const fontMax = 20;
 const borderColor = '#dadce0';
 /**
  * titlerow    || day-title | day-title
@@ -54,6 +61,15 @@ const useTitleRowStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     paddingBottom: 0,
   },
+  list: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 0,
+  },
+  listItem: {
+    borderRadius: theme.shape.borderRadius,
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const TitleRow = (props: {
@@ -61,8 +77,22 @@ const TitleRow = (props: {
   onTodayClick: () => void;
   onBackClick: () => void;
   onForwardClick: () => void;
+  filters: IFilters;
+  setFilter: (filter: IFilters) => void;
 }) => {
   const classes = useTitleRowStyles();
+  const isCalendarSelected = props.filters.meetings;
+  const isDocsSelected = props.filters.docs;
+  const isPeopleSelected = props.filters.people;
+  const togglePeopleSelected = () => {
+    props.setFilter({ ...props.filters, people: !props.filters.people });
+  };
+  const toggleCalendarSelected = () => {
+    props.setFilter({ ...props.filters, meetings: !props.filters.meetings });
+  };
+  const toggleDocsSelected = () => {
+    props.setFilter({ ...props.filters, docs: !props.filters.docs });
+  };
   return (
     <div className={classes.container}>
       <Grid container justify="space-between" alignContent="center" alignItems="center">
@@ -70,6 +100,43 @@ const TitleRow = (props: {
           <Typography variant="h4" className={classes.heading}>
             <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
           </Typography>
+        </Grid>
+        <Grid item>
+          <List dense className={classes.list} disablePadding>
+            <ListItem
+              selected={isCalendarSelected}
+              button
+              className={classes.listItem}
+              onClick={toggleCalendarSelected}
+            >
+              <ListItemIcon>
+                <CalendarViewDayIcon />
+              </ListItemIcon>
+              <ListItemText>Meetings</ListItemText>
+            </ListItem>
+            <ListItem
+              button
+              selected={isDocsSelected}
+              className={classes.listItem}
+              onClick={toggleDocsSelected}
+            >
+              <ListItemIcon>
+                <InsertDriveFileIcon />
+              </ListItemIcon>
+              <ListItemText>Documents</ListItemText>
+            </ListItem>
+            <ListItem
+              button
+              selected={isPeopleSelected}
+              className={classes.listItem}
+              onClick={togglePeopleSelected}
+            >
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText>People</ListItemText>
+            </ListItem>
+          </List>
         </Grid>
         <Grid item>
           <Button onClick={props.onBackClick}>
@@ -208,6 +275,11 @@ const getStart = () =>
 const Summary = (props: IStore) => {
   const classes = useStyles();
   const [start, setStart] = useState<Date>(getStart());
+  const [filters, setFilters] = useState<IFilters>({
+    meetings: true,
+    people: true,
+    docs: true,
+  });
   const onTodayClick = () => setStart(getStart());
   const onForwardClick = () => {
     setStart(
@@ -236,6 +308,10 @@ const Summary = (props: IStore) => {
       </Grid>
     </div>
   ));
+  const onSetFilterClick = (filters: IFilters) => {
+    props.tfidfStore.recomputeForFilters(props, filters);
+    setFilters(filters);
+  };
   return (
     <div className={classes.container}>
       <TitleRow
@@ -243,6 +319,8 @@ const Summary = (props: IStore) => {
         onBackClick={onBackClick}
         onForwardClick={onForwardClick}
         onTodayClick={onTodayClick}
+        filters={filters}
+        setFilter={onSetFilterClick}
       />
       <div className={classes.weeks}>{dayRows}</div>
     </div>
