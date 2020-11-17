@@ -9,8 +9,10 @@ interface IIdfCache {
   [text: string]: number;
 }
 
+const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
+
 const buildDocument = (text: string, key: string): IDocument =>
-  removeStopwords(text.replace(/[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g, '').split(' ')).reduce(
+  removeStopwords(text.replace(removePunctuationRegex, '').split(' ')).reduce(
     (document: IDocument, term: string) => {
       const formattedTerm = term.replace('(', '').replace(')', '');
       if (formattedTerm.length > 1)
