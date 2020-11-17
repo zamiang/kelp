@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   image: {
     display: 'block',
     width: '100%',
+    paddingRight: theme.spacing(1),
   },
   time: {
     minWidth: 160,
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    borderTop: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     borderRadius: 0,
     '&.MuiListItem-button:hover': {
       borderColor: theme.palette.divider,

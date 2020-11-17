@@ -160,6 +160,14 @@ export default class TimeStore {
     );
   }
 
+  getDriveActivityIdsForWeek(week: number) {
+    return flatten(
+      this.segments
+        .filter((segment) => getWeek(segment.start) == week)
+        .map((segment) => segment.driveActivityIds),
+    );
+  }
+
   getSegmentsForDriveActivity(driveActivityIds: string[]) {
     return this.segments.filter(
       (segment) => intersection(driveActivityIds, segment.driveActivityIds).length > 0,

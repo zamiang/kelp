@@ -11,7 +11,9 @@ import { times } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
+import { borderColor } from '../../pages/dashboard/index';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import TopBar from '../shared/top-bar';
 import { IDoc } from '../store/doc-store';
 import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
@@ -20,7 +22,6 @@ const leftSpacer = 40;
 const topNavHeight = 94;
 const hourHeight = 48;
 const scrollBarWidth = 15;
-const borderColor = '#dadce0';
 const shouldShowSentEmails = false;
 const shouldShowDocumentActivity = true;
 const shouldShowCalendarEvents = true;
@@ -119,22 +120,22 @@ const TitleRow = (props: {
   const classes = useTitleRowStyles();
   return (
     <div className={classes.container}>
-      <Grid container justify="space-between" alignContent="center" alignItems="center">
-        <Grid item>
-          <Typography variant="h4" className={classes.heading}>
-            <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
-          </Typography>
+      <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
+        <Grid container justify="space-between" alignContent="center" alignItems="center">
+          <Grid item>
+            <Typography variant="h4" className={classes.heading}></Typography>
+          </Grid>
+          <Grid item>
+            <Button onClick={props.onBackClick}>
+              <ChevronLeftIcon />
+            </Button>
+            <Button onClick={props.onTodayClick}>Today</Button>
+            <Button onClick={props.onForwardClick}>
+              <ChevronRightIcon />
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button onClick={props.onBackClick}>
-            <ChevronLeftIcon />
-          </Button>
-          <Button onClick={props.onTodayClick}>Today</Button>
-          <Button onClick={props.onForwardClick}>
-            <ChevronRightIcon />
-          </Button>
-        </Grid>
-      </Grid>
+      </TopBar>
       <Grid container>
         <Grid item className={classes.spacer}></Grid>
         <Grid item className={classes.item}>
