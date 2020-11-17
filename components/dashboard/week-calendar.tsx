@@ -19,8 +19,8 @@ import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
-const topNavHeight = 94;
-const hourHeight = 48;
+const topNavHeight = 110;
+const hourHeight = 38;
 const scrollBarWidth = 15;
 const shouldShowSentEmails = false;
 const shouldShowDocumentActivity = true;
@@ -61,13 +61,20 @@ const useDayTitleStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(0.5),
   },
   day: {
-    width: 35,
-    height: 35,
+    width: 27,
+    height: 27,
     display: 'inline-block',
     padding: 3,
+    fontWeight: theme.typography.fontWeightBold,
   },
   dayOfWeek: {
     display: 'inline-block',
+  },
+  dayContainer: {
+    color: theme.palette.secondary.light,
+    textTransform: 'uppercase',
+    fontSize: theme.typography.subtitle2.fontSize,
+    marginTop: 3,
   },
 }));
 
@@ -75,14 +82,12 @@ const DayTitle = (props: { day: Date }) => {
   const isToday = isSameDay(props.day, new Date());
   const classes = useDayTitleStyles();
   return (
-    <React.Fragment>
-      <Typography className={classes.dayOfWeek} variant="h6">
-        {format(props.day, 'EEE')}
-      </Typography>
-      <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">
+    <div className={classes.dayContainer}>
+      <Typography className={classes.dayOfWeek}>{format(props.day, 'EEE')}</Typography>
+      <Typography className={clsx(classes.day, isToday && classes.currentDay)}>
         {format(props.day, 'd')}
       </Typography>
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -93,14 +98,14 @@ const useTitleRowStyles = makeStyles((theme) => ({
   },
   border: {
     width: 1,
-    height: 19,
-    background: theme.palette.secondary.light,
-    marginTop: -15,
+    height: 27,
+    background: borderColor,
+    marginTop: -30,
   },
   item: {
     flex: 1,
+    height: 27,
     textAlign: 'center',
-    borderBottom: `1px solid ${borderColor}`,
   },
   spacer: {
     width: leftSpacer,
@@ -121,20 +126,13 @@ const TitleRow = (props: {
   return (
     <div className={classes.container}>
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
-        <Grid container justify="space-between" alignContent="center" alignItems="center">
-          <Grid item>
-            <Typography variant="h4" className={classes.heading}></Typography>
-          </Grid>
-          <Grid item>
-            <Button onClick={props.onBackClick}>
-              <ChevronLeftIcon />
-            </Button>
-            <Button onClick={props.onTodayClick}>Today</Button>
-            <Button onClick={props.onForwardClick}>
-              <ChevronRightIcon />
-            </Button>
-          </Grid>
-        </Grid>
+        <Button onClick={props.onBackClick}>
+          <ChevronLeftIcon />
+        </Button>
+        <Button onClick={props.onTodayClick}>Today</Button>
+        <Button onClick={props.onForwardClick}>
+          <ChevronRightIcon />
+        </Button>
       </TopBar>
       <Grid container>
         <Grid item className={classes.spacer}></Grid>
@@ -201,11 +199,11 @@ const useHourLabelStyles = makeStyles((theme) => ({
 const HourLabels = () => {
   const currentDay = new Date();
   const classes = useHourLabelStyles();
-  const hours = times(24).map((hour) => {
+  const hours = times(24).map((hour, index) => {
     const day = currentDay.setHours(hour);
     return (
       <Grid item key={hour} className={classes.hour}>
-        <div className={classes.text}>{format(day, 'hh:00')}</div>
+        <div className={classes.text}>{index > 0 && format(day, 'hh:00')}</div>
         <div className={classes.border}></div>
       </Grid>
     );

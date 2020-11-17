@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     position: 'sticky',
     top: 0,
-    zIndex: 10,
+    zIndex: 1,
     background: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
