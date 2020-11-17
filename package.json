@@ -60,7 +60,7 @@
     "react": "17.0.1",
     "react-async-hook": "3.6.2",
     "react-dom": "17.0.1",
-    "react-hook-form": "6.11.2",
+    "react-hook-form": "6.11.3",
     "react-linkify": "1.0.0-alpha",
     "react-onclickoutside": "^6.9.0",
     "react-popper": "2.2.4",
