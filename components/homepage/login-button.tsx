@@ -32,7 +32,11 @@ const LoginButton = () => {
     return (
       <Link href="/dashboard?tab=meetings">
         <Button className={classes.button} variant="outlined" disableElevation={true}>
-          <Avatar className={classes.avatar} src={user.image} alt={user.email} />
+          <Avatar
+            className={classes.avatar}
+            src={user.image || undefined}
+            alt={user.email || undefined}
+          />
           My Dashboard
         </Button>
       </Link>

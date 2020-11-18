@@ -229,7 +229,11 @@ const LeftDrawer = (props: IProps) => {
           <Link href="?tab=settings">
             <Grid container justify="center">
               <Grid item>
-                <Avatar className={classes.avatar} src={user.image} alt={user.name || user.email} />
+                <Avatar
+                  className={classes.avatar}
+                  src={user.image || undefined}
+                  alt={user.name || user.email || undefined}
+                />
               </Grid>
             </Grid>
           </Link>
