@@ -61,7 +61,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
 
   React.useEffect(() => {
     if (isSelected && referenceElement) {
-      referenceElement.scrollIntoView();
+      referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [referenceElement]);
 

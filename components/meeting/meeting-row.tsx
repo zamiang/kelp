@@ -59,7 +59,7 @@ const MeetingRow = (props: {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   React.useEffect(() => {
     if ((isSelected || props.shouldRenderCurrentTime) && referenceElement) {
-      referenceElement.scrollIntoView();
+      referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [referenceElement]);
 

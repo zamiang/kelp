@@ -67,14 +67,13 @@ const MeetingsByDay = (
   const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
   let hasRenderedCurrentTime = false;
   const currentTitle = 'Meeting Schedule';
-
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
         <Button
           variant="contained"
           disableElevation
-          onClick={() => referenceElement?.scrollIntoView()}
+          onClick={() => referenceElement?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
         >
           Now
         </Button>

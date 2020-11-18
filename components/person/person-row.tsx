@@ -27,7 +27,7 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
 
   React.useEffect(() => {
     if (isSelected && referenceElement) {
-      referenceElement.scrollIntoView();
+      referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [referenceElement]);
 
