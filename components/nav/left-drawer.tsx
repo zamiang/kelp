@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import DateRangeIcon from '@material-ui/icons/DateRange';
-import HomeIcon from '@material-ui/icons/Home';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
@@ -184,7 +183,7 @@ const LeftDrawer = (props: IProps) => {
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
   const isWeekSelected = props.tab === 'week';
-  const isHomeSelected = props.tab === 'home';
+  // const isHomeSelected = props.tab === 'home';
   return (
     <Drawer
       variant="permanent"
