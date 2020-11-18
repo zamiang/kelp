@@ -9,11 +9,13 @@ import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import MeetingRow from '../meeting/meeting-row';
 import panelStyles from '../shared/panel-styles';
+import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
 
 const dayStyles = makeStyles((theme) => ({
   day: {
     marginTop: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
   },
   dayNumber: {
     color: theme.palette.text.primary,
@@ -37,10 +39,12 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   const currentMonthNumber = getMonth(props.currentDay);
   const isToday = currentDayNumber == dayNumber && currentMonthNumber == monthNumber;
   return (
-    <Grid container className={clsx(classes.day)} spacing={2} alignItems="center">
-      <Avatar className={clsx(classes.dayNumber, isToday && classes.dayNumberToday)}>
-        {dayNumber}
-      </Avatar>
+    <Grid container className={clsx(classes.day)} spacing={1} alignItems="center">
+      <Grid item>
+        <Avatar className={clsx(classes.dayNumber, isToday && classes.dayNumberToday)}>
+          {dayNumber}
+        </Avatar>
+      </Grid>
       <Grid item>
         <Typography variant="caption" className={classes.dayInfo}>
           {dayInfo}
@@ -60,8 +64,10 @@ const MeetingsByDay = (
   const classes = panelStyles();
   const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
   let hasRenderedCurrentTime = false;
+  const currentTitle = 'Meeting Schedule';
   return (
     <div className={classes.panel}>
+      <TopBar title={currentTitle}></TopBar>
       {days.map((day) => (
         <div key={day} className={classes.row}>
           <Day day={new Date(day)} currentDay={currentTime} />

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  children: any;
+  children?: any;
   title: string;
 }
 

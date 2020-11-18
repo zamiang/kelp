@@ -120,7 +120,7 @@ interface IProps {
   lastUpdated: Date;
   documents: IDoc[];
   meetings: ISegment[];
-  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search';
+  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search' | 'home';
 }
 
 type FormValues = {

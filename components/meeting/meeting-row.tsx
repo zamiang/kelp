@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   time: { minWidth: 150, maxWidth: 180 },
   currentTime: {
     marginTop: -6,
+    paddingLeft: 33,
   },
   currentTimeDot: {
     borderRadius: '50%',
@@ -33,10 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     paddingLeft: 0,
-    marginLeft: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: theme.spacing(1),
-    },
+    marginLeft: 40,
+    width: 'auto',
   },
   summary: {
     flex: 1,
@@ -103,7 +102,6 @@ const MeetingRow = (props: {
             </PopperContainer>
             <Grid
               item
-              zeroMinWidth={true}
               className={clsx(
                 rowStyles.border,
                 props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
@@ -114,13 +112,13 @@ const MeetingRow = (props: {
                 props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
               )}
             ></Grid>
-            <Grid item container xs={10} zeroMinWidth>
+            <Grid item container zeroMinWidth>
               <Grid item className={classes.time}>
                 <Typography variant="subtitle2">
                   {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
                 </Typography>
               </Grid>
-              <Grid item zeroMinWidth className={classes.summary}>
+              <Grid item zeroMinWidth xs={10} className={classes.summary}>
                 <Typography variant="body2" noWrap>
                   <b>{props.meeting.summary || '(no title)'}</b>{' '}
                   {props.meeting.description
