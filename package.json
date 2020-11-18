@@ -39,7 +39,7 @@
     "@types/gapi.client.calendar": "3.0.10",
     "@types/gapi.client.drive": "3.0.13",
     "@types/gapi.client.gmail": "1.0.3",
-    "@types/gapi.client.people": "1.0.2",
+    "@types/gapi.client.people": "1.0.3",
     "@types/lodash": "4.14.165",
     "@types/next-auth": "3.1.15",
     "@types/react-linkify": "1.0.0",
