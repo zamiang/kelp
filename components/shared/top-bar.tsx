@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { borderColor } from '../../pages/dashboard/index';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topBar: {
     width: '100%',
-    borderBottom: `1px solid ${borderColor}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     padding: theme.spacing(3),
     position: 'sticky',
     top: 0,

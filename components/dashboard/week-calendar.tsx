@@ -11,7 +11,6 @@ import { times } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
-import { borderColor } from '../../pages/dashboard/index';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import TopBar from '../shared/top-bar';
 import { IDoc } from '../store/doc-store';
@@ -39,10 +38,10 @@ const getTopForTime = (date: Date) =>
  *                       event  |
  */
 
-const useHourRowStyles = makeStyles(() => ({
+const useHourRowStyles = makeStyles((theme) => ({
   hour: {
-    borderBottom: `1px solid ${borderColor}`,
-    borderLeft: `1px solid ${borderColor}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderLeft: `1px solid ${theme.palette.divider}`,
     height: hourHeight,
     flex: 1,
   },
@@ -99,7 +98,7 @@ const useTitleRowStyles = makeStyles((theme) => ({
   border: {
     width: 1,
     height: 27,
-    background: borderColor,
+    background: theme.palette.divider,
     marginTop: -30,
   },
   item: {
@@ -181,7 +180,7 @@ const useHourLabelStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
   },
   border: {
-    background: borderColor,
+    background: theme.palette.divider,
     width: 5,
     height: 1,
     display: 'flex',

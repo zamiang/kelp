@@ -21,7 +21,6 @@ import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
 
 export const drawerWidth = 240;
-export const borderColor = '#dadce0';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,

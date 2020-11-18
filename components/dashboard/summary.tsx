@@ -26,7 +26,7 @@ const daysInWeek = 7;
 const topNavHeight = 99;
 const fontMin = 12;
 const fontMax = 20;
-const borderColor = '#dadce0';
+
 /**
  * titlerow    || day-title | day-title
  *  --------------
@@ -43,7 +43,7 @@ const useTitleRowStyles = makeStyles((theme) => ({
   border: {
     width: 1,
     height: 16,
-    background: borderColor,
+    background: theme.palette.divider,
     marginTop: -18,
   },
   item: {
@@ -210,7 +210,7 @@ const useDayContentStyles = makeStyles((theme) => ({
     textAlign: 'center',
     flex: 1,
     position: 'relative',
-    borderLeft: `1px solid ${borderColor}`,
+    borderLeft: `1px solid ${theme.palette.divider}`,
     height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
     overflow: 'hidden',
   },
@@ -262,14 +262,14 @@ const DayContent = (props: IDayContentProps) => {
   );
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {},
   weeks: {},
   days: {
     height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
     width: '100%',
     overflow: 'hidden',
-    borderBottom: `1px solid ${borderColor}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
   week: {
     flex: 1,
