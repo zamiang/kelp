@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     opacity: 1,
     marginBottom: theme.spacing(0.5),
-    borderRadius: `${theme.spacing(4)}px 0 0 ${theme.spacing(4)}px`,
+    borderRadius: theme.spacing(4),
     '&:hover': {
       backgroundColor: theme.palette.secondary.light,
     },

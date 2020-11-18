@@ -12,15 +12,15 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import TopBar from '../shared/top-bar';
 import { IDoc } from '../store/doc-store';
 import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
-const topNavHeight = 94;
-const hourHeight = 48;
+const topNavHeight = 110;
+const hourHeight = 38;
 const scrollBarWidth = 15;
-const borderColor = '#dadce0';
 const shouldShowSentEmails = false;
 const shouldShowDocumentActivity = true;
 const shouldShowCalendarEvents = true;
@@ -38,10 +38,10 @@ const getTopForTime = (date: Date) =>
  *                       event  |
  */
 
-const useHourRowStyles = makeStyles(() => ({
+const useHourRowStyles = makeStyles((theme) => ({
   hour: {
-    borderBottom: `1px solid ${borderColor}`,
-    borderLeft: `1px solid ${borderColor}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderLeft: `1px solid ${theme.palette.divider}`,
     height: hourHeight,
     flex: 1,
   },
@@ -60,13 +60,20 @@ const useDayTitleStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(0.5),
   },
   day: {
-    width: 35,
-    height: 35,
+    width: 27,
+    height: 27,
     display: 'inline-block',
     padding: 3,
+    fontWeight: theme.typography.fontWeightBold,
   },
   dayOfWeek: {
     display: 'inline-block',
+  },
+  dayContainer: {
+    color: theme.palette.secondary.light,
+    textTransform: 'uppercase',
+    fontSize: theme.typography.subtitle2.fontSize,
+    marginTop: 3,
   },
 }));
 
@@ -74,14 +81,12 @@ const DayTitle = (props: { day: Date }) => {
   const isToday = isSameDay(props.day, new Date());
   const classes = useDayTitleStyles();
   return (
-    <React.Fragment>
-      <Typography className={classes.dayOfWeek} variant="h6">
-        {format(props.day, 'EEE')}
-      </Typography>
-      <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">
+    <div className={classes.dayContainer}>
+      <Typography className={classes.dayOfWeek}>{format(props.day, 'EEE')}</Typography>
+      <Typography className={clsx(classes.day, isToday && classes.currentDay)}>
         {format(props.day, 'd')}
       </Typography>
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -92,14 +97,14 @@ const useTitleRowStyles = makeStyles((theme) => ({
   },
   border: {
     width: 1,
-    height: 19,
-    background: theme.palette.secondary.light,
-    marginTop: -15,
+    height: 27,
+    background: theme.palette.divider,
+    marginTop: -30,
   },
   item: {
     flex: 1,
+    height: 27,
     textAlign: 'center',
-    borderBottom: `1px solid ${borderColor}`,
   },
   spacer: {
     width: leftSpacer,
@@ -119,22 +124,15 @@ const TitleRow = (props: {
   const classes = useTitleRowStyles();
   return (
     <div className={classes.container}>
-      <Grid container justify="space-between" alignContent="center" alignItems="center">
-        <Grid item>
-          <Typography variant="h4" className={classes.heading}>
-            <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Button onClick={props.onBackClick}>
-            <ChevronLeftIcon />
-          </Button>
-          <Button onClick={props.onTodayClick}>Today</Button>
-          <Button onClick={props.onForwardClick}>
-            <ChevronRightIcon />
-          </Button>
-        </Grid>
-      </Grid>
+      <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
+        <Button onClick={props.onBackClick}>
+          <ChevronLeftIcon />
+        </Button>
+        <Button onClick={props.onTodayClick}>Today</Button>
+        <Button onClick={props.onForwardClick}>
+          <ChevronRightIcon />
+        </Button>
+      </TopBar>
       <Grid container>
         <Grid item className={classes.spacer}></Grid>
         <Grid item className={classes.item}>
@@ -182,7 +180,7 @@ const useHourLabelStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
   },
   border: {
-    background: borderColor,
+    background: theme.palette.divider,
     width: 5,
     height: 1,
     display: 'flex',
@@ -200,11 +198,11 @@ const useHourLabelStyles = makeStyles((theme) => ({
 const HourLabels = () => {
   const currentDay = new Date();
   const classes = useHourLabelStyles();
-  const hours = times(24).map((hour) => {
+  const hours = times(24).map((hour, index) => {
     const day = currentDay.setHours(hour);
     return (
       <Grid item key={hour} className={classes.hour}>
-        <div className={classes.text}>{format(day, 'hh:00')}</div>
+        <div className={classes.text}>{index > 0 && format(day, 'hh:00')}</div>
         <div className={classes.border}></div>
       </Grid>
     );
@@ -441,10 +439,10 @@ const DayContent = (props: IDayContentProps) => {
 };
 
 const useStyles = makeStyles(() => ({
-  container: {},
   calendar: {
     height: `calc(100vh - ${topNavHeight}px)`,
-    overflow: 'scroll',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
   },
   dayColumn: {
     flex: 1,
@@ -483,19 +481,21 @@ const Calendar = (props: IStore) => {
     </Grid>
   ));
   return (
-    <div className={classes.container}>
+    <div>
       <TitleRow
         start={start}
         onBackClick={onBackClick}
         onForwardClick={onForwardClick}
         onTodayClick={onTodayClick}
       />
-      <Grid container className={classes.calendar}>
-        <Grid item>
-          <HourLabels />
+      <div className={classes.calendar}>
+        <Grid container>
+          <Grid item>
+            <HourLabels />
+          </Grid>
+          {dayColumn}
         </Grid>
-        {dayColumn}
-      </Grid>
+      </div>
     </div>
   );
 };

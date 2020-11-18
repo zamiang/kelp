@@ -1,8 +1,10 @@
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -47,9 +49,27 @@ const Search = (props: { query?: string } & IStore) => {
     setValue('query', e.target.value);
     setClearVisible(e.target.value.length > 0);
   };
-  const inputProps = isClearVisible
-    ? {
-        endAdornment: (
+  return (
+    <form onSubmit={onSubmit} className={clsx(classes.form, 'ignore-react-onclickoutside')}>
+      <OutlinedInput
+        id="search-input"
+        autoFocus={true}
+        type="text"
+        placeholder="Search…"
+        autoComplete="off"
+        defaultValue={props.query || ''}
+        onChange={handleChange}
+        name="query"
+        className={classes.inputInput}
+        margin="dense"
+        startAdornment={
+          isClearVisible && (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          )
+        }
+        endAdornment={
           <IconButton
             size="small"
             onClick={() => {
@@ -59,22 +79,7 @@ const Search = (props: { query?: string } & IStore) => {
           >
             <ClearIcon />
           </IconButton>
-        ),
-      }
-    : undefined;
-  return (
-    <form onSubmit={onSubmit} className={clsx(classes.form, 'ignore-react-onclickoutside')}>
-      <TextField
-        id="search-input"
-        autoFocus={true}
-        type="text"
-        placeholder="Search…"
-        autoComplete={undefined}
-        defaultValue={props.query || ''}
-        onChange={handleChange}
-        name="query"
-        className={classes.inputInput}
-        InputProps={inputProps}
+        }
         inputRef={register}
       />
       <Button variant="contained" color="primary" disableElevation onClick={onSubmit}>

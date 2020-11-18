@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   time: { minWidth: 150, maxWidth: 180 },
   currentTime: {
     marginTop: -6,
+    paddingLeft: 33,
   },
   currentTimeDot: {
     borderRadius: '50%',
@@ -33,10 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     paddingLeft: 0,
-    marginLeft: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: theme.spacing(1),
-    },
+    marginLeft: 40,
+    width: 'auto',
   },
   summary: {
     flex: 1,
@@ -103,7 +102,6 @@ const MeetingRow = (props: {
             </PopperContainer>
             <Grid
               item
-              zeroMinWidth={true}
               className={clsx(
                 rowStyles.border,
                 props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,

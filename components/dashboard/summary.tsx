@@ -17,15 +17,16 @@ import { times } from 'lodash';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import config from '../../constants/config';
+import TopBar from '../shared/top-bar';
 import { IFilters, uncommonPunctuation } from '../store/tfidf-store';
 import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
 const daysInWeek = 7;
-const topNavHeight = 85;
+const topNavHeight = 99;
 const fontMin = 12;
 const fontMax = 20;
-const borderColor = '#dadce0';
+
 /**
  * titlerow    || day-title | day-title
  *  --------------
@@ -35,27 +36,20 @@ const borderColor = '#dadce0';
  *                       event  |
  */
 
-const DayTitle = (props: { day: Date }) => (
-  <React.Fragment>
-    <Typography variant="h6">{format(props.day, 'EEE')}</Typography>
-  </React.Fragment>
-);
-
 const useTitleRowStyles = makeStyles((theme) => ({
   container: {
     width: `100%`,
-    height: topNavHeight,
   },
   border: {
     width: 1,
-    height: 19,
-    background: theme.palette.secondary.light,
-    marginTop: -15,
+    height: 16,
+    background: theme.palette.divider,
+    marginTop: -18,
   },
   item: {
     flex: 1,
     textAlign: 'center',
-    borderBottom: `1px solid ${borderColor}`,
+    height: 16,
   },
   heading: {
     padding: theme.spacing(2),
@@ -69,6 +63,11 @@ const useTitleRowStyles = makeStyles((theme) => ({
   listItem: {
     borderRadius: theme.shape.borderRadius,
     marginLeft: theme.spacing(1),
+  },
+  day: {
+    color: theme.palette.secondary.light,
+    textTransform: 'uppercase',
+    fontSize: theme.typography.subtitle2.fontSize,
   },
 }));
 
@@ -95,86 +94,82 @@ const TitleRow = (props: {
   };
   return (
     <div className={classes.container}>
-      <Grid container justify="space-between" alignContent="center" alignItems="center">
-        <Grid item>
-          <Typography variant="h4" className={classes.heading}>
-            <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
-          </Typography>
+      <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
+        <Grid container justify="space-between" alignContent="center" alignItems="center">
+          <Grid item>
+            <List dense className={classes.list} disablePadding>
+              <ListItem
+                selected={isCalendarSelected}
+                button
+                className={classes.listItem}
+                onClick={toggleCalendarSelected}
+              >
+                <ListItemIcon>
+                  <CalendarViewDayIcon />
+                </ListItemIcon>
+                <ListItemText>Meetings</ListItemText>
+              </ListItem>
+              <ListItem
+                button
+                selected={isDocsSelected}
+                className={classes.listItem}
+                onClick={toggleDocsSelected}
+              >
+                <ListItemIcon>
+                  <InsertDriveFileIcon />
+                </ListItemIcon>
+                <ListItemText>Documents</ListItemText>
+              </ListItem>
+              <ListItem
+                button
+                selected={isPeopleSelected}
+                className={classes.listItem}
+                onClick={togglePeopleSelected}
+              >
+                <ListItemIcon>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText>People</ListItemText>
+              </ListItem>
+            </List>
+          </Grid>
+          <Grid item>
+            <Button onClick={props.onBackClick}>
+              <ChevronLeftIcon />
+            </Button>
+            <Button onClick={props.onTodayClick}>Today</Button>
+            <Button onClick={props.onForwardClick}>
+              <ChevronRightIcon />
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <List dense className={classes.list} disablePadding>
-            <ListItem
-              selected={isCalendarSelected}
-              button
-              className={classes.listItem}
-              onClick={toggleCalendarSelected}
-            >
-              <ListItemIcon>
-                <CalendarViewDayIcon />
-              </ListItemIcon>
-              <ListItemText>Meetings</ListItemText>
-            </ListItem>
-            <ListItem
-              button
-              selected={isDocsSelected}
-              className={classes.listItem}
-              onClick={toggleDocsSelected}
-            >
-              <ListItemIcon>
-                <InsertDriveFileIcon />
-              </ListItemIcon>
-              <ListItemText>Documents</ListItemText>
-            </ListItem>
-            <ListItem
-              button
-              selected={isPeopleSelected}
-              className={classes.listItem}
-              onClick={togglePeopleSelected}
-            >
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText>People</ListItemText>
-            </ListItem>
-          </List>
-        </Grid>
-        <Grid item>
-          <Button onClick={props.onBackClick}>
-            <ChevronLeftIcon />
-          </Button>
-          <Button onClick={props.onTodayClick}>Today</Button>
-          <Button onClick={props.onForwardClick}>
-            <ChevronRightIcon />
-          </Button>
-        </Grid>
-      </Grid>
+      </TopBar>
       <Grid container>
         <Grid item className={classes.item}>
-          <DayTitle day={props.start} />
+          <div className={classes.day}>{format(props.start, 'EEE')}</div>
+        </Grid>
+        <Grid item className={classes.item}>
+          <div className={classes.day}>{format(addDays(props.start, 1), 'EEE')}</div>
           <div className={classes.border}></div>
         </Grid>
         <Grid item className={classes.item}>
-          <DayTitle day={addDays(props.start, 1)} />
+          <div className={classes.day}>{format(addDays(props.start, 2), 'EEE')}</div>
           <div className={classes.border}></div>
         </Grid>
         <Grid item className={classes.item}>
-          <DayTitle day={addDays(props.start, 2)} />
+          <div className={classes.day}>{format(addDays(props.start, 3), 'EEE')}</div>
           <div className={classes.border}></div>
         </Grid>
         <Grid item className={classes.item}>
-          <DayTitle day={addDays(props.start, 3)} />
+          <div className={classes.day}>{format(addDays(props.start, 4), 'EEE')}</div>
           <div className={classes.border}></div>
         </Grid>
         <Grid item className={classes.item}>
-          <DayTitle day={addDays(props.start, 4)} />
+          <div className={classes.day}>{format(addDays(props.start, 5), 'EEE')}</div>
           <div className={classes.border}></div>
         </Grid>
         <Grid item className={classes.item}>
-          <DayTitle day={addDays(props.start, 5)} />
-          <div className={classes.border}></div>
-        </Grid>
-        <Grid item className={classes.item}>
-          <DayTitle day={addDays(props.start, 6)} />
+          <div className={classes.day}>{format(addDays(props.start, 6), 'EEE')}</div>
           <div className={classes.border}></div>
         </Grid>
       </Grid>
@@ -190,6 +185,7 @@ const TitleRow = (props: {
  */
 interface IDayContentProps {
   tfidfStore: IStore['tfidfStore'];
+  isFirst: boolean;
   day: Date;
 }
 
@@ -197,22 +193,29 @@ const useDayContentStyles = makeStyles((theme) => ({
   currentDay: {
     borderRadius: '50%',
     background: config.YELLOW_BACKGROUND,
-    marginLeft: theme.spacing(0.5),
   },
   day: {
-    width: 35,
-    height: 35,
+    width: 26,
+    height: 26,
     display: 'inline-block',
-    padding: 3,
+    marginTop: theme.spacing(0.5),
+    padding: theme.spacing(0.5),
+    fontSize: theme.typography.subtitle2.fontSize,
+  },
+  pastDay: {
+    opacity: 0.6,
   },
   container: {
     width: '100%',
     textAlign: 'center',
     flex: 1,
     position: 'relative',
-    borderLeft: `1px solid ${borderColor}`,
+    borderLeft: `1px solid ${theme.palette.divider}`,
     height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
     overflow: 'hidden',
+  },
+  noBorder: {
+    borderLeft: `1px solid ${theme.palette.background.paper}`,
   },
   term: {
     display: 'inline-block',
@@ -226,7 +229,9 @@ const useDayContentStyles = makeStyles((theme) => ({
 }));
 
 const DayContent = (props: IDayContentProps) => {
-  const isToday = isSameDay(props.day, new Date());
+  const today = new Date();
+  const isToday = isSameDay(props.day, today);
+  const isInPast = props.day < today;
   const classes = useDayContentStyles();
 
   // interpolation yay
@@ -242,23 +247,29 @@ const DayContent = (props: IDayContentProps) => {
     </Link>
   ));
   return (
-    <Grid item className={classes.container}>
-      <Typography className={clsx(classes.day, isToday && classes.currentDay)} variant="h6">
+    <Grid item className={clsx(classes.container, props.isFirst && classes.noBorder)}>
+      <div
+        className={clsx(
+          classes.day,
+          isToday && classes.currentDay,
+          !isToday && isInPast && classes.pastDay,
+        )}
+      >
         {format(props.day, 'd')}
-      </Typography>
+      </div>
       <div>{terms}</div>
     </Grid>
   );
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {},
   weeks: {},
   days: {
     height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
     width: '100%',
     overflow: 'hidden',
-    borderBottom: `1px solid ${borderColor}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
   week: {
     flex: 1,
@@ -297,8 +308,13 @@ const Summary = (props: IStore) => {
   };
   const getDayColumn = (week: number) => {
     const days = times(daysInWeek).map((day) => addDays(start, day + week * daysInWeek));
-    return days.map((day) => (
-      <DayContent tfidfStore={props.tfidfStore} day={day} key={day.toISOString()} />
+    return days.map((day, index) => (
+      <DayContent
+        isFirst={index < 1}
+        tfidfStore={props.tfidfStore}
+        day={day}
+        key={day.toISOString()}
+      />
     ));
   };
   const dayRows = times(numberWeeks).map((week) => (
@@ -313,7 +329,7 @@ const Summary = (props: IStore) => {
     setFilters(filters);
   };
   return (
-    <div className={classes.container}>
+    <div>
       <TitleRow
         start={start}
         onBackClick={onBackClick}

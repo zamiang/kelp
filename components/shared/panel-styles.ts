@@ -6,7 +6,6 @@ const TOP_BAR_HEIGHT = 64;
 
 const useStyles = makeStyles((theme) => ({
   panel: {
-    overflowX: 'auto',
     minHeight: '100vh',
     paddingRight: 0,
     position: 'relative',
@@ -39,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     marginBottom: theme.spacing(4),
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     borderBottom: `1px solid ${theme.palette.divider}`,
     '&:last-child': {
       borderbottom: '0px solid',
@@ -52,13 +51,17 @@ const useStyles = makeStyles((theme) => ({
   },
   rowNoBorder: {
     marginBottom: theme.spacing(4),
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
   },
+  selected: {
+    color: theme.palette.text.primary,
+  },
+  unSelected: { color: theme.palette.text.hint },
 }));
 
 export default useStyles;

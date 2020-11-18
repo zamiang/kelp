@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    borderTop: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     borderRadius: 0,
     '&.MuiListItem-button:hover': {
       borderColor: theme.palette.divider,

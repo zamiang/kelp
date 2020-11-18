@@ -1,9 +1,8 @@
-import { Typography } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
@@ -148,9 +147,7 @@ export const DashboardContainer = ({ store }: IProps) => {
         tab={tab as any}
       />
       <main className={classes.content}>
-        {store.error && !is500Error(store.error) && (
-          <Alert severity="error">{JSON.stringify(store.error)}</Alert>
-        )}
+        {store.error && !is500Error(store.error) && <div>{JSON.stringify(store.error)}</div>}
         {tabHash[tab]}
       </main>
     </div>

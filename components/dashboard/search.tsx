@@ -6,6 +6,7 @@ import DocumentSearchResult from '../docs/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonSearchResult from '../person/person-search-result';
 import SearchBar from '../shared/search-bar';
+import TopBar from '../shared/top-bar';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { uncommonPunctuation } from '../store/tfidf-store';
@@ -91,16 +92,12 @@ const Search = (props: IStore) => {
   const results = searchQuery ? searchIndex.filter((item) => item.text.includes(searchQuery)) : [];
   return (
     <div className={classes.panel}>
-      <div className={classes.section}>
-        <div className={classes.rowNoBorder}>
-          <SearchBar query={searchQuery} {...props} />
-        </div>
-        <div className={classes.rowNoBorder}>
-          <Typography variant="caption" className={classes.title}>
-            Search Results for: {searchQuery}
-          </Typography>
-          {renderSearchResults(results || [], props)}
-        </div>
+      <TopBar title={`Search Results for: ${searchQuery || ''}`}>
+        <SearchBar query={searchQuery} {...props} />
+      </TopBar>
+      <div className={classes.rowNoBorder}>
+        <Typography variant="caption" className={classes.title}></Typography>
+        {renderSearchResults(results || [], props)}
       </div>
     </div>
   );
