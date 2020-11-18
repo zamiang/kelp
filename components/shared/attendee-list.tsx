@@ -1,4 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
@@ -6,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import PersonDataStore from '../store/person-store';
 import { IFormattedAttendee } from '../store/time-store';
 
@@ -91,10 +92,16 @@ const AttendeeRow = (props: IProps) => {
   );
 };
 
-const AttendeeList = (props: IProps) => (
-  <Grid container spacing={2}>
-    <AttendeeRow {...props} />
-  </Grid>
-);
+const attendeeMax = 10;
+
+const AttendeeList = (props: IProps) => {
+  const [isExpanded, setExpand] = useState<boolean>(props.attendees.length > attendeeMax);
+  return (
+    <Grid container spacing={2}>
+      {isExpanded && <AttendeeRow {...props} />}
+      {!isExpanded && <Button onClick={() => setExpand(true)}>Show Full List</Button>}
+    </Grid>
+  );
+};
 
 export default AttendeeList;
