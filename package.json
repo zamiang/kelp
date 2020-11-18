@@ -41,7 +41,7 @@
     "@types/gapi.client.gmail": "1.0.3",
     "@types/gapi.client.people": "1.0.3",
     "@types/lodash": "4.14.165",
-    "@types/next-auth": "3.1.15",
+    "@types/next-auth": "3.1.16",
     "@types/react-linkify": "1.0.0",
     "@types/react-onclickoutside": "6.7.3",
     "@types/stopword": "1.0.0",
