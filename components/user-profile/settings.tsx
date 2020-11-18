@@ -9,6 +9,7 @@ import { signIn } from 'next-auth/client';
 import React from 'react';
 import config from '../../constants/config';
 import panelStyles from '../shared/panel-styles';
+import TopBar from '../shared/top-bar';
 import LogoutButton from '../user-profile/logout-button';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,10 +32,8 @@ const Settings = () => {
   const formClasses = useStyles();
   return (
     <div className={classes.panel}>
+      <TopBar title="Settings"></TopBar>
       <div className={classes.section}>
-        <div className={classes.row}>
-          <Typography className={classes.title}>Settings</Typography>
-        </div>
         <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
             <InputLabel htmlFor="days-back">Number of days to look back</InputLabel>

@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logoContainer: {
     marginTop: -4,
-    marginBottom: 7,
+    marginBottom: 6,
   },
   logo: {
     width: 60,
@@ -111,6 +111,12 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: 60,
     height: 60,
+    transition: 'opacity 0.3s',
+    opacity: 1,
+    cursor: 'pointer',
+    '&:hover': {
+      opacity: 0.6,
+    },
   },
 }));
 
@@ -231,6 +237,7 @@ const LeftDrawer = (props: IProps) => {
         )}
         <SearchBar />
         <List>
+          {/*
           <Link href="?tab=home">
             <ListItem
               button
@@ -246,6 +253,7 @@ const LeftDrawer = (props: IProps) => {
               />
             </ListItem>
           </Link>
+        */}
           <Link href="?tab=week">
             <ListItem
               button

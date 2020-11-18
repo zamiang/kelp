@@ -439,10 +439,10 @@ const DayContent = (props: IDayContentProps) => {
 };
 
 const useStyles = makeStyles(() => ({
-  container: {},
   calendar: {
     height: `calc(100vh - ${topNavHeight}px)`,
-    overflow: 'scroll',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
   },
   dayColumn: {
     flex: 1,
@@ -481,19 +481,21 @@ const Calendar = (props: IStore) => {
     </Grid>
   ));
   return (
-    <div className={classes.container}>
+    <div>
       <TitleRow
         start={start}
         onBackClick={onBackClick}
         onForwardClick={onForwardClick}
         onTodayClick={onTodayClick}
       />
-      <Grid container className={classes.calendar}>
-        <Grid item>
-          <HourLabels />
+      <div className={classes.calendar}>
+        <Grid container>
+          <Grid item>
+            <HourLabels />
+          </Grid>
+          {dayColumn}
         </Grid>
-        {dayColumn}
-      </Grid>
+      </div>
     </div>
   );
 };

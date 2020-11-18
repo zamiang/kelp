@@ -329,7 +329,7 @@ const Summary = (props: IStore) => {
     setFilters(filters);
   };
   return (
-    <div className={classes.container}>
+    <div>
       <TitleRow
         start={start}
         onBackClick={onBackClick}

@@ -112,13 +112,13 @@ const MeetingRow = (props: {
                 props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
               )}
             ></Grid>
-            <Grid item container zeroMinWidth>
+            <Grid item container xs={10} zeroMinWidth>
               <Grid item className={classes.time}>
                 <Typography variant="subtitle2">
                   {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
                 </Typography>
               </Grid>
-              <Grid item zeroMinWidth xs={10} className={classes.summary}>
+              <Grid item zeroMinWidth className={classes.summary}>
                 <Typography variant="body2" noWrap>
                   <b>{props.meeting.summary || '(no title)'}</b>{' '}
                   {props.meeting.description

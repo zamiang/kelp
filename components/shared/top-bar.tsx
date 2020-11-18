@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topBar: {
     width: '100%',
+    height: 83,
     borderBottom: `1px solid ${theme.palette.divider}`,
     padding: theme.spacing(3),
     position: 'sticky',
