@@ -22,6 +22,8 @@ const useRowStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
     marginTop: 4,
+    textAlign: 'center',
+    paddingTop: 4,
   },
   link: {
     textTransform: 'none',

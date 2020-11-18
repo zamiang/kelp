@@ -1,4 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -59,15 +60,25 @@ const MeetingsByDay = (
     selectedMeetingId: string | null;
   },
 ) => {
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const meetingsByDay = props.timeDataStore.getSegmentsByDay();
   const currentTime = new Date();
   const classes = panelStyles();
   const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
   let hasRenderedCurrentTime = false;
   const currentTitle = 'Meeting Schedule';
+
   return (
     <div className={classes.panel}>
-      <TopBar title={currentTitle}></TopBar>
+      <TopBar title={currentTitle}>
+        <Button
+          variant="contained"
+          disableElevation
+          onClick={() => referenceElement?.scrollIntoView()}
+        >
+          Now
+        </Button>
+      </TopBar>
       {days.map((day) => (
         <div key={day} className={classes.row}>
           <Day day={new Date(day)} currentDay={currentTime} />
@@ -80,14 +91,15 @@ const MeetingsByDay = (
                 shouldRenderCurrentTime = true;
               }
               return (
-                <MeetingRow
-                  currentTime={currentTime}
-                  shouldRenderCurrentTime={shouldRenderCurrentTime}
-                  key={meeting.id}
-                  meeting={meeting}
-                  selectedMeetingId={props.selectedMeetingId}
-                  store={props}
-                />
+                <div key={meeting.id} ref={shouldRenderCurrentTime ? setReferenceElement : null}>
+                  <MeetingRow
+                    currentTime={currentTime}
+                    shouldRenderCurrentTime={shouldRenderCurrentTime}
+                    meeting={meeting}
+                    selectedMeetingId={props.selectedMeetingId}
+                    store={props}
+                  />
+                </div>
               );
             })}
         </div>
