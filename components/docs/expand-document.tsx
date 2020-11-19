@@ -32,12 +32,12 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
       <div className={classes.navBar}>
         {document.link && (
           <MuiLink target="_blank" rel="noreferrer" className={classes.link} href={document.link}>
-            <IconButton>
+            <IconButton className={classes.topButton}>
               <ExitToAppIcon fontSize="small" />
             </IconButton>
           </MuiLink>
         )}
-        <IconButton onClick={props.close}>
+        <IconButton onClick={props.close} className={classes.topButton}>
           <CloseIcon />
         </IconButton>
       </div>
@@ -63,7 +63,6 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
               <MeetingList segments={meetings} personStore={props.personDataStore} />
             </React.Fragment>
           )}
-
           {people.length > 0 && (
             <React.Fragment>
               <Typography variant="h6" className={classes.smallHeading}>

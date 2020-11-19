@@ -1,11 +1,21 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
+  topContainer: {
     padding: theme.spacing(4),
     paddingTop: theme.spacing(6),
     margin: 0,
     width: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(2),
+    },
+  },
+  container: {
+    padding: theme.spacing(4),
+    paddingTop: theme.spacing(2),
+    margin: 0,
+    width: 'auto',
+    overflowX: 'auto',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(2),
     },
@@ -89,6 +99,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
+  },
+  topButton: {
+    background: theme.palette.background.paper,
   },
 }));
 

@@ -1,3 +1,4 @@
+import { Divider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
@@ -84,127 +85,130 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   const guestStats = getFormattedGuestStats(meeting.formattedAttendees);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
   return (
-    <div className={classes.container}>
-      <div className={classes.navBar}>
-        {meeting.link && (
-          <MuiLink href={meeting.link} target="_blank" className={classes.link}>
-            <IconButton>
-              <ExitToAppIcon fontSize="small" />
-            </IconButton>
-          </MuiLink>
-        )}
-        <IconButton onClick={props.close}>
-          <CloseIcon />
-        </IconButton>
-      </div>
-      <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
-        {meeting.summary || '(no title)'}
-      </Typography>
-      <i>
+    <React.Fragment>
+      <div className={classes.topContainer}>
+        <div className={classes.navBar}>
+          {meeting.link && (
+            <MuiLink href={meeting.link} target="_blank" className={classes.link}>
+              <IconButton className={classes.topButton}>
+                <ExitToAppIcon fontSize="small" />
+              </IconButton>
+            </MuiLink>
+          )}
+          <IconButton onClick={props.close} className={classes.topButton}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
+          {meeting.summary || '(no title)'}
+        </Typography>
         {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
         {format(meeting.end, 'p')}
-      </i>
-      <Grid container spacing={3} className={classes.content}>
-        <Grid item xs={12} sm={7}>
-          {hasDescription && !isHtml && (
-            <Typography variant="body2" className={classes.description}>
-              <Linkify>{meeting.description?.trim()}</Linkify>
-            </Typography>
-          )}
-          {hasDescription && isHtml && (
-            <Typography
-              variant="body2"
-              className={classes.description}
-              dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
-            />
-          )}
-          {meeting.location && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Location
+      </div>
+      <Divider />
+      <div className={classes.container}>
+        <Grid container spacing={3} className={classes.content}>
+          <Grid item xs={12} sm={7}>
+            {hasDescription && !isHtml && (
+              <Typography variant="body2" className={classes.description}>
+                <Linkify>{meeting.description?.trim()}</Linkify>
               </Typography>
-              <Typography variant="subtitle2" className={classes.overflowEllipsis}>
-                {meeting.location}
-              </Typography>
-            </React.Fragment>
-          )}
-          {hasEmails && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Emails Sent or received during the meeting
-              </Typography>
-              <EmailsList
-                emailIds={meeting.emailIds}
-                emailStore={props.emailDataStore}
-                personStore={props.personDataStore}
+            )}
+            {hasDescription && isHtml && (
+              <Typography
+                variant="body2"
+                className={classes.description}
+                dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
               />
-            </React.Fragment>
-          )}
-          {hasDriveActivity && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Documents with activity during this meeting
-              </Typography>
-              <DriveActivityList
-                driveActivity={meetingDriveActivity}
-                docStore={props.docDataStore}
-                personStore={props.personDataStore}
-              />
-            </React.Fragment>
-          )}
-          {documentsCurrentUserEditedWhileMeetingWithAttendees.length > 0 && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Documents you edited while meeting with these attendees recently
-              </Typography>
-              <DriveActivityList
-                driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
-                docStore={props.docDataStore}
-                personStore={props.personDataStore}
-              />
-            </React.Fragment>
-          )}
-          {recentEmailsFromAttendees.length > 0 && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Recent emails from people in this meeting
-              </Typography>
-              <EmailsList
-                emailIds={recentEmailsFromAttendees}
-                emailStore={props.emailDataStore}
-                personStore={props.personDataStore}
-              />
-            </React.Fragment>
-          )}
-          {driveActivityFromAttendees.length > 0 && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Documents recently edited by people in this meeting
-              </Typography>
-              <DriveActivityList
-                driveActivity={driveActivityFromAttendees}
-                docStore={props.docDataStore}
-                personStore={props.personDataStore}
-              />
-            </React.Fragment>
-          )}
+            )}
+            {meeting.location && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Location
+                </Typography>
+                <Typography variant="subtitle2" className={classes.overflowEllipsis}>
+                  {meeting.location}
+                </Typography>
+              </React.Fragment>
+            )}
+            {hasEmails && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Emails Sent or received during the meeting
+                </Typography>
+                <EmailsList
+                  emailIds={meeting.emailIds}
+                  emailStore={props.emailDataStore}
+                  personStore={props.personDataStore}
+                />
+              </React.Fragment>
+            )}
+            {hasDriveActivity && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Documents with activity during this meeting
+                </Typography>
+                <DriveActivityList
+                  driveActivity={meetingDriveActivity}
+                  docStore={props.docDataStore}
+                  personStore={props.personDataStore}
+                />
+              </React.Fragment>
+            )}
+            {documentsCurrentUserEditedWhileMeetingWithAttendees.length > 0 && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Documents you edited while meeting with these attendees recently
+                </Typography>
+                <DriveActivityList
+                  driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
+                  docStore={props.docDataStore}
+                  personStore={props.personDataStore}
+                />
+              </React.Fragment>
+            )}
+            {recentEmailsFromAttendees.length > 0 && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Recent emails from people in this meeting
+                </Typography>
+                <EmailsList
+                  emailIds={recentEmailsFromAttendees}
+                  emailStore={props.emailDataStore}
+                  personStore={props.personDataStore}
+                />
+              </React.Fragment>
+            )}
+            {driveActivityFromAttendees.length > 0 && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Documents recently edited by people in this meeting
+                </Typography>
+                <DriveActivityList
+                  driveActivity={driveActivityFromAttendees}
+                  docStore={props.docDataStore}
+                  personStore={props.personDataStore}
+                />
+              </React.Fragment>
+            )}
+          </Grid>
+          <Grid item sm={5}>
+            {hasAttendees && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Guests
+                </Typography>
+                <Typography variant="caption" className={classes.smallCaption}>
+                  {guestStats}
+                </Typography>
+                <br />
+                <AttendeeList personStore={props.personDataStore} attendees={attendees} />
+              </React.Fragment>
+            )}
+          </Grid>
         </Grid>
-        <Grid item sm={5}>
-          {hasAttendees && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Guests
-              </Typography>
-              <Typography variant="caption" className={classes.smallCaption}>
-                {guestStats}
-              </Typography>
-              <br />
-              <AttendeeList personStore={props.personDataStore} attendees={attendees} />
-            </React.Fragment>
-          )}
-        </Grid>
-      </Grid>
-    </div>
+      </div>
+    </React.Fragment>
   );
 };
 

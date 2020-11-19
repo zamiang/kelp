@@ -23,6 +23,8 @@ const useRowStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.contrastText,
     marginTop: 4,
     textAlign: 'center',
+  },
+  iconText: {
     paddingTop: 4,
   },
   link: {
@@ -50,7 +52,7 @@ const Activity = (props: {
               style={{ height: 24, width: 24 }}
               className={classes.icon}
             >
-              {(person.name || person.id)[0]}
+              <span className={classes.iconText}>{(person.name || person.id)[0]}</span>
             </Avatar>
           </Link>
         )}

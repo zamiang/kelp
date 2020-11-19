@@ -52,12 +52,12 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             className={classes.link}
             href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
           >
-            <IconButton>
+            <IconButton className={classes.topButton}>
               <LinkedInIcon fontSize="small" />
             </IconButton>
           </MuiLink>
         )}
-        <IconButton onClick={props.close}>
+        <IconButton onClick={props.close} className={classes.topButton}>
           <CloseIcon />
         </IconButton>
       </div>
