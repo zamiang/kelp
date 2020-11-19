@@ -1,4 +1,4 @@
-import { format, getWeek, isAfter, isBefore, isSameDay, isToday } from 'date-fns';
+import { format, getWeek, isAfter, isBefore, isSameDay } from 'date-fns';
 import { flatten, groupBy, intersection } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -152,20 +152,21 @@ export default class TimeStore {
     return this.getSegments().filter((segment) => getWeek(segment.start) == week);
   }
 
-  getDriveActivityIdsForToday() {
+  getDriveActivityIdsForDate(date: Date) {
     return flatten(
       this.segments
-        .filter((segment) => isToday(segment.start))
+        .filter((segment) => isSameDay(segment.start, date))
         .map((segment) => segment.driveActivityIds),
     );
   }
 
   getDriveActivityIdsForWeek(week: number) {
-    return flatten(
+    const segments = flatten(
       this.segments
-        .filter((segment) => getWeek(segment.start) == week)
+        .filter((segment) => getWeek(segment.start) === week)
         .map((segment) => segment.driveActivityIds),
     );
+    return segments;
   }
 
   getSegmentsForDriveActivity(driveActivityIds: string[]) {

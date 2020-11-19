@@ -1,4 +1,3 @@
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
@@ -72,47 +71,45 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
     return false;
   };
   return (
-    <ClickAwayListener onClickAway={() => setIsOpen(false)}>
-      <ListItem
-        onClick={handleClick}
-        ref={setReferenceElement as any}
-        className={clsx(
-          'ignore-react-onclickoutside',
-          rowStyles.row,
-          rowStyles.rowDefault,
-          classes.row,
-          isSelected && rowStyles.pinkBackground,
-        )}
-      >
-        <Grid container spacing={1} alignItems="center">
-          <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
-            <ExpandedDocument
-              documentId={props.doc.id}
-              close={() => setIsOpen(false)}
-              {...props.store}
-            />
-          </PopperContainer>
-          <Grid item className={classes.imageContainer}>
-            <img src={props.doc.iconLink} className={classes.image} />
-          </Grid>
-          <Grid item zeroMinWidth xs>
-            <Typography noWrap variant="body2">
-              <b>{props.doc.name}</b>
-            </Typography>
-          </Grid>
-          <Grid item sm={2}>
-            <Grid container spacing={1} alignItems="center">
-              <Avatars people={people as any} />
-            </Grid>
-          </Grid>
-          <Grid item className={classes.time}>
-            <Typography variant="caption" color="textSecondary">
-              {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
-            </Typography>
+    <ListItem
+      onClick={handleClick}
+      ref={setReferenceElement as any}
+      className={clsx(
+        'ignore-react-onclickoutside',
+        rowStyles.row,
+        rowStyles.rowDefault,
+        classes.row,
+        isSelected && rowStyles.pinkBackground,
+      )}
+    >
+      <Grid container spacing={1} alignItems="center">
+        <PopperContainer anchorEl={referenceElement} isOpen={isOpen} setIsOpen={setIsOpen}>
+          <ExpandedDocument
+            documentId={props.doc.id}
+            close={() => setIsOpen(false)}
+            {...props.store}
+          />
+        </PopperContainer>
+        <Grid item className={classes.imageContainer}>
+          <img src={props.doc.iconLink} className={classes.image} />
+        </Grid>
+        <Grid item zeroMinWidth xs>
+          <Typography noWrap variant="body2">
+            <b>{props.doc.name}</b>
+          </Typography>
+        </Grid>
+        <Grid item sm={2}>
+          <Grid container spacing={1} alignItems="center">
+            <Avatars people={people as any} />
           </Grid>
         </Grid>
-      </ListItem>
-    </ClickAwayListener>
+        <Grid item className={classes.time}>
+          <Typography variant="caption" color="textSecondary">
+            {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
+          </Typography>
+        </Grid>
+      </Grid>
+    </ListItem>
   );
 };
 

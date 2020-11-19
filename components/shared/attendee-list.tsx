@@ -95,11 +95,15 @@ const AttendeeRow = (props: IProps) => {
 const attendeeMax = 10;
 
 const AttendeeList = (props: IProps) => {
-  const [isExpanded, setExpand] = useState<boolean>(props.attendees.length > attendeeMax);
+  const [isExpanded, setExpand] = useState<boolean>(props.attendees.length < attendeeMax);
   return (
     <Grid container spacing={2}>
       {isExpanded && <AttendeeRow {...props} />}
-      {!isExpanded && <Button onClick={() => setExpand(true)}>Show Full List</Button>}
+      {!isExpanded && (
+        <Button className="ignore-react-onclickoutside" onClick={() => setExpand(true)}>
+          Show Full List
+        </Button>
+      )}
     </Grid>
   );
 };

@@ -1,5 +1,5 @@
 import { intervalToDuration, subDays } from 'date-fns';
-import { first, flatten, uniq } from 'lodash';
+import { first, flatten, sortBy, uniq, uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -292,6 +292,28 @@ export default class PersonDataStore {
 
   cleanupDuplicateSegmentIds() {
     this.getPeople().map((person) => (person.segmentIds = uniq(person.segmentIds)));
+  }
+
+  getPeopleMeetingWithOnDay(timeDataStore: IStore['timeDataStore'], date: Date) {
+    const meetings = timeDataStore.getSegmentsForDay(date);
+    return sortBy(
+      uniqBy(
+        flatten(meetings.map((segment) => segment.formattedAttendees)),
+        'personId',
+      ).map((attendee) => this.getPersonById(attendee.personId)),
+      'name',
+    );
+  }
+
+  getPeopleMeetingWithThisWeek(timeDataStore: IStore['timeDataStore']) {
+    const meetingsThisWeek = timeDataStore.getSegmentsForWeek(getWeek(new Date()));
+    return sortBy(
+      uniqBy(
+        flatten(meetingsThisWeek.map((segment) => segment.formattedAttendees)),
+        'personId',
+      ).map((attendee) => this.getPersonById(attendee.personId)),
+      'name',
+    );
   }
 
   getEmailAddresses() {

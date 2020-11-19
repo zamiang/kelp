@@ -1,4 +1,3 @@
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
@@ -77,59 +76,58 @@ const MeetingRow = (props: {
           <div className={classes.currentTimeBorder}></div>
         </ListItem>
       )}
-      <ClickAwayListener onClickAway={() => setIsOpen(false)}>
-        <ListItem
-          ref={setReferenceElement as any}
-          onClick={handleClick}
-          className={clsx(
-            'ignore-react-onclickoutside',
-            rowStyles.row,
-            classes.row,
-            props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
-            props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
-            props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
-            props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
-            isSelected && rowStyles.rowPrimaryMain,
-          )}
-        >
-          <Grid container spacing={1} alignItems="center">
-            <PopperContainer anchorEl={referenceElement} isOpen={isOpen}>
-              <ExpandedMeeting
-                meetingId={props.meeting.id}
-                close={() => setIsOpen(false)}
-                {...props.store}
-              />
-            </PopperContainer>
-            <Grid
-              item
-              className={clsx(
-                rowStyles.border,
-                props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
-                props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
-                props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
-                props.meeting.selfResponseStatus === 'needsAction' &&
-                  rowStyles.borderSecondaryLight,
-                props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
-              )}
-            ></Grid>
-            <Grid item container xs={10} zeroMinWidth>
-              <Grid item className={classes.time}>
-                <Typography variant="subtitle2">
-                  {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-                </Typography>
-              </Grid>
-              <Grid item zeroMinWidth className={classes.summary}>
-                <Typography variant="body2" noWrap>
-                  <b>{props.meeting.summary || '(no title)'}</b>{' '}
-                  {props.meeting.description
-                    ? props.meeting.description.replace(/<[^>]+>/g, '')
-                    : ''}
-                </Typography>
-              </Grid>
+      <ListItem
+        ref={setReferenceElement as any}
+        onClick={handleClick}
+        className={clsx(
+          'ignore-react-onclickoutside',
+          rowStyles.row,
+          classes.row,
+          props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
+          props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
+          props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
+          props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
+          isSelected && rowStyles.rowPrimaryMain,
+        )}
+      >
+        <Grid container spacing={1} alignItems="center">
+          <PopperContainer
+            anchorEl={referenceElement}
+            isOpen={isOpen}
+            setIsOpen={(isOpen) => setIsOpen(isOpen)}
+          >
+            <ExpandedMeeting
+              meetingId={props.meeting.id}
+              close={() => setIsOpen(false)}
+              {...props.store}
+            />
+          </PopperContainer>
+          <Grid
+            item
+            className={clsx(
+              rowStyles.border,
+              props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
+              props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
+              props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
+              props.meeting.selfResponseStatus === 'needsAction' && rowStyles.borderSecondaryLight,
+              props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
+            )}
+          ></Grid>
+          <Grid item container xs={10} zeroMinWidth>
+            <Grid item className={classes.time}>
+              <Typography variant="subtitle2">
+                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+              </Typography>
+            </Grid>
+            <Grid item zeroMinWidth className={classes.summary}>
+              <Typography variant="body2" noWrap>
+                <b>{props.meeting.summary || '(no title)'}</b>{' '}
+                {props.meeting.description ? props.meeting.description.replace(/<[^>]+>/g, '') : ''}
+              </Typography>
             </Grid>
           </Grid>
-        </ListItem>
-      </ClickAwayListener>
+        </Grid>
+      </ListItem>
     </React.Fragment>
   );
 };

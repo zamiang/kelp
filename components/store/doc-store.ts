@@ -1,3 +1,7 @@
+import { uniqBy } from 'lodash';
+import { getWeek } from '../shared/date-helpers';
+import { IStore } from './use-store';
+
 type DocumentType =
   | 'UNKNOWN'
   | 'application/vnd.google-apps.presentation'
@@ -57,6 +61,43 @@ export default class DocDataStore {
     docs.forEach((document) => {
       this.docsById[document.id || 'wtf'] = document;
     });
+  }
+
+  getDocumentsForDay(
+    timeDataStore: IStore['timeDataStore'],
+    driveActivityStore: IStore['driveActivityStore'],
+    day: Date,
+  ) {
+    const driveActivityIdsForDay = timeDataStore.getDriveActivityIdsForDate(day);
+    return uniqBy(
+      driveActivityIdsForDay
+        .map((id) => id && driveActivityStore.getById(id))
+        .map(
+          (driveActivity) =>
+            driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
+        )
+        .filter((doc) => doc && doc.id),
+      'id',
+    ) as IDoc[];
+  }
+
+  getDocumentsForThisWeek(
+    timeDataStore: IStore['timeDataStore'],
+    driveActivityStore: IStore['driveActivityStore'],
+  ) {
+    const driveActivityIdsForThisWeek = timeDataStore.getDriveActivityIdsForWeek(
+      getWeek(new Date()),
+    );
+    return uniqBy(
+      driveActivityIdsForThisWeek
+        .map((id) => id && driveActivityStore.getById(id))
+        .map(
+          (driveActivity) =>
+            driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
+        )
+        .filter((doc) => doc && doc.id),
+      'id',
+    ) as IDoc[];
   }
 
   /**

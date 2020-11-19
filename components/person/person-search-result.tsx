@@ -1,5 +1,4 @@
 import Avatar from '@material-ui/core/Avatar';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
@@ -39,38 +38,36 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
   };
   const isOpen = Boolean(anchorEl);
   return (
-    <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-      <ListItem
-        onClick={handleClick}
-        className={clsx('ignore-react-onclickoutside', rowStyles.row, classes.row)}
-      >
-        <Link href={`?tab=people&slug=${props.person.id}`}>
-          <Grid container spacing={1} alignItems="center">
-            <PopperContainer anchorEl={anchorEl} isOpen={isOpen}>
-              <ExpandedPerson
-                close={() => setAnchorEl(null)}
-                personId={props.person.id}
-                {...props.store}
-              />
-            </PopperContainer>
-            <Grid item className={classes.avatar}>
-              {props.person.imageUrl ? (
-                <Avatar style={{ height: 24, width: 24 }} src={props.person.imageUrl} />
-              ) : (
-                <Avatar style={{ height: 24, width: 24 }}>
-                  {(props.person.name || props.person.id)[0]}
-                </Avatar>
-              )}
-            </Grid>
-            <Grid item className={classes.name} zeroMinWidth>
-              <Typography variant="body2" noWrap>
-                <b>{props.person.name || props.person.id}</b>
-              </Typography>
-            </Grid>
+    <ListItem
+      onClick={handleClick}
+      className={clsx('ignore-react-onclickoutside', rowStyles.row, classes.row)}
+    >
+      <Link href={`?tab=people&slug=${props.person.id}`}>
+        <Grid container spacing={1} alignItems="center">
+          <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
+            <ExpandedPerson
+              close={() => setAnchorEl(null)}
+              personId={props.person.id}
+              {...props.store}
+            />
+          </PopperContainer>
+          <Grid item className={classes.avatar}>
+            {props.person.imageUrl ? (
+              <Avatar style={{ height: 24, width: 24 }} src={props.person.imageUrl} />
+            ) : (
+              <Avatar style={{ height: 24, width: 24 }}>
+                {(props.person.name || props.person.id)[0]}
+              </Avatar>
+            )}
           </Grid>
-        </Link>
-      </ListItem>
-    </ClickAwayListener>
+          <Grid item className={classes.name} zeroMinWidth>
+            <Typography variant="body2" noWrap>
+              <b>{props.person.name || props.person.id}</b>
+            </Typography>
+          </Grid>
+        </Grid>
+      </Link>
+    </ListItem>
   );
 };
 

@@ -1,23 +1,18 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { flatten, sortBy, uniqBy } from 'lodash';
+import { sortBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import PersonRow from '../person/person-row';
-import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
 
 const PeopleToday = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = panelStyles();
-  const meetingsToday = props.timeDataStore.getSegmentsForDay(new Date());
-  const peopleMeetingWithToday = sortBy(
-    uniqBy(
-      flatten(meetingsToday.map((segment) => segment.formattedAttendees)),
-      'personId',
-    ).map((attendee) => props.personDataStore.getPersonById(attendee.personId)),
-    'name',
+  const peopleMeetingWithToday = props.personDataStore.getPeopleMeetingWithOnDay(
+    props.timeDataStore,
+    new Date(),
   );
   return (
     <div className={classes.section}>
@@ -40,13 +35,8 @@ const PeopleToday = (props: IStore & { selectedPersonId: string | null }) => {
 
 const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = panelStyles();
-  const meetingsThisWeek = props.timeDataStore.getSegmentsForWeek(getWeek(new Date()));
-  const peopleMeetingWithThisWeek = sortBy(
-    uniqBy(
-      flatten(meetingsThisWeek.map((segment) => segment.formattedAttendees)),
-      'personId',
-    ).map((attendee) => props.personDataStore.getPersonById(attendee.personId)),
-    'name',
+  const peopleMeetingWithThisWeek = props.personDataStore.getPeopleMeetingWithThisWeek(
+    props.timeDataStore,
   );
   return (
     <div className={classes.section}>
