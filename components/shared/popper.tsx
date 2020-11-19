@@ -1,3 +1,4 @@
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,7 +18,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PopperContainer = (props: { anchorEl: any; children: any; isOpen: boolean }) => {
+const PopperContainer = (props: {
+  anchorEl: any;
+  children: any;
+  isOpen: boolean;
+  setIsOpen: (boolean) => void;
+}) => {
   const classes = useStyles();
   return (
     <Popper
@@ -32,9 +38,15 @@ const PopperContainer = (props: { anchorEl: any; children: any; isOpen: boolean 
         },
       }}
     >
-      <Paper elevation={5} className={classes.paper} onClick={(event) => event.stopPropagation()}>
-        {props.children}
-      </Paper>
+      <ClickAwayListener
+        onClickAway={() => {
+          props.setIsOpen(false);
+        }}
+      >
+        <Paper elevation={5} className={classes.paper}>
+          {props.children}
+        </Paper>
+      </ClickAwayListener>
     </Popper>
   );
 };

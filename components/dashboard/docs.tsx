@@ -1,13 +1,10 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import DocumentRow from '../docs/document-row';
-import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
-import { IDoc } from '../store/doc-store';
 import { IStore } from '../store/use-store';
 
 const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => {
@@ -29,18 +26,11 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
 
 const DocumentsForToday = (props: IStore & { selectedDocumentId: string | null }) => {
   const classes = panelStyles();
-
-  const driveActivityIdsForToday = props.timeDataStore.getDriveActivityIdsForToday();
-  const docsForToday = uniqBy(
-    driveActivityIdsForToday
-      .map((id) => id && props.driveActivityStore.getById(id))
-      .map(
-        (driveActivity) =>
-          driveActivity && driveActivity.link && props.docDataStore.getByLink(driveActivity.link),
-      )
-      .filter((doc) => doc && doc.id),
-    'id',
-  ) as IDoc[];
+  const docsForToday = props.docDataStore.getDocumentsForDay(
+    props.timeDataStore,
+    props.driveActivityStore,
+    new Date(),
+  );
   return (
     <div className={classes.rowNoBorder}>
       {docsForToday.map((doc) => (
@@ -57,20 +47,10 @@ const DocumentsForToday = (props: IStore & { selectedDocumentId: string | null }
 
 const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | null }) => {
   const classes = panelStyles();
-
-  const driveActivityIdsForThisWeek = props.timeDataStore.getDriveActivityIdsForWeek(
-    getWeek(new Date()),
+  const docsForThisWeek = props.docDataStore.getDocumentsForThisWeek(
+    props.timeDataStore,
+    props.driveActivityStore,
   );
-  const docsForThisWeek = uniqBy(
-    driveActivityIdsForThisWeek
-      .map((id) => id && props.driveActivityStore.getById(id))
-      .map(
-        (driveActivity) =>
-          driveActivity && driveActivity.link && props.docDataStore.getByLink(driveActivity.link),
-      )
-      .filter((doc) => doc && doc.id),
-    'id',
-  ) as IDoc[];
   return (
     <div className={classes.rowNoBorder}>
       {docsForThisWeek.map((doc) => (

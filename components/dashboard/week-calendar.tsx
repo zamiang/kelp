@@ -14,14 +14,12 @@ import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import TopBar from '../shared/top-bar';
 import { IDoc } from '../store/doc-store';
-import { IEmail } from '../store/email-store';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
 const topNavHeight = 110;
 const hourHeight = 38;
 const scrollBarWidth = 15;
-const shouldShowSentEmails = false;
 const shouldShowDocumentActivity = true;
 const shouldShowCalendarEvents = true;
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
@@ -276,22 +274,6 @@ const CalendarItem = (props: ICalendarItemProps) => {
   );
 };
 
-interface IEmailItemProps {
-  onClick: () => void;
-  email: IEmail;
-}
-
-const EmailItem = (props: IEmailItemProps) => {
-  const classes = useCalendarItemStyles();
-  const top = getTopForTime(props.email.date);
-  return (
-    <div className={classes.container} style={{ top }} onClick={props.onClick}>
-      <Typography className={classes.title}>{props.email.subject}</Typography>
-      <Typography className={classes.subtitle}>{props.email.to}</Typography>
-    </div>
-  );
-};
-
 interface IDocumentItemProps {
   document?: IDoc;
   activity?: IFormattedDriveActivity;
@@ -323,13 +305,11 @@ const DocumentItem = (props: IDocumentItemProps) => {
  * each item would then check if it is inside a prior box, and if so, add a class/move them
  */
 interface IDayContentProps {
-  shouldShowSentEmails: boolean;
   shouldShowDocumentActivity: boolean;
   shouldShowCalendarEvents: boolean;
   personStore: IStore['personDataStore'];
   activityStore: IStore['driveActivityStore'];
   timeStore: IStore['timeDataStore'];
-  emailStore: IStore['emailDataStore'];
   documentsStore: IStore['docDataStore'];
   day: Date;
 }
@@ -357,7 +337,6 @@ const useDayContentStyles = makeStyles((theme) => ({
 }));
 
 const DayContent = (props: IDayContentProps) => {
-  let emailsHtml = '' as any;
   let documentsHtml = '' as any;
   let segmentsHtml = '' as any;
   let currentTimeHtml = '' as any;
@@ -395,16 +374,8 @@ const DayContent = (props: IDayContentProps) => {
     ));
   }
 
-  if (props.shouldShowSentEmails && currentUser && currentUser.emailAddress) {
-    const emails = props.emailStore
-      .getEmailsFrom([currentUser.emailAddress])
-      .filter((email) => isSameDay(email.date, props.day));
-    emailsHtml = emails.map((email) => (
-      <EmailItem key={email.id} email={email} onClick={() => alert(`clicked ${email.id}`)} />
-    ));
-  }
-
   if (props.shouldShowDocumentActivity && currentUser) {
+    // TODO: Potentially refactor
     const documentActivityPairs = Object.values(currentUser.driveActivity)
       .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
       .map((activity) => ({
@@ -431,7 +402,6 @@ const DayContent = (props: IDayContentProps) => {
   return (
     <div>
       {segmentsHtml}
-      {emailsHtml}
       {documentsHtml}
       {currentTimeHtml}
     </div>
@@ -468,13 +438,11 @@ const Calendar = (props: IStore) => {
     <Grid item key={day} className={classes.dayColumn}>
       <HourRows />
       <DayContent
-        shouldShowSentEmails={shouldShowSentEmails}
         shouldShowDocumentActivity={shouldShowDocumentActivity}
         shouldShowCalendarEvents={shouldShowCalendarEvents}
         personStore={props.personDataStore}
         activityStore={props.driveActivityStore}
         timeStore={props.timeDataStore}
-        emailStore={props.emailDataStore}
         documentsStore={props.docDataStore}
         day={addDays(start, day)}
       />

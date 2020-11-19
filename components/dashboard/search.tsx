@@ -9,56 +9,10 @@ import SearchBar from '../shared/search-bar';
 import TopBar from '../shared/top-bar';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
+import SearchIndex, { ISearchItem } from '../store/search-index';
 import { uncommonPunctuation } from '../store/tfidf-store';
 import { ISegment } from '../store/time-store';
 import { IStore } from '../store/use-store';
-
-interface ISearchItem {
-  text: string;
-  type: 'segment' | 'document' | 'person';
-  item: IPerson | ISegment | IDoc;
-}
-
-const buildSearchIndex = (store: {
-  docDataStore: IStore['docDataStore'];
-  driveActivityStore: IStore['driveActivityStore'];
-  timeDataStore: IStore['timeDataStore'];
-  personDataStore: IStore['personDataStore'];
-}) => {
-  const searchIndex = [] as ISearchItem[];
-  // Docs
-  store.docDataStore.getDocs().map((doc) => {
-    if (doc && doc.name) {
-      searchIndex.push({
-        text: doc.name.toLowerCase(),
-        type: 'document',
-        item: doc,
-      });
-    }
-  });
-  // Meetings
-  store.timeDataStore.getSegments().map((segment) => {
-    if (segment.summary) {
-      searchIndex.push({
-        text: segment.summary.toLowerCase(),
-        type: 'segment',
-        item: segment,
-      });
-    }
-  });
-  // People
-  store.personDataStore.getPeople().map((person) => {
-    // TODO: Remove need to do indexof
-    if (person && person.name.indexOf('person') < 0 && person.name.indexOf('@') < 0) {
-      searchIndex.push({
-        text: person.name.toLowerCase(),
-        type: 'person',
-        item: person,
-      });
-    }
-  });
-  return searchIndex;
-};
 
 const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
   searchResults.map((result) => {
@@ -85,11 +39,13 @@ const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
 const Search = (props: IStore) => {
   const classes = panelStyles();
   const router = useRouter();
-  const searchIndex = buildSearchIndex(props);
+  const searchIndex = new SearchIndex(props);
   const searchQuery =
     router.query?.query &&
     (router.query.query as string).toLowerCase().replace(uncommonPunctuation, ' ');
-  const results = searchQuery ? searchIndex.filter((item) => item.text.includes(searchQuery)) : [];
+  const results = searchQuery
+    ? searchIndex.results.filter((item) => item.text.includes(searchQuery))
+    : [];
   return (
     <div className={classes.panel}>
       <TopBar title={`Search Results for: ${searchQuery || ''}`}>
