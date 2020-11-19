@@ -73,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 0,
     marginBottom: theme.spacing(1),
   },
+  link: {
+    color: theme.palette.primary.dark,
+  },
   description: {
     wordWrap: 'break-word',
     whiteSpace: 'pre-wrap',
