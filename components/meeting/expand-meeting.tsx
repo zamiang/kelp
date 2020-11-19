@@ -1,16 +1,13 @@
-import { Divider } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
 import Linkify from 'react-linkify';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/documents-from-drive-activity';
+import AppBar from '../shared/elevate-app-bar';
 import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import { IFormattedAttendee } from '../store/time-store';
@@ -86,19 +83,8 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
   return (
     <React.Fragment>
+      <AppBar externalLink={meeting.link} onClose={props.close} />
       <div className={classes.topContainer}>
-        <div className={classes.navBar}>
-          {meeting.link && (
-            <MuiLink href={meeting.link} target="_blank" className={classes.link}>
-              <IconButton className={classes.topButton}>
-                <ExitToAppIcon fontSize="small" />
-              </IconButton>
-            </MuiLink>
-          )}
-          <IconButton onClick={props.close} className={classes.topButton}>
-            <CloseIcon />
-          </IconButton>
-        </div>
         <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
           {meeting.summary || '(no title)'}
         </Typography>

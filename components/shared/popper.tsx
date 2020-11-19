@@ -43,7 +43,7 @@ const PopperContainer = (props: {
           props.setIsOpen(false);
         }}
       >
-        <Paper elevation={5} className={classes.paper}>
+        <Paper elevation={5} className={classes.paper} onClick={(event) => event.stopPropagation()}>
           {props.children}
         </Paper>
       </ClickAwayListener>

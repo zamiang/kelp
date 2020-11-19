@@ -1,0 +1,65 @@
+import AppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import MuiLink from '@material-ui/core/Link';
+import Toolbar from '@material-ui/core/Toolbar';
+import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import React from 'react';
+
+const useStyles = makeStyles((theme) => ({
+  navBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  link: {
+    color: theme.palette.primary.dark,
+  },
+  topButton: {
+    background: theme.palette.background.paper,
+  },
+}));
+
+interface IProps {
+  externalLink?: string;
+  onClose: () => void;
+  linkedinName?: string;
+}
+
+const CustomAppBar = (props: IProps) => {
+  const classes = useStyles();
+
+  return (
+    <AppBar elevation={0} className={classes.navBar} color="transparent">
+      <Toolbar>
+        {props.linkedinName && (
+          <MuiLink
+            target="_blank"
+            rel="noreferrer"
+            className={classes.link}
+            href={`https://www.linkedin.com/search/results/people/?keywords=${props.linkedinName}`}
+          >
+            <IconButton className={classes.topButton}>
+              <LinkedInIcon fontSize="small" />
+            </IconButton>
+          </MuiLink>
+        )}
+        {props.externalLink && (
+          <MuiLink href={props.externalLink} target="_blank" className={classes.link}>
+            <IconButton className={classes.topButton}>
+              <ExitToAppIcon fontSize="small" />
+            </IconButton>
+          </MuiLink>
+        )}
+        <IconButton onClick={props.onClose} className={classes.topButton}>
+          <CloseIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default CustomAppBar;

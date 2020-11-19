@@ -1,23 +1,22 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import EventIcon from '@material-ui/icons/Event';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { formatDistance, formatDuration } from 'date-fns';
 import { isEmpty, last } from 'lodash';
 import Link from 'next/link';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivity from '../shared/documents-from-drive-activity';
+import AppBar from '../shared/elevate-app-bar';
 import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
@@ -43,131 +42,126 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
   const associates = props.personDataStore.getAssociates(props.personId, segments);
   const hasName = !person.name.includes('people/') && !person.name.includes('@');
   return (
-    <div className={classes.container}>
-      <div className={classes.navBar}>
-        {hasName && (
-          <MuiLink
-            target="_blank"
-            rel="noreferrer"
-            className={classes.link}
-            href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
+    <React.Fragment>
+      <AppBar linkedinName={hasName ? person.name : undefined} onClose={props.close} />
+      <div className={classes.topContainer}>
+        <Box flexDirection="column" alignItems="center" display="flex">
+          <Avatar className={classes.avatar} src={person.imageUrl || ''}>
+            {(person.name || person.id)[0]}
+          </Avatar>
+          <Typography
+            className={classes.title}
+            variant="h5"
+            color="textPrimary"
+            gutterBottom
+            noWrap
           >
-            <IconButton className={classes.topButton}>
-              <LinkedInIcon fontSize="small" />
-            </IconButton>
-          </MuiLink>
-        )}
-        <IconButton onClick={props.close} className={classes.topButton}>
-          <CloseIcon />
-        </IconButton>
+            {props.personDataStore.getPersonDisplayName(person)}
+          </Typography>
+          <List dense={true} className={classes.inlineList} disablePadding={true}>
+            {person.emailAddress && (
+              <MuiLink
+                target="_blank"
+                className={classes.link}
+                rel="noreferrer"
+                href={`mailto:${person.emailAddress}`}
+              >
+                <ListItem button={true}>
+                  <ListItemIcon>
+                    <EmailIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary={person.emailAddress} />
+                </ListItem>
+              </MuiLink>
+            )}
+            {lastMeeting && (
+              <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
+                <ListItem button={true} className={classes.hideForMobile}>
+                  <ListItemIcon>
+                    <EventIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
+                  />
+                </ListItem>
+              </Link>
+            )}
+          </List>
+        </Box>
       </div>
-      <Box flexDirection="column" alignItems="center" display="flex">
-        <Avatar className={classes.avatar} src={person.imageUrl || ''}>
-          {(person.name || person.id)[0]}
-        </Avatar>
-        <Typography className={classes.title} variant="h5" color="textPrimary" gutterBottom noWrap>
-          {props.personDataStore.getPersonDisplayName(person)}
-        </Typography>
-        <List dense={true} className={classes.inlineList} disablePadding={true}>
-          {person.emailAddress && (
-            <MuiLink
-              target="_blank"
-              className={classes.link}
-              rel="noreferrer"
-              href={`mailto:${person.emailAddress}`}
-            >
-              <ListItem button={true}>
-                <ListItemIcon>
-                  <EmailIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={person.emailAddress} />
-              </ListItem>
-            </MuiLink>
+      <Divider />
+      <div className={classes.container}>
+        <Grid container spacing={3} className={classes.content}>
+          {person.isMissingProfile && (
+            <Grid item sm={7}>
+              <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
+                Add this person to your google contacts for more info
+              </MuiLink>
+            </Grid>
           )}
-          {lastMeeting && (
-            <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
-              <ListItem button={true} className={classes.hideForMobile}>
-                <ListItemIcon>
-                  <EventIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
-                />
-              </ListItem>
-            </Link>
-          )}
-        </List>
-      </Box>
-      <Grid container spacing={3} className={classes.content}>
-        {person.isMissingProfile && (
           <Grid item sm={7}>
-            <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
-              Add this person to your google contacts for more info
-            </MuiLink>
+            <PersonNotes person={person} refetch={props.refetch} />
+            {!isEmpty(person.driveActivity) && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Active Documents
+                </Typography>
+                <DriveActivity
+                  driveActivity={Object.values(person.driveActivity)}
+                  personStore={props.personDataStore}
+                  docStore={props.docDataStore}
+                />
+              </React.Fragment>
+            )}
+            {person.segmentIds.length > 0 && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Meetings
+                </Typography>
+                <MeetingList segments={segments} personStore={props.personDataStore} />
+              </React.Fragment>
+            )}
+            {person.emailIds.length > 0 && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Emails
+                </Typography>
+                <EmailsList
+                  emailIds={person.emailIds}
+                  emailStore={props.emailDataStore}
+                  personStore={props.personDataStore}
+                />
+              </React.Fragment>
+            )}
           </Grid>
-        )}
-        <Grid item sm={7}>
-          <PersonNotes person={person} refetch={props.refetch} />
-          {!isEmpty(person.driveActivity) && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Active Documents
-              </Typography>
-              <DriveActivity
-                driveActivity={Object.values(person.driveActivity)}
-                personStore={props.personDataStore}
-                docStore={props.docDataStore}
-              />
-            </React.Fragment>
-          )}
-          {person.segmentIds.length > 0 && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Meetings
-              </Typography>
-              <MeetingList segments={segments} personStore={props.personDataStore} />
-            </React.Fragment>
-          )}
-          {person.emailIds.length > 0 && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Emails
-              </Typography>
-              <EmailsList
-                emailIds={person.emailIds}
-                emailStore={props.emailDataStore}
-                personStore={props.personDataStore}
-              />
-            </React.Fragment>
-          )}
-        </Grid>
-        <Grid item sm={5}>
-          {meetingTime.lastWeekMs > 0 && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Time in meetings
-              </Typography>
-              <div>
-                <i>This week:</i> {timeInMeetings}
-              </div>
-              {meetingTime.lastWeekMs > 0 && (
+          <Grid item sm={5}>
+            {meetingTime.lastWeekMs > 0 && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Time in meetings
+                </Typography>
                 <div>
-                  <i>Last week:</i> {timeInMeetingsLastWeek}
+                  <i>This week:</i> {timeInMeetings}
                 </div>
-              )}
-            </React.Fragment>
-          )}
-          {associates.length > 0 && (
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Associates
-              </Typography>
-              <AttendeeList personStore={props.personDataStore} attendees={associates} />
-            </React.Fragment>
-          )}
+                {meetingTime.lastWeekMs > 0 && (
+                  <div>
+                    <i>Last week:</i> {timeInMeetingsLastWeek}
+                  </div>
+                )}
+              </React.Fragment>
+            )}
+            {associates.length > 0 && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Associates
+                </Typography>
+                <AttendeeList personStore={props.personDataStore} attendees={associates} />
+              </React.Fragment>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </React.Fragment>
   );
 };
 

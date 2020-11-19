@@ -58,9 +58,6 @@ const useStyles = makeStyles((theme) => ({
   content: {
     marginTop: theme.spacing(1),
   },
-  link: {
-    color: theme.palette.primary.dark,
-  },
   avatar: {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
@@ -87,11 +84,6 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  navBar: {
-    position: 'absolute',
-    top: 5,
-    right: 5,
-  },
   center: {
     textAlign: 'center',
   },
@@ -99,9 +91,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
-  },
-  topButton: {
-    background: theme.palette.background.paper,
   },
 }));
 
