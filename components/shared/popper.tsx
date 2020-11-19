@@ -22,7 +22,7 @@ const PopperContainer = (props: {
   anchorEl: any;
   children: any;
   isOpen: boolean;
-  setIsOpen: (boolean) => void;
+  setIsOpen: (isOpen: boolean) => void;
 }) => {
   const classes = useStyles();
   return (
