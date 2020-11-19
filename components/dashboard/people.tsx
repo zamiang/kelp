@@ -88,7 +88,6 @@ const People = (props: IStore) => {
   const classes = panelStyles();
   const [currentTab, changeTab] = useState<tab>('this-week');
   const selectedPersonId = useRouter().query.slug as string;
-
   const currentTitle = titleHash[currentTab];
   const tabHash = {
     all: <AllPeople selectedPersonId={selectedPersonId} {...props} />,

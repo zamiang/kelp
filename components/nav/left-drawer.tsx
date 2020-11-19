@@ -2,13 +2,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
@@ -18,18 +16,16 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import PublicIcon from '@material-ui/icons/Public';
-import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { drawerWidth } from '../../pages/dashboard';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
 import { ISegment } from '../store/time-store';
 import RefreshButton from './refresh-button';
+import SearchBar from './search-bar';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -95,14 +91,6 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
-  input: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-  },
-  inputContainer: {
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-  },
   icon: {
     width: 22,
     height: 22,
@@ -127,49 +115,6 @@ interface IProps {
   meetings: ISegment[];
   tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search' | 'home';
 }
-
-type FormValues = {
-  query: string;
-};
-
-const SearchBar = () => {
-  const classes = useStyles();
-  const { handleSubmit, register, setValue } = useForm<FormValues>({
-    defaultValues: {
-      query: '',
-    },
-  });
-  const router = useRouter();
-
-  const onSubmit = handleSubmit(async (data) => {
-    void router.push(`?tab=search&query=${data.query}`);
-    setValue('query', '');
-  });
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setValue('query', e.target.value);
-
-  return (
-    <form onSubmit={onSubmit} className={classes.inputContainer}>
-      <OutlinedInput
-        id="search-input-for-nav"
-        type="text"
-        placeholder="Search…"
-        fullWidth
-        autoComplete="off"
-        onChange={handleChange}
-        name="query"
-        margin="dense"
-        className={classes.input}
-        startAdornment={
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        }
-        inputRef={register}
-      />
-    </form>
-  );
-};
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();

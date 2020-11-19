@@ -10,41 +10,7 @@ import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
-import { IFormattedAttendee } from '../store/time-store';
 import { IStore } from '../store/use-store';
-
-const guestStatsHash = {
-  needsAction: 'awaiting response',
-  declined: 'no',
-  tentative: 'maybe',
-  accepted: 'yes',
-  notAttending: 'no',
-} as any;
-
-const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {
-  if (attendees.length < 2) {
-    return null;
-  }
-  const guestStats = {
-    accepted: 0,
-    tentative: 0,
-    needsAction: 0,
-    declined: 0,
-    notAttending: 0,
-  } as any;
-  attendees.map((attendee) => attendee.responseStatus && guestStats[attendee.responseStatus]++);
-
-  return Object.keys(guestStats)
-    .map((key) => {
-      if (guestStats[key]) {
-        // eslint-disable-next-line
-        return `${guestStats[key as any]} ${guestStatsHash[key]}`;
-      }
-      return false;
-    })
-    .filter((text) => !!text)
-    .join(', ');
-};
 
 const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
   const classes = useExpandStyles();
@@ -79,7 +45,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   const driveActivityFromAttendees = flatten(
     people.map((person) => Object.values(person.driveActivity)),
   );
-  const guestStats = getFormattedGuestStats(meeting.formattedAttendees);
+  const guestStats = props.timeDataStore.getFormattedGuestStats(meeting);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
   return (
     <React.Fragment>

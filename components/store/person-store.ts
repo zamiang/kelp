@@ -316,6 +316,13 @@ export default class PersonDataStore {
     );
   }
 
+  getPeopleForDriveActivity(activity: IFormattedDriveActivity[]) {
+    return uniqBy(activity, 'actorPersonId')
+      .filter((activity) => !!activity.actorPersonId)
+      .map((activity) => this.getPersonById(activity.actorPersonId!))
+      .filter((person) => person && person.id) as IPerson[];
+  }
+
   getEmailAddresses() {
     return Object.keys(this.personById);
   }

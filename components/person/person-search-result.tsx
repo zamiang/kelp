@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event?.currentTarget);

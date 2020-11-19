@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Avatars from '../person/avatars';
@@ -51,12 +50,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const activity = props.store.driveActivityStore.getDriveActivityForDocument(props.doc.id) || [];
-
-  const people = uniqBy(activity, 'actorPersonId')
-    .filter((activity) => !!activity.actorPersonId)
-    .map((activity) => props.store.personDataStore.getPersonById(activity.actorPersonId!))
-    .filter((person) => person && person.id)
-    .slice(0, 5);
+  const people = props.store.personDataStore.getPeopleForDriveActivity(activity).slice(0, 5);
 
   React.useEffect(() => {
     if (isSelected && referenceElement) {

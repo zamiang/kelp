@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event: any) => {
     if (!anchorEl) {

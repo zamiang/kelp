@@ -160,6 +160,41 @@ export default class TimeStore {
     );
   }
 
+  getFormattedGuestStats(segment: ISegment) {
+    const guestStatsHash = {
+      needsAction: 'awaiting response',
+      declined: 'no',
+      tentative: 'maybe',
+      accepted: 'yes',
+      notAttending: 'no',
+    } as any;
+
+    if (segment.formattedAttendees.length < 2) {
+      return null;
+    }
+    const guestStats = {
+      accepted: 0,
+      tentative: 0,
+      needsAction: 0,
+      declined: 0,
+      notAttending: 0,
+    } as any;
+    segment.formattedAttendees.map(
+      (attendee) => attendee.responseStatus && guestStats[attendee.responseStatus]++,
+    );
+
+    return Object.keys(guestStats)
+      .map((key) => {
+        if (guestStats[key]) {
+          // eslint-disable-next-line
+          return `${guestStats[key as any]} ${guestStatsHash[key]}`;
+        }
+        return false;
+      })
+      .filter((text) => !!text)
+      .join(', ');
+  }
+
   getDriveActivityIdsForWeek(week: number) {
     const segments = flatten(
       this.segments
