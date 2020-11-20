@@ -4,6 +4,7 @@ import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
+import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import React from 'react';
@@ -27,6 +28,7 @@ interface IProps {
   externalLink?: string;
   onClose: () => void;
   linkedinName?: string;
+  emailAddress?: string;
 }
 
 const CustomAppBar = (props: IProps) => {
@@ -35,6 +37,13 @@ const CustomAppBar = (props: IProps) => {
   return (
     <AppBar elevation={0} className={classes.navBar} color="transparent">
       <Toolbar>
+        {props.emailAddress && (
+          <MuiLink href={`mailto:${props.emailAddress}`} target="_blank" className={classes.link}>
+            <IconButton className={classes.topButton}>
+              <EmailIcon fontSize="small" />
+            </IconButton>
+          </MuiLink>
+        )}
         {props.linkedinName && (
           <MuiLink
             target="_blank"

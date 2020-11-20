@@ -4,12 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import EmailIcon from '@material-ui/icons/Email';
-import EventIcon from '@material-ui/icons/Event';
 import { formatDistance, formatDuration } from 'date-fns';
 import { isEmpty, last } from 'lodash';
 import Link from 'next/link';
@@ -36,13 +31,22 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
   );
   const lastMeeting = last(segments);
   const meetingTime = props.personDataStore.getMeetingTime(segments);
-  const timeInMeetings = formatDuration(meetingTime.thisWeek);
-  const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek);
+  const timeInMeetings = formatDuration(meetingTime.thisWeek)
+    .replace(' hours', 'h')
+    .replace(' minutes', 'm');
+  const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek)
+    .replace(' hours', 'h')
+    .replace(' minutes', 'm');
   const associates = props.personDataStore.getAssociates(props.personId, segments);
   const hasName = !person.name.includes('people/') && !person.name.includes('@');
+  const hasMeetingTime = meetingTime.lastWeekMs > 0;
   return (
     <React.Fragment>
-      <AppBar linkedinName={hasName ? person.name : undefined} onClose={props.close} />
+      <AppBar
+        linkedinName={hasName ? person.name : undefined}
+        onClose={props.close}
+        emailAddress={person.emailAddress}
+      />
       <div className={classes.topContainer}>
         <Box flexDirection="column" alignItems="center" display="flex">
           <Avatar className={classes.avatar} src={person.imageUrl || ''}>
@@ -57,38 +61,43 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           >
             {props.personDataStore.getPersonDisplayName(person)}
           </Typography>
-          <List dense={true} className={classes.inlineList} disablePadding={true}>
-            {person.emailAddress && (
-              <MuiLink
-                target="_blank"
-                className={classes.link}
-                rel="noreferrer"
-                href={`mailto:${person.emailAddress}`}
-              >
-                <ListItem button={true}>
-                  <ListItemIcon>
-                    <EmailIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary={person.emailAddress} />
-                </ListItem>
-              </MuiLink>
-            )}
-            {lastMeeting && (
-              <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
-                <ListItem button={true} className={classes.hideForMobile}>
-                  <ListItemIcon>
-                    <EventIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
-                  />
-                </ListItem>
-              </Link>
-            )}
-          </List>
+          <List dense={true} className={classes.inlineList} disablePadding={true}></List>
         </Box>
       </div>
       <Divider />
+      {lastMeeting && (
+        <React.Fragment>
+          <Grid container className={classes.triGroup} justify="space-between">
+            {lastMeeting && (
+              <Grid item xs className={classes.triGroupItem}>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Last meeting
+                </Typography>
+                <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
+                  <Typography variant="subtitle2">
+                    {formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
+                  </Typography>
+                </Link>
+              </Grid>
+            )}
+            {lastMeeting && hasMeetingTime && <div className={classes.triGroupBorder}></div>}
+            <Grid item xs className={classes.triGroupItem}>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Metings this week
+              </Typography>
+              <Typography variant="subtitle2">
+                {timeInMeetings}{' '}
+                {hasMeetingTime && (
+                  <sub>
+                    <i>From:</i> {timeInMeetingsLastWeek}
+                  </sub>
+                )}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Divider />
+        </React.Fragment>
+      )}
       <div className={classes.container}>
         <Grid container spacing={3} className={classes.content}>
           {person.isMissingProfile && (
@@ -122,21 +131,6 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             )}
           </Grid>
           <Grid item sm={5}>
-            {meetingTime.lastWeekMs > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Time in meetings
-                </Typography>
-                <div>
-                  <i>This week:</i> {timeInMeetings}
-                </div>
-                {meetingTime.lastWeekMs > 0 && (
-                  <div>
-                    <i>Last week:</i> {timeInMeetingsLastWeek}
-                  </div>
-                )}
-              </React.Fragment>
-            )}
             {associates.length > 0 && (
               <React.Fragment>
                 <Typography variant="h6" className={classes.smallHeading}>

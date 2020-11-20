@@ -95,6 +95,22 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  triGroup: {
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    width: '100%',
+  },
+  triGroupItem: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  triGroupBorder: {
+    width: 1,
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    background: theme.palette.divider,
+    height: 'auto',
+  },
 }));
 
 export default useStyles;

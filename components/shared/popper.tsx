@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 500,
     maxHeight: '80vh',
     overflow: 'auto',
+    overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       maxWidth: `calc(100vw - 90px)`,
     },
