@@ -8,7 +8,6 @@ import Linkify from 'react-linkify';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
-import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import { IStore } from '../store/use-store';
 
@@ -20,7 +19,6 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   }
   const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
   const hasAttendees = attendees.length > 0;
-  const hasEmails = meeting.emailIds.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
   const hasDriveActivity = meeting.driveActivityIds.length > 0;
   const meetingDriveActivity = meeting.driveActivityIds.map(
@@ -41,7 +39,6 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
     props.driveActivityStore,
     currentUser && currentUser.id,
   );
-  const recentEmailsFromAttendees = flatten(people.map((person) => person.emailIds));
   const driveActivityFromAttendees = flatten(
     people.map((person) => Object.values(person.driveActivity)),
   );
@@ -83,18 +80,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
                 </Typography>
               </React.Fragment>
             )}
-            {hasEmails && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Emails Sent or received during the meeting
-                </Typography>
-                <EmailsList
-                  emailIds={meeting.emailIds}
-                  emailStore={props.emailDataStore}
-                  personStore={props.personDataStore}
-                />
-              </React.Fragment>
-            )}
+
             {hasDriveActivity && (
               <React.Fragment>
                 <Typography variant="h6" className={classes.smallHeading}>
@@ -115,18 +101,6 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
                 <DriveActivityList
                   driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
                   docStore={props.docDataStore}
-                  personStore={props.personDataStore}
-                />
-              </React.Fragment>
-            )}
-            {recentEmailsFromAttendees.length > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Recent emails from people in this meeting
-                </Typography>
-                <EmailsList
-                  emailIds={recentEmailsFromAttendees}
-                  emailStore={props.emailDataStore}
                   personStore={props.personDataStore}
                 />
               </React.Fragment>

@@ -1,7 +1,6 @@
 import FetchAll from '../fetch/fetch-all';
 import DocDataStore, { formatGoogleDoc } from './doc-store';
 import DriveActivityDataStore from './drive-activity-store';
-import EmailDataStore from './email-store';
 import PersonDataStore, { formatPerson } from './person-store';
 import TfidfDataStore from './tfidf-store';
 import TimeDataStore from './time-store';
@@ -11,7 +10,6 @@ export interface IStore {
   readonly timeDataStore: TimeDataStore;
   readonly docDataStore: DocDataStore;
   readonly driveActivityStore: DriveActivityDataStore;
-  readonly emailDataStore: EmailDataStore;
   readonly tfidfStore: TfidfDataStore;
   readonly lastUpdated: Date;
   readonly refetch: () => void;
@@ -44,9 +42,6 @@ const useStore = (signedIn: boolean): IStore => {
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
   // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
 
-  const emailDataStore = new EmailDataStore(data.emails, personDataStore);
-  // console.log('EMAIL DATA STORE:', emailDataStore);
-
   const tfidfStore = new TfidfDataStore(
     {
       driveActivityStore: driveActivityDataStore,
@@ -59,7 +54,6 @@ const useStore = (signedIn: boolean): IStore => {
 
   return {
     driveActivityStore: driveActivityDataStore,
-    emailDataStore,
     timeDataStore,
     personDataStore,
     docDataStore,

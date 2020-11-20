@@ -35,8 +35,10 @@ export interface IFormattedDriveActivity {
   action: string;
   actorPersonId?: string | null;
   title?: string | null;
-  link?: string | null;
+  link: string;
 }
+
+type ExcludesFalse = <T>(x: T | false) => x is T;
 
 const fetchDriveActivityForDocument = async (documentId: string) => {
   // Todo: Make driveactivity types
@@ -54,23 +56,28 @@ const fetchDriveActivityForDocument = async (documentId: string) => {
           )
         : [];
 
-    const formattedDriveActivity: IFormattedDriveActivity[] = activity.map((activity) => {
-      const action = activity.primaryActionDetail
-        ? Object.keys(activity.primaryActionDetail)[0]
-        : 'unknown';
-      const targetInfo = activity.targets ? getTargetInfo(activity.targets[0]) : null;
-      const actor = activity.actors && activity.actors[0];
-      const actorPersonId =
-        actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
-      return {
-        id: activity.timestamp || 'noid',
-        time: activity.timestamp ? new Date(activity.timestamp) : new Date(),
-        action,
-        actorPersonId,
-        title: targetInfo && targetInfo.title,
-        link: targetInfo && targetInfo.link,
-      };
-    });
+    const formattedDriveActivity = activity
+      .map((activity) => {
+        const action = activity.primaryActionDetail
+          ? Object.keys(activity.primaryActionDetail)[0]
+          : 'unknown';
+        const targetInfo = activity.targets ? getTargetInfo(activity.targets[0]) : null;
+        const actor = activity.actors && activity.actors[0];
+        const actorPersonId =
+          actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
+        if (!targetInfo || !targetInfo.link) {
+          return false; // typescript and filter don't get along
+        }
+        return {
+          id: activity.timestamp || 'noid',
+          time: activity.timestamp ? new Date(activity.timestamp) : new Date(),
+          action,
+          actorPersonId,
+          title: targetInfo && targetInfo.title,
+          link: targetInfo && targetInfo.link,
+        };
+      })
+      .filter((Boolean as any) as ExcludesFalse);
 
     // these are returned as 'people ids'
     const peopleIds = formattedDriveActivity

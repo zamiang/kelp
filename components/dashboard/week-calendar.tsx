@@ -380,7 +380,7 @@ const DayContent = (props: IDayContentProps) => {
       .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
       .map((activity) => ({
         activity,
-        document: props.documentsStore.getByLink(activity.link!),
+        document: props.documentsStore.getByLink(activity.link),
       }));
 
     documentsHtml = documentActivityPairs.map((pairs) => (

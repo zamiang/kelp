@@ -17,7 +17,6 @@ import React from 'react';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivity from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
-import EmailsList from '../shared/emails-list';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import { IStore } from '../store/use-store';
@@ -119,18 +118,6 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
                   Meetings
                 </Typography>
                 <MeetingList segments={segments} personStore={props.personDataStore} />
-              </React.Fragment>
-            )}
-            {person.emailIds.length > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Emails
-                </Typography>
-                <EmailsList
-                  emailIds={person.emailIds}
-                  emailStore={props.emailDataStore}
-                  personStore={props.personDataStore}
-                />
               </React.Fragment>
             )}
           </Grid>

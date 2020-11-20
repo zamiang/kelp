@@ -56,16 +56,12 @@ const DriveActivityList = (props: {
   docStore: DocDataStore;
 }) => {
   const classes = useRowStyles();
-  const actions = uniqBy(
-    props.driveActivity.filter((action) => action && action.link),
-    'link',
-  );
+  const actions = uniqBy(props.driveActivity, 'link');
   if (actions.length < 1) {
     return null;
   }
   const docs = actions
-    .filter((action) => action && action.link)
-    .map((action) => props.docStore.getByLink(action.link!))
+    .map((action) => props.docStore.getByLink(action.link))
     .filter((doc) => doc && doc.updatedAt)
     .sort((a, b) => (a!.updatedAt! > b!.updatedAt! ? -1 : 1));
   return (
