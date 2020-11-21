@@ -136,13 +136,10 @@ export const DashboardContainer = ({ store }: IProps) => {
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
       <Head>
-        <title> Dashboard - Kelp</title>
+        <title>Dashboard - Kelp</title>
       </Head>
       <LeftDrawer
         lastUpdated={store.lastUpdated}
-        people={store.personDataStore.getPeople()}
-        documents={store.docDataStore.getDocs()}
-        meetings={store.timeDataStore.getSegments()}
         handleRefreshClick={handleRefreshClick}
         tab={tab as any}
       />

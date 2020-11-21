@@ -290,27 +290,29 @@ export default class PersonDataStore {
   }
 
   cleanupDuplicateSegmentIds() {
-    this.getPeople().map((person) => (person.segmentIds = uniq(person.segmentIds)));
+    this.getPeople(false).map((person) => (person.segmentIds = uniq(person.segmentIds)));
   }
 
-  getPeopleMeetingWithOnDay(timeDataStore: IStore['timeDataStore'], date: Date) {
+  getPeopleMeetingWithOnDay(
+    timeDataStore: IStore['timeDataStore'],
+    date: Date,
+    shouldExcludeSelf: boolean,
+  ) {
     const meetings = timeDataStore.getSegmentsForDay(date);
     return sortBy(
-      uniqBy(
-        flatten(meetings.map((segment) => segment.formattedAttendees)),
-        'personId',
-      ).map((attendee) => this.getPersonById(attendee.personId)),
+      uniqBy(flatten(meetings.map((segment) => segment.formattedAttendees)), 'personId')
+        .map((attendee) => this.getPersonById(attendee.personId))
+        .filter((person) => (shouldExcludeSelf ? !person?.isCurrentUser : true)),
       'name',
     );
   }
 
-  getPeopleMeetingWithThisWeek(timeDataStore: IStore['timeDataStore']) {
+  getPeopleMeetingWithThisWeek(timeDataStore: IStore['timeDataStore'], shouldExcludeSelf: boolean) {
     const meetingsThisWeek = timeDataStore.getSegmentsForWeek(getWeek(new Date()));
     return sortBy(
-      uniqBy(
-        flatten(meetingsThisWeek.map((segment) => segment.formattedAttendees)),
-        'personId',
-      ).map((attendee) => this.getPersonById(attendee.personId)),
+      uniqBy(flatten(meetingsThisWeek.map((segment) => segment.formattedAttendees)), 'personId')
+        .map((attendee) => this.getPersonById(attendee.personId))
+        .filter((person) => (shouldExcludeSelf ? !person?.isCurrentUser : true)),
       'name',
     );
   }
@@ -326,12 +328,14 @@ export default class PersonDataStore {
     return Object.keys(this.personById);
   }
 
-  getPeople() {
-    return Object.values(this.personById);
+  getPeople(shouldExcludeSelf: boolean) {
+    return Object.values(this.personById).filter((person) =>
+      shouldExcludeSelf ? !person?.isCurrentUser : true,
+    );
   }
 
   getSelf(): IPerson | undefined {
-    return first(this.getPeople().filter((person) => person.isCurrentUser));
+    return first(this.getPeople(false).filter((person) => person.isCurrentUser));
   }
 
   getPersonById(id: string): IPerson | undefined {

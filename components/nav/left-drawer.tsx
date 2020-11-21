@@ -21,9 +21,6 @@ import { useSession } from 'next-auth/client';
 import Link from 'next/link';
 import React from 'react';
 import { drawerWidth } from '../../pages/dashboard';
-import { IDoc } from '../store/doc-store';
-import { IPerson } from '../store/person-store';
-import { ISegment } from '../store/time-store';
 import RefreshButton from './refresh-button';
 import SearchBar from './search-bar';
 
@@ -109,10 +106,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   handleRefreshClick: () => void;
-  people: IPerson[];
   lastUpdated: Date;
-  documents: IDoc[];
-  meetings: ISegment[];
   tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search' | 'home';
 }
 

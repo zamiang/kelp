@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
   image: {
     display: 'block',
     width: '100%',
+    minHeight: 22,
+    minWidth: 22,
   },
   time: { minWidth: 160, maxWidth: 180, textAlign: 'right' },
   row: {
@@ -54,7 +56,7 @@ const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
         classes.row,
       )}
     >
-      <Grid container spacing={1} alignItems="center">
+      <Grid container spacing={1} alignItems="center" justify="flex-start">
         <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
           <ExpandedDocument
             documentId={props.doc.id}
@@ -65,7 +67,7 @@ const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
         <Grid item className={classes.imageContainer}>
           <img src={props.doc.iconLink} className={classes.image} />
         </Grid>
-        <Grid item zeroMinWidth xs>
+        <Grid item zeroMinWidth>
           <Typography noWrap variant="body2">
             <b>{props.doc.name}</b>
           </Typography>

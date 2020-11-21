@@ -13,6 +13,7 @@ const PeopleToday = (props: IStore & { selectedPersonId: string | null }) => {
   const peopleMeetingWithToday = props.personDataStore.getPeopleMeetingWithOnDay(
     props.timeDataStore,
     new Date(),
+    true,
   );
   return (
     <div className={classes.section}>
@@ -37,6 +38,7 @@ const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => 
   const classes = panelStyles();
   const peopleMeetingWithThisWeek = props.personDataStore.getPeopleMeetingWithThisWeek(
     props.timeDataStore,
+    true,
   );
   return (
     <div className={classes.section}>
@@ -59,7 +61,7 @@ const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => 
 
 const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = panelStyles();
-  const people = sortBy(props.personDataStore.getPeople(), 'name');
+  const people = sortBy(props.personDataStore.getPeople(true), 'name');
   return (
     <div className={classes.section}>
       <div className={classes.rowNoBorder}>

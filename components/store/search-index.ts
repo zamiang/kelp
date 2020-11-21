@@ -40,7 +40,7 @@ export default class SearchIndex {
       }
     });
     // People
-    store.personDataStore.getPeople().map((person) => {
+    store.personDataStore.getPeople(false).map((person) => {
       // TODO: Remove need to do indexof
       if (person && person.name.indexOf('person') < 0 && person.name.indexOf('@') < 0) {
         searchIndex.push({
