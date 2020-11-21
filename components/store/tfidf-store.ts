@@ -67,7 +67,11 @@ export default class TfidfStore {
     // Docs
     if (filters.docs) {
       store.driveActivityStore.getAll().map((activity) => {
-        if (activity.link) {
+        if (
+          activity.link &&
+          activity.actorPersonId &&
+          store.personDataStore.getPersonById(activity.actorPersonId)?.isCurrentUser
+        ) {
           const doc = store.docDataStore.getByLink(activity.link);
           const day = differenceInCalendarDays(currentDate, activity.time);
           if (documentsByDay[day] && doc && doc.name) {
