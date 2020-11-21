@@ -1,8 +1,7 @@
 import { flatten, uniq } from 'lodash';
 import config from '../../constants/config';
-import { DriveActivity, Target } from '../types/activity';
 
-const getTargetInfo = (target: Target) => {
+const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
   if (target.drive) {
     // Not handling these
     console.warn('unable to get target info for', target);
@@ -41,18 +40,16 @@ export interface IFormattedDriveActivity {
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
 const fetchDriveActivityForDocument = async (documentId: string) => {
-  // Todo: Make driveactivity types
   try {
-    const activityResponse = await (gapi.client as any).driveactivity.activity.query({
-      pageSize: 100,
-      filter: `detail.action_detail_case:(CREATE EDIT COMMENT) AND time >= "${config.startDate.toISOString()}"`,
+    const activityResponse = await gapi.client.driveactivity.activity.query({
+      pageSize: 50,
+      filter: `detail.action_detail_case:(CREATE EDIT COMMENT RENAME) AND time >= "${config.startDate.toISOString()}"`,
       itemName: `items/${documentId}`,
-    });
-    const activity: DriveActivity[] =
+    } as any);
+    const activity =
       activityResponse && activityResponse.result && activityResponse.result.activities
         ? activityResponse.result.activities.filter(
-            (activity: DriveActivity) =>
-              activity.actors && activity.actors[0] && activity.actors[0].user,
+            (activity) => activity.actors && activity.actors[0] && activity.actors[0].user,
           )
         : [];
 

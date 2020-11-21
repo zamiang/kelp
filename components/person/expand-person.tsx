@@ -83,7 +83,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             {lastMeeting && hasMeetingTime && <div className={classes.triGroupBorder}></div>}
             <Grid item xs className={classes.triGroupItem}>
               <Typography variant="h6" className={classes.smallHeading}>
-                Metings this week
+                Meetings this week
               </Typography>
               <Typography variant="subtitle2">
                 {timeInMeetings}{' '}

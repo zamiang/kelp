@@ -79,7 +79,6 @@ export default class PersonDataStore {
     this.addEmailAddressessToStore(emailAddresses);
   }
 
-  // TODO: Cache this?
   getMeetingTime(segments: (ISegment | undefined)[]) {
     const currentWeek = getWeek(new Date());
     const previousWeek = getWeek(subDays(new Date(), 7));
@@ -116,7 +115,6 @@ export default class PersonDataStore {
     };
   }
 
-  // TODO: Cache this?
   getDriveActivityWhileMeetingWith(
     people: IPerson[],
     timeDataStore: IStore['timeDataStore'],
@@ -179,6 +177,7 @@ export default class PersonDataStore {
       // Already in the store
       return;
     }
+
     this.personById[person.id.replace('people/', '')] = { ...person };
     if (person.emailAddress) {
       this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
