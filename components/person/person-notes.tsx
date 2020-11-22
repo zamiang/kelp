@@ -4,13 +4,31 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import EditIcon from '@material-ui/icons/Edit';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useExpandStyles from '../shared/expand-styles';
 import { IPerson } from '../store/person-store';
 import { updateContactNotes } from './update-contact';
+
+const useStyles = makeStyles((theme) => ({
+  textarea: {
+    border: `1px solid #dadce0`,
+    borderRadius: 0,
+    marginBottom: theme.spacing(1),
+  },
+  relativeContainer: {
+    borderRadius: theme.shape.borderRadius,
+    background: theme.palette.grey[100],
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+  },
+  edit: {
+    display: 'inline-block',
+    marginLeft: theme.spacing(1),
+    textDecoration: 'underline',
+  },
+}));
 
 type FormValues = {
   note: string;
@@ -18,7 +36,7 @@ type FormValues = {
 
 const NotesEditForm = (props: { person: IPerson; onCloseEdit: () => void }) => {
   const { handleSubmit, register, setValue } = useForm<FormValues>();
-  const classes = useExpandStyles();
+  const classes = useStyles();
   const onSubmit = handleSubmit(async (data) => {
     await updateContactNotes(props.person.googleId!, data.note, props.person);
     props.onCloseEdit();
@@ -48,7 +66,7 @@ const NotesEditForm = (props: { person: IPerson; onCloseEdit: () => void }) => {
 };
 
 const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
-  const classes = useExpandStyles();
+  const classes = useStyles();
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const onEdit = () => setIsEditing(true);
@@ -58,18 +76,14 @@ const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
   }
   return (
     <div className={classes.relativeContainer}>
-      <Typography variant="h6" className={classes.smallHeading}>
-        Notes
+      <Typography variant="subtitle2">
+        {!isEditing && <span>{props.person.notes || 'add notes...'}</span>}
+        {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
+          <span className={classes.edit} onClick={onEdit}>
+            Edit
+          </span>
+        )}
       </Typography>
-      {!isEditing && props.person.notes && (
-        <Typography variant="body2">{props.person.notes}</Typography>
-      )}
-      {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
-        <Button onClick={onEdit} className={classes.edit} size="small">
-          <EditIcon />
-          <Typography variant="subtitle2">Edit</Typography>
-        </Button>
-      )}
       {isEditing && <NotesEditForm person={props.person} onCloseEdit={onCloseEdit} />}
       {isEditing && (
         <IconButton onClick={onCloseEdit} size="small">

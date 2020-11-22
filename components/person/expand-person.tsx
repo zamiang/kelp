@@ -3,7 +3,6 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import { formatDistance, formatDuration } from 'date-fns';
 import { isEmpty, last } from 'lodash';
@@ -61,7 +60,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           >
             {props.personDataStore.getPersonDisplayName(person)}
           </Typography>
-          <List dense={true} className={classes.inlineList} disablePadding={true}></List>
+          <PersonNotes person={person} refetch={props.refetch} />
         </Box>
       </div>
       <Divider />
@@ -108,7 +107,6 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             </Grid>
           )}
           <Grid item sm={7}>
-            <PersonNotes person={person} refetch={props.refetch} />
             {!isEmpty(person.driveActivity) && (
               <React.Fragment>
                 <Typography variant="h6" className={classes.smallHeading}>

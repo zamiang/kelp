@@ -70,11 +70,6 @@ const useStyles = makeStyles((theme) => ({
       fontSize: 35,
     },
   },
-  textarea: {
-    border: `1px solid #dadce0`,
-    borderRadius: 0,
-    marginBottom: theme.spacing(1),
-  },
   link: {
     color: theme.palette.primary.dark,
   },
