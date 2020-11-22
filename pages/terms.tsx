@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';

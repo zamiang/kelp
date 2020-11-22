@@ -339,7 +339,10 @@ export default class PersonDataStore {
   }
 
   getPersonById(id: string): IPerson | undefined {
-    return this.personById[id.replace('people/', '')];
+    if (id) {
+      return this.personById[id.replace('people/', '')];
+    }
+    return undefined;
   }
 
   getPersonDisplayName(person: IPerson) {

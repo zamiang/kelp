@@ -25,24 +25,28 @@ const fetchContacts = async () => {
 
   people.result?.connections?.map((person) => {
     // TODO: Handle multiple email addresses
-    const emailAddress =
+    const primaryEmailAddress =
       person?.emailAddresses &&
       person.emailAddresses[0] &&
       person.emailAddresses[0].value?.toLocaleLowerCase();
     const displayName = person?.names && person?.names[0]?.displayName;
-    if (!emailAddress || !person.resourceName) {
+    if (!primaryEmailAddress || !person.resourceName) {
       return;
     }
     const formattedContact = {
       id: person.resourceName,
-      name: displayName || emailAddress || person.resourceName,
+      name: displayName || primaryEmailAddress || person.resourceName,
       isMissingProfile: person?.names ? false : true,
-      emailAddress,
+      emailAddress: primaryEmailAddress,
       imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
       notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
     };
     contactsByPeopleId[person.resourceName] = formattedContact;
-    contactsByEmail[emailAddress] = formattedContact;
+    person.emailAddresses?.map((email) => {
+      if (email.value) {
+        contactsByEmail[email.value.toLocaleLowerCase()] = formattedContact;
+      }
+    });
   });
   return { contactsByPeopleId, contactsByEmail };
 };
