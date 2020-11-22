@@ -94,7 +94,7 @@ const AttendeeRow = (props: IProps) => {
 
 const attendeeMax = 10;
 
-const useAttendeeStyles = makeStyles((theme) => ({
+const useAttendeeStyles = makeStyles(() => ({
   expand: {
     textDecoration: 'underline',
     cursor: 'pointer',
