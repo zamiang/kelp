@@ -1,5 +1,4 @@
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
@@ -59,6 +58,7 @@ const AttendeeRow = (props: IProps) => {
           <ListItem
             button={true}
             key={person.id}
+            disableGutters
             className={clsx(
               classes.person,
               attendee.responseStatus === 'accepted' && classes.personAccepted,
@@ -94,17 +94,29 @@ const AttendeeRow = (props: IProps) => {
 
 const attendeeMax = 10;
 
+const useAttendeeStyles = makeStyles((theme) => ({
+  expand: {
+    textDecoration: 'underline',
+    cursor: 'pointer',
+  },
+}));
+
 const AttendeeList = (props: IProps) => {
+  const classes = useAttendeeStyles();
   const [isExpanded, setExpand] = useState<boolean>(props.attendees.length < attendeeMax);
   return (
-    <Grid container spacing={2}>
+    <React.Fragment>
       {isExpanded && <AttendeeRow {...props} />}
       {!isExpanded && (
-        <Button className="ignore-react-onclickoutside" onClick={() => setExpand(true)}>
+        <Typography
+          variant="subtitle2"
+          className={clsx(classes.expand, 'ignore-react-onclickoutside')}
+          onClick={() => setExpand(true)}
+        >
           Show Full List
-        </Button>
+        </Typography>
       )}
-    </Grid>
+    </React.Fragment>
   );
 };
 

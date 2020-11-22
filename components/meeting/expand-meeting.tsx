@@ -70,17 +70,6 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
                 dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
               />
             )}
-            {meeting.location && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Location
-                </Typography>
-                <Typography variant="subtitle2" className={classes.overflowEllipsis}>
-                  {meeting.location}
-                </Typography>
-              </React.Fragment>
-            )}
-
             {hasDriveActivity && (
               <React.Fragment>
                 <Typography variant="h6" className={classes.smallHeading}>
@@ -127,8 +116,17 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
                 <Typography variant="caption" className={classes.smallCaption}>
                   {guestStats}
                 </Typography>
-                <br />
                 <AttendeeList personStore={props.personDataStore} attendees={attendees} />
+              </React.Fragment>
+            )}
+            {meeting.location && (
+              <React.Fragment>
+                <Typography variant="h6" className={classes.smallHeading}>
+                  Location
+                </Typography>
+                <Typography variant="subtitle2" className={classes.overflowEllipsis}>
+                  {meeting.location}
+                </Typography>
               </React.Fragment>
             )}
           </Grid>

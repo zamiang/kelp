@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     background: 'white',
     overscrollBehavior: 'contain',
   },
+  grayBackground: {
+    backgroundColor: '#F4F5F7',
+  },
   yellowBackground: {
     backgroundColor: config.YELLOW_BACKGROUND,
   },
@@ -115,13 +118,13 @@ export const DashboardContainer = ({ store }: IProps) => {
   } as any;
 
   const colorHash = {
-    week: classes.yellowBackground,
+    week: classes.grayBackground,
+    summary: classes.grayBackground,
+    search: classes.grayBackground,
+    settings: classes.grayBackground,
     meetings: classes.blueBackground,
     docs: classes.pinkBackground,
     people: classes.orangeBackground,
-    settings: classes.purpleBackground,
-    search: classes.purpleBackground,
-    summary: classes.blueBackground,
   } as any;
 
   useEffect(() => {
@@ -132,7 +135,6 @@ export const DashboardContainer = ({ store }: IProps) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
   }, []);
-
   return (
     <div className={clsx(classes.container, colorHash[tab])}>
       <Head>

@@ -21,13 +21,16 @@ module.exports = {
           contentSecurityPolicy: {
             directives: {
               defaultSrc: "'self'",
-              styleSrc: ["'self'", "'unsafe-inline'"],
+              styleSrc: ["'self'", "'unsafe-inline'", 'https://rsms.me/inter/inter.css'],
               imgSrc: [
                 "'self'",
                 'https://placeimg.com',
-                'https://drive-thirdparty.googleusercontent.com/',
+                'https://drive-thirdparty.googleusercontent.com',
                 'https://*.googleusercontent.com',
                 'https://platform.slack-edge.com',
+              ],
+              fontSrc: [
+                "'self'", 'https://rsms.me',
               ],
               scriptSrc: [
                 "'self'",

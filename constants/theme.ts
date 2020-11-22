@@ -1,6 +1,6 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
-const bodyFontFamily = "'-apple-system', Arial, sans-serif;";
+const bodyFontFamily = "'Inter var', '-apple-system', 'Helvetica Neue', sans-serif;";
 
 const theme = createMuiTheme({
   palette: {
@@ -42,7 +42,7 @@ const theme = createMuiTheme({
   },
   typography: {
     fontSize: 13,
-    fontFamily: "'-apple-system', 'Helvetica Neue', sans-serif;",
+    fontFamily: bodyFontFamily,
     fontWeightRegular: 500,
     h1: {
       fontWeight: 500,
@@ -52,6 +52,9 @@ const theme = createMuiTheme({
     },
     h3: {
       fontWeight: 500,
+    },
+    h6: {
+      fontWeight: 600,
     },
     subtitle1: {
       fontFamily: bodyFontFamily,
