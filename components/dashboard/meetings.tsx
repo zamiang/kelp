@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import MeetingRow from '../meeting/meeting-row';
+import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
@@ -64,6 +65,7 @@ const MeetingsByDay = (
   const meetingsByDay = props.timeDataStore.getSegmentsByDay();
   const currentTime = new Date();
   const classes = panelStyles();
+  const buttonClasses = useButtonStyles();
   const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
   let hasRenderedCurrentTime = false;
   const currentTitle = 'Meeting Schedule';
@@ -71,9 +73,7 @@ const MeetingsByDay = (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
         <Button
-          variant="contained"
-          disableElevation
-          className={classes.unSelected}
+          className={buttonClasses.unSelected}
           onClick={() => referenceElement?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
         >
           Now

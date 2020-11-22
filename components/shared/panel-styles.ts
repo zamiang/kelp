@@ -56,24 +56,6 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: theme.spacing(1),
     },
   },
-  selected: {
-    borderRadius: '0.375rem',
-    border: `1px solid ${theme.palette.primary.main}`,
-    textTransform: 'none',
-    background: theme.palette.primary.main,
-    color: theme.palette.getContrastText(theme.palette.primary.main),
-    fontWeight: 600,
-    fontSize: 14,
-  },
-  unSelected: {
-    borderRadius: '0.375rem',
-    border: `1px solid ${theme.palette.divider}`,
-    textTransform: 'none',
-    background: theme.palette.background.paper,
-    color: theme.palette.text.hint,
-    fontWeight: 600,
-    fontSize: 14,
-  },
 }));
 
 export default useStyles;

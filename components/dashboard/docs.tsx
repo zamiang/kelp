@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import DocumentRow from '../docs/document-row';
+import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
@@ -75,6 +76,7 @@ const titleHash = {
 
 const Documents = (props: IStore) => {
   const classes = panelStyles();
+  const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('this-week');
   const selectedDocumentId = useRouter().query.slug as string;
   const currentTitle = titleHash[currentTab];
@@ -90,8 +92,9 @@ const Documents = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'today' ? classes.selected : classes.unSelected}
+              className={currentTab === 'today' ? buttonClasses.selected : buttonClasses.unSelected}
               disableElevation
+              disabled={currentTab === 'today'}
               onClick={() => changeTab('today')}
             >
               Today
@@ -100,8 +103,11 @@ const Documents = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'this-week' ? classes.selected : classes.unSelected}
+              className={
+                currentTab === 'this-week' ? buttonClasses.selected : buttonClasses.unSelected
+              }
               disableElevation
+              disabled={currentTab === 'this-week'}
               onClick={() => changeTab('this-week')}
             >
               This Week
@@ -110,8 +116,9 @@ const Documents = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'all' ? classes.selected : classes.unSelected}
+              className={currentTab === 'all' ? buttonClasses.selected : buttonClasses.unSelected}
               disableElevation
+              disabled={currentTab === 'all'}
               onClick={() => changeTab('all')}
             >
               All

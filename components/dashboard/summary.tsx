@@ -13,6 +13,7 @@ import { times } from 'lodash';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import config from '../../constants/config';
+import useButtonStyles from '../shared/button-styles';
 import TopBar from '../shared/top-bar';
 import { IFilters, uncommonPunctuation } from '../store/tfidf-store';
 import { IStore } from '../store/use-store';
@@ -56,28 +57,6 @@ const useTitleRowStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     padding: 0,
   },
-  selected: {
-    borderRadius: '0.375rem',
-    border: `1px solid ${theme.palette.primary.main}`,
-    textTransform: 'none',
-    background: theme.palette.primary.main,
-    color: theme.palette.getContrastText(theme.palette.primary.main),
-    fontWeight: 600,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    fontSize: 14,
-  },
-  unSelected: {
-    borderRadius: '0.375rem',
-    border: `1px solid ${theme.palette.divider}`,
-    textTransform: 'none',
-    background: theme.palette.background.paper,
-    color: theme.palette.text.hint,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    fontWeight: 600,
-    fontSize: 14,
-  },
   day: {
     color: theme.palette.secondary.light,
     textTransform: 'uppercase',
@@ -94,6 +73,7 @@ const TitleRow = (props: {
   setFilter: (filter: IFilters) => void;
 }) => {
   const classes = useTitleRowStyles();
+  const buttonClasses = useButtonStyles();
   const isCalendarSelected = props.filters.meetings;
   const isDocsSelected = props.filters.docs;
   const isPeopleSelected = props.filters.people;
@@ -114,7 +94,7 @@ const TitleRow = (props: {
             <Grid container spacing={2}>
               <Grid item>
                 <Button
-                  className={isCalendarSelected ? classes.selected : classes.unSelected}
+                  className={isCalendarSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={toggleCalendarSelected}
                   startIcon={<CalendarViewDayIcon />}
                 >
@@ -123,7 +103,7 @@ const TitleRow = (props: {
               </Grid>
               <Grid item>
                 <Button
-                  className={isDocsSelected ? classes.selected : classes.unSelected}
+                  className={isDocsSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={toggleDocsSelected}
                   startIcon={<InsertDriveFileIcon />}
                 >
@@ -132,7 +112,7 @@ const TitleRow = (props: {
               </Grid>
               <Grid item>
                 <Button
-                  className={isPeopleSelected ? classes.selected : classes.unSelected}
+                  className={isPeopleSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={togglePeopleSelected}
                   startIcon={<PeopleIcon />}
                 >

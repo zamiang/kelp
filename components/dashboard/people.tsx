@@ -4,6 +4,7 @@ import { sortBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import PersonRow from '../person/person-row';
+import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
@@ -88,6 +89,7 @@ const titleHash = {
 
 const People = (props: IStore) => {
   const classes = panelStyles();
+  const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('this-week');
   const selectedPersonId = useRouter().query.slug as string;
   const currentTitle = titleHash[currentTab];
@@ -103,8 +105,9 @@ const People = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'today' ? classes.selected : classes.unSelected}
+              className={currentTab === 'today' ? buttonClasses.selected : buttonClasses.unSelected}
               disableElevation
+              disabled={currentTab === 'today'}
               onClick={() => changeTab('today')}
             >
               Today
@@ -113,8 +116,11 @@ const People = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'this-week' ? classes.selected : classes.unSelected}
+              className={
+                currentTab === 'this-week' ? buttonClasses.selected : buttonClasses.unSelected
+              }
               disableElevation
+              disabled={currentTab === 'this-week'}
               onClick={() => changeTab('this-week')}
             >
               This Week
@@ -123,7 +129,8 @@ const People = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'all' ? classes.selected : classes.unSelected}
+              className={currentTab === 'all' ? buttonClasses.selected : buttonClasses.unSelected}
+              disabled={currentTab === 'all'}
               disableElevation
               onClick={() => changeTab('all')}
             >
