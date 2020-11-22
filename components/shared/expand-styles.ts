@@ -63,9 +63,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.contrastText,
     height: 77,
     width: 77,
+    fontSize: 50,
     [theme.breakpoints.down('sm')]: {
       height: 50,
       width: 50,
+      fontSize: 35,
     },
   },
   textarea: {

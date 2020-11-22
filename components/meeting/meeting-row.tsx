@@ -82,6 +82,7 @@ const MeetingRow = (props: {
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,
+          rowStyles.rowBorderRadius,
           classes.row,
           props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
           props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,

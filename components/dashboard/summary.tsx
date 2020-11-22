@@ -1,9 +1,5 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
@@ -60,9 +56,27 @@ const useTitleRowStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     padding: 0,
   },
-  listItem: {
-    borderRadius: theme.shape.borderRadius,
-    marginLeft: theme.spacing(1),
+  selected: {
+    borderRadius: '0.375rem',
+    border: `1px solid ${theme.palette.primary.main}`,
+    textTransform: 'none',
+    background: theme.palette.primary.main,
+    color: theme.palette.getContrastText(theme.palette.primary.main),
+    fontWeight: 600,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    fontSize: 14,
+  },
+  unSelected: {
+    borderRadius: '0.375rem',
+    border: `1px solid ${theme.palette.divider}`,
+    textTransform: 'none',
+    background: theme.palette.background.paper,
+    color: theme.palette.text.hint,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    fontWeight: 600,
+    fontSize: 14,
   },
   day: {
     color: theme.palette.secondary.light,
@@ -97,41 +111,35 @@ const TitleRow = (props: {
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
         <Grid container justify="space-between" alignContent="center" alignItems="center">
           <Grid item>
-            <List dense className={classes.list} disablePadding>
-              <ListItem
-                selected={isCalendarSelected}
-                button
-                className={classes.listItem}
-                onClick={toggleCalendarSelected}
-              >
-                <ListItemIcon>
-                  <CalendarViewDayIcon />
-                </ListItemIcon>
-                <ListItemText>Meetings</ListItemText>
-              </ListItem>
-              <ListItem
-                button
-                selected={isDocsSelected}
-                className={classes.listItem}
-                onClick={toggleDocsSelected}
-              >
-                <ListItemIcon>
-                  <InsertDriveFileIcon />
-                </ListItemIcon>
-                <ListItemText>Documents</ListItemText>
-              </ListItem>
-              <ListItem
-                button
-                selected={isPeopleSelected}
-                className={classes.listItem}
-                onClick={togglePeopleSelected}
-              >
-                <ListItemIcon>
-                  <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText>People</ListItemText>
-              </ListItem>
-            </List>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Button
+                  className={isCalendarSelected ? classes.selected : classes.unSelected}
+                  onClick={toggleCalendarSelected}
+                  startIcon={<CalendarViewDayIcon />}
+                >
+                  Meetings
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  className={isDocsSelected ? classes.selected : classes.unSelected}
+                  onClick={toggleDocsSelected}
+                  startIcon={<InsertDriveFileIcon />}
+                >
+                  Documents
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  className={isPeopleSelected ? classes.selected : classes.unSelected}
+                  onClick={togglePeopleSelected}
+                  startIcon={<PeopleIcon />}
+                >
+                  People
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item>
             <Button onClick={props.onBackClick}>

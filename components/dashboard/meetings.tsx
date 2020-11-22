@@ -73,6 +73,7 @@ const MeetingsByDay = (
         <Button
           variant="contained"
           disableElevation
+          className={classes.unSelected}
           onClick={() => referenceElement?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
         >
           Now

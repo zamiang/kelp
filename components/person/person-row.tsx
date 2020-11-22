@@ -29,7 +29,6 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
       referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [referenceElement]);
-
   const [isOpen, setIsOpen] = React.useState(isSelected);
   const handleClick = () => {
     setIsOpen(true);

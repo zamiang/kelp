@@ -27,7 +27,9 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
         <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
           {document.name || '(no title)'}
         </Typography>
-        {document.updatedAt && <i>Modified: {format(document.updatedAt, 'EEEE, MMMM d p')}</i>}
+        {document.updatedAt && (
+          <React.Fragment>Modified: {format(document.updatedAt, 'EEEE, MMMM d p')}</React.Fragment>
+        )}
       </div>
       <Divider />
       <div className={classes.container}>

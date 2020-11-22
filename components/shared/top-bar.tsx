@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     height: 83,
     borderBottom: `1px solid ${theme.palette.divider}`,
     padding: theme.spacing(3),
+    paddingRight: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
     position: 'sticky',
     top: 0,
     zIndex: 1,

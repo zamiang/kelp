@@ -51,17 +51,29 @@ const useStyles = makeStyles((theme) => ({
   },
   rowNoBorder: {
     marginBottom: theme.spacing(4),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
   },
   selected: {
-    color: theme.palette.text.primary,
+    borderRadius: '0.375rem',
+    border: `1px solid ${theme.palette.primary.main}`,
+    textTransform: 'none',
+    background: theme.palette.primary.main,
+    color: theme.palette.getContrastText(theme.palette.primary.main),
+    fontWeight: 600,
+    fontSize: 14,
   },
-  unSelected: { color: theme.palette.text.hint },
+  unSelected: {
+    borderRadius: '0.375rem',
+    border: `1px solid ${theme.palette.divider}`,
+    textTransform: 'none',
+    background: theme.palette.background.paper,
+    color: theme.palette.text.hint,
+    fontWeight: 600,
+    fontSize: 14,
+  },
 }));
 
 export default useStyles;
