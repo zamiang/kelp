@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     textDecoration: 'underline',
   },
+  addNotes: {
+    color: theme.palette.grey[600],
+  },
 }));
 
 type FormValues = {
@@ -77,7 +80,9 @@ const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
   return (
     <div className={classes.relativeContainer}>
       <Typography variant="subtitle2">
-        {!isEditing && <span>{props.person.notes || 'add notes...'}</span>}
+        {!isEditing && (
+          <span>{props.person.notes || <span className={classes.addNotes}>add notes</span>}</span>
+        )}
         {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
           <span className={classes.edit} onClick={onEdit}>
             Edit
