@@ -9,12 +9,14 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 2,
   },
   paper: {
-    maxWidth: 500,
+    maxWidth: 550,
     maxHeight: '80vh',
     overflow: 'auto',
+    minWidth: 500,
     overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       maxWidth: `calc(100vw - 90px)`,
+      minWidth: 0,
     },
   },
 }));
