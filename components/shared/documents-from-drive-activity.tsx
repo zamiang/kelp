@@ -58,7 +58,7 @@ const DriveActivityList = (props: {
   const classes = useRowStyles();
   const actions = uniqBy(props.driveActivity, 'link');
   if (actions.length < 1) {
-    return null;
+    return <Typography variant="body2">None</Typography>;
   }
   const docs = actions
     .map((action) => props.docStore.getByLink(action.link))

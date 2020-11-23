@@ -1,4 +1,4 @@
-import { intervalToDuration, subDays } from 'date-fns';
+import { intervalToDuration, subWeeks } from 'date-fns';
 import { first, flatten, sortBy, uniq, uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
@@ -76,7 +76,7 @@ export default class PersonDataStore {
 
   getMeetingTime(segments: (ISegment | undefined)[]) {
     const currentWeek = getWeek(new Date());
-    const previousWeek = getWeek(subDays(new Date(), 7));
+    const previousWeek = getWeek(subWeeks(new Date(), 1));
     const timeInMeetingsInMs = segments
       .map((segment) =>
         segment && getWeek(segment.start) === currentWeek
@@ -172,7 +172,6 @@ export default class PersonDataStore {
       }
     });
     if (isInStore) {
-      console.log('is in store', person, this);
       return;
     }
 

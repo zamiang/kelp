@@ -51,6 +51,10 @@ const MeetingList = (props: {
   personStore: PersonDataStore;
 }) => {
   const classes = useRowStyles();
+  if (props.segments.length < 1) {
+    return <Typography variant="body2">None</Typography>;
+  }
+
   const sortedSegments = props.segments
     .filter((item) => !!item)
     .sort((a, b) => (a!.start < b!.start ? -1 : 1));

@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { formatDistance, formatDuration } from 'date-fns';
-import { isEmpty, last } from 'lodash';
+import { last } from 'lodash';
 import Link from 'next/link';
 import React from 'react';
 import AttendeeList from '../shared/attendee-list';
@@ -64,79 +64,72 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
         </Box>
       </div>
       <Divider />
-      {lastMeeting && (
-        <React.Fragment>
-          <Grid container className={classes.triGroup} justify="space-between">
-            {lastMeeting && (
-              <Grid item xs className={classes.triGroupItem}>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Last meeting
-                </Typography>
-                <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
-                  <Typography variant="subtitle2">
-                    {formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
-                  </Typography>
-                </Link>
-              </Grid>
+      <Grid container className={classes.triGroup} justify="space-between">
+        <Grid item xs className={classes.triGroupItem}>
+          <Typography variant="h6" className={classes.smallHeading}>
+            Last meeting
+          </Typography>
+          {lastMeeting && (
+            <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
+              <Typography className={classes.highlight}>
+                <span className={classes.highlightValue}>
+                  {formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
+                </span>
+              </Typography>
+            </Link>
+          )}
+          {!lastMeeting && (
+            <Typography className={classes.highlight}>
+              <span className={classes.highlightValue}>None</span>
+            </Typography>
+          )}
+        </Grid>
+        <div className={classes.triGroupBorder}></div>
+        <Grid item xs className={classes.triGroupItem}>
+          <Typography variant="h6" className={classes.smallHeading}>
+            Meetings this week
+          </Typography>
+          <Typography className={classes.highlight}>
+            <span className={classes.highlightValue}>{timeInMeetings || 'None'} </span>
+            {hasMeetingTime && (
+              <span className={classes.highlightSub}>from {timeInMeetingsLastWeek || 'None'}</span>
             )}
-            {lastMeeting && hasMeetingTime && <div className={classes.triGroupBorder}></div>}
-            <Grid item xs className={classes.triGroupItem}>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Meetings this week
-              </Typography>
-              <Typography variant="subtitle2">
-                {timeInMeetings}{' '}
-                {hasMeetingTime && (
-                  <sub>
-                    <i>From:</i> {timeInMeetingsLastWeek}
-                  </sub>
-                )}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Divider />
-        </React.Fragment>
-      )}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Divider />
       <div className={classes.container}>
         <Grid container spacing={3} className={classes.content}>
           {person.isMissingProfile && (
-            <Grid item sm={7}>
+            <Grid item>
               <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
                 Add this person to your google contacts for more info
               </MuiLink>
             </Grid>
           )}
-          <Grid item sm={7}>
-            {!isEmpty(person.driveActivity) && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Active Documents
-                </Typography>
-                <DriveActivity
-                  driveActivity={Object.values(person.driveActivity)}
-                  personStore={props.personDataStore}
-                  docStore={props.docDataStore}
-                />
-              </React.Fragment>
-            )}
-            {person.segmentIds.length > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Meetings
-                </Typography>
-                <MeetingList segments={segments} personStore={props.personDataStore} />
-              </React.Fragment>
-            )}
-          </Grid>
-          <Grid item sm={5}>
-            {associates.length > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Associates
-                </Typography>
-                <AttendeeList personStore={props.personDataStore} attendees={associates} />
-              </React.Fragment>
-            )}
+          <Grid item>
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Active Documents
+              </Typography>
+              <DriveActivity
+                driveActivity={Object.values(person.driveActivity)}
+                personStore={props.personDataStore}
+                docStore={props.docDataStore}
+              />
+            </React.Fragment>
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Associates
+              </Typography>
+              <AttendeeList personStore={props.personDataStore} attendees={associates} />
+            </React.Fragment>
+            <React.Fragment>
+              <Typography variant="h6" className={classes.smallHeading}>
+                Meetings
+              </Typography>
+              <MeetingList segments={segments} personStore={props.personDataStore} />
+            </React.Fragment>
           </Grid>
         </Grid>
       </div>

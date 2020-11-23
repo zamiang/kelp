@@ -6,7 +6,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
-import { addDays, differenceInMinutes, format, isSameDay, startOfWeek, subDays } from 'date-fns';
+import {
+  addDays,
+  addWeeks,
+  differenceInMinutes,
+  format,
+  isSameDay,
+  startOfWeek,
+  subWeeks,
+} from 'date-fns';
 import { times } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -429,10 +437,10 @@ const Calendar = (props: IStore) => {
     setStart(startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any }));
   };
   const onForwardClick = () => {
-    setStart(addDays(start, 7));
+    setStart(addWeeks(start, 1));
   };
   const onBackClick = () => {
-    setStart(subDays(start, 7));
+    setStart(subWeeks(start, 1));
   };
   const dayColumn = times(7).map((day) => (
     <Grid item key={day} className={classes.dayColumn}>

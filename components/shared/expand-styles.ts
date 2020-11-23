@@ -32,11 +32,22 @@ const useStyles = makeStyles((theme) => ({
   smallHeading: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
-    fontSize: theme.typography.body2.fontSize,
-    textTransform: 'uppercase',
     '&:first-child': {
       marginTop: 0,
     },
+  },
+  highlight: {
+    marginTop: -theme.spacing(1),
+  },
+  highlightValue: {
+    fontSize: theme.typography.h4.fontSize,
+    color: theme.palette.primary.dark,
+    fontWeight: 600,
+  },
+  highlightSub: {
+    fontSize: '0.875rem',
+    color: theme.palette.secondary.main,
+    fontWeight: 500,
   },
   overflowEllipsis: {
     textOverflow: 'ellipsis',

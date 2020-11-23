@@ -104,6 +104,9 @@ const useAttendeeStyles = makeStyles(() => ({
 const AttendeeList = (props: IProps) => {
   const classes = useAttendeeStyles();
   const [isExpanded, setExpand] = useState<boolean>(props.attendees.length < attendeeMax);
+  if (props.attendees.length < 1) {
+    return <Typography variant="body2">None</Typography>;
+  }
   return (
     <React.Fragment>
       {isExpanded && <AttendeeRow {...props} />}
