@@ -5,7 +5,7 @@ export const fetchSelf = (): person => {
   return {
     id: profile.getId(),
     name: `${profile.getGivenName()} ${profile.getFamilyName()}`,
-    emailAddress: profile.getEmail(),
+    emailAddresses: [profile.getEmail()],
     isMissingProfile: false,
     imageUrl: profile.getImageUrl(),
   };

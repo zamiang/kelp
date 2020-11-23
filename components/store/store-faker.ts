@@ -3,14 +3,11 @@ import Faker from 'faker';
 import { random, sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import { formattedEmail } from '../fetch/fetch-emails';
 import { IDoc } from './doc-store';
 import { IPerson } from './person-store';
 import { ISegment, getStateForMeeting } from './time-store';
 
 const PEOPLE_COUNT = 10;
-const EMAIL_THREAD_COUNT = 10;
-const EMAIL_COUNT = 0;
 const DOCUMENT_COUNT = 50;
 const CURRENT_USER_EMAIL = 'brennanmoore@gmail.com';
 const NUMBER_OF_MEETINGS = 16;
@@ -24,13 +21,12 @@ times(PEOPLE_COUNT, () => {
   const emailAddress = Faker.internet.email(name).toLowerCase();
   people.push({
     id: emailAddress,
-    emailAddress,
+    emailAddresses: [emailAddress],
     name,
     imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
     isMissingProfile: false,
     googleId: null,
     isCurrentUser: false,
-    emailIds: [],
     driveActivity: {},
     segmentIds: [],
   });
@@ -39,36 +35,15 @@ times(PEOPLE_COUNT, () => {
 // add current user
 people.push({
   id: CURRENT_USER_EMAIL,
-  emailAddress: CURRENT_USER_EMAIL,
+  emailAddresses: [CURRENT_USER_EMAIL],
   name: 'current user',
   googleId: null,
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
   isMissingProfile: false,
   isCurrentUser: true,
-  emailIds: [],
   driveActivity: {},
   segmentIds: [],
 });
-
-/**
- * create 50 emails over the past day
- */
-const threadIds: string[] = [];
-times(EMAIL_THREAD_COUNT, () => {
-  threadIds.push(Faker.random.uuid());
-});
-
-const emails: formattedEmail[] = times(EMAIL_COUNT, () => ({
-  id: Faker.random.uuid(),
-  snippet: Faker.lorem.paragraphs(2),
-  threadId: sample(threadIds)!,
-  date: Faker.date.recent(1),
-  subject: Faker.lorem.lines(1),
-  isImportant: Faker.random.boolean(),
-  labelIds: [],
-  from: sample(people)!.emailAddress!,
-  to: [sample(people)!.emailAddress!],
-}));
 
 /**
  * create 10 documents
@@ -138,9 +113,9 @@ times(WEEKS_TO_CREATE, (week: number) => {
       date = addMinutes(date, 30);
       const endDate = addMinutes(date, 30);
       const attendees = sampleSize(people, 5)
-        .filter((person) => person.emailAddress !== CURRENT_USER_EMAIL)
+        .filter((person) => person.emailAddresses[0] !== CURRENT_USER_EMAIL)
         .map((person) => ({
-          email: person.emailAddress,
+          email: person.emailAddresses[0],
           self: false,
           // Adds accepted many times to weight it higher in the sample
           responseStatus: getRandomResponseStatus(),
@@ -154,7 +129,7 @@ times(WEEKS_TO_CREATE, (week: number) => {
       });
 
       const formattedAttendees = attendees.map((attendee) => ({
-        personId: attendee.email!, // TODO: Simulate google person ids
+        personId: attendee.email, // TODO: Simulate google person ids
         self: attendee.self,
         responseStatus: attendee.responseStatus,
       }));
@@ -169,18 +144,17 @@ times(WEEKS_TO_CREATE, (week: number) => {
         attendees,
         formattedAttendees,
         creator: {
-          email: sample(people)?.emailAddress,
+          email: sample(people)?.emailAddresses[0],
         },
         organizer: {
-          email: sample(people)?.emailAddress,
+          email: sample(people)?.emailAddresses[0],
         },
         selfResponseStatus: getSelfResponseStatus(attendees),
         state: getStateForMeeting({ start: startDate, end: endDate }),
         driveActivityIds: [],
-        emailIds: [],
       });
     });
   });
 });
 
-export default { people, documents, segments, emails, driveActivity };
+export default { people, documents, segments, driveActivity };

@@ -90,7 +90,7 @@ const titleHash = {
 const People = (props: IStore) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
-  const [currentTab, changeTab] = useState<tab>('this-week');
+  const [currentTab, changeTab] = useState<tab>('all');
   const selectedPersonId = useRouter().query.slug as string;
   const currentTitle = titleHash[currentTab];
   const tabHash = {

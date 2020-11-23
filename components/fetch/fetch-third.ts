@@ -1,8 +1,6 @@
-import { clone, sortedUniq } from 'lodash';
+import { clone } from 'lodash';
 import { useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
-import config from '../../constants/config';
-import { fetchCurrentUserEmailsForEmailAddresses, fetchEmails } from './fetch-emails';
 import { batchFetchPeople, person } from './fetch-people';
 import { fetchSelf } from './fetch-self';
 
@@ -33,34 +31,13 @@ const FetchThird = (props: IProps) => {
 
   const emailAddresses = clone(props.emailAddresses);
   personList.forEach((person) => {
-    if (person.emailAddress) {
-      emailAddresses.push(person.emailAddress);
-    }
+    person.emailAddresses.map((email) => emailAddresses.push(email));
   });
 
-  const uniqueEmailAddresses = sortedUniq(emailAddresses);
-  // eslint-ignore-next-line
-  const gmailResponse =
-    config.IS_GMAIL_ENABLED &&
-    // eslint-disable-next-line
-    useAsyncAbortable(() => fetchCurrentUserEmailsForEmailAddresses(uniqueEmailAddresses), [
-      uniqueEmailAddresses.length,
-    ] as any);
-
-  const emails = gmailResponse ? sortedUniq(gmailResponse.result) : [];
-  const emailsResponse =
-    config.IS_GMAIL_ENABLED &&
-    // eslint-disable-next-line
-    useAsyncAbortable(() => fetchEmails(emails || []), [emails ? emails.length : 'error'] as any);
-
-  const error =
-    gmailResponse && emailsResponse && peopleResponse
-      ? gmailResponse.error || peopleResponse.error || emailsResponse.error
-      : undefined;
+  const error = peopleResponse ? peopleResponse.error : undefined;
 
   return {
-    isLoading: peopleResponse.loading && emailsResponse && emailsResponse.loading,
-    emails: emailsResponse && emailsResponse.result ? emailsResponse.result : [],
+    isLoading: peopleResponse.loading,
     error,
     personList,
     refetchPersonList: async () => null, // emailsResponse.execute,

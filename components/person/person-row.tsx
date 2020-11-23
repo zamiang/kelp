@@ -70,7 +70,7 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
           </Grid>
           <Grid item className={classes.email}>
             <Typography variant="body2" noWrap>
-              {props.person.emailAddress}
+              {props.person.emailAddresses.join(' ')}
             </Typography>
           </Grid>
           <Grid item>

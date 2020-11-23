@@ -3,7 +3,6 @@ import { first, flatten, sortBy, uniq, uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import { formattedEmail } from '../fetch/fetch-emails';
 import { person as GooglePerson } from '../fetch/fetch-people';
 import { getWeek } from '../shared/date-helpers';
 import { ISegment } from './time-store';
@@ -12,9 +11,8 @@ import { IStore } from './use-store';
 export interface IPerson {
   id: string;
   name: string;
-  emailAddress?: string;
+  emailAddresses: string[];
   imageUrl?: string | null;
-  emailIds: string[];
   notes?: string;
   googleId: string | null;
   isCurrentUser: boolean;
@@ -31,17 +29,15 @@ interface IEmailAddressToPersonIdHash {
   [emailAddress: string]: string;
 }
 
-// TODO: handle one person w/ multiple email addresses
 export const formatPerson = (person: GooglePerson) => ({
   id: person.id.replace('people/', ''),
   name: person.name,
   googleId: person.id,
-  emailAddress: person.emailAddress?.toLocaleLowerCase(),
+  emailAddresses: person.emailAddresses,
   imageUrl: person.imageUrl,
   isCurrentUser: false,
   isMissingProfile: person.isMissingProfile,
   notes: person.notes,
-  emailIds: [],
   driveActivity: {},
   segmentIds: [],
 });
@@ -50,11 +46,10 @@ const createNewPersonFromEmail = (email: string) => ({
   id: email,
   name: email,
   googleId: null,
-  emailAddress: email,
+  emailAddresses: [email],
   imageUrl: null,
   isCurrentUser: false,
   isMissingProfile: false,
-  emailIds: [],
   driveActivity: {},
   segmentIds: [],
 });
@@ -170,18 +165,22 @@ export default class PersonDataStore {
   }
 
   addPersonToStore(person: IPerson) {
-    if (
-      person.emailAddress &&
-      this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()]
-    ) {
-      // Already in the store
+    let isInStore = false;
+    person.emailAddresses.map((email) => {
+      if (this.emailAddressToPersonIdHash[email]) {
+        isInStore = true;
+      }
+    });
+    if (isInStore) {
+      console.log('is in store', person, this);
       return;
     }
 
     this.personById[person.id.replace('people/', '')] = { ...person };
-    if (person.emailAddress) {
-      this.emailAddressToPersonIdHash[person.emailAddress.toLocaleLowerCase()] = person.id;
-    }
+
+    person.emailAddresses.map((email) => {
+      this.emailAddressToPersonIdHash[email] = person.id;
+    });
   }
 
   addPeopleToStore(people: IPerson[]) {
@@ -215,37 +214,6 @@ export default class PersonDataStore {
         if (person) {
           person.driveActivity[driveActivity.id] = driveActivity;
         }
-      }
-    });
-  }
-
-  addEmailsToStore(emails: formattedEmail[]) {
-    (emails || []).forEach((email) => {
-      if (email.from) {
-        const formattedEmailAddress = email.from.toLocaleLowerCase();
-        const contact = this.contacts.contactsByEmail[formattedEmailAddress];
-        if (contact) {
-          this.addPersonToStore(formatPerson(contact));
-        }
-        const personId = this.emailAddressToPersonIdHash[formattedEmailAddress];
-        if (personId) {
-          this.personById[personId] && this.personById[personId].emailIds.push(email.id);
-        }
-      }
-      if (email.to) {
-        email.to.map((emailTo) => {
-          if (emailTo) {
-            const formattedEmailAddress = emailTo.toLocaleLowerCase();
-            const contact = this.contacts.contactsByEmail[formattedEmailAddress];
-            if (contact) {
-              this.addPersonToStore(formatPerson(contact));
-            }
-            const personId = emailTo && this.emailAddressToPersonIdHash[emailTo];
-            if (personId) {
-              this.personById[personId] && this.personById[personId].emailIds.push(email.id);
-            }
-          }
-        });
       }
     });
   }

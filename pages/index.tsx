@@ -205,6 +205,16 @@ const App = () => {
                         primary: classes.largeListItemTextBold,
                         secondary: classes.largeListItemText,
                       }}
+                      primary="Organization for humans"
+                      secondary="Kelp meets you where you are. It doesn’t ask you to change how you organize your work or how you collaborate."
+                    />
+                  </ListItem>
+                  <ListItem disableGutters={true}>
+                    <ListItemText
+                      classes={{
+                        primary: classes.largeListItemTextBold,
+                        secondary: classes.largeListItemText,
+                      }}
                       primary="Quickly Prepare For Meetings"
                       secondary="Kelp scans your calendar and documents to automatically collect the documents you need. It then magically annotates your calendar. Easy."
                     />
@@ -217,16 +227,6 @@ const App = () => {
                       }}
                       primary="Manage Work Relationships"
                       secondary="Kelp infers associations between information, such as between a person, a meeting with the person and document edits by the person."
-                    />
-                  </ListItem>
-                  <ListItem disableGutters={true}>
-                    <ListItemText
-                      classes={{
-                        primary: classes.largeListItemTextBold,
-                        secondary: classes.largeListItemText,
-                      }}
-                      primary="Your Data"
-                      secondary="When visiting the Kelp website, your computer is storing and processing your data. Kelp is a static website that does not have any kind of data processing or data storage capability."
                     />
                   </ListItem>
                 </List>
@@ -251,7 +251,9 @@ const App = () => {
                 </a>
               </div>
               <div className={classes.hint}>
-                Kelp is currently free but may add a paid version in the future.
+                Your data is your data. When visiting the Kelp website, your computer is storing and
+                processing your data. Kelp is a static website that does not have any kind of data
+                processing or data storage capability.
               </div>
               <div className={classes.hint}>
                 Kelp currently works with Google and will expand to other integrations.
