@@ -2,7 +2,6 @@ import { format, getWeek, isAfter, isBefore, isSameDay } from 'date-fns';
 import { flatten, groupBy, intersection } from 'lodash';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import { formattedEmail } from '../fetch/fetch-emails';
 import PersonDataStore from './person-store';
 
 type SegmentState = 'current' | 'upcoming' | 'past';
@@ -30,7 +29,6 @@ export const getStateForMeeting = (event: IEvent): SegmentState => {
 
 export interface ISegment extends ICalendarEvent {
   readonly driveActivityIds: string[];
-  readonly emailIds: string[];
   readonly state: SegmentState;
   readonly formattedAttendees: IFormattedAttendee[];
   readonly formattedOrganizer?: IFormattedAttendee;
@@ -91,22 +89,10 @@ export default class TimeStore {
           formattedAttendees,
           formattedOrganizer,
           formattedCreator,
-          emailIds: [],
           driveActivityIds: [],
           state: getStateForMeeting(event),
         };
       });
-  }
-
-  addEmailsToStore(emails: formattedEmail[]) {
-    emails.forEach((email) => {
-      // NOTE: SUPER SLOW (design a segment storage system)
-      this.segments.forEach((segment) => {
-        if (isAfter(email.date, segment.start) && isBefore(email.date, segment.end)) {
-          segment.emailIds.push(email.id);
-        }
-      });
-    });
   }
 
   addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {

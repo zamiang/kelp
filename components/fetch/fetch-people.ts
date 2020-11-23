@@ -2,24 +2,28 @@ export interface person {
   id: string;
   name: string;
   isMissingProfile: boolean;
-  emailAddress?: string;
+  emailAddresses: string[];
   notes?: string;
   imageUrl?: string | null;
 }
+
+type ExcludesFalse = <T>(x: T | false) => x is T;
 
 const formatGooglePeopleResponse = (
   person: gapi.client.people.PersonResponse['person'],
   requestedResourceName?: string | null,
 ) => {
-  const emailAddress =
-    person?.emailAddresses && person.emailAddresses[0] && person.emailAddresses[0].value;
+  const emailAddresses =
+    (person?.emailAddresses
+      ?.map((address) => address.value?.toLocaleLowerCase())
+      .filter((Boolean as any) as ExcludesFalse) as string[]) || [];
   const displayName = person?.names && person?.names[0]?.displayName;
   return {
     id: requestedResourceName!,
-    name: displayName || emailAddress || requestedResourceName!,
+    name: displayName || emailAddresses[0] || requestedResourceName!,
     isMissingProfile: person?.names ? false : true,
     notes: person?.biographies?.map((b) => b.value).join('<br />'),
-    emailAddress,
+    emailAddresses,
     imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
   };
 };

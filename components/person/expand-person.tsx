@@ -44,7 +44,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
       <AppBar
         linkedinName={hasName ? person.name : undefined}
         onClose={props.close}
-        emailAddress={person.emailAddress}
+        emailAddress={person.emailAddresses[0]}
       />
       <div className={classes.topContainer}>
         <Box flexDirection="column" alignItems="center" display="flex">

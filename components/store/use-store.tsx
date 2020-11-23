@@ -24,14 +24,12 @@ const useStore = (signedIn: boolean): IStore => {
 
   // TODO: Only create the datastores once data.isLoading is false
   const personDataStore = new PersonDataStore(people, data.emailAddresses || [], data.contacts);
-  personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(data.driveActivity);
   personDataStore.addGoogleCalendarEventsIdsToStore(data.calendarEvents || []);
   personDataStore.addCurrentUserFlag(data.calendarEvents);
   // console.log('PERSON DATA STORE:', personDataStore);
 
   const timeDataStore = new TimeDataStore(data.calendarEvents || [], personDataStore);
-  timeDataStore.addEmailsToStore(data.emails || []);
   timeDataStore.addDriveActivityToStore(data.driveActivity);
   // console.log('TIME DATA STORE:', timeDataStore);
 

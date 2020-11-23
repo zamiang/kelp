@@ -77,7 +77,7 @@ const titleHash = {
 const Documents = (props: IStore) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
-  const [currentTab, changeTab] = useState<tab>('this-week');
+  const [currentTab, changeTab] = useState<tab>('all');
   const selectedDocumentId = useRouter().query.slug as string;
   const currentTitle = titleHash[currentTab];
   const tabHash = {

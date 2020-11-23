@@ -6,6 +6,8 @@ const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
     .map((bio) => bio.value)
     .join('<br />');
 
+type ExcludesFalse = <T>(x: T | false) => x is T;
+
 export const userPersonFields = 'names,nicknames,emailAddresses,photos,biographies'; // NOTE: Google Contacts has a field called 'notes' that edits the 'biographies' field
 /**
  * There is no way to lookup contacts via the Google Contacts API,
@@ -24,28 +26,25 @@ const fetchContacts = async () => {
   const contactsByPeopleId: { [id: string]: person } = {};
 
   people.result?.connections?.map((person) => {
-    // TODO: Handle multiple email addresses
-    const primaryEmailAddress =
-      person?.emailAddresses &&
-      person.emailAddresses[0] &&
-      person.emailAddresses[0].value?.toLocaleLowerCase();
+    const emailAddresses =
+      (person?.emailAddresses
+        ?.map((address) => address.value?.toLocaleLowerCase())
+        .filter((Boolean as any) as ExcludesFalse) as string[]) || [];
     const displayName = person?.names && person?.names[0]?.displayName;
-    if (!primaryEmailAddress || !person.resourceName) {
+    if (!emailAddresses[0] || !person.resourceName) {
       return;
     }
     const formattedContact = {
       id: person.resourceName,
-      name: displayName || primaryEmailAddress || person.resourceName,
+      name: displayName || emailAddresses[0] || person.resourceName,
       isMissingProfile: person?.names ? false : true,
-      emailAddress: primaryEmailAddress,
+      emailAddresses,
       imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
       notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
     };
     contactsByPeopleId[person.resourceName] = formattedContact;
-    person.emailAddresses?.map((email) => {
-      if (email.value) {
-        contactsByEmail[email.value.toLocaleLowerCase()] = formattedContact;
-      }
+    formattedContact.emailAddresses.map((email) => {
+      contactsByEmail[email] = formattedContact;
     });
   });
   return { contactsByPeopleId, contactsByEmail };
