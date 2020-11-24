@@ -5,10 +5,10 @@ import { format, getWeek, subWeeks } from 'date-fns';
 import pluralize from 'pluralize';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import AvatarList from '../shared/avatar-list';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
-import PersonList from '../shared/person-list';
 import { IStore } from '../store/use-store';
 
 const getActivityStats = (activity: IFormattedDriveActivity[], week: number) => {
@@ -36,7 +36,12 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
   const activity = props.driveActivityStore.getDriveActivityForDocument(document.id) || [];
   const people = props.personDataStore.getPeopleForDriveActivity(activity);
   const driveActivityIds = activity.map((item) => item.id);
-  const meetings = props.timeDataStore.getSegmentsForDriveActivity(driveActivityIds);
+  const currentUserMeetings = props.timeDataStore.getSegmentsWithCurrentUserDriveActivity(
+    driveActivityIds,
+  );
+  const attendeeMeetings = props.timeDataStore.getSegmentsWithAttendeeDriveActivity(
+    driveActivityIds,
+  );
   const activityStatsThisWeek = getActivityStats(activity, getWeek(new Date()));
   const activityStatsLastWeek = getActivityStats(activity, getWeek(subWeeks(new Date(), 1)));
   return (
@@ -53,42 +58,38 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
       <Divider />
       <Grid container className={classes.triGroup} justify="space-between">
         <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.smallHeading}>
-            Activity This Week
+          <Typography variant="h6" className={classes.triGroupHeading}>
+            Activity this Week
           </Typography>
           {
             <Typography className={classes.highlight}>
               <span className={classes.highlightValue}>{activityStatsThisWeek || 'None'}</span>
               {activityStatsLastWeek && (
-                <span className={classes.highlightSub}>from {activityStatsLastWeek}</span>
+                <span className={classes.highlightSub}> from {activityStatsLastWeek}</span>
               )}
             </Typography>
           }
         </Grid>
         <div className={classes.triGroupBorder}></div>
         <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.smallHeading}>
+          <Typography variant="h6" className={classes.triGroupHeading}>
             Collaborators
           </Typography>
           <Typography className={classes.highlight}>
-            <PersonList personStore={props.personDataStore} people={people} />
+            <AvatarList personStore={props.personDataStore} people={people} />
           </Typography>
         </Grid>
       </Grid>
       <Divider />
       <div className={classes.container}>
-        <Grid container spacing={3} className={classes.content}>
-          <Grid item>
-            {meetings.length > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Meetings
-                </Typography>
-                <MeetingList segments={meetings} personStore={props.personDataStore} />
-              </React.Fragment>
-            )}
-          </Grid>
-        </Grid>
+        <Typography variant="h6" className={classes.smallHeading}>
+          Meetings where you edited this document
+        </Typography>
+        <MeetingList segments={currentUserMeetings} personStore={props.personDataStore} />
+        <Typography variant="h6" className={classes.smallHeading}>
+          Meetings where attendees edited this document
+        </Typography>
+        <MeetingList segments={attendeeMeetings} personStore={props.personDataStore} />
       </div>
     </React.Fragment>
   );

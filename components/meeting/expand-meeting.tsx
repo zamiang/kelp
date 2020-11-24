@@ -1,7 +1,6 @@
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
 import { flatten } from 'lodash';
 import React from 'react';
 import Linkify from 'react-linkify';
@@ -17,27 +16,24 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   if (!meeting) {
     return null;
   }
+  const isInPast = isPast(meeting.start);
   const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
-  const hasDriveActivity = meeting.driveActivityIds.length > 0;
-  const meetingDriveActivity = meeting.driveActivityIds.map(
-    (id) => props.driveActivityStore.getById(id)!,
-  );
+  const attendeeAndCurrentUserDriveActivity = meeting.driveActivityIds
+    .concat(meeting.currentUserDriveActivityIds)
+    .map((id) => props.driveActivityStore.getById(id)!);
   const attendeeIds = (meeting.formattedAttendees || [])
     .filter((attendee) => !attendee.self)
     .map((attendee) => attendee.personId);
 
-  // TODO: figure out filter types
   const people = attendeeIds
     .map((id) => props.personDataStore.getPersonById(id)!)
     .filter((person) => !!person);
-  const currentUser = props.personDataStore.getSelf();
   const documentsCurrentUserEditedWhileMeetingWithAttendees = props.personDataStore.getDriveActivityWhileMeetingWith(
     people,
     props.timeDataStore,
     props.driveActivityStore,
-    currentUser && currentUser.id,
   );
   const driveActivityFromAttendees = flatten(
     people.map((person) => Object.values(person.driveActivity)),
@@ -56,81 +52,67 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
       </div>
       <Divider />
       <div className={classes.container}>
-        <Grid container spacing={3} className={classes.content}>
-          <Grid item xs={12} sm={7}>
-            {hasDescription && !isHtml && (
-              <Typography variant="body2" className={classes.description}>
-                <Linkify>{meeting.description?.trim()}</Linkify>
-              </Typography>
-            )}
-            {hasDescription && isHtml && (
-              <Typography
-                variant="body2"
-                className={classes.description}
-                dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
-              />
-            )}
-            {hasDriveActivity && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Documents with activity during this meeting
-                </Typography>
-                <DriveActivityList
-                  driveActivity={meetingDriveActivity}
-                  docStore={props.docDataStore}
-                  personStore={props.personDataStore}
-                />
-              </React.Fragment>
-            )}
-            {documentsCurrentUserEditedWhileMeetingWithAttendees.length > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Documents you edited while meeting with these attendees recently
-                </Typography>
-                <DriveActivityList
-                  driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
-                  docStore={props.docDataStore}
-                  personStore={props.personDataStore}
-                />
-              </React.Fragment>
-            )}
-            {driveActivityFromAttendees.length > 0 && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Documents recently edited by people in this meeting
-                </Typography>
-                <DriveActivityList
-                  driveActivity={driveActivityFromAttendees}
-                  docStore={props.docDataStore}
-                  personStore={props.personDataStore}
-                />
-              </React.Fragment>
-            )}
-          </Grid>
-          <Grid item sm={5}>
-            {hasAttendees && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Guests
-                </Typography>
-                <Typography variant="caption" className={classes.smallCaption}>
-                  {guestStats}
-                </Typography>
-                <AttendeeList personStore={props.personDataStore} attendees={attendees} />
-              </React.Fragment>
-            )}
-            {meeting.location && (
-              <React.Fragment>
-                <Typography variant="h6" className={classes.smallHeading}>
-                  Location
-                </Typography>
-                <Typography variant="subtitle2" className={classes.overflowEllipsis}>
-                  {meeting.location}
-                </Typography>
-              </React.Fragment>
-            )}
-          </Grid>
-        </Grid>
+        {hasDescription && !isHtml && (
+          <Typography variant="body2" className={classes.description}>
+            <Linkify>{meeting.description?.trim()}</Linkify>
+          </Typography>
+        )}
+        {hasDescription && isHtml && (
+          <Typography
+            variant="body2"
+            className={classes.description}
+            dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
+          />
+        )}
+        {isInPast && (
+          <React.Fragment>
+            <Typography variant="h6" className={classes.smallHeading}>
+              Documents with activity by the attendees during this meeting
+            </Typography>
+            <DriveActivityList
+              driveActivity={attendeeAndCurrentUserDriveActivity}
+              docStore={props.docDataStore}
+              personStore={props.personDataStore}
+            />
+          </React.Fragment>
+        )}
+        <Typography variant="h6" className={classes.smallHeading}>
+          Documents edited by you when with the attendees
+        </Typography>
+        <DriveActivityList
+          driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
+          docStore={props.docDataStore}
+          personStore={props.personDataStore}
+        />
+        <Typography variant="h6" className={classes.smallHeading}>
+          Documents edited during previous meetings with the attendees
+        </Typography>
+        <DriveActivityList
+          driveActivity={driveActivityFromAttendees}
+          docStore={props.docDataStore}
+          personStore={props.personDataStore}
+        />
+        {hasAttendees && (
+          <React.Fragment>
+            <Typography variant="h6" className={classes.smallHeading}>
+              Guests
+            </Typography>
+            <Typography variant="caption" className={classes.smallCaption}>
+              {guestStats}
+            </Typography>
+            <AttendeeList personStore={props.personDataStore} attendees={attendees} />
+          </React.Fragment>
+        )}
+        {meeting.location && (
+          <React.Fragment>
+            <Typography variant="h6" className={classes.smallHeading}>
+              Location
+            </Typography>
+            <Typography variant="subtitle2" className={classes.overflowEllipsis}>
+              {meeting.location}
+            </Typography>
+          </React.Fragment>
+        )}
       </div>
     </React.Fragment>
   );

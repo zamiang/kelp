@@ -30,7 +30,7 @@ const useStore = (signedIn: boolean): IStore => {
   // console.log('PERSON DATA STORE:', personDataStore);
 
   const timeDataStore = new TimeDataStore(data.calendarEvents || [], personDataStore);
-  timeDataStore.addDriveActivityToStore(data.driveActivity);
+  timeDataStore.addDriveActivityToStore(data.driveActivity, personDataStore);
   // console.log('TIME DATA STORE:', timeDataStore);
 
   const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));

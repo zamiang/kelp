@@ -29,6 +29,8 @@ export const getStateForMeeting = (event: IEvent): SegmentState => {
 
 export interface ISegment extends ICalendarEvent {
   readonly driveActivityIds: string[];
+  readonly attendeeDriveActivityIds: string[];
+  readonly currentUserDriveActivityIds: string[];
   readonly state: SegmentState;
   readonly formattedAttendees: IFormattedAttendee[];
   readonly formattedOrganizer?: IFormattedAttendee;
@@ -90,12 +92,14 @@ export default class TimeStore {
           formattedOrganizer,
           formattedCreator,
           driveActivityIds: [],
+          attendeeDriveActivityIds: [],
+          currentUserDriveActivityIds: [],
           state: getStateForMeeting(event),
         };
       });
   }
 
-  addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
+  addDriveActivityToStore(driveActivity: IFormattedDriveActivity[], personStore: PersonDataStore) {
     driveActivity
       // TODO: filter earlier
       .filter((activity) => activity.time)
@@ -104,8 +108,27 @@ export default class TimeStore {
         // TODO: Design  segment storage system or add optimizations assuming segments are ordered
         const start = activity.time;
         this.segments.forEach((segment) => {
-          if (isAfter(start, segment.start) && isBefore(start, segment.end)) {
-            segment.driveActivityIds.push(activity.id);
+          if (activity.actorPersonId) {
+            if (isAfter(start, segment.start) && isBefore(start, segment.end)) {
+              const actor = personStore.getPersonById(activity.actorPersonId);
+              if (!actor) {
+                return;
+              }
+              // documents edited by current user during meeting
+              if (actor.isCurrentUser) {
+                segment.currentUserDriveActivityIds.push(activity.id);
+              } else {
+                // documents edited by attendees
+                const isActorAttending = segment.formattedAttendees
+                  .map((a) => a.personId)
+                  .includes(actor.id);
+                if (isActorAttending) {
+                  segment.attendeeDriveActivityIds.push(activity.id);
+                }
+              }
+              // all edits
+              segment.driveActivityIds.push(activity.id);
+            }
           }
         });
       });
@@ -190,9 +213,17 @@ export default class TimeStore {
     return segments;
   }
 
-  getSegmentsForDriveActivity(driveActivityIds: string[]) {
+  // Segments with activity by current user
+  getSegmentsWithCurrentUserDriveActivity(driveActivityIds: string[]) {
     return this.segments.filter(
-      (segment) => intersection(driveActivityIds, segment.driveActivityIds).length > 0,
+      (segment) => intersection(driveActivityIds, segment.currentUserDriveActivityIds).length > 0,
+    );
+  }
+
+  // Segments with activity by attendees
+  getSegmentsWithAttendeeDriveActivity(driveActivityIds: string[]) {
+    return this.segments.filter(
+      (segment) => intersection(driveActivityIds, segment.attendeeDriveActivityIds).length > 0,
     );
   }
 }

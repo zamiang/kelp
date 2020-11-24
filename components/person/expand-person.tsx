@@ -66,7 +66,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
       <Divider />
       <Grid container className={classes.triGroup} justify="space-between">
         <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.smallHeading}>
+          <Typography variant="h6" className={classes.triGroupHeading}>
             Last meeting
           </Typography>
           {lastMeeting && (
@@ -86,7 +86,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
         </Grid>
         <div className={classes.triGroupBorder}></div>
         <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.smallHeading}>
+          <Typography variant="h6" className={classes.triGroupHeading}>
             Meetings this week
           </Typography>
           <Typography className={classes.highlight}>
@@ -99,39 +99,33 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
       </Grid>
       <Divider />
       <div className={classes.container}>
-        <Grid container spacing={3} className={classes.content}>
-          {person.isMissingProfile && (
-            <Grid item>
-              <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
-                Add this person to your google contacts for more info
-              </MuiLink>
-            </Grid>
-          )}
-          <Grid item>
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Active Documents
-              </Typography>
-              <DriveActivity
-                driveActivity={Object.values(person.driveActivity)}
-                personStore={props.personDataStore}
-                docStore={props.docDataStore}
-              />
-            </React.Fragment>
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Associates
-              </Typography>
-              <AttendeeList personStore={props.personDataStore} attendees={associates} />
-            </React.Fragment>
-            <React.Fragment>
-              <Typography variant="h6" className={classes.smallHeading}>
-                Meetings
-              </Typography>
-              <MeetingList segments={segments} personStore={props.personDataStore} />
-            </React.Fragment>
-          </Grid>
-        </Grid>
+        {person.isMissingProfile && (
+          <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
+            Add this person to your google contacts for more info
+          </MuiLink>
+        )}
+        <React.Fragment>
+          <Typography variant="h6" className={classes.smallHeading}>
+            Active Documents
+          </Typography>
+          <DriveActivity
+            driveActivity={Object.values(person.driveActivity)}
+            personStore={props.personDataStore}
+            docStore={props.docDataStore}
+          />
+        </React.Fragment>
+        <React.Fragment>
+          <Typography variant="h6" className={classes.smallHeading}>
+            Associates
+          </Typography>
+          <AttendeeList personStore={props.personDataStore} attendees={associates} />
+        </React.Fragment>
+        <React.Fragment>
+          <Typography variant="h6" className={classes.smallHeading}>
+            Meetings you both attended
+          </Typography>
+          <MeetingList segments={segments} personStore={props.personDataStore} />
+        </React.Fragment>
       </div>
     </React.Fragment>
   );

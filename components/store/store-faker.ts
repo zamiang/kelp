@@ -152,6 +152,8 @@ times(WEEKS_TO_CREATE, (week: number) => {
         selfResponseStatus: getSelfResponseStatus(attendees),
         state: getStateForMeeting({ start: startDate, end: endDate }),
         driveActivityIds: [],
+        attendeeDriveActivityIds: [],
+        currentUserDriveActivityIds: [],
       });
     });
   });

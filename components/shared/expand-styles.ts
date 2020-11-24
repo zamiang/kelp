@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
   smallHeading: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    paddingBottom: theme.spacing(1),
+    width: '100%',
+    display: 'block',
     '&:first-child': {
       marginTop: 0,
     },
@@ -118,6 +122,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     background: theme.palette.divider,
     height: 'auto',
+  },
+  triGroupHeading: {
+    paddingBottom: theme.spacing(1),
   },
 }));
 

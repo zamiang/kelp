@@ -114,20 +114,17 @@ export default class PersonDataStore {
     people: IPerson[],
     timeDataStore: IStore['timeDataStore'],
     driveActivityStore: IStore['driveActivityStore'],
-    currentUserId?: string,
   ) {
     const activityIds = flatten(
       people.map((person) => {
         const segmentIds = person.segmentIds;
         const driveActivityIds = segmentIds.map(
-          (id) => timeDataStore.getSegmentById(id)!.driveActivityIds,
+          (id) => timeDataStore.getSegmentById(id)!.currentUserDriveActivityIds,
         );
         return flatten(driveActivityIds);
       }),
     );
-    return activityIds
-      .map((id) => driveActivityStore.getById(id)!)
-      .filter((activity) => activity.actorPersonId === currentUserId);
+    return activityIds.map((id) => driveActivityStore.getById(id)!);
   }
 
   getAssociates(personId: string, segments: (ISegment | undefined)[]) {

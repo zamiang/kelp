@@ -20,7 +20,7 @@ const useFakeStore = (): IStore => {
 
   const timeDataStore = new TimeDataStore(data.segments, personDataStore);
   // timeDataStore.addEmailsToStore(data.emails);
-  timeDataStore.addDriveActivityToStore(data.driveActivity);
+  timeDataStore.addDriveActivityToStore(data.driveActivity, personDataStore);
   // console.log('TIME DATA STORE:', timeDataStore);
 
   const docDataStore = new DocDataStore(data.documents);
