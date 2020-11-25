@@ -8,7 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import Link from 'next/link';
 import { signIn } from 'next-auth/client';
 import Head from 'next/head';
 import Image from 'next/image';
