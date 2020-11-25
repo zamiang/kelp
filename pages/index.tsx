@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import Link from 'next/link';
 import { signIn } from 'next-auth/client';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -253,7 +254,11 @@ const App = () => {
               <div className={classes.hint}>
                 Your data is your data. When visiting the Kelp website, your computer is storing and
                 processing your data. Kelp is a static website that does not have any kind of data
-                processing or data storage capability.
+                processing or data storage capability.{' '}
+                <MuiLink color="primary" href="/about">
+                  Read more
+                </MuiLink>
+                .
               </div>
               <div className={classes.hint}>
                 Kelp currently works with Google and will expand to other integrations.
