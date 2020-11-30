@@ -175,6 +175,8 @@ interface IDayContentProps {
   tfidfStore: IStore['tfidfStore'];
   isFirst: boolean;
   day: Date;
+  hoveredItem?: string;
+  setHoveredItem: (s: string) => void;
 }
 
 const useDayContentStyles = makeStyles((theme) => ({
@@ -210,9 +212,15 @@ const useDayContentStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
     cursor: 'pointer',
+    transition: 'color 0.3s',
     '&:hover': {
       textDecoration: 'underline',
+      color: theme.palette.primary.main,
     },
+  },
+  termSelected: {
+    textDecoration: 'underline',
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -229,7 +237,12 @@ const DayContent = (props: IDayContentProps) => {
 
   const terms = props.tfidfStore.getForDay(props.day).map((document) => (
     <Link href={`?tab=search&query=${document.term}`} key={document.term}>
-      <Typography className={classes.term} style={{ fontSize: document.tfidf / scale + fontMin }}>
+      <Typography
+        onMouseEnter={() => props.setHoveredItem(document.term)}
+        onMouseLeave={() => props.setHoveredItem('')}
+        className={clsx(classes.term, document.term === props.hoveredItem && classes.termSelected)}
+        style={{ fontSize: document.tfidf / scale + fontMin }}
+      >
         {document.term.split(uncommonPunctuation).join(' ')}
       </Typography>
     </Link>
@@ -273,6 +286,7 @@ const getStart = () =>
 
 const Summary = (props: IStore) => {
   const classes = useStyles();
+  const [hoveredItem, setHoveredItem] = useState<string>();
   const [start, setStart] = useState<Date>(getStart());
   const [filters, setFilters] = useState<IFilters>({
     meetings: true,
@@ -302,6 +316,8 @@ const Summary = (props: IStore) => {
         tfidfStore={props.tfidfStore}
         day={day}
         key={day.toISOString()}
+        hoveredItem={hoveredItem}
+        setHoveredItem={setHoveredItem}
       />
     ));
   };
