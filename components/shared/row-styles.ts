@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: `${theme.spacing(1)}px 0 0 ${theme.spacing(1)}px`,
     },
   },
+  rowNoLeftMargin: {
+    paddingLeft: theme.spacing(2),
+  },
   rowBorderRadius: {
     borderRadius: theme.spacing(4),
   },

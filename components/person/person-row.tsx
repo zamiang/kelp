@@ -17,7 +17,12 @@ const useStyles = makeStyles(() => ({
   email: { minWidth: 200 },
 }));
 
-const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; store: IStore }) => {
+const PersonRow = (props: {
+  selectedPersonId: string | null;
+  noLeftMargin?: boolean;
+  person: IPerson;
+  store: IStore;
+}) => {
   const isSelected = props.selectedPersonId === props.person.id;
   const classes = useStyles();
   const rowStyles = useRowStyles();
@@ -43,6 +48,7 @@ const PersonRow = (props: { selectedPersonId: string | null; person: IPerson; st
         'ignore-react-onclickoutside',
         rowStyles.row,
         isSelected && rowStyles.orangeBackground,
+        props.noLeftMargin && rowStyles.rowNoLeftMargin,
       )}
     >
       <Grid container spacing={2} alignItems="center">

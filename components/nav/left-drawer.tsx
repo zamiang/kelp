@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import HomeIcon from '@material-ui/icons/Home';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
@@ -23,6 +24,8 @@ import React from 'react';
 import { drawerWidth } from '../../pages/dashboard';
 import RefreshButton from './refresh-button';
 import SearchBar from './search-bar';
+
+const shouldRenderHome = true;
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -122,7 +125,7 @@ const LeftDrawer = (props: IProps) => {
   const isDocsSelected = props.tab === 'docs';
   const isPeopleSelected = props.tab === 'people';
   const isWeekSelected = props.tab === 'week';
-  // const isHomeSelected = props.tab === 'home';
+  const isHomeSelected = props.tab === 'home';
   return (
     <Drawer
       variant="permanent"
@@ -179,23 +182,23 @@ const LeftDrawer = (props: IProps) => {
         )}
         <SearchBar />
         <List>
-          {/*
-          <Link href="?tab=home">
-            <ListItem
-              button
-              selected={isHomeSelected}
-              className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
-            >
-              <ListItemIcon className={classes.iconContainer}>
-                <HomeIcon className={isHomeSelected ? classes.selected : classes.unSelected} />
-              </ListItemIcon>
-              <ListItemText
-                primary="Home"
-                className={isHomeSelected ? classes.selected : classes.unSelected}
-              />
-            </ListItem>
-          </Link>
-        */}
+          {shouldRenderHome && (
+            <Link href="?tab=home">
+              <ListItem
+                button
+                selected={isHomeSelected}
+                className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+              >
+                <ListItemIcon className={classes.iconContainer}>
+                  <HomeIcon className={isHomeSelected ? classes.selected : classes.unSelected} />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Home"
+                  className={isHomeSelected ? classes.selected : classes.unSelected}
+                />
+              </ListItem>
+            </Link>
+          )}
           <Link href="?tab=week">
             <ListItem
               button

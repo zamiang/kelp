@@ -43,7 +43,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; store: IStore }) => {
+const DocumentRow = (props: {
+  doc: IDoc;
+  selectedDocumentId: string | null;
+  store: IStore;
+  noLeftMargin?: boolean;
+}) => {
   const isSelected = props.selectedDocumentId === props.doc.id;
   const router = useRouter();
   const rowStyles = useRowStyles();
@@ -74,6 +79,7 @@ const DocumentRow = (props: { doc: IDoc; selectedDocumentId: string | null; stor
         rowStyles.rowDefault,
         classes.row,
         isSelected && rowStyles.pinkBackground,
+        props.noLeftMargin && rowStyles.rowNoLeftMargin,
       )}
     >
       <Grid container spacing={1} alignItems="center">
