@@ -98,6 +98,12 @@ const theme = createMuiTheme({
         paddingBottom: 6,
       },
     },
+    MuiButton: {
+      root: {
+        textTransform: 'none',
+        fontWeight: 500,
+      },
+    },
     MuiAvatar: {
       root: {
         height: 36,

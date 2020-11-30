@@ -31,7 +31,7 @@ const About = () => {
       <div className={classes.containerWidth}>
         <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
           <Grid item sm={7}>
-            <Container maxWidth="sm">
+            <Container>
               <div className={classes.loginButton}>
                 <LoginButton />
               </div>
@@ -42,24 +42,17 @@ const About = () => {
                 About Kelp
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                It is important for us to take a step back and define why we are building another
-                piece of software and define what we stand for.
-              </Typography>
-            </Container>
-            <Container maxWidth="sm">
-              <br />
-              <Divider />
-              <Typography variant="h6" className={classes.body}>
                 Kelp organizes your documents, events and contacts to make work make sense.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                It is difficult for working professionals to quickly gather the information they
+                We are trying to help working professionals to quickly gather the information they
                 need to be effective across an increasingly vast set of information sources.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                Kelp solves this problem through passively organizing information. This passive
-                organization reduces the time working professionals spend searching for information
-                and helps them see the bigger picture.
+                We believe that we can help by meeting people where they are instead of asking them
+                to adopt yet another organizational scheme. Our strategy is to find novel approaches
+                to passive information organization in order to reduce the time working
+                professionals spend searching for information and help them see the bigger picture.
               </Typography>
               <br />
               <Divider />
