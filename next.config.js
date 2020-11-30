@@ -24,10 +24,12 @@ module.exports = {
               styleSrc: ["'self'", "'unsafe-inline'", 'https://rsms.me/inter/inter.css'],
               imgSrc: [
                 "'self'",
+                "data:",
                 'https://placeimg.com',
                 'https://drive-thirdparty.googleusercontent.com',
                 'https://*.googleusercontent.com',
                 'https://platform.slack-edge.com',
+                'https://www.googletagmanager.com',
               ],
               fontSrc: [
                 "'self'", 'https://rsms.me',
