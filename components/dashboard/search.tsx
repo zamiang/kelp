@@ -5,7 +5,6 @@ import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../docs/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonSearchResult from '../person/person-search-result';
-import SearchBar from '../shared/search-bar';
 import TopBar from '../shared/top-bar';
 import { IDoc } from '../store/doc-store';
 import { IPerson } from '../store/person-store';
@@ -48,9 +47,7 @@ const Search = (props: IStore) => {
     : [];
   return (
     <div className={classes.panel}>
-      <TopBar title={`Search Results for: ${searchQuery || ''}`}>
-        <SearchBar query={searchQuery} {...props} />
-      </TopBar>
+      <TopBar title={`Search Results for: ${searchQuery || ''}`} />
       <div className={classes.rowNoBorder}>
         <Typography variant="caption" className={classes.title}></Typography>
         {renderSearchResults(results || [], props)}

@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 const useBackdropStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: config.BLUE_BACKGROUND,
   },
 }));
 

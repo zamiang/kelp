@@ -106,7 +106,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
         )}
         <React.Fragment>
           <Typography variant="h6" className={classes.smallHeading}>
-            Active Documents
+            Documents they have edited
           </Typography>
           <DriveActivity
             driveActivity={Object.values(person.driveActivity)}
