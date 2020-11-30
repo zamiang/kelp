@@ -29,7 +29,7 @@ const Terms = () => {
       <div className={classes.containerWidth}>
         <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
           <Grid item sm={7}>
-            <Container maxWidth="md">
+            <Container maxWidth="sm">
               <div className={classes.loginButton}>
                 <LoginButton />
               </div>
