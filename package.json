@@ -27,7 +27,7 @@
   "dependencies": {
     "@material-ui/core": "4.9.6",
     "@material-ui/icons": "4.9.1",
-    "@material-ui/styles": "4.9.6",
+    "@material-ui/styles": "4.11.1",
     "@popperjs/core": "2.5.4",
     "@slack/web-api": "5.14.0",
     "@types/express": "4.17.9",
