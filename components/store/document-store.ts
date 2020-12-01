@@ -1,3 +1,4 @@
+import { subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import { getWeek } from '../shared/date-helpers';
 import { IStore } from './use-store';
@@ -8,7 +9,7 @@ type DocumentType =
   | 'application/vnd.google-apps.spreadsheet'
   | 'application/vnd.google-apps.document';
 
-export interface IDoc {
+export interface IDocument {
   id: string;
   name?: string;
   viewedByMe?: boolean;
@@ -21,8 +22,8 @@ export interface IDoc {
   iconLink?: string;
 }
 
-interface IDocById {
-  [id: string]: IDoc;
+interface IDocumentById {
+  [id: string]: IDocument;
 }
 
 export const getGoogleDocsIdFromLink = (link: string) =>
@@ -42,25 +43,50 @@ export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
   updatedAt: googleDoc.modifiedTime ? new Date(googleDoc.modifiedTime) : undefined,
 });
 
-export default class DocDataStore {
-  private docsById: IDocById;
+export default class DocumentDataStore {
+  private docsById: IDocumentById;
 
-  constructor(docsList: IDoc[]) {
+  constructor(docsList: IDocument[]) {
     // console.warn('setting up person store');
     this.docsById = {};
     this.addDocsToStore(docsList);
   }
 
-  setupFromFakeData(docs: IDoc[]) {
+  setupFromFakeData(docs: IDocument[]) {
     docs.forEach((document) => {
       this.docsById[document.id] = document;
     });
   }
 
-  addDocsToStore(docs: IDoc[]) {
+  addDocsToStore(docs: IDocument[]) {
     docs.forEach((document) => {
       this.docsById[document.id || 'wtf'] = document;
     });
+  }
+
+  getDocsRecentlyEditedByCurrentUser(
+    driveActivityStore: IStore['driveActivityStore'],
+    personDataStore: IStore['personDataStore'],
+  ) {
+    const driveActivity = driveActivityStore.getAll();
+    const minTime = subDays(new Date(), 7);
+    return uniqBy(
+      driveActivity
+        .filter((activity) => {
+          const person =
+            activity.actorPersonId && personDataStore.getPersonById(activity.actorPersonId);
+          if (person && person.isCurrentUser) {
+            return activity.time > minTime;
+          }
+          return false;
+        })
+        .map(
+          (driveActivity) =>
+            driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
+        )
+        .filter((doc) => doc && doc.id),
+      'id',
+    ) as IDocument[];
   }
 
   getDocumentsForDay(
@@ -78,7 +104,7 @@ export default class DocDataStore {
         )
         .filter((doc) => doc && doc.id),
       'id',
-    ) as IDoc[];
+    ) as IDocument[];
   }
 
   getDocumentsForThisWeek(
@@ -97,7 +123,7 @@ export default class DocDataStore {
         )
         .filter((doc) => doc && doc.id),
       'id',
-    ) as IDoc[];
+    ) as IDocument[];
   }
 
   /**
@@ -105,7 +131,7 @@ export default class DocDataStore {
    *
    * @param link link: "https://docs.google.com/document/d/1xgblKX2-5BAbmGwaERTREP6OhXPv9BOjnPXF1Ohgvrw"
    */
-  getByLink(link: string): IDoc | undefined {
+  getByLink(link: string): IDocument | undefined {
     return this.docsById[getGoogleDocsIdFromLink(link)];
   }
 

@@ -1,7 +1,7 @@
 import { flatten, max, min } from 'lodash';
 import { removeStopwords } from 'stopword';
 
-interface IDocument {
+interface IDocumentument {
   [text: string]: number;
 }
 
@@ -11,9 +11,9 @@ interface IIdfCache {
 
 const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 
-const buildDocument = (text: string, key: string): IDocument =>
+const buildDocument = (text: string, key: string): IDocumentument =>
   removeStopwords(text.replace(removePunctuationRegex, '').split(' ')).reduce(
-    (document: IDocument, term: string) => {
+    (document: IDocumentument, term: string) => {
       const formattedTerm = term.replace('(', '').replace(')', '');
       if (formattedTerm.length > 1)
         document[formattedTerm] = document[formattedTerm] ? document[formattedTerm] + 1 : 1;
@@ -24,11 +24,12 @@ const buildDocument = (text: string, key: string): IDocument =>
     } as any,
   );
 
-const tf = (term: string, document: IDocument) => (document[term] ? document[term] : 0);
-const documentHasTerm = (term: string, document: IDocument) => document[term] && document[term] > 0;
+const tf = (term: string, document: IDocumentument) => (document[term] ? document[term] : 0);
+const documentHasTerm = (term: string, document: IDocumentument) =>
+  document[term] && document[term] > 0;
 
 export default class Tfidf {
-  private documents: IDocument[];
+  private documents: IDocumentument[];
   private idfCache: IIdfCache;
 
   constructor(documentsToAdd: { text: string; key: string }[]) {

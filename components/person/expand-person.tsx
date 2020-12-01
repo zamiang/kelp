@@ -111,7 +111,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           <DriveActivity
             driveActivity={Object.values(person.driveActivity)}
             personStore={props.personDataStore}
-            docStore={props.docDataStore}
+            docStore={props.documentDataStore}
           />
         </React.Fragment>
         <React.Fragment>

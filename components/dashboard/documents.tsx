@@ -2,14 +2,14 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import DocumentRow from '../docs/document-row';
+import DocumentRow from '../documents/document-row';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
 
 const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => {
-  const docs = props.docDataStore.getDocs();
+  const docs = props.documentDataStore.getDocs();
   const classes = panelStyles();
   return (
     <div className={classes.rowNoBorder}>
@@ -29,7 +29,7 @@ export const DocumentsForToday = (
   props: IStore & { selectedDocumentId: string | null; noLeftMargin?: boolean },
 ) => {
   const classes = panelStyles();
-  const docsForToday = props.docDataStore.getDocumentsForDay(
+  const docsForToday = props.documentDataStore.getDocumentsForDay(
     props.timeDataStore,
     props.driveActivityStore,
     new Date(),
@@ -51,7 +51,7 @@ export const DocumentsForToday = (
 
 const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | null }) => {
   const classes = panelStyles();
-  const docsForThisWeek = props.docDataStore.getDocumentsForThisWeek(
+  const docsForThisWeek = props.documentDataStore.getDocumentsForThisWeek(
     props.timeDataStore,
     props.driveActivityStore,
   );

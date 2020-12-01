@@ -1,4 +1,4 @@
-import DocDataStore from './doc-store';
+import DocumentDataStore from './document-store';
 import DriveActivityDataStore from './drive-activity-store';
 import PersonDataStore from './person-store';
 import data from './store-faker';
@@ -23,8 +23,8 @@ const useFakeStore = (): IStore => {
   timeDataStore.addDriveActivityToStore(data.driveActivity, personDataStore);
   // console.log('TIME DATA STORE:', timeDataStore);
 
-  const docDataStore = new DocDataStore(data.documents);
-  // console.log('DOC DATA STORE:', docDataStore);
+  const documentDataStore = new DocumentDataStore(data.documents);
+  // console.log('DOC DATA STORE:', DocumentDataStore);
 
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
   // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
@@ -34,7 +34,7 @@ const useFakeStore = (): IStore => {
       driveActivityStore: driveActivityDataStore,
       timeDataStore,
       personDataStore,
-      docDataStore,
+      documentDataStore,
     },
     { meetings: true, people: true, docs: true },
   );
@@ -43,7 +43,7 @@ const useFakeStore = (): IStore => {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
     personDataStore,
-    docDataStore,
+    documentDataStore,
     tfidfStore,
     lastUpdated: new Date(),
     refetch: () => null,

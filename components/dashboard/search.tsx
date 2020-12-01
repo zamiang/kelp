@@ -2,11 +2,11 @@ import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
-import DocumentSearchResult from '../docs/document-search-result';
+import DocumentSearchResult from '../documents/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonSearchResult from '../person/person-search-result';
 import TopBar from '../shared/top-bar';
-import { IDoc } from '../store/doc-store';
+import { IDocument } from '../store/document-store';
 import { IPerson } from '../store/person-store';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { uncommonPunctuation } from '../store/tfidf-store';
@@ -18,7 +18,7 @@ const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
     switch (result.type) {
       case 'document':
         return (
-          <DocumentSearchResult key={result.item.id} doc={result.item as IDoc} store={store} />
+          <DocumentSearchResult key={result.item.id} doc={result.item as IDocument} store={store} />
         );
       case 'person':
         return (

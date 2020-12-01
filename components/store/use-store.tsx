@@ -1,5 +1,5 @@
 import FetchAll from '../fetch/fetch-all';
-import DocDataStore, { formatGoogleDoc } from './doc-store';
+import DocumentDataStore, { formatGoogleDoc } from './document-store';
 import DriveActivityDataStore from './drive-activity-store';
 import PersonDataStore, { formatPerson } from './person-store';
 import TfidfDataStore from './tfidf-store';
@@ -8,7 +8,7 @@ import TimeDataStore from './time-store';
 export interface IStore {
   readonly personDataStore: PersonDataStore;
   readonly timeDataStore: TimeDataStore;
-  readonly docDataStore: DocDataStore;
+  readonly documentDataStore: DocumentDataStore;
   readonly driveActivityStore: DriveActivityDataStore;
   readonly tfidfStore: TfidfDataStore;
   readonly lastUpdated: Date;
@@ -34,8 +34,8 @@ const useStore = (signedIn: boolean): IStore => {
   // console.log('TIME DATA STORE:', timeDataStore);
 
   const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));
-  const docDataStore = new DocDataStore(docs);
-  // console.log('DOC DATA STORE:', docDataStore);
+  const documentDataStore = new DocumentDataStore(docs);
+  // console.log('DOC DATA STORE:', DocumentDataStore);
 
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
   // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
@@ -45,7 +45,7 @@ const useStore = (signedIn: boolean): IStore => {
       driveActivityStore: driveActivityDataStore,
       timeDataStore,
       personDataStore,
-      docDataStore,
+      documentDataStore,
     },
     { meetings: true, people: true, docs: true },
   );
@@ -54,7 +54,7 @@ const useStore = (signedIn: boolean): IStore => {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
     personDataStore,
-    docDataStore,
+    documentDataStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
     refetch: () => {

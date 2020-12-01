@@ -1,5 +1,5 @@
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import { getGoogleDocsIdFromLink } from './doc-store';
+import { getGoogleDocsIdFromLink } from './document-store';
 
 interface driveActivityById {
   [id: string]: IFormattedDriveActivity;

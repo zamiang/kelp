@@ -7,7 +7,7 @@ import { uniqBy } from 'lodash';
 import Link from 'next/link';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import DocDataStore, { IDoc } from '../store/doc-store';
+import DocumentDataStore, { IDocument } from '../store/document-store';
 import PersonDataStore from '../store/person-store';
 
 const useRowStyles = makeStyles(() => ({
@@ -28,7 +28,7 @@ const useRowStyles = makeStyles(() => ({
   },
 }));
 
-const Activity = (props: { document: IDoc }) => {
+const Activity = (props: { document: IDocument }) => {
   const classes = useRowStyles();
   return (
     <Grid container wrap="nowrap" spacing={2}>
@@ -53,7 +53,7 @@ const Activity = (props: { document: IDoc }) => {
 const DriveActivityList = (props: {
   driveActivity: IFormattedDriveActivity[];
   personStore: PersonDataStore;
-  docStore: DocDataStore;
+  docStore: DocumentDataStore;
 }) => {
   const classes = useRowStyles();
   const actions = uniqBy(props.driveActivity, 'link');
