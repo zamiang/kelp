@@ -21,7 +21,7 @@ import React, { useState } from 'react';
 import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import TopBar from '../shared/top-bar';
-import { IDoc } from '../store/doc-store';
+import { IDocument } from '../store/document-store';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
@@ -282,12 +282,12 @@ const CalendarItem = (props: ICalendarItemProps) => {
   );
 };
 
-interface IDocumentItemProps {
-  document?: IDoc;
+interface IDocumentumentItemProps {
+  document?: IDocument;
   activity?: IFormattedDriveActivity;
 }
 
-const DocumentItem = (props: IDocumentItemProps) => {
+const DocumentItem = (props: IDocumentumentItemProps) => {
   const classes = useCalendarItemStyles();
   const router = useRouter();
   if (!props.activity || !props.document) {
@@ -318,7 +318,7 @@ interface IDayContentProps {
   personStore: IStore['personDataStore'];
   activityStore: IStore['driveActivityStore'];
   timeStore: IStore['timeDataStore'];
-  documentsStore: IStore['docDataStore'];
+  documentsStore: IStore['documentDataStore'];
   day: Date;
 }
 
@@ -451,7 +451,7 @@ const Calendar = (props: IStore) => {
         personStore={props.personDataStore}
         activityStore={props.driveActivityStore}
         timeStore={props.timeDataStore}
-        documentsStore={props.docDataStore}
+        documentsStore={props.documentDataStore}
         day={addDays(start, day)}
       />
     </Grid>

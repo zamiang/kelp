@@ -30,7 +30,7 @@ const LoginButton = () => {
 
   if (user) {
     return (
-      <Link href="/dashboard?tab=meetings">
+      <Link href="/dashboard?tab=home">
         <Button className={classes.button} variant="outlined" disableElevation={true}>
           <Avatar
             className={classes.avatar}

@@ -8,7 +8,8 @@ import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import Docs from '../../components/dashboard/docs';
+import Docs from '../../components/dashboard/documents';
+import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
 import People from '../../components/dashboard/people';
 import Search from '../../components/dashboard/search';
@@ -114,6 +115,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     summary: <Summary {...store} />,
     settings: <Settings />,
     search: <Search {...store} />,
+    home: <Home {...store} />,
   } as any;
 
   const colorHash = {
@@ -124,6 +126,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     meetings: classes.blueBackground,
     docs: classes.pinkBackground,
     people: classes.orangeBackground,
+    home: classes.grayBackground,
   } as any;
 
   useEffect(() => {

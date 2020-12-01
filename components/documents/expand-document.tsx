@@ -29,7 +29,7 @@ const getActivityStats = (activity: IFormattedDriveActivity[], week: number) => 
 
 const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
   const classes = useExpandStyles();
-  const document = props.docDataStore.getByLink(props.documentId);
+  const document = props.documentDataStore.getByLink(props.documentId);
   if (!document) {
     return null;
   }

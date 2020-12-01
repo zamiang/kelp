@@ -4,10 +4,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import Avatars from '../person/avatars';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
-import { IDoc } from '../store/doc-store';
+import { IDocument } from '../store/document-store';
 import { IStore } from '../store/use-store';
 import ExpandedDocument from './expand-document';
 
@@ -20,10 +22,15 @@ const useStyles = makeStyles((theme) => ({
   image: {
     display: 'block',
     width: '100%',
-    minHeight: 22,
-    minWidth: 22,
+    paddingRight: theme.spacing(1),
   },
-  time: { minWidth: 160, maxWidth: 180, textAlign: 'right' },
+  time: {
+    minWidth: 160,
+    maxWidth: 180,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
   row: {
     margin: 0,
     paddingTop: theme.spacing(2),
@@ -36,41 +43,65 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
+const DocumentRow = (props: {
+  doc: IDocument;
+  selectedDocumentId: string | null;
+  store: IStore;
+  noLeftMargin?: boolean;
+}) => {
+  const isSelected = props.selectedDocumentId === props.doc.id;
+  const router = useRouter();
   const rowStyles = useRowStyles();
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event: any) => {
-    if (!anchorEl) {
-      setAnchorEl(anchorEl ? null : event?.currentTarget);
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const activity = props.store.driveActivityStore.getDriveActivityForDocument(props.doc.id) || [];
+  const people = props.store.personDataStore.getPeopleForDriveActivity(activity).slice(0, 5);
+
+  React.useEffect(() => {
+    if (isSelected && referenceElement) {
+      referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+  }, [referenceElement]);
+
+  const [isOpen, setIsOpen] = React.useState(isSelected);
+  const handleClick = () => {
+    setIsOpen(true);
+    void router.push(`?tab=docs&slug=${props.doc.id}`);
+    return false;
   };
-  const isOpen = Boolean(anchorEl);
   return (
     <ListItem
       onClick={handleClick}
+      ref={setReferenceElement as any}
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
         rowStyles.rowDefault,
         classes.row,
+        isSelected && rowStyles.pinkBackground,
+        props.noLeftMargin && rowStyles.rowNoLeftMargin,
       )}
     >
-      <Grid container spacing={1} alignItems="center" justify="flex-start">
-        <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
+      <Grid container spacing={1} alignItems="center">
+        <PopperContainer anchorEl={referenceElement} isOpen={isOpen} setIsOpen={setIsOpen}>
           <ExpandedDocument
             documentId={props.doc.id}
-            close={() => setAnchorEl(null)}
+            close={() => setIsOpen(false)}
             {...props.store}
           />
         </PopperContainer>
         <Grid item className={classes.imageContainer}>
           <img src={props.doc.iconLink} className={classes.image} />
         </Grid>
-        <Grid item zeroMinWidth>
+        <Grid item zeroMinWidth xs>
           <Typography noWrap variant="body2">
             <b>{props.doc.name}</b>
           </Typography>
+        </Grid>
+        <Grid item sm={2}>
+          <Grid container spacing={1} alignItems="center">
+            <Avatars people={people as any} />
+          </Grid>
         </Grid>
         <Grid item className={classes.time}>
           <Typography variant="caption" color="textSecondary">
@@ -82,4 +113,4 @@ const DocumentSearchResult = (props: { doc: IDoc; store: IStore }) => {
   );
 };
 
-export default DocumentSearchResult;
+export default DocumentRow;

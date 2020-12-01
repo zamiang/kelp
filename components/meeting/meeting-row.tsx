@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
       flex: 'none',
     },
   },
+  noLeftMargin: {
+    marginLeft: 0,
+  },
 }));
 
 const MeetingRow = (props: {
@@ -50,6 +53,7 @@ const MeetingRow = (props: {
   selectedMeetingId: string | null;
   shouldRenderCurrentTime: boolean;
   store: IStore;
+  noLeftMargin?: boolean;
 }) => {
   const isSelected = props.selectedMeetingId === props.meeting.id;
   const classes = useStyles();
@@ -89,6 +93,7 @@ const MeetingRow = (props: {
           props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
           props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
           isSelected && rowStyles.rowPrimaryMain,
+          props.noLeftMargin && classes.noLeftMargin,
         )}
       >
         <Grid container spacing={1} alignItems="center">

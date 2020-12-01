@@ -71,7 +71,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
             </Typography>
             <DriveActivityList
               driveActivity={attendeeAndCurrentUserDriveActivity}
-              docStore={props.docDataStore}
+              docStore={props.documentDataStore}
               personStore={props.personDataStore}
             />
           </React.Fragment>
@@ -81,7 +81,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
         </Typography>
         <DriveActivityList
           driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
-          docStore={props.docDataStore}
+          docStore={props.documentDataStore}
           personStore={props.personDataStore}
         />
         <Typography variant="h6" className={classes.smallHeading}>
@@ -89,7 +89,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
         </Typography>
         <DriveActivityList
           driveActivity={driveActivityFromAttendees}
-          docStore={props.docDataStore}
+          docStore={props.documentDataStore}
           personStore={props.personDataStore}
         />
         {hasAttendees && (

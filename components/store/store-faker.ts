@@ -3,7 +3,7 @@ import Faker from 'faker';
 import { random, sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import { IDoc } from './doc-store';
+import { IDocument } from './document-store';
 import { IPerson } from './person-store';
 import { ISegment, getStateForMeeting } from './time-store';
 
@@ -48,7 +48,7 @@ people.push({
 /**
  * create 10 documents
  */
-const documents: IDoc[] = times(DOCUMENT_COUNT, () => ({
+const documents: IDocument[] = times(DOCUMENT_COUNT, () => ({
   id: Faker.random.uuid(),
   name: Faker.system.fileName(),
   viewedByMe: true,

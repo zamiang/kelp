@@ -242,11 +242,7 @@ const App = () => {
                 >
                   Log In with Google
                 </Button>
-                <a
-                  className={classes.loginTryLink}
-                  href="/test-dashboard?tab=meetings"
-                  target="_blank"
-                >
+                <a className={classes.loginTryLink} href="/test-dashboard?tab=home" target="_blank">
                   Try Kelp with fake data ›
                 </a>
               </div>

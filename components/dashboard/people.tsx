@@ -9,7 +9,9 @@ import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
 
-const PeopleToday = (props: IStore & { selectedPersonId: string | null }) => {
+export const PeopleToday = (
+  props: IStore & { selectedPersonId: string | null; noLeftMargin?: boolean },
+) => {
   const classes = panelStyles();
   const peopleMeetingWithToday = props.personDataStore.getPeopleMeetingWithOnDay(
     props.timeDataStore,
@@ -27,6 +29,7 @@ const PeopleToday = (props: IStore & { selectedPersonId: string | null }) => {
                 person={person}
                 selectedPersonId={props.selectedPersonId}
                 store={{ ...props }}
+                noLeftMargin={props.noLeftMargin}
               />
             ),
         )}

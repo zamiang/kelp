@@ -22,7 +22,7 @@ export default class TfidfStore {
 
   constructor(
     store: {
-      docDataStore: IStore['docDataStore'];
+      documentDataStore: IStore['documentDataStore'];
       driveActivityStore: IStore['driveActivityStore'];
       timeDataStore: IStore['timeDataStore'];
       personDataStore: IStore['personDataStore'];
@@ -37,7 +37,7 @@ export default class TfidfStore {
 
   recomputeForFilters(
     store: {
-      docDataStore: IStore['docDataStore'];
+      documentDataStore: IStore['documentDataStore'];
       driveActivityStore: IStore['driveActivityStore'];
       timeDataStore: IStore['timeDataStore'];
       personDataStore: IStore['personDataStore'];
@@ -51,7 +51,7 @@ export default class TfidfStore {
 
   getDocumentsByDay(
     store: {
-      docDataStore: IStore['docDataStore'];
+      documentDataStore: IStore['documentDataStore'];
       driveActivityStore: IStore['driveActivityStore'];
       timeDataStore: IStore['timeDataStore'];
       personDataStore: IStore['personDataStore'];
@@ -72,7 +72,7 @@ export default class TfidfStore {
           activity.actorPersonId &&
           store.personDataStore.getPersonById(activity.actorPersonId)?.isCurrentUser
         ) {
-          const doc = store.docDataStore.getByLink(activity.link);
+          const doc = store.documentDataStore.getByLink(activity.link);
           const day = differenceInCalendarDays(currentDate, activity.time);
           if (documentsByDay[day] && doc && doc.name) {
             documentsByDay[day].push(doc?.name);
