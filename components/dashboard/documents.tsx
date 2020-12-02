@@ -26,7 +26,7 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
 };
 
 export const DocumentsForToday = (
-  props: IStore & { selectedDocumentId: string | null; noLeftMargin?: boolean },
+  props: IStore & { selectedDocumentId: string | null; isSmall?: boolean },
 ) => {
   const classes = panelStyles();
   const docsForToday = props.documentDataStore.getDocumentsForDay(
@@ -42,7 +42,7 @@ export const DocumentsForToday = (
           doc={doc}
           store={props}
           selectedDocumentId={props.selectedDocumentId}
-          noLeftMargin={props.noLeftMargin}
+          isSmall={props.isSmall}
         />
       ))}
     </div>

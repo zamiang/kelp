@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { signIn } from 'next-auth/client';
 import Head from 'next/head';
-import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import LoginButton from '../components/homepage/login-button';
@@ -95,7 +95,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   body: {
     marginTop: theme.spacing(3),
-    fontWeight: 400,
+    fontWeight: theme.typography.fontWeightMedium,
+    fontSize: '0.9285714285714286rem',
+    color: theme.palette.text.secondary,
   },
   largeAvatar: {
     marginLeft: 'auto',
@@ -242,9 +244,9 @@ const App = () => {
                 >
                   Log In with Google
                 </Button>
-                <a className={classes.loginTryLink} href="/test-dashboard?tab=home" target="_blank">
-                  Try Kelp with fake data ›
-                </a>
+                <Link href="/test-dashboard?tab=home">
+                  <div className={classes.loginTryLink}>Try Kelp with fake data ›</div>
+                </Link>
               </div>
               <div className={classes.hint}>
                 Your data is your data. When visiting the Kelp website, your computer is storing and
@@ -269,15 +271,6 @@ const App = () => {
               </div>
               <Footer shouldAlignLeft={true} />
             </Container>
-          </Grid>
-          <Grid item sm={5}>
-            <Image
-              alt="kelp marketing image"
-              className={classes.heroImage}
-              src="/designer_file_case.png"
-              width="586"
-              height="416"
-            />
           </Grid>
         </Grid>
       </div>

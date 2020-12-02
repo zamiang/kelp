@@ -49,10 +49,10 @@ const About = () => {
                 need to be effective across an increasingly vast set of information sources.
               </Typography>
               <Typography variant="h6" className={classes.body}>
-                We believe that we can help by meeting people where they are instead of asking them
-                to adopt yet another organizational scheme. Our strategy is to find novel approaches
-                to passive information organization in order to reduce the time working
-                professionals spend searching for information and help them see the bigger picture.
+                We meet you where you are instead of asking you to adopt yet another organizational
+                scheme. Our strategy is to find novel approaches to passive information organization
+                in order to reduce the time working professionals (like you!) spend searching for
+                information and help them see the bigger picture.
               </Typography>
               <br />
               <Divider />

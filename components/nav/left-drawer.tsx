@@ -153,7 +153,7 @@ const LeftDrawer = (props: IProps) => {
           {isLoading && (
             <ListItem>
               <ListItemIcon className={classes.iconContainer}>
-                <LoopIcon className={classes.avatar} />
+                <LoopIcon className={classes.unSelected} />
               </ListItemIcon>
               <ListItemText>Loading</ListItemText>
             </ListItem>
@@ -161,7 +161,7 @@ const LeftDrawer = (props: IProps) => {
           {!session && (
             <ListItem>
               <ListItemIcon className={classes.iconContainer}>
-                <LockOpenIcon className={classes.avatar} />
+                <LockOpenIcon className={classes.unSelected} />
               </ListItemIcon>
               <ListItemText>Not Authenticated</ListItemText>
             </ListItem>

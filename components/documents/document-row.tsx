@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     margin: 0,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingTop: 9,
+    paddingBottom: 9,
     borderBottom: `1px solid ${theme.palette.divider}`,
     borderRadius: 0,
     '&.MuiListItem-button:hover': {
@@ -47,7 +47,7 @@ const DocumentRow = (props: {
   doc: IDocument;
   selectedDocumentId: string | null;
   store: IStore;
-  noLeftMargin?: boolean;
+  isSmall?: boolean;
 }) => {
   const isSelected = props.selectedDocumentId === props.doc.id;
   const router = useRouter();
@@ -79,7 +79,7 @@ const DocumentRow = (props: {
         rowStyles.rowDefault,
         classes.row,
         isSelected && rowStyles.pinkBackground,
-        props.noLeftMargin && rowStyles.rowNoLeftMargin,
+        props.isSmall && rowStyles.rowNoLeftMargin,
       )}
     >
       <Grid container spacing={1} alignItems="center">
@@ -98,16 +98,20 @@ const DocumentRow = (props: {
             <b>{props.doc.name}</b>
           </Typography>
         </Grid>
-        <Grid item sm={2}>
-          <Grid container spacing={1} alignItems="center">
-            <Avatars people={people as any} />
+        {!props.isSmall && (
+          <Grid item sm={2}>
+            <Grid container spacing={1} alignItems="center">
+              <Avatars people={people as any} />
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid item className={classes.time}>
-          <Typography variant="caption" color="textSecondary">
-            {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
-          </Typography>
-        </Grid>
+        )}
+        {!props.isSmall && (
+          <Grid item className={classes.time}>
+            <Typography variant="caption" color="textSecondary">
+              {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </ListItem>
   );
