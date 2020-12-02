@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
     opacity: 1,
     marginBottom: theme.spacing(0.5),
     paddingLeft: theme.spacing(4),
-    // borderRadius: theme.spacing(4),
     '&:hover': {
       backgroundColor: theme.palette.secondary.light,
     },

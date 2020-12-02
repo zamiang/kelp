@@ -51,7 +51,7 @@ const PersonRow = (props: {
         props.noLeftMargin && rowStyles.rowNoLeftMargin,
       )}
     >
-      <Grid container spacing={2} alignItems="center">
+      <Grid container spacing={2} alignItems="center" wrap="nowrap">
         <PopperContainer anchorEl={referenceElement} isOpen={isOpen} setIsOpen={setIsOpen}>
           <ExpandedPerson
             personId={props.person.id}
@@ -68,21 +68,23 @@ const PersonRow = (props: {
             </Avatar>
           )}
         </Grid>
-        <Grid item xs={8} sm container>
-          <Grid item xs={4} className={classes.name} zeroMinWidth>
-            <Typography variant="body2" noWrap>
-              <b>{props.person.name || props.person.id}</b>
-            </Typography>
-          </Grid>
-          <Grid item xs={4} className={classes.email}>
-            <Typography variant="body2" noWrap>
-              {props.person.emailAddresses.join(', ')}
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="body2" noWrap>
-              {props.person.notes}
-            </Typography>
+        <Grid item xs>
+          <Grid container>
+            <Grid item xs={4} className={classes.name} zeroMinWidth>
+              <Typography variant="body2" noWrap>
+                <b>{props.person.name || props.person.id}</b>
+              </Typography>
+            </Grid>
+            <Grid item xs={4} className={classes.email}>
+              <Typography variant="body2" noWrap>
+                {props.person.emailAddresses.join(', ')}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2" noWrap>
+                {props.person.notes}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
