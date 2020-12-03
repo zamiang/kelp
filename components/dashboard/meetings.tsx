@@ -74,7 +74,7 @@ const MeetingsByDay = (
       <TopBar title={currentTitle}>
         <Button
           className={buttonClasses.unSelected}
-          onClick={() => referenceElement?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+          onClick={() => referenceElement?.scrollIntoView({ behavior: 'auto', block: 'center' })}
         >
           Now
         </Button>

@@ -82,7 +82,10 @@ const segments: ISegment[] = [];
 const DAYS_IN_WEEK = 7;
 const WEEKS_TO_CREATE = 3;
 const START_HOUR = 9;
-const startDate = setDay(new Date(new Date().setHours(9)), -(DAYS_IN_WEEK * WEEKS_TO_CREATE));
+const startDate = setDay(
+  new Date(new Date(new Date().setHours(9)).setMinutes(0)),
+  -(DAYS_IN_WEEK * WEEKS_TO_CREATE),
+);
 
 /**
  * create drive activity per document

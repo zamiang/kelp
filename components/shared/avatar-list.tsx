@@ -1,14 +1,14 @@
 import Avatar from '@material-ui/core/Avatar';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Link from 'next/link';
 import React from 'react';
-import PersonDataStore, { IPerson } from '../store/person-store';
+import { IPerson } from '../store/person-store';
 
 interface IProps {
   people: IPerson[];
-  personStore: PersonDataStore;
+  shouldDisplayNone?: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -28,16 +28,23 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     opacity: 1,
     transition: 'opacity 0.3s',
+    borderColor: theme.palette.background.paper,
     '&:hover': {
-      opacity: 0.6,
+      opacity: 0.9,
     },
   },
 }));
 
-const AvatarRow = (props: IProps) => {
+const AvatarList = (props: IProps) => {
   const classes = useStyles();
+  if (props.people.filter((p) => !p.isCurrentUser).length < 1) {
+    if (props.shouldDisplayNone) {
+      return <Typography>None</Typography>;
+    }
+    return null;
+  }
   return (
-    <React.Fragment>
+    <AvatarGroup max={5}>
       {props.people.map((person) => {
         if (!person) {
           return null;
@@ -46,31 +53,14 @@ const AvatarRow = (props: IProps) => {
           return null;
         }
         return (
-          <Link key={person.id} href={`?tab=people&slug=${person.id}`}>
-            <Grid item>
-              <Avatar
-                style={{ height: 32, width: 32 }}
-                src={person.imageUrl || ''}
-                className={classes.avatar}
-              >
-                {(person.name || person.id)[0]}
-              </Avatar>
-            </Grid>
-          </Link>
+          <Avatar key={person.id} src={person.imageUrl || ''} className={classes.avatar}>
+            <Link key={person.id} href={`?tab=people&slug=${person.id}`}>
+              {(person.name || person.id)[0]}
+            </Link>
+          </Avatar>
         );
       })}
-    </React.Fragment>
-  );
-};
-
-const AvatarList = (props: IProps) => {
-  if (props.people.filter((p) => !p.isCurrentUser).length < 1) {
-    return <Typography>None</Typography>;
-  }
-  return (
-    <Grid container spacing={1}>
-      <AvatarRow {...props} />
-    </Grid>
+    </AvatarGroup>
   );
 };
 

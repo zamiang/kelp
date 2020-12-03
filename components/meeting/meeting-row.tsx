@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
   },
   smallContainer: {
-    flexDirection: 'column',
+    flexDirection: 'column-reverse',
     overflow: 'hidden',
   },
 }));
@@ -65,8 +65,10 @@ const MeetingRow = (props: {
   const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   React.useEffect(() => {
-    if ((isSelected || props.shouldRenderCurrentTime) && referenceElement) {
-      referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (isSelected && referenceElement) {
+      referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
+    } else if (referenceElement && !props.selectedMeetingId && props.shouldRenderCurrentTime) {
+      referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [referenceElement]);
 

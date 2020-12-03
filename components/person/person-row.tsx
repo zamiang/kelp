@@ -31,7 +31,7 @@ const PersonRow = (props: {
 
   React.useEffect(() => {
     if (isSelected && referenceElement) {
-      referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [referenceElement]);
   const [isOpen, setIsOpen] = React.useState(isSelected);

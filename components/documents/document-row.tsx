@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import Avatars from '../person/avatars';
+import AvatarList from '../shared/avatar-list';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { IDocument } from '../store/document-store';
@@ -59,7 +59,7 @@ const DocumentRow = (props: {
 
   React.useEffect(() => {
     if (isSelected && referenceElement) {
-      referenceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [referenceElement]);
 
@@ -101,7 +101,7 @@ const DocumentRow = (props: {
         {!props.isSmall && (
           <Grid item sm={2}>
             <Grid container spacing={1} alignItems="center">
-              <Avatars people={people as any} />
+              <AvatarList people={people as any} shouldDisplayNone={false} />
             </Grid>
           </Grid>
         )}

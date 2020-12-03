@@ -113,7 +113,13 @@ const theme = createMuiTheme({
         color: '#ffffffcf',
       },
     },
+    MuiAvatarGroup: {
+      avatar: {
+        borderColor: '#fff',
+        color: 'rgba(0, 0, 0, 0.87)',
+      },
+    },
   },
-});
+} as any);
 
 export default responsiveFontSizes(theme);

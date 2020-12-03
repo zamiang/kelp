@@ -6,7 +6,7 @@ import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
   popper: {
-    zIndex: 2,
+    zIndex: 5, // above the avatar group
   },
   paper: {
     maxWidth: 550,

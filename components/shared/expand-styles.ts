@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   edit: {},
   title: {
+    wordBreak: 'break-word',
     [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(3),
     },

@@ -76,7 +76,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
             Collaborators
           </Typography>
           <Typography className={classes.highlight}>
-            <AvatarList personStore={props.personDataStore} people={people} />
+            <AvatarList people={people} shouldDisplayNone={true} />
           </Typography>
         </Grid>
       </Grid>
