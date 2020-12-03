@@ -32,7 +32,7 @@ const Home = (props: IStore) => {
           </Typography>
           {meetings.map((meeting) => (
             <MeetingRow
-              noLeftMargin={true}
+              isSmall={true}
               key={meeting.id}
               currentTime={currentTime}
               meeting={meeting}

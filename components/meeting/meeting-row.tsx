@@ -45,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
   noLeftMargin: {
     marginLeft: 0,
   },
+  smallContainer: {
+    flexDirection: 'column',
+    overflow: 'hidden',
+  },
 }));
 
 const MeetingRow = (props: {
@@ -53,7 +57,7 @@ const MeetingRow = (props: {
   selectedMeetingId: string | null;
   shouldRenderCurrentTime: boolean;
   store: IStore;
-  noLeftMargin?: boolean;
+  isSmall?: boolean;
 }) => {
   const isSelected = props.selectedMeetingId === props.meeting.id;
   const classes = useStyles();
@@ -93,7 +97,7 @@ const MeetingRow = (props: {
           props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
           props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
           isSelected && rowStyles.rowPrimaryMain,
-          props.noLeftMargin && classes.noLeftMargin,
+          props.isSmall && classes.noLeftMargin,
         )}
       >
         <Grid container spacing={1} alignItems="center">
@@ -119,7 +123,13 @@ const MeetingRow = (props: {
               props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
             )}
           ></Grid>
-          <Grid item container xs={10} zeroMinWidth>
+          <Grid
+            item
+            container
+            sm
+            zeroMinWidth
+            className={clsx(props.isSmall && classes.smallContainer)}
+          >
             <Grid item className={classes.time}>
               <Typography variant="subtitle2">
                 {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
@@ -128,7 +138,9 @@ const MeetingRow = (props: {
             <Grid item zeroMinWidth className={classes.summary}>
               <Typography variant="body2" noWrap>
                 <b>{props.meeting.summary || '(no title)'}</b>{' '}
-                {props.meeting.description ? props.meeting.description.replace(/<[^>]+>/g, '') : ''}
+                {!props.isSmall && props.meeting.description
+                  ? props.meeting.description.replace(/<[^>]+>/g, '')
+                  : ''}
               </Typography>
             </Grid>
           </Grid>
