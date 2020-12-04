@@ -20,6 +20,7 @@ import PublicIcon from '@material-ui/icons/Public';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { drawerWidth } from '../../pages/dashboard';
 import RefreshButton from './refresh-button';
@@ -69,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
   unSelected: { color: theme.palette.text.hint },
   listItem: {
     borderRadius: theme.spacing(3),
+    textOverflow: 'ellipsis',
+    whiteWpace: 'nowrap',
+    overflow: 'hidden',
     transition: theme.transitions.create('background', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -115,6 +119,7 @@ interface IProps {
 
 const LeftDrawer = (props: IProps) => {
   const classes = useStyles();
+  const router = useRouter();
   const [session, isLoading] = useSession();
   const user = session && session.user;
   const isMobile = typeof document !== 'undefined' && document.body.clientWidth < 500;
@@ -167,19 +172,6 @@ const LeftDrawer = (props: IProps) => {
             </ListItem>
           )}
         </List>
-        {!isLoading && user && (
-          <Link href="?tab=settings">
-            <Grid container justify="center">
-              <Grid item>
-                <Avatar
-                  className={classes.avatar}
-                  src={user.image || undefined}
-                  alt={user.name || user.email || undefined}
-                />
-              </Grid>
-            </Grid>
-          </Link>
-        )}
         <SearchBar />
         <List>
           {shouldRenderHome && (
@@ -283,8 +275,25 @@ const LeftDrawer = (props: IProps) => {
           </Link>
         </List>
       </div>
+
       <List>
         <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
+        {!isLoading && user && (
+          <ListItem
+            button
+            className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+            onClick={() => router.push('?tab=settings')}
+          >
+            <ListItemIcon className={classes.iconContainer}>
+              <Avatar
+                className={clsx(classes.unSelected, classes.icon)}
+                src={user.image || undefined}
+                alt={user.name || user.email || undefined}
+              />
+            </ListItemIcon>
+            <ListItemText primary={user.name || user.email || undefined} />
+          </ListItem>
+        )}
       </List>
     </Drawer>
   );
