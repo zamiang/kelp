@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     width: '100%',
     paddingRight: theme.spacing(1),
+    maxHeight: 24,
+    maxWidth: 24,
   },
   time: {
     minWidth: 160,
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   row: {
+    minHeight: 48,
     margin: 0,
     paddingTop: 9,
     paddingBottom: 9,
