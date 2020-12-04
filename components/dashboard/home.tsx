@@ -25,7 +25,7 @@ const Home = (props: IStore) => {
     <div className={classes.panel}>
       <TopBar title={currentTitle} />
       <br />
-      <Grid container className={classes.row}>
+      <Grid container className={classes.rowNoBorder}>
         <Grid item sm={3}>
           <Typography variant="h6" className={expandClasses.smallHeading}>
             Today&apos;s schedule
@@ -67,18 +67,6 @@ const Home = (props: IStore) => {
               isSmall={true}
             />
           ))}
-        </Grid>
-      </Grid>
-      <Grid container className={classes.row}>
-        <Grid item sm={3}>
-          <Typography variant="h6" className={expandClasses.smallHeading}>
-            Meeting Netowrk
-          </Typography>
-        </Grid>
-        <Grid item sm={3}>
-          <Typography variant="h6" className={expandClasses.smallHeading}>
-            Document Netowrk
-          </Typography>
         </Grid>
       </Grid>
     </div>

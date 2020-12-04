@@ -9,7 +9,7 @@ import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
 
 const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => {
-  const docs = props.documentDataStore.getDocs();
+  const docs = props.documentDataStore.getDocs().sort((a, b) => (a.name! < b.name! ? -1 : 1));
   const classes = panelStyles();
   return (
     <div className={classes.rowNoBorder}>

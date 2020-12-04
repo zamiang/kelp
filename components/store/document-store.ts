@@ -70,7 +70,7 @@ export default class DocumentDataStore {
   ) {
     const driveActivity = driveActivityStore.getAll();
     const minTime = subDays(new Date(), 7);
-    return uniqBy(
+    return (uniqBy(
       driveActivity
         .filter((activity) => {
           const person =
@@ -86,7 +86,7 @@ export default class DocumentDataStore {
         )
         .filter((doc) => doc && doc.id),
       'id',
-    ) as IDocument[];
+    ) as IDocument[]).sort((a, b) => (a.name! < b.name! ? -1 : 1));
   }
 
   getDocumentsForDay(
@@ -95,7 +95,7 @@ export default class DocumentDataStore {
     day: Date,
   ) {
     const driveActivityIdsForDay = timeDataStore.getDriveActivityIdsForDate(day);
-    return uniqBy(
+    return (uniqBy(
       driveActivityIdsForDay
         .map((id) => id && driveActivityStore.getById(id))
         .map(
@@ -104,7 +104,7 @@ export default class DocumentDataStore {
         )
         .filter((doc) => doc && doc.id),
       'id',
-    ) as IDocument[];
+    ) as IDocument[]).sort((a, b) => (a.name! < b.name! ? -1 : 1));
   }
 
   getDocumentsForThisWeek(
@@ -114,7 +114,7 @@ export default class DocumentDataStore {
     const driveActivityIdsForThisWeek = timeDataStore.getDriveActivityIdsForWeek(
       getWeek(new Date()),
     );
-    return uniqBy(
+    return (uniqBy(
       driveActivityIdsForThisWeek
         .map((id) => id && driveActivityStore.getById(id))
         .map(
@@ -123,7 +123,7 @@ export default class DocumentDataStore {
         )
         .filter((doc) => doc && doc.id),
       'id',
-    ) as IDocument[];
+    ) as IDocument[]).sort((a, b) => (a.name! < b.name! ? -1 : 1));
   }
 
   /**

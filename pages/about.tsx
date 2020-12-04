@@ -232,13 +232,14 @@ const About = () => {
                     pdf
                   </MuiLink>
                 </sup>
-                .
+                . That research with Max, combined with my work experience is what inspired the
+                creation of Kelp.
               </Typography>
               <Typography variant="h6" className={classes.body}>
                 Across all of those experiences, I&rsquo;ve made a lot of simple mistakes.
-                I&rsquo;ve lost documents, missed emails, created events with the wrong attendees
+                I&rsquo;ve lost documents, missed emails, created events with the missing attendees
                 and I&rsquo;ve had coworker relationships languish. While we are responsible for our
-                actions, we are not well suited to dealing with the amount of information and
+                actions, humans are not well suited to dealing with the amount of information and
                 notifications we receive every day across an increasingly vast set of sources.
               </Typography>
               <Typography variant="h6" className={classes.body}>

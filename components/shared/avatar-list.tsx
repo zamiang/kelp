@@ -2,7 +2,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { IPerson } from '../store/person-store';
 
@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 
 const AvatarList = (props: IProps) => {
   const classes = useStyles();
+  const router = useRouter();
+
   if (props.people.filter((p) => !p.isCurrentUser).length < 1) {
     if (props.shouldDisplayNone) {
       return <Typography>None</Typography>;
@@ -53,10 +55,13 @@ const AvatarList = (props: IProps) => {
           return null;
         }
         return (
-          <Avatar key={person.id} src={person.imageUrl || ''} className={classes.avatar}>
-            <Link key={person.id} href={`?tab=people&slug=${person.id}`}>
-              {(person.name || person.id)[0]}
-            </Link>
+          <Avatar
+            onClick={() => router.push(`?tab=people&slug=${person.id}`)}
+            key={person.id}
+            src={person.imageUrl || ''}
+            className={classes.avatar}
+          >
+            {(person.name || person.id)[0]}
           </Avatar>
         );
       })}

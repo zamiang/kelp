@@ -198,19 +198,25 @@ const Terms = () => {
               </Typography>
               <ul id="9cbf1b19-4699-4995-9412-3939029cb0cf">
                 <li>
-                  Kelp asks for the most restricted access that Google allows, which is read-only.
-                  Kelp cannot create new documents, change any existing documents, delete your
-                  documents, or access any other data within your Google account, including Gmail.
+                  <Typography variant="h6" className={classes.body}>
+                    Kelp asks for the most restricted access that Google allows, which is read-only.
+                    Kelp cannot create new documents, change any existing documents, delete your
+                    documents, or access any other data within your Google account, including Gmail.
+                  </Typography>
                 </li>
                 <li>
-                  Documents data does not pass through Kelp. Your device requests the data directly
-                  from Google.
+                  <Typography variant="h6" className={classes.body}>
+                    Documents data does not pass through Kelp. Your device requests the data
+                    directly from Google.
+                  </Typography>
                 </li>
                 <li>
-                  You can revoke access to your documents at any time at{' '}
-                  <a href="https://myaccount.google.com/permissions">
-                    https://myaccount.google.com/permissions
-                  </a>
+                  <Typography variant="h6" className={classes.body}>
+                    You can revoke access to your documents at any time at{' '}
+                    <a href="https://myaccount.google.com/permissions">
+                      https://myaccount.google.com/permissions
+                    </a>
+                  </Typography>
                 </li>
               </ul>
               <h1 id="d886474f-e8b8-4e94-b279-cfe945e16baf">
