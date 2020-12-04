@@ -25,7 +25,7 @@ const Home = (props: IStore) => {
     <div className={classes.panel}>
       <TopBar title={currentTitle} />
       <br />
-      <Grid container className={classes.rowNoBorder}>
+      <Grid container className={classes.homeRow}>
         <Grid item sm={3}>
           <Typography variant="h6" className={expandClasses.smallHeading}>
             Today&apos;s schedule

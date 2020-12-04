@@ -56,6 +56,15 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: theme.spacing(1),
     },
   },
+  homeRow: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
+  },
 }));
 
 export default useStyles;
