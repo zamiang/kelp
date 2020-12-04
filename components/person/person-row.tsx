@@ -42,6 +42,7 @@ const PersonRow = (props: {
   };
   return (
     <ListItem
+      button={true}
       onClick={handleClick}
       ref={setReferenceElement as any}
       className={clsx(

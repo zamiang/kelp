@@ -87,6 +87,7 @@ const MeetingRow = (props: {
         </ListItem>
       )}
       <ListItem
+        button={true}
         ref={setReferenceElement as any}
         onClick={handleClick}
         className={clsx(
