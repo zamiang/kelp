@@ -45,6 +45,7 @@ const PersonRow = (props: {
       button={true}
       onClick={handleClick}
       ref={setReferenceElement as any}
+      selected={isSelected}
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,

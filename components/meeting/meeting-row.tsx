@@ -88,6 +88,7 @@ const MeetingRow = (props: {
       )}
       <ListItem
         button={true}
+        selected={isSelected}
         ref={setReferenceElement as any}
         onClick={handleClick}
         className={clsx(

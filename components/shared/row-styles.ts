@@ -77,35 +77,35 @@ const useStyles = makeStyles((theme) => ({
   },
   rowPrimaryMain: {
     background: config.BLUE_BACKGROUND,
-    '&.MuiListItem-button:hover': {
+    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: config.BLUE_BACKGROUND,
       background: config.BLUE_BACKGROUND,
     },
   },
   yellowBackground: {
     backgroundColor: config.YELLOW_BACKGROUND,
-    '&.MuiListItem-button:hover': {
+    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: config.YELLOW_BACKGROUND,
       backgroundColor: config.YELLOW_BACKGROUND,
     },
   },
   orangeBackground: {
     backgroundColor: config.ORANGE_BACKGROUND,
-    '&.MuiListItem-button:hover': {
+    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: config.ORANGE_BACKGROUND,
       backgroundColor: config.ORANGE_BACKGROUND,
     },
   },
   purpleBackground: {
     backgroundColor: config.PURPLE_BACKGROUND,
-    '&.MuiListItem-button:hover': {
+    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: config.PURPLE_BACKGROUND,
       backgroundColor: config.PURPLE_BACKGROUND,
     },
   },
   pinkBackground: {
     backgroundColor: config.PINK_BACKGROUND,
-    '&.MuiListItem-button:hover': {
+    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: config.PINK_BACKGROUND,
       backgroundColor: config.PINK_BACKGROUND,
     },

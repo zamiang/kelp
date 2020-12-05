@@ -1,11 +1,12 @@
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { format, getWeek, subWeeks } from 'date-fns';
+import { format, subWeeks } from 'date-fns';
 import pluralize from 'pluralize';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
+import { getWeek } from '../shared/date-helpers';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
