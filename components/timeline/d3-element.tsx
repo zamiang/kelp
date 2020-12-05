@@ -14,6 +14,7 @@ import {
 } from 'd3';
 import { subWeeks } from 'date-fns';
 import config from '../../constants/config';
+import { useStyles } from './timeline';
 
 const chartId = '#d3-chart';
 
@@ -29,6 +30,7 @@ interface IProps {
   width: number;
   height: number;
   data: ITimelineItem[];
+  classes: ReturnType<typeof useStyles>;
 }
 
 const colorHash = {
@@ -37,19 +39,17 @@ const colorHash = {
   person: config.YELLOW_BACKGROUND,
 };
 
-class D3Timeline {
-  props: IProps;
-  margin = {
-    top: 20,
-    bottom: 20,
-    left: 60,
-    right: 0,
-  };
+const margin = {
+  top: 20,
+  bottom: 20,
+  left: 60,
+  right: 0,
+};
 
+class D3Timeline {
   constructor(props: IProps) {
-    this.props = props;
-    const width = props.width - this.margin.left - this.margin.right;
-    const height = props.height - this.margin.top - this.margin.bottom;
+    const width = props.width - margin.left - margin.right;
+    const height = props.height - margin.top - margin.bottom;
 
     const maxDate = new Date();
     const minDate = subWeeks(maxDate, 1);
@@ -59,7 +59,7 @@ class D3Timeline {
       .attr('height', props.height)
       .attr('width', props.width)
       .append('g')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     const rows = ['  ', 'meeting', 'document', 'person', '     '];
 
@@ -95,7 +95,12 @@ class D3Timeline {
     const tx = () => zoomTransform(gx.node()!);
     gx.call(zoomX as any);
 
-    console.log('append');
+    // Define the div for the tooltip
+    const tooltip = select('body')
+      .append('div')
+      .attr('class', props.classes.tooltip)
+      .style('opacity', 0);
+
     // add data
     svg
       .selectAll('.node')
@@ -104,15 +109,35 @@ class D3Timeline {
       .append('g')
       .attr('class', (d) => d.type + ' node');
 
-    const meetings = selectAll('.meeting').append('rect').attr('width', 50).attr('height', 30);
+    const meetings = selectAll('.meeting')
+      .append('rect')
+      .attr('width', 50)
+      .attr('height', 30)
+      .attr('rx', 6)
+      .attr('ry', 6)
+      .style('fill', '#fff')
+      .style('stroke', (d) => colorHash[d.type] as any)
+      .on('mouseover', (event: any, d: ITimelineItem) => {
+        tooltip.transition().duration(200).style('opacity', 0.9);
+        tooltip
+          .html(d.hoverText)
+          .style('left', `${event.pageX}px`)
+          .style('top', `${event.pageY - 28}px`);
+      });
 
     const documents = selectAll('.document')
       .append('circle')
       .attr('r', 10)
       .attr('cy', (d) => yName(d.type) as any)
       .style('fill', 'url(#document)')
-      .style('stroke', (d) => colorHash[d.type] as any);
-
+      .style('stroke', (d) => colorHash[d.type] as any)
+      .on('mouseover', (event: any, d: ITimelineItem) => {
+        tooltip.transition().duration(200).style('opacity', 0.9);
+        tooltip
+          .html(d.hoverText)
+          .style('left', `${event.pageX}px`)
+          .style('top', `${event.pageY - 28}px`);
+      });
     function redraw() {
       const xr = tx().rescaleX(xscale);
       gx.call(xaxis, xr);
