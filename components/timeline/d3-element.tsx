@@ -101,6 +101,14 @@ class D3Timeline {
       .attr('class', props.classes.tooltip)
       .style('opacity', 0);
 
+    const handleHover = (event: any, d: ITimelineItem) => {
+      tooltip.transition().duration(200).style('opacity', 0.9);
+      tooltip
+        .html(d.hoverText)
+        .style('left', `${event.pageX}px`)
+        .style('top', `${event.pageY - 28}px`);
+    };
+
     // add data
     svg
       .selectAll('.node')
@@ -116,34 +124,25 @@ class D3Timeline {
       .attr('rx', 6)
       .attr('ry', 6)
       .style('fill', '#fff')
-      .style('stroke', (d) => colorHash[d.type] as any)
-      .on('mouseover', (event: any, d: ITimelineItem) => {
-        tooltip.transition().duration(200).style('opacity', 0.9);
-        tooltip
-          .html(d.hoverText)
-          .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY - 28}px`);
-      });
+      .style('stroke', ((d: ITimelineItem) => colorHash[d.type]) as any)
+      .on('mouseover', handleHover as any);
 
     const documents = selectAll('.document')
       .append('circle')
       .attr('r', 10)
-      .attr('cy', (d) => yName(d.type) as any)
+      .attr('cy', ((d: ITimelineItem) => yName(d.type)) as any)
       .style('fill', 'url(#document)')
-      .style('stroke', (d) => colorHash[d.type] as any)
-      .on('mouseover', (event: any, d: ITimelineItem) => {
-        tooltip.transition().duration(200).style('opacity', 0.9);
-        tooltip
-          .html(d.hoverText)
-          .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY - 28}px`);
-      });
+      .style('stroke', ((d: ITimelineItem) => colorHash[d.type]) as any)
+      .on('mouseover', handleHover as any);
+
     function redraw() {
       const xr = tx().rescaleX(xscale);
       gx.call(xaxis, xr);
 
-      documents.attr('cx', (d) => xr(d.time)).attr('rx', 6 * Math.sqrt(tx().k));
-      meetings.attr('x', (d) => xr(d.time)); // .attr('rx', 6 * Math.sqrt(tx().k));
+      documents
+        .attr('cx', ((d: ITimelineItem) => xr(d.time)) as any)
+        .attr('rx', 6 * Math.sqrt(tx().k));
+      meetings.attr('x', ((d: ITimelineItem) => xr(d.time)) as any); // .attr('rx', 6 * Math.sqrt(tx().k));
     }
 
     const zoomSetup = zoom().on('zoom', function (event: D3ZoomEvent<any, any>) {
@@ -154,16 +153,19 @@ class D3Timeline {
 
       if (k === 1) {
         // pure translation?
-        shouldDoX && gx.call(zoomX.translateBy, (t.x - z.x) / tx().k, 0);
+        shouldDoX && gx.call(zoomX.translateBy as any, (t.x - z.x) / tx().k, 0);
       } else {
         // if not, we're zooming on a fixed point
-        shouldDoX && gx.call(zoomX.scaleBy, k, point);
+        shouldDoX && gx.call(zoomX.scaleBy as any, k, point);
       }
       z = t;
       redraw();
     });
 
-    svg.call(zoomSetup).transition().call(zoomSetup.transform, zoomIdentity.scale(20));
+    svg
+      .call(zoomSetup as any)
+      .transition()
+      .call(zoomSetup.transform as any, zoomIdentity.scale(20));
   }
 }
 

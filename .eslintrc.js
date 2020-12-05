@@ -51,6 +51,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/prefer-regexp-exec': 0,
     '@typescript-eslint/require-await': 0,
+    '@typescript-eslint/restrict-template-expressions': 0,
     '@typescript-eslint/unbound-method': 0,
     // NOTE: These no-unsafe-foo flags are needed due to the google api not having types
     '@typescript-eslint/no-unsafe-assignment': 1,
@@ -73,6 +74,7 @@ module.exports = {
     'react/no-unknown-property': 0, // Slow and not needed
     'react/prop-types': 0,
     'security/detect-object-injection': 0,
+
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
   },
   settings: {
