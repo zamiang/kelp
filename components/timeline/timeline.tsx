@@ -4,6 +4,7 @@ import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
 const chartId = 'd3-chart';
+let hasRun = false;
 
 const Timeline = (props: IStore & { height: number; width: number }) => {
   useEffect(initVis, [props.height, props.width]);
@@ -34,12 +35,15 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
         type: 'meeting',
       })),
     );
-
+    if (hasRun) {
+      return;
+    }
     new D3Timeline({
       data,
       width: props.width,
       height: props.height,
     });
+    hasRun = true;
   }
   return <div id={chartId} />;
 };

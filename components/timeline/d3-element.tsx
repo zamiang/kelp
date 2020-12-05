@@ -7,11 +7,13 @@ import {
   scaleBand,
   scaleTime,
   select,
+  selectAll,
   zoom,
   zoomIdentity,
   zoomTransform,
 } from 'd3';
 import { subWeeks } from 'date-fns';
+import config from '../../constants/config';
 
 const chartId = '#d3-chart';
 
@@ -28,6 +30,12 @@ interface IProps {
   height: number;
   data: ITimelineItem[];
 }
+
+const colorHash = {
+  document: config.PINK_BACKGROUND,
+  meeting: config.BLUE_BACKGROUND,
+  person: config.YELLOW_BACKGROUND,
+};
 
 class D3Timeline {
   props: IProps;
@@ -87,20 +95,30 @@ class D3Timeline {
     const tx = () => zoomTransform(gx.node()!);
     gx.call(zoomX as any);
 
+    console.log('append');
     // add data
-    const dots = svg
-      .selectAll('circle')
+    svg
+      .selectAll('.node')
       .data(props.data)
       .enter()
+      .append('g')
+      .attr('class', (d) => d.type + ' node');
+
+    const meetings = selectAll('.meeting').append('rect').attr('width', 50).attr('height', 30);
+
+    const documents = selectAll('.document')
       .append('circle')
       .attr('r', 10)
-      .attr('cy', (d) => yName(d.type));
+      .attr('cy', (d) => yName(d.type) as any)
+      .style('fill', 'url(#document)')
+      .style('stroke', (d) => colorHash[d.type] as any);
 
     function redraw() {
       const xr = tx().rescaleX(xscale);
       gx.call(xaxis, xr);
 
-      dots.attr('cx', (d) => xr(d.time)).attr('rx', 6 * Math.sqrt(tx().k));
+      documents.attr('cx', (d) => xr(d.time)).attr('rx', 6 * Math.sqrt(tx().k));
+      meetings.attr('x', (d) => xr(d.time)); // .attr('rx', 6 * Math.sqrt(tx().k));
     }
 
     const zoomSetup = zoom().on('zoom', function (event: D3ZoomEvent<any, any>) {
