@@ -1,11 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect } from 'react';
-import { getWeek } from '../shared/date-helpers';
+import { uniq, uniqBy } from 'lodash';
+import React, { useEffect, useRef } from 'react';
 import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
-const chartId = 'd3-chart';
-let hasRun = false;
+const scrollBarWidth = 20;
 
 export const useStyles = makeStyles((theme) => ({
   tooltip: {
@@ -22,48 +21,94 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Timeline = (props: IStore & { height: number; width: number }) => {
+const D3Component = (props: { data: any; dataLinks: any; height: number; width: number }) => {
   const classes = useStyles();
-  useEffect(initVis, [props.height, props.width]);
-
-  const currentDate = new Date();
-
-  function initVis() {
-    let data: ITimelineItem[] = [];
-
-    data = data.concat(
-      props.driveActivityStore.getAll().map((activity) => {
-        const document = props.documentDataStore.getByLink(activity.link)!;
-        return {
-          time: activity.time,
-          type: 'document',
-          icon: document.iconLink!,
-          hoverText: document.name || 'no title',
-        };
-      }),
-    );
-
-    data = data.concat(
-      props.timeDataStore.getSegmentsForWeek(getWeek(currentDate)).map((segment) => ({
-        time: segment.start,
-        end: segment.end,
-        icon: 'foo',
-        hoverText: segment.summary!,
-        type: 'meeting',
-      })),
-    );
-    if (hasRun) {
-      return;
-    }
+  const d3Container = useRef(null);
+  const tooltipRef = useRef(null);
+  useEffect(() => {
     new D3Timeline({
-      data,
-      width: props.width,
+      data: props.data,
+      dataLinks: props.dataLinks,
+      width: props.width - scrollBarWidth,
       height: props.height,
-      classes,
+      tooltipRef,
+      selector: d3Container?.current,
     });
-    hasRun = true;
-  }
-  return <div id={chartId} />;
+  }, [props.data, d3Container.current]);
+
+  return (
+    <React.Fragment>
+      <svg className="d3-component" ref={d3Container} />
+      <div className={classes.tooltip} style={{ opacity: 0 }} ref={tooltipRef} />
+    </React.Fragment>
+  );
+};
+
+const Timeline = (props: IStore & { height: number; width: number }) => {
+  let data: ITimelineItem[] = [];
+  const personIds: string[] = [];
+  data = data.concat(
+    props.driveActivityStore.getAll().map((activity) => {
+      const document = props.documentDataStore.getByLink(activity.link)!;
+      return {
+        id: document.id,
+        time: activity.time,
+        type: 'document',
+        imageUrl: document.iconLink!,
+        hoverText: document.name || 'no title',
+      };
+    }),
+  );
+
+  const segments = props.timeDataStore.getSegments();
+
+  segments.map((segment) => {
+    data = data.concat(
+      segment.formattedAttendees
+        .filter((a) => !a.self)
+        .map((attendee) => {
+          const person = props.personDataStore.getPersonById(attendee.personId)!;
+          personIds.push(person.id);
+          return {
+            id: person.id,
+            time: segment.start,
+            imageUrl: person.imageUrl!,
+            hoverText: person.name || person.emailAddresses[0],
+            type: 'person',
+          };
+        }),
+    );
+  });
+
+  const graph = {} as any;
+
+  uniq(personIds).map((p) => {
+    const person = props.personDataStore.getPersonById(p)!;
+    let linksData = props.personDataStore
+      .getAssociates(person.id, segments)
+      .filter((associate) => !associate.self)
+      .map((associate) => ({
+        source: person.id,
+        target: props.personDataStore.getPersonById(associate.personId)!.id,
+        type: 'person',
+      }));
+
+    linksData = linksData.concat(
+      uniqBy(
+        Object.values(person.driveActivity).map((activity) =>
+          props.documentDataStore.getByLink(activity.link),
+        ),
+        'id',
+      ).map((document) => ({ source: person.id, target: document!.id, type: 'document' })),
+    );
+    graph[p.id] = linksData;
+  });
+
+  return (
+    <div>
+      <D3Component data={data} dataLinks={graph} width={props.width} height={props.height} />;
+    </div>
+  );
 };
 
 export default Timeline;
