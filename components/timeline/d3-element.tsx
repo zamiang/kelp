@@ -10,8 +10,6 @@ import {
   scaleBand,
   scaleTime,
   select,
-  zoom,
-  zoomTransform,
 } from 'd3';
 import { subWeeks } from 'date-fns';
 
@@ -138,13 +136,6 @@ class D3Timeline {
     // Add y axis
     const yScale = scaleBand().domain(rows).range([0, height]).paddingInner(1);
 
-    // set up the ancillary zooms and an accessor for their transforms
-    const zoomX = zoom().scaleExtent([0.5, 10]);
-
-    const tx = () => zoomTransform(xAxisSvg.node()!);
-    xAxisSvg.call(zoomX as any);
-    tx().rescaleX(xScale);
-
     const tooltip = select(props.tooltipRef.current);
 
     const handleHover = (event: any, d: ITimelineItem) => {
@@ -197,12 +188,6 @@ class D3Timeline {
       u.exit().remove();
     };
 
-    const updateXAxis = () => {
-      // scale the x axis
-      const xr = tx().rescaleX(xScale);
-      xAxisSvg.call(xAxis, xr);
-    };
-
     const updateLinks = () => {
       const u = select('.links').selectAll('line').data(props.dataLinks);
 
@@ -220,7 +205,6 @@ class D3Timeline {
     const ticked = () => {
       updateLinks();
       updateNodes();
-      updateXAxis();
     };
 
     const simulation = forceSimulation(nodes as any)
