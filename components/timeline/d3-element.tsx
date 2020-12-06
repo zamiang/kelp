@@ -1,5 +1,7 @@
+import { Subject } from '@material-ui/icons';
 import {
   axisBottom,
+  drag,
   extent,
   forceCollide,
   forceLink,
@@ -251,6 +253,35 @@ class D3Timeline {
     ) {
       simulation.tick();
     }
+
+    const setupDrag = (simulation: any) => {
+      const dragSubject = (event: any) => simulation.find(event.x, event.y);
+
+      const dragstarted = (event: any) => {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        event.subject.fx = event.subject.x;
+        event.subject.fy = event.subject.y;
+      };
+
+      const dragged = (event: any) => {
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
+      };
+
+      const dragended = (event: any) => {
+        if (!event.active) simulation.alphaTarget(0);
+        event.subject.fx = null;
+        event.subject.fy = null;
+      };
+
+      return drag()
+        .subject(dragSubject)
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended);
+    };
+
+    svg.call(setupDrag(simulation)).node();
   }
 }
 
