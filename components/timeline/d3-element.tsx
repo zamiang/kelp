@@ -6,16 +6,13 @@ import {
   forceSimulation,
   forceX,
   forceY,
-  path,
   scaleBand,
   scaleTime,
   select,
-  selectAll,
   zoom,
   zoomTransform,
 } from 'd3';
 import { subWeeks } from 'date-fns';
-import { flatten } from 'lodash';
 import config from '../../constants/config';
 
 export interface ITimelineItem {
@@ -28,16 +25,15 @@ export interface ITimelineItem {
 }
 
 interface IDataLink {
-  source: string;
-  target: string;
-  type: string;
+  source: number;
+  target: number;
 }
 
 interface IProps {
   width: number;
   height: number;
   data: ITimelineItem[];
-  dataLinks: { [key: string]: IDataLink };
+  dataLinks: IDataLink[];
   selector: any;
   tooltipRef: any;
 }
@@ -54,42 +50,6 @@ const margin = {
   bottom: 20,
   left: 0,
   right: 0,
-};
-
-const ticked = () => {
-  const u = svg.selectAll('circle').data(nodes);
-
-  u.enter()
-    .append('g')
-    .merge(u as any)
-    .attr('cx', (d: any) => d.x) //  add if needing x bounding box = Math.max(d.radius, Math.min(width - d.radius, d.x))))
-    .attr('cy', (d: any) => (d.y = Math.max(d.radius, Math.min(height - d.radius, d.y))))
-    .attr('class', (d) => d.type + ' node')
-    .attr('r', (d) => d.radius)
-    .style('stroke', (d: any) => d.stroke);
-
-  u.exit().remove();
-
-  const link = selectAll('.link').data(dataLinksValues);
-
-  link
-    .enter()
-    .merge(link as any)
-    .style('stroke', (d: any) => '#000000')
-    .attr('x1', function (d) {
-      return d.source.x;
-    })
-    .attr('y1', function (d) {
-      return d.source.y;
-    })
-    .attr('x2', function (d) {
-      return d.target.x;
-    })
-    .attr('y2', function (d) {
-      return d.target.y;
-    });
-
-  // console.log(path);
 };
 
 const setupZoom = () => {
@@ -155,7 +115,6 @@ class D3Timeline {
 
     const maxDate = new Date();
     const minDate = subWeeks(maxDate, 1);
-    const dataLinksValues = flatten(Object.values(props.dataLinks));
 
     const svg = select(props.selector);
 
@@ -196,17 +155,17 @@ class D3Timeline {
     const tooltip = select(props.tooltipRef.current);
 
     const handleHover = (event: any, d: ITimelineItem) => {
-      const hoveredItem = d.id;
+      // const hoveredItem = d.id;
       tooltip.transition().duration(200).style('opacity', 0.9);
       tooltip
         .html(d.hoverText)
         .style('left', `${event.offsetX}px`)
         .style('top', `${event.offsetY - 28}px`);
 
-      const links = props.dataLinks[hoveredItem];
-      if (links) {
-        svg.selectAll('.link').data(links as any);
-      }
+      // const links = props.dataLinks[hoveredItem];
+      //if (links) {
+      //  svg.selectAll('.link').data(links as any);
+      //}
     };
 
     const nodes = props.data.map((data) => ({
@@ -230,9 +189,9 @@ class D3Timeline {
         .attr('class', (d) => d.type + ' node')
         .attr('r', (d) => d.radius)
         .style('stroke', (d: any) => d.stroke)
-        .merge(u)
-        .attr('cx', (d) => d.x)
-        .attr('cy', (d) => d.y)
+        .merge(u as any)
+        .attr('cx', (d: any) => d.x)
+        .attr('cy', (d: any) => d.y)
         .style('fill', 'transparent')
         .on('mouseover', handleHover)
         .on('click', click);
@@ -256,14 +215,12 @@ class D3Timeline {
     };
 
     const updateLinks = () => {
-      const u = select('.links')
-        .selectAll('line')
-        .data(nodes.length > 1 ? dataLinksValues : []);
+      console.log(props.dataLinks, nodes);
+      const u = select('.links').selectAll('line').data(props.dataLinks);
 
-      console.log(dataLinksValues, '<<<<<<');
       u.enter()
         .append('line')
-        .merge(u)
+        .merge(u as any)
         .attr('x1', (d) => d.source.x)
         .attr('y1', (d) => d.source.y)
         .attr('x2', (d) => d.target.x)
@@ -279,12 +236,7 @@ class D3Timeline {
     };
 
     const simulation = forceSimulation(nodes as any)
-      .force(
-        'link',
-        forceLink()
-          .links(nodes.length > 1 ? dataLinksValues : [])
-          .id((d) => d.id),
-      )
+      .force('link', forceLink().links(props.dataLinks))
       .force(
         'collision',
         forceCollide().radius((d: any) => d.radius),

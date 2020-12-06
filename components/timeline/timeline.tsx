@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { uniq, uniqBy } from 'lodash';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
@@ -44,9 +44,15 @@ const D3Component = (props: { data: any; dataLinks: any; height: number; width: 
   );
 };
 
+type link = {
+  source: number;
+  target: number;
+};
+
 const Timeline = (props: IStore & { height: number; width: number }) => {
   let data: ITimelineItem[] = [];
   const personIds: string[] = [];
+  const linksData: link[] = [];
   data = data.concat(
     props.driveActivityStore.getAll().map((activity) => {
       const document = props.documentDataStore.getByLink(activity.link)!;
@@ -106,7 +112,7 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
 
   return (
     <div>
-      <D3Component data={data} dataLinks={graph} width={props.width} height={props.height} />;
+      <D3Component data={data} dataLinks={linksData} width={props.width} height={props.height} />;
     </div>
   );
 };
