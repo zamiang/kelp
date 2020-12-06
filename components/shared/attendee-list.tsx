@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import config from '../../constants/config';
 import PersonDataStore from '../store/person-store';
 import { IFormattedAttendee } from '../store/time-store';
 
@@ -92,8 +93,6 @@ const AttendeeRow = (props: IProps) => {
   );
 };
 
-const attendeeMax = 10;
-
 const useAttendeeStyles = makeStyles(() => ({
   expand: {
     textDecoration: 'underline',
@@ -103,7 +102,7 @@ const useAttendeeStyles = makeStyles(() => ({
 
 const AttendeeList = (props: IProps) => {
   const classes = useAttendeeStyles();
-  const [isExpanded, setExpand] = useState<boolean>(props.attendees.length < attendeeMax);
+  const [isExpanded, setExpand] = useState<boolean>(props.attendees.length < config.ATTENDEE_MAX);
   if (props.attendees.length < 1) {
     return <Typography variant="body2">None</Typography>;
   }
