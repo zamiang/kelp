@@ -191,22 +191,9 @@ class D3Timeline {
 
     const tx = () => zoomTransform(xAxisSvg.node()!);
     xAxisSvg.call(zoomX as any);
+    tx().rescaleX(xScale);
 
     const tooltip = select(props.tooltipRef.current);
-
-    const simulation = forceSimulation();
-
-    // link
-    const linkSvgs = svg
-      .append('g')
-      .attr('class', 'links')
-      .selectAll('.link')
-      .data(dataLinksValues)
-      .enter()
-      .append('line')
-      .attr('class', 'link')
-      .attr('stroke-width', 5)
-      .style('stroke', '#000000');
 
     const handleHover = (event: any, d: ITimelineItem) => {
       const hoveredItem = d.id;
@@ -222,16 +209,9 @@ class D3Timeline {
       }
     };
 
-    const currentScale = tx().rescaleX(xScale);
-
     const nodes = props.data.map((data) => ({
       id: data.id,
       time: data.time,
-      cx: currentScale(data.time),
-      x: currentScale(data.time),
-      rx: 6 * Math.sqrt(tx().k),
-      cy: yScale(data.type),
-      y: yScale(data.type),
       type: data.type,
       imageUrl: data.imageUrl,
       radius,
@@ -239,95 +219,26 @@ class D3Timeline {
       hoverText: data.hoverText,
     }));
 
-    // add data
-    const nodeElements = svg
-      .selectAll('.node')
-      .data(nodes)
-      .enter()
-      .append('g')
-      .attr('class', (d) => d.type + ' node');
-
-    const tick = () => {
-      const path = svg.selectAll('.link');
-      const node = svg.selectAll('.node circle');
-      path
-        .attr('cx', (d: any) => d.cx) //  add if needing x bounding box = Math.max(d.radius, Math.min(width - d.radius, d.x))))
-        .attr('cy', (d: any) => d.cy);
-
-      node // .attr('x', (d) => d.x).attr('y', (d) => d.y);
-        // .attr('transform', (d) => `translate(${d.x}, ${d.y})`);
-        .attr('cx', (d: any) => d.x) //  add if needing x bounding box = Math.max(d.radius, Math.min(width - d.radius, d.x))))
-        .attr('cy', (d: any) => d.y);
-    };
-
-    function update() {
-      // scale the x axis
-      const xr = tx().rescaleX(xScale);
-      xAxisSvg.call(xAxis, xr);
-
-      // Update the nodes…
-      const path = svg.selectAll('path.link').data(nodes, function (d) {
-        return d.id;
-      });
-
-      simulation
-        .nodes(nodes)
-        .force(
-          'link',
-          forceLink()
-            .links(nodes.length > 1 ? dataLinksValues : [])
-            .id((d) => d.id),
-        )
-        .force(
-          'collision',
-          forceCollide().radius((d: any) => d.radius),
-        )
-        .force(
-          'x',
-          forceX().x((d: any) => xScale(d.time)),
-        )
-        .force(
-          'y',
-          forceY().y((d: any) => yScale(d.type)!),
-        )
-        .on('tick', tick);
-
-      path.enter().insert('svg:path').attr('class', 'link').style('stroke', '#eee');
-
-      // Exit any old paths
-      path.exit().remove();
-
+    const updateNodes = () => {
       // update the nodes
-      const node = svg.selectAll('.node').data(nodes, function (d) {
-        return d.id;
-      });
+      const u = select('svg g').selectAll('circle').data(nodes);
 
       // Enter any new nodes.
-      const nodeElements = path
+      const nodeElements = u
         .enter()
-        .data(nodes)
-        .append('g')
-        .attr('class', (d) => d.type + ' node')
-        // .attr('transform', (d) => console.log(d) && `translate(${d.x}, ${d.y})`)
-        .on('click', click);
-      // .call(force.drag);
-
-      // append stuff to them
-      const documents = nodeElements
         .append('circle')
-        .attr('r', (d: any) => d.radius)
-        // .attr('cx', (d: any) => d.cx) //  add if needing x bounding box = Math.max(d.radius, Math.min(width - d.radius, d.x))))
-        .attr('cy', (d: any) => d.cy)
-        .attr('cx', (d: any) => xr(d.time))
-        .attr('rx', (d: any) => d.rx)
-        // .attr('cy', (d: any) => (d.cy = Math.max(d.radius, Math.min(height - d.radius, d.cy))))
-        .style('fill', 'url(#document)')
+        .attr('class', (d) => d.type + ' node')
+        .attr('r', (d) => d.radius)
         .style('stroke', (d: any) => d.stroke)
+        .merge(u)
+        .attr('cx', (d) => d.x)
+        .attr('cy', (d) => d.y)
         .style('fill', 'transparent')
-        .on('mouseover', handleHover);
+        .on('mouseover', handleHover)
+        .on('click', click);
 
       // add documents images
-      documents
+      nodeElements
         .append('image')
         .attr('xlink:href', (d) => d.imageUrl)
         .attr('x', -radius)
@@ -335,13 +246,58 @@ class D3Timeline {
         .attr('height', radius * 2)
         .attr('width', radius * 2);
 
-      node.exit().remove();
+      u.exit().remove();
+    };
 
-      //documents.attr('cx', ((d: any) => xr(d.time)) as any).attr('rx', 6 * Math.sqrt(tx().k));
-    }
+    const updateXAxis = () => {
+      // scale the x axis
+      const xr = tx().rescaleX(xScale);
+      xAxisSvg.call(xAxis, xr);
+    };
 
-    // https://www.d3indepth.com/force-layout/
-    // https://observablehq.com/@d3/beeswarm
+    const updateLinks = () => {
+      const u = select('.links')
+        .selectAll('line')
+        .data(nodes.length > 1 ? dataLinksValues : []);
+
+      console.log(dataLinksValues, '<<<<<<');
+      u.enter()
+        .append('line')
+        .merge(u)
+        .attr('x1', (d) => d.source.x)
+        .attr('y1', (d) => d.source.y)
+        .attr('x2', (d) => d.target.x)
+        .attr('y2', (d) => d.target.y);
+
+      u.exit().remove();
+    };
+
+    const ticked = () => {
+      updateLinks();
+      updateNodes();
+      updateXAxis();
+    };
+
+    const simulation = forceSimulation(nodes as any)
+      .force(
+        'link',
+        forceLink()
+          .links(nodes.length > 1 ? dataLinksValues : [])
+          .id((d) => d.id),
+      )
+      .force(
+        'collision',
+        forceCollide().radius((d: any) => d.radius),
+      )
+      .force(
+        'x',
+        forceX().x((d: any) => xScale(d.time)),
+      )
+      .force(
+        'y',
+        forceY().y((d: any) => yScale(d.type)!),
+      )
+      .on('tick', ticked);
 
     // Calculate the position before drawing
     // See https://github.com/d3/d3-force/blob/master/README.md#simulation_tick
@@ -353,16 +309,6 @@ class D3Timeline {
     ) {
       simulation.tick();
     }
-
-    update();
-
-    // Fun times for React
-    //svg.exit().remove();
-    //svg.select('.x.axis').exit().remove();
-    //xAxisSvg.exit().remove();
-    // nodeElements.exit().remove();
-    // elements[0].exit().remove();
-    // elements[1].exit().remove();
   }
 }
 

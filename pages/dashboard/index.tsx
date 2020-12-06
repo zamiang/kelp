@@ -20,6 +20,7 @@ import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
+import { bodyFontFamily } from '../../constants/theme';
 
 export const drawerWidth = 240;
 
@@ -102,6 +103,21 @@ interface IProps {
 
 const is500Error = (error: Error) => (error as any).status === 500;
 
+const globalStyles = `
+circle {
+  fill: cadetblue;
+}
+line {
+  stroke: #ccc;
+}
+text {
+  text-anchor: middle;
+  font-family: ${bodyFontFamily};
+  fill: rgba(0, 0, 0, 0.87);
+  font-size: 0.8125rem;
+}
+`;
+
 export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
@@ -142,6 +158,7 @@ export const DashboardContainer = ({ store }: IProps) => {
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
+      <style>{globalStyles}</style>
       <LeftDrawer
         lastUpdated={store.lastUpdated}
         handleRefreshClick={handleRefreshClick}

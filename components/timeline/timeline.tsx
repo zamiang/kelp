@@ -38,7 +38,7 @@ const D3Component = (props: { data: any; dataLinks: any; height: number; width: 
 
   return (
     <React.Fragment>
-      <svg className="d3-component" ref={d3Container} />
+      <svg ref={d3Container} />
       <div className={classes.tooltip} style={{ opacity: 0 }} ref={tooltipRef} />
     </React.Fragment>
   );
