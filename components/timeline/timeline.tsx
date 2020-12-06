@@ -111,7 +111,7 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
     const person = props.personDataStore.getPersonById(p)!;
     const personSegments = person.segmentIds
       .map((segmentId) => props.timeDataStore.getSegmentById(segmentId))
-      .filter((segment) => segment.start > startDate);
+      .filter((segment) => segment!.start > startDate);
 
     linksData = linksData.concat(
       props.personDataStore

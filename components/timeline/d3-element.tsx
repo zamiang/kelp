@@ -1,4 +1,3 @@
-import { Subject } from '@material-ui/icons';
 import {
   axisBottom,
   drag,
@@ -15,7 +14,6 @@ import {
   zoomTransform,
 } from 'd3';
 import { subWeeks } from 'date-fns';
-import config from '../../constants/config';
 
 export interface ITimelineItem {
   id: string;
@@ -48,8 +46,9 @@ const margin = {
   right: 0,
 };
 
+/*
 const setupZoom = () => {
-  /*
+
     // z holds a copy of the previous transform, so we can track its changes
     // let z = zoomIdentity;
 
@@ -74,8 +73,8 @@ const setupZoom = () => {
       .call(zoomSetup as any)
       .transition()
       .call(zoomSetup.transform as any, zoomIdentity.scale(20));
-*/
 };
+*/
 
 const addIcons = () => {
   // Add icons
@@ -101,8 +100,6 @@ const addIcons = () => {
       .attr('height', radius);
     */
 };
-
-const click = () => console.log('click');
 
 class D3Timeline {
   constructor(props: IProps) {
@@ -186,8 +183,7 @@ class D3Timeline {
         .merge(u as any)
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
-        .on('mouseover', handleHover)
-        .on('click', click);
+        .on('mouseover', handleHover);
 
       // add documents images
       nodeElements
@@ -213,10 +209,10 @@ class D3Timeline {
       u.enter()
         .append('line')
         .merge(u as any)
-        .attr('x1', (d) => d.source.x)
-        .attr('y1', (d) => d.source.y)
-        .attr('x2', (d) => d.target.x)
-        .attr('y2', (d) => d.target.y);
+        .attr('x1', (d: any) => d.source.x)
+        .attr('y1', (d: any) => d.source.y)
+        .attr('x2', (d: any) => d.target.x)
+        .attr('y2', (d: any) => d.target.y);
 
       u.exit().remove();
     };
