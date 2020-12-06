@@ -104,9 +104,6 @@ interface IProps {
 const is500Error = (error: Error) => (error as any).status === 500;
 
 const globalStyles = `
-circle {
-  fill: cadetblue;
-}
 line {
   stroke: #ccc;
 }
@@ -116,6 +113,19 @@ text {
   fill: rgba(0, 0, 0, 0.87);
   font-size: 0.8125rem;
 }
+circle.document {
+  stroke: ${config.PINK_BACKGROUND};
+  fill: #fff;
+}
+circle.meeting {
+  stroke: ${config.BLUE_BACKGROUND};
+  fill: #fff;
+}
+circle.person {
+  stroke: ${config.YELLOW_BACKGROUND};
+  fill: #fff;
+}
+
 `;
 
 export const DashboardContainer = ({ store }: IProps) => {

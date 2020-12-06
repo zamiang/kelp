@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { uniq, uniqBy } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
@@ -38,7 +38,10 @@ const D3Component = (props: { data: any; dataLinks: any; height: number; width: 
 
   return (
     <React.Fragment>
-      <svg ref={d3Container} />
+      <svg ref={d3Container}>
+        <g className="links"></g>
+        <g className="nodes"></g>
+      </svg>
       <div className={classes.tooltip} style={{ opacity: 0 }} ref={tooltipRef} />
     </React.Fragment>
   );
@@ -52,7 +55,7 @@ type link = {
 const Timeline = (props: IStore & { height: number; width: number }) => {
   let data: ITimelineItem[] = [];
   const personIds: string[] = [];
-  const linksData: link[] = [];
+  let linksData: link[] = [];
   data = data.concat(
     props.driveActivityStore.getAll().map((activity) => {
       const document = props.documentDataStore.getByLink(activity.link)!;
@@ -86,18 +89,22 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
     );
   });
 
-  const graph = {} as any;
+  const idToIndexHash: { [id: string]: number } = {};
+  data.map((d, index) => {
+    idToIndexHash[d.id] = index;
+  });
 
   uniq(personIds).map((p) => {
     const person = props.personDataStore.getPersonById(p)!;
-    let linksData = props.personDataStore
-      .getAssociates(person.id, segments)
-      .filter((associate) => !associate.self)
-      .map((associate) => ({
-        source: person.id,
-        target: props.personDataStore.getPersonById(associate.personId)!.id,
-        type: 'person',
-      }));
+    linksData = linksData.concat(
+      props.personDataStore
+        .getAssociates(person.id, segments)
+        .filter((associate) => !associate.self)
+        .map((associate) => ({
+          source: idToIndexHash[person.id],
+          target: idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
+        })),
+    );
 
     linksData = linksData.concat(
       uniqBy(
@@ -105,9 +112,11 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
           props.documentDataStore.getByLink(activity.link),
         ),
         'id',
-      ).map((document) => ({ source: person.id, target: document!.id, type: 'document' })),
+      ).map((document) => ({
+        source: idToIndexHash[person.id],
+        target: idToIndexHash[document!.id],
+      })),
     );
-    graph[p.id] = linksData;
   });
 
   return (

@@ -38,12 +38,6 @@ interface IProps {
   tooltipRef: any;
 }
 
-const colorHash = {
-  document: config.PINK_BACKGROUND,
-  meeting: config.BLUE_BACKGROUND,
-  person: config.YELLOW_BACKGROUND,
-};
-
 const radius = 20;
 const margin = {
   top: 0,
@@ -174,13 +168,12 @@ class D3Timeline {
       type: data.type,
       imageUrl: data.imageUrl,
       radius,
-      stroke: colorHash[data.type],
       hoverText: data.hoverText,
     }));
 
     const updateNodes = () => {
       // update the nodes
-      const u = select('svg g').selectAll('circle').data(nodes);
+      const u = select('.nodes').selectAll('circle').data(nodes);
 
       // Enter any new nodes.
       const nodeElements = u
@@ -188,11 +181,9 @@ class D3Timeline {
         .append('circle')
         .attr('class', (d) => d.type + ' node')
         .attr('r', (d) => d.radius)
-        .style('stroke', (d: any) => d.stroke)
         .merge(u as any)
         .attr('cx', (d: any) => d.x)
         .attr('cy', (d: any) => d.y)
-        .style('fill', 'transparent')
         .on('mouseover', handleHover)
         .on('click', click);
 
@@ -215,7 +206,6 @@ class D3Timeline {
     };
 
     const updateLinks = () => {
-      console.log(props.dataLinks, nodes);
       const u = select('.links').selectAll('line').data(props.dataLinks);
 
       u.enter()
@@ -236,7 +226,7 @@ class D3Timeline {
     };
 
     const simulation = forceSimulation(nodes as any)
-      .force('link', forceLink().links(props.dataLinks))
+      .force('link', forceLink().strength(0).links(props.dataLinks))
       .force(
         'collision',
         forceCollide().radius((d: any) => d.radius),
