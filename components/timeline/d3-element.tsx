@@ -157,7 +157,6 @@ class D3Timeline {
 
       // add circle
       u.append('circle').attr('r', (d) => d.radius);
-      // .on('mouseover', handleHover);
 
       // Append hero name on roll over next to the node as well
       u.append('text')
@@ -265,6 +264,9 @@ class D3Timeline {
         .on('end', dragended);
     };
 
+    // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/clipPath
+    // https://bl.ocks.org/kenpenn/268878b410ddb1201277be3f0305d566
+    // http://bl.ocks.org/eesur/be2abfb3155a38be4de4
     svg.call(setupDrag(simulation));
     updateNodes();
     updateLinks();
