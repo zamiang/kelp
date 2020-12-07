@@ -69,7 +69,7 @@
     "react-onclickoutside": "6.9.0",
     "react-popper": "2.2.4",
     "sitemap": "6.3.3",
-    "stopword": "1.0.3",
+    "stopword": "1.0.4",
     "styled-components": "5.2.1",
     "typescript": "4.1.2"
   },
