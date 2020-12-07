@@ -33,7 +33,6 @@ interface IProps {
   data: ITimelineItem[];
   dataLinks: IDataLink[];
   selector: any;
-  tooltipRef: any;
 }
 
 const radius = 20;
@@ -122,35 +121,20 @@ class D3Timeline {
     // The x axis gets drawn many times
     svg.selectAll('.x.axis').remove();
 
-    const xAxisSvg = svg
+    // Add x axis
+    const xScale = scaleTime([minDate, maxDate], [0, width]);
+    xScale.domain(extent(props.data, (d) => d.time) as any);
+    svg
       .append('g')
       .attr('pointer-events', 'none')
       .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${height})`);
+      .attr('transform', `translate(0, ${height})`)
+      .call(axisBottom(xScale))
+      .select('.domain')
+      .remove();
 
-    // Add x axis
-    const xScale = scaleTime([minDate, maxDate], [0, width]);
-    const xAxis = (g: any, scale: any) => g.call(axisBottom(scale)).select('.domain').remove();
-    xScale.domain(extent(props.data, (d) => d.time) as any);
-
-    // Add y axis
+    // yScale function
     const yScale = scaleBand().domain(rows).range([0, height]).paddingInner(1);
-
-    const tooltip = select(props.tooltipRef.current);
-
-    const handleHover = (event: any, d: ITimelineItem) => {
-      // const hoveredItem = d.id;
-      tooltip.transition().duration(200).style('opacity', 0.9);
-      tooltip
-        .html(d.hoverText)
-        .style('left', `${event.offsetX}px`)
-        .style('top', `${event.offsetY - 28}px`);
-
-      // const links = props.dataLinks[hoveredItem];
-      //if (links) {
-      //  svg.selectAll('.link').data(links as any);
-      //}
-    };
 
     const nodes = props.data.map((data) => ({
       id: data.id,
@@ -163,22 +147,30 @@ class D3Timeline {
 
     const updateNodes = () => {
       // update the nodes
-      const u = select('.nodes').selectAll('circle').data(nodes);
-
-      // Enter any new nodes.
-      const nodeElements = u
+      const u = select('.nodes')
+        .selectAll('.node')
+        .data(nodes)
         .enter()
-        .append('circle')
+        .append('g')
         .attr('class', (d) => d.type + ' node')
-        .attr('r', (d) => d.radius)
-        .merge(u as any)
-        .attr('cx', (d: any) => d.x)
-        .attr('cy', (d: any) => d.y)
-        .on('mouseover', handleHover);
+        .attr('transform', (d) => `translate(${d.x}, ${d.y})`);
+
+      // add circle
+      u.append('circle').attr('r', (d) => d.radius);
+      // .on('mouseover', handleHover);
+
+      // Append hero name on roll over next to the node as well
+      u.append('text')
+        .attr('class', 'nodetext')
+        .attr('x', 20)
+        .attr('y', 25 + 15)
+        .attr('fill', '130C0E')
+        .text(function (d) {
+          return d.hoverText;
+        });
 
       // add documents images
-      nodeElements
-        .append('image')
+      u.append('image')
         .attr('xlink:href', (d) => d.imageUrl)
         .attr('x', -radius)
         .attr('y', -radius)
@@ -186,6 +178,9 @@ class D3Timeline {
         .attr('width', radius * 2);
 
       u.exit().remove();
+      u.selectAll('circle').exit().remove();
+      u.selectAll('text').exit().remove();
+      u.selectAll('image').exit().remove();
     };
 
     const updateLinks = () => {
@@ -203,8 +198,17 @@ class D3Timeline {
     };
 
     const ticked = () => {
-      updateLinks();
-      updateNodes();
+      select('.nodes')
+        .selectAll('.node')
+        .data(nodes)
+        .attr('transform', (d) => `translate(${d.x}, ${d.y})`);
+      select('.links')
+        .selectAll('line')
+        .data(props.dataLinks)
+        .attr('x1', (d) => d.source.x)
+        .attr('y1', (d) => d.source.y)
+        .attr('x2', (d) => d.target.x)
+        .attr('y2', (d) => d.target.y);
     };
 
     const simulation = forceSimulation(nodes as any)
@@ -261,7 +265,9 @@ class D3Timeline {
         .on('end', dragended);
     };
 
-    svg.call(setupDrag(simulation)).node();
+    svg.call(setupDrag(simulation));
+    updateNodes();
+    updateLinks();
   }
 }
 

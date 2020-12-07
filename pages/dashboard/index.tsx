@@ -125,7 +125,12 @@ circle.person {
   stroke: ${config.YELLOW_BACKGROUND};
   fill: #fff;
 }
-
+.node:not(:hover) .nodetext {
+  display: none;
+}
+.node {
+  position: relative;
+}
 `;
 
 export const DashboardContainer = ({ store }: IProps) => {

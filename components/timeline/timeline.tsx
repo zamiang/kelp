@@ -24,16 +24,13 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 const D3Component = (props: { data: any; dataLinks: any; height: number; width: number }) => {
-  const classes = useStyles();
   const d3Container = useRef(null);
-  const tooltipRef = useRef(null);
   useEffect(() => {
     new D3Timeline({
       data: props.data,
       dataLinks: props.dataLinks,
       width: props.width - scrollBarWidth,
       height: props.height,
-      tooltipRef,
       selector: d3Container?.current,
     });
   }, [props.data, d3Container.current]);
@@ -44,7 +41,6 @@ const D3Component = (props: { data: any; dataLinks: any; height: number; width: 
         <g className="links"></g>
         <g className="nodes"></g>
       </svg>
-      <div className={classes.tooltip} style={{ opacity: 0 }} ref={tooltipRef} />
     </React.Fragment>
   );
 };
@@ -58,7 +54,7 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
   let data: ITimelineItem[] = [];
   const personIds: string[] = [];
   let linksData: link[] = [];
-  const startDate = new Date(subDays(new Date(), 21));
+  const startDate = new Date(subDays(new Date(), 14));
   const allActivity = props.driveActivityStore
     .getAll()
     .filter((activity) => activity.time > startDate);
