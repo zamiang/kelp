@@ -1,19 +1,21 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import useComponentSize from '@rehooks/component-size';
+import React, { useRef } from 'react';
 import DocumentRow from '../documents/document-row';
 import MeetingRow from '../meeting/meeting-row';
 import expandStyles from '../shared/expand-styles';
 import panelStyles from '../shared/panel-styles';
-import TopBar from '../shared/top-bar';
 import { IStore } from '../store/use-store';
+import Timeline from '../timeline/timeline';
 import { DocumentsForToday } from './documents';
 import { PeopleToday } from './people';
 
 const Home = (props: IStore) => {
+  const ref = useRef(null);
+  const size = useComponentSize(ref);
   const classes = panelStyles();
   const expandClasses = expandStyles();
-  const currentTitle = 'Dashboard';
   const currentTime = new Date();
   const meetings = props.timeDataStore
     .getSegmentsForDay(currentTime)
@@ -22,8 +24,8 @@ const Home = (props: IStore) => {
     .getDocsRecentlyEditedByCurrentUser(props.driveActivityStore, props.personDataStore)
     .slice(0, 10);
   return (
-    <div className={classes.panel}>
-      <TopBar title={currentTitle} />
+    <div className={classes.panel} ref={ref}>
+      {size.width > 0 && <Timeline width={size.width} height={600} {...props} />}
       <br />
       <Grid container className={classes.homeRow}>
         <Grid item sm={3}>

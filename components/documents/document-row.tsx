@@ -75,6 +75,7 @@ const DocumentRow = (props: {
   return (
     <ListItem
       button={true}
+      selected={isSelected}
       onClick={handleClick}
       ref={setReferenceElement as any}
       className={clsx(
