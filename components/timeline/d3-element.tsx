@@ -153,7 +153,7 @@ class D3Timeline {
         .enter()
         .append('g')
         .attr('class', (d) => d.type + ' node')
-        .attr('transform', (d) => `translate(${d.x}, ${d.y})`);
+        .attr('transform', (d: any) => `translate(${d.x}, ${d.y})`);
 
       // add circle
       u.append('circle').attr('r', (d) => d.radius);
@@ -201,14 +201,14 @@ class D3Timeline {
       select('.nodes')
         .selectAll('.node')
         .data(nodes)
-        .attr('transform', (d) => `translate(${d.x}, ${d.y})`);
+        .attr('transform', (d: any) => `translate(${d.x}, ${d.y})`);
       select('.links')
         .selectAll('line')
         .data(props.dataLinks)
-        .attr('x1', (d) => d.source.x)
-        .attr('y1', (d) => d.source.y)
-        .attr('x2', (d) => d.target.x)
-        .attr('y2', (d) => d.target.y);
+        .attr('x1', (d: any) => d.source.x)
+        .attr('y1', (d: any) => d.source.y)
+        .attr('x2', (d: any) => d.target.x)
+        .attr('y2', (d: any) => d.target.y);
     };
 
     const simulation = forceSimulation(nodes as any)

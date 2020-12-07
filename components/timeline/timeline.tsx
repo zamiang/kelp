@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
 import { getDayOfYear, subDays } from 'date-fns';
 import { uniq, uniqBy } from 'lodash';
 import React, { useEffect, useRef } from 'react';
@@ -7,21 +6,6 @@ import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
 const scrollBarWidth = 20;
-
-export const useStyles = makeStyles((theme) => ({
-  tooltip: {
-    position: 'absolute',
-    textAlign: 'center',
-    padding: theme.spacing(1),
-    borderRadius: 2,
-    fontFamily: theme.typography.fontFamily,
-    fontSize: theme.typography.caption.fontSize,
-    border: `1px solid ${theme.palette.divider}`,
-    background: theme.palette.background.paper,
-    bordeRadius: 8,
-    pointerEvents: 'none',
-  },
-}));
 
 const D3Component = (props: { data: any; dataLinks: any; height: number; width: number }) => {
   const d3Container = useRef(null);
