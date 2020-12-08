@@ -3,8 +3,8 @@ import {
   SimulationNodeDatum,
   axisBottom,
   drag,
-  forceCollide,
   forceLink,
+  forceManyBody,
   forceSimulation,
   forceX,
   forceY,
@@ -12,7 +12,6 @@ import {
   scaleTime,
   select,
 } from 'd3';
-import { subWeeks } from 'date-fns';
 import { uniqBy } from 'lodash';
 import { IStore } from '../store/use-store';
 
@@ -34,8 +33,8 @@ interface INode {
 }
 
 interface IDataLink {
-  source: number;
-  target: number;
+  source: INode;
+  target: INode;
 }
 
 interface IProps {
@@ -51,12 +50,20 @@ interface IProps {
   minDate: Date;
 }
 
-const radius = 20;
+const radius = 10;
 const margin = {
   top: 0,
   bottom: 20,
   left: 0,
   right: 0,
+};
+
+const parseNumber = (number: Number) => {
+  const n = number.toString();
+  if (n.indexOf('e+') > -1) {
+    return n.split('e+')[0];
+  }
+  return n;
 };
 
 const addIcons = () => {
@@ -140,11 +147,7 @@ class D3Timeline {
     const yScale = scaleBand().domain(this.rows).range([0, this.height]).paddingInner(1);
 
     this.simulation = forceSimulation(this.nodes as any)
-      .force('link', forceLink().strength(20).links(this.dataLinks))
-      .force(
-        'collision',
-        forceCollide().radius((d: any) => d.radius),
-      )
+      .force('charge', forceManyBody().strength(-20))
       .force(
         'x',
         forceX().x((d: any) => xScale(d.time)),
@@ -171,7 +174,11 @@ class D3Timeline {
     select('.nodes')
       .selectAll('.node')
       .data(this.nodes)
-      .attr('transform', (d: any) => `translate(${d.x}, ${d.y})`);
+      .attr('transform', (d: any) => {
+        const x = parseNumber(d.x);
+        const y = parseNumber(d.y);
+        return `translate(${x}, ${y})`;
+      });
 
     select('.links')
       .selectAll('line')
@@ -275,14 +282,21 @@ class D3Timeline {
     this.personDataStore = props.personDataStore;
     this.documentsDataStore = props.documentsDataStore;
     this.timeDataStore = props.timeDataStore;
-    this.nodes = props.data.map((data) => ({
-      id: data.id,
-      time: data.time,
-      type: data.type,
-      imageUrl: data.imageUrl,
-      radius,
-      hoverText: data.hoverText,
-    }));
+
+    const currentNodeIds = this.nodes.map((node) => node.id);
+
+    props.data.forEach((node) => {
+      if (!currentNodeIds.includes(node.id)) {
+        this.nodes.push({
+          id: node.id,
+          time: node.time,
+          type: node.type,
+          imageUrl: node.imageUrl,
+          radius,
+          hoverText: node.hoverText,
+        });
+      }
+    });
 
     // redraw the nodes
     this.updateNodes();
@@ -309,17 +323,28 @@ class D3Timeline {
 
     // update the link elements
     this.updateLinks();
+    const u = select('.links').selectAll('line').data(this.dataLinks);
+
+    u.exit().remove();
+
+    u.enter()
+      .append('line')
+      .merge(u as any);
+
+    this.simulation.nodes(this.nodes as any).on('tick', this.onTick.bind(this));
 
     // update the simulation
-    this.simulation.force('link')!.links(this.dataLinks);
+    (this.simulation as any).force('link', forceLink().links(this.dataLinks as any));
+
+    // this.simulation.restart();
   }
 
   getLinksForNode(node: INode) {
-    let linksData: IDataLink[] = [];
+    const linksData: IDataLink[] = [];
 
-    const idToIndexHash: { [id: string]: number } = {};
-    this.nodes.map((d, index) => {
-      idToIndexHash[d.id] = index;
+    const idToIndexHash: { [id: string]: INode } = {};
+    this.nodes.map((d) => {
+      idToIndexHash[d.id] = d;
     });
 
     if (node.type === 'person' && node.id && (node as any).index) {
@@ -328,32 +353,34 @@ class D3Timeline {
         .map((segmentId) => this.timeDataStore.getSegmentById(segmentId))
         .filter((segment) => segment!.start > this.minDate);
 
-      linksData = linksData.concat(
-        this.personDataStore
-          .getAssociates(person.id, personSegments)
-          .filter((associate) => !associate.self)
-          .filter(
-            (associate) =>
-              idToIndexHash[person.id] &&
-              idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
-          )
-          .map((associate) => ({
-            source: currentElement.index!,
-            target: idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
-          })),
-      );
+      this.personDataStore
+        .getAssociates(person.id, personSegments)
+        .filter((associate) => !associate.self)
+        .forEach((associate) => {
+          const targetPerson = this.personDataStore.getPersonById(associate.personId);
+          const targetIndex = targetPerson ? idToIndexHash[targetPerson.id] : null;
+          if (targetIndex) {
+            linksData.push({
+              source: node,
+              target: idToIndexHash[this.personDataStore.getPersonById(associate.personId)!.id],
+            });
+          }
+        });
 
-      linksData = linksData.concat(
-        uniqBy(
-          Object.values(person.driveActivity).map((activity) =>
-            this.documentsDataStore.getByLink(activity.link),
-          ),
-          'id',
-        ).map((document) => ({
-          source: currentElement.index!,
-          target: idToIndexHash[document.id],
-        })),
-      );
+      uniqBy(
+        Object.values(person.driveActivity).map((activity) =>
+          this.documentsDataStore.getByLink(activity.link),
+        ),
+        'id',
+      ).forEach((document) => {
+        const documentIndex = document ? idToIndexHash[document.id] : null;
+        if (documentIndex) {
+          linksData.push({
+            source: node,
+            target: idToIndexHash[document!.id],
+          });
+        }
+      });
     }
     return linksData;
   }

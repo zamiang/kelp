@@ -25,7 +25,7 @@ const Home = (props: IStore) => {
     .slice(0, 10);
   return (
     <div className={classes.panel} ref={ref}>
-      {size.width > 0 && <Timeline width={size.width} height={600} {...props} />}
+      {size.width > 0 && <Timeline width={size.width} height={400} {...props} />}
       <br />
       <Grid container className={classes.homeRow}>
         <Grid item sm={3}>

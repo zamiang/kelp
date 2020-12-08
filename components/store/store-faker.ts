@@ -10,8 +10,9 @@ import { ISegment, getStateForMeeting } from './time-store';
 const PEOPLE_COUNT = 10;
 const DOCUMENT_COUNT = 50;
 const CURRENT_USER_EMAIL = 'brennanmoore@gmail.com';
-const NUMBER_OF_MEETINGS = 16;
-const NUMBER_OF_DRIVE_ACTIVITY = 20;
+const NUMBER_OF_MEETINGS = 12;
+const NUMBER_OF_DRIVE_ACTIVITY = 5;
+const NUMBER_OF_ATTENDEES = 6;
 /**
  * create name/email pairs to be used across the fake data
  */
@@ -92,7 +93,7 @@ const startDate = setDay(
  */
 const driveActivity: IFormattedDriveActivity[] = [];
 documents.map((document) => {
-  times(NUMBER_OF_DRIVE_ACTIVITY, () => {
+  times(Math.round(Math.random() * NUMBER_OF_DRIVE_ACTIVITY), () => {
     driveActivity.push({
       id: Faker.random.uuid(),
       time: Faker.date.recent(DAYS_IN_WEEK * WEEKS_TO_CREATE),
@@ -108,14 +109,14 @@ times(WEEKS_TO_CREATE, (week: number) => {
   let date = setDay(startDate, DAYS_IN_WEEK * (week + 1));
   times(DAYS_IN_WEEK, () => {
     date = setHours(addDays(date, 1), START_HOUR);
-    times(NUMBER_OF_MEETINGS, () => {
+    times(Math.round(Math.random() * NUMBER_OF_MEETINGS), () => {
       const currentDayOfWeek = getDay(date);
       if (currentDayOfWeek > 5 || currentDayOfWeek < 1) {
         return;
       }
       date = addMinutes(date, 30);
       const endDate = addMinutes(date, 30);
-      const attendees = sampleSize(people, 5)
+      const attendees = sampleSize(people, Math.round(Math.random() * NUMBER_OF_ATTENDEES))
         .filter((person) => person.emailAddresses[0] !== CURRENT_USER_EMAIL)
         .map((person) => ({
           email: person.emailAddresses[0],

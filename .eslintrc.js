@@ -35,6 +35,7 @@ module.exports = {
   rules: {
     'import/no-unresolved': [2, { ignore: ['gapi'] }],
     '@typescript-eslint/camelcase': 0, // Triggers on external APIs
+    '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
@@ -53,12 +54,14 @@ module.exports = {
     '@typescript-eslint/require-await': 0,
     '@typescript-eslint/restrict-template-expressions': 0,
     '@typescript-eslint/unbound-method': 0,
+    '@typescript-eslint/no-non-null-assertion': 0,
+    '@security/detect-non-literal-fs-filename': 0, // no idea about this one
     // NOTE: These no-unsafe-foo flags are needed due to the google api not having types
-    '@typescript-eslint/no-unsafe-assignment': 1,
-    '@typescript-eslint/no-unsafe-member-access': 1,
-    '@typescript-eslint/ban-types': 1,
-    '@typescript-eslint/no-unsafe-call': 1,
-    '@typescript-eslint/no-unsafe-return': 1,
+    '@typescript-eslint/no-unsafe-assignment': 0,
+    '@typescript-eslint/no-unsafe-member-access': 0,
+    '@typescript-eslint/ban-types': 0,
+    '@typescript-eslint/no-unsafe-call': 0,
+    '@typescript-eslint/no-unsafe-return': 0,
     'arrow-body-style': ['error', 'as-needed'],
     'import/first': 'error',
     'import/no-duplicates': 'error',
@@ -74,7 +77,6 @@ module.exports = {
     'react/no-unknown-property': 0, // Slow and not needed
     'react/prop-types': 0,
     'security/detect-object-injection': 0,
-
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
   },
   settings: {

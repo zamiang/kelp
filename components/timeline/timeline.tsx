@@ -68,7 +68,7 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
   let data: ITimelineItem[] = [];
   const personIds: string[] = [];
   const linksData: link[] = [];
-  const minDate = new Date(subDays(new Date(), 21));
+  const minDate = new Date(subDays(new Date(), 15));
   const maxDate = new Date(config.endDate);
 
   const allActivity = props.driveActivityStore
