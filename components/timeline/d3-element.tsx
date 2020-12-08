@@ -13,7 +13,8 @@ import {
   select,
 } from 'd3';
 import { subWeeks } from 'date-fns';
-import { ISetCurrentElement } from './timeline';
+import { uniqBy } from 'lodash';
+import { IStore } from '../store/use-store';
 
 export interface ITimelineItem {
   id: string;
@@ -43,7 +44,11 @@ interface IProps {
   data: ITimelineItem[];
   dataLinks: IDataLink[];
   selector: any;
-  setCurrentElement: (props: ISetCurrentElement) => void;
+  documentsDataStore: IStore['documentDataStore'];
+  personDataStore: IStore['personDataStore'];
+  timeDataStore: IStore['timeDataStore'];
+  maxDate: Date;
+  minDate: Date;
 }
 
 const radius = 20;
@@ -80,19 +85,22 @@ const addIcons = () => {
 };
 
 class D3Timeline {
-  /* eslint-disable-next-line */
   nodes: INode[];
   dataLinks: IDataLink[];
-  setCurrentElement: (props: ISetCurrentElement) => void;
   simulation: Simulation<SimulationNodeDatum, undefined>;
-
   rows = ['  ', '  ', 'document', 'person', 'meeting'];
   height: number;
   width: number;
   minDate: Date;
   maxDate: Date;
+  documentsDataStore: IStore['documentDataStore'];
+  personDataStore: IStore['personDataStore'];
+  timeDataStore: IStore['timeDataStore'];
 
   constructor(props: IProps) {
+    this.personDataStore = props.personDataStore;
+    this.documentsDataStore = props.documentsDataStore;
+    this.timeDataStore = props.timeDataStore;
     this.dataLinks = props.dataLinks;
     this.nodes = props.data.map((data) => ({
       id: data.id,
@@ -102,13 +110,12 @@ class D3Timeline {
       radius,
       hoverText: data.hoverText,
     }));
-    this.setCurrentElement = props.setCurrentElement;
 
     this.width = props.width - margin.left - margin.right;
     this.height = props.height - margin.top - margin.bottom;
 
-    this.maxDate = new Date();
-    this.minDate = subWeeks(this.maxDate, 1);
+    this.maxDate = props.maxDate;
+    this.minDate = props.minDate;
 
     const svg = select(props.selector);
 
@@ -120,9 +127,6 @@ class D3Timeline {
 
     addIcons();
 
-    // The x axis gets drawn many times
-    svg.selectAll('.x.axis').remove();
-
     // Add x axis
     const xScale = scaleTime([this.minDate, this.maxDate], [0, this.width]);
     svg
@@ -130,9 +134,7 @@ class D3Timeline {
       .attr('pointer-events', 'none')
       .attr('class', 'x axis')
       .attr('transform', `translate(0, ${this.height})`)
-      .call(axisBottom(xScale))
-      .select('.domain')
-      .remove();
+      .call(axisBottom(xScale));
 
     // yScale function - needed despite no y axis being displayed
     const yScale = scaleBand().domain(this.rows).range([0, this.height]).paddingInner(1);
@@ -237,14 +239,9 @@ class D3Timeline {
       //if (!event.active) simulation.alphaTarget(0.3).restart();
       event.subject.fx = event.subject.x;
       event.subject.fy = event.subject.y;
+      event.subject.radius = event.subject.radius * 2;
 
-      /*
-      this.setCurrentElement({
-        id: event.subject.id,
-        index: event.subject.index,
-        type: event.subject.type,
-      });
-      */
+      this.updateLinksForNode(event.subject);
     };
 
     const dragged = (event: any) => {
@@ -257,13 +254,9 @@ class D3Timeline {
       // if (!event.active) simulation.alphaTarget(0);
       event.subject.fx = null;
       event.subject.fy = null;
-      /*
-      this.setCurrentElement({
-        id: null,
-        index: null,
-        type: null,
-      });
-      */
+      event.subject.radius = radius;
+
+      this.updateLinksForNode(null);
     };
 
     return drag()
@@ -273,7 +266,15 @@ class D3Timeline {
       .on('end', dragended);
   }
 
-  updateNodesFromProps(props: { data: ITimelineItem[] }) {
+  updateNodesFromProps(props: {
+    data: ITimelineItem[];
+    documentsDataStore: IStore['documentDataStore'];
+    personDataStore: IStore['personDataStore'];
+    timeDataStore: IStore['timeDataStore'];
+  }) {
+    this.personDataStore = props.personDataStore;
+    this.documentsDataStore = props.documentsDataStore;
+    this.timeDataStore = props.timeDataStore;
     this.nodes = props.data.map((data) => ({
       id: data.id,
       time: data.time,
@@ -300,6 +301,61 @@ class D3Timeline {
     ) {
       this.simulation.tick();
     }
+  }
+
+  updateLinksForNode(node: INode | null) {
+    // get new data
+    this.dataLinks = node ? this.getLinksForNode(node) : [];
+
+    // update the link elements
+    this.updateLinks();
+
+    // update the simulation
+    this.simulation.force('link')!.links(this.dataLinks);
+  }
+
+  getLinksForNode(node: INode) {
+    let linksData: IDataLink[] = [];
+
+    const idToIndexHash: { [id: string]: number } = {};
+    this.nodes.map((d, index) => {
+      idToIndexHash[d.id] = index;
+    });
+
+    if (node.type === 'person' && node.id && (node as any).index) {
+      const person = this.personDataStore.getPersonById(node.id)!;
+      const personSegments = person.segmentIds
+        .map((segmentId) => this.timeDataStore.getSegmentById(segmentId))
+        .filter((segment) => segment!.start > this.minDate);
+
+      linksData = linksData.concat(
+        this.personDataStore
+          .getAssociates(person.id, personSegments)
+          .filter((associate) => !associate.self)
+          .filter(
+            (associate) =>
+              idToIndexHash[person.id] &&
+              idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
+          )
+          .map((associate) => ({
+            source: currentElement.index!,
+            target: idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
+          })),
+      );
+
+      linksData = linksData.concat(
+        uniqBy(
+          Object.values(person.driveActivity).map((activity) =>
+            this.documentsDataStore.getByLink(activity.link),
+          ),
+          'id',
+        ).map((document) => ({
+          source: currentElement.index!,
+          target: idToIndexHash[document.id],
+        })),
+      );
+    }
+    return linksData;
   }
 }
 

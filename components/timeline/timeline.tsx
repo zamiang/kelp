@@ -7,18 +7,16 @@ import D3Timeline, { ITimelineItem } from './d3-element';
 
 const scrollBarWidth = 20;
 
-export interface ISetCurrentElement {
-  id: string | null;
-  index: number | null;
-  type: 'document' | 'person' | null;
-}
-
 const D3Component = (props: {
+  documentDataStore: IStore['documentDataStore'];
+  personDataStore: IStore['personDataStore'];
+  timeDataStore: IStore['timeDataStore'];
   data: any;
   dataLinks: any;
   height: number;
   width: number;
-  setCurrentElement: (args: ISetCurrentElement) => void;
+  maxDate: Date;
+  minDate: Date;
 }) => {
   const d3Container = useRef(null);
   const [timeline, setTimeline] = useState<any>(null);
@@ -32,14 +30,23 @@ const D3Component = (props: {
           width: props.width - scrollBarWidth,
           height: props.height,
           selector: d3Container?.current,
-          setCurrentElement: props.setCurrentElement,
+          personDataStore: props.personDataStore,
+          documentsDataStore: props.documentDataStore,
+          timeDataStore: props.timeDataStore,
+          minDate: props.minDate,
+          maxDate: props.maxDate,
         }),
       ),
     [d3Container],
   );
 
   if (timeline) {
-    timeline.updateNodesFromProps({ data: props.data });
+    timeline.updateNodesFromProps({
+      personDataStore: props.personDataStore,
+      documentsDataStore: props.documentDataStore,
+      timeDataStore: props.timeDataStore,
+      data: props.data,
+    });
   }
 
   return (
@@ -58,18 +65,15 @@ type link = {
 };
 
 const Timeline = (props: IStore & { height: number; width: number }) => {
-  const [currentElement, setCurrentElement] = useState<ISetCurrentElement>({
-    id: null,
-    index: null,
-    type: null,
-  });
   let data: ITimelineItem[] = [];
   const personIds: string[] = [];
-  let linksData: link[] = [];
-  const startDate = new Date(subDays(new Date(), 14));
+  const linksData: link[] = [];
+  const minDate = new Date(subDays(new Date(), 21));
+  const maxDate = new Date(config.endDate);
+
   const allActivity = props.driveActivityStore
     .getAll()
-    .filter((activity) => activity.time > startDate);
+    .filter((activity) => activity.time > minDate);
 
   data = data.concat(
     uniqBy(
@@ -90,7 +94,7 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
   const segments = props.timeDataStore.getSegments();
 
   segments
-    .filter((segment) => segment.start > startDate)
+    .filter((segment) => segment.start > minDate)
     .filter((segment) => segment.formattedAttendees.length < config.ATTENDEE_MAX)
     .map((segment) => {
       data = data.concat(
@@ -110,53 +114,18 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
       );
     });
 
-  const idToIndexHash: { [id: string]: number } = {};
-  data.map((d, index) => {
-    idToIndexHash[d.id] = index;
-  });
-
-  if (currentElement.type === 'person' && currentElement.id && currentElement.index) {
-    const person = props.personDataStore.getPersonById(currentElement.id)!;
-    const personSegments = person.segmentIds
-      .map((segmentId) => props.timeDataStore.getSegmentById(segmentId))
-      .filter((segment) => segment!.start > startDate);
-
-    linksData = linksData.concat(
-      props.personDataStore
-        .getAssociates(person.id, personSegments)
-        .filter((associate) => !associate.self)
-        .filter(
-          (associate) =>
-            idToIndexHash[person.id] &&
-            idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
-        )
-        .map((associate) => ({
-          source: currentElement.index!,
-          target: idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
-        })),
-    );
-
-    linksData = linksData.concat(
-      uniqBy(
-        Object.values(person.driveActivity).map((activity) =>
-          props.documentDataStore.getByLink(activity.link),
-        ),
-        'id',
-      ).map((document) => ({
-        source: currentElement.index!,
-        target: idToIndexHash[document!.id],
-      })),
-    );
-  }
-
   return (
     <div>
       <D3Component
-        setCurrentElement={setCurrentElement}
+        personDataStore={props.personDataStore}
+        documentDataStore={props.documentDataStore}
+        timeDataStore={props.timeDataStore}
         data={data}
         dataLinks={linksData}
         width={props.width}
         height={props.height}
+        minDate={minDate}
+        maxDate={maxDate}
       />
     </div>
   );
