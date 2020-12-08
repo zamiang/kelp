@@ -1,23 +1,46 @@
 import { getDayOfYear, subDays } from 'date-fns';
-import { uniq, uniqBy } from 'lodash';
-import React, { useEffect, useRef } from 'react';
+import { uniqBy } from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import config from '../../constants/config';
 import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
 const scrollBarWidth = 20;
 
-const D3Component = (props: { data: any; dataLinks: any; height: number; width: number }) => {
+export interface ISetCurrentElement {
+  id: string | null;
+  index: number | null;
+  type: 'document' | 'person' | null;
+}
+
+const D3Component = (props: {
+  data: any;
+  dataLinks: any;
+  height: number;
+  width: number;
+  setCurrentElement: (args: ISetCurrentElement) => void;
+}) => {
   const d3Container = useRef(null);
-  useEffect(() => {
-    new D3Timeline({
-      data: props.data,
-      dataLinks: props.dataLinks,
-      width: props.width - scrollBarWidth,
-      height: props.height,
-      selector: d3Container?.current,
-    });
-  }, [props.data, d3Container.current]);
+  const [timeline, setTimeline] = useState<any>(null);
+
+  useEffect(
+    () =>
+      setTimeline(
+        new D3Timeline({
+          data: props.data,
+          dataLinks: props.dataLinks,
+          width: props.width - scrollBarWidth,
+          height: props.height,
+          selector: d3Container?.current,
+          setCurrentElement: props.setCurrentElement,
+        }),
+      ),
+    [d3Container],
+  );
+
+  if (timeline) {
+    timeline.updateNodesFromProps({ data: props.data });
+  }
 
   return (
     <React.Fragment>
@@ -35,6 +58,11 @@ type link = {
 };
 
 const Timeline = (props: IStore & { height: number; width: number }) => {
+  const [currentElement, setCurrentElement] = useState<ISetCurrentElement>({
+    id: null,
+    index: null,
+    type: null,
+  });
   let data: ITimelineItem[] = [];
   const personIds: string[] = [];
   let linksData: link[] = [];
@@ -87,8 +115,8 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
     idToIndexHash[d.id] = index;
   });
 
-  uniq(personIds).map((p) => {
-    const person = props.personDataStore.getPersonById(p)!;
+  if (currentElement.type === 'person' && currentElement.id && currentElement.index) {
+    const person = props.personDataStore.getPersonById(currentElement.id)!;
     const personSegments = person.segmentIds
       .map((segmentId) => props.timeDataStore.getSegmentById(segmentId))
       .filter((segment) => segment!.start > startDate);
@@ -103,7 +131,7 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
             idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
         )
         .map((associate) => ({
-          source: idToIndexHash[person.id],
+          source: currentElement.index!,
           target: idToIndexHash[props.personDataStore.getPersonById(associate.personId)!.id],
         })),
     );
@@ -115,15 +143,21 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
         ),
         'id',
       ).map((document) => ({
-        source: idToIndexHash[person.id],
+        source: currentElement.index!,
         target: idToIndexHash[document!.id],
       })),
     );
-  });
+  }
 
   return (
     <div>
-      <D3Component data={data} dataLinks={linksData} width={props.width} height={props.height} />
+      <D3Component
+        setCurrentElement={setCurrentElement}
+        data={data}
+        dataLinks={linksData}
+        width={props.width}
+        height={props.height}
+      />
     </div>
   );
 };
