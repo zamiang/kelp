@@ -52,6 +52,9 @@ const D3Component = (props: {
   return (
     <React.Fragment>
       <svg ref={d3Container}>
+        <clipPath id="circle" clipPathUnits="objectBoundingBox">
+          <circle cx=".5" cy=".5" r=".5" />
+        </clipPath>
         <g className="links"></g>
         <g className="nodes"></g>
       </svg>

@@ -131,6 +131,10 @@ circle.person {
 .node {
   position: relative;
 }
+.avatar {
+  fill: #fff;
+  font-weight: bold;
+}
 `;
 
 export const DashboardContainer = ({ store }: IProps) => {

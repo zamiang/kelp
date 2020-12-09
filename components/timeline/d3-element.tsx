@@ -3,6 +3,7 @@ import {
   SimulationNodeDatum,
   axisBottom,
   drag,
+  forceCollide,
   forceLink,
   forceManyBody,
   forceSimulation,
@@ -58,39 +59,6 @@ const margin = {
   right: 0,
 };
 
-const parseNumber = (number: Number) => {
-  const n = number.toString();
-  if (n.indexOf('e+') > -1) {
-    return n.split('e+')[0];
-  }
-  return n;
-};
-
-const addIcons = () => {
-  // Add icons
-  /*
-    const paths = [
-      {
-        id: 'document',
-        fill: config.PURPLE_BACKGROUND,
-        stroke: config.PURPLE_BACKGROUND,
-        d:
-          'M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-5 17l1.006-4.036 3.106 3.105-4.112.931zm5.16-1.879l-3.202-3.202 5.841-5.919 3.201 3.2-5.84 5.921z',
-      },
-    ];
-
-    const defs = svg
-      .append('pattern')
-      .attr('id', (d: any) => d.id)
-      .attr('width', 1)
-      .attr('height', 1)
-      .append('svg:image')
-      .attr('xlink:href', (d: any) => d.url)
-      .attr('width', radius)
-      .attr('height', radius);
-    */
-};
-
 class D3Timeline {
   nodes: INode[];
   dataLinks: IDataLink[];
@@ -132,8 +100,6 @@ class D3Timeline {
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    addIcons();
-
     // Add x axis
     const xScale = scaleTime([this.minDate, this.maxDate], [0, this.width]);
     svg
@@ -147,7 +113,8 @@ class D3Timeline {
     const yScale = scaleBand().domain(this.rows).range([0, this.height]).paddingInner(1);
 
     this.simulation = forceSimulation(this.nodes as any)
-      .force('charge', forceManyBody().strength(-20))
+      .force('charge', forceManyBody())
+      .force('collide', forceCollide(radius * 1.2))
       .force(
         'x',
         forceX().x((d: any) => xScale(d.time)),
@@ -156,7 +123,7 @@ class D3Timeline {
         'y',
         forceY().y((d: any) => yScale(d.type)!),
       )
-      .alphaTarget(1)
+      .alphaTarget(0.9)
       .on('tick', this.onTick.bind(this));
 
     // Calculate the position before drawing
@@ -174,11 +141,7 @@ class D3Timeline {
     select('.nodes')
       .selectAll('.node')
       .data(this.nodes)
-      .attr('transform', (d: any) => {
-        const x = parseNumber(d.x);
-        const y = parseNumber(d.y);
-        return `translate(${x}, ${y})`;
-      });
+      .attr('transform', (d: any) => `translate(${Math.round(d.x)}, ${Math.round(d.y)})`);
 
     select('.links')
       .selectAll('line')
@@ -196,19 +159,41 @@ class D3Timeline {
       .data(this.nodes)
       .enter()
       .append('g')
-      .attr('class', (d) => d.type + ' node');
+      .attr('class', (d) => d.type + ' node')
+      .on('mouseover', function (d) {
+        d.radius = radius * 1.5;
+        select(this).select('circle').transition().attr('r', d.radius);
+      })
+      .on('mouseout', function (d) {
+        d.radius = radius;
+        select(this).select('circle').transition().attr('r', d.radius);
+      });
 
     // add circle
-    u.append('circle').attr('r', (d) => d.radius);
+    u.append('circle')
+      .attr('r', (d) => d.radius)
+      .attr('fill', 'rgba(116, 124, 129, 1)')
+      .attr('clip-path', 'url(#circle)');
 
     // Append hero name on roll over next to the node as well
     u.append('text')
       .attr('class', 'nodetext')
-      .attr('x', 20)
-      .attr('y', 25 + 15)
-      .attr('fill', '130C0E')
+      .attr('x', 0)
+      .attr('y', radius * 3)
+      .attr('fill', 'rgba(0, 0, 0, 0.87)')
       .text(function (d) {
         return d.hoverText;
+      });
+
+    // Icon
+    u.append('text')
+      .attr('class', 'avatar')
+      .attr('y', radius / 2)
+      .text((d) => {
+        if (!d.imageUrl) {
+          return d.hoverText[0].toLocaleUpperCase();
+        }
+        return '';
       });
 
     // add documents images
@@ -217,7 +202,8 @@ class D3Timeline {
       .attr('x', -radius)
       .attr('y', -radius)
       .attr('height', radius * 2)
-      .attr('width', radius * 2);
+      .attr('width', radius * 2)
+      .attr('clip-path', 'url(#circle)');
 
     u.exit().remove();
     u.selectAll('circle').exit().remove();
@@ -243,7 +229,7 @@ class D3Timeline {
     const dragSubject = (event: any) => simulation.find(event.x, event.y);
 
     const dragstarted = (event: any) => {
-      //if (!event.active) simulation.alphaTarget(0.3).restart();
+      if (!event.active) simulation.alphaTarget(0.9).restart();
       event.subject.fx = event.subject.x;
       event.subject.fy = event.subject.y;
       event.subject.radius = event.subject.radius * 2;
@@ -252,13 +238,13 @@ class D3Timeline {
     };
 
     const dragged = (event: any) => {
-      // this.simulation.alphaTarget(0.7).restart();
+      this.simulation.alphaTarget(0.9).restart();
       event.subject.fx = event.x;
       event.subject.fy = event.y;
     };
 
     const dragended = (event: any) => {
-      // if (!event.active) simulation.alphaTarget(0);
+      if (!event.active) simulation.alphaTarget(0.9);
       event.subject.fx = null;
       event.subject.fy = null;
       event.subject.radius = radius;
@@ -335,13 +321,10 @@ class D3Timeline {
 
     // update the simulation
     (this.simulation as any).force('link', forceLink().links(this.dataLinks as any));
-
-    // this.simulation.restart();
   }
 
   getLinksForNode(node: INode) {
     const linksData: IDataLink[] = [];
-
     const idToIndexHash: { [id: string]: INode } = {};
     this.nodes.map((d) => {
       idToIndexHash[d.id] = d;
