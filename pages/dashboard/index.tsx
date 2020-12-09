@@ -1,8 +1,11 @@
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
@@ -190,7 +193,11 @@ export const DashboardContainer = ({ store }: IProps) => {
         tab={tab as any}
       />
       <main className={classes.content}>
-        {store.error && !is500Error(store.error) && <div>{JSON.stringify(store.error)}</div>}
+        <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>Please reload the page
+          </Alert>
+        </Dialog>
         {tabHash[tab]}
       </main>
     </div>

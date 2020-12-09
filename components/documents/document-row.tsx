@@ -81,8 +81,9 @@ const DocumentRow = (props: {
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
-        rowStyles.rowDefault,
-        classes.row,
+        props.isSmall && rowStyles.rowBorderRadius,
+        !props.isSmall && rowStyles.rowDefault,
+        !props.isSmall && classes.row,
         isSelected && rowStyles.pinkBackground,
         props.isSmall && rowStyles.rowNoLeftMargin,
       )}
