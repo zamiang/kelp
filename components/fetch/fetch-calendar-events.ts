@@ -8,7 +8,7 @@ import config from '../../constants/config';
  * - "tentative" - The attendee has tentatively accepted the invitation.
  * - "accepted" - The attendee has accepted the invitation.
  */
-type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted' | 'notAttending';
+export type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted' | 'notAttending';
 
 type attendee = {
   readonly email?: string;

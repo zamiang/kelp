@@ -72,9 +72,9 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           {lastMeeting && (
             <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
               <Typography className={classes.highlight}>
-                <span className={classes.highlightValue}>
+                <div className={classes.highlightValue} style={{ fontSize: '1.3094rem' }}>
                   {formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
-                </span>
+                </div>
               </Typography>
             </Link>
           )}

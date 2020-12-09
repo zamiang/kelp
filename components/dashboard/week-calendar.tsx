@@ -19,6 +19,7 @@ import { times } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
+import { responseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/document-store';
@@ -28,7 +29,7 @@ const leftSpacer = 40;
 const topNavHeight = 110;
 const hourHeight = 38;
 const scrollBarWidth = 15;
-const shouldShowDocumentActivity = true;
+const shouldShowDocumentActivity = false;
 const shouldShowCalendarEvents = true;
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 
@@ -227,15 +228,14 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     flex: 1,
     overflow: 'hidden',
-    background: theme.palette.primary.light,
-    width: '90%',
+    background: theme.palette.primary.main,
+    width: '100%',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     minHeight: hourHeight / 4,
     cursor: 'pointer',
     opacity: 1,
     transition: 'opacity 0.3s',
-
     '&:hover': {
       opacity: 0.8,
     },
@@ -247,14 +247,17 @@ const useCalendarItemStyles = makeStyles((theme) => ({
   },
   title: {
     fontSize: theme.typography.caption.fontSize,
-    fontWeight: theme.typography.fontWeightBold,
-  },
-  subtitle: {
-    fontSize: theme.typography.caption.fontSize,
-    fontWeight: theme.typography.fontWeightRegular,
+    color: theme.palette.background.paper,
+    lineHeight: '15.3px',
+    marginTop: 2,
   },
   documentBackground: {
     background: config.PINK_BACKGROUND,
+  },
+  tentative: {
+    backgroundSize: '12px 12px',
+    backgroundImage:
+      'linear-gradient(45deg,transparent,transparent 40%,rgba(0,0,0,0.2) 40%,rgba(0,0,0,0.2) 50%,transparent 50%,transparent 90%,rgba(0,0,0,0.2) 90%,rgba(0,0,0,0.2))',
   },
 }));
 
@@ -263,6 +266,7 @@ interface ICalendarItemProps {
   title: string;
   start: Date;
   end?: Date;
+  status: responseStatus;
 }
 
 const CalendarItem = (props: ICalendarItemProps) => {
@@ -273,10 +277,13 @@ const CalendarItem = (props: ICalendarItemProps) => {
     : 100;
   const top = getTopForTime(props.start);
   return (
-    <div className={classes.container} style={{ height, top }} onClick={props.onClick}>
-      <Typography className={classes.title} variant="h6">
-        {props.title}
-        <Typography className={classes.subtitle}>{format(props.start, 'HH:mm')}</Typography>
+    <div
+      className={clsx(classes.container, props.status === 'tentative' && classes.tentative)}
+      style={{ height, top }}
+      onClick={props.onClick}
+    >
+      <Typography className={classes.title}>
+        <b>{props.title}</b>, {format(props.start, 'hh:mm')}
       </Typography>
     </div>
   );
@@ -377,6 +384,7 @@ const DayContent = (props: IDayContentProps) => {
         title={segment.summary || '(no title)'}
         start={segment.start}
         end={segment.end}
+        status={segment.selfResponseStatus}
         onClick={() => router.push(`?tab=meetings&slug=${segment.id}`)}
       />
     ));
