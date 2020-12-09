@@ -110,7 +110,7 @@ line {
 text {
   text-anchor: middle;
   font-family: ${bodyFontFamily};
-  fill: rgba(0, 0, 0, 0.87);
+  fill: #B8B8B8;
   font-size: 0.8125rem;
 }
 circle.document {
@@ -131,9 +131,15 @@ circle.person {
 .node {
   position: relative;
 }
+.node text {
+  fill: #747C81;
+}
 .avatar {
   fill: #fff;
   font-weight: bold;
+}
+.domain {
+  display: none;
 }
 `;
 
