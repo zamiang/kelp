@@ -116,7 +116,7 @@ class D3Timeline {
       for (const node of this.nodes) {
         // Of the positions exceed the box, set them to the boundary position.
         // You may want to include your nodes width to not overlap with the box.
-        node.y = Math.max(radius, Math.min(this.height - radius, node.y));
+        (node as any).y = Math.max(radius, Math.min(this.height - radius, (node as any).y));
       }
     };
 
