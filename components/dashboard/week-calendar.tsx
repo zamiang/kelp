@@ -251,6 +251,9 @@ const useCalendarItemStyles = makeStyles((theme) => ({
     lineHeight: '15.3px',
     marginTop: 2,
   },
+  smallTitle: {
+    marginTop: -2,
+  },
   documentBackground: {
     background: config.PINK_BACKGROUND,
   },
@@ -269,11 +272,13 @@ interface ICalendarItemProps {
   status: responseStatus;
 }
 
+const calendarItemPadding = 1;
+
 const CalendarItem = (props: ICalendarItemProps) => {
   const classes = useCalendarItemStyles();
   const minuteHeight = hourHeight / 60;
   const height = props.end
-    ? Math.abs(differenceInMinutes(props.start, props.end) * minuteHeight)
+    ? Math.abs(differenceInMinutes(props.start, props.end) * minuteHeight) - calendarItemPadding
     : 100;
   const top = getTopForTime(props.start);
   return (
@@ -282,7 +287,7 @@ const CalendarItem = (props: ICalendarItemProps) => {
       style={{ height, top }}
       onClick={props.onClick}
     >
-      <Typography className={classes.title}>
+      <Typography className={clsx(classes.title, height < 10 && classes.smallTitle)}>
         <b>{props.title}</b>, {format(props.start, 'hh:mm')}
       </Typography>
     </div>
