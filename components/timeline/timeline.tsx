@@ -98,7 +98,6 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
 
   segments
     .filter((segment) => segment.start > minDate)
-    .filter((segment) => segment.formattedAttendees.length < config.ATTENDEE_MAX)
     .map((segment) => {
       data = data.concat(
         segment.formattedAttendees
@@ -116,6 +115,8 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
           }),
       );
     });
+
+  data = uniqBy(data, (item) => `${getDayOfYear(item.time)}-${item.id}`);
 
   return (
     <div>

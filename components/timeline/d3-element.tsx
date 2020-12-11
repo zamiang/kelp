@@ -112,9 +112,18 @@ class D3Timeline {
     // yScale function - needed despite no y axis being displayed
     const yScale = scaleBand().domain(this.rows).range([0, this.height]).paddingInner(1);
 
+    const boxingForce = () => {
+      for (const node of this.nodes) {
+        // Of the positions exceed the box, set them to the boundary position.
+        // You may want to include your nodes width to not overlap with the box.
+        node.y = Math.max(radius, Math.min(this.height - radius, node.y));
+      }
+    };
+
     this.simulation = forceSimulation(this.nodes as any)
       .force('charge', forceManyBody())
-      .force('collide', forceCollide(radius * 1.2))
+      .force('collide', forceCollide(radius))
+      .force('bounds', boxingForce)
       .force(
         'x',
         forceX().x((d: any) => xScale(d.time)),
@@ -123,7 +132,7 @@ class D3Timeline {
         'y',
         forceY().y((d: any) => yScale(d.type)!),
       )
-      .alphaTarget(0.9)
+      .alphaTarget(0.01)
       .on('tick', this.onTick.bind(this));
 
     // Calculate the position before drawing
@@ -229,7 +238,7 @@ class D3Timeline {
     const dragSubject = (event: any) => simulation.find(event.x, event.y);
 
     const dragstarted = (event: any) => {
-      if (!event.active) simulation.alphaTarget(0.9).restart();
+      if (!event.active) simulation.alphaTarget(0.4).restart();
       event.subject.fx = event.subject.x;
       event.subject.fy = event.subject.y;
       event.subject.radius = event.subject.radius * 2;
@@ -238,13 +247,13 @@ class D3Timeline {
     };
 
     const dragged = (event: any) => {
-      this.simulation.alphaTarget(0.9).restart();
+      this.simulation.alphaTarget(0.4).restart();
       event.subject.fx = event.x;
       event.subject.fy = event.y;
     };
 
     const dragended = (event: any) => {
-      if (!event.active) simulation.alphaTarget(0.9);
+      if (!event.active) simulation.alphaTarget(0.001).restart();
       event.subject.fx = null;
       event.subject.fy = null;
       event.subject.radius = radius;
@@ -320,7 +329,12 @@ class D3Timeline {
     this.simulation.nodes(this.nodes as any).on('tick', this.onTick.bind(this));
 
     // update the simulation
-    (this.simulation as any).force('link', forceLink().links(this.dataLinks as any));
+    (this.simulation as any).force(
+      'link',
+      forceLink()
+        .links(this.dataLinks as any)
+        .distance(70),
+    );
   }
 
   getLinksForNode(node: INode) {
