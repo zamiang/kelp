@@ -18,6 +18,7 @@ import People from '../../components/dashboard/people';
 import Search from '../../components/dashboard/search';
 import Summary from '../../components/dashboard/summary';
 import WeekCalendar from '../../components/dashboard/week-calendar';
+import ErrorBoundaryComponent from '../../components/error-tracking/error-boundary';
 import LeftDrawer from '../../components/nav/left-drawer';
 import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
@@ -195,7 +196,7 @@ export const DashboardContainer = ({ store }: IProps) => {
             <AlertTitle>Error</AlertTitle>Please reload the page
           </Alert>
         </Dialog>
-        {tabHash[tab]}
+        <ErrorBoundaryComponent>{tabHash[tab]}</ErrorBoundaryComponent>
       </main>
     </div>
   );

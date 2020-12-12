@@ -39,7 +39,6 @@ module.exports = {
                 "'unsafe-eval'",
                 'https://apis.google.com',
                 'https://www.googletagmanager.com',
-                "'sha256-04Jv5Jfs6qO8py3c25yqGm8Ex55ZTNyucqYowVqbawo='"
               ],
               frameSrc: [
                 'https://auth.kelp.nyc',
@@ -54,6 +53,7 @@ module.exports = {
                 'https://auth.kelp.nyc/oauth/token',
                 'https://www.google-analytics.com',
                 'https://slack.com/api/conversations.list',
+                'https://api.rollbar.com/api/1/item/',
               ],
             },
           },
