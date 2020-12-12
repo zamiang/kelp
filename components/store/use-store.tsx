@@ -57,10 +57,7 @@ const useStore = (signedIn: boolean): IStore => {
     documentDataStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
-    refetch: () => {
-      console.log('refetching');
-      return data.refetch();
-    },
+    refetch: () => data.refetch(),
     error: data.error,
   };
 };

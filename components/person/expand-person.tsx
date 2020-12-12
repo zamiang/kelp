@@ -118,7 +118,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           <Typography variant="h6" className={classes.smallHeading}>
             Associates
           </Typography>
-          <AttendeeList personStore={props.personDataStore} attendees={associates} />
+          <AttendeeList personStore={props.personDataStore} attendees={associates} showAll={true} />
         </React.Fragment>
         <React.Fragment>
           <Typography variant="h6" className={classes.smallHeading}>

@@ -14,6 +14,7 @@ import { IFormattedAttendee } from '../store/time-store';
 interface IProps {
   attendees: IFormattedAttendee[];
   personStore: PersonDataStore;
+  showAll: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -102,7 +103,9 @@ const useAttendeeStyles = makeStyles(() => ({
 
 const AttendeeList = (props: IProps) => {
   const classes = useAttendeeStyles();
-  const [isExpanded, setExpand] = useState<boolean>(props.attendees.length < config.ATTENDEE_MAX);
+  const [isExpanded, setExpand] = useState<boolean>(
+    props.showAll || props.attendees.length < config.ATTENDEE_MAX,
+  );
   if (props.attendees.length < 1) {
     return <Typography variant="body2">None</Typography>;
   }

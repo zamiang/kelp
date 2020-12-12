@@ -78,22 +78,25 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
     .getAll()
     .filter((activity) => activity.time > minDate);
 
-  data = data.concat(
-    uniqBy(
-      allActivity,
-      (activity) => `${getDayOfYear(activity.time)}-${activity.actorPersonId}-${activity.link}`,
-    ).map((activity) => {
-      const document = props.documentDataStore.getByLink(activity.link)!;
-      return {
-        id: document.id,
-        time: activity.time,
-        type: 'document',
-        imageUrl: document.iconLink!,
-        hoverText: document.name || 'no title',
-      };
-    }),
-  );
+  const activityDocuments = uniqBy(
+    allActivity,
+    (activity) => `${getDayOfYear(activity.time)}-${activity.actorPersonId}-${activity.link}`,
+  )
+    .map((activity) => {
+      const document = props.documentDataStore.getByLink(activity.link);
+      if (document) {
+        return {
+          id: document.id,
+          time: activity.time,
+          type: 'document',
+          imageUrl: document.iconLink!,
+          hoverText: document.name || 'no title',
+        };
+      }
+    })
+    .filter(Boolean) as ITimelineItem[];
 
+  data = data.concat(activityDocuments);
   const segments = props.timeDataStore.getSegments();
 
   segments
