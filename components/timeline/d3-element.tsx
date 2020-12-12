@@ -13,6 +13,7 @@ import {
   scaleTime,
   select,
 } from 'd3';
+import { addSeconds } from 'date-fns';
 import { uniqBy } from 'lodash';
 import { IStore } from '../store/use-store';
 
@@ -58,6 +59,7 @@ const margin = {
   left: 0,
   right: 0,
 };
+const simulationDurationSeconds = 3;
 
 class D3Timeline {
   nodes: INode[];
@@ -71,6 +73,7 @@ class D3Timeline {
   documentsDataStore: IStore['documentDataStore'];
   personDataStore: IStore['personDataStore'];
   timeDataStore: IStore['timeDataStore'];
+  forceEndTime: Date;
 
   constructor(props: IProps) {
     this.personDataStore = props.personDataStore;
@@ -91,6 +94,8 @@ class D3Timeline {
 
     this.maxDate = props.maxDate;
     this.minDate = props.minDate;
+
+    this.forceEndTime = addSeconds(new Date(), simulationDurationSeconds);
 
     const svg = select(props.selector);
 
@@ -147,6 +152,10 @@ class D3Timeline {
   }
 
   onTick() {
+    if (new Date() > this.forceEndTime) {
+      return this.simulation.stop();
+    }
+
     select('.nodes')
       .selectAll('.node')
       .data(this.nodes)
@@ -181,7 +190,6 @@ class D3Timeline {
     // add circle
     u.append('circle')
       .attr('r', (d) => d.radius)
-      .attr('fill', 'rgba(116, 124, 129, 1)')
       .attr('clip-path', 'url(#circle)');
 
     // Append hero name on roll over next to the node as well
@@ -189,7 +197,6 @@ class D3Timeline {
       .attr('class', 'nodetext')
       .attr('x', 0)
       .attr('y', radius * 3)
-      .attr('fill', 'rgba(0, 0, 0, 0.87)')
       .text(function (d) {
         return d.hoverText;
       });
@@ -244,10 +251,10 @@ class D3Timeline {
       event.subject.radius = event.subject.radius * 2;
 
       this.updateLinksForNode(event.subject);
+      this.forceEndTime = addSeconds(new Date(), simulationDurationSeconds);
     };
 
     const dragged = (event: any) => {
-      this.simulation.alphaTarget(0.4).restart();
       event.subject.fx = event.x;
       event.subject.fy = event.y;
     };
@@ -259,6 +266,7 @@ class D3Timeline {
       event.subject.radius = radius;
 
       this.updateLinksForNode(null);
+      this.forceEndTime = addSeconds(new Date(), simulationDurationSeconds);
     };
 
     return drag()
@@ -329,7 +337,7 @@ class D3Timeline {
     this.simulation.nodes(this.nodes as any).on('tick', this.onTick.bind(this));
 
     // update the simulation
-    (this.simulation as any).force(
+    this.simulation.force(
       'link',
       forceLink()
         .links(this.dataLinks as any)

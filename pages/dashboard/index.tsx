@@ -116,17 +116,14 @@ text {
   fill: #B8B8B8;
   font-size: 0.8125rem;
 }
-circle.document {
-  stroke: ${config.PINK_BACKGROUND};
-  fill: #fff;
+.document circle {
+  fill: #747C81;
 }
-circle.meeting {
-  stroke: ${config.BLUE_BACKGROUND};
-  fill: #fff;
+.meeting circle {
+  fill: #747C81;
 }
-circle.person {
-  stroke: ${config.YELLOW_BACKGROUND};
-  fill: #fff;
+.person circle {
+  fill: #747C81;
 }
 .node:not(:hover) .nodetext {
   display: none;
@@ -134,7 +131,7 @@ circle.person {
 .node {
   position: relative;
 }
-.node text {
+.tick text, .nodetext {
   fill: #747C81;
 }
 .avatar {
