@@ -19,10 +19,9 @@ export default function Catch(component: any, errorHandler?: any) {
     }
 
     componentDidCatch(error: any, info: any) {
-      // Note: Unsure if this will lead to duplication
-      RollbarErrorTracking.logErrorInfo(info);
-      RollbarErrorTracking.logErrorInRollbar(error);
       if (errorHandler) {
+        RollbarErrorTracking.logErrorInfo(info);
+        RollbarErrorTracking.logErrorInRollbar(error);
         errorHandler(error, info);
       }
     }
