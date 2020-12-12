@@ -100,7 +100,11 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
             <Typography variant="caption" className={classes.smallCaption}>
               {guestStats}
             </Typography>
-            <AttendeeList personStore={props.personDataStore} attendees={attendees} />
+            <AttendeeList
+              personStore={props.personDataStore}
+              attendees={attendees}
+              showAll={false}
+            />
           </React.Fragment>
         )}
         {meeting.location && (

@@ -68,6 +68,7 @@
     "react-linkify": "1.0.0-alpha",
     "react-onclickoutside": "6.9.0",
     "react-popper": "2.2.4",
+    "rollbar": "2.19.4",
     "sitemap": "6.3.3",
     "stopword": "1.0.5",
     "styled-components": "5.2.1",

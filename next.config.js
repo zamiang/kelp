@@ -39,6 +39,7 @@ module.exports = {
                 "'unsafe-eval'",
                 'https://apis.google.com',
                 'https://www.googletagmanager.com',
+                "'sha256-04Jv5Jfs6qO8py3c25yqGm8Ex55ZTNyucqYowVqbawo='"
               ],
               frameSrc: [
                 'https://auth.kelp.nyc',
