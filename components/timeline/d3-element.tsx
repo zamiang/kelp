@@ -137,7 +137,7 @@ class D3Timeline {
         'y',
         forceY().y((d: any) => yScale(d.type)!),
       )
-      .alphaTarget(0.01)
+      .alphaTarget(0.1)
       .on('tick', this.onTick.bind(this));
 
     // Calculate the position before drawing
@@ -260,7 +260,7 @@ class D3Timeline {
     };
 
     const dragended = (event: any) => {
-      if (!event.active) simulation.alphaTarget(0.001).restart();
+      if (!event.active) simulation.alphaTarget(0.1).restart();
       event.subject.fx = null;
       event.subject.fy = null;
       event.subject.radius = radius;
