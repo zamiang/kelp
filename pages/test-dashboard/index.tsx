@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 import useStore from '../../components/store/use-fake-store';
@@ -16,4 +17,6 @@ const TestDashboard = () => {
   );
 };
 
-export default TestDashboard;
+export default dynamic(() => Promise.resolve(TestDashboard), {
+  ssr: false,
+});
