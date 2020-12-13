@@ -41,11 +41,14 @@ export interface ICalendarEvent {
   readonly attendees: attendee[];
 }
 
-export const getSelfResponseStatus = (attendees: attendee[]) => {
+export const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
   for (const person of attendees) {
     if (person.self) {
       return person.responseStatus as responseStatus;
     }
+  }
+  if (attendees.length < 1) {
+    return 'accepted';
   }
   return 'notAttending';
 };

@@ -6,10 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
-import PopperContainer from '../shared/popper';
-import useRowStyles from '../shared/row-styles';
-import { IPerson } from '../store/person-store';
-import { IStore } from '../store/use-store';
+import PopperContainer from '../../shared/popper';
+import useRowStyles from '../../shared/row-styles';
+import { IPerson } from '../../store/person-store';
+import { IStore } from '../../store/use-store';
 import ExpandedPerson from './expand-person';
 
 const useStyles = makeStyles((theme) => ({

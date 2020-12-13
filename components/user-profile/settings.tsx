@@ -81,6 +81,23 @@ const Settings = () => {
         )}
         <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
+            <InputLabel htmlFor="notifications">Notifications</InputLabel>
+            <br />
+            <br />
+            <br />
+            <Button
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={() => Notification.requestPermission()}
+            >
+              Enable meeting prep notifications
+            </Button>
+            Current status: {Notification.permission}
+          </FormControl>
+        </div>
+        <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
+          <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
             <LogoutButton />
           </FormControl>
         </div>

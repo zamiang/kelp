@@ -1,5 +1,6 @@
-import { format, getWeek, isAfter, isBefore, isSameDay } from 'date-fns';
-import { flatten, groupBy, intersection } from 'lodash';
+import { addMinutes, format, getWeek, isAfter, isBefore, isSameDay, subMinutes } from 'date-fns';
+import { first, flatten, groupBy, intersection } from 'lodash';
+import config from '../../constants/config';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import PersonDataStore from './person-store';
@@ -146,6 +147,19 @@ export default class TimeStore {
         return a.start < b.start ? -1 : 1;
       }
     });
+  }
+
+  getCurrentSegment() {
+    const segments = this.getSegments();
+    const start = subMinutes(new Date(), config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
+    const end = addMinutes(new Date(), 30 + config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
+    return first(
+      segments.filter((segment) => {
+        const isUpNext = segment.start > start && segment.start < end;
+        const isCurrent = start > segment.start && start < segment.end;
+        return segment.selfResponseStatus === 'accepted' && (isUpNext || isCurrent);
+      }),
+    );
   }
 
   getSegmentsByDay() {

@@ -20,6 +20,8 @@ import Summary from '../../components/dashboard/summary';
 import WeekCalendar from '../../components/dashboard/week-calendar';
 import ErrorBoundaryComponent from '../../components/error-tracking/error-boundary';
 import LeftDrawer from '../../components/nav/left-drawer';
+import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
+import NotificationsPopup from '../../components/notifications/notifications-popup';
 import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
@@ -172,7 +174,7 @@ export const DashboardContainer = ({ store }: IProps) => {
   } as any;
 
   useEffect(() => {
-    const interval = setInterval(store.refetch, 1000 * 60 * 1); // 10 minutes
+    const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
   }, []);
 
@@ -196,6 +198,8 @@ export const DashboardContainer = ({ store }: IProps) => {
             <AlertTitle>Error</AlertTitle>Please reload the page
           </Alert>
         </Dialog>
+        <NotificationsPopup />
+        <MeetingPrepNotifications {...store} />
         <ErrorBoundaryComponent>{tabHash[tab]}</ErrorBoundaryComponent>
       </main>
     </div>

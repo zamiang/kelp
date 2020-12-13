@@ -22,6 +22,7 @@ export default {
   SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS: true,
   NUMBER_OF_DAYS_BACK,
   WEEK_STARTS_ON: 0,
+  MEETING_PREP_NOTIFICATION_EARLY_MINUTES: 5,
   ATTENDEE_MAX: 10, // for 'show more'
   IS_GMAIL_ENABLED: false,
   GOOGLE_CALENDAR_FILTER: ['declined'], // Could be ['needsAction', 'declined']
