@@ -153,7 +153,13 @@ export default class TimeStore {
     const segments = this.getSegments();
     const start = subMinutes(new Date(), config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
     const end = addMinutes(new Date(), 30 + config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
-    return first(segments.filter((segment) => segment.start > start && segment.start < end));
+    return first(
+      segments.filter((segment) => {
+        const isUpNext = segment.start > start && segment.start < end;
+        const isCurrent = start > segment.start && start < segment.end;
+        return isUpNext || isCurrent;
+      }),
+    );
   }
 
   getSegmentsByDay() {

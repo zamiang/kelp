@@ -10,11 +10,11 @@ const createNotification = (
   onClick: () => Promise<boolean>,
   onClose: () => void,
 ) => {
-  console.log('creating notification');
-  // If the user agreed to get notified
   if (window.Notification && Notification.permission === 'granted') {
-    const notification = new Notification(meeting.summary || 'Meeting notification', {
-      tag: 'soManyNotification',
+    const title = `Prepare for: ${meeting.summary || 'Meeting notification'}`;
+    const notification = new Notification(title, {
+      tag: 'meeting-prep',
+      icon: 'https://www.kelp.nyc/kelp.svg',
     });
     notification.onclick = onClick;
     notification.onclose = onClose;
@@ -32,7 +32,6 @@ const MeetingPrepNotifications = (props: IStore) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const newMeeting = props.timeDataStore.getCurrentSegment();
-      console.log(newMeeting, currentMeeting, '<<<<<<');
       if (newMeeting !== currentMeeting && newMeeting) {
         createNotification(
           newMeeting,
