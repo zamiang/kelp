@@ -1,4 +1,5 @@
 import Dialog from '@material-ui/core/Dialog';
+import { differenceInMilliseconds } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import ExpandedMeeting from '../meeting/expand-meeting';
@@ -14,10 +15,14 @@ const createNotification = (
     const title = `Prepare for: ${meeting.summary || 'Meeting notification'}`;
     const notification = new Notification(title, {
       tag: 'meeting-prep',
-      icon: 'https://www.kelp.nyc/kelp.svg',
+      icon: `${window.location.protocol}//${window.location.host}/kelp.svg`,
     });
     notification.onclick = onClick;
     notification.onclose = onClose;
+    const timeout = differenceInMilliseconds(meeting.end, new Date());
+    setTimeout(() => {
+      notification.close();
+    }, timeout);
   }
 };
 
@@ -32,7 +37,7 @@ const MeetingPrepNotifications = (props: IStore) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const newMeeting = props.timeDataStore.getCurrentSegment();
-      if (newMeeting !== currentMeeting && newMeeting) {
+      if (newMeeting && newMeeting.id !== currentMeeting?.id) {
         createNotification(
           newMeeting,
           () => router.push(`?tab=meetings&slug=${newMeeting.id}`),

@@ -157,7 +157,7 @@ export default class TimeStore {
       segments.filter((segment) => {
         const isUpNext = segment.start > start && segment.start < end;
         const isCurrent = start > segment.start && start < segment.end;
-        return isUpNext || isCurrent;
+        return segment.selfResponseStatus === 'accepted' && (isUpNext || isCurrent);
       }),
     );
   }
