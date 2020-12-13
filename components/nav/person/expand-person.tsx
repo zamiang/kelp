@@ -4,6 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import Link from 'next/link';
@@ -52,7 +53,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             {(person.name || person.id)[0]}
           </Avatar>
           <Typography
-            className={classes.title}
+            className={clsx(classes.title, classes.titleCenter)}
             variant="h5"
             color="textPrimary"
             gutterBottom

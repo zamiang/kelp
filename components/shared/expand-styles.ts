@@ -27,10 +27,13 @@ const useStyles = makeStyles((theme) => ({
   title: {
     wordBreak: 'break-word',
     width: '100%',
-    textAlign: 'center',
+
     [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(3),
     },
+  },
+  titleCenter: {
+    textAlign: 'center',
   },
   smallHeading: {
     marginTop: theme.spacing(3),
