@@ -37,7 +37,7 @@ const fetchContacts = async () => {
     const formattedContact = {
       id: person.resourceName,
       name: displayName || emailAddresses[0] || person.resourceName,
-      isMissingProfile: person?.names ? false : true,
+      isInContacsts: person.names ? true : false,
       emailAddresses,
       imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
       notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,

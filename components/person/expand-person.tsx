@@ -99,10 +99,23 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
       </Grid>
       <Divider />
       <div className={classes.container}>
-        {person.isMissingProfile && (
-          <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
-            Add this person to your google contacts for more info
-          </MuiLink>
+        {!person.isInContacsts && (
+          <Typography variant="body2">
+            Add this person to your google contacts for more info{' '}
+            <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
+              (guide)
+            </MuiLink>
+            <br />
+            {person.emailAddresses && (
+              <MuiLink
+                className={classes.link}
+                target="_blank"
+                href={`https://mail.google.com/mail/u/0/#search/${person.emailAddresses[0]}`}
+              >
+                (search Gmail)
+              </MuiLink>
+            )}
+          </Typography>
         )}
         <React.Fragment>
           <Typography variant="h6" className={classes.smallHeading}>

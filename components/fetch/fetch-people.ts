@@ -1,7 +1,7 @@
 export interface person {
   id: string;
   name: string;
-  isMissingProfile: boolean;
+  isInContacsts: boolean;
   emailAddresses: string[];
   notes?: string;
   imageUrl?: string | null;
@@ -21,7 +21,7 @@ const formatGooglePeopleResponse = (
   return {
     id: requestedResourceName!,
     name: displayName || emailAddresses[0] || requestedResourceName!,
-    isMissingProfile: person?.names ? false : true,
+    isInContacsts: person && person.names ? true : false,
     notes: person?.biographies?.map((b) => b.value).join('<br />'),
     emailAddresses,
     imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,

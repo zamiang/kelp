@@ -16,7 +16,7 @@ export interface IPerson {
   notes?: string;
   googleId: string | null;
   isCurrentUser: boolean;
-  isMissingProfile: boolean;
+  isInContacsts: boolean;
   driveActivity: { [id: string]: IFormattedDriveActivity };
   segmentIds: string[];
 }
@@ -36,7 +36,7 @@ export const formatPerson = (person: GooglePerson) => ({
   emailAddresses: person.emailAddresses,
   imageUrl: person.imageUrl,
   isCurrentUser: false,
-  isMissingProfile: person.isMissingProfile,
+  isInContacsts: person.isInContacsts,
   notes: person.notes,
   driveActivity: {},
   segmentIds: [],
@@ -49,7 +49,7 @@ const createNewPersonFromEmail = (email: string) => ({
   emailAddresses: [email],
   imageUrl: null,
   isCurrentUser: false,
-  isMissingProfile: false,
+  isInContacsts: false,
   driveActivity: {},
   segmentIds: [],
 });

@@ -74,7 +74,7 @@ const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
 
   const onEdit = () => setIsEditing(true);
   const onCloseEdit = () => setIsEditing(false);
-  if (!props.person.googleId) {
+  if (!props.person.isInContacsts) {
     return null;
   }
   return (
