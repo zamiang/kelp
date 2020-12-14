@@ -26,6 +26,7 @@ const PopperContainer = (props: {
   children: any;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  offset?: string;
 }) => {
   const classes = useStyles();
   return (
@@ -37,7 +38,7 @@ const PopperContainer = (props: {
       modifiers={{
         offset: {
           enabled: true,
-          offset: '0, -50',
+          offset: props.offset || '0, -50',
         },
       }}
     >

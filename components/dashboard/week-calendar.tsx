@@ -21,6 +21,8 @@ import React, { useState } from 'react';
 import config from '../../constants/config';
 import { responseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import ExpandedMeeting from '../meeting/expand-meeting';
+import PopperContainer from '../shared/popper';
 import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/document-store';
 import { IStore } from '../store/use-store';
@@ -265,16 +267,19 @@ const useCalendarItemStyles = makeStyles((theme) => ({
 }));
 
 interface ICalendarItemProps {
-  onClick: () => void;
   title: string;
   start: Date;
   end?: Date;
   status: responseStatus;
+  store: IStore;
+  id: string;
 }
 
 const calendarItemPadding = 1;
 
 const CalendarItem = (props: ICalendarItemProps) => {
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const classes = useCalendarItemStyles();
   const minuteHeight = hourHeight / 60;
   const height = props.end
@@ -285,8 +290,17 @@ const CalendarItem = (props: ICalendarItemProps) => {
     <div
       className={clsx(classes.container, props.status === 'tentative' && classes.tentative)}
       style={{ height, top }}
-      onClick={props.onClick}
+      ref={setReferenceElement as any}
+      onClick={() => setIsOpen(true)}
     >
+      <PopperContainer
+        anchorEl={referenceElement}
+        isOpen={isOpen}
+        setIsOpen={(isOpen) => setIsOpen(isOpen)}
+        offset="140, -250"
+      >
+        <ExpandedMeeting meetingId={props.id} close={() => setIsOpen(false)} {...props.store} />
+      </PopperContainer>
       <Typography className={clsx(classes.title, height < 10 && classes.smallTitle)}>
         <b>{props.title}</b>, {format(props.start, 'hh:mm')}
       </Typography>
@@ -327,10 +341,7 @@ const DocumentItem = (props: IDocumentumentItemProps) => {
 interface IDayContentProps {
   shouldShowDocumentActivity: boolean;
   shouldShowCalendarEvents: boolean;
-  personStore: IStore['personDataStore'];
-  activityStore: IStore['driveActivityStore'];
-  timeStore: IStore['timeDataStore'];
-  documentsStore: IStore['documentDataStore'];
+  store: IStore;
   day: Date;
 }
 
@@ -360,8 +371,7 @@ const DayContent = (props: IDayContentProps) => {
   let documentsHtml = '' as any;
   let segmentsHtml = '' as any;
   let currentTimeHtml = '' as any;
-  const router = useRouter();
-  const currentUser = props.personStore.getSelf();
+  const currentUser = props.store.personDataStore.getSelf();
   const currentDay = new Date();
   const classes = useDayContentStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -382,15 +392,16 @@ const DayContent = (props: IDayContentProps) => {
   }
 
   if (props.shouldShowCalendarEvents) {
-    const segments = props.timeStore.getSegmentsForDay(props.day);
+    const segments = props.store.timeDataStore.getSegmentsForDay(props.day);
     segmentsHtml = segments.map((segment) => (
       <CalendarItem
         key={segment.id}
+        id={segment.id}
+        store={props.store}
         title={segment.summary || '(no title)'}
         start={segment.start}
         end={segment.end}
         status={segment.selfResponseStatus}
-        onClick={() => router.push(`?tab=meetings&slug=${segment.id}`)}
       />
     ));
   }
@@ -401,7 +412,7 @@ const DayContent = (props: IDayContentProps) => {
       .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
       .map((activity) => ({
         activity,
-        document: props.documentsStore.getByLink(activity.link),
+        document: props.store.documentDataStore.getByLink(activity.link),
       }));
 
     documentsHtml = documentActivityPairs.map((pairs) => (
@@ -461,10 +472,7 @@ const Calendar = (props: IStore) => {
       <DayContent
         shouldShowDocumentActivity={shouldShowDocumentActivity}
         shouldShowCalendarEvents={shouldShowCalendarEvents}
-        personStore={props.personDataStore}
-        activityStore={props.driveActivityStore}
-        timeStore={props.timeDataStore}
-        documentsStore={props.documentDataStore}
+        store={props}
         day={addDays(start, day)}
       />
     </Grid>
