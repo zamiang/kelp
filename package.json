@@ -29,7 +29,7 @@
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.57",
     "@material-ui/styles": "4.11.2",
-    "@popperjs/core": "2.5.4",
+    "@popperjs/core": "2.6.0",
     "@rehooks/component-size": "1.0.3",
     "@slack/web-api": "5.14.0",
     "@types/d3": "6.2.0",
