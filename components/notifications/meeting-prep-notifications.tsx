@@ -14,10 +14,14 @@ const createNotification = (
   if (window.Notification && Notification.permission === 'granted') {
     const title = `Prepare for: ${meeting.summary || 'Meeting notification'}`;
     const notification = new Notification(title, {
+      icon: `${window.location.protocol}//${window.location.host}/android-chrome-192x192.png`,
+      badge: `${window.location.protocol}//${window.location.host}/favicon-32x32.png`,
       tag: 'meeting-prep',
-      icon: `${window.location.protocol}//${window.location.host}/kelp.svg`,
     });
-    notification.onclick = onClick;
+    notification.onclick = () => {
+      window.focus();
+      return onClick();
+    };
     notification.onclose = onClose;
     const timeout = differenceInMilliseconds(meeting.end, new Date());
     setTimeout(() => {

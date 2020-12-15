@@ -38,7 +38,6 @@ module.exports = {
                 "'self'",
                 "'unsafe-eval'",
                 'https://apis.google.com',
-                'https://www.googletagmanager.com',
               ],
               frameSrc: [
                 'https://auth.kelp.nyc',
@@ -51,7 +50,6 @@ module.exports = {
               connectSrc: [
                 "'self'",
                 'https://auth.kelp.nyc/oauth/token',
-                'https://www.google-analytics.com',
                 'https://slack.com/api/conversations.list',
                 'https://api.rollbar.com/api/1/item/',
               ],

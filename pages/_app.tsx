@@ -15,15 +15,6 @@ const App = (props: any) => {
     }
   }, []);
 
-  React.useEffect(() => {
-    (window as any).dataLayer = (window as any).dataLayer || [];
-    function gtag() {
-      (window as any).dataLayer.push(arguments);
-    }
-    (gtag as any)('js', new Date());
-    (gtag as any)('config', 'G-2QP6D4R28C');
-  }, []);
-
   return (
     <Provider session={pageProps.session}>
       <ThemeProvider theme={theme}>
