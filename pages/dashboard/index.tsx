@@ -26,7 +26,6 @@ import useGapi from '../../components/store/use-gapi';
 import useStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
-import { bodyFontFamily } from '../../constants/theme';
 
 export const drawerWidth = 240;
 
