@@ -1,3 +1,4 @@
+import { makeStyles } from '@material-ui/core/styles';
 import { getDayOfYear, subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -6,6 +7,54 @@ import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
 const scrollBarWidth = 20;
+
+const d3Styles = makeStyles((theme) => ({
+  svg: {
+    '& line': {
+      stroke: theme.palette.divider,
+    },
+    '& text': {
+      textAnchor: 'middle',
+      fontFamily: theme.typography.fontFamily,
+      fill: '#B8B8B8',
+      fontSize: theme.typography.caption.fontSize,
+    },
+    '& .document circle': {
+      fill: '#747C81',
+    },
+    '& .meeting circle': {
+      fill: '#747C81',
+    },
+    '& .person circle': {
+      fill: '#747C81',
+    },
+    '& .node .nodetext': {
+      display: 'none',
+    },
+    '& .node:hover .nodetext': {
+      display: 'block',
+    },
+    '& .node:hover circle': {
+      r: 15,
+    },
+    '& .node': {
+      position: 'relative',
+    },
+    '& .node circle': {
+      transition: 'r 0.3s',
+    },
+    '& .tick text, .nodetext': {
+      fill: '#747C81',
+    },
+    '& .avatar': {
+      fill: theme.palette.background.paper,
+      fontWeight: theme.typography.fontWeightBold,
+    },
+    '& .domain': {
+      display: 'none',
+    },
+  },
+}));
 
 const D3Component = (props: {
   documentDataStore: IStore['documentDataStore'];
@@ -18,6 +67,7 @@ const D3Component = (props: {
   maxDate: Date;
   minDate: Date;
 }) => {
+  const classes = d3Styles();
   const d3Container = useRef(null);
   const [timeline, setTimeline] = useState<any>(null);
 
@@ -51,7 +101,7 @@ const D3Component = (props: {
 
   return (
     <React.Fragment>
-      <svg ref={d3Container}>
+      <svg ref={d3Container} className={classes.svg}>
         <clipPath id="circle" clipPathUnits="objectBoundingBox">
           <circle cx=".5" cy=".5" r=".5" />
         </clipPath>

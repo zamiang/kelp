@@ -177,15 +177,7 @@ class D3Timeline {
       .data(this.nodes)
       .enter()
       .append('g')
-      .attr('class', (d) => d.type + ' node')
-      .on('mouseover', function (d) {
-        d.radius = radius * 1.5;
-        select(this).select('circle').transition().attr('r', d.radius);
-      })
-      .on('mouseout', function (d) {
-        d.radius = radius;
-        select(this).select('circle').transition().attr('r', d.radius);
-      });
+      .attr('class', (d) => d.type + ' node');
 
     // add circle
     u.append('circle')

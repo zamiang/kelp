@@ -109,43 +109,6 @@ interface IProps {
 
 const is500Error = (error: Error) => (error as any).status === 500;
 
-const globalStyles = `
-line {
-  stroke: #ccc;
-}
-text {
-  text-anchor: middle;
-  font-family: ${bodyFontFamily};
-  fill: #B8B8B8;
-  font-size: 0.8125rem;
-}
-.document circle {
-  fill: #747C81;
-}
-.meeting circle {
-  fill: #747C81;
-}
-.person circle {
-  fill: #747C81;
-}
-.node:not(:hover) .nodetext {
-  display: none;
-}
-.node {
-  position: relative;
-}
-.tick text, .nodetext {
-  fill: #747C81;
-}
-.avatar {
-  fill: #fff;
-  font-weight: bold;
-}
-.domain {
-  display: none;
-}
-`;
-
 export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
@@ -186,7 +149,6 @@ export const DashboardContainer = ({ store }: IProps) => {
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
-      <style>{globalStyles}</style>
       <LeftDrawer
         lastUpdated={store.lastUpdated}
         handleRefreshClick={handleRefreshClick}
