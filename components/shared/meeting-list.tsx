@@ -1,45 +1,38 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import EventIcon from '@material-ui/icons/Event';
 import { format } from 'date-fns';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
+import useExpandStyles from '../shared/expand-styles';
 import PersonDataStore from '../store/person-store';
 import { ISegment } from '../store/time-store';
 
-const useRowStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    overflow: 'hidden',
-  },
-  link: {
-    padding: 0,
-    marginTop: 0,
-    fontWeight: theme.typography.fontWeightBold,
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-}));
-
 const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => {
-  const classes = useRowStyles();
+  const expandClasses = useExpandStyles();
+  const router = useRouter();
   return (
-    <Grid container wrap="nowrap" spacing={2}>
-      <Grid item zeroMinWidth>
-        <Link href={`?tab=meetings&slug=${props.segment.id}`}>
-          <span className={classes.link}>{props.segment.summary || '(No title)'}</span>
-        </Link>
-        <br />
-        <Typography variant="caption" color="textSecondary">
-          <Typography variant="subtitle2">
-            {format(props.segment.start, 'cccc, MMMM dd')} from {format(props.segment.start, 'p')}{' '}
-            to {format(props.segment.end, 'p')}
+    <Button
+      className={expandClasses.listItem}
+      onClick={() => router.push(`?tab=meetings&slug=${props.segment.id}`)}
+    >
+      <Grid container wrap="nowrap" spacing={2} alignItems="center">
+        <Grid item>
+          <EventIcon style={{ fontSize: 16, display: 'block' }} />
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="body2" noWrap>
+            {props.segment.summary || '(No title)'}
           </Typography>
-        </Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography variant="caption" noWrap color="textSecondary">
+            {format(props.segment.start, "MMM do 'at' hh:mm a")}
+          </Typography>
+        </Grid>
       </Grid>
-    </Grid>
+    </Button>
   );
 };
 
@@ -50,16 +43,16 @@ const MeetingList = (props: {
   segments: (ISegment | undefined)[];
   personStore: PersonDataStore;
 }) => {
-  const classes = useRowStyles();
+  const classes = useExpandStyles();
   if (props.segments.length < 1) {
-    return <Typography variant="body2">None</Typography>;
+    return <Typography variant="caption">None</Typography>;
   }
 
   const sortedSegments = props.segments
     .filter((item) => !!item)
     .sort((a, b) => (a!.start < b!.start ? -1 : 1));
   return (
-    <div className={classes.root}>
+    <div className={classes.list}>
       {sortedSegments.map(
         (segment) =>
           segment && <Meeting key={segment.id} segment={segment} personStore={props.personStore} />,

@@ -38,9 +38,8 @@ const useStyles = makeStyles((theme) => ({
   smallHeading: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    paddingBottom: theme.spacing(1),
     width: '100%',
+    fontWeight: 500,
     display: 'block',
     '&:first-child': {
       marginTop: 0,
@@ -131,6 +130,22 @@ const useStyles = makeStyles((theme) => ({
   },
   triGroupHeading: {
     paddingBottom: theme.spacing(1),
+  },
+  list: {
+    borderRadius: theme.shape.borderRadius,
+    border: '1px solid',
+    borderColor: theme.palette.divider,
+    width: '100%',
+  },
+  listItem: {
+    borderBottom: '1px solid',
+    borderBottomColor: theme.palette.divider,
+    borderRadius: 0,
+    width: '100%',
+    textAlign: 'left',
+    '&:last-child': {
+      borderBottom: '0px solid',
+    },
   },
 }));
 

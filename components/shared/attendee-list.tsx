@@ -1,13 +1,14 @@
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
+import useExpandStyles from '../shared/expand-styles';
 import PersonDataStore from '../store/person-store';
 import { IFormattedAttendee } from '../store/time-store';
 
@@ -49,19 +50,22 @@ const useStyles = makeStyles((theme) => ({
 
 const AttendeeRow = (props: IProps) => {
   const classes = useStyles();
+  const expandClasses = useExpandStyles();
+  const router = useRouter();
+
   return (
-    <React.Fragment>
+    <div className={expandClasses.list}>
       {orderBy(props.attendees || [], 'responseStatus').map((attendee) => {
         const person = props.personStore.getPersonById(attendee.personId);
         if (!person) {
           return null;
         }
         return (
-          <ListItem
-            button={true}
+          <Button
             key={person.id}
-            disableGutters
+            onClick={() => router.push(`?tab=people&slug=${person.id}`)}
             className={clsx(
+              expandClasses.listItem,
               classes.person,
               attendee.responseStatus === 'accepted' && classes.personAccepted,
               attendee.responseStatus === 'tentative' && classes.personTentative,
@@ -69,28 +73,26 @@ const AttendeeRow = (props: IProps) => {
               attendee.responseStatus === 'needsAction' && classes.personNeedsAction,
             )}
           >
-            <Link href={`?tab=people&slug=${person.id}`}>
-              <Grid container alignItems="center" spacing={1} wrap="nowrap">
-                <Grid item>
-                  <Avatar
-                    style={{ height: 24, width: 24 }}
-                    src={person.imageUrl || ''}
-                    className={classes.avatar}
-                  >
-                    {(person.name || person.id)[0]}
-                  </Avatar>
-                </Grid>
-                <Grid item xs={10}>
-                  <Typography variant="subtitle2" noWrap>
-                    {person.name || person.id}
-                  </Typography>
-                </Grid>
+            <Grid container alignItems="center" spacing={1} wrap="nowrap">
+              <Grid item>
+                <Avatar
+                  style={{ height: 24, width: 24 }}
+                  src={person.imageUrl || ''}
+                  className={classes.avatar}
+                >
+                  {(person.name || person.id)[0]}
+                </Avatar>
               </Grid>
-            </Link>
-          </ListItem>
+              <Grid item xs={10}>
+                <Typography variant="body2" noWrap>
+                  {person.name || person.id}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Button>
         );
       })}
-    </React.Fragment>
+    </div>
   );
 };
 
