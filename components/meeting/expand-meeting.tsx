@@ -1,9 +1,12 @@
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { format, isPast } from 'date-fns';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import { format, isPast, isToday } from 'date-fns';
 import { flatten } from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import Linkify from 'react-linkify';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
@@ -16,6 +19,7 @@ import { createDocument } from './create-meeting-notes';
 const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
+  const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const meeting = props.timeDataStore.getSegmentById(props.meetingId);
   if (!meeting) {
     return null;
@@ -24,7 +28,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
-  const hasMeetingLink = !!meeting.hangoutLink;
+  const shouldShowMeetingLink = !!meeting.hangoutLink && isToday(meeting.start);
   const attendeeAndCurrentUserDriveActivity = meeting.driveActivityIds
     .concat(meeting.currentUserDriveActivityIds)
     .map((id) => props.driveActivityStore.getById(id)!);
@@ -45,6 +49,8 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   );
   const guestStats = props.timeDataStore.getFormattedGuestStats(meeting);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
+  const meetingNotesLink = '';
+  const hasMeetingNotes = !!meetingNotesLink;
   return (
     <React.Fragment>
       <AppBar externalLink={meeting.link} onClose={props.close} />
@@ -54,24 +60,64 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
         </Typography>
         {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
         {format(meeting.end, 'p')}
+        <br />
+        <br />
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button
+              onClick={async () => {
+                setMeetingNotesLoading(true);
+                const document = await createDocument(
+                  meeting,
+                  documentsCurrentUserEditedWhileMeetingWithAttendees,
+                  props.personDataStore,
+                  props.documentDataStore,
+                );
+                setMeetingNotesLoading(false);
+                window.open(`https://docs.google.com/document/d/${document.id}`, '_blank');
+                props.refetch();
+              }}
+              variant="contained"
+              className={buttonClasses.selected}
+              startIcon={<InsertDriveFileIcon />}
+              disabled={isMeetingNotesLoading}
+              disableElevation
+            >
+              Create Smart Meeting Notes
+            </Button>
+          </Grid>
+          {hasMeetingNotes && (
+            <Grid item>
+              <Button
+                onClick={async () => {
+                  window.open(meetingNotesLink, '_blank');
+                }}
+                variant="contained"
+                className={buttonClasses.selected}
+                startIcon={<InsertDriveFileIcon />}
+                disableElevation
+              >
+                View Meeting Notes
+              </Button>
+            </Grid>
+          )}
+          {shouldShowMeetingLink && (
+            <Grid item>
+              <Button
+                onClick={() => window.open(meeting.hangoutLink, '_blank')}
+                variant="contained"
+                className={buttonClasses.selected}
+                startIcon={<MeetingRoomIcon />}
+                disableElevation
+              >
+                Join with Google Meet
+              </Button>
+            </Grid>
+          )}
+        </Grid>
       </div>
       <Divider />
       <div className={classes.container}>
-        <Button
-          onClick={() => createDocument(meeting, props.personDataStore)}
-          variant="contained"
-          className={buttonClasses.selected}
-          disableElevation
-        >
-          Create Meeting Notes
-        </Button>
-        {hasMeetingLink && (
-          <a target="_blank" rel="noreferrer" href={meeting.hangoutLink}>
-            <Button variant="contained" className={buttonClasses.selected} disableElevation>
-              Join with Google Meet
-            </Button>
-          </a>
-        )}
         {hasDescription && !isHtml && (
           <Typography variant="body2" className={classes.description}>
             <Linkify>{meeting.description?.trim()}</Linkify>
