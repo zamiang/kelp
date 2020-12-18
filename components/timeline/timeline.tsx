@@ -1,8 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { getDayOfYear, subDays } from 'date-fns';
+import { addDays, getDayOfYear, subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import config from '../../constants/config';
 import { IStore } from '../store/use-store';
 import D3Timeline, { ITimelineItem } from './d3-element';
 
@@ -35,7 +34,7 @@ const d3Styles = makeStyles((theme) => ({
       display: 'block',
     },
     '& .node:hover circle': {
-      r: 15,
+      r: 20,
     },
     '& .node': {
       position: 'relative',
@@ -60,6 +59,7 @@ const D3Component = (props: {
   documentDataStore: IStore['documentDataStore'];
   personDataStore: IStore['personDataStore'];
   timeDataStore: IStore['timeDataStore'];
+  driveActivityStore: IStore['driveActivityStore'];
   data: any;
   dataLinks: any;
   height: number;
@@ -80,6 +80,7 @@ const D3Component = (props: {
           width: props.width - scrollBarWidth,
           height: props.height,
           selector: d3Container?.current,
+          driveActivityStore: props.driveActivityStore,
           personDataStore: props.personDataStore,
           documentsDataStore: props.documentDataStore,
           timeDataStore: props.timeDataStore,
@@ -121,8 +122,8 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
   let data: ITimelineItem[] = [];
   const personIds: string[] = [];
   const linksData: link[] = [];
-  const minDate = new Date(subDays(new Date(), 15));
-  const maxDate = new Date(config.endDate);
+  const minDate = new Date(subDays(new Date(), 12));
+  const maxDate = new Date(addDays(new Date(), 2));
 
   const allActivity = props.driveActivityStore
     .getAll()
@@ -176,6 +177,7 @@ const Timeline = (props: IStore & { height: number; width: number }) => {
       <D3Component
         personDataStore={props.personDataStore}
         documentDataStore={props.documentDataStore}
+        driveActivityStore={props.driveActivityStore}
         timeDataStore={props.timeDataStore}
         data={data}
         dataLinks={linksData}

@@ -48,11 +48,12 @@ interface IProps {
   documentsDataStore: IStore['documentDataStore'];
   personDataStore: IStore['personDataStore'];
   timeDataStore: IStore['timeDataStore'];
+  driveActivityStore: IStore['driveActivityStore'];
   maxDate: Date;
   minDate: Date;
 }
 
-const radius = 10;
+const radius = 14;
 const margin = {
   top: 0,
   bottom: 20,
@@ -73,11 +74,13 @@ class D3Timeline {
   documentsDataStore: IStore['documentDataStore'];
   personDataStore: IStore['personDataStore'];
   timeDataStore: IStore['timeDataStore'];
+  driveActivityStore: IStore['driveActivityStore'];
   forceEndTime: Date;
 
   constructor(props: IProps) {
     this.personDataStore = props.personDataStore;
     this.documentsDataStore = props.documentsDataStore;
+    this.driveActivityStore = props.driveActivityStore;
     this.timeDataStore = props.timeDataStore;
     this.dataLinks = props.dataLinks;
     this.nodes = props.data.map((data) => ({
@@ -188,7 +191,7 @@ class D3Timeline {
     u.append('text')
       .attr('class', 'nodetext')
       .attr('x', 0)
-      .attr('y', radius * 3)
+      .attr('y', radius * 2)
       .text(function (d) {
         return d.hoverText;
       });
@@ -379,6 +382,27 @@ class D3Timeline {
         }
       });
     }
+    // NOTE: Just looks at drive activity, not meetings
+    if (node.type === 'document' && node.id && (node as any).index) {
+      const document = this.documentsDataStore.getByLink(node.id);
+      if (document) {
+        uniqBy(
+          this.driveActivityStore.getDriveActivityForDocument(document.id),
+          'actorPersonId',
+        ).forEach((activity) => {
+          const personIndex = activity?.actorPersonId
+            ? idToIndexHash[activity.actorPersonId]
+            : null;
+          if (personIndex) {
+            linksData.push({
+              source: node,
+              target: idToIndexHash[activity.actorPersonId!],
+            });
+          }
+        });
+      }
+    }
+
     return linksData;
   }
 }
