@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { IPerson } from '../../store/person-store';
+import { IPerson } from '../store/person-store';
 import { updateContactNotes } from './update-contact';
 
 const useStyles = makeStyles((theme) => ({

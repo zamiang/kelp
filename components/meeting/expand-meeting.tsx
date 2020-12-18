@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { format, isPast } from 'date-fns';
@@ -5,6 +6,7 @@ import { flatten } from 'lodash';
 import React from 'react';
 import Linkify from 'react-linkify';
 import AttendeeList from '../shared/attendee-list';
+import useButtonStyles from '../shared/button-styles';
 import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
@@ -12,6 +14,7 @@ import { IStore } from '../store/use-store';
 
 const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
   const classes = useExpandStyles();
+  const buttonClasses = useButtonStyles();
   const meeting = props.timeDataStore.getSegmentById(props.meetingId);
   if (!meeting) {
     return null;
@@ -20,6 +23,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
+  const hasMeetingLink = !!meeting.hangoutLink;
   const attendeeAndCurrentUserDriveActivity = meeting.driveActivityIds
     .concat(meeting.currentUserDriveActivityIds)
     .map((id) => props.driveActivityStore.getById(id)!);
@@ -52,6 +56,13 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
       </div>
       <Divider />
       <div className={classes.container}>
+        {hasMeetingLink && (
+          <a target="_blank" rel="noreferrer" href={meeting.hangoutLink}>
+            <Button variant="contained" className={buttonClasses.selected} disableElevation>
+              Join with Google Meet
+            </Button>
+          </a>
+        )}
         {hasDescription && !isHtml && (
           <Typography variant="body2" className={classes.description}>
             <Linkify>{meeting.description?.trim()}</Linkify>

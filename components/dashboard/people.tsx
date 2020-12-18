@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { sortBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import PersonRow from '../nav/person/person-row';
+import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';

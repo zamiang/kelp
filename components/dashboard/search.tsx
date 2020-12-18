@@ -4,7 +4,7 @@ import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../documents/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
-import PersonSearchResult from '../nav/person/person-search-result';
+import PersonSearchResult from '../person/person-search-result';
 import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/document-store';
 import { IPerson } from '../store/person-store';
