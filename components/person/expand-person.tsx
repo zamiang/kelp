@@ -9,12 +9,12 @@ import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import Link from 'next/link';
 import React from 'react';
-import AttendeeList from '../../shared/attendee-list';
-import DriveActivity from '../../shared/documents-from-drive-activity';
-import AppBar from '../../shared/elevate-app-bar';
-import useExpandStyles from '../../shared/expand-styles';
-import MeetingList from '../../shared/meeting-list';
-import { IStore } from '../../store/use-store';
+import AttendeeList from '../shared/attendee-list';
+import DriveActivity from '../shared/documents-from-drive-activity';
+import AppBar from '../shared/elevate-app-bar';
+import useExpandStyles from '../shared/expand-styles';
+import MeetingList from '../shared/meeting-list';
+import { IStore } from '../store/use-store';
 import PersonNotes from './person-notes';
 
 const ADD_SENDER_LINK =

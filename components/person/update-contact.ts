@@ -1,5 +1,5 @@
-import { userPersonFields } from '../../fetch/fetch-contacts';
-import { IPerson } from '../../store/person-store';
+import { userPersonFields } from '../fetch/fetch-contacts';
+import { IPerson } from '../store/person-store';
 
 const contactEditScope = 'https://www.googleapis.com/auth/contacts';
 
