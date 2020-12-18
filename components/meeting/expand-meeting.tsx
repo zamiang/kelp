@@ -133,7 +133,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
         {isInPast && (
           <React.Fragment>
             <Typography variant="h6" className={classes.smallHeading}>
-              Documents with activity by the attendees during this meeting
+              Documents attendees edited during this meeting
             </Typography>
             <DriveActivityList
               driveActivity={attendeeAndCurrentUserDriveActivity}
@@ -143,7 +143,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
           </React.Fragment>
         )}
         <Typography variant="h6" className={classes.smallHeading}>
-          Documents edited by you when with the attendees
+          Documents you edited while meeting with the attendees
         </Typography>
         <DriveActivityList
           driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
@@ -151,7 +151,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
           personStore={props.personDataStore}
         />
         <Typography variant="h6" className={classes.smallHeading}>
-          Documents edited during previous meetings with the attendees
+          Documents from previous meetings with the attendees
         </Typography>
         <DriveActivityList
           driveActivity={driveActivityFromAttendees}
