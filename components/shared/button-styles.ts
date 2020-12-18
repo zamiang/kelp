@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(3),
     fontSize: 14,
     transition: 'opacity 0.3s',
+    textDecoration: 'none',
     opacity: 1,
     '&.Mui-disabled': {
       background: theme.palette.primary.main,
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   unSelected: {
     border: `1px solid ${theme.palette.divider}`,
+    textDecoration: 'none',
     textTransform: 'none',
     background: theme.palette.background.paper,
     color: theme.palette.text.hint,

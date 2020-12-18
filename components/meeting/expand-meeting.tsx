@@ -11,6 +11,7 @@ import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import { IStore } from '../store/use-store';
+import { createDocument } from './create-meeting-notes';
 
 const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
   const classes = useExpandStyles();
@@ -56,6 +57,14 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
       </div>
       <Divider />
       <div className={classes.container}>
+        <Button
+          onClick={() => createDocument(meeting, props.personDataStore)}
+          variant="contained"
+          className={buttonClasses.selected}
+          disableElevation
+        >
+          Create Meeting Notes
+        </Button>
         {hasMeetingLink && (
           <a target="_blank" rel="noreferrer" href={meeting.hangoutLink}>
             <Button variant="contained" className={buttonClasses.selected} disableElevation>
