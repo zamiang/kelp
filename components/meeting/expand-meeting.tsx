@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -116,7 +117,13 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
               }
               variant="contained"
               className={buttonClasses.selected}
-              startIcon={<InsertDriveFileIcon />}
+              startIcon={
+                isMeetingNotesLoading ? (
+                  <CircularProgress size={20} color={'paper' as any} />
+                ) : (
+                  <InsertDriveFileIcon />
+                )
+              }
               disabled={isMeetingNotesLoading}
               disableElevation
             >
