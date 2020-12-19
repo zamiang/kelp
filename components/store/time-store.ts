@@ -266,4 +266,10 @@ export default class TimeStore {
       (segment) => intersection(driveActivityIds, segment.attendeeDriveActivityIds).length > 0,
     );
   }
+
+  getSegmentsWithDocumentInDescription(documentId: string) {
+    return this.segments.filter((segment) =>
+      segment.documentIdsFromDescription.includes(documentId),
+    );
+  }
 }

@@ -40,6 +40,9 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
   const currentUserMeetings = props.timeDataStore.getSegmentsWithCurrentUserDriveActivity(
     driveActivityIds,
   );
+  const segmentsWithDocumentInDescription = props.timeDataStore.getSegmentsWithDocumentInDescription(
+    props.documentId,
+  );
   const attendeeMeetings = props.timeDataStore.getSegmentsWithAttendeeDriveActivity(
     driveActivityIds,
   );
@@ -83,6 +86,13 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
       </Grid>
       <Divider />
       <div className={classes.container}>
+        <Typography variant="h6" className={classes.smallHeading}>
+          Meetings where this document is listed in the description
+        </Typography>
+        <MeetingList
+          segments={segmentsWithDocumentInDescription}
+          personStore={props.personDataStore}
+        />
         <Typography variant="h6" className={classes.smallHeading}>
           Meetings where you edited this document
         </Typography>

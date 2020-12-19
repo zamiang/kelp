@@ -112,7 +112,7 @@ export default class DocumentDataStore {
     const concattedDocuments = uniqBy(listedDocuments.concat(documentsFromActivity), 'id');
     return concattedDocuments.sort((a: any, b: any) =>
       a?.name.toLowerCase().localeCompare(b?.name.toLowerCase()),
-    );
+    ) as IDocument[];
   }
 
   getDocumentsForThisWeek(

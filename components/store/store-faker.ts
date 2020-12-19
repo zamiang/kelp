@@ -147,6 +147,7 @@ times(WEEKS_TO_CREATE, (week: number) => {
         end: endDate,
         attendees,
         formattedAttendees,
+        documentIdsFromDescription: [],
         creator: {
           email: sample(people)?.emailAddresses[0],
         },
