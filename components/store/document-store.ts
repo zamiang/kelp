@@ -27,7 +27,11 @@ interface IDocumentById {
 }
 
 export const getGoogleDocsIdFromLink = (link: string) =>
-  link.replace('https://docs.google.com/document/d/', '');
+  link
+    .replace('https://docs.google.com/document/d/', '')
+    .replace('https://docs.google.com/presentation/d/', '')
+    .replace('https://docs.google.com/spreadsheets/d/', '')
+    .split('/')[0];
 
 // handle one person w/ multiple email addresses
 export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
@@ -95,16 +99,20 @@ export default class DocumentDataStore {
     day: Date,
   ) {
     const driveActivityIdsForDay = timeDataStore.getDriveActivityIdsForDate(day);
-    return (uniqBy(
-      driveActivityIdsForDay
-        .map((id) => id && driveActivityStore.getById(id))
-        .map(
-          (driveActivity) =>
-            driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
-        )
-        .filter((doc) => doc && doc.id),
-      'id',
-    ) as IDocument[]).sort((a, b) => (a.name! < b.name! ? -1 : 1));
+    const documentsFromActivity: any[] = driveActivityIdsForDay
+      .map((id) => id && driveActivityStore.getById(id))
+      .map(
+        (driveActivity) =>
+          driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
+      )
+      .filter((doc) => doc && doc.id);
+
+    const documentIdsForDay = timeDataStore.getListedDocumentIdsForDay(day);
+    const listedDocuments = documentIdsForDay.map((id) => this.getByLink(id)).filter(Boolean);
+    const concattedDocuments = uniqBy(listedDocuments.concat(documentsFromActivity), 'id');
+    return concattedDocuments.sort((a: any, b: any) =>
+      a?.name.toLowerCase().localeCompare(b?.name.toLowerCase()),
+    );
   }
 
   getDocumentsForThisWeek(
@@ -123,7 +131,9 @@ export default class DocumentDataStore {
         )
         .filter((doc) => doc && doc.id),
       'id',
-    ) as IDocument[]).sort((a, b) => (a.name! < b.name! ? -1 : 1));
+    ) as IDocument[]).sort((a: any, b: any) =>
+      a?.name.toLowerCase().localeCompare(b?.name.toLowerCase()),
+    );
   }
 
   /**

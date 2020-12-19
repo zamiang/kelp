@@ -86,7 +86,7 @@ const DriveActivityList = (props: {
     <div className={classes.list}>
       {items.map((item) => (
         <Activity
-          key={item.document.id}
+          key={item.action.id}
           personStore={props.personStore}
           document={item.document}
           action={item.action}

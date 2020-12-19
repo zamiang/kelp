@@ -1,8 +1,10 @@
 import { addMinutes, format, getWeek, isAfter, isBefore, isSameDay, subMinutes } from 'date-fns';
+import getUrls from 'get-urls';
 import { first, flatten, groupBy, intersection } from 'lodash';
 import config from '../../constants/config';
 import { ICalendarEvent } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { getGoogleDocsIdFromLink } from './document-store';
 import PersonDataStore from './person-store';
 
 type SegmentState = 'current' | 'upcoming' | 'past';
@@ -36,11 +38,24 @@ export interface ISegment extends ICalendarEvent {
   readonly formattedAttendees: IFormattedAttendee[];
   readonly formattedOrganizer?: IFormattedAttendee;
   readonly formattedCreator?: IFormattedAttendee;
+  readonly documentIdsFromDescription: string[];
 }
 
 interface ISegmentsByID {
   [id: string]: ISegment;
 }
+
+const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
+  const documentIds: string[] = [];
+
+  const urls: string[] = event.description ? (getUrls(event.description) as any) : [];
+  urls.forEach((url) => {
+    if (url.includes('https://docs.google.com')) {
+      documentIds.push(getGoogleDocsIdFromLink(url));
+    }
+  });
+  return documentIds;
+};
 
 export default class TimeStore {
   private segments: ISegment[];
@@ -87,11 +102,13 @@ export default class TimeStore {
                 self: event.creator.self,
               }
             : undefined;
+        const documentIds = getDocumentIdsFromCalendarEvents(event);
         return {
           ...event,
           formattedAttendees,
           formattedOrganizer,
           formattedCreator,
+          documentIdsFromDescription: documentIds,
           driveActivityIds: [],
           attendeeDriveActivityIds: [],
           currentUserDriveActivityIds: [],
@@ -181,6 +198,14 @@ export default class TimeStore {
       this.segments
         .filter((segment) => isSameDay(segment.start, date))
         .map((segment) => segment.driveActivityIds),
+    );
+  }
+
+  getListedDocumentIdsForDay(date: Date) {
+    return flatten(
+      this.segments
+        .filter((segment) => isSameDay(segment.start, date))
+        .map((segment) => segment.documentIdsFromDescription),
     );
   }
 
