@@ -3,6 +3,7 @@ import fetchDriveActivityForDocumentIds from './fetch-drive-activity';
 
 interface IProps {
   readonly googleDocIds: string[];
+  readonly isLoading: boolean;
 }
 /**
  * Fetches 2nd layer of information.
@@ -10,7 +11,7 @@ interface IProps {
 const FetchSecond = (props: IProps) => {
   const activityResponse = useAsyncAbortable(
     () => fetchDriveActivityForDocumentIds(props.googleDocIds),
-    [props.googleDocIds.length] as any, // unsure why this type is a failure
+    [props.isLoading, props.googleDocIds.length.toString()] as any, // unsure why this type is a failure
   );
   return {
     driveActivity: activityResponse.result ? activityResponse.result.activity : [],

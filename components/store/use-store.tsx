@@ -38,7 +38,7 @@ const useStore = (signedIn: boolean): IStore => {
   // console.log('DOC DATA STORE:', DocumentDataStore);
 
   const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
-  // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
+  // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore, data.driveActivity);
 
   const tfidfStore = new TfidfDataStore(
     {

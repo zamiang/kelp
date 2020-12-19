@@ -26,7 +26,7 @@ const askNotificationPermission = async () => {
 
   // Let's check if the browser supports notifications
   if (!('Notification' in window)) {
-    console.log('This browser does not support notifications.');
+    // console.log('This browser does not support notifications.');
   } else {
     if (await checkNotificationPromise()) {
       await Notification.requestPermission().then((permission) => {

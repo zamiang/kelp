@@ -27,6 +27,7 @@ const FetchAll = (signedIn: boolean): IReturnType => {
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const secondLayer = FetchSecond({
     googleDocIds,
+    isLoading: firstLayer.isLoading,
   });
   const peopleIds = uniq(
     secondLayer.driveActivity
@@ -44,7 +45,6 @@ const FetchAll = (signedIn: boolean): IReturnType => {
     refetch: async () => {
       await firstLayer.refetchCalendarEvents();
       await firstLayer.refetchDriveFiles();
-      await secondLayer.refetchDriveActivity();
       await thirdLayer.refetchPersonList();
     },
     isLoading: firstLayer.isLoading && secondLayer.isLoading && thirdLayer.isLoading,

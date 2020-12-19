@@ -274,7 +274,6 @@ const LeftDrawer = (props: IProps) => {
           </Link>
         </List>
       </div>
-
       <List>
         <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
         {!isLoading && user && (
