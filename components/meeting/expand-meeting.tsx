@@ -8,15 +8,52 @@ import { format, isPast, isToday } from 'date-fns';
 import { flatten } from 'lodash';
 import React, { useState } from 'react';
 import Linkify from 'react-linkify';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
+import { ISegment } from '../store/time-store';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
 
-// https://docs.google.com/document/d/1-2e7TXyBbFmdBiKB24BT74P9EbC_oF8ajIrXdwtwBCk/edit?userstoinvite=yantoniou%40gmail.com&ts=5fce9993&actionButton=1#heading=h.s22eovb6drnp
+const createMeetingNotes = async (
+  meeting: ISegment,
+  documentsCurrentUserEditedWhileMeetingWithAttendees: IFormattedDriveActivity[],
+  setMeetingNotesLoading: (isLoading: boolean) => void,
+  personDataStore: IStore['personDataStore'],
+  documentDataStore: IStore['documentDataStore'],
+  refetch: () => void,
+) => {
+  setMeetingNotesLoading(true);
+  const document = await createDocument(
+    meeting,
+    documentsCurrentUserEditedWhileMeetingWithAttendees,
+    personDataStore,
+    documentDataStore,
+  );
+  setMeetingNotesLoading(false);
+  const emailsToInvite = meeting.formattedAttendees
+    .map((a) => {
+      const shouldInvite = !a.self && a.responseStatus === 'accepted';
+      if (shouldInvite) {
+        const person = personDataStore.getPersonById(a.personId);
+        if (person && person.emailAddresses.length > 0) {
+          return person.emailAddresses[0];
+        }
+      }
+    })
+    .filter(Boolean);
+
+  const params = new URLSearchParams({
+    actionButton: '1',
+    userstoinvite: emailsToInvite.join(','),
+  });
+  const documentShareUrl = `https://docs.google.com/document/d/${document.id}?${params.toString()}`;
+  window.open(documentShareUrl, '_blank');
+  refetch();
+};
 
 const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
   const classes = useExpandStyles();
@@ -67,18 +104,16 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
         <Grid container spacing={2}>
           <Grid item>
             <Button
-              onClick={async () => {
-                setMeetingNotesLoading(true);
-                const document = await createDocument(
+              onClick={() =>
+                createMeetingNotes(
                   meeting,
                   documentsCurrentUserEditedWhileMeetingWithAttendees,
+                  setMeetingNotesLoading,
                   props.personDataStore,
                   props.documentDataStore,
-                );
-                setMeetingNotesLoading(false);
-                window.open(`https://docs.google.com/document/d/${document.id}`, '_blank');
-                props.refetch();
-              }}
+                  props.refetch,
+                )
+              }
               variant="contained"
               className={buttonClasses.selected}
               startIcon={<InsertDriveFileIcon />}

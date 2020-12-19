@@ -96,5 +96,6 @@ export const createDocument = async (
   if (!id) {
     return alert(`no id for ${JSON.stringify(document)}`);
   }
+
   return document.result;
 };
