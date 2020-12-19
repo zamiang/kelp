@@ -121,6 +121,7 @@ export default class TimeStore {
               } else {
                 // documents edited by attendees
                 const isActorAttending = segment.formattedAttendees
+                  .filter((a) => a.responseStatus === 'accepted')
                   .map((a) => a.personId)
                   .includes(actor.id);
                 if (isActorAttending) {
