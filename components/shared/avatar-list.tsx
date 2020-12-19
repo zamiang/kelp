@@ -1,4 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
@@ -55,14 +56,15 @@ const AvatarList = (props: IProps) => {
           return null;
         }
         return (
-          <Avatar
-            onClick={() => router.push(`?tab=people&slug=${person.id}`)}
-            key={person.id}
-            src={person.imageUrl || ''}
-            className={classes.avatar}
-          >
-            {(person.name || person.id)[0]}
-          </Avatar>
+          <Tooltip key={person.id} title={person.name || person.emailAddresses}>
+            <Avatar
+              onClick={() => router.push(`?tab=people&slug=${person.id}`)}
+              src={person.imageUrl || ''}
+              className={classes.avatar}
+            >
+              {(person.name || person.id)[0]}
+            </Avatar>
+          </Tooltip>
         );
       })}
     </AvatarGroup>

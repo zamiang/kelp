@@ -1,7 +1,9 @@
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { format, subWeeks } from 'date-fns';
+import { uniq } from 'lodash';
 import pluralize from 'pluralize';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -12,12 +14,26 @@ import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import { IStore } from '../store/use-store';
 
-const getActivityStats = (activity: IFormattedDriveActivity[], week: number) => {
+const getActivityStats = (
+  activity: IFormattedDriveActivity[],
+  week: number,
+  personDataStore: IStore['personDataStore'],
+) => {
   const filteredActivity = activity.filter((activity) => getWeek(activity.time) === week);
   const commentCount = filteredActivity.filter((activity) => activity.action === 'comment').length;
   const editCount = filteredActivity.filter((activity) => activity.action === 'edit').length;
 
   const formattedString = [];
+  const formattedTooltipString = uniq(
+    filteredActivity
+      .map((activity) => {
+        const person = activity.actorPersonId
+          ? personDataStore.getPersonById(activity.actorPersonId)
+          : null;
+        return person?.name || person?.emailAddresses;
+      })
+      .filter(Boolean),
+  );
   if (commentCount > 0) {
     formattedString.push(`${commentCount} ${pluralize('comment', commentCount)}`);
   }
@@ -25,7 +41,12 @@ const getActivityStats = (activity: IFormattedDriveActivity[], week: number) => 
     formattedString.push(`${editCount} ${pluralize('edit', editCount)}`);
   }
 
-  return formattedString.join(' & ');
+  return [
+    formattedString.join(' & '),
+    formattedTooltipString.length > 2
+      ? `${formattedTooltipString.slice(0, -1).join(', ')} and ${formattedTooltipString.slice(-1)}`
+      : formattedTooltipString.join(' and '),
+  ];
 };
 
 const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
@@ -46,8 +67,16 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
   const attendeeMeetings = props.timeDataStore.getSegmentsWithAttendeeDriveActivity(
     driveActivityIds,
   );
-  const activityStatsThisWeek = getActivityStats(activity, getWeek(new Date()));
-  const activityStatsLastWeek = getActivityStats(activity, getWeek(subWeeks(new Date(), 1)));
+  const [activityStatsThisWeek, activityStatsThisWeekText] = getActivityStats(
+    activity,
+    getWeek(new Date()),
+    props.personDataStore,
+  );
+  const [activityStatsLastWeek, activityStatsLastsWeekText] = getActivityStats(
+    activity,
+    getWeek(subWeeks(new Date(), 1)),
+    props.personDataStore,
+  );
   return (
     <React.Fragment>
       <AppBar onClose={props.close} externalLink={document.link} />
@@ -67,9 +96,13 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
           </Typography>
           {
             <Typography className={classes.highlight}>
-              <span className={classes.highlightValue}>{activityStatsThisWeek || 'None'}</span>
+              <Tooltip title={activityStatsThisWeekText}>
+                <span className={classes.highlightValue}>{activityStatsThisWeek || 'None'}</span>
+              </Tooltip>
               {activityStatsLastWeek && (
-                <span className={classes.highlightSub}> from {activityStatsLastWeek}</span>
+                <Tooltip title={activityStatsLastsWeekText}>
+                  <span className={classes.highlightSub}> from {activityStatsLastWeek}</span>
+                </Tooltip>
               )}
             </Typography>
           }
