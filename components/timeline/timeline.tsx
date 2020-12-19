@@ -16,7 +16,7 @@ const d3Styles = makeStyles((theme) => ({
       textAnchor: 'middle',
       fontFamily: theme.typography.fontFamily,
       fill: '#B8B8B8',
-      fontSize: theme.typography.caption.fontSize,
+      fontSize: theme.typography.body2.fontSize,
     },
     '& .document circle': {
       fill: '#747C81',

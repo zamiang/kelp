@@ -199,7 +199,7 @@ class D3Timeline {
     // Icon
     u.append('text')
       .attr('class', 'avatar')
-      .attr('y', radius / 2)
+      .attr('y', 4)
       .text((d) => {
         if (!d.imageUrl) {
           return d.hoverText[0].toLocaleUpperCase();
