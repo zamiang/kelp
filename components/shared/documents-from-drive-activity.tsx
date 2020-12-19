@@ -80,18 +80,21 @@ const DriveActivityList = (props: {
   }
   const items = actions.map((action) => ({
     action,
-    document: props.docStore.getByLink(action.link)!,
+    document: props.docStore.getByLink(action.link),
   }));
   return (
     <div className={classes.list}>
-      {items.map((item) => (
-        <Activity
-          key={item.action.id}
-          personStore={props.personStore}
-          document={item.document}
-          action={item.action}
-        />
-      ))}
+      {items.map(
+        (item) =>
+          item.document && (
+            <Activity
+              key={item.action.id}
+              personStore={props.personStore}
+              document={item.document}
+              action={item.action}
+            />
+          ),
+      )}
     </div>
   );
 };
