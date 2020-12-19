@@ -16,6 +16,8 @@ import useExpandStyles from '../shared/expand-styles';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
 
+// https://docs.google.com/document/d/1-2e7TXyBbFmdBiKB24BT74P9EbC_oF8ajIrXdwtwBCk/edit?userstoinvite=yantoniou%40gmail.com&ts=5fce9993&actionButton=1#heading=h.s22eovb6drnp
+
 const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
