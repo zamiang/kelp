@@ -21,12 +21,12 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
         <Grid item>
           <EventIcon style={{ fontSize: 16, display: 'block' }} />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <Typography variant="body2" noWrap>
             {props.segment.summary || '(No title)'}
           </Typography>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4} style={{ textAlign: 'right' }}>
           <Typography variant="caption" noWrap color="textSecondary">
             {format(props.segment.start, "MMM do 'at' hh:mm a")}
           </Typography>
