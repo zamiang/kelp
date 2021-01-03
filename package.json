@@ -57,7 +57,7 @@
     "faker": "5.1.0",
     "get-urls": "10.0.0",
     "lodash": "4.17.20",
-    "next": "10.0.3",
+    "next": "10.0.4",
     "next-auth": "3.1.0",
     "next-secure-headers": "2.1.0",
     "pg": "8.5.1",
