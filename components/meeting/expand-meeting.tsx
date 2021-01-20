@@ -179,7 +179,7 @@ const ExpandedMeeting = (
           Documents you may need
         </Typography>
         <DriveActivityList
-          driveActivity={driveActivityFromAttendees}
+          driveActivity={driveActivityFromAttendees.concat(attendeeAndCurrentUserDriveActivity)}
           docStore={props.documentDataStore}
           personStore={props.personDataStore}
         />

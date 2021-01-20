@@ -8,7 +8,7 @@ import { endDate, startDate } from '../../components/store/use-homepage-store';
 
 const useStyles = makeStyles((theme) => ({
   notification: {
-    borderRadius: 20,
+    borderRadius: 16,
     border: `1px solid ${theme.palette.divider}`,
     padding: theme.spacing(2),
     background: theme.palette.background.paper,
@@ -50,9 +50,11 @@ const Notification = () => {
       <Grid container justify="space-between" alignItems="flex-end">
         <Grid item xs={9}>
           <Typography>
-            <b>Upcomming Meeting: SPAC Formataion to acquire Roman Empire</b>
+            <b>SPAC Formataion to acquire Roman Empire</b>
           </Typography>
-          <Typography>Documents you may need</Typography>
+          <Typography>
+            {format(startDate, 'p')} – {format(endDate, 'p')}
+          </Typography>
         </Grid>
         <Grid item xs={3}>
           <Button

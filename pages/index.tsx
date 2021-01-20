@@ -1,4 +1,3 @@
-import { Paper } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
@@ -8,16 +7,16 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import clsx from 'clsx';
 import { signIn } from 'next-auth/client';
 import Head from 'next/head';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
-import Notification from '../components/homepage/notification';
+import UiBlocks from '../components/homepage/ui-blocks';
 import ExpandedMeeting from '../components/meeting/expand-meeting';
 import useStore, { meetingId } from '../components/store/use-homepage-store';
 import config from '../constants/config';
@@ -33,10 +32,6 @@ export const useStyles = makeStyles((theme) => ({
   blueContainer: {
     width: '100%',
     backgroundColor: config.BLUE_BACKGROUND,
-  },
-  greyContainer: {
-    width: '100%',
-    backgroundColor: theme.palette.grey[200],
   },
   whiteContainer: {
     width: '100%',
@@ -142,25 +137,6 @@ export const useStyles = makeStyles((theme) => ({
   bodyLargeCopy: {
     fontSize: theme.typography.h5.fontSize,
   },
-  sectionImageLeft: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  sectionText: {
-    padding: theme.spacing(6),
-  },
-  sectionImageRightTop: {
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  sectionImageRightBottom: {
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  section: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
 }));
 
 const App = () => {
@@ -224,59 +200,7 @@ const App = () => {
           />
         </Paper>
         <Divider />
-        <Grid container className={classes.section}>
-          <Grid item xs={6} className={clsx(classes.sectionText)}>
-            <Container maxWidth="xs" style={{ marginRight: 0 }}>
-              <Typography variant="h4">Organization for humans</Typography>
-              <br />
-              <Typography variant="h6">
-                Kelp meets you where you are. It doesn’t ask you to change how you organize your
-                work or how you collaborate.
-              </Typography>
-            </Container>
-          </Grid>
-          <Grid item xs={6} className={clsx(classes.sectionImageRightTop, classes.greyContainer)}>
-            [documents you may need]
-          </Grid>
-        </Grid>
-        <Grid container className={classes.section}>
-          <Grid item xs={6} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
-            <Grid container alignItems="center">
-              <Container maxWidth="xs" style={{ marginRight: 28, marginTop: 65 }}>
-                <Notification />
-              </Container>
-            </Grid>
-          </Grid>
-          <Grid item xs={6} className={clsx(classes.sectionText)}>
-            <Container maxWidth="xs" style={{ marginLeft: 0 }}>
-              <Typography variant="h4">Quickly Prepare For Meetings</Typography>
-              <br />
-              <Typography variant="h6">
-                Kelp scans your calendar and documents to automatically collect the documents you
-                need. It then magically annotates your calendar. Easy.
-              </Typography>
-            </Container>
-          </Grid>
-        </Grid>
-        <Grid container className={classes.section}>
-          <Grid item xs={6} className={clsx(classes.sectionText)}>
-            <Container maxWidth="xs" style={{ marginRight: 0 }}>
-              <Typography variant="h4">Manage Work Relationships</Typography>
-              <br />
-              <Typography variant="h6">
-                Kelp infers associations between information, such as between a person, a meeting
-                with the person and document edits by the person.
-              </Typography>
-            </Container>
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-          >
-            [tag cloud]
-          </Grid>
-        </Grid>
+        <UiBlocks store={store} />
         <Container maxWidth="md" className={classes.bodyCopySection}>
           <Typography variant="h4">Your data is your data.</Typography>
           <br />
