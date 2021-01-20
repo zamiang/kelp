@@ -1,3 +1,4 @@
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,15 +47,9 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   return (
-    <div className={clsx(classes.headerContainer)}>
-      <Grid
-        container
-        spacing={1}
-        justify="space-between"
-        className={classes.header}
-        alignItems="center"
-      >
-        <Grid item className={classes.footerItem}>
+    <Container maxWidth="md" className={clsx(classes.headerContainer)}>
+      <Grid container justify="space-between" className={classes.header} alignItems="center">
+        <Grid item xs={3} className={classes.footerItem} style={{ textAlign: 'left' }}>
           <Link href="/">
             <Typography variant="h4">
               <b>Kelp</b>
@@ -86,11 +81,11 @@ const Header = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item className={classes.footerItem}>
+        <Grid item xs={3} className={classes.footerItem} style={{ textAlign: 'right' }}>
           <LoginButton />
         </Grid>
       </Grid>
-    </div>
+    </Container>
   );
 };
 
