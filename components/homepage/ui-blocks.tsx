@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 'auto',
     marginLeft: 80,
     marginTop: 65,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
       marginBottom: 65,
     },
@@ -46,6 +46,22 @@ const useStyles = makeStyles((theme) => ({
   notificationContainer: {
     marginRight: 28,
     marginTop: 65,
+    [theme.breakpoints.down('md')]: {
+      marginRight: 'auto',
+      marginBottom: 65,
+    },
+  },
+  prepareTextRight: {
+    marginLeft: 0,
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 'auto',
+    },
+  },
+  manageWorkTextLeft: {
+    marginRight: 0,
+    [theme.breakpoints.down('md')]: {
+      marginRight: 'auto',
+    },
   },
 }));
 
@@ -54,8 +70,8 @@ const UiBlocks = (props: { store: IStore }) => {
   return (
     <div className={classes.container}>
       <Grid container className={classes.section}>
-        <Grid item md={6} sm={12} className={clsx(classes.sectionText)}>
-          <Container maxWidth="xs" style={{ marginRight: 0 }}>
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Container maxWidth="xs" className={classes.manageWorkTextLeft}>
             <Typography variant="h4">Organization for humans</Typography>
             <br />
             <Typography variant="h6">
@@ -83,8 +99,8 @@ const UiBlocks = (props: { store: IStore }) => {
             </Container>
           </Grid>
         </Grid>
-        <Grid item md={6} sm={12} className={clsx(classes.sectionText)}>
-          <Container maxWidth="xs" style={{ marginLeft: 0 }}>
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Container maxWidth="xs" className={classes.prepareTextRight}>
             <Typography variant="h4">Quickly Prepare For Meetings</Typography>
             <br />
             <Typography variant="h6">
@@ -95,8 +111,8 @@ const UiBlocks = (props: { store: IStore }) => {
         </Grid>
       </Grid>
       <Grid container className={classes.section}>
-        <Grid item md={6} sm={12} className={clsx(classes.sectionText)}>
-          <Container maxWidth="xs" style={{ marginRight: 0 }}>
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Container maxWidth="xs" className={classes.manageWorkTextLeft}>
             <Typography variant="h4">Manage Work Relationships</Typography>
             <br />
             <Typography variant="h6">
