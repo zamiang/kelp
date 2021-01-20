@@ -224,7 +224,7 @@ const useDayContentStyles = makeStyles((theme) => ({
   },
 }));
 
-const DayContent = (props: IDayContentProps) => {
+export const DayContent = (props: IDayContentProps) => {
   const today = new Date();
   const isToday = isSameDay(props.day, today);
   const isInPast = props.day < today;
@@ -264,8 +264,6 @@ const DayContent = (props: IDayContentProps) => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  container: {},
-  weeks: {},
   days: {
     height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
     width: '100%',
@@ -342,7 +340,7 @@ const Summary = (props: IStore) => {
         filters={filters}
         setFilter={onSetFilterClick}
       />
-      <div className={classes.weeks}>{dayRows}</div>
+      <div>{dayRows}</div>
     </div>
   );
 };

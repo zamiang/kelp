@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
-import { format, isPast, isToday } from 'date-fns';
+import { format, isToday } from 'date-fns';
 import { flatten } from 'lodash';
 import React, { useState } from 'react';
 import Linkify from 'react-linkify';
@@ -56,7 +56,9 @@ const createMeetingNotes = async (
   refetch();
 };
 
-const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
+const ExpandedMeeting = (
+  props: IStore & { meetingId: string; close: () => void; hideHeader?: boolean },
+) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
@@ -64,7 +66,6 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   if (!meeting) {
     return null;
   }
-  const isInPast = isPast(meeting.start);
   const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
@@ -93,7 +94,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   const hasMeetingNotes = !!meetingNotesLink;
   return (
     <React.Fragment>
-      <AppBar externalLink={meeting.link} onClose={props.close} />
+      {!props.hideHeader && <AppBar externalLink={meeting.link} onClose={props.close} />}
       <div className={classes.topContainer}>
         <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
           {meeting.summary || '(no title)'}
@@ -174,31 +175,11 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
             dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
           />
         )}
-        {isInPast && (
-          <React.Fragment>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Documents attendees edited during this meeting
-            </Typography>
-            <DriveActivityList
-              driveActivity={attendeeAndCurrentUserDriveActivity}
-              docStore={props.documentDataStore}
-              personStore={props.personDataStore}
-            />
-          </React.Fragment>
-        )}
         <Typography variant="h6" className={classes.smallHeading}>
-          Documents you edited while meeting with the attendees
+          Documents you may need
         </Typography>
         <DriveActivityList
-          driveActivity={documentsCurrentUserEditedWhileMeetingWithAttendees}
-          docStore={props.documentDataStore}
-          personStore={props.personDataStore}
-        />
-        <Typography variant="h6" className={classes.smallHeading}>
-          Documents from previous meetings with the attendees
-        </Typography>
-        <DriveActivityList
-          driveActivity={driveActivityFromAttendees}
+          driveActivity={driveActivityFromAttendees.concat(attendeeAndCurrentUserDriveActivity)}
           docStore={props.documentDataStore}
           personStore={props.personDataStore}
         />
@@ -227,6 +208,10 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
             </Typography>
           </React.Fragment>
         )}
+        <Typography variant="h6" className={classes.smallHeading}>
+          Did you mean to invite
+        </Typography>
+        <AttendeeList personStore={props.personDataStore} attendees={attendees} showAll={false} />
       </div>
     </React.Fragment>
   );

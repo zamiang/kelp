@@ -6,6 +6,7 @@ const RollbarErrorTracking = (() => {
     captureUncaught: true,
     captureUnhandledRejections: true,
     captureIp: 'anonymize',
+    enabled: process.env.NODE_ENV === 'production',
   });
 
   const logErrorInfo = (info: string) => {

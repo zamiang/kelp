@@ -10,7 +10,7 @@ import React from 'react';
 import Footer from '../components/homepage/footer';
 import LoginButton from '../components/homepage/login-button';
 import config from '../constants/config';
-import { useStyles } from './index';
+import { useStyles } from './old-homepage';
 
 const About = () => {
   const classes = useStyles();
