@@ -1,3 +1,4 @@
+import { Paper } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
@@ -34,7 +35,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   greyContainer: {
     width: '100%',
-    backgroundColor: theme.palette.grey[300],
+    backgroundColor: theme.palette.grey[200],
   },
   whiteContainer: {
     width: '100%',
@@ -124,7 +125,10 @@ export const useStyles = makeStyles((theme) => ({
     position: 'relative',
     maxWidth: 480,
     padding: theme.spacing(2),
-    margin: '0px auto',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    marginLeft: 'auto',
+    marginRight: 'auto',
     pointerEvents: 'none',
   },
   bodyCopySection: {
@@ -135,13 +139,22 @@ export const useStyles = makeStyles((theme) => ({
   bodyLargeCopy: {
     fontSize: theme.typography.h5.fontSize,
   },
-  sectionLeft: {
+  sectionImageLeft: {
     borderRight: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderTop: `1px solid ${theme.palette.divider}`,
   },
   sectionText: {
     padding: theme.spacing(6),
   },
-  sectionRight: {},
+  sectionImageRightTop: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  sectionImageRightBottom: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    borderTop: `1px solid ${theme.palette.divider}`,
+  },
   section: {
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
@@ -199,17 +212,17 @@ const App = () => {
           </Typography>
         </Container>
         <Divider />
-        <div className={classes.meetingContainer}>
+        <Paper className={classes.meetingContainer} elevation={2}>
           <ExpandedMeeting
             hideHeader={true}
             meetingId={meetingId}
             close={() => undefined}
             {...store}
           />
-        </div>
+        </Paper>
         <Divider />
         <Grid container className={classes.section}>
-          <Grid item xs={6} className={clsx(classes.sectionLeft, classes.sectionText)}>
+          <Grid item xs={6} className={clsx(classes.sectionText)}>
             <Container maxWidth="xs" style={{ marginRight: 0 }}>
               <Typography variant="h4">Organization for humans</Typography>
               <br />
@@ -219,14 +232,18 @@ const App = () => {
               </Typography>
             </Container>
           </Grid>
-          <Grid item xs={6} className={clsx(classes.sectionRight, classes.greyContainer)}>
-            image here
-          </Grid>
+          <Grid
+            item
+            xs={6}
+            className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
+          ></Grid>
         </Grid>
         <Grid container className={classes.section}>
-          <Grid item xs={6} className={clsx(classes.sectionLeft, classes.greyContainer)}>
-            image here
-          </Grid>
+          <Grid
+            item
+            xs={6}
+            className={clsx(classes.sectionImageLeft, classes.greyContainer)}
+          ></Grid>
           <Grid item xs={6} className={clsx(classes.sectionRight, classes.sectionText)}>
             <Container maxWidth="xs" style={{ marginLeft: 0 }}>
               <Typography variant="h4">Quickly Prepare For Meetings</Typography>
@@ -239,7 +256,7 @@ const App = () => {
           </Grid>
         </Grid>
         <Grid container className={classes.section}>
-          <Grid item xs={6} className={clsx(classes.sectionLeft, classes.sectionText)}>
+          <Grid item xs={6} className={clsx(classes.sectionText)}>
             <Container maxWidth="xs" style={{ marginRight: 0 }}>
               <Typography variant="h4">Manage Work Relationships</Typography>
               <br />
@@ -249,9 +266,11 @@ const App = () => {
               </Typography>
             </Container>
           </Grid>
-          <Grid item xs={6} className={clsx(classes.sectionRight, classes.greyContainer)}>
-            image here
-          </Grid>
+          <Grid
+            item
+            xs={6}
+            className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
+          ></Grid>
         </Grid>
         <Container maxWidth="md" className={classes.bodyCopySection}>
           <Typography variant="h4">Your data is your data.</Typography>
@@ -283,7 +302,7 @@ const App = () => {
           <Grid container alignItems="center">
             <Grid xs={6} item className={classes.bodyCopySection}>
               <Typography variant="h4">Ready to get started?</Typography>
-              <Typography variant="h6">Join the way to information freedom</Typography>
+              <Typography variant="h6">Join the way to [todo]</Typography>
               <div className={classes.buttonContainer}>
                 <Button
                   variant="contained"
@@ -303,7 +322,7 @@ const App = () => {
                   <ListItemIcon>
                     <SentimentVerySatisfiedIcon />
                   </ListItemIcon>
-                  <ListItemText>Design for people with too many meetings</ListItemText>
+                  <ListItemText>Designed for people with too many meetings</ListItemText>
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>

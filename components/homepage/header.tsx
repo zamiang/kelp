@@ -56,14 +56,8 @@ const Header = () => {
             </Typography>
           </Link>
         </Grid>
-        <Grid xs={3} item>
-          <Grid
-            container
-            spacing={1}
-            justify="space-between"
-            alignItems="center"
-            className={classes.links}
-          >
+        <Grid item>
+          <Grid container spacing={4} alignItems="center" className={classes.links}>
             <Grid item className={classes.footerItem}>
               <Link href="/about">
                 <Typography className={classes.footerLink}>About</Typography>
