@@ -20,6 +20,7 @@ Error.getInitialProps = ({ req, res, err }: any) => {
       captureIp: 'anonymize',
       captureUncaught: true,
       captureUnhandledRejections: true,
+      enabled: process.env.NODE_ENV === 'production',
     });
 
     rollbar.error(err, req, (rollbarError: any) => {

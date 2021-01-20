@@ -56,7 +56,9 @@ const createMeetingNotes = async (
   refetch();
 };
 
-const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void }) => {
+const ExpandedMeeting = (
+  props: IStore & { meetingId: string; close: () => void; hideHeader?: boolean },
+) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
@@ -93,7 +95,7 @@ const ExpandedMeeting = (props: IStore & { meetingId: string; close: () => void 
   const hasMeetingNotes = !!meetingNotesLink;
   return (
     <React.Fragment>
-      <AppBar externalLink={meeting.link} onClose={props.close} />
+      {!props.hideHeader && <AppBar externalLink={meeting.link} onClose={props.close} />}
       <div className={classes.topContainer}>
         <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
           {meeting.summary || '(no title)'}

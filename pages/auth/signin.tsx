@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { providers, signIn } from 'next-auth/client';
 import React from 'react';
-import { useStyles } from '../index';
+import { useStyles } from '../old-homepage';
 
 interface IProvider {
   id: string;

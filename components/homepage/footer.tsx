@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   footer: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxWidth: theme.breakpoints.width('md'),
     borderTop: '1px solid',
     borderColor: theme.palette.divider,
     marginTop: theme.spacing(8),
