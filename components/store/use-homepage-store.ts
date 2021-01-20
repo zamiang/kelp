@@ -89,8 +89,8 @@ const formattedAttendees = attendees.map((attendee) => ({
   responseStatus: attendee.responseStatus,
 }));
 
-const startDate = new Date(new Date().setMinutes(0));
-const endDate = addMinutes(startDate, 55);
+export const startDate = new Date(new Date().setMinutes(0));
+export const endDate = addMinutes(startDate, 55);
 
 const segments: ISegment[] = [
   {

@@ -17,6 +17,7 @@ import Head from 'next/head';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
+import Notification from '../components/homepage/notification';
 import ExpandedMeeting from '../components/meeting/expand-meeting';
 import useStore, { meetingId } from '../components/store/use-homepage-store';
 import config from '../constants/config';
@@ -129,7 +130,9 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(4),
     marginLeft: 'auto',
     marginRight: 'auto',
-    pointerEvents: 'none',
+    '& button': {
+      pointerEvents: 'none',
+    },
   },
   bodyCopySection: {
     paddingTop: theme.spacing(10),
@@ -232,19 +235,19 @@ const App = () => {
               </Typography>
             </Container>
           </Grid>
-          <Grid
-            item
-            xs={6}
-            className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
-          ></Grid>
+          <Grid item xs={6} className={clsx(classes.sectionImageRightTop, classes.greyContainer)}>
+            [documents you may need]
+          </Grid>
         </Grid>
         <Grid container className={classes.section}>
-          <Grid
-            item
-            xs={6}
-            className={clsx(classes.sectionImageLeft, classes.greyContainer)}
-          ></Grid>
-          <Grid item xs={6} className={clsx(classes.sectionRight, classes.sectionText)}>
+          <Grid item xs={6} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
+            <Grid container alignItems="center">
+              <Container maxWidth="xs" style={{ marginRight: 28, marginTop: 65 }}>
+                <Notification />
+              </Container>
+            </Grid>
+          </Grid>
+          <Grid item xs={6} className={clsx(classes.sectionText)}>
             <Container maxWidth="xs" style={{ marginLeft: 0 }}>
               <Typography variant="h4">Quickly Prepare For Meetings</Typography>
               <br />
@@ -270,7 +273,9 @@ const App = () => {
             item
             xs={6}
             className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-          ></Grid>
+          >
+            [tag cloud]
+          </Grid>
         </Grid>
         <Container maxWidth="md" className={classes.bodyCopySection}>
           <Typography variant="h4">Your data is your data.</Typography>
@@ -302,7 +307,6 @@ const App = () => {
           <Grid container alignItems="center">
             <Grid xs={6} item className={classes.bodyCopySection}>
               <Typography variant="h4">Ready to get started?</Typography>
-              <Typography variant="h6">Join the way to [todo]</Typography>
               <div className={classes.buttonContainer}>
                 <Button
                   variant="contained"

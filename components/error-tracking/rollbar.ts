@@ -1,7 +1,6 @@
 import Rollbar from 'rollbar';
 
 const RollbarErrorTracking = (() => {
-  console.log(process.env.NODE_ENV, '<<<<<<<<<<<<');
   const RollbarObj = new Rollbar({
     accessToken: process.env.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN,
     captureUncaught: true,
