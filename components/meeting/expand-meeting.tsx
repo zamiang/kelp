@@ -101,9 +101,13 @@ const ExpandedMeeting = (
 
   const meetingNotesLink = meeting.documentIdsFromDescription[0];
   const hasMeetingNotes = !!meetingNotesLink;
+  const editLink = meeting.link?.replace(
+    'https://www.google.com/calendar/event?eid=',
+    'https://calendar.google.com/calendar/u/0/r/eventedit/',
+  );
   return (
     <React.Fragment>
-      {!props.hideHeader && <AppBar externalLink={meeting.link} onClose={props.close} />}
+      {!props.hideHeader && <AppBar externalLink={editLink} onClose={props.close} />}
       <div className={classes.topContainer}>
         <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
           {meeting.summary || '(no title)'}

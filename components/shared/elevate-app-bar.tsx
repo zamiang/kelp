@@ -4,7 +4,6 @@ import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import EditIcon from '@material-ui/icons/Edit';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -34,13 +33,9 @@ interface IProps {
 
 const CustomAppBar = (props: IProps) => {
   const classes = useStyles();
-  const editLink = props.externalLink?.replace(
-    'https://www.google.com/calendar/event?eid=',
-    'https://calendar.google.com/calendar/u/0/r/eventedit/',
-  );
   return (
     <AppBar elevation={0} className={classes.navBar} color="transparent">
-      <Toolbar>
+      <Toolbar variant="dense">
         {props.emailAddress && (
           <MuiLink href={`mailto:${props.emailAddress}`} target="_blank" className={classes.link}>
             <IconButton className={classes.topButton}>
@@ -57,13 +52,6 @@ const CustomAppBar = (props: IProps) => {
           >
             <IconButton className={classes.topButton}>
               <LinkedInIcon fontSize="small" />
-            </IconButton>
-          </MuiLink>
-        )}
-        {editLink && (
-          <MuiLink href={editLink} target="_blank" className={classes.link}>
-            <IconButton className={classes.topButton}>
-              <EditIcon fontSize="small" />
             </IconButton>
           </MuiLink>
         )}
