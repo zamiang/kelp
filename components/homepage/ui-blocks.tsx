@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionText: {
     padding: theme.spacing(6),
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
   sectionImageRightTop: {
     borderLeft: `1px solid ${theme.palette.divider}`,
@@ -63,6 +67,11 @@ const useStyles = makeStyles((theme) => ({
       marginRight: 'auto',
     },
   },
+  sectionMobileReverse: {
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column-reverse',
+    },
+  },
 }));
 
 const UiBlocks = (props: { store: IStore }) => {
@@ -91,7 +100,7 @@ const UiBlocks = (props: { store: IStore }) => {
           </Container>
         </Grid>
       </Grid>
-      <Grid container className={classes.section}>
+      <Grid container className={clsx(classes.section, classes.sectionMobileReverse)}>
         <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
           <Grid container alignItems="center">
             <Container maxWidth="xs" className={classes.notificationContainer}>

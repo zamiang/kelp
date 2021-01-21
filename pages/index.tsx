@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
+import clsx from 'clsx';
 import { signIn } from 'next-auth/client';
 import Head from 'next/head';
 import React from 'react';
@@ -39,7 +40,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   heading: {
     [theme.breakpoints.down('sm')]: {
-      fontSize: theme.typography.h4.fontSize,
+      fontSize: theme.typography.h2.fontSize,
       marginBottom: theme.spacing(2),
     },
   },
@@ -98,23 +99,32 @@ export const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     '& button': {
-      pointerEvents: 'none',
+      // pointerEvents: 'none',
     },
   },
   bodyCopySection: {
     paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(10),
-    maxWidth: theme.breakpoints.width('sm'),
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+      maxWidth: 'none',
+    },
   },
   bodyLargeCopy: {
     fontSize: theme.typography.h5.fontSize,
+  },
+  loginButtonContainer: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+      margin: '0px auto',
+    },
   },
 }));
 
 const App = () => {
   const classes = useStyles();
   const store = useStore();
-  // console.log(store, '<<<<<<<<<<<');
   return (
     <div className={classes.container}>
       <Head>
@@ -164,14 +174,16 @@ const App = () => {
           </Typography>
         </Container>
         <Divider />
-        <Paper className={classes.meetingContainer} elevation={2}>
-          <ExpandedMeeting
-            hideHeader={true}
-            meetingId={meetingId}
-            close={() => undefined}
-            {...store}
-          />
-        </Paper>
+        <Container maxWidth="md">
+          <Paper className={classes.meetingContainer} elevation={2}>
+            <ExpandedMeeting
+              hideHeader={true}
+              meetingId={meetingId}
+              close={() => undefined}
+              {...store}
+            />
+          </Paper>
+        </Container>
         <Divider />
         <UiBlocks store={store} />
         <Container maxWidth="md" className={classes.bodyCopySection}>
@@ -202,7 +214,12 @@ const App = () => {
         <Divider />
         <Container maxWidth="md">
           <Grid container alignItems="center">
-            <Grid xs={6} item className={classes.bodyCopySection}>
+            <Grid
+              sm={12}
+              md={6}
+              item
+              className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
+            >
               <Typography variant="h4">Ready to get started?</Typography>
               <div className={classes.buttonContainer}>
                 <Button
@@ -217,33 +234,33 @@ const App = () => {
                 </Button>
               </div>
             </Grid>
-            <Grid xs={6} item>
-              <List>
-                <ListItem>
+            <Grid sm={12} md={6} item>
+              <List disablePadding>
+                <ListItem disableGutters>
                   <ListItemIcon>
                     <SentimentVerySatisfiedIcon />
                   </ListItemIcon>
                   <ListItemText>Designed for people with too many meetings</ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters>
                   <ListItemIcon>
                     <SentimentVerySatisfiedIcon />
                   </ListItemIcon>
                   <ListItemText>Secure - Kelp does not store your data</ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters>
                   <ListItemIcon>
                     <SentimentVerySatisfiedIcon />
                   </ListItemIcon>
                   <ListItemText>Active & transparent development</ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters>
                   <ListItemIcon>
                     <SentimentVerySatisfiedIcon />
                   </ListItemIcon>
                   <ListItemText>Independently bootstrapped</ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem disableGutters>
                   <ListItemIcon>
                     <SentimentVerySatisfiedIcon />
                   </ListItemIcon>
