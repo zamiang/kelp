@@ -12,7 +12,7 @@ import useExpandStyles from '../shared/expand-styles';
 import { IDocument } from '../store/document-store';
 import { IStore } from '../store/use-store';
 
-const useRowStyles = makeStyles(() => ({
+const useRowStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     overflow: 'hidden',
@@ -22,6 +22,12 @@ const useRowStyles = makeStyles(() => ({
     width: 16,
     display: 'block',
     marginTop: 2,
+  },
+  distanceToNow: {
+    textAlign: 'right',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
   },
 }));
 
@@ -58,7 +64,7 @@ const Activity = (props: {
               {belowText}
             </Typography>
           </Grid>
-          <Grid item xs={3} style={{ textAlign: 'right' }}>
+          <Grid item xs={3} className={classes.distanceToNow}>
             <Typography variant="caption" color="textSecondary" noWrap>
               {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
             </Typography>

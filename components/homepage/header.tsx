@@ -1,10 +1,17 @@
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
+import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
+import { signIn } from 'next-auth/client';
 import Link from 'next/link';
 import React from 'react';
+import config from '../../constants/config';
 import LoginButton from './login-button';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   headerContainer: {
-    marginTop: theme.spacing(2),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     textAlign: 'center',
@@ -38,11 +44,25 @@ const useStyles = makeStyles((theme) => ({
   },
   links: {
     minWidth: 185,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
   footerItem: {},
+  closeIcon: {
+    marginBottom: -30,
+    '& svg': {
+      marginLeft: 'auto',
+    },
+  },
+  mobileMenu: {
+    minWidth: '80vw',
+  },
+  menuButton: {
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
 }));
 
 const Header = () => {
@@ -76,7 +96,43 @@ const Header = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={3} className={classes.footerItem} style={{ textAlign: 'right' }}>
+        <Grid item xs={6} sm={3} className={classes.footerItem} style={{ textAlign: 'right' }}>
+          <PopupState variant="popover" popupId="demo-popup-menu">
+            {(popupState) => (
+              <React.Fragment>
+                <Button
+                  className={classes.menuButton}
+                  variant="contained"
+                  color="primary"
+                  {...bindTrigger(popupState)}
+                >
+                  Menu
+                </Button>
+                <Menu
+                  className={classes.mobileMenu}
+                  PaperProps={{
+                    style: {
+                      width: 350,
+                    },
+                  }}
+                  {...bindMenu(popupState)}
+                >
+                  <MenuItem onClick={popupState.close} className={classes.closeIcon}>
+                    <CloseIcon />
+                  </MenuItem>
+                  <MenuItem component="a" href="/about">
+                    About
+                  </MenuItem>
+                  <MenuItem component="a" href="https://updates.kelp.nyc">
+                    Updates
+                  </MenuItem>
+                  <MenuItem onClick={() => signIn('google', { callbackUrl: config.REDIRECT_URI })}>
+                    <Typography>Log In</Typography>
+                  </MenuItem>
+                </Menu>
+              </React.Fragment>
+            )}
+          </PopupState>
           <LoginButton />
         </Grid>
       </Grid>

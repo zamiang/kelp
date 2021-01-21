@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     minWidth: 100,
     marginLeft: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   avatar: {
     width: 22,

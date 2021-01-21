@@ -46,7 +46,7 @@ const Notification = () => {
         </Grid>
       </Grid>
       <Grid container justify="space-between" alignItems="flex-end">
-        <Grid item xs={9}>
+        <Grid item xs={8} sm={9}>
           <Typography>
             <b>SPAC Formataion to acquire Roman Empire</b>
           </Typography>
@@ -54,7 +54,7 @@ const Notification = () => {
             {format(startDate, 'p')} – {format(endDate, 'p')}
           </Typography>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4} sm={3}>
           <Button
             variant="contained"
             color="primary"
