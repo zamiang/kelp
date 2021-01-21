@@ -98,7 +98,7 @@ export const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     '& button': {
-      // pointerEvents: 'none',
+      pointerEvents: 'none',
     },
   },
   bodyCopySection: {
