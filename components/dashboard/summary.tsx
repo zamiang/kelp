@@ -22,7 +22,7 @@ const numberWeeks = 4;
 const daysInWeek = 7;
 const topNavHeight = 99;
 const fontMin = 12;
-const fontMax = 20;
+const fontMax = 18;
 
 /**
  * titlerow    || day-title | day-title
