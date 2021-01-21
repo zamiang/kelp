@@ -67,16 +67,6 @@ export const useStyles = makeStyles((theme) => ({
   pinkBackground: {
     backgroundColor: config.PINK_BACKGROUND,
   },
-  info: {
-    marginTop: theme.spacing(9),
-    padding: theme.spacing(9),
-    width: '100%',
-    fontSize: theme.typography.body1.fontSize,
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
   buttonContainer: {
     marginTop: theme.spacing(2),
   },
@@ -85,24 +75,6 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 6),
     backgroundColor: theme.palette.primary.dark,
     color: 'white',
-  },
-  loginMargin: {
-    margin: theme.spacing(1),
-  },
-  loginTryLink: {
-    margin: theme.spacing(0, 3),
-    cursor: 'pointer',
-    display: 'inline-block',
-    color: theme.palette.text.secondary,
-    fontSize: theme.typography.body1.fontSize,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-    [theme.breakpoints.down('sm')]: {
-      display: 'block',
-      margin: theme.spacing(3, 0),
-    },
   },
   body: {
     marginTop: theme.spacing(3),
@@ -142,13 +114,14 @@ export const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   const store = useStore();
+  // console.log(store, '<<<<<<<<<<<');
   return (
     <div className={classes.container}>
       <Head>
         <title>Kelp - Your information filtration system</title>
         <meta
           name="description"
-          content="Kelp organizes your documents, events and contacts to make work make sense."
+          content="Kelp automatically organizes your documents, events and contacts to make work make sense."
         />
         <meta name="slack-app-id" content="A01E5A9263B" />
       </Head>

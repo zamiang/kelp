@@ -1,6 +1,7 @@
-import { addMinutes } from 'date-fns';
+import { addDays, addMinutes, getDay, setDay, setHours } from 'date-fns';
 import Faker from 'faker';
-import { random, times } from 'lodash';
+import { random, sample, sampleSize, times } from 'lodash';
+import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import DocumentDataStore, { IDocument } from './document-store';
 import DriveActivityDataStore from './drive-activity-store';
@@ -9,11 +10,16 @@ import TfidfDataStore from './tfidf-store';
 import TimeDataStore, { ISegment, getStateForMeeting } from './time-store';
 import { IStore } from './use-store';
 
+Faker.seed(124);
+
 export const meetingId = 'meeting-id';
 const NUMBER_OF_DRIVE_ACTIVITY = 5;
 const DAYS_IN_WEEK = 7;
-const WEEKS_TO_CREATE = 3;
+const WEEKS_TO_CREATE = 1;
 const CURRENT_USER_EMAIL = 'ghengis.khan@gmail.com';
+const NUMBER_OF_MEETINGS = 12;
+const NUMBER_OF_ATTENDEES = 6;
+const START_HOUR = 9;
 
 const people: IPerson[] = [
   {
@@ -69,7 +75,8 @@ const documents: IDocument[] = [
     viewedByMe: true,
     viewedByMeAt: new Date(Faker.date.recent(1).toISOString()),
     link: Faker.internet.url(),
-    iconLink: Faker.image.imageUrl(32, 32, 'abstract', true, true),
+    iconLink:
+      'https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.document',
     mimeType: 'UNKNOWN',
     isShared: true,
     isStarred: true,
@@ -122,37 +129,86 @@ documents.map((document) => {
   times(Math.round(Math.random() * NUMBER_OF_DRIVE_ACTIVITY), () => {
     driveActivity.push({
       id: Faker.random.uuid(),
-      time: Faker.date.recent(DAYS_IN_WEEK * WEEKS_TO_CREATE),
-      action: 'comment', // TODO
-      actorPersonId: people[random(0, people.length - 1)].id, // TODO use person id
+      time: addMinutes(startDate, 10),
+      action: 'comment',
+      actorPersonId: people[random(0, people.length - 1)].id,
       title: Faker.lorem.lines(1),
       link: document.id,
     });
   });
 });
 
+times(WEEKS_TO_CREATE, (week: number) => {
+  let date = setDay(startDate, DAYS_IN_WEEK * week);
+  times(DAYS_IN_WEEK, () => {
+    date = setHours(addDays(date, 1), START_HOUR);
+    times(Math.round(Math.random() * NUMBER_OF_MEETINGS), () => {
+      const currentDayOfWeek = getDay(date);
+      if (currentDayOfWeek > 5 || currentDayOfWeek < 1) {
+        return;
+      }
+      date = addMinutes(date, 30);
+      const endDate = addMinutes(date, 30);
+      const attendees = sampleSize(people, Math.round(Math.random() * NUMBER_OF_ATTENDEES))
+        .filter((person) => person.emailAddresses[0] !== CURRENT_USER_EMAIL)
+        .map((person) => ({
+          email: person.emailAddresses[0],
+          self: false,
+          // Adds accepted many times to weight it higher in the sample
+          responseStatus: 'accepted',
+        }));
+
+      attendees.push({
+        email: CURRENT_USER_EMAIL,
+        self: true,
+        // Adds accepted many times to weight it higher in the sample
+        responseStatus: 'accepted',
+      });
+
+      const formattedAttendees = attendees.map((attendee) => ({
+        personId: attendee.email, // TODO: Simulate google person ids
+        self: attendee.self,
+        responseStatus: attendee.responseStatus,
+      }));
+
+      segments.push({
+        id: Faker.random.uuid(),
+        link: Faker.internet.url(),
+        summary: `${Faker.commerce.productName()} meeting`,
+        description: Faker.lorem.paragraphs(3),
+        start: date,
+        end: endDate,
+        attendees,
+        formattedAttendees,
+        documentIdsFromDescription: [],
+        creator: {
+          email: sample(people)?.emailAddresses[0],
+        },
+        organizer: {
+          email: sample(people)?.emailAddresses[0],
+        },
+        selfResponseStatus: getSelfResponseStatus(attendees),
+        state: getStateForMeeting({ start: startDate, end: endDate }),
+        driveActivityIds: [],
+        attendeeDriveActivityIds: [],
+        currentUserDriveActivityIds: [],
+      });
+    });
+  });
+});
+
 const useFakeStore = (): IStore => {
-  // TODO: Only create the datastores once data.isLoading is false
   const personDataStore = new PersonDataStore(people, [], {
     contactsByEmail: {},
     contactsByPeopleId: {},
   });
-  // personDataStore.addEmailsToStore(data.emails || []);
   personDataStore.addDriveActivityToStore(driveActivity);
   personDataStore.addGoogleCalendarEventsIdsToStore(segments);
-  // personDataStore.addCurrentUserFlag(data.calendarEvents);
-  // console.log('PERSON DATA STORE:', personDataStore);
 
   const timeDataStore = new TimeDataStore(segments, personDataStore);
-  // timeDataStore.addEmailsToStore(data.emails);
   timeDataStore.addDriveActivityToStore(driveActivity, personDataStore);
-  // console.log('TIME DATA STORE:', timeDataStore);
-
   const documentDataStore = new DocumentDataStore(documents);
-  // console.log('DOC DATA STORE:', DocumentDataStore);
-
   const driveActivityDataStore = new DriveActivityDataStore(driveActivity);
-  // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore);
 
   const tfidfStore = new TfidfDataStore(
     {

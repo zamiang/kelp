@@ -4,14 +4,12 @@ import { addDays } from 'date-fns';
 import { times } from 'lodash';
 import React from 'react';
 import { DayContent } from '../dashboard/summary';
-import TfidfStore from '../store/tfidf-store';
 import { IStore } from '../store/use-store';
 
 const daysInWeek = 3;
 const numberWeeks = 1;
 const setHoveredItem = () => null;
 const start = new Date();
-const filters = { meetings: true, people: true, docs: true };
 
 const useStyles = makeStyles((theme) => ({
   summary: {
@@ -32,13 +30,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Summary = (props: { store: IStore }) => {
   const classes = useStyles();
-  const tfidfStore: IStore['tfidfStore'] = new TfidfStore(props.store, filters);
   const getDayColumn = (week: number) => {
     const days = times(daysInWeek).map((day) => addDays(start, day + week * daysInWeek));
     return days.map((day, index) => (
       <DayContent
         isFirst={index < 1}
-        tfidfStore={tfidfStore}
+        tfidfStore={props.store.tfidfStore}
         day={day}
         key={day.toISOString()}
         hoveredItem={undefined}
