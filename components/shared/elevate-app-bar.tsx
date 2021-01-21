@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   externalLink?: string;
-  meetingId: string;
   onClose: () => void;
   linkedinName?: string;
   emailAddress?: string;
