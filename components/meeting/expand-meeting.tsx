@@ -209,9 +209,9 @@ const ExpandedMeeting = (
           </React.Fragment>
         )}
         <Typography variant="h6" className={classes.smallHeading}>
-          Did you mean to invite
+          Did you mean to invite…
         </Typography>
-        <AttendeeList personStore={props.personDataStore} attendees={attendees} showAll={false} />
+        [todo]
       </div>
     </React.Fragment>
   );

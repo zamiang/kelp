@@ -91,7 +91,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   meetingContainer: {
     position: 'relative',
-    maxWidth: 480,
+    maxWidth: 530,
     padding: theme.spacing(2),
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),

@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -56,7 +56,7 @@ const Activity = (props: {
           </Grid>
           <Grid item xs={3} style={{ textAlign: 'right' }}>
             <Typography variant="caption" color="textSecondary" noWrap>
-              {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
+              x recently commented
             </Typography>
           </Grid>
         </Grid>
