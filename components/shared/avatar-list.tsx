@@ -42,7 +42,7 @@ const AvatarList = (props: IProps) => {
 
   if (props.people.filter((p) => !p.isCurrentUser).length < 1) {
     if (props.shouldDisplayNone) {
-      return <Typography>None</Typography>;
+      return <Typography variant="caption">None</Typography>;
     }
     return null;
   }

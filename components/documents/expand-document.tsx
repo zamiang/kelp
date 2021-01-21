@@ -1,19 +1,14 @@
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import { format, subWeeks } from 'date-fns';
-import { uniq } from 'lodash';
-import pluralize from 'pluralize';
+import { format } from 'date-fns';
 import React from 'react';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
-import { getWeek } from '../shared/date-helpers';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import { IStore } from '../store/use-store';
 
+/*
 const getActivityStats = (
   activity: IFormattedDriveActivity[],
   week: number,
@@ -48,6 +43,7 @@ const getActivityStats = (
       : formattedTooltipString.join(' and '),
   ];
 };
+*/
 
 const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
   const classes = useExpandStyles();
@@ -67,16 +63,6 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
   const attendeeMeetings = props.timeDataStore.getSegmentsWithAttendeeDriveActivity(
     driveActivityIds,
   );
-  const [activityStatsThisWeek, activityStatsThisWeekText] = getActivityStats(
-    activity,
-    getWeek(new Date()),
-    props.personDataStore,
-  );
-  const [activityStatsLastWeek, activityStatsLastsWeekText] = getActivityStats(
-    activity,
-    getWeek(subWeeks(new Date(), 1)),
-    props.personDataStore,
-  );
   return (
     <React.Fragment>
       <AppBar onClose={props.close} externalLink={document.link} />
@@ -89,36 +75,13 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
         )}
       </div>
       <Divider />
-      <Grid container className={classes.triGroup} justify="space-between">
-        <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.triGroupHeading}>
-            Activity this Week
-          </Typography>
-          {
-            <Typography className={classes.highlight}>
-              <Tooltip title={activityStatsThisWeekText}>
-                <span className={classes.highlightValue}>{activityStatsThisWeek || 'None'}</span>
-              </Tooltip>
-              {activityStatsLastWeek && (
-                <Tooltip title={activityStatsLastsWeekText}>
-                  <span className={classes.highlightSub}> from {activityStatsLastWeek}</span>
-                </Tooltip>
-              )}
-            </Typography>
-          }
-        </Grid>
-        <div className={classes.triGroupBorder}></div>
-        <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.triGroupHeading}>
-            Collaborators
-          </Typography>
-          <Typography className={classes.highlight}>
-            <AvatarList people={people} shouldDisplayNone={true} />
-          </Typography>
-        </Grid>
-      </Grid>
-      <Divider />
       <div className={classes.container}>
+        <Typography variant="h6" className={classes.triGroupHeading}>
+          Collaborators
+        </Typography>
+        <Typography className={classes.highlight}>
+          <AvatarList people={people} shouldDisplayNone={true} />
+        </Typography>
         <Typography variant="h6" className={classes.smallHeading}>
           Meetings where this document is listed in the description
         </Typography>

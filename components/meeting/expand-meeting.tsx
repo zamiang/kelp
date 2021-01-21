@@ -91,7 +91,9 @@ const ExpandedMeeting = (
   const driveActivityFromAttendees = flatten(
     people.map((person) => Object.values(person.driveActivity)),
   );
-  const driveActivity = driveActivityFromAttendees.concat(attendeeAndCurrentUserDriveActivity);
+  const driveActivity = driveActivityFromAttendees
+    .concat(attendeeAndCurrentUserDriveActivity)
+    .concat(documentsCurrentUserEditedWhileMeetingWithAttendees);
   const guestStats = props.timeDataStore.getFormattedGuestStats(meeting);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
   const meetingNotesLink = '';
