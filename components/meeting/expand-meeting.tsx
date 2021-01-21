@@ -51,8 +51,12 @@ const createMeetingNotes = async (
     actionButton: '1',
     userstoinvite: emailsToInvite.join(','),
   });
-  const documentShareUrl = `https://docs.google.com/document/d/${document.id}?${params.toString()}`;
-  window.open(documentShareUrl, '_blank');
+  const documentShareUrl = document
+    ? `https://docs.google.com/document/d/${document.id}?${params.toString()}`
+    : null;
+  if (documentShareUrl) {
+    window.open(documentShareUrl, '_blank');
+  }
   refetch();
 };
 
@@ -76,7 +80,6 @@ const ExpandedMeeting = (
   const attendeeIds = (meeting.formattedAttendees || [])
     .filter((attendee) => !attendee.self)
     .map((attendee) => attendee.personId);
-
   const people = attendeeIds
     .map((id) => props.personDataStore.getPersonById(id)!)
     .filter((person) => !!person);
@@ -88,6 +91,7 @@ const ExpandedMeeting = (
   const driveActivityFromAttendees = flatten(
     people.map((person) => Object.values(person.driveActivity)),
   );
+  const driveActivity = driveActivityFromAttendees.concat(attendeeAndCurrentUserDriveActivity);
   const guestStats = props.timeDataStore.getFormattedGuestStats(meeting);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
   const meetingNotesLink = '';
@@ -179,7 +183,7 @@ const ExpandedMeeting = (
           Documents you may need
         </Typography>
         <DriveActivityList
-          driveActivity={driveActivityFromAttendees.concat(attendeeAndCurrentUserDriveActivity)}
+          driveActivity={driveActivity}
           docStore={props.documentDataStore}
           personStore={props.personDataStore}
         />

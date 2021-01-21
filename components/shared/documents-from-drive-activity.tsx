@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { format } from 'date-fns';
-import { uniqBy } from 'lodash';
+import { format, formatDistanceToNow } from 'date-fns';
+import { capitalize, uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -21,6 +21,7 @@ const useRowStyles = makeStyles(() => ({
     height: 16,
     width: 16,
     display: 'block',
+    marginTop: 2,
   },
 }));
 
@@ -35,17 +36,17 @@ const Activity = (props: {
   const actor = props.action.actorPersonId
     ? props.personStore.getPersonById(props.action.actorPersonId)
     : null;
-  const tooltipText = `Last edited by ${actor?.name || actor?.emailAddresses} on ${format(
-    new Date(props.document.updatedAt!),
-    "MMM do 'at' hh:mm a",
-  )}`;
+  const tooltipText = `${capitalize(props.action.action)} by ${
+    actor?.name || actor?.emailAddresses
+  } on ${format(new Date(props.document.updatedAt!), "MMM do 'at' hh:mm a")}`;
+  const belowText = `Recent ${props.action.action} by ${actor?.name || actor?.emailAddresses}`;
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button
         className={expandClasses.listItem}
         onClick={() => router.push(`?tab=docs&slug=${props.document.id}`)}
       >
-        <Grid container wrap="nowrap" spacing={2} alignItems="center">
+        <Grid container wrap="nowrap" spacing={1} alignItems="flex-start">
           <Grid item>
             <img src={props.document.iconLink} className={classes.icon} />
           </Grid>
@@ -53,10 +54,13 @@ const Activity = (props: {
             <Typography variant="body2" noWrap>
               {props.document.name}
             </Typography>
+            <Typography variant="caption" noWrap>
+              {belowText}
+            </Typography>
           </Grid>
           <Grid item xs={3} style={{ textAlign: 'right' }}>
             <Typography variant="caption" color="textSecondary" noWrap>
-              x recently commented
+              {formatDistanceToNow(new Date(props.document.updatedAt!))} ago
             </Typography>
           </Grid>
         </Grid>

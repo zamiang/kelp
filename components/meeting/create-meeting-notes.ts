@@ -10,10 +10,14 @@ const boundary = '-------314159265358979323846';
 const delimiter = `\r\n--${boundary}\r\n`;
 const closeDelim = `\r\n--${boundary}--`;
 
-const addScope = async () => {
+const addScope = async (): Promise<boolean> => {
+  if (!gapi.auth2) {
+    alert('You are either in test mode or should reauthenticate');
+    return false;
+  }
   const grantedScopes = gapi.auth2.getAuthInstance().currentUser.get().getGrantedScopes();
   if (grantedScopes.includes(documentCreateScope + ' ')) {
-    return;
+    return true;
   }
 
   const option = new gapi.auth2.SigninOptionsBuilder();
@@ -22,8 +26,10 @@ const addScope = async () => {
   const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
   try {
     await googleUser.grant(option);
+    return true;
   } catch (e) {
     alert(e);
+    return false;
   }
 };
 
@@ -74,7 +80,10 @@ export const createDocument = async (
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
 ) => {
-  await addScope();
+  const isScopeAdded = await addScope();
+  if (!isScopeAdded) {
+    return;
+  }
 
   const body = getCreateDocumentRequestBody(
     meeting,
