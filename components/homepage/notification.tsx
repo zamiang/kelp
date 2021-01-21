@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
   logo: {},
   logoText: {
     display: 'inline-block',
-    fontWeight: theme.typography.fontWeightLight,
     color: theme.palette.secondary.main,
     textTransform: 'uppercase',
     verticalAlign: 'middle',
@@ -29,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.divider}`,
     marginRight: theme.spacing(1),
   },
-  date: {},
 }));
 
 const Notification = () => {
@@ -41,7 +39,7 @@ const Notification = () => {
           <img className={classes.logoImage} alt="Kelp logo" src="/kelp.svg" />
           <Typography className={classes.logoText}>Kelp</Typography>
         </Grid>
-        <Grid item className={classes.date}>
+        <Grid item>
           <Typography color="textSecondary" variant="body2">
             in 10 minutes
           </Typography>

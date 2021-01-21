@@ -8,6 +8,8 @@ import { IStore } from './use-store';
  * Used so that a person's unique first+last name combo makes it through TFIDF and common first or last names are not misrepresented
  */
 export const uncommonPunctuation = 'æ';
+const currentDate = new Date();
+const getDayKey = (day: Date) => differenceInCalendarDays(currentDate, day).toString();
 
 export interface IFilters {
   meetings: boolean;
@@ -58,12 +60,14 @@ export default class TfidfStore {
     },
     filters: IFilters,
   ) {
-    const documentsByDay = new Array(config.NUMBER_OF_DAYS_BACK);
-    const currentDate = new Date();
+    const documentsByDay: any = {};
     times(config.NUMBER_OF_DAYS_BACK).map((day) => {
-      documentsByDay[day] = [];
+      documentsByDay[day.toString()] = [];
     });
-
+    // Capture negative
+    times(config.NUMBER_OF_DAYS_BACK).map((day) => {
+      documentsByDay[(-day).toString()] = [];
+    });
     // Docs
     if (filters.docs) {
       store.driveActivityStore.getAll().map((activity) => {
@@ -73,7 +77,7 @@ export default class TfidfStore {
           store.personDataStore.getPersonById(activity.actorPersonId)?.isCurrentUser
         ) {
           const doc = store.documentDataStore.getByLink(activity.link);
-          const day = differenceInCalendarDays(currentDate, activity.time);
+          const day = getDayKey(activity.time);
           if (documentsByDay[day] && doc && doc.name) {
             documentsByDay[day].push(doc?.name);
           }
@@ -83,7 +87,7 @@ export default class TfidfStore {
 
     // Meetings
     store.timeDataStore.getSegments().map((segment) => {
-      const day = differenceInCalendarDays(currentDate, segment.start);
+      const day = getDayKey(segment.start);
       if (filters.meetings) {
         if (documentsByDay[day] && segment.summary) {
           documentsByDay[day].push(segment.summary);
@@ -106,15 +110,14 @@ export default class TfidfStore {
       }
     });
 
-    return documentsByDay.map((day, index) => ({
-      key: index.toString(),
-      text: day.join(' ').toLowerCase(),
+    return Object.keys(documentsByDay).map((key) => ({
+      key,
+      text: documentsByDay[key].join(' ').toLowerCase(),
     }));
   }
 
   getForDay(day: Date) {
-    const currentDate = new Date();
-    const diff = differenceInCalendarDays(currentDate, day);
-    return this.tfidf.listTerms(diff);
+    const diff = getDayKey(day);
+    return this.tfidf.listTerms(Number(diff));
   }
 }

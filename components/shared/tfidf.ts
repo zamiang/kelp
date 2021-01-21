@@ -14,7 +14,7 @@ const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 const buildDocument = (text: string, key: string): IDocumentument =>
   removeStopwords(text.replace(removePunctuationRegex, '').split(' ')).reduce(
     (document: IDocumentument, term: string) => {
-      const formattedTerm = term.replace('(', '').replace(')', '');
+      const formattedTerm = term.replace('(', '').replace(')', '').replace('meeting', '');
       if (formattedTerm.length > 1)
         document[formattedTerm] = document[formattedTerm] ? document[formattedTerm] + 1 : 1;
       return document;
@@ -79,20 +79,25 @@ export default class Tfidf {
     return term.split(' ').reduce(function (value, term) {
       let idf = getIdf(term, false);
       idf = idf === Infinity ? 0 : idf;
-      return value + tf(term, documents[documentIndex]) * idf;
+      const documentsToSearch = documents.find(
+        (item) => item.__key === (documentIndex.toString() as any),
+      );
+      return value + tf(term, documentsToSearch!) * idf;
     }, 0.0);
   }
 
   listTerms(documentIndex: number) {
     const terms = [];
-    for (const term in this.documents[documentIndex]) {
-      if (term != '__key')
+    const documentsToSearch = this.documents.find(
+      (item) => item.__key === (documentIndex.toString() as any),
+    );
+    for (const term in documentsToSearch) {
+      if (term !== '__key')
         terms.push({
           term,
           tfidf: this.tfidf(term, documentIndex),
         });
     }
-
     return terms.sort(function (x, y) {
       return y.tfidf - x.tfidf;
     });
