@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   links: {
+    minWidth: 185,
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
