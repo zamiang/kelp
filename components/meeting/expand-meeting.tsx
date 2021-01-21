@@ -34,6 +34,8 @@ const createMeetingNotes = async (
     personDataStore,
     documentDataStore,
   );
+  // Not sure if a good idea
+  // await addDocumentToCalendarEvent(meeting, document);
   setMeetingNotesLoading(false);
   const emailsToInvite = meeting.formattedAttendees
     .map((a) => {
@@ -96,7 +98,8 @@ const ExpandedMeeting = (
     .concat(documentsCurrentUserEditedWhileMeetingWithAttendees);
   const guestStats = props.timeDataStore.getFormattedGuestStats(meeting);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
-  const meetingNotesLink = '';
+
+  const meetingNotesLink = meeting.documentIdsFromDescription[0];
   const hasMeetingNotes = !!meetingNotesLink;
   return (
     <React.Fragment>
@@ -170,16 +173,26 @@ const ExpandedMeeting = (
       <Divider />
       <div className={classes.container}>
         {hasDescription && !isHtml && (
-          <Typography variant="body2" className={classes.description}>
-            <Linkify>{meeting.description?.trim()}</Linkify>
-          </Typography>
+          <React.Fragment>
+            <Typography variant="h6" className={classes.smallHeading}>
+              Description
+            </Typography>
+            <Typography variant="body2" className={classes.description}>
+              <Linkify>{meeting.description?.trim()}</Linkify>
+            </Typography>
+          </React.Fragment>
         )}
         {hasDescription && isHtml && (
-          <Typography
-            variant="body2"
-            className={classes.description}
-            dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
-          />
+          <React.Fragment>
+            <Typography variant="h6" className={classes.smallHeading}>
+              Description
+            </Typography>
+            <Typography
+              variant="body2"
+              className={classes.description}
+              dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
+            />
+          </React.Fragment>
         )}
         <Typography variant="h6" className={classes.smallHeading}>
           Documents you may need
