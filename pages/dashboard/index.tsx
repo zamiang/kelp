@@ -45,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
     background: 'white',
     overscrollBehavior: 'contain',
   },
+  center: {
+    maxWidth: MOBILE_WIDTH + 100,
+    margin: '0px auto',
+  },
   grayBackground: {
     backgroundColor: '#F4F5F7',
   },
@@ -140,6 +144,8 @@ export const DashboardContainer = ({ store }: IProps) => {
     home: classes.grayBackground,
   } as any;
 
+  const shouldCenter = ['docs', 'people', 'meetings'].indexOf(tab) > -1;
+
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
@@ -161,7 +167,7 @@ export const DashboardContainer = ({ store }: IProps) => {
         />
       )}
       {size.width <= MOBILE_WIDTH && <BottomNav tab={tab as any} />}
-      <main className={classes.content}>
+      <main className={clsx(classes.content, shouldCenter && classes.center)}>
         <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
           <Alert severity="error">
             <AlertTitle>Error</AlertTitle>Please reload the page

@@ -72,12 +72,16 @@ const NavBar = (props: IProps) => {
       <Grid container justify="space-between" alignItems="center">
         {isLoading && (
           <Grid item>
-            <LoopIcon className={classes.unSelected} />
+            <IconButton>
+              <LoopIcon className={classes.unSelected} />
+            </IconButton>
           </Grid>
         )}
         {!session && (
           <Grid item>
-            <LockOpenIcon className={classes.unSelected} />
+            <IconButton>
+              <LockOpenIcon className={classes.unSelected} />
+            </IconButton>
           </Grid>
         )}
         <Grid item>

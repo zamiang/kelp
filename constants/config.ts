@@ -29,9 +29,9 @@ export default {
   MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,
   startDate: subDays(new Date(), NUMBER_OF_DAYS_BACK),
   endDate: addDays(new Date(), NUMBER_OF_DAYS_FORWARD),
-  YELLOW_BACKGROUND: '#deff2a', // TODO: Add to theme somehow?
-  ORANGE_BACKGROUND: '#ffd12a',
+  YELLOW_BACKGROUND: '#deff2a', //'#deff2a', // TODO: Add to theme somehow?
+  ORANGE_BACKGROUND: '#fff9e1', // '#ffd12a',
   PURPLE_BACKGROUND: '#722aff',
-  PINK_BACKGROUND: '#ff2ab4',
-  BLUE_BACKGROUND: '#2aceff',
+  PINK_BACKGROUND: '#ffe2f5', //#ff2ab4',
+  BLUE_BACKGROUND: '#ddf7ff', // '#2aceff',
 };

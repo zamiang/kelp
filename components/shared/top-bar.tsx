@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     position: 'sticky',
     top: 0,
-    zIndex: 4, // Above avatar group
+    zIndex: 5, // Above avatar group
     background: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),

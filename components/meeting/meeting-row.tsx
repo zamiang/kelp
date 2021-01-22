@@ -35,32 +35,26 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     marginLeft: 40,
     width: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
+      marginLeft: -4,
       paddingLeft: theme.spacing(2),
       borderRadius: 0,
     },
   },
   summary: {
     flex: 1,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flex: 'none',
     },
   },
   noLeftMargin: {
     marginLeft: 0,
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: theme.spacing(1),
-    },
   },
   smallContainer: {
     flexDirection: 'column-reverse',
     overflow: 'hidden',
   },
-  dot: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
+  dot: {},
 }));
 
 const MeetingRow = (props: {
@@ -141,7 +135,7 @@ const MeetingRow = (props: {
               )}
             />
           </Grid>
-          <Grid item sm={10} xs={12} className={clsx(props.isSmall && classes.smallContainer)}>
+          <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
             <Grid container>
               <Grid item xs={12}>
                 <Typography variant="subtitle2">

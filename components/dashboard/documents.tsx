@@ -72,9 +72,9 @@ const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | nul
 type tab = 'today' | 'this-week' | 'all';
 
 const titleHash = {
-  today: 'Documents for today',
-  'this-week': 'Documents for this week',
-  all: 'All Documents',
+  today: 'Documents',
+  'this-week': 'Documents',
+  all: 'Documents',
 };
 
 const Documents = (props: IStore) => {
@@ -88,6 +88,7 @@ const Documents = (props: IStore) => {
     'this-week': <DocumentsForThisWeek selectedDocumentId={selectedDocumentId} {...props} />,
     today: <DocumentsForToday selectedDocumentId={selectedDocumentId} {...props} />,
   };
+  console.log('currenttab', currentTab, currentTab === 'today');
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
@@ -97,7 +98,6 @@ const Documents = (props: IStore) => {
               variant="contained"
               className={currentTab === 'today' ? buttonClasses.selected : buttonClasses.unSelected}
               disableElevation
-              disabled={currentTab === 'today'}
               onClick={() => changeTab('today')}
             >
               Today
@@ -110,7 +110,6 @@ const Documents = (props: IStore) => {
                 currentTab === 'this-week' ? buttonClasses.selected : buttonClasses.unSelected
               }
               disableElevation
-              disabled={currentTab === 'this-week'}
               onClick={() => changeTab('this-week')}
             >
               This Week
@@ -121,7 +120,6 @@ const Documents = (props: IStore) => {
               variant="contained"
               className={currentTab === 'all' ? buttonClasses.selected : buttonClasses.unSelected}
               disableElevation
-              disabled={currentTab === 'all'}
               onClick={() => changeTab('all')}
             >
               All

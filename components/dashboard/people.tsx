@@ -85,9 +85,9 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
 type tab = 'today' | 'this-week' | 'all';
 
 const titleHash = {
-  today: 'Contacts you are meeting with today',
-  'this-week': 'Contacts you are meeting with this week',
-  all: 'All Contacts',
+  today: 'Contacts',
+  'this-week': 'Contacts',
+  all: 'Contacts',
 };
 
 const People = (props: IStore) => {
@@ -110,7 +110,6 @@ const People = (props: IStore) => {
               variant="contained"
               className={currentTab === 'today' ? buttonClasses.selected : buttonClasses.unSelected}
               disableElevation
-              disabled={currentTab === 'today'}
               onClick={() => changeTab('today')}
             >
               Today
@@ -123,7 +122,6 @@ const People = (props: IStore) => {
                 currentTab === 'this-week' ? buttonClasses.selected : buttonClasses.unSelected
               }
               disableElevation
-              disabled={currentTab === 'this-week'}
               onClick={() => changeTab('this-week')}
             >
               This Week
@@ -133,7 +131,6 @@ const People = (props: IStore) => {
             <Button
               variant="contained"
               className={currentTab === 'all' ? buttonClasses.selected : buttonClasses.unSelected}
-              disabled={currentTab === 'all'}
               disableElevation
               onClick={() => changeTab('all')}
             >
