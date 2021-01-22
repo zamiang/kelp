@@ -92,7 +92,7 @@ const Documents = (props: IStore) => {
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justify="flex-end">
           <Grid item>
             <Button
               variant="contained"

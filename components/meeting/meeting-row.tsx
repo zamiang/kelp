@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     paddingLeft: 0,
-    marginLeft: 40,
+    marginLeft: 4,
     width: 'auto',
     [theme.breakpoints.down('md')]: {
       marginLeft: -4,

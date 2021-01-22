@@ -50,7 +50,9 @@ const TopBar = (props: IProps) => {
             {props.title}
           </Typography>
         </Grid>
-        <Grid item>{props.children}</Grid>
+        <Grid item xs zeroMinWidth>
+          {props.children}
+        </Grid>
       </Grid>
     </div>
   );

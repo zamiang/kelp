@@ -134,13 +134,15 @@ const TitleRow = (props: {
   return (
     <div className={classes.container}>
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
-        <Button onClick={props.onBackClick}>
-          <ChevronLeftIcon />
-        </Button>
-        <Button onClick={props.onTodayClick}>Today</Button>
-        <Button onClick={props.onForwardClick}>
-          <ChevronRightIcon />
-        </Button>
+        <Grid container justify="flex-end">
+          <Button onClick={props.onBackClick}>
+            <ChevronLeftIcon />
+          </Button>
+          <Button onClick={props.onTodayClick}>Today</Button>
+          <Button onClick={props.onForwardClick}>
+            <ChevronRightIcon />
+          </Button>
+        </Grid>
       </TopBar>
       <Grid container>
         <Grid item className={classes.spacer}></Grid>

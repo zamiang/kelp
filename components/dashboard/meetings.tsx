@@ -72,12 +72,14 @@ const MeetingsByDay = (
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
-        <Button
-          className={buttonClasses.unSelected}
-          onClick={() => referenceElement?.scrollIntoView({ behavior: 'auto', block: 'center' })}
-        >
-          Now
-        </Button>
+        <Grid container justify="flex-end">
+          <Button
+            className={buttonClasses.unSelected}
+            onClick={() => referenceElement?.scrollIntoView({ behavior: 'auto', block: 'center' })}
+          >
+            Now
+          </Button>
+        </Grid>
       </TopBar>
       {days.map((day) => (
         <div key={day} className={classes.row}>

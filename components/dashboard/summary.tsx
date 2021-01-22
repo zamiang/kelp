@@ -89,9 +89,9 @@ const TitleRow = (props: {
   return (
     <div className={classes.container}>
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
-        <Grid container justify="space-between" alignContent="center" alignItems="center">
-          <Grid item>
-            <Grid container spacing={2}>
+        <Grid container justify="flex-end" alignContent="center" alignItems="center">
+          <Grid item xs>
+            <Grid container spacing={2} justify="flex-end">
               <Grid item>
                 <Button
                   className={isCalendarSelected ? buttonClasses.selected : buttonClasses.unSelected}
