@@ -1,4 +1,3 @@
-import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import React from 'react';
 import panelStyles from '../../components/shared/panel-styles';
