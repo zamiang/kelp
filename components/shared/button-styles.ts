@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     opacity: 1,
     [theme.breakpoints.down('sm')]: {
+      border: 0,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+      fontSize: theme.typography.body2.fontSize,
       borderRadius: 0,
     },
     '&.Mui-disabled': {
@@ -37,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(3),
     fontWeight: 600,
     fontSize: 14,
+    [theme.breakpoints.down('sm')]: {
+      border: 0,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+      fontSize: theme.typography.body2.fontSize,
+      borderRadius: 0,
+    },
   },
 }));
 

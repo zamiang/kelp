@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
+      height: 'auto',
+      minHeight: 83,
     },
   },
 }));
