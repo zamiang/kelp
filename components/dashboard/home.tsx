@@ -1,3 +1,4 @@
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useComponentSize from '@rehooks/component-size';
@@ -25,13 +26,14 @@ const Home = (props: IStore) => {
     .slice(0, 10);
   return (
     <div className={classes.panel} ref={ref}>
-      {size.width > 0 && <Timeline width={size.width} height={400} {...props} />}
+      {size.width > 700 && <Timeline width={size.width} height={400} {...props} />}
       <br />
       <Grid container className={classes.homeRow}>
-        <Grid item sm={3}>
+        <Grid item xs={12} sm={3}>
           <Typography variant="h6" className={expandClasses.smallHeading}>
             Today&apos;s schedule
           </Typography>
+          <Divider />
           {meetings.map((meeting) => (
             <MeetingRow
               isSmall={true}
@@ -44,22 +46,25 @@ const Home = (props: IStore) => {
             />
           ))}
         </Grid>
-        <Grid item sm={3}>
+        <Grid item xs={12} sm={3}>
           <Typography variant="h6" className={expandClasses.smallHeading}>
             People you are meeting with today
           </Typography>
+          <Divider />
           <PeopleToday {...props} selectedPersonId={null} noLeftMargin={true} />
         </Grid>
-        <Grid item sm={3}>
+        <Grid item xs={12} sm={3}>
           <Typography variant="h6" className={expandClasses.smallHeading}>
             Documents you may need today
           </Typography>
+          <Divider />
           <DocumentsForToday {...props} selectedDocumentId={null} isSmall={true} />
         </Grid>
-        <Grid item sm={3}>
+        <Grid item xs={12} sm={3}>
           <Typography variant="h6" className={expandClasses.smallHeading}>
             Documents you recently edited
           </Typography>
+          <Divider />
           {recentlyEditedDocuments.map((doc) => (
             <DocumentRow
               store={props}

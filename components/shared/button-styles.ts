@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
     transition: 'opacity 0.3s',
     textDecoration: 'none',
     opacity: 1,
+    [theme.breakpoints.down('sm')]: {
+      borderRadius: 0,
+    },
     '&.Mui-disabled': {
       background: theme.palette.primary.main,
       color: theme.palette.getContrastText(theme.palette.primary.main),

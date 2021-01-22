@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     marginLeft: 40,
     width: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(2),
+      borderRadius: 0,
+    },
   },
   summary: {
     flex: 1,
@@ -44,10 +48,18 @@ const useStyles = makeStyles((theme) => ({
   },
   noLeftMargin: {
     marginLeft: 0,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.spacing(1),
+    },
   },
   smallContainer: {
     flexDirection: 'column-reverse',
     overflow: 'hidden',
+  },
+  dot: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
 }));
 
@@ -104,7 +116,7 @@ const MeetingRow = (props: {
           props.isSmall && classes.noLeftMargin,
         )}
       >
-        <Grid container spacing={1} alignItems="center">
+        <Grid container spacing={2} alignItems="center">
           <PopperContainer
             anchorEl={referenceElement}
             isOpen={isOpen}
@@ -116,36 +128,32 @@ const MeetingRow = (props: {
               {...props.store}
             />
           </PopperContainer>
-          <Grid
-            item
-            className={clsx(
-              rowStyles.border,
-              props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
-              props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
-              props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
-              props.meeting.selfResponseStatus === 'needsAction' && rowStyles.borderSecondaryLight,
-              props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
-            )}
-          ></Grid>
-          <Grid
-            item
-            container
-            sm
-            zeroMinWidth
-            className={clsx(props.isSmall && classes.smallContainer)}
-          >
-            <Grid item className={classes.time}>
-              <Typography variant="subtitle2">
-                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-              </Typography>
-            </Grid>
-            <Grid item zeroMinWidth className={classes.summary}>
-              <Typography variant="body2" noWrap>
-                <b>{props.meeting.summary || '(no title)'}</b>{' '}
-                {!props.isSmall && props.meeting.description
-                  ? props.meeting.description.replace(/<[^>]+>/g, '')
-                  : ''}
-              </Typography>
+          <Grid item className={classes.dot}>
+            <div
+              className={clsx(
+                rowStyles.border,
+                props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
+                props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
+                props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
+                props.meeting.selfResponseStatus === 'needsAction' &&
+                  rowStyles.borderSecondaryLight,
+                props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
+              )}
+            />
+          </Grid>
+          <Grid item sm={10} xs={12} className={clsx(props.isSmall && classes.smallContainer)}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography variant="subtitle2">
+                  {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+                </Typography>
+                <Typography variant="body2" noWrap>
+                  <b>{props.meeting.summary || '(no title)'}</b>{' '}
+                  {!props.isSmall && props.meeting.description
+                    ? props.meeting.description.replace(/<[^>]+>/g, '')
+                    : ''}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

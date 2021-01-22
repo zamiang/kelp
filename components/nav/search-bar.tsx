@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   inputContainer: {
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   input: {
     marginBottom: theme.spacing(2),
@@ -38,25 +41,27 @@ const SearchBar = () => {
     setValue('query', e.target.value);
 
   return (
-    <form onSubmit={onSubmit} className={classes.inputContainer}>
-      <OutlinedInput
-        id="search-input-for-nav"
-        type="text"
-        placeholder="Search…"
-        fullWidth
-        autoComplete="off"
-        onChange={handleChange}
-        name="query"
-        margin="dense"
-        className={classes.input}
-        startAdornment={
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        }
-        inputRef={register}
-      />
-    </form>
+    <React.Fragment>
+      <form onSubmit={onSubmit} className={classes.inputContainer}>
+        <OutlinedInput
+          id="search-input-for-nav"
+          type="text"
+          placeholder="Search…"
+          fullWidth
+          autoComplete="off"
+          onChange={handleChange}
+          name="query"
+          margin="dense"
+          className={classes.input}
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          }
+          inputRef={register}
+        />
+      </form>
+    </React.Fragment>
   );
 };
 

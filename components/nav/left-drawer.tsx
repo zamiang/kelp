@@ -16,6 +16,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import PublicIcon from '@material-ui/icons/Public';
+import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
@@ -76,6 +77,12 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 6,
+      paddingLeft: 10,
+      width: 42,
+      height: 42,
+    },
   },
   iconContainer: {
     minWidth: theme.spacing(5),
@@ -106,6 +113,16 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     '&:hover': {
       opacity: 0.6,
+    },
+  },
+  hideOnMobile: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+  hideOnDesktop: {
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 }));
@@ -173,6 +190,23 @@ const LeftDrawer = (props: IProps) => {
         </List>
         <SearchBar />
         <List>
+          <Link href="?tab=search">
+            <ListItem
+              button
+              selected={isWeekSelected}
+              className={clsx(
+                classes.listItem,
+                classes.hideOnDesktop,
+                'ignore-react-onclickoutside',
+              )}
+            >
+              <ListItemIcon className={classes.iconContainer}>
+                <SearchIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
+              </ListItemIcon>
+            </ListItem>
+          </Link>
+        </List>
+        <List>
           {shouldRenderHome && (
             <Link href="?tab=home">
               <ListItem
@@ -194,7 +228,11 @@ const LeftDrawer = (props: IProps) => {
             <ListItem
               button
               selected={isWeekSelected}
-              className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+              className={clsx(
+                classes.listItem,
+                classes.hideOnMobile,
+                'ignore-react-onclickoutside',
+              )}
             >
               <ListItemIcon className={classes.iconContainer}>
                 <DateRangeIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
@@ -209,7 +247,11 @@ const LeftDrawer = (props: IProps) => {
             <ListItem
               button
               selected={isSummarySelected}
-              className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
+              className={clsx(
+                classes.listItem,
+                classes.hideOnMobile,
+                'ignore-react-onclickoutside',
+              )}
             >
               <ListItemIcon className={classes.iconContainer}>
                 <PublicIcon className={isSummarySelected ? classes.selected : classes.unSelected} />
@@ -220,9 +262,7 @@ const LeftDrawer = (props: IProps) => {
               />
             </ListItem>
           </Link>
-        </List>
-        <List>
-          <ListSubheader>DATA</ListSubheader>
+          <ListSubheader className={classes.hideOnMobile}>DATA</ListSubheader>
           <Link href="?tab=meetings">
             <ListItem
               button

@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   },
   rowNoLeftMargin: {
     paddingLeft: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(0),
+    },
   },
   rowBorderRadius: {
     borderRadius: theme.spacing(4),
