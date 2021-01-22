@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
       height: 'auto',
-      minHeight: 83,
+      // minHeight: 83,
     },
   },
 }));

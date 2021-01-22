@@ -10,9 +10,6 @@ const useStyles = makeStyles((theme) => ({
   inputContainer: {
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
   input: {
     marginBottom: theme.spacing(2),

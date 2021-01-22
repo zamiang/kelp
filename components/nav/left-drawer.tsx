@@ -188,7 +188,9 @@ const LeftDrawer = (props: IProps) => {
             </ListItem>
           )}
         </List>
-        <SearchBar />
+        <div className={classes.hideOnMobile}>
+          <SearchBar />
+        </div>
         <List>
           <Link href="?tab=search">
             <ListItem
