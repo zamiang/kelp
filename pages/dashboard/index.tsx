@@ -145,7 +145,7 @@ export const DashboardContainer = ({ store }: IProps) => {
   } as any;
 
   const shouldCenter = ['docs', 'people', 'meetings'].indexOf(tab) > -1;
-
+  const isDesktop = size.width > MOBILE_WIDTH || typeof window !== undefined;
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
@@ -159,14 +159,14 @@ export const DashboardContainer = ({ store }: IProps) => {
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
-      {size.width > MOBILE_WIDTH && (
+      {isDesktop && (
         <NavBar
           lastUpdated={store.lastUpdated}
           handleRefreshClick={handleRefreshClick}
           tab={tab as any}
         />
       )}
-      {size.width <= MOBILE_WIDTH && <BottomNav tab={tab as any} />}
+      {!isDesktop && <BottomNav tab={tab as any} />}
       <main className={clsx(classes.content, shouldCenter && classes.center)}>
         <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
           <Alert severity="error">
