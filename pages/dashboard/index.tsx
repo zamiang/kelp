@@ -6,11 +6,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import useComponentSize from '@rehooks/component-size';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Docs from '../../components/dashboard/documents';
 import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
@@ -19,7 +20,8 @@ import Search from '../../components/dashboard/search';
 import Summary from '../../components/dashboard/summary';
 import WeekCalendar from '../../components/dashboard/week-calendar';
 import ErrorBoundaryComponent from '../../components/error-tracking/error-boundary';
-import LeftDrawer from '../../components/nav/left-drawer';
+import BottomNav from '../../components/nav/bottom-nav-bar';
+import NavBar from '../../components/nav/nav-bar';
 import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
 import NotificationsPopup from '../../components/notifications/notifications-popup';
 import useGapi from '../../components/store/use-gapi';
@@ -28,6 +30,7 @@ import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
 
 export const drawerWidth = 240;
+export const MOBILE_WIDTH = 700;
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -109,9 +112,11 @@ interface IProps {
 const is500Error = (error: Error) => (error as any).status === 500;
 
 export const DashboardContainer = ({ store }: IProps) => {
+  const ref = useRef(null);
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
   const router = useRouter();
+  const size = useComponentSize(ref);
   const tab = router.query.tab as string;
   const tabHash = {
     week: <WeekCalendar {...store} />,
@@ -144,15 +149,18 @@ export const DashboardContainer = ({ store }: IProps) => {
     document.body.style.overflow = 'hidden';
   }, []);
   return (
-    <div className={clsx(classes.container, colorHash[tab])}>
+    <div ref={ref} className={clsx(classes.container, colorHash[tab])}>
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
-      <LeftDrawer
-        lastUpdated={store.lastUpdated}
-        handleRefreshClick={handleRefreshClick}
-        tab={tab as any}
-      />
+      {size.width > MOBILE_WIDTH && (
+        <NavBar
+          lastUpdated={store.lastUpdated}
+          handleRefreshClick={handleRefreshClick}
+          tab={tab as any}
+        />
+      )}
+      {size.width <= MOBILE_WIDTH && <BottomNav tab={tab as any} />}
       <main className={classes.content}>
         <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
           <Alert severity="error">

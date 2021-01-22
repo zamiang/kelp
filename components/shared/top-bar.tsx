@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
       height: 'auto',
-      // minHeight: 83,
+      marginTop: -theme.spacing(1), // fixes weird bounce issue
     },
   },
 }));

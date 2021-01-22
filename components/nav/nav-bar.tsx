@@ -16,7 +16,6 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import PublicIcon from '@material-ui/icons/Public';
-import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
@@ -44,10 +43,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     height: '100vh',
-    [theme.breakpoints.down('sm')]: {
-      width: theme.spacing(7),
-      paddingLeft: 0,
-    },
   },
   drawerPaperClose: {
     overflowX: 'hidden',
@@ -55,10 +50,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
+    width: theme.spacing(9),
   },
   date: {
     color: theme.palette.text.hint,
@@ -77,12 +69,6 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 6,
-      paddingLeft: 10,
-      width: 42,
-      height: 42,
-    },
   },
   iconContainer: {
     minWidth: theme.spacing(5),
@@ -115,16 +101,6 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.6,
     },
   },
-  hideOnMobile: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  hideOnDesktop: {
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
 }));
 
 interface IProps {
@@ -133,14 +109,11 @@ interface IProps {
   tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search' | 'home';
 }
 
-const LeftDrawer = (props: IProps) => {
+const NavBar = (props: IProps) => {
   const classes = useStyles();
   const router = useRouter();
   const [session, isLoading] = useSession();
   const user = session && session.user;
-  const isMobile = typeof document !== 'undefined' && document.body.clientWidth < 500;
-  const isOpen = isMobile ? false : true;
-  const anchor = isMobile ? 'top' : 'left';
   const isSummarySelected = props.tab === 'summary';
   const isMeetingsSelected = props.tab === 'meetings';
   const isDocsSelected = props.tab === 'docs';
@@ -151,10 +124,10 @@ const LeftDrawer = (props: IProps) => {
     <Drawer
       variant="permanent"
       classes={{
-        paper: clsx(classes.drawerPaper),
+        paper: classes.drawerPaper,
       }}
-      anchor={anchor}
-      open={isOpen}
+      anchor="left"
+      open={true}
     >
       <div>
         <List>
@@ -188,26 +161,9 @@ const LeftDrawer = (props: IProps) => {
             </ListItem>
           )}
         </List>
-        <div className={classes.hideOnMobile}>
+        <div>
           <SearchBar />
         </div>
-        <List>
-          <Link href="?tab=search">
-            <ListItem
-              button
-              selected={isWeekSelected}
-              className={clsx(
-                classes.listItem,
-                classes.hideOnDesktop,
-                'ignore-react-onclickoutside',
-              )}
-            >
-              <ListItemIcon className={classes.iconContainer}>
-                <SearchIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
-              </ListItemIcon>
-            </ListItem>
-          </Link>
-        </List>
         <List>
           {shouldRenderHome && (
             <Link href="?tab=home">
@@ -230,11 +186,7 @@ const LeftDrawer = (props: IProps) => {
             <ListItem
               button
               selected={isWeekSelected}
-              className={clsx(
-                classes.listItem,
-                classes.hideOnMobile,
-                'ignore-react-onclickoutside',
-              )}
+              className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
             >
               <ListItemIcon className={classes.iconContainer}>
                 <DateRangeIcon className={isWeekSelected ? classes.selected : classes.unSelected} />
@@ -249,11 +201,7 @@ const LeftDrawer = (props: IProps) => {
             <ListItem
               button
               selected={isSummarySelected}
-              className={clsx(
-                classes.listItem,
-                classes.hideOnMobile,
-                'ignore-react-onclickoutside',
-              )}
+              className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
             >
               <ListItemIcon className={classes.iconContainer}>
                 <PublicIcon className={isSummarySelected ? classes.selected : classes.unSelected} />
@@ -264,7 +212,7 @@ const LeftDrawer = (props: IProps) => {
               />
             </ListItem>
           </Link>
-          <ListSubheader className={classes.hideOnMobile}>DATA</ListSubheader>
+          <ListSubheader>DATA</ListSubheader>
           <Link href="?tab=meetings">
             <ListItem
               button
@@ -339,4 +287,4 @@ const LeftDrawer = (props: IProps) => {
   );
 };
 
-export default LeftDrawer;
+export default NavBar;

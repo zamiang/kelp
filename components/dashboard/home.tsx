@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useComponentSize from '@rehooks/component-size';
 import React, { useRef } from 'react';
+import { MOBILE_WIDTH } from '../../pages/dashboard';
 import DocumentRow from '../documents/document-row';
 import MeetingRow from '../meeting/meeting-row';
 import expandStyles from '../shared/expand-styles';
@@ -26,7 +27,7 @@ const Home = (props: IStore) => {
     .slice(0, 10);
   return (
     <div className={classes.panel} ref={ref}>
-      {size.width > 700 && <Timeline width={size.width} height={400} {...props} />}
+      {size.width > MOBILE_WIDTH && <Timeline width={size.width} height={400} {...props} />}
       <br />
       <Grid container className={classes.homeRow}>
         <Grid item xs={12} sm={3}>
