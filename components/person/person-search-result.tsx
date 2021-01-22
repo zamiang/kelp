@@ -13,8 +13,16 @@ import { IStore } from '../store/use-store';
 import ExpandedPerson from './expand-person';
 
 const useStyles = makeStyles((theme) => ({
-  name: { minWidth: 300 },
-  email: { minWidth: 200 },
+  name: {
+    [theme.breakpoints.up('sm')]: {
+      minWidth: 300,
+    },
+  },
+  email: {
+    [theme.breakpoints.up('sm')]: {
+      minWidth: 200,
+    },
+  },
   avatar: { marginLeft: -5 },
   row: {
     margin: 0,
