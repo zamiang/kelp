@@ -11,7 +11,8 @@ const createNotification = (
   onClick: () => Promise<boolean>,
   onClose: () => void,
 ) => {
-  if (window.Notification && Notification.permission === 'granted') {
+  alert('Notification' in window);
+  if ('Notification' in window && Notification.permission === 'granted') {
     const title = `Prepare for: ${meeting.summary || 'Meeting notification'}`;
     const notification = new Notification(title, {
       icon: `${window.location.protocol}//${window.location.host}/android-chrome-192x192.png`,

@@ -7,7 +7,10 @@ import useExpandStyles from '../shared/expand-styles';
 
 const checkNotificationPromise = async () => {
   try {
-    await Notification.requestPermission().then();
+    if ('Notification' in window) {
+      return await Notification.requestPermission().then();
+    }
+    return false;
   } catch (e) {
     return false;
   }
@@ -41,7 +44,9 @@ const askNotificationPermission = async () => {
 };
 
 const NotificationsPopup = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(Notification.permission === 'default');
+  const [isOpen, setIsOpen] = useState<boolean>(
+    'Notification' in window && Notification.permission === 'default',
+  );
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
 
