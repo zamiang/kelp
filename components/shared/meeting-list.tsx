@@ -21,15 +21,17 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
         <Grid item>
           <EventIcon style={{ fontSize: 16, display: 'block' }} />
         </Grid>
-        <Grid item xs={7}>
-          <Typography variant="body2" noWrap>
-            {props.segment.summary || '(No title)'}
-          </Typography>
-        </Grid>
-        <Grid item xs={4} style={{ textAlign: 'right' }}>
-          <Typography variant="caption" noWrap color="textSecondary">
-            {format(props.segment.start, "MMM do 'at' hh:mm a")}
-          </Typography>
+        <Grid xs container zeroMinWidth className={expandClasses.textPadding}>
+          <Grid item xs={12} md={7}>
+            <Typography variant="body2" noWrap>
+              {props.segment.summary || '(No title)'}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={4} className={expandClasses.date}>
+            <Typography variant="caption" noWrap color="textSecondary">
+              {format(props.segment.start, "MMM do 'at' hh:mm a")}
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     </Button>

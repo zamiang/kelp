@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   dockedPanel: {
     maxWidth: 600,
     width: `calc((100vw - ${drawerWidth}px) * 0.618)`,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: `calc(100vw - ${theme.spacing(7)}px)`,
     },
   },

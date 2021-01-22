@@ -70,19 +70,19 @@ const PersonRow = (props: {
             </Avatar>
           )}
         </Grid>
-        <Grid item xs>
+        <Grid item xs zeroMinWidth>
           <Grid container>
-            <Grid item xs={4} className={classes.name} zeroMinWidth>
+            <Grid item xs={12} className={classes.name} zeroMinWidth>
               <Typography variant="body2" noWrap>
                 <b>{props.person.name || props.person.id}</b>
               </Typography>
             </Grid>
-            <Grid item xs={4} className={classes.email}>
+            <Grid item xs={12} className={classes.email}>
               <Typography variant="body2" noWrap>
                 {props.person.emailAddresses.join(', ')}
               </Typography>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <Typography variant="body2" noWrap>
                 {props.person.notes}
               </Typography>

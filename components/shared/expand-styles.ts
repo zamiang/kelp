@@ -147,6 +147,18 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: '0px solid',
     },
   },
+  date: {
+    textAlign: 'right',
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'left',
+    },
+  },
+  textPadding: {
+    [theme.breakpoints.down('md')]: {
+      paddingBottom: theme.spacing(0.5),
+      paddingTop: theme.spacing(0.5),
+    },
+  },
 }));
 
 export default useStyles;

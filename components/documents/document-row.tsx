@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,11 +15,7 @@ import { IStore } from '../store/use-store';
 import ExpandedDocument from './expand-document';
 
 const useStyles = makeStyles((theme) => ({
-  imageContainer: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
+  imageContainer: {},
   image: {
     display: 'block',
     width: '100%',
@@ -81,9 +78,6 @@ const DocumentRow = (props: {
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
-        props.isSmall && rowStyles.rowBorderRadius,
-        !props.isSmall && rowStyles.rowDefault,
-        !props.isSmall && classes.row,
         isSelected && rowStyles.pinkBackground,
         props.isSmall && rowStyles.rowNoLeftMargin,
       )}
@@ -97,7 +91,9 @@ const DocumentRow = (props: {
           />
         </PopperContainer>
         <Grid item className={classes.imageContainer}>
-          <img src={props.doc.iconLink} className={classes.image} />
+          <IconButton>
+            <img src={props.doc.iconLink} className={classes.image} />
+          </IconButton>
         </Grid>
         <Grid item zeroMinWidth xs>
           <Typography noWrap variant="body2">
