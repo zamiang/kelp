@@ -88,7 +88,6 @@ const theme = createMuiTheme({
   overrides: {
     MuiListItemIcon: {
       root: {
-        paddingRight: 8,
         minWidth: 0,
       },
     },

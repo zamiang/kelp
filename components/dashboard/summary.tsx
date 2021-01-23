@@ -52,6 +52,11 @@ const useTitleRowStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     paddingBottom: 0,
   },
+  toggleText: {
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
+  },
   list: {
     display: 'flex',
     flexDirection: 'row',
@@ -98,7 +103,7 @@ const TitleRow = (props: {
                   onClick={toggleCalendarSelected}
                   startIcon={<CalendarViewDayIcon />}
                 >
-                  Meetings
+                  <span className={classes.toggleText}>Meetings</span>
                 </Button>
               </Grid>
               <Grid item>
@@ -107,7 +112,7 @@ const TitleRow = (props: {
                   onClick={toggleDocsSelected}
                   startIcon={<InsertDriveFileIcon />}
                 >
-                  Documents
+                  <span className={classes.toggleText}>Documents</span>
                 </Button>
               </Grid>
               <Grid item>
@@ -116,7 +121,7 @@ const TitleRow = (props: {
                   onClick={togglePeopleSelected}
                   startIcon={<PeopleIcon />}
                 >
-                  People
+                  <span className={classes.toggleText}>People</span>
                 </Button>
               </Grid>
             </Grid>
