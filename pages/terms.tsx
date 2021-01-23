@@ -6,9 +6,9 @@ import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
-import LoginButton from '../components/homepage/login-button';
+import Header from '../components/homepage/header';
 import config from '../constants/config';
-import { useStyles } from './old-homepage';
+import { useStyles } from './index';
 
 const Terms = () => {
   const classes = useStyles();
@@ -27,12 +27,10 @@ const Terms = () => {
         }
       `}</style>
       <div className={classes.containerWidth}>
-        <Grid container className={clsx(classes.hero, classes.heroNoMarginTop)} alignItems="center">
+        <Header isFullWidth={true} />
+        <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">
-              <div className={classes.loginButton}>
-                <LoginButton />
-              </div>
               <Link href="/">
                 <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
               </Link>

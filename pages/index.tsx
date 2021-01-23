@@ -44,17 +44,25 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(2),
     },
   },
+  containerWidth: {
+    width: '100%',
+  },
+  loginMargin: {
+    margin: theme.spacing(1),
+  },
+  loginPaper: {
+    padding: theme.spacing(2),
+  },
   hero: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(12),
     width: '100%',
     textAlign: 'center',
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(1),
-    },
   },
-  heroNoMarginTop: {
-    marginTop: 0,
+  subpage: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(12),
+    width: '100%',
   },
   yellowBackground: {
     backgroundColor: config.YELLOW_BACKGROUND,

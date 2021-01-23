@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
   header: {
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  headerContained: {
     maxWidth: theme.breakpoints.width('md'),
   },
   alignLeft: {
@@ -48,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  footerItem: {},
   closeIcon: {
     marginBottom: -30,
     '& svg': {
@@ -63,28 +64,40 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  logo: {
+    cursor: 'pointer',
+    fontWeight: theme.typography.fontWeightBold,
+  },
 }));
 
-const Header = () => {
+const Header = (props: { isFullWidth?: boolean }) => {
   const classes = useStyles();
   return (
-    <Container maxWidth="md" className={clsx(classes.headerContainer)}>
-      <Grid container justify="space-between" className={classes.header} alignItems="center">
-        <Grid item xs={3} className={classes.footerItem} style={{ textAlign: 'left' }}>
+    <Container
+      maxWidth={props.isFullWidth ? undefined : 'md'}
+      className={clsx(classes.headerContainer)}
+    >
+      <Grid
+        container
+        justify="space-between"
+        className={clsx(classes.header, props.isFullWidth ? undefined : classes.headerContained)}
+        alignItems="center"
+      >
+        <Grid item xs={3} style={{ textAlign: 'left' }}>
           <Link href="/">
-            <Typography variant="h4">
-              <b>Kelp</b>
+            <Typography variant="h4" className={classes.logo}>
+              Kelp
             </Typography>
           </Link>
         </Grid>
         <Grid item>
           <Grid container spacing={4} alignItems="center" className={classes.links}>
-            <Grid item className={classes.footerItem}>
+            <Grid item>
               <Link href="/about">
                 <Typography className={classes.footerLink}>About</Typography>
               </Link>
             </Grid>
-            <Grid item className={classes.footerItem}>
+            <Grid item>
               <a
                 rel="noreferrer"
                 href="https://updates.kelp.nyc"
@@ -96,7 +109,7 @@ const Header = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={6} sm={3} className={classes.footerItem} style={{ textAlign: 'right' }}>
+        <Grid item xs={6} sm={3} style={{ textAlign: 'right' }}>
           <PopupState variant="popover" popupId="demo-popup-menu">
             {(popupState) => (
               <React.Fragment>
