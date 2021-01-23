@@ -3,7 +3,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import EmailIcon from '@material-ui/icons/Email';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format, isToday } from 'date-fns';
