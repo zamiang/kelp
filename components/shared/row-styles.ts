@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     height: 9,
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(2),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: theme.spacing(1),
     },
   },
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
       borderColor: theme.palette.secondary.main,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(1),
       marginLeft: 0,
       borderRadius: `${theme.spacing(1)}px 0 0 ${theme.spacing(1)}px`,
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rowNoLeftMargin: {
     paddingLeft: theme.spacing(2),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(0),
     },
   },

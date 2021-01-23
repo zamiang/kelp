@@ -25,7 +25,7 @@ const useRowStyles = makeStyles((theme) => ({
   },
   distanceToNow: {
     textAlign: 'right',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },

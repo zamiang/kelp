@@ -149,12 +149,12 @@ const useStyles = makeStyles((theme) => ({
   },
   date: {
     textAlign: 'right',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       textAlign: 'left',
     },
   },
   textPadding: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingBottom: theme.spacing(0.5),
       paddingTop: theme.spacing(0.5),
     },

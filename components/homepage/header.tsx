@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   links: {
     minWidth: 185,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '80vw',
   },
   menuButton: {
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
   },

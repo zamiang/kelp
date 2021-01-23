@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionText: {
     padding: theme.spacing(6),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingLeft: 0,
       paddingRight: 0,
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 'auto',
     marginLeft: 80,
     marginTop: 65,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 'auto',
       marginBottom: 65,
     },
@@ -50,25 +50,25 @@ const useStyles = makeStyles((theme) => ({
   notificationContainer: {
     marginRight: 28,
     marginTop: 65,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginRight: 'auto',
       marginBottom: 65,
     },
   },
   prepareTextRight: {
     marginLeft: 0,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 'auto',
     },
   },
   manageWorkTextLeft: {
     marginRight: 0,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginRight: 'auto',
     },
   },
   sectionMobileReverse: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       flexDirection: 'column-reverse',
     },
   },

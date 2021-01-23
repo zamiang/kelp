@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     marginLeft: 4,
     width: 'auto',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: -4,
       paddingLeft: theme.spacing(2),
       borderRadius: 0,
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   summary: {
     flex: 1,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       flex: 'none',
     },
   },
