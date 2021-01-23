@@ -29,6 +29,7 @@ const useGAPI = () => {
         if (isSignedIn) {
           return setStatus(true);
         }
+        // https://github.com/google/google-api-javascript-client/issues/342#issuecomment-601619334
         const isSafari = navigator.userAgent.includes('Safari');
         const result = await authInstance.signIn({
           scope: config.GOOGLE_SCOPES.join(' '),
@@ -44,8 +45,6 @@ const useGAPI = () => {
         } else {
           alert(JSON.stringify(error));
         }
-        // Unsure if logging out is helpful
-        // return logout();
       }
     };
     gapi.load('client:auth2', loadLibraries as any);
