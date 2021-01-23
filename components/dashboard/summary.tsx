@@ -187,7 +187,7 @@ interface IDayContentProps {
 const useDayContentStyles = makeStyles((theme) => ({
   currentDay: {
     borderRadius: '50%',
-    background: config.YELLOW_BACKGROUND,
+    background: config.BLUE_BACKGROUND,
   },
   day: {
     width: 26,

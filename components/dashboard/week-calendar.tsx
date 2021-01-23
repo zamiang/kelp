@@ -65,7 +65,7 @@ const HourRows = () => {
 const useDayTitleStyles = makeStyles((theme) => ({
   currentDay: {
     borderRadius: '50%',
-    background: config.YELLOW_BACKGROUND,
+    background: config.BLUE_BACKGROUND,
     marginLeft: theme.spacing(0.5),
   },
   day: {
