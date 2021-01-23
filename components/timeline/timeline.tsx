@@ -3,7 +3,7 @@ import { addDays, getDayOfYear, subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { IStore } from '../store/use-store';
-import D3Timeline, { ITimelineItem } from './d3-element';
+import D3Timeline, { ITimelineItem } from './d3-timeline';
 
 const scrollBarWidth = 20;
 
