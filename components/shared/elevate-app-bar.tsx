@@ -2,6 +2,7 @@ import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
@@ -28,6 +29,7 @@ interface IProps {
   externalLink?: string;
   onClose: () => void;
   linkedinName?: string;
+  emailLink?: string;
   emailAddress?: string;
 }
 
@@ -36,35 +38,52 @@ const CustomAppBar = (props: IProps) => {
   return (
     <AppBar elevation={0} className={classes.navBar} color="transparent">
       <Toolbar variant="dense">
+        {props.emailLink && (
+          <Tooltip title="Email guests">
+            <MuiLink href={props.emailLink} target="_blank" className={classes.link}>
+              <IconButton className={classes.topButton}>
+                <EmailIcon fontSize="small" />
+              </IconButton>
+            </MuiLink>
+          </Tooltip>
+        )}
         {props.emailAddress && (
-          <MuiLink href={`mailto:${props.emailAddress}`} target="_blank" className={classes.link}>
-            <IconButton className={classes.topButton}>
-              <EmailIcon fontSize="small" />
-            </IconButton>
-          </MuiLink>
+          <Tooltip title="Email contact">
+            <MuiLink href={`mailto:${props.emailAddress}`} target="_blank" className={classes.link}>
+              <IconButton className={classes.topButton}>
+                <EmailIcon fontSize="small" />
+              </IconButton>
+            </MuiLink>
+          </Tooltip>
         )}
         {props.linkedinName && (
-          <MuiLink
-            target="_blank"
-            rel="noreferrer"
-            className={classes.link}
-            href={`https://www.linkedin.com/search/results/people/?keywords=${props.linkedinName}`}
-          >
-            <IconButton className={classes.topButton}>
-              <LinkedInIcon fontSize="small" />
-            </IconButton>
-          </MuiLink>
+          <Tooltip title="Linkedin">
+            <MuiLink
+              target="_blank"
+              rel="noreferrer"
+              className={classes.link}
+              href={`https://www.linkedin.com/search/results/people/?keywords=${props.linkedinName}`}
+            >
+              <IconButton className={classes.topButton}>
+                <LinkedInIcon fontSize="small" />
+              </IconButton>
+            </MuiLink>
+          </Tooltip>
         )}
         {props.externalLink && (
-          <MuiLink href={props.externalLink} target="_blank" className={classes.link}>
-            <IconButton className={classes.topButton}>
-              <ExitToAppIcon fontSize="small" />
-            </IconButton>
-          </MuiLink>
+          <Tooltip title="View in Google">
+            <MuiLink href={props.externalLink} target="_blank" className={classes.link}>
+              <IconButton className={classes.topButton}>
+                <ExitToAppIcon fontSize="small" />
+              </IconButton>
+            </MuiLink>
+          </Tooltip>
         )}
-        <IconButton onClick={props.onClose} className={classes.topButton}>
-          <CloseIcon />
-        </IconButton>
+        <Tooltip title="Close">
+          <IconButton onClick={props.onClose} className={classes.topButton}>
+            <CloseIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );

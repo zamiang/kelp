@@ -3,6 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import EmailIcon from '@material-ui/icons/Email';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format, isToday } from 'date-fns';
@@ -18,6 +19,9 @@ import useExpandStyles from '../shared/expand-styles';
 import { ISegment } from '../store/time-store';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
+
+const createMailtoLink = (meeting: ISegment) =>
+  `mailto:${meeting.attendees.map((a) => a.email).join(',')}?subject=${meeting.summary}`;
 
 const createMeetingNotes = async (
   meeting: ISegment,
@@ -107,7 +111,13 @@ const ExpandedMeeting = (
   );
   return (
     <React.Fragment>
-      {!props.hideHeader && <AppBar externalLink={editLink} onClose={props.close} />}
+      {!props.hideHeader && (
+        <AppBar
+          emailLink={createMailtoLink(meeting)}
+          externalLink={editLink}
+          onClose={props.close}
+        />
+      )}
       <div className={classes.topContainer}>
         <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
           {meeting.summary || '(no title)'}
