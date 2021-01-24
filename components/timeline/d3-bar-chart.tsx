@@ -49,7 +49,6 @@ class D3BarChart {
       .attr('height', props.height)
       .attr('width', props.width + 20)
       .append('g');
-    // .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // Add x axis
     const xScale = scaleBand().rangeRound([0, this.width]).padding(0.4);
@@ -174,31 +173,17 @@ class D3BarChart {
         },
         {
           text: `Daily Avg: ${dailyAvg}`,
-          x: 50,
+          x: 0,
           y: yScale(maxValue) - 5,
           anchor: 'start',
           labelClass: 'label-small',
         },
         {
           text: props.label,
-          x: 50,
+          x: 0,
           y: yScale(maxValue) - 25,
           anchor: 'start',
           labelClass: 'label-large',
-        },
-        {
-          text: `${Math.round(this.data[0] ? this.data[0].rate : 0)} ${props.smallLabel}`,
-          x: this.width,
-          y: yScale(maxValue) - 25,
-          anchor: 'end',
-          labelClass: 'label-large',
-        },
-        {
-          text: 'Today',
-          x: this.width,
-          y: yScale(maxValue) - 5,
-          anchor: 'end',
-          labelClass: 'label-small',
         },
       ])
       .enter()

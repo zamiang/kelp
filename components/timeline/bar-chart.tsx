@@ -51,6 +51,7 @@ const d3Styles = makeStyles((theme) => ({
     },
     '& .label-large': {
       fill: theme.palette.text.secondary,
+      fontWeight: theme.typography.fontWeightBold,
       fillOpacity: 1,
       fontSize: 16,
     },
@@ -110,9 +111,9 @@ const endGradientHash = {
 };
 
 const labelHash = {
-  meetings: 'Meetings',
-  documents: 'Documents',
-  people: 'People Met with',
+  meetings: 'Minutes in meetings',
+  documents: 'Document edits',
+  people: 'People met with',
 };
 
 const smallLabelHash = {
@@ -227,7 +228,6 @@ const BarChart = (
   const classes = useStyles();
   const minDate = new Date(subDays(new Date(), 12));
   const maxDate = new Date(addDays(new Date(), 2));
-  console.log(size.width, '<<<');
   return (
     <div className={classes.barChart} ref={ref}>
       <D3Component
