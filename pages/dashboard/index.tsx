@@ -145,7 +145,7 @@ export const DashboardContainer = ({ store }: IProps) => {
   } as any;
 
   const shouldCenter = ['docs', 'people', 'meetings'].indexOf(tab) > -1;
-  const isDesktop = size.width > MOBILE_WIDTH || typeof window !== undefined;
+  const isDesktop = size.width > MOBILE_WIDTH;
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);

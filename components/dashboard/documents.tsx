@@ -88,7 +88,6 @@ const Documents = (props: IStore) => {
     'this-week': <DocumentsForThisWeek selectedDocumentId={selectedDocumentId} {...props} />,
     today: <DocumentsForToday selectedDocumentId={selectedDocumentId} {...props} />,
   };
-  console.log('currenttab', currentTab, currentTab === 'today');
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
