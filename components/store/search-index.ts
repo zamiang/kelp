@@ -1,6 +1,6 @@
-import { IDocument } from './document-store';
-import { IPerson } from './person-store';
-import { ISegment } from './time-store';
+import { IDocument } from './models/document-model';
+import { IPerson } from './models/person-model';
+import { ISegment } from './models/segment-model';
 import { IStore } from './use-store';
 
 export interface ISearchItem {

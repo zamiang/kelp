@@ -28,6 +28,7 @@ export default class TfidfStore {
       driveActivityStore: IStore['driveActivityStore'];
       timeDataStore: IStore['timeDataStore'];
       personDataStore: IStore['personDataStore'];
+      attendeeDataStore: IStore['attendeeDataStore'];
     },
     filters: IFilters,
   ) {

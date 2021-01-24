@@ -24,7 +24,7 @@ import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import PopperContainer from '../shared/popper';
 import TopBar from '../shared/top-bar';
-import { IDocument } from '../store/document-store';
+import { IDocument } from '../store/models/document-model';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;

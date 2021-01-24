@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import React from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
-import { ISegment } from '../store/time-store';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import ExpandedMeeting from './expand-meeting';
 

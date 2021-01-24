@@ -3,7 +3,7 @@ import { differenceInMilliseconds } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import ExpandedMeeting from '../meeting/expand-meeting';
-import { ISegment } from '../store/time-store';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
 const createNotification = (

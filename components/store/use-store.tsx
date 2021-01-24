@@ -1,9 +1,11 @@
 import FetchAll from '../fetch/fetch-all';
-import DocumentDataStore, { formatGoogleDoc } from './document-store';
-import DriveActivityDataStore from './drive-activity-store';
-import PersonDataStore, { formatPerson } from './person-store';
+import { dbType } from './db';
+import AttendeeModel from './models/attendee-model';
+import DocumentDataStore, { formatGoogleDoc } from './models/document-model';
+import DriveActivityDataStore from './models/drive-activity-model';
+import PersonDataStore, { formatPerson } from './models/person-model';
+import TimeDataStore from './models/segment-model';
 import TfidfDataStore from './tfidf-store';
-import TimeDataStore from './time-store';
 
 export interface IStore {
   readonly personDataStore: PersonDataStore;
@@ -11,34 +13,37 @@ export interface IStore {
   readonly documentDataStore: DocumentDataStore;
   readonly driveActivityStore: DriveActivityDataStore;
   readonly tfidfStore: TfidfDataStore;
+  readonly attendeeDataStore: AttendeeModel;
   readonly lastUpdated: Date;
   readonly refetch: () => void;
   readonly error?: Error;
 }
 
-const useStore = (signedIn: boolean): IStore => {
+const useStore = async (signedIn: boolean, db: dbType): Promise<IStore> => {
   // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll(signedIn);
 
   const people = (data.personList || []).map((person) => formatPerson(person));
 
   // TODO: Only create the datastores once data.isLoading is false
-  const personDataStore = new PersonDataStore(people, data.emailAddresses || [], data.contacts);
-  personDataStore.addDriveActivityToStore(data.driveActivity);
-  personDataStore.addGoogleCalendarEventsIdsToStore(data.calendarEvents || []);
-  personDataStore.addCurrentUserFlag(data.calendarEvents);
-  // console.log('PERSON DATA STORE:', personDataStore);
+  const personDataStore = new PersonDataStore(db);
+  await personDataStore.addContactsToStore(data.contacts);
+  await personDataStore.addPeopleToStore(people);
+  // todo: data.emailAddresses || [], data.contacts);
+  // TODO: personDataStore.addCurrentUserFlag(data.calendarEvents);
 
-  const timeDataStore = new TimeDataStore(data.calendarEvents || [], personDataStore);
-  timeDataStore.addDriveActivityToStore(data.driveActivity, personDataStore);
-  // console.log('TIME DATA STORE:', timeDataStore);
+  const timeDataStore = new TimeDataStore(db);
+  await timeDataStore.addSegments(data.calendarEvents);
 
+  const documentDataStore = new DocumentDataStore(db);
   const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));
-  const documentDataStore = new DocumentDataStore(docs);
-  // console.log('DOC DATA STORE:', DocumentDataStore);
+  await documentDataStore.addDocsToStore(docs);
 
-  const driveActivityDataStore = new DriveActivityDataStore(data.driveActivity);
-  // console.log('DRIVE ACTIVITY DATA STORE:', driveActivityDataStore, data.driveActivity);
+  const driveActivityDataStore = new DriveActivityDataStore(db);
+  await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);
+
+  const attendeeDataStore = new AttendeeModel(db);
+  await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
 
   const tfidfStore = new TfidfDataStore(
     {
@@ -46,6 +51,7 @@ const useStore = (signedIn: boolean): IStore => {
       timeDataStore,
       personDataStore,
       documentDataStore,
+      attendeeDataStore,
     },
     { meetings: true, people: true, docs: true },
   );
@@ -55,6 +61,7 @@ const useStore = (signedIn: boolean): IStore => {
     timeDataStore,
     personDataStore,
     documentDataStore,
+    attendeeDataStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
     refetch: () => data.refetch(),

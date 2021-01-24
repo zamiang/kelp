@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { IPerson } from '../store/person-store';
+import { IPerson } from '../store/models/person-model';
 
 interface IProps {
   people: IPerson[];

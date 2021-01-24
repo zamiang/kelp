@@ -9,8 +9,8 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import useExpandStyles from '../shared/expand-styles';
-import PersonDataStore from '../store/person-store';
-import { IFormattedAttendee } from '../store/time-store';
+import PersonDataStore from '../store/models/person-model';
+import { IFormattedAttendee } from '../store/models/segment-model';
 
 interface IProps {
   attendees: IFormattedAttendee[];

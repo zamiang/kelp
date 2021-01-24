@@ -15,7 +15,7 @@ import useButtonStyles from '../shared/button-styles';
 import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
-import { ISegment } from '../store/time-store';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
 

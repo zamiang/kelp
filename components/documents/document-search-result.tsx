@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import React from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
-import { IDocument } from '../store/document-store';
+import { IDocument } from '../store/models/document-model';
 import { IStore } from '../store/use-store';
 import ExpandedDocument from './expand-document';
 

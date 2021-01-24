@@ -6,11 +6,11 @@ import MeetingSearchResult from '../meeting/meeting-search-result';
 import SearchBar from '../nav/search-bar';
 import PersonSearchResult from '../person/person-search-result';
 import TopBar from '../shared/top-bar';
-import { IDocument } from '../store/document-store';
-import { IPerson } from '../store/person-store';
+import { IDocument } from '../store/models/document-model';
+import { IPerson } from '../store/models/person-model';
+import { ISegment } from '../store/models/segment-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { uncommonPunctuation } from '../store/tfidf-store';
-import { ISegment } from '../store/time-store';
 import { IStore } from '../store/use-store';
 
 const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>

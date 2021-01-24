@@ -59,7 +59,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             gutterBottom
             noWrap
           >
-            {props.personDataStore.getPersonDisplayName(person)}
+            {person.name}
           </Typography>
           <PersonNotes person={person} refetch={props.refetch} />
         </Box>
@@ -100,7 +100,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
       </Grid>
       <Divider />
       <div className={classes.container}>
-        {!person.isInContacsts && (
+        {!person.isInContacts && (
           <Typography variant="body2">
             Add this person to your google contacts for more info{' '}
             <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>

@@ -3,9 +3,9 @@ import Faker from 'faker';
 import { random, sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import { IDocument } from './document-store';
-import { IPerson } from './person-store';
-import { ISegment, getStateForMeeting } from './time-store';
+import { IDocument } from './models/document-model';
+import { IPerson } from './models/person-model';
+import { ISegment, getStateForMeeting } from './models/segment-model';
 
 const PEOPLE_COUNT = 10;
 const DOCUMENT_COUNT = 50;
@@ -25,11 +25,9 @@ times(PEOPLE_COUNT, () => {
     emailAddresses: [emailAddress],
     name,
     imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
-    isInContacsts: true,
+    isInContacts: true,
     googleId: null,
     isCurrentUser: false,
-    driveActivity: {},
-    segmentIds: [],
   });
 });
 
@@ -40,10 +38,8 @@ people.push({
   name: 'current user',
   googleId: null,
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
-  isInContacsts: true,
+  isInContacts: true,
   isCurrentUser: true,
-  driveActivity: {},
-  segmentIds: [],
 });
 
 /**
@@ -132,12 +128,6 @@ times(WEEKS_TO_CREATE, (week: number) => {
         responseStatus: getRandomResponseStatus(),
       });
 
-      const formattedAttendees = attendees.map((attendee) => ({
-        personId: attendee.email, // TODO: Simulate google person ids
-        self: attendee.self,
-        responseStatus: attendee.responseStatus,
-      }));
-
       segments.push({
         id: Faker.random.uuid(),
         link: Faker.internet.url(),
@@ -146,7 +136,6 @@ times(WEEKS_TO_CREATE, (week: number) => {
         start: date,
         end: endDate,
         attendees,
-        formattedAttendees,
         documentIdsFromDescription: [],
         creator: {
           email: sample(people)?.emailAddresses[0],
@@ -156,9 +145,6 @@ times(WEEKS_TO_CREATE, (week: number) => {
         },
         selfResponseStatus: getSelfResponseStatus(attendees),
         state: getStateForMeeting({ start: startDate, end: endDate }),
-        driveActivityIds: [],
-        attendeeDriveActivityIds: [],
-        currentUserDriveActivityIds: [],
       });
     });
   });

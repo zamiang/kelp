@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
-import { IPerson } from '../store/person-store';
+import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 import ExpandedPerson from './expand-person';
 

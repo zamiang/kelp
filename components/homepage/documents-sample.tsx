@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Documents = (props: { store: IStore }) => {
   const classes = useStyles();
-  const meeting = props.store.timeDataStore.getSegmentById(meetingId);
+  const meeting = await props.store.timeDataStore.getById(meetingId);
   if (!meeting) {
     return null;
   }

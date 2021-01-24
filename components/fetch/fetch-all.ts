@@ -9,10 +9,7 @@ import FetchThird from './fetch-third';
 interface IReturnType {
   readonly personList: person[];
   readonly emailAddresses: string[];
-  readonly contacts: {
-    contactsByEmail: { [id: string]: person };
-    contactsByPeopleId: { [id: string]: person };
-  };
+  readonly contacts: person[];
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
   readonly driveActivity: IFormattedDriveActivity[];

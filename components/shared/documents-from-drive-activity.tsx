@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import useExpandStyles from '../shared/expand-styles';
-import { IDocument } from '../store/document-store';
+import { IDocument } from '../store/models/document-model';
 import { IStore } from '../store/use-store';
 
 const useRowStyles = makeStyles((theme) => ({
