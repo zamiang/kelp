@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
     paddingRight: 0,
     position: 'relative',
+    overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
     },
@@ -64,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
+  },
+  homeRowTop: {
+    paddingTop: theme.spacing(2),
+    marginBottom: theme.spacing(0),
   },
 }));
 

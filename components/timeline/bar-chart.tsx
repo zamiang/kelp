@@ -1,6 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { addDays, format, subDays } from 'date-fns';
-import React, { useEffect, useRef, useState } from 'react';
+import useComponentSize from '@rehooks/component-size';
+import { addDays, differenceInCalendarDays, differenceInMinutes, format, subDays } from 'date-fns';
+import { times } from 'lodash';
+import React, { useRef } from 'react';
 import config from '../../constants/config';
 import { IStore } from '../store/use-store';
 import D3BarChart, { IBarChartItem } from './d3-bar-chart';
@@ -8,42 +10,47 @@ import D3BarChart, { IBarChartItem } from './d3-bar-chart';
 const scrollBarWidth = 20;
 const dateFormat = 'MM/dd/yyyy';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   barChart: {
-    padding: theme.spacing(2),
+    width: '100%',
   },
 }));
 
-const d3Styles = makeStyles(() => ({
+const d3Styles = makeStyles((theme) => ({
   svg: {
     '& .background': {
-      fill: 'url(#background-gradient)',
       shapeRendering: 'geometricPrecision',
     },
     '& .axis path, & .axis line': {
       display: 'none',
     },
-    '&.tick text': {
-      fill: '#fff',
+    '& .tick text': {
+      fill: theme.palette.text.secondary,
+      fontWeight: theme.typography.fontWeightBold,
     },
     '& .date-line': {
       fill: 'none',
-      stroke: '#fff',
+      stroke: theme.palette.divider,
       strokeOpacity: 0.6,
       strokeWidth: 1,
       shapeRendering: 'crispEdges',
     },
     '& .bar': {
-      fill: '#fff',
+      fill: '#828282',
+      transition: 'fill 0.3s',
       fillOpacity: 0.3,
+      cursor: 'pointer',
+      '&:hover': {
+        fill: 'purple',
+      },
     },
     '& .label-small': {
-      fill: '#fff',
+      fill: theme.palette.text.secondary,
       fillOpacity: 1,
       fontSize: 12,
     },
     '& .label-large': {
-      fill: '#fff',
+      fill: theme.palette.text.secondary,
       fillOpacity: 1,
       fontSize: 16,
     },
@@ -64,35 +71,24 @@ const D3Component = (props: {
   minDate: Date;
   startGradient: string;
   endGradient: string;
+  label: string;
+  smallLabel: string;
 }) => {
   const classes = d3Styles();
   const d3Container = useRef(null);
-  const [barChart, setBarChart] = useState<any>(null);
 
-  useEffect(
-    () =>
-      setBarChart(
-        new D3BarChart({
-          data: props.data,
-          width: props.width - scrollBarWidth,
-          height: props.height,
-          selector: d3Container?.current,
-          minDate: props.minDate,
-          maxDate: props.maxDate,
-          label: 'Document edits',
-          smallLabel: 'edits',
-          startGradient: props.startGradient,
-          endGradient: props.endGradient,
-        }),
-      ),
-    [d3Container],
-  );
-
-  if (barChart) {
-    barChart.updateNodesFromProps({
-      data: props.data,
-    });
-  }
+  new D3BarChart({
+    data: props.data,
+    width: props.width - scrollBarWidth,
+    height: props.height,
+    selector: d3Container?.current,
+    minDate: props.minDate,
+    maxDate: props.maxDate,
+    startGradient: props.startGradient,
+    endGradient: props.endGradient,
+    smallLabel: props.smallLabel,
+    label: props.label,
+  });
 
   return (
     <React.Fragment>
@@ -104,56 +100,146 @@ const D3Component = (props: {
 const startGradientHash = {
   meetings: config.BLUE_BACKGROUND,
   documents: config.PINK_BACKGROUND,
-  'different-people': config.ORANGE_BACKGROUND,
+  people: config.ORANGE_BACKGROUND,
 };
 
 const endGradientHash = {
   meetings: config.BLUE_BACKGROUND,
   documents: config.PINK_BACKGROUND,
-  'different-people': config.ORANGE_BACKGROUND,
+  people: config.ORANGE_BACKGROUND,
+};
+
+const labelHash = {
+  meetings: 'Meetings',
+  documents: 'Documents',
+  people: 'People Met with',
+};
+
+const smallLabelHash = {
+  meetings: 'meetings',
+  documents: 'edits',
+  people: 'met',
+};
+
+const getDataForType = (
+  props: IStore & { type: 'meetings' | 'documents' | 'people' },
+  minDate: Date,
+  maxDate: Date,
+) => {
+  if (props.type === 'documents') {
+    const allActivity = props.driveActivityStore
+      .getAll()
+      .filter((activity) => activity.time > minDate);
+
+    const activityDocuments = {} as any;
+    times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
+      const date = addDays(minDate, interval);
+      const dateFormatted = format(date, dateFormat);
+      activityDocuments[dateFormatted] = {
+        rate: 0,
+        date,
+        type: 'document',
+      };
+    });
+
+    allActivity.map((activity) => {
+      // TOOD: potentially filter them?
+      const date = format(activity.time, dateFormat);
+      if (activityDocuments[date]) {
+        activityDocuments[date].rate++;
+      } else {
+        activityDocuments[date] = {
+          date: activity.time,
+          rate: 1,
+          type: 'document',
+        };
+      }
+    });
+    return Object.values(activityDocuments);
+  } else if (props.type === 'meetings') {
+    const allMeetings = props.timeDataStore
+      .getSegments()
+      .filter((segment) => segment.start > minDate);
+    const meetingCount = {} as any;
+    times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
+      const date = addDays(minDate, interval);
+      const dateFormatted = format(date, dateFormat);
+      meetingCount[dateFormatted] = {
+        rate: 0,
+        date,
+        type: 'segment',
+      };
+    });
+    allMeetings.map((segment) => {
+      // TOOD: potentially filter them?
+      const date = format(segment.start, dateFormat);
+      const duration = differenceInMinutes(segment.end, segment.start);
+      if (meetingCount[date]) {
+        meetingCount[date].rate += duration;
+      } else {
+        meetingCount[date] = {
+          date: segment.start,
+          rate: duration,
+          type: 'document',
+        };
+      }
+    });
+    return Object.values(meetingCount);
+  } else {
+    const allMeetings = props.timeDataStore
+      .getSegments()
+      .filter((segment) => segment.start > minDate);
+    const peopleCount = {} as any;
+    times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
+      const date = addDays(minDate, interval);
+      const dateFormatted = format(date, dateFormat);
+      peopleCount[dateFormatted] = {
+        rate: 0,
+        date,
+        type: 'segment',
+      };
+    });
+    allMeetings.map((segment) => {
+      // TOOD: potentially filter them?
+      const date = format(segment.start, dateFormat);
+      const count = segment.attendees.length;
+      if (peopleCount[date]) {
+        peopleCount[date].rate += count;
+      } else {
+        peopleCount[date] = {
+          date: segment.start,
+          rate: count,
+          type: 'document',
+        };
+      }
+    });
+    return Object.values(peopleCount);
+  }
 };
 
 const BarChart = (
   props: IStore & {
-    type: 'meetings' | 'documents' | 'different-people';
-    height: number;
-    width: number;
+    type: 'meetings' | 'documents' | 'people';
   },
 ) => {
+  const ref = useRef(null);
+  const size = useComponentSize(ref);
   const classes = useStyles();
   const minDate = new Date(subDays(new Date(), 12));
   const maxDate = new Date(addDays(new Date(), 2));
-
-  const allActivity = props.driveActivityStore
-    .getAll()
-    .filter((activity) => activity.time > minDate);
-
-  const activityDocuments = {} as any;
-
-  allActivity.map((activity) => {
-    // TOOD: potentially filter them?
-    const date = format(activity.time, dateFormat);
-    if (activityDocuments[date]) {
-      activityDocuments[date].rate++;
-    } else {
-      activityDocuments[date] = {
-        date: activity.time,
-        rate: 1,
-        type: 'document',
-      };
-    }
-  });
-
+  console.log(size.width, '<<<');
   return (
-    <div className={classes.barChart}>
+    <div className={classes.barChart} ref={ref}>
       <D3Component
-        data={Object.values(activityDocuments)}
-        width={props.width}
-        height={props.height}
+        data={getDataForType(props, minDate, maxDate) as any}
+        width={size.width < 300 ? 300 : size.width}
+        height={300}
         minDate={minDate}
         maxDate={maxDate}
         startGradient={startGradientHash[props.type]}
         endGradient={endGradientHash[props.type]}
+        label={labelHash[props.type]}
+        smallLabel={smallLabelHash[props.type]}
       />
     </div>
   );

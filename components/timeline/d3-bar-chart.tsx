@@ -43,11 +43,13 @@ class D3BarChart {
 
     const svg = select(props.selector);
 
+    svg.selectAll('*').remove();
+
     svg
       .attr('height', props.height)
-      .attr('width', props.width)
-      .append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+      .attr('width', props.width + 20)
+      .append('g');
+    // .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // Add x axis
     const xScale = scaleBand().rangeRound([0, this.width]).padding(0.4);
@@ -62,20 +64,21 @@ class D3BarChart {
 
     const formatter = (date: Date) => (timeFormat as any)('%a')(date)[0];
     const xAxis = axisBottom(xScale).tickFormat(formatter as any);
-
+    const backgroundGradientUrl = `background-gradient-${props.smallLabel}`;
     // background
     svg
       .append('rect')
       .attr('class', 'background')
       .attr('rx', '5px')
       .attr('ry', '5px')
-      .attr('width', props.width)
+      .attr('width', props.width + 20)
+      .attr('fill', `url(#${backgroundGradientUrl})`)
       .attr('height', props.height);
 
     // Gradients
     svg
       .append('linearGradient')
-      .attr('id', 'background-gradient')
+      .attr('id', backgroundGradientUrl)
       .attr('gradientUnits', 'userSpaceOnUse')
       .attr('x1', 0)
       .attr('y1', 0)
@@ -115,6 +118,7 @@ class D3BarChart {
       .attr('rx', 5)
       .attr('ry', 5)
       .attr('height', (d) => this.height - yScale(d.rate));
+
     svgBody
       .append('g')
       .selectAll('line')
@@ -212,19 +216,6 @@ class D3BarChart {
       .attr('text-anchor', function (d) {
         return d.anchor;
       });
-
-    /*
-    svg
-      .append('path')
-      .attr('d', symbol({ type: 'triangle-up' as any, size: 400 }))
-      .attr('class', 'icon')
-      .attr('transform', 'translate(25,-20)');
-*/
-    //this.updateNodes();
-  }
-
-  updateNodesFromProps(props: { data: IBarChartItem[] }) {
-    console.log('todo', props);
   }
 }
 
