@@ -61,31 +61,38 @@ export const getDriveActivityWhileMeetingWith = (
   return activityIds.map((id) => driveActivityStore.getById(id)!);
 };
 
-export const getAssociates = (personId: string, segments: (ISegment | undefined)[]) => {
+export const getAssociates = async (
+  personId: string,
+  segments: (ISegment | undefined)[],
+  attendeeDataStore: IStore['attendeeDataStore'],
+) => {
   const attendeeLookup = {} as any;
   const associates = {} as any;
-  segments.map((segment) => {
-    if (
-      segment &&
-      segment.formattedAttendees.length < config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION
-    ) {
-      segment?.formattedAttendees.map((attendee) => {
-        if (
-          attendee.personId &&
-          attendee.personId !== personId &&
-          !attendee.self &&
-          attendee.responseStatus === 'accepted'
-        ) {
-          if (associates[attendee.personId]) {
-            associates[attendee.personId]++;
-          } else {
-            attendeeLookup[attendee.personId] = attendee;
-            associates[attendee.personId] = 1;
+  await Promise.all(
+    segments.map(async (segment) => {
+      if (
+        segment &&
+        segment.attendees.length < config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION
+      ) {
+        const attendees = await attendeeDataStore.getAllForSegmentId(segment.id);
+        attendees.map((attendee) => {
+          if (
+            attendee.personId &&
+            attendee.personId !== personId &&
+            !attendee.self &&
+            attendee.responseStatus === 'accepted'
+          ) {
+            if (associates[attendee.personId]) {
+              associates[attendee.personId]++;
+            } else {
+              attendeeLookup[attendee.personId] = attendee;
+              associates[attendee.personId] = 1;
+            }
           }
-        }
-      });
-    }
-  });
+        });
+      }
+    }),
+  );
 
   const attendees = Object.entries(associates).sort((a: any, b: any) => b[1] - a[1]);
   return attendees.map((a) => attendeeLookup[a[0]]);

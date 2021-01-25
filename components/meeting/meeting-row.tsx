@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/models/segment-model';
@@ -70,7 +70,7 @@ const MeetingRow = (props: {
   const router = useRouter();
   const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     } else if (referenceElement && !props.selectedMeetingId && props.shouldRenderCurrentTime) {
@@ -78,7 +78,7 @@ const MeetingRow = (props: {
     }
   }, [referenceElement]);
 
-  const [isOpen, setIsOpen] = React.useState(isSelected);
+  const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
     setIsOpen(true);
     void router.push(`?tab=meetings&slug=${props.meeting.id}`);

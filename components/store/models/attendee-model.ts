@@ -4,6 +4,7 @@ import { ISegment } from './segment-model';
 
 export interface IFormattedAttendee {
   readonly id: string;
+  readonly personId?: string;
   readonly emailAddress?: string;
   readonly responseStatus?: string;
   readonly self?: boolean;
@@ -16,7 +17,11 @@ interface IAttendee {
   readonly self?: boolean;
 }
 
-export const formatAttendee = (attendee: IAttendee, person: IPerson, segmentId: string) => ({
+export const formatAttendee = (
+  attendee: IAttendee,
+  person: IPerson,
+  segmentId: string,
+): IFormattedAttendee => ({
   id: `${segmentId}-${person.id}`,
   segmentId,
   personId: person.id,
@@ -46,7 +51,7 @@ export default class AttendeeModel {
   }
 
   async getAllForSegmentId(segmentId: string) {
-    return this.db.getFromIndex('attendee', 'by-segment-id', segmentId);
+    return this.db.getAllFromIndex('attendee', 'by-segment-id', segmentId);
   }
 
   async getAll() {

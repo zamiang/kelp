@@ -185,15 +185,17 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
   const driveActivityDataStore = new DriveActivityDataStore(db);
   await driveActivityDataStore.addDriveActivityToStore(driveActivity);
 
-  const attendeesDataStore = new AttendeeDataStore(db);
-  await attendeesDataStore.addAttendeesToStore(segments);
+  const attendeeDataStore = new AttendeeDataStore(db);
+  await attendeeDataStore.addAttendeesToStore(segments);
 
-  const tfidfStore = new TfidfDataStore(
+  const tfidfStore = new TfidfDataStore();
+  await tfidfStore.recomputeForFilters(
     {
       driveActivityStore: driveActivityDataStore,
       timeDataStore,
       personDataStore,
       documentDataStore,
+      attendeeDataStore,
     },
     { meetings: true, people: true, docs: true },
   );
@@ -203,6 +205,7 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
     timeDataStore,
     personDataStore,
     documentDataStore,
+    attendeeDataStore,
     tfidfStore,
     lastUpdated: new Date(),
     refetch: () => null,

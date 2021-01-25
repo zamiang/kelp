@@ -8,12 +8,17 @@ import clsx from 'clsx';
 import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AttendeeList from '../shared/attendee-list';
 import DriveActivity from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
+import { getAssociates, getMeetingTime } from '../store/helpers';
+import { IFormattedAttendee } from '../store/models/attendee-model';
+import { IPerson } from '../store/models/person-model';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import PersonNotes from './person-notes';
 
@@ -22,22 +27,54 @@ const ADD_SENDER_LINK =
 
 const ExpandPerson = (props: IStore & { personId: string; close: () => void }) => {
   const classes = useExpandStyles();
-  const person = props.personDataStore.getPersonById(props.personId);
+  const [person, setPerson] = useState<IPerson | undefined>(undefined);
+  const [segments, setSegments] = useState<ISegment[]>([]);
+  const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
+  const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const p = await props.personDataStore.getPersonById(props.personId);
+      setPerson(p);
+    };
+    void fetchData();
+  }, [props.personId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const p = await props.driveActivityStore.getDriveActivityForPersonId(props.personId);
+      setDriveActivity(p);
+    };
+    void fetchData();
+  }, [props.personId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const s = await props.timeDataStore.getSegmentsForPersonId(props.personId);
+      setSegments(s);
+    };
+    void fetchData();
+  }, [props.personId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const a = await getAssociates(props.personId, segments, props.attendeeDataStore);
+      setAssociates(a);
+    };
+    void fetchData();
+  }, [segments.length]);
+
   if (!person) {
     return null;
   }
-  const segments = (person.segmentIds || []).map((segmentId) =>
-    props.timeDataStore.getSegmentById(segmentId),
-  );
   const lastMeeting = last(segments);
-  const meetingTime = props.personDataStore.getMeetingTime(segments);
+  const meetingTime = getMeetingTime(segments);
   const timeInMeetings = formatDuration(meetingTime.thisWeek)
     .replace(' hours', 'h')
     .replace(' minutes', 'm');
   const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek)
     .replace(' hours', 'h')
     .replace(' minutes', 'm');
-  const associates = props.personDataStore.getAssociates(props.personId, segments);
+
   const hasName = !person.name.includes('people/') && !person.name.includes('@');
   const hasMeetingTime = meetingTime.lastWeekMs > 0;
   return (
@@ -123,7 +160,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             Documents they have edited
           </Typography>
           <DriveActivity
-            driveActivity={Object.values(person.driveActivity)}
+            driveActivity={driveActivity}
             personStore={props.personDataStore}
             docStore={props.documentDataStore}
           />

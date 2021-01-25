@@ -40,6 +40,7 @@ interface Db extends DBSchema {
     indexes: {
       'by-email': string;
       'by-segment-id': string;
+      'by-person-id': string;
     };
   };
 }
@@ -76,6 +77,7 @@ async function database() {
       });
       attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
       attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
+      attendeeStore.createIndex('by-person-id', 'segmentId', { unique: false });
     },
   });
 

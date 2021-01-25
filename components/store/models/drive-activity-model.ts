@@ -25,7 +25,11 @@ export default class DriveActivityModel {
   }
 
   async getDriveActivityForDocument(documentId: string) {
-    return this.db.getFromIndex('driveActivity', 'by-document-id', documentId);
+    return this.db.getAllFromIndex('driveActivity', 'by-document-id', documentId);
+  }
+
+  async getDriveActivityForPersonId(personId: string) {
+    return this.db.getAllFromIndex('driveActivity', 'by-actor-person-id', personId);
   }
 
   async getById(id: string): Promise<IFormattedDriveActivity | undefined> {

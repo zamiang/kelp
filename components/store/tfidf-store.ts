@@ -22,7 +22,13 @@ export default class TfidfStore {
   tfidfMin: number;
   tfidfMax: number;
 
-  constructor(
+  constructor() {
+    this.tfidf = new Tfidf([]);
+    this.tfidfMin = 0;
+    this.tfidfMax = 10;
+  }
+
+  async recomputeForFilters(
     store: {
       documentDataStore: IStore['documentDataStore'];
       driveActivityStore: IStore['driveActivityStore'];
@@ -32,32 +38,19 @@ export default class TfidfStore {
     },
     filters: IFilters,
   ) {
-    // console.warn('setting up tfidf store');
-    this.tfidf = new Tfidf(this.getDocumentsByDay(store, filters));
+    const data = await this.getDocumentsByDay(store, filters);
+    this.tfidf = new Tfidf(data);
     this.tfidfMin = this.tfidf.getMin() || 0;
     this.tfidfMax = this.tfidf.getMax() || 10;
   }
 
-  recomputeForFilters(
+  async getDocumentsByDay(
     store: {
       documentDataStore: IStore['documentDataStore'];
       driveActivityStore: IStore['driveActivityStore'];
       timeDataStore: IStore['timeDataStore'];
       personDataStore: IStore['personDataStore'];
-    },
-    filters: IFilters,
-  ) {
-    this.tfidf = new Tfidf(this.getDocumentsByDay(store, filters));
-    this.tfidfMin = this.tfidf.getMin() || 0;
-    this.tfidfMax = this.tfidf.getMax() || 10;
-  }
-
-  getDocumentsByDay(
-    store: {
-      documentDataStore: IStore['documentDataStore'];
-      driveActivityStore: IStore['driveActivityStore'];
-      timeDataStore: IStore['timeDataStore'];
-      personDataStore: IStore['personDataStore'];
+      attendeeDataStore: IStore['attendeeDataStore'];
     },
     filters: IFilters,
   ) {
@@ -71,45 +64,53 @@ export default class TfidfStore {
     });
     // Docs
     if (filters.docs) {
-      store.driveActivityStore.getAll().map((activity) => {
-        if (
-          activity.link &&
-          activity.actorPersonId &&
-          store.personDataStore.getPersonById(activity.actorPersonId)?.isCurrentUser
-        ) {
-          const doc = store.documentDataStore.getByLink(activity.link);
-          const day = getDayKey(activity.time);
-          if (documentsByDay[day] && doc && doc.name) {
-            documentsByDay[day].push(doc?.name);
+      const activityList = await store.driveActivityStore.getAll();
+      await Promise.all(
+        activityList.map(async (activity) => {
+          if (activity.link && activity.actorPersonId) {
+            const person = await store.personDataStore.getPersonById(activity.actorPersonId);
+            if (person?.isCurrentUser) {
+              const doc = await store.documentDataStore.getByLink(activity.link);
+              const day = getDayKey(activity.time);
+              if (documentsByDay[day] && doc && doc.name) {
+                documentsByDay[day].push(doc?.name);
+              }
+            }
           }
-        }
-      });
+        }),
+      );
     }
 
     // Meetings
-    store.timeDataStore.getSegments().map((segment) => {
-      const day = getDayKey(segment.start);
-      if (filters.meetings) {
-        if (documentsByDay[day] && segment.summary) {
-          documentsByDay[day].push(segment.summary);
-        }
-      }
-      if (filters.people) {
-        segment.formattedAttendees.map((attendee) => {
-          const person = store.personDataStore.getPersonById(attendee.personId);
-          // TODO: Remove need to do indexof
-          if (
-            documentsByDay[day] &&
-            person &&
-            !person.isCurrentUser &&
-            person.name.indexOf('person') < 0 &&
-            person.name.indexOf('@') < 0
-          ) {
-            documentsByDay[day].push(person.name.split(' ').join(uncommonPunctuation));
+    const segments = await store.timeDataStore.getSegments();
+    await Promise.all(
+      segments.map(async (segment) => {
+        const day = getDayKey(segment.start);
+        if (filters.meetings) {
+          if (documentsByDay[day] && segment.summary) {
+            documentsByDay[day].push(segment.summary);
           }
-        });
-      }
-    });
+        }
+        if (filters.people) {
+          const attendees = await store.attendeeDataStore.getAllForSegmentId(segment.id);
+          return attendees.map(async (attendee) => {
+            if (attendee.personId) {
+              const person = await store.personDataStore.getPersonById(attendee.personId);
+              // TODO: Remove need to do indexof
+              if (
+                documentsByDay[day] &&
+                person &&
+                !person.isCurrentUser &&
+                person.name.indexOf('person') < 0 &&
+                person.name.indexOf('@') < 0
+              ) {
+                documentsByDay[day].push(person.name.split(' ').join(uncommonPunctuation));
+              }
+            }
+          });
+        }
+      }),
+    );
 
     return Object.keys(documentsByDay).map((key) => ({
       key,

@@ -123,6 +123,11 @@ export default class SegmentModel {
     );
   }
 
+  async getSegmentsForPersonId(personId: string) {
+    const attendees = await this.db.getAllFromIndex('attendee', 'by-person-id', personId);
+    return Promise.all(attendees.map((attendee) => this.db.get('meeting', attendee.segmentId)));
+  }
+
   getDriveActivityIdsForWeek(week: number) {
     const segments = flatten(
       this.segments

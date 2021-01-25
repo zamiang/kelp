@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { IDocument } from '../store/models/document-model';
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const DocumentSearchResult = (props: { doc: IDocument; store: IStore }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event: any) => {
     if (!anchorEl) {
       setAnchorEl(anchorEl ? null : event?.currentTarget);

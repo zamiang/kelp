@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
@@ -28,18 +28,20 @@ const PersonRow = (props: {
   const rowStyles = useRowStyles();
   const router = useRouter();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const [isOpen, setIsOpen] = useState(isSelected);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [referenceElement]);
-  const [isOpen, setIsOpen] = React.useState(isSelected);
+
   const handleClick = () => {
     setIsOpen(true);
     void router.push(`?tab=people&slug=${props.person.id}`);
     return false;
   };
+
   return (
     <ListItem
       button={true}

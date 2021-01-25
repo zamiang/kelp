@@ -1,13 +1,13 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import { Provider } from 'next-auth/client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import theme from '../constants/theme';
 
 const App = (props: any) => {
   const { Component, pageProps } = props;
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentElement) {

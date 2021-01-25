@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import EventIcon from '@material-ui/icons/Event';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/models/segment-model';
@@ -44,7 +44,7 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };

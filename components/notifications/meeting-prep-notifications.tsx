@@ -33,7 +33,7 @@ const createNotification = (
 
 const MeetingPrepNotifications = (props: IStore) => {
   const router = useRouter();
-  const [currentMeeting, setCurrentMeeting] = useState(props.timeDataStore.getCurrentSegment());
+  const [currentMeeting, setCurrentMeeting] = useState<ISegment | undefined>(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(
     currentMeeting ? Notification.permission === 'denied' : false,
   );
@@ -41,15 +41,18 @@ const MeetingPrepNotifications = (props: IStore) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const newMeeting = props.timeDataStore.getCurrentSegment();
-      if (newMeeting && newMeeting.id !== currentMeeting?.id) {
-        createNotification(
-          newMeeting,
-          () => router.push(`?tab=meetings&slug=${newMeeting.id}`),
-          () => setIsOpen(false),
-        );
-        setCurrentMeeting(newMeeting);
-      }
+      const updateCurrentMeeting = async () => {
+        const newMeeting = await props.timeDataStore.getCurrentSegment();
+        if (newMeeting && newMeeting.id !== currentMeeting?.id) {
+          createNotification(
+            newMeeting,
+            () => router.push(`?tab=meetings&slug=${newMeeting.id}`),
+            () => setIsOpen(false),
+          );
+          setCurrentMeeting(newMeeting);
+        }
+      };
+      void updateCurrentMeeting();
       setSeconds((seconds) => seconds + 1);
     }, 5000);
     return () => clearInterval(interval);

@@ -332,7 +332,7 @@ const Summary = (props: IStore) => {
     </div>
   ));
   const onSetFilterClick = (filters: IFilters) => {
-    props.tfidfStore.recomputeForFilters(props, filters);
+    void props.tfidfStore.recomputeForFilters(props, filters);
     setFilters(filters);
   };
   return (

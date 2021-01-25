@@ -12,7 +12,11 @@ export interface ISearchItem {
 export default class SearchIndex {
   results: ISearchItem[];
 
-  constructor(store: {
+  constructor() {
+    this.results = [];
+  }
+
+  async addData(store: {
     documentDataStore: IStore['documentDataStore'];
     driveActivityStore: IStore['driveActivityStore'];
     timeDataStore: IStore['timeDataStore'];
@@ -20,7 +24,8 @@ export default class SearchIndex {
   }) {
     const searchIndex = [] as ISearchItem[];
     // Docs
-    store.documentDataStore.getDocs().map((doc) => {
+    const documents = await store.documentDataStore.getAll();
+    documents.map((doc) => {
       if (doc && doc.name) {
         searchIndex.push({
           text: doc.name.toLowerCase(),
@@ -30,7 +35,8 @@ export default class SearchIndex {
       }
     });
     // Meetings
-    store.timeDataStore.getSegments().map((segment) => {
+    const segments = await store.timeDataStore.getAll();
+    segments.map((segment) => {
       if (segment.summary) {
         searchIndex.push({
           text: segment.summary.toLowerCase(),
@@ -40,7 +46,8 @@ export default class SearchIndex {
       }
     });
     // People
-    store.personDataStore.getPeople(false).map((person) => {
+    const people = await store.personDataStore.getAll(false);
+    people.map((person) => {
       // TODO: Remove need to do indexof
       if (person && person.name.indexOf('person') < 0 && person.name.indexOf('@') < 0) {
         searchIndex.push({

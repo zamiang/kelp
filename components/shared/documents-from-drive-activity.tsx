@@ -6,10 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format, formatDistanceToNow } from 'date-fns';
 import { capitalize, uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import useExpandStyles from '../shared/expand-styles';
 import { IDocument } from '../store/models/document-model';
+import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 
 const useRowStyles = makeStyles((theme) => ({
@@ -39,13 +40,23 @@ const Activity = (props: {
   const classes = useRowStyles();
   const expandClasses = useExpandStyles();
   const router = useRouter();
-  const actor = props.action.actorPersonId
-    ? props.personStore.getPersonById(props.action.actorPersonId)
-    : null;
+  const [actor, setActor] = useState<IPerson | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.action.actorPersonId) {
+        const result = await props.personStore.getPersonById(props.action.actorPersonId);
+        setActor(result);
+      }
+    };
+    void fetchData();
+  }, [props.action.actorPersonId]);
+
   const tooltipText = `${capitalize(props.action.action)} by ${
     actor?.name || actor?.emailAddresses
   } on ${format(new Date(props.document.updatedAt!), "MMM do 'at' hh:mm a")}`;
   const belowText = `Recent ${props.action.action} by ${actor?.name || actor?.emailAddresses}`;
+
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button
@@ -75,6 +86,37 @@ const Activity = (props: {
   );
 };
 
+const DriveActivityItem = (props: {
+  personStore: IStore['personDataStore'];
+  docStore: IStore['documentDataStore'];
+  action: any;
+}) => {
+  const [document, setDocument] = useState<IDocument | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.action.link) {
+        const result = await props.docStore.getByLink(props.action.link);
+        setDocument(result);
+      }
+    };
+    void fetchData();
+  }, [props.action.link]);
+
+  if (!document) {
+    return null;
+  }
+
+  return (
+    <Activity
+      key={props.action.id}
+      personStore={props.personStore}
+      document={document}
+      action={props.action}
+    />
+  );
+};
+
 const DriveActivityList = (props: {
   driveActivity: IFormattedDriveActivity[];
   personStore: IStore['personDataStore'];
@@ -88,23 +130,16 @@ const DriveActivityList = (props: {
   if (actions.length < 1) {
     return <Typography variant="caption">None</Typography>;
   }
-  const items = actions.map((action) => ({
-    action,
-    document: props.docStore.getByLink(action.link),
-  }));
   return (
     <div className={classes.list}>
-      {items.map(
-        (item) =>
-          item.document && (
-            <Activity
-              key={item.action.id}
-              personStore={props.personStore}
-              document={item.document}
-              action={item.action}
-            />
-          ),
-      )}
+      {actions.map((action) => (
+        <DriveActivityItem
+          key={action.id}
+          personStore={props.personStore}
+          action={action}
+          docStore={props.docStore}
+        />
+      ))}
     </div>
   );
 };

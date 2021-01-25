@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AvatarList from '../shared/avatar-list';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
@@ -57,13 +57,13 @@ const DocumentRow = (props: {
   const activity = props.store.driveActivityStore.getDriveActivityForDocument(props.doc.id) || [];
   const people = props.store.personDataStore.getPeopleForDriveActivity(activity).slice(0, 5);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [referenceElement]);
 
-  const [isOpen, setIsOpen] = React.useState(isSelected);
+  const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
     setIsOpen(true);
     void router.push(`?tab=docs&slug=${props.doc.id}`);

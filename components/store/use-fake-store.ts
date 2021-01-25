@@ -27,7 +27,8 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
   const attendeeDataStore = new AttendeeModel(db);
   await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
 
-  const tfidfStore = new TfidfDataStore(
+  const tfidfStore = new TfidfDataStore();
+  await tfidfStore.recomputeForFilters(
     {
       driveActivityStore: driveActivityDataStore,
       timeDataStore,
