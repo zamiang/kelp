@@ -7,10 +7,13 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
+import { getPeopleForDriveActivity } from '../store/helpers';
 import { IDocument } from '../store/models/document-model';
+import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 import ExpandedDocument from './expand-document';
 
@@ -54,8 +57,30 @@ const DocumentRow = (props: {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const activity = props.store.driveActivityStore.getDriveActivityForDocument(props.doc.id) || [];
-  const people = props.store.personDataStore.getPeopleForDriveActivity(activity).slice(0, 5);
+  const [activity, setActivity] = useState<IFormattedDriveActivity[]>([]);
+  const [people, setPeople] = useState<IPerson[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.doc.id) {
+        const result = await props.store.driveActivityStore.getDriveActivityForDocument(
+          props.doc.id,
+        );
+        setActivity(result);
+      }
+    };
+    void fetchData();
+  }, [props.doc.id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (activity.length > 0) {
+        const result = await getPeopleForDriveActivity(activity, props.store.personDataStore);
+        setPeople(result.slice(0, 5));
+      }
+    };
+    void fetchData();
+  }, [activity.length]);
 
   useEffect(() => {
     if (isSelected && referenceElement) {

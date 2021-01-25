@@ -3,7 +3,7 @@ import { flatten, sortBy, uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { getWeek } from '../shared/date-helpers';
-import { dbType } from './db';
+import { IFormattedAttendee } from './models/attendee-model';
 import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
 import { ISegment } from './models/segment-model';
@@ -125,11 +125,18 @@ export const getPeopleMeetingWithThisWeek = async (
   );
 };
 
-export const getPeopleForDriveActivity = async (activity: IFormattedDriveActivity[]) =>
-  uniqBy(activity, 'actorPersonId')
-    .filter((activity) => !!activity.actorPersonId)
-    .map((activity) => this.getPersonById(activity.actorPersonId!))
-    .filter((person) => person && person.id) as IPerson[];
+export const getPeopleForDriveActivity = async (
+  activity: IFormattedDriveActivity[],
+  personDataStore: IStore['personDataStore'],
+) => {
+  const people = await Promise.all(
+    uniqBy(activity, 'actorPersonId')
+      .filter((activity) => !!activity.actorPersonId)
+      .map(async (activity) => personDataStore.getPersonById(activity.actorPersonId!)),
+  );
+
+  return people.filter((person) => person && person.id) as IPerson[];
+};
 
 export const getDocsRecentlyEditedByCurrentUser = (
   driveActivityStore: IStore['driveActivityStore'],
@@ -196,7 +203,7 @@ export const getDocumentsForThisWeek = (
   );
 };
 
-export const getFormattedGuestStats = async (segmentId: string, db: dbType) => {
+export const getFormattedGuestStats = async (attendees: IFormattedAttendee[]) => {
   const guestStatsHash = {
     needsAction: 'awaiting response',
     declined: 'no',
@@ -204,7 +211,6 @@ export const getFormattedGuestStats = async (segmentId: string, db: dbType) => {
     accepted: 'yes',
     notAttending: 'no',
   } as any;
-  const attendees = await db.getAllFromIndex('attendee', 'by-segment-id', segmentId);
   if (attendees.length < 2) {
     return null;
   }

@@ -8,43 +8,6 @@ import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import { IStore } from '../store/use-store';
 
-/*
-const getActivityStats = (
-  activity: IFormattedDriveActivity[],
-  week: number,
-  personDataStore: IStore['personDataStore'],
-) => {
-  const filteredActivity = activity.filter((activity) => getWeek(activity.time) === week);
-  const commentCount = filteredActivity.filter((activity) => activity.action === 'comment').length;
-  const editCount = filteredActivity.filter((activity) => activity.action === 'edit').length;
-
-  const formattedString = [];
-  const formattedTooltipString = uniq(
-    filteredActivity
-      .map((activity) => {
-        const person = activity.actorPersonId
-          ? personDataStore.getPersonById(activity.actorPersonId)
-          : null;
-        return person?.name || person?.emailAddresses;
-      })
-      .filter(Boolean),
-  );
-  if (commentCount > 0) {
-    formattedString.push(`${commentCount} ${pluralize('comment', commentCount)}`);
-  }
-  if (editCount > 0) {
-    formattedString.push(`${editCount} ${pluralize('edit', editCount)}`);
-  }
-
-  return [
-    formattedString.join(' & '),
-    formattedTooltipString.length > 2
-      ? `${formattedTooltipString.slice(0, -1).join(', ')} and ${formattedTooltipString.slice(-1)}`
-      : formattedTooltipString.join(' and '),
-  ];
-};
-*/
-
 const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const document = props.documentDataStore.getByLink(props.documentId);
