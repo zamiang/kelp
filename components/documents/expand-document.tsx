@@ -1,31 +1,37 @@
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AvatarList from '../shared/avatar-list';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
+import { IDocument } from '../store/models/document-model';
 import { IStore } from '../store/use-store';
 
 const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
   const classes = useExpandStyles();
-  const document = props.documentDataStore.getByLink(props.documentId);
+  const [document, setDocument] = useState<IDocument | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.documentId) {
+        const result = await props.documentDataStore.getByLink(props.documentId);
+        setDocument(result);
+      }
+    };
+    void fetchData();
+  }, [props.documentId]);
+
   if (!document) {
     return null;
   }
-  const activity = props.driveActivityStore.getDriveActivityForDocument(document.id) || [];
-  const people = props.personDataStore.getPeopleForDriveActivity(activity);
-  const driveActivityIds = activity.map((item) => item.id);
-  const currentUserMeetings = props.timeDataStore.getSegmentsWithCurrentUserDriveActivity(
-    driveActivityIds,
-  );
-  const segmentsWithDocumentInDescription = props.timeDataStore.getSegmentsWithDocumentInDescription(
-    props.documentId,
-  );
-  const attendeeMeetings = props.timeDataStore.getSegmentsWithAttendeeDriveActivity(
-    driveActivityIds,
-  );
+
+  // TODO
+  const people = [] as any;
+  const currentUserMeetings = [] as any;
+  const segmentsWithDocumentInDescription = [] as any;
+  const attendeeMeetings = [] as any;
   return (
     <React.Fragment>
       <AppBar onClose={props.close} externalLink={document.link} />

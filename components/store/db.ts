@@ -3,6 +3,7 @@ import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { IFormattedAttendee } from './models/attendee-model';
 import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
+import { ISegmentDriveActivity } from './models/segment-drive-activity-model';
 import { ISegment } from './models/segment-model';
 
 interface Db extends DBSchema {
@@ -33,6 +34,15 @@ interface Db extends DBSchema {
     value: ISegment;
     key: string;
     indexes: { 'by-start': string };
+  };
+  meetingDriveActivity: {
+    value: ISegmentDriveActivity;
+    key: string;
+    indexes: {
+      'by-segment-id': string;
+      'by-document-id': string;
+      'by-drive-activity-id': string;
+    };
   };
   attendee: {
     value: IFormattedAttendee;

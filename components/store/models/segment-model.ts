@@ -128,18 +128,17 @@ export default class SegmentModel {
     return Promise.all(attendees.map((attendee) => this.db.get('meeting', attendee.segmentId)));
   }
 
-  getDriveActivityIdsForWeek(week: number) {
-    const segments = flatten(
-      this.segments
-        .filter((segment) => getWeek(segment.start) === week)
-        .map((segment) => segment.driveActivityIds),
-    );
+  async getDriveActivityIdsForWeek(week: number) {
+    const segments = await this.getAll();
+    // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
+    flatten(segments.filter((segment) => getWeek(segment.start) === week).map((segment) => []));
     return segments;
   }
 
   // Segments with activity by current user
-  getSegmentsWithCurrentUserDriveActivity(driveActivityIds: string[]) {
-    return this.segments.filter(
+  async getSegmentsWithCurrentUserDriveActivity(driveActivityIds: string[]) {
+    const segments = await this.getAll();
+    return segments.filter(
       (segment) => intersection(driveActivityIds, segment.currentUserDriveActivityIds).length > 0,
     );
   }
