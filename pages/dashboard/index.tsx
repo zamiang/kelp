@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Docs from '../../components/dashboard/documents';
 import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
@@ -24,8 +24,9 @@ import BottomNav from '../../components/nav/bottom-nav-bar';
 import NavBar from '../../components/nav/nav-bar';
 import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
 import NotificationsPopup from '../../components/notifications/notifications-popup';
+import db from '../../components/store/db';
 import useGapi from '../../components/store/use-gapi';
-import useStore, { IStore } from '../../components/store/use-store';
+import getStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
 
@@ -79,7 +80,16 @@ const LoadingDashboardContainer = () => {
   const isSignedIn = useGapi();
   const router = useRouter();
   const [session, isLoading] = useSession();
-  const store = useStore(isSignedIn);
+  const [store, setStore] = useState<any>(undefined);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isSignedIn) {
+        const store = await getStore(await db);
+        setStore(store);
+      }
+    };
+    void fetchData();
+  }, [isSignedIn]);
 
   if (!isLoading && !session?.user) {
     void router.push('/');

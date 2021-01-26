@@ -50,7 +50,9 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
   useEffect(() => {
     const fetchData = async () => {
       const s = await props.timeDataStore.getSegmentsForPersonId(props.personId);
-      setSegments(s);
+      if (s) {
+        setSegments(s.filter(Boolean) as any);
+      }
     };
     void fetchData();
   }, [props.personId]);

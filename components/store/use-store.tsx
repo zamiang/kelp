@@ -19,9 +19,9 @@ export interface IStore {
   readonly error?: Error;
 }
 
-const useStore = async (signedIn: boolean, db: dbType): Promise<IStore> => {
+const useStore = async (db: dbType): Promise<IStore> => {
   // TODO: Listen for log-out or token espiring and re-fetch
-  const data = FetchAll(signedIn);
+  const data = FetchAll();
 
   const people = (data.personList || []).map((person) => formatPerson(person));
 
@@ -45,7 +45,8 @@ const useStore = async (signedIn: boolean, db: dbType): Promise<IStore> => {
   const attendeeDataStore = new AttendeeModel(db);
   await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
 
-  const tfidfStore = new TfidfDataStore(
+  const tfidfStore = new TfidfDataStore();
+  await tfidfStore.recomputeForFilters(
     {
       driveActivityStore: driveActivityDataStore,
       timeDataStore,

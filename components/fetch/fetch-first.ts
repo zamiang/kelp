@@ -15,10 +15,7 @@ interface IResponse {
   readonly driveFiles: gapi.client.drive.File[];
   readonly refetchCalendarEvents: () => Promise<any>;
   readonly refetchDriveFiles: () => Promise<any>;
-  readonly contacts: {
-    contactsByEmail: { [id: string]: person };
-    contactsByPeopleId: { [id: string]: person };
-  };
+  readonly contacts: person[];
   readonly lastUpdated: Date;
   readonly emailAddresses: string[];
   readonly addEmailAddressesToStore: (addresses: string[]) => void;
@@ -27,16 +24,17 @@ interface IResponse {
 /**
  * Fetches data that can be fetched in parallel and creates the person store object
  */
-const FetchFirst = (signedIn: boolean): IResponse => {
+const FetchFirst = (): IResponse => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
     setEmailList(sortedUniq(emailAddresses.concat(emailList)));
   };
-  const driveResponse = useAsyncAbortable(fetchDriveFiles, [signedIn] as any);
-  const contactsResponse = useAsyncAbortable(fetchContacts, [signedIn] as any);
-  const calendarResponse = useAsyncAbortable(() => fetchCalendarEvents(addEmailAddressesToStore), [
-    signedIn,
-  ] as any);
+  const driveResponse = useAsyncAbortable(fetchDriveFiles, [] as any);
+  const contactsResponse = useAsyncAbortable(fetchContacts, [] as any);
+  const calendarResponse = useAsyncAbortable(
+    () => fetchCalendarEvents(addEmailAddressesToStore),
+    [] as any,
+  );
   return {
     isLoading: driveResponse.loading && calendarResponse.loading && contactsResponse.loading,
     error: driveResponse.error || calendarResponse.error || contactsResponse.error,
@@ -44,7 +42,7 @@ const FetchFirst = (signedIn: boolean): IResponse => {
     driveFiles: driveResponse.result || [],
     refetchCalendarEvents: calendarResponse.execute,
     refetchDriveFiles: driveResponse.execute,
-    contacts: contactsResponse.result || { contactsByEmail: {}, contactsByPeopleId: {} },
+    contacts: contactsResponse.result || [],
     lastUpdated: new Date(),
     emailAddresses: emailList,
     addEmailAddressesToStore,

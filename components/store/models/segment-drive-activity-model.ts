@@ -48,7 +48,7 @@ export default class SegmentDriveActivityModel {
     return this.db.getAllFromIndex('meetingDriveActivity', 'by-drive-activity-id', activityId);
   }
 
-  async getById(id: string): Promise<IFormattedDriveActivity | undefined> {
+  async getById(id: string): Promise<ISegmentDriveActivity | undefined> {
     if (id) {
       return this.db.get('meetingDriveActivity', id);
     }

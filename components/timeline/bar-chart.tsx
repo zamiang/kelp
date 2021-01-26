@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useComponentSize from '@rehooks/component-size';
 import { addDays, differenceInCalendarDays, differenceInMinutes, format, subDays } from 'date-fns';
 import { times } from 'lodash';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import config from '../../constants/config';
 import { IStore } from '../store/use-store';
 import D3BarChart, { IBarChartItem } from './d3-bar-chart';
@@ -122,15 +122,14 @@ const smallLabelHash = {
   people: 'met',
 };
 
-const getDataForType = (
+const getDataForType = async (
   props: IStore & { type: 'meetings' | 'documents' | 'people' },
   minDate: Date,
   maxDate: Date,
 ) => {
   if (props.type === 'documents') {
-    const allActivity = props.driveActivityStore
-      .getAll()
-      .filter((activity) => activity.time > minDate);
+    let allActivity = await props.driveActivityStore.getAll();
+    allActivity = allActivity.filter((activity) => activity.time > minDate);
 
     const activityDocuments = {} as any;
     times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
@@ -158,9 +157,8 @@ const getDataForType = (
     });
     return Object.values(activityDocuments);
   } else if (props.type === 'meetings') {
-    const allMeetings = props.timeDataStore
-      .getSegments()
-      .filter((segment) => segment.start > minDate);
+    let allMeetings = await props.timeDataStore.getSegments();
+    allMeetings = allMeetings.filter((segment) => segment.start > minDate);
     const meetingCount = {} as any;
     times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
       const date = addDays(minDate, interval);
@@ -187,9 +185,8 @@ const getDataForType = (
     });
     return Object.values(meetingCount);
   } else {
-    const allMeetings = props.timeDataStore
-      .getSegments()
-      .filter((segment) => segment.start > minDate);
+    const allMeetings = await props.timeDataStore.getSegments();
+    allMeetings.filter((segment) => segment.start > minDate);
     const peopleCount = {} as any;
     times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
       const date = addDays(minDate, interval);
@@ -228,10 +225,20 @@ const BarChart = (
   const classes = useStyles();
   const minDate = new Date(subDays(new Date(), 12));
   const maxDate = new Date(addDays(new Date(), 2));
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = (await getDataForType(props, minDate, maxDate)) as any;
+      setData(result);
+    };
+    void fetchData();
+  }, [props.type]);
+
   return (
     <div className={classes.barChart} ref={ref}>
       <D3Component
-        data={getDataForType(props, minDate, maxDate) as any}
+        data={data}
         width={size.width < 300 ? 300 : size.width}
         height={300}
         minDate={minDate}

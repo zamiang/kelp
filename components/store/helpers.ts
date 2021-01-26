@@ -1,10 +1,9 @@
-import { intervalToDuration, subDays, subWeeks } from 'date-fns';
-import { flatten, sortBy, uniqBy } from 'lodash';
+import { intervalToDuration, subWeeks } from 'date-fns';
+import { uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { getWeek } from '../shared/date-helpers';
 import { IFormattedAttendee } from './models/attendee-model';
-import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
 import { ISegment } from './models/segment-model';
 import { IStore } from './use-store';
@@ -44,23 +43,6 @@ export const getMeetingTime = (segments: (ISegment | undefined)[]) => {
   };
 };
 
-export const getDriveActivityWhileMeetingWith = (
-  people: IPerson[],
-  timeDataStore: IStore['timeDataStore'],
-  driveActivityStore: IStore['driveActivityStore'],
-) => {
-  const activityIds = flatten(
-    people.map((person) => {
-      const segmentIds = person.segmentIds;
-      const driveActivityIds = segmentIds.map(
-        (id) => timeDataStore.getSegmentById(id)!.currentUserDriveActivityIds,
-      );
-      return flatten(driveActivityIds);
-    }),
-  );
-  return activityIds.map((id) => driveActivityStore.getById(id)!);
-};
-
 export const getAssociates = async (
   personId: string,
   segments: (ISegment | undefined)[],
@@ -98,33 +80,6 @@ export const getAssociates = async (
   return attendees.map((a) => attendeeLookup[a[0]]);
 };
 
-export const getPeopleMeetingWithOnDay = async (
-  timeDataStore: IStore['timeDataStore'],
-  date: Date,
-  shouldExcludeSelf: boolean,
-) => {
-  const meetings = timeDataStore.getSegmentsForDay(date);
-  return sortBy(
-    uniqBy(flatten(meetings.map((segment) => segment.formattedAttendees)), 'personId')
-      .map((attendee) => this.getPersonById(attendee.personId))
-      .filter((person) => (shouldExcludeSelf ? !person?.isCurrentUser : true)),
-    'name',
-  );
-};
-
-export const getPeopleMeetingWithThisWeek = async (
-  timeDataStore: IStore['timeDataStore'],
-  shouldExcludeSelf: boolean,
-) => {
-  const meetingsThisWeek = timeDataStore.getSegmentsForWeek(getWeek(new Date()));
-  return sortBy(
-    uniqBy(flatten(meetingsThisWeek.map((segment) => segment.formattedAttendees)), 'personId')
-      .map((attendee) => this.getPersonById(attendee.personId))
-      .filter((person) => (shouldExcludeSelf ? !person?.isCurrentUser : true)),
-    'name',
-  );
-};
-
 export const getPeopleForDriveActivity = async (
   activity: IFormattedDriveActivity[],
   personDataStore: IStore['personDataStore'],
@@ -136,52 +91,6 @@ export const getPeopleForDriveActivity = async (
   );
 
   return people.filter((person) => person && person.id) as IPerson[];
-};
-
-export const getDocsRecentlyEditedByCurrentUser = (
-  driveActivityStore: IStore['driveActivityStore'],
-  personDataStore: IStore['personDataStore'],
-) => {
-  const driveActivity = driveActivityStore.getAll();
-  const minTime = subDays(new Date(), 7);
-  return (uniqBy(
-    driveActivity
-      .filter((activity) => {
-        const person =
-          activity.actorPersonId && personDataStore.getPersonById(activity.actorPersonId);
-        if (person && person.isCurrentUser) {
-          return activity.time > minTime;
-        }
-        return false;
-      })
-      .map(
-        (driveActivity) =>
-          driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
-      )
-      .filter((doc) => doc && doc.id),
-    'id',
-  ) as IDocument[]).sort((a, b) => (a.name! < b.name! ? -1 : 1));
-};
-
-export const getDocumentsForDay = (
-  timeDataStore: IStore['timeDataStore'],
-  driveActivityStore: IStore['driveActivityStore'],
-  day: Date,
-) => {
-  const driveActivityIdsForDay = timeDataStore.getDriveActivityIdsForDate(day);
-  const documentsFromActivity: any[] = driveActivityIdsForDay
-    .map((id) => id && driveActivityStore.getById(id))
-    .map(
-      (driveActivity) => driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
-    )
-    .filter((doc) => doc && doc.id);
-
-  const documentIdsForDay = timeDataStore.getListedDocumentIdsForDay(day);
-  const listedDocuments = documentIdsForDay.map((id) => this.getByLink(id)).filter(Boolean);
-  const concattedDocuments = uniqBy(listedDocuments.concat(documentsFromActivity), 'id');
-  return concattedDocuments.sort((a: any, b: any) =>
-    a?.name.toLowerCase().localeCompare(b?.name.toLowerCase()),
-  );
 };
 
 export const getFormattedGuestStats = async (attendees: IFormattedAttendee[]) => {

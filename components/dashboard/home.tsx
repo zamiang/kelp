@@ -20,11 +20,11 @@ const Home = (props: IStore) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.timeDataStore.getSegmentsForDay(props.day);
+      const result = await props.timeDataStore.getSegmentsForDay(currentTime);
       setSegments(result.sort((a, b) => (a.start < b.start ? -1 : 1)));
     };
     void fetchData();
-  }, [props.day]);
+  }, []);
 
   return (
     <div className={classes.panel}>

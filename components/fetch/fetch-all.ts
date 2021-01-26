@@ -19,18 +19,23 @@ interface IReturnType {
   readonly error: Error | undefined;
 }
 
-const FetchAll = (signedIn: boolean): IReturnType => {
-  const firstLayer = FetchFirst(signedIn);
+const FetchAll = (): IReturnType => {
+  const firstLayer = FetchFirst();
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const secondLayer = FetchSecond({
     googleDocIds,
     isLoading: firstLayer.isLoading,
   });
+
+  // TODO: This lookup is weird
+  const contactsByPeopleId = {} as any;
+  firstLayer.contacts.map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
     secondLayer.driveActivity
       .map((activity) => activity.actorPersonId)
-      .filter((id) => !!id && !firstLayer.contacts?.contactsByPeopleId[id]),
+      .filter((id) => !!id && !contactsByPeopleId[id]),
   ) as string[];
+
   const thirdLayer = FetchThird({
     peopleIds,
     emailAddresses: firstLayer.emailAddresses,

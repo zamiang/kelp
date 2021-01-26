@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../documents/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
@@ -38,7 +38,20 @@ const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
 const Search = (props: IStore) => {
   const classes = panelStyles();
   const router = useRouter();
-  const searchIndex = new SearchIndex(props);
+  const [searchIndex, setSearchIndex] = useState<SearchIndex | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const searchIndex = new SearchIndex();
+      await searchIndex.addData(props);
+      setSearchIndex(searchIndex);
+    };
+    void fetchData();
+  });
+  if (!searchIndex) {
+    return null;
+  }
+
   const searchQuery =
     router.query?.query &&
     (router.query.query as string).toLowerCase().replace(uncommonPunctuation, ' ');

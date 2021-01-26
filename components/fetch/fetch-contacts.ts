@@ -1,3 +1,5 @@
+import { person } from './fetch-people';
+
 const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
   biographies
     .filter((bio) => bio.metadata?.primary)
@@ -39,7 +41,7 @@ const fetchContacts = async () => {
     };
     return formattedContact;
   });
-  return results?.filter(Boolean);
+  return results?.filter(Boolean) as person[];
 };
 
 export default fetchContacts;

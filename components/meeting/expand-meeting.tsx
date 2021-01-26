@@ -29,6 +29,7 @@ const createMeetingNotes = async (
   setMeetingNotesLoading: (isLoading: boolean) => void,
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
+  attendeeDataStore: IStore['attendeeDataStore'],
   refetch: () => void,
 ) => {
   setMeetingNotesLoading(true);
@@ -37,6 +38,7 @@ const createMeetingNotes = async (
     documentsCurrentUserEditedWhileMeetingWithAttendees,
     personDataStore,
     documentDataStore,
+    attendeeDataStore,
   );
   // Not sure if a good idea
   // await addDocumentToCalendarEvent(meeting, document);
@@ -148,6 +150,7 @@ const ExpandedMeeting = (
                   setMeetingNotesLoading,
                   props.personDataStore,
                   props.documentDataStore,
+                  props.attendeeDataStore,
                   props.refetch,
                 )
               }

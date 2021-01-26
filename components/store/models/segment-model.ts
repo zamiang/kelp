@@ -1,4 +1,4 @@
-import { addMinutes, format, getWeek, isSameDay, subMinutes } from 'date-fns';
+import { addMinutes, format, getDate, getWeek, isSameDay, subMinutes } from 'date-fns';
 import getUrls from 'get-urls';
 import { first, flatten, groupBy } from 'lodash';
 import config from '../../../constants/config';
@@ -132,6 +132,13 @@ export default class SegmentModel {
     const segments = await this.getAll();
     // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
     flatten(segments.filter((segment) => getWeek(segment.start) === week).map(() => []));
+    return segments;
+  }
+
+  async getDriveActivityIdsForDate(date: number) {
+    const segments = await this.getAll();
+    // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
+    flatten(segments.filter((segment) => getDate(segment.start) === date).map(() => []));
     return segments;
   }
 }
