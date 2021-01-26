@@ -17,7 +17,7 @@ interface IAttendee {
   readonly self?: boolean;
 }
 
-export const formatAttendee = (
+const formatAttendee = (
   attendee: IAttendee,
   person: IPerson,
   segmentId: string,
