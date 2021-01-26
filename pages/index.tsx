@@ -142,6 +142,11 @@ const App = () => {
     void fetchData();
   }, []);
 
+  // TODO
+  if (!store) {
+    return null;
+  }
+
   return (
     <div className={classes.container}>
       <Head>

@@ -91,6 +91,11 @@ const LoadingDashboardContainer = () => {
     void fetchData();
   }, [isSignedIn]);
 
+  // TODO
+  if (!store) {
+    return null;
+  }
+
   if (!isLoading && !session?.user) {
     void router.push('/');
   }

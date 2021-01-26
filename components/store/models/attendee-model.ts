@@ -38,16 +38,22 @@ export default class AttendeeModel {
   }
 
   async addAttendeesToStore(segments: ISegment[]) {
-    const tx = this.db.transaction('attendee', 'readwrite');
     await Promise.all(
-      segments.map((segment) =>
-        segment.attendees.map(async (attendee) => {
-          const person = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
-          return tx.store.add(formatAttendee(attendee, person[0], segment.id));
-        }),
+      segments.map(
+        async (segment) =>
+          await Promise.all(
+            segment.attendees.map(async (attendee) => {
+              const person = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
+              if (person[0] && person[0].id) {
+                return this.db.put('attendee', formatAttendee(attendee, person[0], segment.id));
+              } else {
+                console.error('missing', attendee.email);
+              }
+            }),
+          ),
       ),
     );
-    return tx.done;
+    return;
   }
 
   async getAllForSegmentId(segmentId: string) {
