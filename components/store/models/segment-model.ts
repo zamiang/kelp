@@ -1,6 +1,6 @@
 import { addMinutes, format, getWeek, isSameDay, subMinutes } from 'date-fns';
 import getUrls from 'get-urls';
-import { first, flatten, groupBy, intersection } from 'lodash';
+import { first, flatten, groupBy } from 'lodash';
 import config from '../../../constants/config';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
 import { dbType } from '../db';
@@ -131,28 +131,7 @@ export default class SegmentModel {
   async getDriveActivityIdsForWeek(week: number) {
     const segments = await this.getAll();
     // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
-    flatten(segments.filter((segment) => getWeek(segment.start) === week).map((segment) => []));
+    flatten(segments.filter((segment) => getWeek(segment.start) === week).map(() => []));
     return segments;
-  }
-
-  // Segments with activity by current user
-  async getSegmentsWithCurrentUserDriveActivity(driveActivityIds: string[]) {
-    const segments = await this.getAll();
-    return segments.filter(
-      (segment) => intersection(driveActivityIds, segment.currentUserDriveActivityIds).length > 0,
-    );
-  }
-
-  // Segments with activity by attendees
-  getSegmentsWithAttendeeDriveActivity(driveActivityIds: string[]) {
-    return this.segments.filter(
-      (segment) => intersection(driveActivityIds, segment.attendeeDriveActivityIds).length > 0,
-    );
-  }
-
-  getSegmentsWithDocumentInDescription(documentId: string) {
-    return this.segments.filter((segment) =>
-      segment.documentIdsFromDescription.includes(documentId),
-    );
   }
 }

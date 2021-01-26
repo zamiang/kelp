@@ -184,25 +184,6 @@ export const getDocumentsForDay = (
   );
 };
 
-export const getDocumentsForThisWeek = (
-  timeDataStore: IStore['timeDataStore'],
-  driveActivityStore: IStore['driveActivityStore'],
-) => {
-  const driveActivityIdsForThisWeek = timeDataStore.getDriveActivityIdsForWeek(getWeek(new Date()));
-  return (uniqBy(
-    driveActivityIdsForThisWeek
-      .map((id) => id && driveActivityStore.getById(id))
-      .map(
-        (driveActivity) =>
-          driveActivity && driveActivity.link && this.getByLink(driveActivity.link),
-      )
-      .filter((doc) => doc && doc.id),
-    'id',
-  ) as IDocument[]).sort((a: any, b: any) =>
-    a?.name.toLowerCase().localeCompare(b?.name.toLowerCase()),
-  );
-};
-
 export const getFormattedGuestStats = async (attendees: IFormattedAttendee[]) => {
   const guestStatsHash = {
     needsAction: 'awaiting response',

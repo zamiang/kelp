@@ -1,15 +1,24 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DocumentRow from '../documents/document-row';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
+import { IDocument } from '../store/models/document-model';
 import { IStore } from '../store/use-store';
 
 const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => {
-  const docs = props.documentDataStore.getDocs().sort((a, b) => (a.name! < b.name! ? -1 : 1));
+  const [docs, setDocs] = useState<IDocument[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.documentDataStore.getAll();
+      setDocs(result.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
+    };
+    void fetchData();
+  }, []);
+
   const classes = panelStyles();
   return (
     <div className={classes.rowNoBorder}>
@@ -29,14 +38,11 @@ export const DocumentsForToday = (
   props: IStore & { selectedDocumentId: string | null; isSmall?: boolean },
 ) => {
   const classes = panelStyles();
-  const docsForToday = props.documentDataStore.getDocumentsForDay(
-    props.timeDataStore,
-    props.driveActivityStore,
-    new Date(),
-  );
+  // TODO: Make new table for this
+  const docsForToday = [] as any;
   return (
     <div className={classes.rowNoBorder}>
-      {docsForToday.map((doc) => (
+      {docsForToday.map((doc: IDocument) => (
         <DocumentRow
           key={doc.id}
           doc={doc}
@@ -51,13 +57,11 @@ export const DocumentsForToday = (
 
 const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | null }) => {
   const classes = panelStyles();
-  const docsForThisWeek = props.documentDataStore.getDocumentsForThisWeek(
-    props.timeDataStore,
-    props.driveActivityStore,
-  );
+  // TODO make new table for this
+  const docsForThisWeek = [] as any;
   return (
     <div className={classes.rowNoBorder}>
-      {docsForThisWeek.map((doc) => (
+      {docsForThisWeek.map((doc: IDocument) => (
         <DocumentRow
           key={doc.id}
           doc={doc}

@@ -1,28 +1,25 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { sortBy } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
+import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 
 export const PeopleToday = (
   props: IStore & { selectedPersonId: string | null; noLeftMargin?: boolean },
 ) => {
   const classes = panelStyles();
-  const peopleMeetingWithToday = props.personDataStore.getPeopleMeetingWithOnDay(
-    props.timeDataStore,
-    new Date(),
-    true,
-  );
+  // TODO: Add an index for this
+  const peopleMeetingWithToday = [] as any;
   return (
     <div className={classes.section}>
       <div className={classes.rowNoBorder}>
         {peopleMeetingWithToday.map(
-          (person) =>
+          (person: IPerson) =>
             person && (
               <PersonRow
                 key={person.id}
@@ -40,15 +37,13 @@ export const PeopleToday = (
 
 const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = panelStyles();
-  const peopleMeetingWithThisWeek = props.personDataStore.getPeopleMeetingWithThisWeek(
-    props.timeDataStore,
-    true,
-  );
+  // TODO: Add an index for this
+  const peopleMeetingWithThisWeek = [] as any;
   return (
     <div className={classes.section}>
       <div className={classes.rowNoBorder}>
         {peopleMeetingWithThisWeek.map(
-          (person) =>
+          (person: IPerson) =>
             person && (
               <PersonRow
                 key={person.id}
@@ -65,7 +60,16 @@ const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => 
 
 const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = panelStyles();
-  const people = sortBy(props.personDataStore.getPeople(true), 'name');
+  const [people, setPeople] = useState<IPerson[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.personDataStore.getAll(true);
+      setPeople(result);
+    };
+    void fetchData();
+  }, []);
+
   return (
     <div className={classes.section}>
       <div className={classes.rowNoBorder}>

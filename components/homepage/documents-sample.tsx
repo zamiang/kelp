@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { flatten } from 'lodash';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import DriveActivityList from '../shared/documents-from-drive-activity';
 import { meetingId } from '../store/use-homepage-store';
 import { IStore } from '../store/use-store';
@@ -16,25 +16,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Documents = (props: { store: IStore }) => {
   const classes = useStyles();
-  const meeting = await props.store.timeDataStore.getById(meetingId);
-  if (!meeting) {
-    return null;
-  }
-  const attendeeIds = (meeting.formattedAttendees || [])
-    .filter((attendee) => !attendee.self)
-    .map((attendee) => attendee.personId);
-  const people = attendeeIds
-    .map((id) => props.store.personDataStore.getPersonById(id)!)
-    .filter((person) => !!person);
+  const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
 
-  const driveActivityFromAttendees = flatten(
-    people.map((person) => Object.values(person.driveActivity)),
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      if (meetingId) {
+        // TODO
+        setDriveActivity([]);
+      }
+    };
+    void fetchData();
+  }, [meetingId]);
+
   return (
     <div className={classes.summary}>
       <Typography variant="h6">Documents you may need</Typography>
       <DriveActivityList
-        driveActivity={driveActivityFromAttendees}
+        driveActivity={driveActivity}
         docStore={props.store.documentDataStore}
         personStore={props.store.personDataStore}
       />

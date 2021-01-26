@@ -33,33 +33,40 @@ const addScope = async (): Promise<boolean> => {
   }
 };
 
-const getCreateDocumentRequestBody = (
+const getCreateDocumentRequestBody = async (
   meeting: ISegment,
   documents: IFormattedDriveActivity[],
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
+  attendeeDataStore: IStore['attendeeDataStore'],
 ) => {
-  const attendees = meeting.formattedAttendees
-    .map((attendee) => {
-      const person = personDataStore.getPersonById(attendee.personId);
-      const name = person?.name || person?.emailAddresses;
-      return `<a href="https://www.kelp.nyc/dashboard?tab=people&slug=${person?.id}">${name}</a>`;
-    })
-    .join(', ');
-  const relatedDocuments = uniqBy(documents, 'link')
-    .map((activity) => {
-      const document = documentDataStore.getByLink(activity.link);
+  const attendees = await attendeeDataStore.getAllForSegmentId(meeting.id);
+  const attendeesText = await Promise.all(
+    attendees.map(async (attendee) => {
+      if (attendee.personId) {
+        const person = await personDataStore.getPersonById(attendee.personId);
+        const name = person?.name || person?.emailAddresses;
+        return `<a href="https://www.kelp.nyc/dashboard?tab=people&slug=${person?.id}">${name}</a>`;
+      }
+    }),
+  );
+
+  const uniqueDocuments = uniqBy(documents, 'link');
+  const relatedDocuments = await Promise.all(
+    uniqueDocuments.map(async (activity) => {
+      const document = await documentDataStore.getByLink(activity.link);
       return `<li><a href="${document?.link}">${document?.name}</a></li>`;
-    })
-    .join('');
+    }),
+  );
+
   const start = `${format(meeting.start, 'EEEE, MMMM d')} at ${format(meeting.start, 'p')}`;
   const data = `
     <h1>${meeting.summary}</h1>
     <b>Time</b>: <i>${start}</i><br />
-    <b>Attendees</b>: ${attendees}<br />
+    <b>Attendees</b>: ${attendeesText.join(', ')}<br />
     ${
       relatedDocuments.length > 0
-        ? `<b>Related Documents</b><br /><ul>${relatedDocuments}</ul><br />`
+        ? `<b>Related Documents</b><br /><ul>${relatedDocuments.join('')}</ul><br />`
         : ''
     }
     <h2>Notes<h2>`;
@@ -79,18 +86,21 @@ export const createDocument = async (
   driveActivity: IFormattedDriveActivity[],
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
+  attendeeDataStore: IStore['attendeeDataStore'],
 ) => {
   const isScopeAdded = await addScope();
   if (!isScopeAdded) {
     return;
   }
 
-  const body = getCreateDocumentRequestBody(
+  const body = await getCreateDocumentRequestBody(
     meeting,
     driveActivity,
     personDataStore,
     documentDataStore,
+    attendeeDataStore,
   );
+
   const document = await gapi.client.request({
     path: '/upload/drive/v3/files',
     method: 'POST',
