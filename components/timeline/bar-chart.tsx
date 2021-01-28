@@ -129,7 +129,9 @@ const getDataForType = async (
 ) => {
   if (props.type === 'documents') {
     let allActivity = await props.driveActivityStore.getAll();
-    allActivity = allActivity.filter((activity) => activity.time > minDate);
+    allActivity = allActivity.filter(
+      (activity) => activity.time > minDate && activity.time < maxDate,
+    );
 
     const activityDocuments = {} as any;
     times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
@@ -147,12 +149,6 @@ const getDataForType = async (
       const date = format(activity.time, dateFormat);
       if (activityDocuments[date]) {
         activityDocuments[date].rate++;
-      } else {
-        activityDocuments[date] = {
-          date: activity.time,
-          rate: 1,
-          type: 'document',
-        };
       }
     });
     return Object.values(activityDocuments);
@@ -175,12 +171,6 @@ const getDataForType = async (
       const duration = differenceInMinutes(segment.end, segment.start);
       if (meetingCount[date]) {
         meetingCount[date].rate += duration;
-      } else {
-        meetingCount[date] = {
-          date: segment.start,
-          rate: duration,
-          type: 'document',
-        };
       }
     });
     return Object.values(meetingCount);
@@ -203,12 +193,6 @@ const getDataForType = async (
       const count = segment.attendees.length;
       if (peopleCount[date]) {
         peopleCount[date].rate += count;
-      } else {
-        peopleCount[date] = {
-          date: segment.start,
-          rate: count,
-          type: 'document',
-        };
       }
     });
     return Object.values(peopleCount);

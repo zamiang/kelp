@@ -118,7 +118,7 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
 
   return (
     <React.Fragment>
-      <Loading isOpen={!isSignedIn || isLoading} message="Loading" />
+      <Loading isOpen={!isSignedIn || isLoading || store.isLoading} message="Loading" />
       {isSignedIn && <DashboardContainer store={store} />}
     </React.Fragment>
   );

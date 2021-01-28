@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import FetchAll from '../fetch/fetch-all';
 import { dbType } from './db';
 import AttendeeModel from './models/attendee-model';
@@ -17,12 +17,14 @@ export interface IStore {
   readonly attendeeDataStore: AttendeeModel;
   readonly lastUpdated: Date;
   readonly refetch: () => void;
+  readonly isLoading: boolean;
   readonly error?: Error;
 }
 
 const useStore = (db: dbType): IStore => {
   // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll();
+  const [isLoading, setLoading] = useState<boolean>(true);
   const people = (data.personList || []).map((person) => formatPerson(person));
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
@@ -59,6 +61,7 @@ const useStore = (db: dbType): IStore => {
         },
         { meetings: true, people: true, docs: true },
       );
+      setLoading(false);
     };
     void addData();
   }, [data.isLoading]);
@@ -71,6 +74,7 @@ const useStore = (db: dbType): IStore => {
     attendeeDataStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
+    isLoading: data.isLoading || isLoading,
     refetch: () => data.refetch(),
     error: data.error,
   };

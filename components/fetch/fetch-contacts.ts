@@ -32,7 +32,7 @@ const fetchContacts = async () => {
       return;
     }
     const formattedContact = {
-      id: person.resourceName,
+      id: person.resourceName.replace('people/', ''),
       name: displayName || emailAddresses[0] || person.resourceName,
       isInContacts: person.names ? true : false,
       emailAddresses,

@@ -55,22 +55,17 @@ export default class PersonModel {
   ) {
     const tx = this.db.transaction('person', 'readwrite');
     const emailAddressToPersonIdHash: any = {};
+    const contactLookup: any = {};
     const filteredPeople: IPerson[] = [];
-    // Add contacts
+    // Create contact lookup
     contacts.forEach((contact) => {
-      let isInStore = false;
       contact.emailAddresses.map((email) => {
-        const person = emailAddressToPersonIdHash[email];
-        if (person) {
-          isInStore = true;
-        }
+        contactLookup[email] = contact;
       });
-
-      if (!isInStore) {
-        filteredPeople.push(formatPerson(contact));
-      }
+      contactLookup[contact.id] = contact;
     });
 
+    console.log(contactLookup);
     // Add people first
     people.forEach((person) => {
       let isInStore = false;
@@ -84,6 +79,7 @@ export default class PersonModel {
         }
       });
       if (!isInStore) {
+        console.log(person.id, person.emailAddresses);
         filteredPeople.push(formatPersonForStore(person));
       }
     });
@@ -93,17 +89,20 @@ export default class PersonModel {
       const formattedEmailAddress = emailAddress.toLocaleLowerCase();
       const person = emailAddressToPersonIdHash[formattedEmailAddress];
       if (!person) {
-        filteredPeople.push(createNewPersonFromEmail(formattedEmailAddress));
+        if (contactLookup[formattedEmailAddress]) {
+          filteredPeople.push(contactLookup[formattedEmailAddress]);
+        } else {
+          filteredPeople.push(createNewPersonFromEmail(formattedEmailAddress));
+        }
       }
     });
 
     // get current user email
     (events[0]?.attendees || []).forEach((attendee) => {
       if (attendee && attendee.self && attendee.email) {
-        const person = filteredPeople.find(
-          (item) => attendee.email && item.emailAddresses.includes(attendee.email),
-        );
-        person!.isCurrentUser = 1;
+        const person = contactLookup[attendee.email];
+        person.isCurrentUser = 1;
+        filteredPeople.push(person);
       }
     });
 
