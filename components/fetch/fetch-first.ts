@@ -36,7 +36,7 @@ const FetchFirst = (): IResponse => {
     [] as any,
   );
   return {
-    isLoading: driveResponse.loading && calendarResponse.loading && contactsResponse.loading,
+    isLoading: driveResponse.loading || calendarResponse.loading || contactsResponse.loading,
     error: driveResponse.error || calendarResponse.error || contactsResponse.error,
     calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents || [] : [],
     driveFiles: driveResponse.result || [],

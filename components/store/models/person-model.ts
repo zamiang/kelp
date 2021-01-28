@@ -1,4 +1,5 @@
 import { first } from 'lodash';
+import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
 import { person as GooglePerson } from '../../fetch/fetch-people';
 import { dbType } from '../db';
 
@@ -9,7 +10,7 @@ export interface IPerson {
   imageUrl?: string | null;
   notes?: string;
   googleId: string | null;
-  isCurrentUser: boolean;
+  isCurrentUser: number; // needs to be a number to be a valid index
   isInContacts: boolean;
 }
 
@@ -19,9 +20,19 @@ export const formatPerson = (person: GooglePerson) => ({
   googleId: person.id,
   emailAddresses: person.emailAddresses,
   imageUrl: person.imageUrl,
-  isCurrentUser: false,
+  isCurrentUser: 0,
   isInContacts: person.isInContacts,
   notes: person.notes,
+});
+
+const createNewPersonFromEmail = (email: string): IPerson => ({
+  id: email,
+  name: email,
+  googleId: null,
+  emailAddresses: [email],
+  imageUrl: null,
+  isCurrentUser: 0,
+  isInContacts: false,
 });
 
 const formatPersonForStore = (person: IPerson) => ({
@@ -36,15 +47,69 @@ export default class PersonModel {
     this.db = db;
   }
 
-  async addPeopleToStore(people: IPerson[]) {
+  async addPeopleToStore(
+    people: IPerson[],
+    contacts: GooglePerson[] = [],
+    emailAddresses: string[] = [],
+    events: ICalendarEvent[] = [],
+  ) {
     const tx = this.db.transaction('person', 'readwrite');
-    await Promise.all(people.map((person) => tx.store.put(formatPersonForStore(person))));
-    return tx.done;
-  }
+    const emailAddressToPersonIdHash: any = {};
+    const filteredPeople: IPerson[] = [];
+    // Add contacts
+    contacts.forEach((contact) => {
+      let isInStore = false;
+      contact.emailAddresses.map((email) => {
+        const person = emailAddressToPersonIdHash[email];
+        if (person) {
+          isInStore = true;
+        }
+      });
 
-  async addContactsToStore(contacts: GooglePerson[]) {
-    const tx = this.db.transaction('person', 'readwrite');
-    await Promise.all(contacts.map((contact) => tx.store.put(formatPerson(contact))));
+      if (!isInStore) {
+        filteredPeople.push(formatPerson(contact));
+      }
+    });
+
+    // Add people first
+    people.forEach((person) => {
+      let isInStore = false;
+      person.emailAddresses.map((email) => {
+        if (emailAddressToPersonIdHash[email]) {
+          isInStore = true;
+        } else {
+          person.emailAddresses.map((email) => {
+            emailAddressToPersonIdHash[email] = person.id;
+          });
+        }
+      });
+      if (!isInStore) {
+        filteredPeople.push(formatPersonForStore(person));
+      }
+    });
+
+    // Add email addresses
+    emailAddresses.forEach((emailAddress) => {
+      const formattedEmailAddress = emailAddress.toLocaleLowerCase();
+      const person = emailAddressToPersonIdHash[formattedEmailAddress];
+      if (!person) {
+        filteredPeople.push(createNewPersonFromEmail(formattedEmailAddress));
+      }
+    });
+
+    console.log('wat', events[0]);
+
+    // get current user email
+    (events[0]?.attendees || []).forEach((attendee) => {
+      if (attendee && attendee.self && attendee.email) {
+        const person = filteredPeople.find(
+          (item) => attendee.email && item.emailAddresses.includes(attendee.email),
+        );
+        person!.isCurrentUser = 1;
+      }
+    });
+
+    await Promise.all(filteredPeople.map((person) => tx.store.put(person)));
     return tx.done;
   }
 

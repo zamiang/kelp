@@ -63,7 +63,7 @@ async function database() {
       });
       personStore.createIndex('by-google-id', 'googleId', { unique: true });
       personStore.createIndex('by-email', 'emailAddresses', { unique: false, multiEntry: true });
-      personStore.createIndex('is-self', 'isCurrentUser');
+      personStore.createIndex('is-self', 'isCurrentUser', { unique: true });
 
       const documentStore = db.createObjectStore('document', {
         keyPath: 'id',

@@ -31,7 +31,7 @@ const people: IPerson[] = [
     imageUrl: '',
     isInContacts: true,
     googleId: null,
-    isCurrentUser: true,
+    isCurrentUser: 1,
   },
   {
     id: 'ramesses.ii@gmail.com',
@@ -40,7 +40,7 @@ const people: IPerson[] = [
     imageUrl: '',
     isInContacts: true,
     googleId: null,
-    isCurrentUser: false,
+    isCurrentUser: 0,
   },
   {
     id: 'alexander.the.great@gmail.com',
@@ -49,7 +49,7 @@ const people: IPerson[] = [
     imageUrl: '',
     isInContacts: true,
     googleId: null,
-    isCurrentUser: false,
+    isCurrentUser: 0,
   },
   {
     id: 'shaka@gmail.com',
@@ -58,7 +58,7 @@ const people: IPerson[] = [
     imageUrl: '',
     isInContacts: true,
     googleId: null,
-    isCurrentUser: false,
+    isCurrentUser: 0,
   },
 ];
 

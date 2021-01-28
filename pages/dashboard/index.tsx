@@ -80,21 +80,37 @@ const LoadingDashboardContainer = () => {
   const isSignedIn = useGapi();
   const router = useRouter();
   const [session, isLoading] = useSession();
-  const [store, setStore] = useState<any>(undefined);
+  const [database, setDatabase] = useState<any>(undefined);
+
   useEffect(() => {
     const fetchData = async () => {
-      if (isSignedIn) {
-        const store = await getStore(await db);
-        setStore(store);
-      }
+      setDatabase(await db);
     };
     void fetchData();
-  }, [isSignedIn]);
+  }, []);
 
   // TODO
-  if (!store) {
+  if (!database) {
     return null;
   }
+
+  if (!isLoading && !session?.user) {
+    void router.push('/');
+  }
+
+  return (
+    <React.Fragment>
+      <Loading isOpen={!isSignedIn || isLoading} message="Loading" />
+      {isSignedIn && <LoadingStoreDashboardContainer database={database} />}
+    </React.Fragment>
+  );
+};
+
+const LoadingStoreDashboardContainer = (props: { database: any }) => {
+  const isSignedIn = useGapi();
+  const router = useRouter();
+  const [session, isLoading] = useSession();
+  const store = getStore(props.database);
 
   if (!isLoading && !session?.user) {
     void router.push('/');

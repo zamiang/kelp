@@ -27,7 +27,7 @@ times(PEOPLE_COUNT, () => {
     imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
     isInContacts: true,
     googleId: null,
-    isCurrentUser: false,
+    isCurrentUser: 0,
   });
 });
 
@@ -39,7 +39,7 @@ people.push({
   googleId: null,
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
   isInContacts: true,
-  isCurrentUser: true,
+  isCurrentUser: 1,
 });
 
 /**
