@@ -38,13 +38,13 @@ export default class PersonModel {
 
   async addPeopleToStore(people: IPerson[]) {
     const tx = this.db.transaction('person', 'readwrite');
-    await Promise.all(people.map((person) => tx.store.add(formatPersonForStore(person))));
+    await Promise.all(people.map((person) => tx.store.put(formatPersonForStore(person))));
     return tx.done;
   }
 
   async addContactsToStore(contacts: GooglePerson[]) {
     const tx = this.db.transaction('person', 'readwrite');
-    await Promise.all(contacts.map((contact) => tx.store.add(formatPerson(contact))));
+    await Promise.all(contacts.map((contact) => tx.store.put(formatPerson(contact))));
     return tx.done;
   }
 

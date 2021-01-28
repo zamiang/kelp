@@ -61,7 +61,7 @@ export default class SegmentModel {
   async addSegments(calendarEvents: ICalendarEvent[]) {
     const formattedSegments = formatSegments(calendarEvents);
     const tx = this.db.transaction('meeting', 'readwrite');
-    await Promise.all(formattedSegments.map((event) => tx.store.add(event)));
+    await Promise.all(formattedSegments.map((event) => tx.store.put(event)));
     return tx.done;
   }
 

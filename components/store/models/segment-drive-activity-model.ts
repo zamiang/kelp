@@ -30,7 +30,7 @@ export default class SegmentDriveActivityModel {
     const tx = this.db.transaction('meetingDriveActivity', 'readwrite');
     await Promise.all(
       driveActivity.map((driveActivityItem) =>
-        tx.store.add(formatSegmentDriveActivity(driveActivityItem, segments[0])),
+        tx.store.put(formatSegmentDriveActivity(driveActivityItem, segments[0])),
       ),
     );
     return tx.done;

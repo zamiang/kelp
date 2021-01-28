@@ -54,7 +54,6 @@ const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personD
   const expandClasses = useExpandStyles();
   const router = useRouter();
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
-
   useEffect(() => {
     const fetchData = async () => {
       if (props.attendee.personId) {
@@ -101,13 +100,14 @@ const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personD
   );
 };
 
-const AttendeeRow = (props: IProps) => {
+const AttendeeRows = (props: IProps) => {
   const expandClasses = useExpandStyles();
+  const orderedAttendees = orderBy(props.attendees || [], 'responseStatus');
   return (
     <div className={expandClasses.list}>
-      {orderBy(props.attendees || [], 'responseStatus').map((attendee) => {
-        <Row attendee={attendee} personStore={props.personStore} />;
-      })}
+      {orderedAttendees.map((attendee) => (
+        <Row key={attendee.id} attendee={attendee} personStore={props.personStore} />
+      ))}
     </div>
   );
 };
@@ -129,7 +129,7 @@ const AttendeeList = (props: IProps) => {
   }
   return (
     <React.Fragment>
-      {isExpanded && <AttendeeRow {...props} />}
+      {isExpanded && <AttendeeRows {...props} />}
       {!isExpanded && (
         <Typography
           variant="subtitle2"

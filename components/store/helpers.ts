@@ -93,7 +93,7 @@ export const getPeopleForDriveActivity = async (
   return people.filter((person) => person && person.id) as IPerson[];
 };
 
-export const getFormattedGuestStats = async (attendees: IFormattedAttendee[]) => {
+export const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {
   const guestStatsHash = {
     needsAction: 'awaiting response',
     declined: 'no',
