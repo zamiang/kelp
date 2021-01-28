@@ -84,7 +84,7 @@ const LoadingDashboardContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setDatabase(await db);
+      setDatabase(await db('production'));
     };
     void fetchData();
   }, []);

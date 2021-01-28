@@ -10,7 +10,7 @@ const TestDashboard = () => {
   const [store, setStore] = useState<any>(undefined);
   useEffect(() => {
     const fetchData = async () => {
-      const store = await getStore(await db);
+      const store = await getStore(await db('test'));
       setStore(store);
     };
     void fetchData();

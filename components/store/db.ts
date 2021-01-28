@@ -55,15 +55,21 @@ interface Db extends DBSchema {
   };
 }
 
-async function database() {
-  const db = await openDB<Db>('kelp', 1, {
+const dbNameHash = {
+  production: 'kelp-1',
+  test: 'test-1',
+  homepage: 'homepage-1',
+};
+
+async function database(environment: 'production' | 'test' | 'homepage') {
+  const db = await openDB<Db>(dbNameHash[environment], 1, {
     upgrade(db) {
       const personStore = db.createObjectStore('person', {
         keyPath: 'id',
       });
       personStore.createIndex('by-google-id', 'googleId', { unique: true });
       personStore.createIndex('by-email', 'emailAddresses', { unique: false, multiEntry: true });
-      personStore.createIndex('is-self', 'isCurrentUser', { unique: true });
+      personStore.createIndex('is-self', 'isCurrentUser', { unique: false });
 
       const documentStore = db.createObjectStore('document', {
         keyPath: 'id',
@@ -96,4 +102,4 @@ async function database() {
 
 export type dbType = IDBPDatabase<Db>;
 
-export default database();
+export default database;
