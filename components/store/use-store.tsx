@@ -34,7 +34,6 @@ const useStore = (db: dbType): IStore => {
 
   useEffect(() => {
     const addData = async () => {
-      console.log(data, 'adding to store');
       // TODO: Only create the datastores once data.isLoading is false
       await personDataStore.addPeopleToStore(
         people,

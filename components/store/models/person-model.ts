@@ -97,8 +97,6 @@ export default class PersonModel {
       }
     });
 
-    console.log('wat', events[0]);
-
     // get current user email
     (events[0]?.attendees || []).forEach((attendee) => {
       if (attendee && attendee.self && attendee.email) {
