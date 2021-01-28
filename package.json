@@ -69,7 +69,7 @@
     "react-dom": "16.14.0",
     "react-hook-form": "6.14.2",
     "react-linkify": "1.0.0-alpha",
-    "react-onclickoutside": "6.9.1",
+    "react-onclickoutside": "6.10.0",
     "react-popper": "2.2.4",
     "rollbar": "2.19.4",
     "sitemap": "6.3.5",
