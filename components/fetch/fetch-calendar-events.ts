@@ -118,7 +118,6 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
         end: new Date(event.end!.dateTime!),
         hangoutLink: event.hangoutLink,
         location: event.location,
-        // TODO: Handle lack of enum type in the google calendar library
         selfResponseStatus: getSelfResponseStatus(event.attendees || []),
         creator: event.creator,
         organizer: event.organizer,

@@ -22,7 +22,6 @@ export interface IStore {
 }
 
 const useStore = (db: dbType): IStore => {
-  // TODO: Listen for log-out or token espiring and re-fetch
   const data = FetchAll();
   const [isLoading, setLoading] = useState<boolean>(true);
   const people = (data.personList || []).map((person) => formatPerson(person));
@@ -39,7 +38,6 @@ const useStore = (db: dbType): IStore => {
       if (data.isLoading) {
         return;
       }
-      // TODO: Only create the datastores once data.isLoading is false
       await personDataStore.addPeopleToStore(
         people,
         data.contacts,
