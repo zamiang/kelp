@@ -87,7 +87,7 @@ export default class Tfidf {
   }
 
   listTerms(documentIndex: number) {
-    const terms: any = [];
+    const terms: { tfidf: number; term: string }[] = [];
     const documentsToSearch: any = [];
     this.documents.forEach((item) => {
       if (item.__key === (documentIndex.toString() as any)) {
