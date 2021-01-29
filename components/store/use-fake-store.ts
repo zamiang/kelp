@@ -4,8 +4,8 @@ import DocumentDataStore from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
 import TimeDataStore from './models/segment-model';
+import TfidfDataStore from './models/tfidf-model';
 import data from './store-faker';
-import TfidfDataStore from './tfidf-store';
 import { IStore } from './use-store';
 
 const useFakeStore = async (db: dbType): Promise<IStore> => {
@@ -14,7 +14,6 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
   await personDataStore.addPeopleToStore(data.people);
   // TODO??
   // personDataStore.addCurrentUserFlag(data.calendarEvents); ?
-
   const timeDataStore = new TimeDataStore(db);
   await timeDataStore.addSegments(data.segments);
 
@@ -27,17 +26,14 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
   const attendeeDataStore = new AttendeeModel(db);
   await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
 
-  const tfidfStore = new TfidfDataStore();
-  await tfidfStore.recomputeForFilters(
-    {
-      driveActivityStore: driveActivityDataStore,
-      timeDataStore,
-      personDataStore,
-      documentDataStore,
-      attendeeDataStore,
-    },
-    { meetings: true, people: true, docs: true },
-  );
+  const tfidfStore = new TfidfDataStore(db);
+  await tfidfStore.saveDocuments({
+    driveActivityStore: driveActivityDataStore,
+    timeDataStore,
+    personDataStore,
+    documentDataStore,
+    attendeeDataStore,
+  });
 
   return {
     driveActivityStore: driveActivityDataStore,
@@ -46,6 +42,7 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
     documentDataStore,
     attendeeDataStore,
     tfidfStore,
+    isLoading: false,
     lastUpdated: new Date(),
     refetch: () => null,
   };

@@ -5,6 +5,7 @@ import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
 import { ISegmentDriveActivity } from './models/segment-drive-activity-model';
 import { ISegment } from './models/segment-model';
+import { ITfidfRow } from './models/tfidf-model';
 
 interface Db extends DBSchema {
   document: {
@@ -29,6 +30,11 @@ interface Db extends DBSchema {
       'by-email': string;
       'is-self': string;
     };
+  };
+  tfidf: {
+    value: ITfidfRow;
+    key: string;
+    indexes: { 'by-type': string };
   };
   meeting: {
     value: ISegment;
@@ -94,6 +100,11 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
       attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
       attendeeStore.createIndex('by-person-id', 'segmentId', { unique: false });
+
+      const tfidfStore = db.createObjectStore('tfidf', {
+        keyPath: 'id',
+      });
+      tfidfStore.createIndex('by-type', 'type', { unique: false });
     },
   });
 

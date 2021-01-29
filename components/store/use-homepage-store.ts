@@ -9,7 +9,7 @@ import DocumentDataStore, { IDocument } from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore, { IPerson } from './models/person-model';
 import TimeDataStore, { ISegment, getStateForMeeting } from './models/segment-model';
-import TfidfDataStore from './tfidf-store';
+import TfidfDataStore from './models/tfidf-model';
 import { IStore } from './use-store';
 
 Faker.seed(124);
@@ -188,17 +188,14 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
   const attendeeDataStore = new AttendeeDataStore(db);
   await attendeeDataStore.addAttendeesToStore(segments);
 
-  const tfidfStore = new TfidfDataStore();
-  await tfidfStore.recomputeForFilters(
-    {
-      driveActivityStore: driveActivityDataStore,
-      timeDataStore,
-      personDataStore,
-      documentDataStore,
-      attendeeDataStore,
-    },
-    { meetings: true, people: true, docs: true },
-  );
+  const tfidfStore = new TfidfDataStore(db);
+  await tfidfStore.saveDocuments({
+    driveActivityStore: driveActivityDataStore,
+    timeDataStore,
+    personDataStore,
+    documentDataStore,
+    attendeeDataStore,
+  });
 
   return {
     driveActivityStore: driveActivityDataStore,
@@ -207,6 +204,7 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
     documentDataStore,
     attendeeDataStore,
     tfidfStore,
+    isLoading: false,
     lastUpdated: new Date(),
     refetch: () => null,
   };

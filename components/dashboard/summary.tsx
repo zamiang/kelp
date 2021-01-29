@@ -11,11 +11,12 @@ import clsx from 'clsx';
 import { addDays, addWeeks, format, isSameDay, startOfWeek, subDays, subWeeks } from 'date-fns';
 import { times } from 'lodash';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import useButtonStyles from '../shared/button-styles';
+import Tfidf from '../shared/tfidf';
 import TopBar from '../shared/top-bar';
-import { IFilters, uncommonPunctuation } from '../store/tfidf-store';
+import { IFilters, getDayKey, uncommonPunctuation } from '../store/models/tfidf-model';
 import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
@@ -75,22 +76,19 @@ const TitleRow = (props: {
   onBackClick: () => void;
   onForwardClick: () => void;
   filters: IFilters;
-  setFilter: (filter: IFilters) => void;
+  setFilter: (filter: IFilters) => Promise<void>;
 }) => {
   const classes = useTitleRowStyles();
   const buttonClasses = useButtonStyles();
   const isCalendarSelected = props.filters.meetings;
   const isDocsSelected = props.filters.docs;
   const isPeopleSelected = props.filters.people;
-  const togglePeopleSelected = () => {
+  const togglePeopleSelected = async () =>
     props.setFilter({ ...props.filters, people: !props.filters.people });
-  };
-  const toggleCalendarSelected = () => {
+  const toggleCalendarSelected = async () =>
     props.setFilter({ ...props.filters, meetings: !props.filters.meetings });
-  };
-  const toggleDocsSelected = () => {
+  const toggleDocsSelected = async () =>
     props.setFilter({ ...props.filters, docs: !props.filters.docs });
-  };
   return (
     <div className={classes.container}>
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
@@ -177,7 +175,7 @@ const TitleRow = (props: {
  * each item would then check if it is inside a prior box, and if so, add a class/move them
  */
 interface IDayContentProps {
-  tfidfStore: IStore['tfidfStore'];
+  tfidf: Tfidf;
   isFirst: boolean;
   day: Date;
   hoveredItem?: string;
@@ -236,11 +234,12 @@ export const DayContent = (props: IDayContentProps) => {
   const classes = useDayContentStyles();
 
   // interpolation yay
-  const scaleX = props.tfidfStore.tfidfMax - props.tfidfStore.tfidfMin;
+  const scaleX = (props.tfidf.getMax() || 10) - (props.tfidf.getMin() || 0);
   const scaleY = fontMax - fontMin;
   const scale = scaleX / scaleY;
 
-  const terms = props.tfidfStore.getForDay(props.day).map((document) => (
+  const diff = getDayKey(props.day);
+  const terms = props.tfidf.listTerms(Number(diff)).map((document) => (
     <Link href={`?tab=search&query=${document.term}`} key={document.term}>
       <Typography
         onMouseEnter={() => props.setHoveredItem(document.term)}
@@ -296,6 +295,15 @@ const Summary = (props: IStore) => {
     people: true,
     docs: true,
   });
+  const [tfidf, setTfidf] = useState<Tfidf | undefined>(undefined);
+  useEffect(() => {
+    const compute = async () => {
+      const instance = await props.tfidfStore.getTfidf(filters);
+      setTfidf(instance);
+    };
+    void compute();
+  }, [filters.docs, filters.meetings, filters.people]);
+
   const onTodayClick = () => setStart(getStart());
   const onForwardClick = () => {
     setStart(
@@ -311,12 +319,16 @@ const Summary = (props: IStore) => {
       }),
     );
   };
+  if (!tfidf) {
+    return null;
+  }
+
   const getDayColumn = (week: number) => {
     const days = times(daysInWeek).map((day) => addDays(start, day + week * daysInWeek));
     return days.map((day, index) => (
       <DayContent
         isFirst={index < 1}
-        tfidfStore={props.tfidfStore}
+        tfidf={tfidf}
         day={day}
         key={day.toISOString()}
         hoveredItem={hoveredItem}
@@ -331,8 +343,7 @@ const Summary = (props: IStore) => {
       </Grid>
     </div>
   ));
-  const onSetFilterClick = (filters: IFilters) => {
-    void props.tfidfStore.recomputeForFilters(props, filters);
+  const onSetFilterClick = async (filters: IFilters) => {
     setFilters(filters);
   };
   return (

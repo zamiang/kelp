@@ -6,7 +6,7 @@ import DocumentDataStore, { formatGoogleDoc } from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore, { formatPerson } from './models/person-model';
 import TimeDataStore from './models/segment-model';
-import TfidfDataStore from './tfidf-store';
+import TfidfDataStore from './models/tfidf-model';
 
 export interface IStore {
   readonly personDataStore: PersonDataStore;
@@ -32,10 +32,13 @@ const useStore = (db: dbType): IStore => {
   const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeModel(db);
-  const tfidfStore = new TfidfDataStore();
+  const tfidfStore = new TfidfDataStore(db);
 
   useEffect(() => {
     const addData = async () => {
+      if (data.isLoading) {
+        return;
+      }
       // TODO: Only create the datastores once data.isLoading is false
       await personDataStore.addPeopleToStore(
         people,
@@ -46,21 +49,15 @@ const useStore = (db: dbType): IStore => {
 
       await timeDataStore.addSegments(data.calendarEvents);
       await documentDataStore.addDocsToStore(docs);
-
       await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);
-
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
-
-      await tfidfStore.recomputeForFilters(
-        {
-          driveActivityStore: driveActivityDataStore,
-          timeDataStore,
-          personDataStore,
-          documentDataStore,
-          attendeeDataStore,
-        },
-        { meetings: true, people: true, docs: true },
-      );
+      await tfidfStore.saveDocuments({
+        driveActivityStore: driveActivityDataStore,
+        timeDataStore,
+        personDataStore,
+        documentDataStore,
+        attendeeDataStore,
+      });
       setLoading(false);
     };
     void addData();

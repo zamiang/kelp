@@ -9,8 +9,8 @@ import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { ISegment } from '../store/models/segment-model';
+import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
-import { uncommonPunctuation } from '../store/tfidf-store';
 import { IStore } from '../store/use-store';
 
 const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>

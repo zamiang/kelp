@@ -65,7 +65,6 @@ export default class PersonModel {
       contactLookup[contact.id] = contact;
     });
 
-    console.log(contactLookup);
     // Add people first
     people.forEach((person) => {
       let isInStore = false;
@@ -79,7 +78,6 @@ export default class PersonModel {
         }
       });
       if (!isInStore) {
-        console.log(person.id, person.emailAddresses);
         filteredPeople.push(formatPersonForStore(person));
       }
     });
