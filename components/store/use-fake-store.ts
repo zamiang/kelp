@@ -10,11 +10,9 @@ import data from './store-faker';
 import { IStore } from './use-store';
 
 const useFakeStore = async (db: dbType): Promise<IStore> => {
-  // TODO: Only create the datastores once data.isLoading is false
   const personDataStore = new PersonDataStore(db);
   await personDataStore.addPeopleToStore(data.people);
-  // TODO??
-  // personDataStore.addCurrentUserFlag(data.calendarEvents); ?
+
   const timeDataStore = new TimeDataStore(db);
   await timeDataStore.addSegments(data.segments);
 

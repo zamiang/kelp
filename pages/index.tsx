@@ -142,7 +142,6 @@ const App = () => {
     void fetchData();
   }, []);
 
-  // TODO
   if (!store) {
     return null;
   }

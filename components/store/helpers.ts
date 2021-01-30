@@ -4,7 +4,6 @@ import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { getWeek } from '../shared/date-helpers';
 import { IFormattedAttendee } from './models/attendee-model';
-import { IPerson } from './models/person-model';
 import { ISegment } from './models/segment-model';
 import { IStore } from './use-store';
 
@@ -84,13 +83,12 @@ export const getPeopleForDriveActivity = async (
   activity: IFormattedDriveActivity[],
   personDataStore: IStore['personDataStore'],
 ) => {
-  const people = await Promise.all(
-    uniqBy(activity, 'actorPersonId')
-      .filter((activity) => !!activity.actorPersonId)
-      .map(async (activity) => personDataStore.getPersonById(activity.actorPersonId!)),
-  );
+  const peopleIds = uniqBy(activity, 'actorPersonId')
+    .filter((activity) => !!activity.actorPersonId)
+    .map((a) => a.actorPersonId!);
 
-  return people.filter((person) => person && person.id) as IPerson[];
+  const people = await personDataStore.getBulk(peopleIds);
+  return people.filter((person) => person && person.id);
 };
 
 export const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {

@@ -69,6 +69,10 @@ export default class SegmentModel {
     return this.db.get('meeting', id);
   }
 
+  async getBulk(ids: string[]): Promise<ISegment[]> {
+    return Promise.all(ids.map((id) => this.db.get('meeting', id))) as any;
+  }
+
   async getAll() {
     return this.db.getAll('meeting');
   }

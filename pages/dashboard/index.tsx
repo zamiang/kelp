@@ -89,7 +89,6 @@ const LoadingDashboardContainer = () => {
     void fetchData();
   }, []);
 
-  // TODO
   if (!database) {
     return null;
   }

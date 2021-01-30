@@ -67,13 +67,15 @@ interface Db extends DBSchema {
 }
 
 const dbNameHash = {
-  production: 'kelp-1',
-  test: 'test-1',
-  homepage: 'homepage-1',
+  production: 'kelp',
+  test: 'test',
+  homepage: 'homepage',
 };
 
+const databaseVerson = 1;
+
 async function database(environment: 'production' | 'test' | 'homepage') {
-  const db = await openDB<Db>(dbNameHash[environment], 1, {
+  const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db) {
       const personStore = db.createObjectStore('person', {
         keyPath: 'id',

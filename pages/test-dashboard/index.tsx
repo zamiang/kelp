@@ -16,7 +16,6 @@ const TestDashboard = () => {
     void fetchData();
   }, []);
 
-  // TODO
   if (!store) {
     return null;
   }
