@@ -181,10 +181,6 @@ export const DashboardContainer = ({ store }: IProps) => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-  }, []);
   return (
     <div ref={ref} className={clsx(classes.container, colorHash[tab])}>
       <Head>
