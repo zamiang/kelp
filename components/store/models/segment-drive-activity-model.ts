@@ -1,61 +1,116 @@
+import { getDay } from 'date-fns';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
+import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
-import { ISegment } from './segment-model';
+import DriveActivityModel from './drive-activity-model';
+import SegmentModel, { ISegment } from './segment-model';
 
-export interface ISegmentDriveActivity {
+export interface ISegmentDocument {
   id: string;
-  driveActivityId: string;
+  driveActivityId?: string;
   documentId: string;
-  segmentId: string;
+  segmentId?: string;
+  date: Date;
+  reason: string;
+  personId: string;
+  day: number;
+  week: number;
 }
 
-const formatSegmentDriveActivity = (driveActivity: IFormattedDriveActivity, segment: ISegment) => ({
-  id: `${segment.id}-${driveActivity.id}`,
+const formatSegmentDocument = (
+  driveActivity: IFormattedDriveActivity,
+  segment?: ISegment,
+): ISegmentDocument => ({
+  id: driveActivity.id,
   driveActivityId: driveActivity.id,
   documentId: driveActivity.documentId!,
-  segmentId: segment.id,
+  segmentId: segment?.id,
+  date: driveActivity.time,
+  reason: driveActivity.action,
+  personId: driveActivity.actorPersonId!,
+  day: getDay(driveActivity.time),
+  week: getWeek(driveActivity.time),
 });
 
-export default class SegmentDriveActivityModel {
+const formatSegmentDocumentFromDescription = (
+  segment: ISegment,
+  documentId: string,
+): ISegmentDocument => ({
+  id: `${segment.id}-${documentId}`,
+  documentId,
+  segmentId: segment.id,
+  date: segment.start,
+  reason: 'Listed in meeting description',
+  personId: segment.organizer!.id!,
+  day: getDay(segment.start),
+  week: getWeek(segment.start),
+});
+
+export default class SegmentDocumentModel {
   private db: dbType;
 
   constructor(db: dbType) {
     this.db = db;
   }
 
-  async addSegmentDriveActivityToStore(
-    driveActivity: IFormattedDriveActivity[],
-    segments: ISegment[],
+  async addSegmentDocumentsToStore(
+    driveActivityStore: DriveActivityModel,
+    timeStore: SegmentModel,
   ) {
-    const tx = this.db.transaction('meetingDriveActivity', 'readwrite');
+    const driveActivity = await driveActivityStore.getAll();
+    const segments = await timeStore.getAll();
+
+    const tx = this.db.transaction('segmentDocument', 'readwrite');
+    // Add drive activity for meetings
     await Promise.all(
-      driveActivity.map((driveActivityItem) =>
-        tx.store.put(formatSegmentDriveActivity(driveActivityItem, segments[0])),
+      driveActivity.map((driveActivityItem) => {
+        const segment = segments.find(
+          (s) => s.start < driveActivityItem.time && s.end > driveActivityItem.time,
+        );
+        return tx.store.put(formatSegmentDocument(driveActivityItem, segment));
+      }),
+    );
+    // Add drive activity in meeting descriptions
+    await Promise.all(
+      segments.map((segment) =>
+        Promise.all(
+          segment.documentIdsFromDescription.map((documentId) =>
+            tx.store.put(formatSegmentDocumentFromDescription(segment, documentId)),
+          ),
+        ),
       ),
     );
     return tx.done;
   }
 
+  async getForWeek(week: number) {
+    return this.db.getAllFromIndex('segmentDocument', 'by-week', week);
+  }
+
+  async getForDay(day: number) {
+    return this.db.getAllFromIndex('segmentDocument', 'by-day', day);
+  }
+
   async getForSegmentId(segmentId: string) {
-    return this.db.getAllFromIndex('meetingDriveActivity', 'by-segment-id', segmentId);
+    return this.db.getAllFromIndex('segmentDocument', 'by-segment-id', segmentId);
   }
 
   async getForDocumentId(documentId: string) {
-    return this.db.getAllFromIndex('meetingDriveActivity', 'by-document-id', documentId);
+    return this.db.getAllFromIndex('segmentDocument', 'by-document-id', documentId);
   }
 
   async getForDriveActivity(activityId: string) {
-    return this.db.getAllFromIndex('meetingDriveActivity', 'by-drive-activity-id', activityId);
+    return this.db.getAllFromIndex('segmentDocument', 'by-drive-activity-id', activityId);
   }
 
-  async getById(id: string): Promise<ISegmentDriveActivity | undefined> {
+  async getById(id: string): Promise<ISegmentDocument | undefined> {
     if (id) {
-      return this.db.get('meetingDriveActivity', id);
+      return this.db.get('segmentDocument', id);
     }
     return undefined;
   }
 
   async getAll() {
-    return this.db.getAll('meetingDriveActivity');
+    return this.db.getAll('segmentDocument');
   }
 }

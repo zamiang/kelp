@@ -1,9 +1,11 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { getDay } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DocumentRow from '../documents/document-row';
 import useButtonStyles from '../shared/button-styles';
+import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/models/document-model';
@@ -38,11 +40,18 @@ export const DocumentsForToday = (
   props: IStore & { selectedDocumentId: string | null; isSmall?: boolean },
 ) => {
   const classes = panelStyles();
-  // TODO: Make new table for this
-  const docsForToday = [] as any;
+  const [docs, setDocs] = useState<IDocument[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.segmentDocumentStore.getForDay(getDay(new Date()));
+      const documents = await props.documentDataStore.getBulk(result.map((r) => r.id));
+      setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
+    };
+    void fetchData();
+  }, []);
   return (
     <div className={classes.rowNoBorder}>
-      {docsForToday.map((doc: IDocument) => (
+      {docs.map((doc: IDocument) => (
         <DocumentRow
           key={doc.id}
           doc={doc}
@@ -57,11 +66,18 @@ export const DocumentsForToday = (
 
 const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | null }) => {
   const classes = panelStyles();
-  // TODO make new table for this
-  const docsForThisWeek = [] as any;
+  const [docs, setDocs] = useState<IDocument[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.segmentDocumentStore.getForWeek(getWeek(new Date()));
+      const documents = await props.documentDataStore.getBulk(result.map((r) => r.id));
+      setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
+    };
+    void fetchData();
+  }, []);
   return (
     <div className={classes.rowNoBorder}>
-      {docsForThisWeek.map((doc: IDocument) => (
+      {docs.map((doc: IDocument) => (
         <DocumentRow
           key={doc.id}
           doc={doc}

@@ -5,6 +5,7 @@ import AttendeeModel from './models/attendee-model';
 import DocumentDataStore, { formatGoogleDoc } from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore, { formatPerson } from './models/person-model';
+import SegmentDocumentModel from './models/segment-drive-activity-model';
 import TimeDataStore from './models/segment-model';
 import TfidfDataStore from './models/tfidf-model';
 
@@ -16,6 +17,7 @@ export interface IStore {
   readonly tfidfStore: TfidfDataStore;
   readonly attendeeDataStore: AttendeeModel;
   readonly lastUpdated: Date;
+  readonly segmentDocumentStore: SegmentDocumentModel;
   readonly refetch: () => void;
   readonly isLoading: boolean;
   readonly error?: Error;
@@ -32,6 +34,7 @@ const useStore = (db: dbType): IStore => {
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeModel(db);
   const tfidfStore = new TfidfDataStore(db);
+  const segmentDocumentStore = new SegmentDocumentModel(db);
 
   useEffect(() => {
     const addData = async () => {
@@ -56,6 +59,7 @@ const useStore = (db: dbType): IStore => {
         documentDataStore,
         attendeeDataStore,
       });
+      await segmentDocumentStore.addSegmentDocumentsToStore(driveActivityDataStore, timeDataStore);
       setLoading(false);
     };
     void addData();
@@ -67,6 +71,7 @@ const useStore = (db: dbType): IStore => {
     personDataStore,
     documentDataStore,
     attendeeDataStore,
+    segmentDocumentStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,

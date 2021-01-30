@@ -3,6 +3,7 @@ import AttendeeModel from './models/attendee-model';
 import DocumentDataStore from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
+import SegmentDocumentModel from './models/segment-drive-activity-model';
 import TimeDataStore from './models/segment-model';
 import TfidfDataStore from './models/tfidf-model';
 import data from './store-faker';
@@ -35,12 +36,16 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
     attendeeDataStore,
   });
 
+  const segmentDocumentStore = new SegmentDocumentModel(db);
+  await segmentDocumentStore.addSegmentDocumentsToStore(driveActivityDataStore, timeDataStore);
+
   return {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
     personDataStore,
     documentDataStore,
     attendeeDataStore,
+    segmentDocumentStore,
     tfidfStore,
     isLoading: false,
     lastUpdated: new Date(),

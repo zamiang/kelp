@@ -3,7 +3,7 @@ import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { IFormattedAttendee } from './models/attendee-model';
 import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
-import { ISegmentDriveActivity } from './models/segment-drive-activity-model';
+import { ISegmentDocument } from './models/segment-drive-activity-model';
 import { ISegment } from './models/segment-model';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -41,13 +41,15 @@ interface Db extends DBSchema {
     key: string;
     indexes: { 'by-start': string };
   };
-  meetingDriveActivity: {
-    value: ISegmentDriveActivity;
+  segmentDocument: {
+    value: ISegmentDocument;
     key: string;
     indexes: {
       'by-segment-id': string;
       'by-document-id': string;
       'by-drive-activity-id': string;
+      'by-day': number;
+      'by-week': number;
     };
   };
   attendee: {
@@ -105,6 +107,17 @@ async function database(environment: 'production' | 'test' | 'homepage') {
         keyPath: 'id',
       });
       tfidfStore.createIndex('by-type', 'type', { unique: false });
+
+      const segmentDocumentStore = db.createObjectStore('segmentDocument', {
+        keyPath: 'id',
+      });
+      segmentDocumentStore.createIndex('by-segment-id', 'segmentId', { unique: false });
+      segmentDocumentStore.createIndex('by-document-id', 'documentId', { unique: false });
+      segmentDocumentStore.createIndex('by-drive-activity-id', 'driveActivityId', {
+        unique: false,
+      });
+      segmentDocumentStore.createIndex('by-day', 'day', { unique: false });
+      segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
     },
   });
 

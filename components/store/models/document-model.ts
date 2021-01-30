@@ -66,4 +66,9 @@ export default class DocumentModel {
   async getAll() {
     return this.db.getAll('document');
   }
+
+  async getBulk(ids: string[]): Promise<IDocument[]> {
+    const docs = await Promise.all(ids.map((id) => this.db.get('document', id)));
+    return docs.filter(Boolean) as any;
+  }
 }
