@@ -8,7 +8,7 @@ import AttendeeDataStore from './models/attendee-model';
 import DocumentDataStore, { IDocument } from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore, { IPerson } from './models/person-model';
-import SegmentDocumentModel from './models/segment-drive-activity-model';
+import SegmentDocumentModel from './models/segment-document-model';
 import TimeDataStore, { ISegment, getStateForMeeting } from './models/segment-model';
 import TfidfDataStore from './models/tfidf-model';
 import { IStore } from './use-store';

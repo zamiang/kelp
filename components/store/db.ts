@@ -3,7 +3,7 @@ import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { IFormattedAttendee } from './models/attendee-model';
 import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
-import { ISegmentDocument } from './models/segment-drive-activity-model';
+import { ISegmentDocument } from './models/segment-document-model';
 import { ISegment } from './models/segment-model';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -48,6 +48,7 @@ interface Db extends DBSchema {
       'by-segment-id': string;
       'by-document-id': string;
       'by-drive-activity-id': string;
+      'by-person-id': string;
       'by-day': number;
       'by-week': number;
     };
@@ -122,6 +123,7 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       });
       segmentDocumentStore.createIndex('by-day', 'day', { unique: false });
       segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
+      segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
     },
   });
 

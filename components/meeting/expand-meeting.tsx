@@ -11,11 +11,12 @@ import Linkify from 'react-linkify';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
-import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
+import SegmentDocumentList from '../shared/segment-document-list';
 import { getFormattedGuestStats } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
+import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
@@ -73,7 +74,7 @@ const ExpandedMeeting = (
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
-  const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
   const documentsCurrentUserEditedWhileMeetingWithAttendees = [] as any;
 
   useEffect(() => {
@@ -99,8 +100,8 @@ const ExpandedMeeting = (
   useEffect(() => {
     const fetchData = async () => {
       if (props.meetingId) {
-        // TODO: drive activity for meeting
-        setDriveActivity([]);
+        const result = await props.segmentDocumentStore.getAllForSegmentId(props.meetingId);
+        setSegmentDocuments(result);
       }
     };
     void fetchData();
@@ -226,8 +227,8 @@ const ExpandedMeeting = (
         <Typography variant="h6" className={classes.smallHeading}>
           Documents you may need
         </Typography>
-        <DriveActivityList
-          driveActivity={driveActivity}
+        <SegmentDocumentList
+          segmentDocuments={segmentDocuments}
           docStore={props.documentDataStore}
           personStore={props.personDataStore}
         />

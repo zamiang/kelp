@@ -43,7 +43,7 @@ export const DocumentsForToday = (
   const [docs, setDocs] = useState<IDocument[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.segmentDocumentStore.getForDay(getDayOfYear(new Date()));
+      const result = await props.segmentDocumentStore.getAllForDay(getDayOfYear(new Date()));
       const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
       setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
     };
@@ -69,7 +69,7 @@ const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | nul
   const [docs, setDocs] = useState<IDocument[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.segmentDocumentStore.getForWeek(getWeek(new Date()));
+      const result = await props.segmentDocumentStore.getAllForWeek(getWeek(new Date()));
       const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
       setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
     };

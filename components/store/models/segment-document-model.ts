@@ -83,23 +83,27 @@ export default class SegmentDocumentModel {
     return tx.done;
   }
 
-  async getForWeek(week: number) {
+  async getAllForWeek(week: number) {
     return this.db.getAllFromIndex('segmentDocument', 'by-week', week);
   }
 
-  async getForDay(day: number) {
+  async getAllForDay(day: number) {
     return this.db.getAllFromIndex('segmentDocument', 'by-day', day);
   }
 
-  async getForSegmentId(segmentId: string) {
+  async getAllForSegmentId(segmentId: string) {
     return this.db.getAllFromIndex('segmentDocument', 'by-segment-id', segmentId);
   }
 
-  async getForDocumentId(documentId: string) {
+  async getAllForDocumentId(documentId: string) {
     return this.db.getAllFromIndex('segmentDocument', 'by-document-id', documentId);
   }
 
-  async getForDriveActivity(activityId: string) {
+  async getAllForPersonId(personId: string) {
+    return this.db.getAllFromIndex('segmentDocument', 'by-person-id', personId);
+  }
+
+  async getAllForDriveActivity(activityId: string) {
     return this.db.getAllFromIndex('segmentDocument', 'by-drive-activity-id', activityId);
   }
 

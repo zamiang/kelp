@@ -1,8 +1,8 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import DriveActivityList from '../shared/documents-from-drive-activity';
+import SegmentDocumentList from '../shared/segment-document-list';
+import { ISegmentDocument } from '../store/models/segment-document-model';
 import { meetingId } from '../store/use-homepage-store';
 import { IStore } from '../store/use-store';
 
@@ -16,13 +16,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Documents = (props: { store: IStore }) => {
   const classes = useStyles();
-  const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (meetingId) {
-        // TODO: Set drive activity for document
-        setDriveActivity([]);
+        const segmentDocuments = await props.store.segmentDocumentStore.getAllForSegmentId(
+          meetingId,
+        );
+        setSegmentDocuments(segmentDocuments);
       }
     };
     void fetchData();
@@ -31,8 +33,8 @@ const Documents = (props: { store: IStore }) => {
   return (
     <div className={classes.summary}>
       <Typography variant="h6">Documents you may need</Typography>
-      <DriveActivityList
-        driveActivity={driveActivity}
+      <SegmentDocumentList
+        segmentDocuments={segmentDocuments}
         docStore={props.store.documentDataStore}
         personStore={props.store.personDataStore}
       />

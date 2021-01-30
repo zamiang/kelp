@@ -7,11 +7,11 @@ import { format, formatDistanceToNow } from 'date-fns';
 import { capitalize, uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import useExpandStyles from '../shared/expand-styles';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
+import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
+import useExpandStyles from './expand-styles';
 
 const useRowStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +34,7 @@ const useRowStyles = makeStyles((theme) => ({
 
 const Activity = (props: {
   document: IDocument;
-  action: IFormattedDriveActivity;
+  segmentDocument: ISegmentDocument;
   personStore: IStore['personDataStore'];
 }) => {
   const classes = useRowStyles();
@@ -44,18 +44,20 @@ const Activity = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.action.actorPersonId) {
-        const result = await props.personStore.getPersonById(props.action.actorPersonId);
+      if (props.segmentDocument.personId) {
+        const result = await props.personStore.getPersonById(props.segmentDocument.personId);
         setActor(result);
       }
     };
     void fetchData();
-  }, [props.action.actorPersonId]);
+  }, [props.segmentDocument.personId]);
 
-  const tooltipText = `${capitalize(props.action.action)} by ${
+  const tooltipText = `${capitalize(props.segmentDocument.reason)} by ${
     actor?.name || actor?.emailAddresses
   } on ${format(new Date(props.document.updatedAt!), "MMM do 'at' hh:mm a")}`;
-  const belowText = `Recent ${props.action.action} by ${actor?.name || actor?.emailAddresses}`;
+  const belowText = `Recent ${props.segmentDocument.reason} by ${
+    actor?.name || actor?.emailAddresses
+  }`;
 
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
@@ -86,22 +88,22 @@ const Activity = (props: {
   );
 };
 
-const DriveActivityItem = (props: {
+const SegmentDocumentItem = (props: {
   personStore: IStore['personDataStore'];
   docStore: IStore['documentDataStore'];
-  action: any;
+  segmentDocument: ISegmentDocument;
 }) => {
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.action.link) {
-        const result = await props.docStore.getByLink(props.action.link);
+      if (props.segmentDocument.documentId) {
+        const result = await props.docStore.get(props.segmentDocument.documentId);
         setDocument(result);
       }
     };
     void fetchData();
-  }, [props.action.link]);
+  }, [props.segmentDocument.documentId]);
 
   if (!document) {
     return null;
@@ -109,34 +111,34 @@ const DriveActivityItem = (props: {
 
   return (
     <Activity
-      key={props.action.id}
+      key={props.segmentDocument.id}
       personStore={props.personStore}
       document={document}
-      action={props.action}
+      segmentDocument={props.segmentDocument}
     />
   );
 };
 
-const DriveActivityList = (props: {
-  driveActivity: IFormattedDriveActivity[];
+const SegmentDocumentList = (props: {
+  segmentDocuments: ISegmentDocument[];
   personStore: IStore['personDataStore'];
   docStore: IStore['documentDataStore'];
 }) => {
   const classes = useExpandStyles();
-  const actions = uniqBy(
-    props.driveActivity.sort((a, b) => (a.time > b.time ? -1 : 1)),
-    'link',
+  const segmentDocuments = uniqBy(
+    props.segmentDocuments.sort((a, b) => (a.date > b.date ? -1 : 1)),
+    'documentId',
   );
-  if (actions.length < 1) {
+  if (segmentDocuments.length < 1) {
     return <Typography variant="caption">None</Typography>;
   }
   return (
     <div className={classes.list}>
-      {actions.map((action) => (
-        <DriveActivityItem
-          key={action.id}
+      {segmentDocuments.map((segmentDocument) => (
+        <SegmentDocumentItem
+          key={segmentDocument.id}
           personStore={props.personStore}
-          action={action}
+          segmentDocument={segmentDocument}
           docStore={props.docStore}
         />
       ))}
@@ -144,4 +146,4 @@ const DriveActivityList = (props: {
   );
 };
 
-export default DriveActivityList;
+export default SegmentDocumentList;

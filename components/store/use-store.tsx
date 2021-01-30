@@ -5,7 +5,7 @@ import AttendeeModel from './models/attendee-model';
 import DocumentDataStore, { formatGoogleDoc } from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore, { formatPerson } from './models/person-model';
-import SegmentDocumentModel from './models/segment-drive-activity-model';
+import SegmentDocumentModel from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
 import TfidfDataStore from './models/tfidf-model';
 

@@ -9,15 +9,15 @@ import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AttendeeList from '../shared/attendee-list';
-import DriveActivity from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
+import SegmentDocumentList from '../shared/segment-document-list';
 import { getAssociates, getMeetingTime } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
 import { IPerson } from '../store/models/person-model';
+import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import PersonNotes from './person-notes';
@@ -29,7 +29,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
   const classes = useExpandStyles();
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   const [segments, setSegments] = useState<ISegment[]>([]);
-  const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -41,8 +41,8 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
 
   useEffect(() => {
     const fetchData = async () => {
-      const p = await props.driveActivityStore.getDriveActivityForPersonId(props.personId);
-      setDriveActivity(p);
+      const p = await props.segmentDocumentStore.getAllForPersonId(props.personId);
+      setSegmentDocuments(p);
     };
     void fetchData();
   }, [props.personId]);
@@ -161,8 +161,8 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           <Typography variant="h6" className={classes.smallHeading}>
             Documents they have edited
           </Typography>
-          <DriveActivity
-            driveActivity={driveActivity}
+          <SegmentDocumentList
+            segmentDocuments={segmentDocuments}
             personStore={props.personDataStore}
             docStore={props.documentDataStore}
           />
