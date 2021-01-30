@@ -11,7 +11,6 @@ const createNotification = (
   onClick: () => Promise<boolean>,
   onClose: () => void,
 ) => {
-  alert('Notification' in window);
   if ('Notification' in window && Notification.permission === 'granted') {
     const title = `Prepare for: ${meeting.summary || 'Meeting notification'}`;
     const notification = new Notification(title, {

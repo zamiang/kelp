@@ -16,7 +16,7 @@ const addScope = async () => {
   try {
     await googleUser.grant(option);
   } catch (e) {
-    alert(e);
+    console.error(e, '<<<<<addScope<<<<<<<');
   }
 };
 

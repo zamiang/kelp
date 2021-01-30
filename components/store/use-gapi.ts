@@ -42,8 +42,6 @@ const useGAPI = () => {
       } catch (error) {
         if (error == 'popup_blocked_by_browser') {
           alert('Please allow popups for Kelp');
-        } else {
-          alert(JSON.stringify(error));
         }
       }
     };

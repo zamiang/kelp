@@ -28,7 +28,6 @@ const addScope = async (): Promise<boolean> => {
     await googleUser.grant(option);
     return true;
   } catch (e) {
-    alert(e);
     return false;
   }
 };

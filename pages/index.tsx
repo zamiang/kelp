@@ -142,10 +142,6 @@ const App = () => {
     void fetchData();
   }, []);
 
-  if (!store) {
-    return null;
-  }
-
   return (
     <div className={classes.container}>
       <Head>
@@ -197,16 +193,18 @@ const App = () => {
         <Divider />
         <Container maxWidth="md">
           <Paper className={classes.meetingContainer} elevation={2}>
-            <ExpandedMeeting
-              hideHeader={true}
-              meetingId={meetingId}
-              close={() => undefined}
-              {...store}
-            />
+            {store && (
+              <ExpandedMeeting
+                hideHeader={true}
+                meetingId={meetingId}
+                close={() => undefined}
+                {...store}
+              />
+            )}
           </Paper>
         </Container>
         <Divider />
-        <UiBlocks store={store} />
+        {store && <UiBlocks store={store} />}
         <Container maxWidth="md" className={classes.bodyCopySection}>
           <Typography variant="h4">Your data is your data.</Typography>
           <br />
