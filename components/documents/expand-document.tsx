@@ -6,11 +6,10 @@ import React, { useEffect, useState } from 'react';
 import AvatarList from '../shared/avatar-list';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
-import MeetingList from '../shared/meeting-list';
+import SegmentMeetingList from '../shared/segment-meeting-list';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
-import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
 const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
@@ -18,7 +17,6 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
   const [people, setPeople] = useState<IPerson[]>([]);
-  const [attendeeSegments, setAttendeeSegments] = useState<ISegment[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +42,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
     const fetchData = async () => {
       if (segmentDocuments.length > 0) {
         const peopleIds = uniqBy(segmentDocuments, 'personId')
-          .filter((segmentDocument) => !!segmentDocument.personId)
+          .filter((segmentDocument) => !!segmentDocument.personId && !!segmentDocument.segmentId)
           .map((segmentDocument) => segmentDocument.personId);
 
         const people = await props.personDataStore.getBulk(peopleIds);
@@ -54,27 +52,10 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
     void fetchData();
   }, [segmentDocuments.length]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (segmentDocuments.length > 0) {
-        const segmentIds = uniqBy(segmentDocuments, 'segmentId')
-          .filter((segmentDocument) => !!segmentDocument.segmentId)
-          .map((segmentDocument) => segmentDocument.segmentId!);
-
-        const segments = await props.timeDataStore.getBulk(segmentIds);
-        setAttendeeSegments(segments);
-      }
-    };
-    void fetchData();
-  }, [segmentDocuments.length]);
-
   if (!document) {
     return null;
   }
 
-  // TODO: Fill out these
-  const currentUserMeetings = [] as any;
-  const segmentsWithDocumentInDescription = [] as any;
   return (
     <React.Fragment>
       <AppBar onClose={props.close} externalLink={document.link} />
@@ -95,20 +76,13 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
           <AvatarList people={people} shouldDisplayNone={true} />
         </Typography>
         <Typography variant="h6" className={classes.smallHeading}>
-          Meetings where this document is listed in the description
+          Meetings
         </Typography>
-        <MeetingList
-          segments={segmentsWithDocumentInDescription}
+        <SegmentMeetingList
+          segmentDocuments={segmentDocuments}
+          timeStore={props.timeDataStore}
           personStore={props.personDataStore}
         />
-        <Typography variant="h6" className={classes.smallHeading}>
-          Meetings where you edited this document
-        </Typography>
-        <MeetingList segments={currentUserMeetings} personStore={props.personDataStore} />
-        <Typography variant="h6" className={classes.smallHeading}>
-          Meetings where attendees edited this document
-        </Typography>
-        <MeetingList segments={attendeeSegments} personStore={props.personDataStore} />
       </div>
     </React.Fragment>
   );
