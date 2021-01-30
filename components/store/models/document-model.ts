@@ -1,3 +1,4 @@
+import { uniq } from 'lodash';
 import { dbType } from '../db';
 
 type DocumentType =
@@ -68,7 +69,8 @@ export default class DocumentModel {
   }
 
   async getBulk(ids: string[]): Promise<IDocument[]> {
-    const docs = await Promise.all(ids.map((id) => this.db.get('document', id)));
+    const uniqIds = uniq(ids);
+    const docs = await Promise.all(uniqIds.map((id) => this.db.get('document', id)));
     return docs.filter(Boolean) as any;
   }
 }
