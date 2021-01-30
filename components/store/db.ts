@@ -59,6 +59,8 @@ interface Db extends DBSchema {
       'by-email': string;
       'by-segment-id': string;
       'by-person-id': string;
+      'by-day': number;
+      'by-week': number;
     };
   };
 }
@@ -101,7 +103,9 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       });
       attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
       attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
-      attendeeStore.createIndex('by-person-id', 'segmentId', { unique: false });
+      attendeeStore.createIndex('by-person-id', 'personId', { unique: false });
+      attendeeStore.createIndex('by-day', 'day', { unique: false });
+      attendeeStore.createIndex('by-week', 'week', { unique: false });
 
       const tfidfStore = db.createObjectStore('tfidf', {
         keyPath: 'id',

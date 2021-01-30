@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { getDay } from 'date-fns';
+import { getDayOfYear } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DocumentRow from '../documents/document-row';
@@ -43,7 +43,7 @@ export const DocumentsForToday = (
   const [docs, setDocs] = useState<IDocument[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.segmentDocumentStore.getForDay(getDay(new Date()));
+      const result = await props.segmentDocumentStore.getForDay(getDayOfYear(new Date()));
       const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
       setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
     };

@@ -1,3 +1,5 @@
+import { getDayOfYear } from 'date-fns';
+import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
 import { IPerson } from './person-model';
 import { ISegment } from './segment-model';
@@ -9,6 +11,9 @@ export interface IFormattedAttendee {
   readonly responseStatus?: string;
   readonly self?: boolean;
   readonly segmentId: string;
+  readonly week: number;
+  readonly day: number;
+  readonly date: Date;
 }
 
 interface IAttendee {
@@ -20,14 +25,17 @@ interface IAttendee {
 const formatAttendee = (
   attendee: IAttendee,
   person: IPerson,
-  segmentId: string,
+  segment: ISegment,
 ): IFormattedAttendee => ({
-  id: `${segmentId}-${person.id}`,
-  segmentId,
+  id: `${segment.id}-${person.id}`,
+  segmentId: segment.id,
   personId: person.id,
   responseStatus: attendee.responseStatus,
   self: attendee.self,
   emailAddress: attendee.email,
+  week: getWeek(segment.start),
+  day: getDayOfYear(segment.start),
+  date: segment.start,
 });
 
 export default class AttendeeModel {
@@ -45,7 +53,7 @@ export default class AttendeeModel {
             segment.attendees.map(async (attendee) => {
               const person = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
               if (person[0] && person[0].id) {
-                return this.db.put('attendee', formatAttendee(attendee, person[0], segment.id));
+                return this.db.put('attendee', formatAttendee(attendee, person[0], segment));
               } else {
                 console.error('missing', attendee.email);
               }
@@ -54,6 +62,14 @@ export default class AttendeeModel {
       ),
     );
     return;
+  }
+
+  async getForWeek(week: number) {
+    return this.db.getAllFromIndex('attendee', 'by-week', week);
+  }
+
+  async getForDay(day: number) {
+    return this.db.getAllFromIndex('attendee', 'by-day', day);
   }
 
   async getAllForSegmentId(segmentId: string) {

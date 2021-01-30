@@ -1,9 +1,11 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { getDayOfYear } from 'date-fns';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
+import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IPerson } from '../store/models/person-model';
@@ -13,12 +15,19 @@ export const PeopleToday = (
   props: IStore & { selectedPersonId: string | null; noLeftMargin?: boolean },
 ) => {
   const classes = panelStyles();
-  // TODO: Add an index for this
-  const peopleMeetingWithToday = [] as any;
+  const [people, setPeople] = useState<IPerson[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.attendeeDataStore.getForDay(getDayOfYear(new Date()));
+      const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
+      setPeople(p.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    };
+    void fetchData();
+  }, []);
   return (
     <div className={classes.section}>
       <div className={classes.rowNoBorder}>
-        {peopleMeetingWithToday.map(
+        {people.map(
           (person: IPerson) =>
             person && (
               <PersonRow
@@ -37,12 +46,20 @@ export const PeopleToday = (
 
 const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = panelStyles();
-  // TODO: Add an index for this
-  const peopleMeetingWithThisWeek = [] as any;
+  const [people, setPeople] = useState<IPerson[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.attendeeDataStore.getForWeek(getWeek(new Date()));
+      const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
+
+      setPeople(p.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    };
+    void fetchData();
+  }, []);
   return (
     <div className={classes.section}>
       <div className={classes.rowNoBorder}>
-        {peopleMeetingWithThisWeek.map(
+        {people.map(
           (person: IPerson) =>
             person && (
               <PersonRow
@@ -65,7 +82,7 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.personDataStore.getAll(true);
-      setPeople(result);
+      setPeople(result.sort((a, b) => (a.name < b.name ? -1 : 1)));
     };
     void fetchData();
   }, []);

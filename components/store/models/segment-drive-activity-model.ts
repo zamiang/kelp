@@ -1,4 +1,4 @@
-import { getDay } from 'date-fns';
+import { getDayOfYear } from 'date-fns';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
@@ -28,7 +28,7 @@ const formatSegmentDocument = (
   date: driveActivity.time,
   reason: driveActivity.action,
   personId: driveActivity.actorPersonId!,
-  day: getDay(driveActivity.time),
+  day: getDayOfYear(driveActivity.time),
   week: getWeek(driveActivity.time),
 });
 
@@ -42,7 +42,7 @@ const formatSegmentDocumentFromDescription = (
   date: segment.start,
   reason: 'Listed in meeting description',
   personId: segment.organizer!.id!,
-  day: getDay(segment.start),
+  day: getDayOfYear(segment.start),
   week: getWeek(segment.start),
 });
 

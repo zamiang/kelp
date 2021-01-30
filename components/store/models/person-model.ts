@@ -1,4 +1,4 @@
-import { first } from 'lodash';
+import { first, uniq } from 'lodash';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
 import { person as GooglePerson } from '../../fetch/fetch-people';
 import { dbType } from '../db';
@@ -128,5 +128,19 @@ export default class PersonModel {
   async getPersonIdForEmailAddress(emailAddress: string) {
     const person = await this.db.getFromIndex('person', 'by-email', emailAddress);
     return person?.id;
+  }
+
+  async getBulkByEmail(emails: string[]): Promise<IPerson[]> {
+    const uniqIds = uniq(emails);
+    const people = await Promise.all(
+      uniqIds.map((email) => this.db.getFromIndex('person', 'by-email', email)),
+    );
+    return people.filter(Boolean) as any;
+  }
+
+  async getBulk(ids: string[]): Promise<IPerson[]> {
+    const uniqIds = uniq(ids);
+    const people = await Promise.all(uniqIds.map((id) => this.db.get('person', id)));
+    return people.filter(Boolean) as any;
   }
 }
