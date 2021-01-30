@@ -72,7 +72,6 @@ const dbNameHash = {
 const databaseVerson = 1;
 
 async function database(environment: 'production' | 'test' | 'homepage') {
-  console.log('starting');
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db) {
       const personStore = db.createObjectStore('person', {
@@ -126,7 +125,6 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       console.error('Terminated');
     },
   });
-  console.log(db, '<<<<<<<<<<<<<<<<<');
   return db;
 }
 
