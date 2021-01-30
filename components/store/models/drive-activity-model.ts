@@ -28,10 +28,6 @@ export default class DriveActivityModel {
     return this.db.getAllFromIndex('driveActivity', 'by-document-id', documentId);
   }
 
-  async getDriveActivityForPersonId(personId: string) {
-    return this.db.getAllFromIndex('driveActivity', 'by-actor-person-id', personId);
-  }
-
   async getById(id: string): Promise<IFormattedDriveActivity | undefined> {
     if (id) {
       return this.db.get('driveActivity', id);

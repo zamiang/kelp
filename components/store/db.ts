@@ -17,8 +17,6 @@ interface Db extends DBSchema {
     value: IFormattedDriveActivity;
     key: string;
     indexes: {
-      'by-link': string;
-      'by-actor-person-id': string;
       'by-document-id': string;
     };
   };
@@ -57,9 +55,8 @@ interface Db extends DBSchema {
     value: IFormattedAttendee;
     key: string;
     indexes: {
-      'by-email': string;
-      'by-segment-id': string;
       'by-person-id': string;
+      'by-segment-id': string;
       'by-day': number;
       'by-week': number;
     };
@@ -75,6 +72,7 @@ const dbNameHash = {
 const databaseVerson = 1;
 
 async function database(environment: 'production' | 'test' | 'homepage') {
+  console.log('starting');
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db) {
       const personStore = db.createObjectStore('person', {
@@ -92,8 +90,6 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       const driveActivity = db.createObjectStore('driveActivity', {
         keyPath: 'id',
       });
-      driveActivity.createIndex('by-link', 'link', { unique: false });
-      driveActivity.createIndex('by-actor-person-id', 'actorPersonId', { unique: false });
       driveActivity.createIndex('by-document-id', 'documentId', { unique: false });
 
       const meetingStore = db.createObjectStore('meeting', {
@@ -104,7 +100,6 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       const attendeeStore = db.createObjectStore('attendee', {
         keyPath: 'id',
       });
-      attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
       attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
       attendeeStore.createIndex('by-person-id', 'personId', { unique: false });
       attendeeStore.createIndex('by-day', 'day', { unique: false });
@@ -127,8 +122,11 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
       segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
     },
+    terminated: () => {
+      console.error('Terminated');
+    },
   });
-
+  console.log(db, '<<<<<<<<<<<<<<<<<');
   return db;
 }
 
