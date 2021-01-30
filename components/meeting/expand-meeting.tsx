@@ -99,7 +99,7 @@ const ExpandedMeeting = (
   useEffect(() => {
     const fetchData = async () => {
       if (props.meetingId) {
-        // TODO
+        // TODO: drive activity for meeting
         setDriveActivity([]);
       }
     };

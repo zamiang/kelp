@@ -27,7 +27,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
     return null;
   }
 
-  // TODO
+  // TODO: Fill out these
   const people = [] as any;
   const currentUserMeetings = [] as any;
   const segmentsWithDocumentInDescription = [] as any;

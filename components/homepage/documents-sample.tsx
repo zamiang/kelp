@@ -21,7 +21,7 @@ const Documents = (props: { store: IStore }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (meetingId) {
-        // TODO
+        // TODO: Set drive activity for document
         setDriveActivity([]);
       }
     };
