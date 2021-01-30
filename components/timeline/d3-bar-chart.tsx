@@ -1,4 +1,5 @@
-import { axisBottom, max, mean, min, scaleBand, scaleLinear, select, timeFormat } from 'd3';
+import { axisBottom, max, mean, min, scaleBand, scaleLinear, select } from 'd3';
+import { format } from 'date-fns';
 
 export interface IBarChartItem {
   date: Date;
@@ -61,7 +62,7 @@ class D3BarChart {
     xScale.domain(this.data.map((d) => d.date) as any);
     yScale.domain([minValue, maxValue]);
 
-    const formatter = (date: Date) => (timeFormat as any)('%a')(date)[0];
+    const formatter = (date: Date) => format(date, 'EEEEEE');
     const xAxis = axisBottom(xScale).tickFormat(formatter as any);
     const backgroundGradientUrl = `background-gradient-${props.smallLabel}`;
     // background
@@ -196,6 +197,9 @@ class D3BarChart {
         return d.x;
       })
       .attr('y', function (d) {
+        if (isNaN(d.y)) {
+          return 0;
+        }
         return d.y;
       })
       .attr('text-anchor', function (d) {

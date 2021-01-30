@@ -16,22 +16,19 @@ import {
   subWeeks,
 } from 'date-fns';
 import { times } from 'lodash';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import { responseStatus } from '../fetch/fetch-calendar-events';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import PopperContainer from '../shared/popper';
 import TopBar from '../shared/top-bar';
-import { IDocument } from '../store/document-store';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;
 const topNavHeight = 110;
 const hourHeight = 38;
 const scrollBarWidth = 15;
-const shouldShowDocumentActivity = false;
 const shouldShowCalendarEvents = true;
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
 
@@ -281,7 +278,7 @@ const calendarItemPadding = 1;
 
 const CalendarItem = (props: ICalendarItemProps) => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const classes = useCalendarItemStyles();
   const minuteHeight = hourHeight / 60;
   const height = props.end
@@ -310,30 +307,6 @@ const CalendarItem = (props: ICalendarItemProps) => {
   );
 };
 
-interface IDocumentumentItemProps {
-  document?: IDocument;
-  activity?: IFormattedDriveActivity;
-}
-
-const DocumentItem = (props: IDocumentumentItemProps) => {
-  const classes = useCalendarItemStyles();
-  const router = useRouter();
-  if (!props.activity || !props.document) {
-    return null;
-  }
-  const onClick = () => props.document && router.push(`?tab=docs&slug=${props.document.id}`);
-  const top = getTopForTime(props.activity.time);
-  return (
-    <div
-      className={clsx(classes.container, classes.containerRight, classes.documentBackground)}
-      style={{ top }}
-      onClick={onClick}
-    >
-      <Typography className={classes.title}>{props.document.name}</Typography>
-    </div>
-  );
-};
-
 /**
  *
  * This should manage intersections
@@ -341,7 +314,6 @@ const DocumentItem = (props: IDocumentumentItemProps) => {
  * each item would then check if it is inside a prior box, and if so, add a class/move them
  */
 interface IDayContentProps {
-  shouldShowDocumentActivity: boolean;
   shouldShowCalendarEvents: boolean;
   store: IStore;
   day: Date;
@@ -370,13 +342,20 @@ const useDayContentStyles = makeStyles((theme) => ({
 }));
 
 const DayContent = (props: IDayContentProps) => {
-  let documentsHtml = '' as any;
   let segmentsHtml = '' as any;
   let currentTimeHtml = '' as any;
-  const currentUser = props.store.personDataStore.getSelf();
   const currentDay = new Date();
   const classes = useDayContentStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const [segments, setSegments] = useState<ISegment[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.store.timeDataStore.getSegmentsForDay(props.day);
+      setSegments(result);
+    };
+    void fetchData();
+  }, [props.day]);
 
   if (isSameDay(currentDay, props.day)) {
     const top = getTopForTime(currentDay);
@@ -394,7 +373,6 @@ const DayContent = (props: IDayContentProps) => {
   }
 
   if (props.shouldShowCalendarEvents) {
-    const segments = props.store.timeDataStore.getSegmentsForDay(props.day);
     segmentsHtml = segments.map((segment) => (
       <CalendarItem
         key={segment.id}
@@ -408,26 +386,8 @@ const DayContent = (props: IDayContentProps) => {
     ));
   }
 
-  if (props.shouldShowDocumentActivity && currentUser) {
-    // TODO: Potentially refactor
-    const documentActivityPairs = Object.values(currentUser.driveActivity)
-      .filter((activity) => activity && activity.link && isSameDay(activity.time, props.day))
-      .map((activity) => ({
-        activity,
-        document: props.store.documentDataStore.getByLink(activity.link),
-      }));
-
-    documentsHtml = documentActivityPairs.map((pairs) => (
-      <DocumentItem
-        key={pairs.activity ? pairs.activity.id : 'key'}
-        document={pairs.document}
-        activity={pairs.activity}
-      />
-    ));
-  }
-
   // Scroll the current time thing into view
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSameDay && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
@@ -436,7 +396,6 @@ const DayContent = (props: IDayContentProps) => {
   return (
     <div>
       {segmentsHtml}
-      {documentsHtml}
       {currentTimeHtml}
     </div>
   );
@@ -472,7 +431,6 @@ const Calendar = (props: IStore) => {
     <Grid item key={day} className={classes.dayColumn}>
       <HourRows />
       <DayContent
-        shouldShowDocumentActivity={shouldShowDocumentActivity}
         shouldShowCalendarEvents={shouldShowCalendarEvents}
         store={props}
         day={addDays(start, day)}

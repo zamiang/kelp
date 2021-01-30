@@ -6,11 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { format, formatDistanceToNow } from 'date-fns';
 import { capitalize, uniqBy } from 'lodash';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import useExpandStyles from '../shared/expand-styles';
-import { IDocument } from '../store/document-store';
+import React, { useEffect, useState } from 'react';
+import { IDocument } from '../store/models/document-model';
+import { IPerson } from '../store/models/person-model';
+import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
+import useExpandStyles from './expand-styles';
 
 const useRowStyles = makeStyles((theme) => ({
   root: {
@@ -33,19 +34,31 @@ const useRowStyles = makeStyles((theme) => ({
 
 const Activity = (props: {
   document: IDocument;
-  action: IFormattedDriveActivity;
+  segmentDocument: ISegmentDocument;
   personStore: IStore['personDataStore'];
 }) => {
   const classes = useRowStyles();
   const expandClasses = useExpandStyles();
   const router = useRouter();
-  const actor = props.action.actorPersonId
-    ? props.personStore.getPersonById(props.action.actorPersonId)
-    : null;
-  const tooltipText = `${capitalize(props.action.action)} by ${
+  const [actor, setActor] = useState<IPerson | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.segmentDocument.personId) {
+        const result = await props.personStore.getPersonById(props.segmentDocument.personId);
+        setActor(result);
+      }
+    };
+    void fetchData();
+  }, [props.segmentDocument.personId]);
+
+  const tooltipText = `${capitalize(props.segmentDocument.reason)} by ${
     actor?.name || actor?.emailAddresses
   } on ${format(new Date(props.document.updatedAt!), "MMM do 'at' hh:mm a")}`;
-  const belowText = `Recent ${props.action.action} by ${actor?.name || actor?.emailAddresses}`;
+  const belowText = `Recent ${props.segmentDocument.reason} by ${
+    actor?.name || actor?.emailAddresses
+  }`;
+
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button
@@ -75,38 +88,62 @@ const Activity = (props: {
   );
 };
 
-const DriveActivityList = (props: {
-  driveActivity: IFormattedDriveActivity[];
+const SegmentDocumentItem = (props: {
+  personStore: IStore['personDataStore'];
+  docStore: IStore['documentDataStore'];
+  segmentDocument: ISegmentDocument;
+}) => {
+  const [document, setDocument] = useState<IDocument | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.segmentDocument.documentId) {
+        const result = await props.docStore.get(props.segmentDocument.documentId);
+        setDocument(result);
+      }
+    };
+    void fetchData();
+  }, [props.segmentDocument.documentId]);
+
+  if (!document) {
+    return null;
+  }
+
+  return (
+    <Activity
+      key={props.segmentDocument.id}
+      personStore={props.personStore}
+      document={document}
+      segmentDocument={props.segmentDocument}
+    />
+  );
+};
+
+const SegmentDocumentList = (props: {
+  segmentDocuments: ISegmentDocument[];
   personStore: IStore['personDataStore'];
   docStore: IStore['documentDataStore'];
 }) => {
   const classes = useExpandStyles();
-  const actions = uniqBy(
-    props.driveActivity.sort((a, b) => (a.time > b.time ? -1 : 1)),
-    'link',
+  const segmentDocuments = uniqBy(
+    props.segmentDocuments.sort((a, b) => (a.date > b.date ? -1 : 1)),
+    'documentId',
   );
-  if (actions.length < 1) {
+  if (segmentDocuments.length < 1) {
     return <Typography variant="caption">None</Typography>;
   }
-  const items = actions.map((action) => ({
-    action,
-    document: props.docStore.getByLink(action.link),
-  }));
   return (
     <div className={classes.list}>
-      {items.map(
-        (item) =>
-          item.document && (
-            <Activity
-              key={item.action.id}
-              personStore={props.personStore}
-              document={item.document}
-              action={item.action}
-            />
-          ),
-      )}
+      {segmentDocuments.map((segmentDocument) => (
+        <SegmentDocumentItem
+          key={segmentDocument.id}
+          personStore={props.personStore}
+          segmentDocument={segmentDocument}
+          docStore={props.docStore}
+        />
+      ))}
     </div>
   );
 };
 
-export default DriveActivityList;
+export default SegmentDocumentList;

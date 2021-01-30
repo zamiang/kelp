@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
-import { ISegment } from '../store/time-store';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import ExpandedMeeting from './expand-meeting';
 
@@ -70,7 +70,7 @@ const MeetingRow = (props: {
   const router = useRouter();
   const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     } else if (referenceElement && !props.selectedMeetingId && props.shouldRenderCurrentTime) {
@@ -78,7 +78,7 @@ const MeetingRow = (props: {
     }
   }, [referenceElement]);
 
-  const [isOpen, setIsOpen] = React.useState(isSelected);
+  const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
     setIsOpen(true);
     void router.push(`?tab=meetings&slug=${props.meeting.id}`);
@@ -95,7 +95,6 @@ const MeetingRow = (props: {
       <ListItem
         button={true}
         selected={isSelected}
-        ref={setReferenceElement as any}
         onClick={handleClick}
         className={clsx(
           'ignore-react-onclickoutside',
@@ -110,18 +109,18 @@ const MeetingRow = (props: {
           props.isSmall && classes.noLeftMargin,
         )}
       >
+        <PopperContainer
+          anchorEl={referenceElement}
+          isOpen={isOpen}
+          setIsOpen={(isOpen) => setIsOpen(isOpen)}
+        >
+          <ExpandedMeeting
+            meetingId={props.meeting.id}
+            close={() => setIsOpen(false)}
+            {...props.store}
+          />
+        </PopperContainer>
         <Grid container spacing={2} alignItems="center">
-          <PopperContainer
-            anchorEl={referenceElement}
-            isOpen={isOpen}
-            setIsOpen={(isOpen) => setIsOpen(isOpen)}
-          >
-            <ExpandedMeeting
-              meetingId={props.meeting.id}
-              close={() => setIsOpen(false)}
-              {...props.store}
-            />
-          </PopperContainer>
           <Grid item className={classes.dot}>
             <div
               className={clsx(
@@ -135,7 +134,13 @@ const MeetingRow = (props: {
               )}
             />
           </Grid>
-          <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
+          <Grid
+            item
+            xs
+            zeroMinWidth
+            className={clsx(props.isSmall && classes.smallContainer)}
+            ref={setReferenceElement as any}
+          >
             <Grid container>
               <Grid item xs={12}>
                 <Typography variant="subtitle2">

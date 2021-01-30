@@ -8,12 +8,17 @@ import clsx from 'clsx';
 import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AttendeeList from '../shared/attendee-list';
-import DriveActivity from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
+import SegmentDocumentList from '../shared/segment-document-list';
+import { getAssociates, getMeetingTime } from '../store/helpers';
+import { IFormattedAttendee } from '../store/models/attendee-model';
+import { IPerson } from '../store/models/person-model';
+import { ISegmentDocument } from '../store/models/segment-document-model';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import PersonNotes from './person-notes';
 
@@ -22,22 +27,56 @@ const ADD_SENDER_LINK =
 
 const ExpandPerson = (props: IStore & { personId: string; close: () => void }) => {
   const classes = useExpandStyles();
-  const person = props.personDataStore.getPersonById(props.personId);
+  const [person, setPerson] = useState<IPerson | undefined>(undefined);
+  const [segments, setSegments] = useState<ISegment[]>([]);
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+  const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const p = await props.personDataStore.getPersonById(props.personId);
+      setPerson(p);
+    };
+    void fetchData();
+  }, [props.personId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const p = await props.segmentDocumentStore.getAllForPersonId(props.personId);
+      setSegmentDocuments(p);
+    };
+    void fetchData();
+  }, [props.personId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const s = await props.timeDataStore.getSegmentsForPersonId(props.personId);
+      if (s) {
+        setSegments(s.filter(Boolean) as any);
+      }
+    };
+    void fetchData();
+  }, [props.personId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const a = await getAssociates(props.personId, segments, props.attendeeDataStore);
+      setAssociates(a);
+    };
+    void fetchData();
+  }, [segments.length]);
+
   if (!person) {
     return null;
   }
-  const segments = (person.segmentIds || []).map((segmentId) =>
-    props.timeDataStore.getSegmentById(segmentId),
-  );
   const lastMeeting = last(segments);
-  const meetingTime = props.personDataStore.getMeetingTime(segments);
+  const meetingTime = getMeetingTime(segments);
   const timeInMeetings = formatDuration(meetingTime.thisWeek)
     .replace(' hours', 'h')
     .replace(' minutes', 'm');
   const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek)
     .replace(' hours', 'h')
     .replace(' minutes', 'm');
-  const associates = props.personDataStore.getAssociates(props.personId, segments);
+
   const hasName = !person.name.includes('people/') && !person.name.includes('@');
   const hasMeetingTime = meetingTime.lastWeekMs > 0;
   return (
@@ -59,7 +98,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             gutterBottom
             noWrap
           >
-            {props.personDataStore.getPersonDisplayName(person)}
+            {person.name}
           </Typography>
           <PersonNotes person={person} refetch={props.refetch} />
         </Box>
@@ -100,7 +139,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
       </Grid>
       <Divider />
       <div className={classes.container}>
-        {!person.isInContacsts && (
+        {!person.isInContacts && (
           <Typography variant="body2">
             Add this person to your google contacts for more info{' '}
             <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
@@ -122,8 +161,8 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           <Typography variant="h6" className={classes.smallHeading}>
             Documents they have edited
           </Typography>
-          <DriveActivity
-            driveActivity={Object.values(person.driveActivity)}
+          <SegmentDocumentList
+            segmentDocuments={segmentDocuments}
             personStore={props.personDataStore}
             docStore={props.documentDataStore}
           />

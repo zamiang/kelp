@@ -35,7 +35,7 @@ export default class Tfidf {
   constructor(documentsToAdd: { text: string; key: string }[]) {
     this.documents = [];
     this.idfCache = {};
-    documentsToAdd.map((doc) => this.addDocument(doc.text, doc.key, false));
+    documentsToAdd.map((doc) => this.addDocument(doc.text, doc.key, true));
   }
 
   idf = (term: string, shouldForce: boolean) => {
@@ -87,20 +87,24 @@ export default class Tfidf {
   }
 
   listTerms(documentIndex: number) {
-    const terms = [];
-    const documentsToSearch = this.documents.find(
-      (item) => item.__key === (documentIndex.toString() as any),
-    );
-    for (const term in documentsToSearch) {
-      if (term !== '__key')
-        terms.push({
-          term,
-          tfidf: this.tfidf(term, documentIndex),
-        });
-    }
-    return terms.sort(function (x, y) {
-      return y.tfidf - x.tfidf;
+    const terms: { tfidf: number; term: string }[] = [];
+    const documentsToSearch: any = [];
+    this.documents.forEach((item) => {
+      if (item.__key === (documentIndex.toString() as any)) {
+        documentsToSearch.push(item);
+      }
     });
+
+    documentsToSearch.forEach((document: any) => {
+      for (const term in document) {
+        if (term !== '__key')
+          terms.push({
+            term,
+            tfidf: this.tfidf(term, documentIndex),
+          });
+      }
+    });
+    return terms.sort((x: any, y: any) => y.tfidf - x.tfidf);
   }
 
   tfidfs(terms: string) {

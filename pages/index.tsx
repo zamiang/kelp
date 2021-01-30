@@ -14,12 +14,13 @@ import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfie
 import clsx from 'clsx';
 import { signIn } from 'next-auth/client';
 import Head from 'next/head';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
 import UiBlocks from '../components/homepage/ui-blocks';
 import ExpandedMeeting from '../components/meeting/expand-meeting';
-import useStore, { meetingId } from '../components/store/use-homepage-store';
+import db from '../components/store/db';
+import getStore, { meetingId } from '../components/store/use-homepage-store';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -132,7 +133,19 @@ export const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
-  const store = useStore();
+  const [store, setStore] = useState<any>(undefined);
+  useEffect(() => {
+    const fetchData = async () => {
+      const store = await getStore(await db('homepage'));
+      setStore(store);
+    };
+    void fetchData();
+  }, []);
+
+  if (!store) {
+    return null;
+  }
+
   return (
     <div className={classes.container}>
       <Head>

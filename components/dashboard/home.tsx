@@ -2,10 +2,11 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MeetingRow from '../meeting/meeting-row';
 import expandStyles from '../shared/expand-styles';
 import panelStyles from '../shared/panel-styles';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import BarChart from '../timeline/bar-chart';
 import { DocumentsForToday } from './documents';
@@ -15,9 +16,16 @@ const Home = (props: IStore) => {
   const classes = panelStyles();
   const expandClasses = expandStyles();
   const currentTime = new Date();
-  const meetings = props.timeDataStore
-    .getSegmentsForDay(currentTime)
-    .sort((a, b) => (a.start < b.start ? -1 : 1));
+  const [segments, setSegments] = useState<ISegment[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.timeDataStore.getSegmentsForDay(currentTime);
+      setSegments(result.sort((a, b) => (a.start < b.start ? -1 : 1)));
+    };
+    void fetchData();
+  }, []);
+
   return (
     <div className={classes.panel}>
       <Grid container className={clsx(classes.homeRow, classes.homeRowTop)} spacing={4}>
@@ -37,7 +45,7 @@ const Home = (props: IStore) => {
             Today&apos;s schedule
           </Typography>
           <Divider />
-          {meetings.map((meeting) => (
+          {segments.map((meeting) => (
             <MeetingRow
               isSmall={true}
               key={meeting.id}

@@ -6,7 +6,7 @@ export const fetchSelf = (): person => {
     id: profile.getId(),
     name: `${profile.getGivenName()} ${profile.getFamilyName()}`,
     emailAddresses: [profile.getEmail()],
-    isInContacsts: true,
+    isInContacts: true,
     imageUrl: profile.getImageUrl(),
   };
 };

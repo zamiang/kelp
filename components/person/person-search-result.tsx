@@ -5,10 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
-import { IPerson } from '../store/person-store';
+import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 import ExpandedPerson from './expand-person';
 
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event?.currentTarget);
   };

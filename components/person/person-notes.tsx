@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { IPerson } from '../store/person-store';
+import { IPerson } from '../store/models/person-model';
 import { updateContactNotes } from './update-contact';
 
 const useStyles = makeStyles((theme) => ({
@@ -74,7 +74,7 @@ const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
 
   const onEdit = () => setIsEditing(true);
   const onCloseEdit = () => setIsEditing(false);
-  if (!props.person.isInContacsts) {
+  if (!props.person.isInContacts) {
     return null;
   }
   return (

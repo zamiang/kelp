@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format, getDate, getMonth } from 'date-fns';
+import { Dictionary } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
@@ -12,6 +13,7 @@ import MeetingRow from '../meeting/meeting-row';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
 const dayStyles = makeStyles((theme) => ({
@@ -62,7 +64,16 @@ const MeetingsByDay = (
   },
 ) => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const meetingsByDay = props.timeDataStore.getSegmentsByDay();
+  const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.timeDataStore.getSegmentsByDay();
+      setMeetingsByDay(result);
+    };
+    void fetchData();
+  }, []);
+
   const currentTime = new Date();
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();

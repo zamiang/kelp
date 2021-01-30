@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../documents/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
 import SearchBar from '../nav/search-bar';
 import PersonSearchResult from '../person/person-search-result';
 import TopBar from '../shared/top-bar';
-import { IDocument } from '../store/document-store';
-import { IPerson } from '../store/person-store';
+import { IDocument } from '../store/models/document-model';
+import { IPerson } from '../store/models/person-model';
+import { ISegment } from '../store/models/segment-model';
+import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
-import { uncommonPunctuation } from '../store/tfidf-store';
-import { ISegment } from '../store/time-store';
 import { IStore } from '../store/use-store';
 
 const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
@@ -38,7 +38,20 @@ const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
 const Search = (props: IStore) => {
   const classes = panelStyles();
   const router = useRouter();
-  const searchIndex = new SearchIndex(props);
+  const [searchIndex, setSearchIndex] = useState<SearchIndex | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const searchIndex = new SearchIndex();
+      await searchIndex.addData(props);
+      setSearchIndex(searchIndex);
+    };
+    void fetchData();
+  });
+  if (!searchIndex) {
+    return null;
+  }
+
   const searchQuery =
     router.query?.query &&
     (router.query.query as string).toLowerCase().replace(uncommonPunctuation, ' ');

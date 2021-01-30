@@ -6,16 +6,18 @@ import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format, isToday } from 'date-fns';
-import { flatten } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
-import DriveActivityList from '../shared/documents-from-drive-activity';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
-import { ISegment } from '../store/time-store';
+import SegmentDocumentList from '../shared/segment-document-list';
+import { getFormattedGuestStats } from '../store/helpers';
+import { IFormattedAttendee } from '../store/models/attendee-model';
+import { ISegmentDocument } from '../store/models/segment-document-model';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
 
@@ -28,6 +30,7 @@ const createMeetingNotes = async (
   setMeetingNotesLoading: (isLoading: boolean) => void,
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
+  attendeeDataStore: IStore['attendeeDataStore'],
   refetch: () => void,
 ) => {
   setMeetingNotesLoading(true);
@@ -36,18 +39,16 @@ const createMeetingNotes = async (
     documentsCurrentUserEditedWhileMeetingWithAttendees,
     personDataStore,
     documentDataStore,
+    attendeeDataStore,
   );
   // Not sure if a good idea
   // await addDocumentToCalendarEvent(meeting, document);
   setMeetingNotesLoading(false);
-  const emailsToInvite = meeting.formattedAttendees
+  const emailsToInvite = meeting.attendees
     .map((a) => {
       const shouldInvite = !a.self && a.responseStatus === 'accepted';
       if (shouldInvite) {
-        const person = personDataStore.getPersonById(a.personId);
-        if (person && person.emailAddresses.length > 0) {
-          return person.emailAddresses[0];
-        }
+        return a.email;
       }
     })
     .filter(Boolean);
@@ -71,35 +72,50 @@ const ExpandedMeeting = (
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
-  const meeting = props.timeDataStore.getSegmentById(props.meetingId);
+  const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
+  const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+  const documentsCurrentUserEditedWhileMeetingWithAttendees = [] as any;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.meetingId) {
+        const result = await props.timeDataStore.getById(props.meetingId);
+        setMeeting(result);
+      }
+    };
+    void fetchData();
+  }, [props.meetingId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.meetingId) {
+        const result = await props.attendeeDataStore.getAllForSegmentId(props.meetingId);
+        setAttendees(result);
+      }
+    };
+    void fetchData();
+  }, [props.meetingId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.meetingId) {
+        const result = await props.segmentDocumentStore.getAllForSegmentId(props.meetingId);
+        setSegmentDocuments(result);
+      }
+    };
+    void fetchData();
+  }, [props.meetingId]);
+
   if (!meeting) {
     return null;
   }
-  const attendees = (meeting.formattedAttendees || []).filter((person) => person.personId);
+
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
   const shouldShowMeetingLink = !!meeting.hangoutLink && isToday(meeting.start);
-  const attendeeAndCurrentUserDriveActivity = meeting.driveActivityIds
-    .concat(meeting.currentUserDriveActivityIds)
-    .map((id) => props.driveActivityStore.getById(id)!);
-  const attendeeIds = (meeting.formattedAttendees || [])
-    .filter((attendee) => !attendee.self)
-    .map((attendee) => attendee.personId);
-  const people = attendeeIds
-    .map((id) => props.personDataStore.getPersonById(id)!)
-    .filter((person) => !!person);
-  const documentsCurrentUserEditedWhileMeetingWithAttendees = props.personDataStore.getDriveActivityWhileMeetingWith(
-    people,
-    props.timeDataStore,
-    props.driveActivityStore,
-  );
-  const driveActivityFromAttendees = flatten(
-    people.map((person) => Object.values(person.driveActivity)),
-  );
-  const driveActivity = driveActivityFromAttendees
-    .concat(attendeeAndCurrentUserDriveActivity)
-    .concat(documentsCurrentUserEditedWhileMeetingWithAttendees);
-  const guestStats = props.timeDataStore.getFormattedGuestStats(meeting);
+
+  const guestStats = getFormattedGuestStats(attendees);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const meetingNotesLink = meeting.documentIdsFromDescription[0];
@@ -135,6 +151,7 @@ const ExpandedMeeting = (
                   setMeetingNotesLoading,
                   props.personDataStore,
                   props.documentDataStore,
+                  props.attendeeDataStore,
                   props.refetch,
                 )
               }
@@ -210,8 +227,8 @@ const ExpandedMeeting = (
         <Typography variant="h6" className={classes.smallHeading}>
           Documents you may need
         </Typography>
-        <DriveActivityList
-          driveActivity={driveActivity}
+        <SegmentDocumentList
+          segmentDocuments={segmentDocuments}
           docStore={props.documentDataStore}
           personStore={props.personDataStore}
         />

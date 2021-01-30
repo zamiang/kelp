@@ -1,8 +1,8 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { flatten } from 'lodash';
-import React from 'react';
-import DriveActivityList from '../shared/documents-from-drive-activity';
+import React, { useEffect, useState } from 'react';
+import SegmentDocumentList from '../shared/segment-document-list';
+import { ISegmentDocument } from '../store/models/segment-document-model';
 import { meetingId } from '../store/use-homepage-store';
 import { IStore } from '../store/use-store';
 
@@ -16,25 +16,25 @@ const useStyles = makeStyles((theme) => ({
 
 const Documents = (props: { store: IStore }) => {
   const classes = useStyles();
-  const meeting = props.store.timeDataStore.getSegmentById(meetingId);
-  if (!meeting) {
-    return null;
-  }
-  const attendeeIds = (meeting.formattedAttendees || [])
-    .filter((attendee) => !attendee.self)
-    .map((attendee) => attendee.personId);
-  const people = attendeeIds
-    .map((id) => props.store.personDataStore.getPersonById(id)!)
-    .filter((person) => !!person);
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
-  const driveActivityFromAttendees = flatten(
-    people.map((person) => Object.values(person.driveActivity)),
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      if (meetingId) {
+        const segmentDocuments = await props.store.segmentDocumentStore.getAllForSegmentId(
+          meetingId,
+        );
+        setSegmentDocuments(segmentDocuments);
+      }
+    };
+    void fetchData();
+  }, [meetingId]);
+
   return (
     <div className={classes.summary}>
       <Typography variant="h6">Documents you may need</Typography>
-      <DriveActivityList
-        driveActivity={driveActivityFromAttendees}
+      <SegmentDocumentList
+        segmentDocuments={segmentDocuments}
         docStore={props.store.documentDataStore}
         personStore={props.store.personDataStore}
       />

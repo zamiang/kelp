@@ -3,11 +3,14 @@ import Faker from 'faker';
 import { sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import DocumentDataStore, { IDocument } from './document-store';
-import DriveActivityDataStore from './drive-activity-store';
-import PersonDataStore, { IPerson } from './person-store';
-import TfidfDataStore from './tfidf-store';
-import TimeDataStore, { ISegment, getStateForMeeting } from './time-store';
+import { dbType } from './db';
+import AttendeeDataStore from './models/attendee-model';
+import DocumentDataStore, { IDocument } from './models/document-model';
+import DriveActivityDataStore from './models/drive-activity-model';
+import PersonDataStore, { IPerson } from './models/person-model';
+import SegmentDocumentModel from './models/segment-document-model';
+import TimeDataStore, { ISegment, getStateForMeeting } from './models/segment-model';
+import TfidfDataStore from './models/tfidf-model';
 import { IStore } from './use-store';
 
 Faker.seed(124);
@@ -27,44 +30,36 @@ const people: IPerson[] = [
     emailAddresses: ['ghengis.khan@gmail.com'],
     name: 'Genghis Khan',
     imageUrl: '',
-    isInContacsts: true,
+    isInContacts: true,
     googleId: null,
-    isCurrentUser: true,
-    driveActivity: {},
-    segmentIds: [],
+    isCurrentUser: 1,
   },
   {
     id: 'ramesses.ii@gmail.com',
     emailAddresses: ['ramesses.ii@gmail.com'],
     name: 'Ramesses II',
     imageUrl: '',
-    isInContacsts: true,
+    isInContacts: true,
     googleId: null,
-    isCurrentUser: false,
-    driveActivity: {},
-    segmentIds: [],
+    isCurrentUser: 0,
   },
   {
     id: 'alexander.the.great@gmail.com',
     emailAddresses: ['alexander.the.great@gmail.com'],
     name: 'Alexander the Great',
     imageUrl: '',
-    isInContacsts: true,
+    isInContacts: true,
     googleId: null,
-    isCurrentUser: false,
-    driveActivity: {},
-    segmentIds: [],
+    isCurrentUser: 0,
   },
   {
     id: 'shaka@gmail.com',
     emailAddresses: ['shaka@gmail.com'],
     name: 'Shaka',
     imageUrl: '',
-    isInContacsts: true,
+    isInContacts: true,
     googleId: null,
-    isCurrentUser: false,
-    driveActivity: {},
-    segmentIds: [],
+    isCurrentUser: 0,
   },
 ];
 
@@ -90,11 +85,6 @@ const attendees = people.map((person) => ({
   // Adds accepted many times to weight it higher in the sample
   responseStatus: 'accepted',
 }));
-const formattedAttendees = attendees.map((attendee) => ({
-  personId: attendee.email, // TODO: Simulate google person ids
-  self: attendee.self,
-  responseStatus: attendee.responseStatus,
-}));
 
 export const startDate = new Date(new Date().setMinutes(0));
 export const endDate = addMinutes(startDate, 55);
@@ -108,7 +98,6 @@ const segments: ISegment[] = [
     start: startDate,
     end: endDate,
     attendees,
-    formattedAttendees,
     documentIdsFromDescription: [],
     creator: {
       email: people[0].emailAddresses[0],
@@ -118,9 +107,6 @@ const segments: ISegment[] = [
     },
     selfResponseStatus: 'accepted',
     state: getStateForMeeting({ start: startDate, end: endDate }),
-    driveActivityIds: [],
-    attendeeDriveActivityIds: [],
-    currentUserDriveActivityIds: [],
   },
 ];
 
@@ -165,12 +151,6 @@ times(WEEKS_TO_CREATE, (week: number) => {
         responseStatus: 'accepted',
       });
 
-      const formattedAttendees = attendees.map((attendee) => ({
-        personId: attendee.email, // TODO: Simulate google person ids
-        self: attendee.self,
-        responseStatus: attendee.responseStatus,
-      }));
-
       segments.push({
         id: Faker.random.uuid(),
         link: 'https://www.kelp.nyc',
@@ -179,7 +159,6 @@ times(WEEKS_TO_CREATE, (week: number) => {
         start: date,
         end: endDate,
         attendees,
-        formattedAttendees,
         documentIdsFromDescription: [],
         creator: {
           email: people[1].emailAddresses[0],
@@ -189,43 +168,48 @@ times(WEEKS_TO_CREATE, (week: number) => {
         },
         selfResponseStatus: getSelfResponseStatus(attendees),
         state: getStateForMeeting({ start: startDate, end: endDate }),
-        driveActivityIds: [],
-        attendeeDriveActivityIds: [],
-        currentUserDriveActivityIds: [],
       });
     });
   });
 });
 
-const useFakeStore = (): IStore => {
-  const personDataStore = new PersonDataStore(people, [], {
-    contactsByEmail: {},
-    contactsByPeopleId: {},
+const useFakeStore = async (db: dbType): Promise<IStore> => {
+  const personDataStore = new PersonDataStore(db);
+  await personDataStore.addPeopleToStore(people);
+
+  const timeDataStore = new TimeDataStore(db);
+  await timeDataStore.addSegments(segments);
+
+  const documentDataStore = new DocumentDataStore(db);
+  await documentDataStore.addDocsToStore(documents);
+
+  const driveActivityDataStore = new DriveActivityDataStore(db);
+  await driveActivityDataStore.addDriveActivityToStore(driveActivity);
+
+  const attendeeDataStore = new AttendeeDataStore(db);
+  await attendeeDataStore.addAttendeesToStore(segments);
+
+  const tfidfStore = new TfidfDataStore(db);
+  await tfidfStore.saveDocuments({
+    driveActivityStore: driveActivityDataStore,
+    timeDataStore,
+    personDataStore,
+    documentDataStore,
+    attendeeDataStore,
   });
-  personDataStore.addDriveActivityToStore(driveActivity);
-  personDataStore.addGoogleCalendarEventsIdsToStore(segments);
 
-  const timeDataStore = new TimeDataStore(segments, personDataStore);
-  timeDataStore.addDriveActivityToStore(driveActivity, personDataStore);
-  const documentDataStore = new DocumentDataStore(documents);
-  const driveActivityDataStore = new DriveActivityDataStore(driveActivity);
-
-  const tfidfStore = new TfidfDataStore(
-    {
-      driveActivityStore: driveActivityDataStore,
-      timeDataStore,
-      personDataStore,
-      documentDataStore,
-    },
-    { meetings: true, people: true, docs: true },
-  );
+  const segmentDocumentStore = new SegmentDocumentModel(db);
+  await segmentDocumentStore.addSegmentDocumentsToStore(driveActivityDataStore, timeDataStore);
 
   return {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
     personDataStore,
     documentDataStore,
+    attendeeDataStore,
+    segmentDocumentStore,
     tfidfStore,
+    isLoading: false,
     lastUpdated: new Date(),
     refetch: () => null,
   };

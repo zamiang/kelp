@@ -6,8 +6,8 @@ import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import React from 'react';
 import useExpandStyles from '../shared/expand-styles';
-import PersonDataStore from '../store/person-store';
-import { ISegment } from '../store/time-store';
+import PersonDataStore from '../store/models/person-model';
+import { ISegment } from '../store/models/segment-model';
 
 const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => {
   const expandClasses = useExpandStyles();

@@ -6,11 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import useExpandStyles from '../shared/expand-styles';
-import PersonDataStore from '../store/person-store';
-import { IFormattedAttendee } from '../store/time-store';
+import { IFormattedAttendee } from '../store/models/attendee-model';
+import PersonDataStore, { IPerson } from '../store/models/person-model';
+import { IStore } from '../store/use-store';
 
 interface IProps {
   attendees: IFormattedAttendee[];
@@ -48,50 +49,65 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AttendeeRow = (props: IProps) => {
+const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personDataStore'] }) => {
   const classes = useStyles();
   const expandClasses = useExpandStyles();
   const router = useRouter();
+  const [person, setPerson] = useState<IPerson | undefined>(undefined);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.attendee.personId) {
+        const result = await props.personStore.getPersonById(props.attendee.personId);
+        setPerson(result);
+      }
+    };
+    void fetchData();
+  }, [props.attendee.personId]);
 
+  if (!person) {
+    return null;
+  }
+  return (
+    <Button
+      key={person.id}
+      onClick={() => router.push(`?tab=people&slug=${person.id}`)}
+      className={clsx(
+        expandClasses.listItem,
+        classes.person,
+        props.attendee.responseStatus === 'accepted' && classes.personAccepted,
+        props.attendee.responseStatus === 'tentative' && classes.personTentative,
+        props.attendee.responseStatus === 'declined' && classes.personDeclined,
+        props.attendee.responseStatus === 'needsAction' && classes.personNeedsAction,
+      )}
+    >
+      <Grid container alignItems="center" spacing={1} wrap="nowrap">
+        <Grid item>
+          <Avatar
+            style={{ height: 24, width: 24 }}
+            src={person.imageUrl || ''}
+            className={classes.avatar}
+          >
+            {(person.name || person.id)[0]}
+          </Avatar>
+        </Grid>
+        <Grid item xs={10}>
+          <Typography variant="body2" noWrap>
+            {person.name || person.id}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Button>
+  );
+};
+
+const AttendeeRows = (props: IProps) => {
+  const expandClasses = useExpandStyles();
+  const orderedAttendees = orderBy(props.attendees || [], 'responseStatus');
   return (
     <div className={expandClasses.list}>
-      {orderBy(props.attendees || [], 'responseStatus').map((attendee) => {
-        const person = props.personStore.getPersonById(attendee.personId);
-        if (!person) {
-          return null;
-        }
-        return (
-          <Button
-            key={person.id}
-            onClick={() => router.push(`?tab=people&slug=${person.id}`)}
-            className={clsx(
-              expandClasses.listItem,
-              classes.person,
-              attendee.responseStatus === 'accepted' && classes.personAccepted,
-              attendee.responseStatus === 'tentative' && classes.personTentative,
-              attendee.responseStatus === 'declined' && classes.personDeclined,
-              attendee.responseStatus === 'needsAction' && classes.personNeedsAction,
-            )}
-          >
-            <Grid container alignItems="center" spacing={1} wrap="nowrap">
-              <Grid item>
-                <Avatar
-                  style={{ height: 24, width: 24 }}
-                  src={person.imageUrl || ''}
-                  className={classes.avatar}
-                >
-                  {(person.name || person.id)[0]}
-                </Avatar>
-              </Grid>
-              <Grid item xs={10}>
-                <Typography variant="body2" noWrap>
-                  {person.name || person.id}
-                </Typography>
-              </Grid>
-            </Grid>
-          </Button>
-        );
-      })}
+      {orderedAttendees.map((attendee) => (
+        <Row key={attendee.id} attendee={attendee} personStore={props.personStore} />
+      ))}
     </div>
   );
 };
@@ -113,7 +129,7 @@ const AttendeeList = (props: IProps) => {
   }
   return (
     <React.Fragment>
-      {isExpanded && <AttendeeRow {...props} />}
+      {isExpanded && <AttendeeRows {...props} />}
       {!isExpanded && (
         <Typography
           variant="subtitle2"

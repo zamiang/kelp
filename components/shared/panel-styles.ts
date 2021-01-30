@@ -1,7 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { drawerWidth } from '../../pages/dashboard';
 
-// TODO: Pull from theme?
 const TOP_BAR_HEIGHT = 64;
 
 const useStyles = makeStyles((theme) => ({

@@ -14,8 +14,6 @@ const checkNotificationPromise = async () => {
   } catch (e) {
     return false;
   }
-
-  return true;
 };
 
 const askNotificationPermission = async () => {

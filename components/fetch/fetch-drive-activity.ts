@@ -34,6 +34,7 @@ export interface IFormattedDriveActivity {
   action: string;
   actorPersonId?: string | null;
   title?: string | null;
+  documentId?: string;
   link: string;
 }
 

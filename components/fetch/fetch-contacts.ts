@@ -22,10 +22,7 @@ const fetchContacts = async () => {
     sortOrder: 'LAST_MODIFIED_DESCENDING',
   });
 
-  const contactsByEmail: { [id: string]: person } = {};
-  const contactsByPeopleId: { [id: string]: person } = {};
-
-  people.result?.connections?.map((person) => {
+  const results = people.result?.connections?.map((person) => {
     const emailAddresses =
       (person?.emailAddresses
         ?.map((address) => address.value?.toLocaleLowerCase())
@@ -35,19 +32,16 @@ const fetchContacts = async () => {
       return;
     }
     const formattedContact = {
-      id: person.resourceName,
+      id: person.resourceName.replace('people/', ''),
       name: displayName || emailAddresses[0] || person.resourceName,
-      isInContacsts: person.names ? true : false,
+      isInContacts: person.names ? true : false,
       emailAddresses,
       imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
       notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
     };
-    contactsByPeopleId[person.resourceName] = formattedContact;
-    formattedContact.emailAddresses.map((email) => {
-      contactsByEmail[email] = formattedContact;
-    });
+    return formattedContact;
   });
-  return { contactsByPeopleId, contactsByEmail };
+  return results?.filter(Boolean) as person[];
 };
 
 export default fetchContacts;
