@@ -41,25 +41,24 @@ const Meeting = (props: {
   const classes = useRowStyles();
   const expandClasses = useExpandStyles();
   const router = useRouter();
-  const [actor, setActor] = useState<IPerson | undefined>(undefined);
+  const [person, setPerson] = useState<IPerson | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
       if (props.segmentDocument.personId) {
         const result = await props.personStore.getPersonById(props.segmentDocument.personId);
-        setActor(result);
+        setPerson(result);
       }
     };
     void fetchData();
   }, [props.segmentDocument.personId]);
-
-  const tooltipText = `${capitalize(props.segmentDocument.reason)} by ${
-    actor?.name || actor?.emailAddresses
-  } on ${format(new Date(props.segmentDocument.date), "MMM do 'at' hh:mm a")}`;
-  const belowText = `${props.segmentDocument.reason} by ${
-    actor?.name || actor?.emailAddresses
-  } during the meeting`;
-
+  console.log(person, props.segmentDocument);
+  const personText = person ? ` by ${person?.name || person?.emailAddresses}` : '';
+  const tooltipText = `${capitalize(props.segmentDocument.reason)}${personText} on ${format(
+    new Date(props.segmentDocument.date),
+    "MMM do 'at' hh:mm a",
+  )}`;
+  const belowText = `${props.segmentDocument.reason}${personText} during the meeting`;
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button

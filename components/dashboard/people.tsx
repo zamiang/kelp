@@ -25,21 +25,19 @@ export const PeopleToday = (
     void fetchData();
   }, []);
   return (
-    <div className={classes.section}>
-      <div className={classes.rowNoBorder}>
-        {people.map(
-          (person: IPerson) =>
-            person && (
-              <PersonRow
-                key={person.id}
-                person={person}
-                selectedPersonId={props.selectedPersonId}
-                store={{ ...props }}
-                noLeftMargin={props.noLeftMargin}
-              />
-            ),
-        )}
-      </div>
+    <div className={classes.rowNoBorder}>
+      {people.map(
+        (person: IPerson) =>
+          person && (
+            <PersonRow
+              key={person.id}
+              person={person}
+              selectedPersonId={props.selectedPersonId}
+              store={{ ...props }}
+              noLeftMargin={props.noLeftMargin}
+            />
+          ),
+      )}
     </div>
   );
 };
@@ -57,20 +55,18 @@ const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => 
     void fetchData();
   }, []);
   return (
-    <div className={classes.section}>
-      <div className={classes.rowNoBorder}>
-        {people.map(
-          (person: IPerson) =>
-            person && (
-              <PersonRow
-                key={person.id}
-                person={person}
-                selectedPersonId={props.selectedPersonId}
-                store={{ ...props }}
-              />
-            ),
-        )}
-      </div>
+    <div className={classes.rowNoBorder}>
+      {people.map(
+        (person: IPerson) =>
+          person && (
+            <PersonRow
+              key={person.id}
+              person={person}
+              selectedPersonId={props.selectedPersonId}
+              store={{ ...props }}
+            />
+          ),
+      )}
     </div>
   );
 };
@@ -88,17 +84,15 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   }, []);
 
   return (
-    <div className={classes.section}>
-      <div className={classes.rowNoBorder}>
-        {people.map((person) => (
-          <PersonRow
-            key={person.id}
-            person={person}
-            selectedPersonId={props.selectedPersonId}
-            store={{ ...props }}
-          />
-        ))}
-      </div>
+    <div className={classes.rowNoBorder}>
+      {people.map((person) => (
+        <PersonRow
+          key={person.id}
+          person={person}
+          selectedPersonId={props.selectedPersonId}
+          store={{ ...props }}
+        />
+      ))}
     </div>
   );
 };

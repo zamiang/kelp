@@ -32,7 +32,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
     const fetchData = async () => {
       if (props.documentId) {
         const result = await props.segmentDocumentStore.getAllForDocumentId(props.documentId);
-        setSegmentDocuments(result);
+        setSegmentDocuments(result.filter((segmentDocument) => segmentDocument.segmentId));
       }
     };
     void fetchData();
@@ -42,7 +42,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
     const fetchData = async () => {
       if (segmentDocuments.length > 0) {
         const peopleIds = uniqBy(segmentDocuments, 'personId')
-          .filter((segmentDocument) => !!segmentDocument.personId && !!segmentDocument.segmentId)
+          .filter((segmentDocument) => segmentDocument.personId && segmentDocument.segmentId)
           .map((segmentDocument) => segmentDocument.personId);
 
         const people = await props.personDataStore.getBulk(peopleIds);

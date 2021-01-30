@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
     transition: 'background 0.3s, opacity 0.3s',
     cursor: 'pointer',
     opacity: 1,
-    marginBottom: theme.spacing(0.5),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
     paddingLeft: theme.spacing(4),
     '&:hover': {
       backgroundColor: theme.palette.secondary.light,

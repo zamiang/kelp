@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   image: {
     display: 'block',
     width: '100%',
-    paddingRight: theme.spacing(1),
     maxHeight: 24,
     maxWidth: 24,
   },
