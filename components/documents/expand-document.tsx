@@ -42,13 +42,13 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.meetingId) {
-        const result = await props.segmentDocumentStore.getAllForSegmentId(props.meetingId);
+      if (props.documentId) {
+        const result = await props.segmentDocumentStore.getAllForSegmentId(props.documentId);
         setSegmentDocuments(result);
       }
     };
     void fetchData();
-  }, [props.meetingId]);
+  }, [props.documentId]);
 
   useEffect(() => {
     const fetchData = async () => {

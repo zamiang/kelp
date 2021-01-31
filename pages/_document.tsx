@@ -15,7 +15,7 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
           <script src="https://apis.google.com/js/api.js"></script>
         </Head>
-        <body>
+        <body style={{ overscrollBehaviorY: 'none' }}>
           <Main />
           <NextScript />
         </body>
