@@ -86,24 +86,19 @@ const LoadingDashboardContainer = () => {
     void fetchData();
   }, []);
 
-  if (!database) {
-    return null;
-  }
-
   if (!isLoading && !session?.user) {
     void router.push('/');
   }
-
   return (
     <React.Fragment>
       <Loading isOpen={!isSignedIn || isLoading} message="Loading" />
-      {isSignedIn && <LoadingStoreDashboardContainer database={database} />}
+      {database && isSignedIn && <LoadingStoreDashboardContainer database={database} />}
     </React.Fragment>
   );
 };
 
 const LoadingStoreDashboardContainer = (props: { database: any }) => {
-  const isSignedIn = useGapi();
+  useGapi();
   const router = useHistory();
   const [session, isLoading] = useSession();
   const store = getStore(props.database);
@@ -111,11 +106,10 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
   if (!isLoading && !session?.user) {
     void router.push('/');
   }
-
   return (
     <div suppressHydrationWarning={true}>
-      <Loading isOpen={!isSignedIn || isLoading || store.isLoading} message="Loading" />
-      {(process as any).browser && isSignedIn && !isLoading && !store.isLoading && (
+      <Loading isOpen={isLoading || store.isLoading} message="Loading" />
+      {(process as any).browser && !isLoading && !store.isLoading && (
         <Router basename="/dashboard">
           <DashboardContainer store={store} />
         </Router>
@@ -185,6 +179,7 @@ export const DashboardContainer = ({ store }: IProps) => {
         <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
           <Alert severity="error">
             <AlertTitle>Error</AlertTitle>Please reload the page
+            <Typography>{store.error}</Typography>
           </Alert>
         </Dialog>
         <NotificationsPopup />

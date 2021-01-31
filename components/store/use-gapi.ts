@@ -41,7 +41,11 @@ const useGAPI = () => {
         }
       } catch (error) {
         if (error == 'popup_blocked_by_browser') {
-          alert('Please allow popups for Kelp');
+          alert('Please allow popups for Kelp.nyc');
+        } else if (error.error == 'popup_blocked_by_browser') {
+          alert('Please allow popups for Kelp.nyc');
+        } else {
+          console.error(error);
         }
       }
     };
