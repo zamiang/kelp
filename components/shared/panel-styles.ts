@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 0,
     position: 'relative',
     overflowX: 'hidden',
+    maxWidth: '100vw',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
     },
