@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import React, { useEffect, useRef, useState } from 'react';
-import { Route, BrowserRouter as Router, Switch, useHistory } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
 import Docs from '../../components/dashboard/documents';
 import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
@@ -116,7 +116,9 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
     <div suppressHydrationWarning={true}>
       <Loading isOpen={!isSignedIn || isLoading || store.isLoading} message="Loading" />
       {(process as any).browser && isSignedIn && !isLoading && !store.isLoading && (
-        <DashboardContainer store={store} />
+        <Router basename="/dashboard">
+          <DashboardContainer store={store} />
+        </Router>
       )}
     </div>
   );
@@ -156,9 +158,8 @@ export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
 
-  // const location = useLocation();
-  // console.log(location, '<<<<<<<<<<<,');
-  const shouldCenter = false; // ['docs', 'people', 'meetings'].indexOf(location) > -1;
+  const location = useLocation().pathname.split('/')[1];
+  const shouldCenter = ['docs', 'people', 'meetings', 'search'].indexOf(location) > -1;
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
@@ -168,50 +169,44 @@ export const DashboardContainer = ({ store }: IProps) => {
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
-      <Router basename="/dashboard">
-        <Nav
-          refToUse={ref}
-          lastUpdated={store.lastUpdated}
-          handleRefreshClick={handleRefreshClick}
-        />
-        <main className={clsx(classes.content, shouldCenter && classes.center)}>
-          <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
-            <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>Please reload the page
-            </Alert>
-          </Dialog>
-          <NotificationsPopup />
-          <MeetingPrepNotifications {...store} />
-          <ErrorBoundaryComponent>
-            <Switch>
-              <Route path="/week">
-                <WeekCalendar {...store} />
-              </Route>
-              <Route path="/meetings">
-                <Meetings {...store} />
-              </Route>
-              <Route path="/docs">
-                <Docs {...store} />
-              </Route>
-              <Route path="/people">
-                <People {...store} />
-              </Route>
-              <Route path="/summary">
-                <Summary {...store} />
-              </Route>
-              <Route path="/search">
-                <Search {...store} />
-              </Route>
-              <Route path="/settings">
-                <Settings />
-              </Route>
-              <Route path="/">
-                <Home {...store} />
-              </Route>
-            </Switch>
-          </ErrorBoundaryComponent>
-        </main>
-      </Router>
+      <Nav refToUse={ref} lastUpdated={store.lastUpdated} handleRefreshClick={handleRefreshClick} />
+      <main className={clsx(classes.content, shouldCenter && classes.center)}>
+        <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>Please reload the page
+          </Alert>
+        </Dialog>
+        <NotificationsPopup />
+        <MeetingPrepNotifications {...store} />
+        <ErrorBoundaryComponent>
+          <Switch>
+            <Route path="/week">
+              <WeekCalendar {...store} />
+            </Route>
+            <Route path="/meetings">
+              <Meetings {...store} />
+            </Route>
+            <Route path="/docs">
+              <Docs {...store} />
+            </Route>
+            <Route path="/people">
+              <People {...store} />
+            </Route>
+            <Route path="/summary">
+              <Summary {...store} />
+            </Route>
+            <Route path="/search">
+              <Search {...store} />
+            </Route>
+            <Route path="/settings">
+              <Settings />
+            </Route>
+            <Route path="/">
+              <Home {...store} />
+            </Route>
+          </Switch>
+        </ErrorBoundaryComponent>
+      </main>
     </div>
   );
 };
