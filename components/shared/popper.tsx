@@ -32,9 +32,17 @@ const PopperContainer = (props: {
   return (
     <Popper
       open={props.isOpen}
+      placement="bottom"
       anchorEl={props.anchorEl}
       className={classes.popper}
       modifiers={{
+        flip: {
+          enabled: true,
+        },
+        preventOverflow: {
+          enabled: true,
+          boundariesElement: 'viewport',
+        },
         offset: {
           enabled: true,
           offset: props.offset || '0, -50',

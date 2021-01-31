@@ -96,6 +96,7 @@ const MeetingRow = (props: {
         button={true}
         selected={isSelected}
         onClick={handleClick}
+        ref={setReferenceElement as any}
         className={clsx(
           'ignore-react-onclickoutside',
           rowStyles.row,
@@ -109,18 +110,18 @@ const MeetingRow = (props: {
           props.isSmall && classes.noLeftMargin,
         )}
       >
-        <PopperContainer
-          anchorEl={referenceElement}
-          isOpen={isOpen}
-          setIsOpen={(isOpen) => setIsOpen(isOpen)}
-        >
-          <ExpandedMeeting
-            meetingId={props.meeting.id}
-            close={() => setIsOpen(false)}
-            {...props.store}
-          />
-        </PopperContainer>
         <Grid container spacing={2} alignItems="center">
+          <PopperContainer
+            anchorEl={referenceElement}
+            isOpen={isOpen}
+            setIsOpen={(isOpen) => setIsOpen(isOpen)}
+          >
+            <ExpandedMeeting
+              meetingId={props.meeting.id}
+              close={() => setIsOpen(false)}
+              {...props.store}
+            />
+          </PopperContainer>
           <Grid item className={classes.dot}>
             <div
               className={clsx(
@@ -134,13 +135,7 @@ const MeetingRow = (props: {
               )}
             />
           </Grid>
-          <Grid
-            item
-            xs
-            zeroMinWidth
-            className={clsx(props.isSmall && classes.smallContainer)}
-            ref={setReferenceElement as any}
-          >
+          <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
             <Grid container>
               <Grid item xs={12}>
                 <Typography variant="subtitle2">
