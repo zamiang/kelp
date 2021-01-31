@@ -1,21 +1,22 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
     "moduleResolution": "node",
+    "target": "ESNext",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noImplicitAny": true,
     "removeComments": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true,
-    "target": "ESNext",
+    "strict": true
   },
   "include": [
     "./components/**/*.ts",
@@ -26,7 +27,7 @@
     "./pages/**/*.ts",
     "./pages/**/*.tsx",
     "@types/**.*.ts",
-    "constants/config.ts"
+    "./constants/config.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "module": "es6",
+    "moduleResolution": "node",
+    "isolatedModules": false,
+    "noEmit": false,
+    "target": "es5",
+    "jsx": "react"
+  },
+  "include": ["./src/**/*", "src/custom.d.ts"],
+  "exclude": ["node_modules"]
+}
