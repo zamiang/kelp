@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { format, formatDistanceToNow } from 'date-fns';
 import { capitalize, uniqBy } from 'lodash';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
@@ -39,7 +39,7 @@ const Activity = (props: {
 }) => {
   const classes = useRowStyles();
   const expandClasses = useExpandStyles();
-  const router = useRouter();
+  const router = useHistory();
   const [actor, setActor] = useState<IPerson | undefined>(undefined);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Activity = (props: {
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button
         className={expandClasses.listItem}
-        onClick={() => router.push(`?tab=docs&slug=${props.document.id}`)}
+        onClick={() => router.push(`/docs/${props.document.id}`)}
       >
         <Grid container wrap="nowrap" spacing={1} alignItems="flex-start">
           <Grid item>

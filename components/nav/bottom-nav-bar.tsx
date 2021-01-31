@@ -12,8 +12,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     background: theme.palette.background.paper,
     borderTop: `1px solid ${theme.palette.divider}`,
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
   },
   selected: {
     color: theme.palette.text.primary,
@@ -47,19 +50,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface IProps {
-  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search' | 'home';
-}
-
-const NavBar = (props: IProps) => {
+const NavBar = () => {
   const classes = useStyles();
   const [session, isLoading] = useSession();
-  const router = useRouter();
+  const history = useHistory();
+  const tab = useLocation().pathname;
   const user = session && session.user;
-  const isMeetingsSelected = props.tab === 'meetings';
-  const isDocsSelected = props.tab === 'docs';
-  const isPeopleSelected = props.tab === 'people';
-  const isHomeSelected = props.tab === 'home';
+  const isMeetingsSelected = tab.includes('meetings');
+  const isDocsSelected = tab.includes('docs');
+  const isPeopleSelected = tab.includes('people');
+  const isHomeSelected = tab.includes('home');
   return (
     <Drawer
       variant="permanent"
@@ -85,14 +85,14 @@ const NavBar = (props: IProps) => {
           </Grid>
         )}
         <Grid item>
-          <Link href="?tab=home">
+          <Link href="/home">
             <IconButton>
               <HomeIcon className={isHomeSelected ? classes.selected : classes.unSelected} />
             </IconButton>
           </Link>
         </Grid>
         <Grid item>
-          <Link href="?tab=meetings">
+          <Link href="/meetings">
             <IconButton>
               <CalendarViewDayIcon
                 className={isMeetingsSelected ? classes.selected : classes.unSelected}
@@ -101,7 +101,7 @@ const NavBar = (props: IProps) => {
           </Link>
         </Grid>
         <Grid item>
-          <Link href="?tab=docs">
+          <Link href="/docs">
             <IconButton>
               <InsertDriveFileIcon
                 className={isDocsSelected ? classes.selected : classes.unSelected}
@@ -110,7 +110,7 @@ const NavBar = (props: IProps) => {
           </Link>
         </Grid>
         <Grid item>
-          <Link href="?tab=people">
+          <Link href="/people">
             <IconButton>
               <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
             </IconButton>
@@ -118,7 +118,7 @@ const NavBar = (props: IProps) => {
         </Grid>
         {!isLoading && user && (
           <Grid item>
-            <IconButton onClick={() => router.push('?tab=settings')}>
+            <IconButton onClick={() => history.push('/settings')}>
               <Avatar
                 className={clsx(classes.unSelected, classes.icon)}
                 src={user.image || undefined}

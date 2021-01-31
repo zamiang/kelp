@@ -49,13 +49,13 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
       onClick={handleClick}
       className={clsx('ignore-react-onclickoutside', rowStyles.row, classes.row)}
     >
-      <Link href={`?tab=people&slug=${props.person.id}`}>
+      <Link href={`/people/${props.person.id}`}>
         <Grid container spacing={1} alignItems="center">
           <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
             <ExpandedPerson
               close={() => setAnchorEl(null)}
               personId={props.person.id}
-              {...props.store}
+              store={props.store}
             />
           </PopperContainer>
           <Grid item className={classes.avatar}>

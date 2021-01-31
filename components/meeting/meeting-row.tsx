@@ -4,33 +4,16 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import ExpandedMeeting from './expand-meeting';
 
-const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
-
 const useStyles = makeStyles((theme) => ({
   time: { minWidth: 150, maxWidth: 180 },
-  currentTime: {
-    marginTop: -6,
-    paddingLeft: 33,
-  },
-  currentTimeDot: {
-    borderRadius: '50%',
-    height: 12,
-    width: 12,
-    background: theme.palette.primary.dark,
-  },
-  currentTimeBorder: {
-    marginTop: 0,
-    width: '100%',
-    borderTop: `2px solid ${theme.palette.primary.dark}`,
-  },
   row: {
     paddingLeft: 0,
     marginLeft: 4,
@@ -66,95 +49,88 @@ const MeetingRow = (props: {
 }) => {
   const isSelected = props.selectedMeetingId === props.meeting.id;
   const classes = useStyles();
-  const router = useRouter();
+  const router = useHistory();
   const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
+  /*
   useEffect(() => {
+    console.log(isSelected && referenceElement, 'ref');
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     } else if (referenceElement && !props.selectedMeetingId && props.shouldRenderCurrentTime) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [!!referenceElement]);
-
+*/
   const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
     setIsOpen(true);
-    void router.push(`?tab=meetings&slug=${props.meeting.id}`);
+    void router.push(`/meetings/${props.meeting.id}`);
     return false;
   };
   return (
-    <React.Fragment>
-      {props.shouldRenderCurrentTime && (
-        <ListItem className={classes.currentTime} id={CURRENT_TIME_ELEMENT_ID}>
-          <div className={classes.currentTimeDot}></div>
-          <div className={classes.currentTimeBorder}></div>
-        </ListItem>
+    <ListItem
+      button={true}
+      selected={isSelected}
+      onClick={handleClick}
+      ref={setReferenceElement as any}
+      className={clsx(
+        'ignore-react-onclickoutside',
+        rowStyles.row,
+        rowStyles.rowBorderRadius,
+        classes.row,
+        props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
+        props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
+        props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
+        props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
+        isSelected && rowStyles.rowPrimaryMain,
+        props.isSmall && classes.noLeftMargin,
       )}
-      <ListItem
-        button={true}
-        selected={isSelected}
-        onClick={handleClick}
-        ref={setReferenceElement as any}
-        className={clsx(
-          'ignore-react-onclickoutside',
-          rowStyles.row,
-          rowStyles.rowBorderRadius,
-          classes.row,
-          props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
-          props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
-          props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
-          props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
-          isSelected && rowStyles.rowPrimaryMain,
-          props.isSmall && classes.noLeftMargin,
-        )}
-      >
-        <Grid container spacing={2} alignItems="center">
-          {referenceElement && (
-            <PopperContainer
-              anchorEl={referenceElement}
-              isOpen={isOpen}
-              setIsOpen={(isOpen) => setIsOpen(isOpen)}
-            >
-              <ExpandedMeeting
-                meetingId={props.meeting.id}
-                close={() => setIsOpen(false)}
-                {...props.store}
-              />
-            </PopperContainer>
-          )}
-          <Grid item className={classes.dot}>
-            <div
-              className={clsx(
-                rowStyles.border,
-                props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
-                props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
-                props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
-                props.meeting.selfResponseStatus === 'needsAction' &&
-                  rowStyles.borderSecondaryLight,
-                props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
-              )}
+    >
+      <Grid container spacing={2} alignItems="center">
+        {referenceElement && (
+          <PopperContainer
+            anchorEl={referenceElement}
+            isOpen={isOpen}
+            setIsOpen={(isOpen) => setIsOpen(isOpen)}
+          >
+            <ExpandedMeeting
+              meetingId={props.meeting.id}
+              close={() => setIsOpen(false)}
+              {...props.store}
             />
-          </Grid>
-          <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography variant="subtitle2">
-                  {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-                </Typography>
-                <Typography variant="body2" noWrap>
-                  <b>{props.meeting.summary || '(no title)'}</b>{' '}
-                  {!props.isSmall && props.meeting.description
-                    ? props.meeting.description.replace(/<[^>]+>/g, '')
-                    : ''}
-                </Typography>
-              </Grid>
+          </PopperContainer>
+        )}
+        <Grid item className={classes.dot}>
+          <div
+            className={clsx(
+              rowStyles.border,
+              props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
+              props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
+              props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
+              props.meeting.selfResponseStatus === 'needsAction' && rowStyles.borderSecondaryLight,
+              props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
+            )}
+          />
+        </Grid>
+        <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2">
+                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+              </Typography>
+              <Typography variant="body2" noWrap>
+                <b>{props.meeting.summary || '(no title)'}</b>{' '}
+                {!props.isSmall && props.meeting.description
+                  ? props.meeting.description.replace(/<[^>]+>/g, '')
+                  : ''}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
-      </ListItem>
-    </React.Fragment>
+      </Grid>
+    </ListItem>
   );
 };
 

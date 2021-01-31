@@ -2,9 +2,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   inputContainer: {
@@ -28,10 +28,10 @@ const SearchBar = () => {
       query: '',
     },
   });
-  const router = useRouter();
+  const router = useHistory();
 
   const onSubmit = handleSubmit(async (data) => {
-    void router.push(`?tab=search&query=${data.query}`);
+    void router.push(`/search?query=${data.query}`);
     setValue('query', '');
   });
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>

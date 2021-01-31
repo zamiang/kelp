@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
 import PopperContainer from '../shared/popper';
@@ -52,7 +52,7 @@ const DocumentRow = (props: {
   isSmall?: boolean;
 }) => {
   const isSelected = props.selectedDocumentId === props.doc.id;
-  const router = useRouter();
+  const router = useHistory();
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -90,7 +90,7 @@ const DocumentRow = (props: {
   const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
     setIsOpen(true);
-    void router.push(`?tab=docs&slug=${props.doc.id}`);
+    void router.push(`/docs/${props.doc.id}`);
     return false;
   };
   return (
@@ -106,15 +106,13 @@ const DocumentRow = (props: {
         props.isSmall && rowStyles.rowNoLeftMargin,
       )}
     >
-      {referenceElement && (
-        <PopperContainer anchorEl={referenceElement} isOpen={isOpen} setIsOpen={setIsOpen}>
-          <ExpandedDocument
-            documentId={props.doc.id}
-            close={() => setIsOpen(false)}
-            {...props.store}
-          />
-        </PopperContainer>
-      )}
+      <PopperContainer anchorEl={referenceElement} isOpen={isOpen} setIsOpen={setIsOpen}>
+        <ExpandedDocument
+          documentId={props.doc.id}
+          close={() => setIsOpen(false)}
+          {...props.store}
+        />
+      </PopperContainer>
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
           <IconButton>

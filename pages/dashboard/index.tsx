@@ -6,12 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
-import useComponentSize from '@rehooks/component-size';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
+import { Route, BrowserRouter as Router, Switch, useHistory } from 'react-router-dom';
 import Docs from '../../components/dashboard/documents';
 import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
@@ -40,11 +39,9 @@ const useStyles = makeStyles((theme) => ({
     transition: 'background 0.3s',
   },
   content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
     background: 'white',
     overscrollBehavior: 'contain',
+    flexGrow: 1,
   },
   center: {
     maxWidth: MOBILE_WIDTH + 100,
@@ -78,7 +75,7 @@ const useBackdropStyles = makeStyles((theme) => ({
 
 const LoadingDashboardContainer = () => {
   const isSignedIn = useGapi();
-  const router = useRouter();
+  const router = useHistory();
   const [session, isLoading] = useSession();
   const [database, setDatabase] = useState<any>(undefined);
 
@@ -107,7 +104,7 @@ const LoadingDashboardContainer = () => {
 
 const LoadingStoreDashboardContainer = (props: { database: any }) => {
   const isSignedIn = useGapi();
-  const router = useRouter();
+  const router = useHistory();
   const [session, isLoading] = useSession();
   const store = getStore(props.database);
 
@@ -116,10 +113,12 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
   }
 
   return (
-    <React.Fragment>
+    <div suppressHydrationWarning={true}>
       <Loading isOpen={!isSignedIn || isLoading || store.isLoading} message="Loading" />
-      {isSignedIn && <DashboardContainer store={store} />}
-    </React.Fragment>
+      {(process as any).browser && isSignedIn && !isLoading && !store.isLoading && (
+        <DashboardContainer store={store} />
+      )}
+    </div>
   );
 };
 
@@ -139,6 +138,13 @@ const Loading = (props: { isOpen: boolean; message: string }) => {
   );
 };
 
+const Nav = (props: { refToUse: any; lastUpdated: Date; handleRefreshClick: () => void }) => (
+  <React.Fragment>
+    <NavBar lastUpdated={props.lastUpdated} handleRefreshClick={props.handleRefreshClick} />
+    <BottomNav />
+  </React.Fragment>
+);
+
 interface IProps {
   store: IStore;
 }
@@ -149,60 +155,64 @@ export const DashboardContainer = ({ store }: IProps) => {
   const ref = useRef(null);
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
-  const router = useRouter();
-  const size = useComponentSize(ref);
-  const tab = router.query.tab as string;
-  const tabHash = {
-    week: <WeekCalendar {...store} />,
-    meetings: <Meetings {...store} />,
-    docs: <Docs {...store} />,
-    people: <People {...store} />,
-    summary: <Summary {...store} />,
-    settings: <Settings />,
-    search: <Search {...store} />,
-    home: <Home {...store} />,
-  } as any;
 
-  const colorHash = {
-    week: classes.grayBackground,
-    summary: classes.grayBackground,
-    search: classes.grayBackground,
-    settings: classes.grayBackground,
-    meetings: classes.blueBackground,
-    docs: classes.pinkBackground,
-    people: classes.orangeBackground,
-    home: classes.grayBackground,
-  } as any;
+  //const location = useLocation();
+  // console.log(location, '<<<<<<<<<<<,');
+  const shouldCenter = false; // ['docs', 'people', 'meetings'].indexOf(location) > -1;
 
-  const shouldCenter = ['docs', 'people', 'meetings'].indexOf(tab) > -1;
-  const isDesktop = size.width > MOBILE_WIDTH;
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
   }, []);
   return (
-    <div ref={ref} className={clsx(classes.container, colorHash[tab])}>
+    <div ref={ref} className={classes.container}>
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
-      {isDesktop && (
-        <NavBar
+      <Router basename="/dashboard">
+        <Nav
+          refToUse={ref}
           lastUpdated={store.lastUpdated}
           handleRefreshClick={handleRefreshClick}
-          tab={tab as any}
         />
-      )}
-      {!isDesktop && <BottomNav tab={tab as any} />}
-      <main className={clsx(classes.content, shouldCenter && classes.center)}>
-        <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
-          <Alert severity="error">
-            <AlertTitle>Error</AlertTitle>Please reload the page
-          </Alert>
-        </Dialog>
-        <NotificationsPopup />
-        <MeetingPrepNotifications {...store} />
-        <ErrorBoundaryComponent>{tabHash[tab]}</ErrorBoundaryComponent>
-      </main>
+        <main className={clsx(classes.content, shouldCenter && classes.center)}>
+          <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>Please reload the page
+            </Alert>
+          </Dialog>
+          <NotificationsPopup />
+          <MeetingPrepNotifications {...store} />
+          <ErrorBoundaryComponent>
+            <Switch>
+              <Route path="/week">
+                <WeekCalendar {...store} />
+              </Route>
+              <Route path="/meetings">
+                <Meetings {...store} />
+              </Route>
+              <Route path="/docs">
+                <Docs {...store} />
+              </Route>
+              <Route path="/people">
+                <People {...store} />
+              </Route>
+              <Route path="/summary">
+                <Summary {...store} />
+              </Route>
+              <Route path="/search">
+                <Search {...store} />
+              </Route>
+              <Route path="/settings">
+                <Settings />
+              </Route>
+              <Route path="/">
+                <Home {...store} />
+              </Route>
+            </Switch>
+          </ErrorBoundaryComponent>
+        </main>
+      </Router>
     </div>
   );
 };

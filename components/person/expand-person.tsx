@@ -25,7 +25,7 @@ import PersonNotes from './person-notes';
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
 
-const ExpandPerson = (props: IStore & { personId: string; close: () => void }) => {
+const ExpandPerson = (props: { store: IStore; personId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   const [segments, setSegments] = useState<ISegment[]>([]);
@@ -33,7 +33,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const p = await props.personDataStore.getPersonById(props.personId);
+      const p = await props.store.personDataStore.getPersonById(props.personId);
       setPerson(p);
     };
     void fetchData();
@@ -41,7 +41,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
 
   useEffect(() => {
     const fetchData = async () => {
-      const p = await props.segmentDocumentStore.getAllForPersonId(props.personId);
+      const p = await props.store.segmentDocumentStore.getAllForPersonId(props.personId);
       setSegmentDocuments(p);
     };
     void fetchData();
@@ -49,7 +49,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
 
   useEffect(() => {
     const fetchData = async () => {
-      const s = await props.timeDataStore.getSegmentsForPersonId(props.personId);
+      const s = await props.store.timeDataStore.getSegmentsForPersonId(props.personId);
       if (s) {
         setSegments(s.filter(Boolean) as any);
       }
@@ -59,7 +59,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
 
   useEffect(() => {
     const fetchData = async () => {
-      const a = await getAssociates(props.personId, segments, props.attendeeDataStore);
+      const a = await getAssociates(props.personId, segments, props.store.attendeeDataStore);
       setAssociates(a);
     };
     void fetchData();
@@ -100,7 +100,7 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           >
             {person.name}
           </Typography>
-          <PersonNotes person={person} refetch={props.refetch} />
+          <PersonNotes person={person} refetch={props.store.refetch} />
         </Box>
       </div>
       <Divider />
@@ -110,11 +110,11 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
             Last meeting
           </Typography>
           {lastMeeting && (
-            <Link href={`?tab=meetings&slug=${lastMeeting.id}`}>
+            <Link href={`/meetings/${lastMeeting.id}`}>
               <Typography className={classes.highlight}>
-                <div className={classes.highlightValue} style={{ fontSize: '1.3094rem' }}>
+                <span className={classes.highlightValue} style={{ fontSize: '1.3094rem' }}>
                   {formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
-                </div>
+                </span>
               </Typography>
             </Link>
           )}
@@ -163,21 +163,25 @@ const ExpandPerson = (props: IStore & { personId: string; close: () => void }) =
           </Typography>
           <SegmentDocumentList
             segmentDocuments={segmentDocuments}
-            personStore={props.personDataStore}
-            docStore={props.documentDataStore}
+            personStore={props.store.personDataStore}
+            docStore={props.store.documentDataStore}
           />
         </React.Fragment>
         <React.Fragment>
           <Typography variant="h6" className={classes.smallHeading}>
             Associates
           </Typography>
-          <AttendeeList personStore={props.personDataStore} attendees={associates} showAll={true} />
+          <AttendeeList
+            personStore={props.store.personDataStore}
+            attendees={associates}
+            showAll={true}
+          />
         </React.Fragment>
         <React.Fragment>
           <Typography variant="h6" className={classes.smallHeading}>
             Meetings you both attended
           </Typography>
-          <MeetingList segments={segments} personStore={props.personDataStore} />
+          <MeetingList segments={segments} personStore={props.store.personDataStore} />
         </React.Fragment>
       </div>
     </React.Fragment>

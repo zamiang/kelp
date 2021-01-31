@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import EventIcon from '@material-ui/icons/Event';
 import { format } from 'date-fns';
 import { capitalize, uniqBy } from 'lodash';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
@@ -40,7 +40,7 @@ const Meeting = (props: {
 }) => {
   const classes = useRowStyles();
   const expandClasses = useExpandStyles();
-  const router = useRouter();
+  const router = useHistory();
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Meeting = (props: {
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button
         className={expandClasses.listItem}
-        onClick={() => router.push(`?tab=meetings&slug=${props.meeting.id}`)}
+        onClick={() => router.push(`/meetings/${props.meeting.id}`)}
       >
         <Grid container wrap="nowrap" spacing={2} alignItems="flex-start">
           <Grid item>

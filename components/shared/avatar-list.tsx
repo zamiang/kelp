@@ -3,8 +3,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import { useRouter } from 'next/router';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { IPerson } from '../store/models/person-model';
 
 interface IProps {
@@ -38,8 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AvatarList = (props: IProps) => {
   const classes = useStyles();
-  const router = useRouter();
-
+  const router = useHistory();
   if (props.people.filter((p) => !p.isCurrentUser).length < 1) {
     if (props.shouldDisplayNone) {
       return <Typography variant="caption">None</Typography>;
@@ -58,7 +57,7 @@ const AvatarList = (props: IProps) => {
         return (
           <Tooltip key={person.id} title={person.name || person.emailAddresses}>
             <Avatar
-              onClick={() => router.push(`?tab=people&slug=${person.id}`)}
+              onClick={() => router.push(`/people/${person.id}`)}
               src={person.imageUrl || ''}
               className={classes.avatar}
             >

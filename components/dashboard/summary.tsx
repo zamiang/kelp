@@ -240,7 +240,7 @@ export const DayContent = (props: IDayContentProps) => {
 
   const diff = getDayKey(props.day);
   const terms = props.tfidf.listTerms(Number(diff)).map((document) => (
-    <Link href={`?tab=search&query=${document.term}`} key={document.term}>
+    <Link href={`/search?query=${document.term}`} key={document.term}>
       <Typography
         onMouseEnter={() => props.setHoveredItem(document.term)}
         onMouseLeave={() => props.setHoveredItem('')}

@@ -1,8 +1,8 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { getDayOfYear } from 'date-fns';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import DocumentRow from '../documents/document-row';
 import useButtonStyles from '../shared/button-styles';
 import { getWeek } from '../shared/date-helpers';
@@ -101,7 +101,8 @@ const Documents = (props: IStore) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('all');
-  const selectedDocumentId = useRouter().query.slug as string;
+  const selectedDocumentId = useLocation().pathname;
+  console.log('selected documentid');
   const currentTitle = titleHash[currentTab];
   const tabHash = {
     all: <AllDocuments selectedDocumentId={selectedDocumentId} {...props} />,

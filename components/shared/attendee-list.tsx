@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import config from '../../constants/config';
 import useExpandStyles from '../shared/expand-styles';
 import { IFormattedAttendee } from '../store/models/attendee-model';
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personDataStore'] }) => {
   const classes = useStyles();
   const expandClasses = useExpandStyles();
-  const router = useRouter();
+  const router = useHistory();
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +70,7 @@ const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personD
   return (
     <Button
       key={person.id}
-      onClick={() => router.push(`?tab=people&slug=${person.id}`)}
+      onClick={() => router.push(`/people/${person.id}`)}
       className={clsx(
         expandClasses.listItem,
         classes.person,

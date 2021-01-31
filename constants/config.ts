@@ -14,7 +14,7 @@ const NUMBER_OF_DAYS_FORWARD = 7;
 
 export default {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  REDIRECT_URI: process.env.NEXT_PUBLIC_REDIRECT_URI || 'http://localhost:3000/dashboard?tab=home',
+  REDIRECT_URI: process.env.NEXT_PUBLIC_REDIRECT_URI || 'http://localhost:3000/dashboard',
   GOOGLE_SCOPES: scopes,
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   SHOULD_FILTER_OUT_FILES_MODIFIED_BEFORE_NUMBER_OF_DAYS_BACK: true,

@@ -29,10 +29,13 @@ const PopperContainer = (props: {
   offset?: string;
 }) => {
   const classes = useStyles();
+  if (!props.anchorEl) {
+    return null;
+  }
+
   return (
     <Popper
       open={props.isOpen}
-      placement="bottom"
       anchorEl={props.anchorEl}
       className={classes.popper}
       modifiers={{
