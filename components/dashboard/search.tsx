@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../documents/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
@@ -37,7 +37,7 @@ const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
 
 const Search = (props: IStore) => {
   const classes = panelStyles();
-  const router = useRouter();
+  const router = useLocation();
   const [searchIndex, setSearchIndex] = useState<SearchIndex | undefined>(undefined);
 
   useEffect(() => {
@@ -52,9 +52,10 @@ const Search = (props: IStore) => {
     return null;
   }
 
-  const searchQuery =
-    router.query?.query &&
-    (router.query.query as string).toLowerCase().replace(uncommonPunctuation, ' ');
+  const searchQuery = router.search
+    .replace('?query=', '')
+    .toLowerCase()
+    .replace(uncommonPunctuation, ' ');
   const results = searchQuery
     ? searchIndex.results.filter((item) => item.text.includes(searchQuery))
     : [];

@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
-
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);

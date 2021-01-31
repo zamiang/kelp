@@ -1,6 +1,7 @@
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -18,9 +19,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import PublicIcon from '@material-ui/icons/Public';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import { drawerWidth } from '../../pages/dashboard';
 import RefreshButton from './refresh-button';
 import SearchBar from './search-bar';
@@ -30,7 +30,9 @@ const shouldRenderHome = true;
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     border: '0px',
-    position: 'relative',
+    position: 'sticky',
+    left: 0,
+    top: 0,
     whiteSpace: 'nowrap',
     width: drawerWidth,
     background: 'none',
@@ -43,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     height: '100vh',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   drawerPaperClose: {
     overflowX: 'hidden',
@@ -106,20 +111,21 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   handleRefreshClick: () => void;
   lastUpdated: Date;
-  tab: 'meetings' | 'docs' | 'people' | 'week' | 'settings' | 'summary' | 'search' | 'home';
 }
 
 const NavBar = (props: IProps) => {
   const classes = useStyles();
-  const router = useRouter();
+  const router = useLocation();
+  const history = useHistory();
   const [session, isLoading] = useSession();
   const user = session && session.user;
-  const isSummarySelected = props.tab === 'summary';
-  const isMeetingsSelected = props.tab === 'meetings';
-  const isDocsSelected = props.tab === 'docs';
-  const isPeopleSelected = props.tab === 'people';
-  const isWeekSelected = props.tab === 'week';
-  const isHomeSelected = props.tab === 'home';
+  const tab = router.pathname;
+  const isSummarySelected = tab.includes('summary');
+  const isMeetingsSelected = tab.includes('meetings');
+  const isDocsSelected = tab.includes('docs');
+  const isPeopleSelected = tab.includes('people');
+  const isWeekSelected = tab.includes('week');
+  const isHomeSelected = tab.includes('home');
   return (
     <Drawer
       variant="permanent"
@@ -131,13 +137,13 @@ const NavBar = (props: IProps) => {
     >
       <div>
         <List>
-          <Link href="/about">
+          <Link href="/about" underline="none">
             <ListItem className={classes.logoContainer}>
               <ListItemIcon className={classes.iconContainer}>
                 <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
               </ListItemIcon>
               <ListItemText>
-                <Typography variant="h4">
+                <Typography variant="h4" color="textPrimary">
                   <b>Kelp</b>
                 </Typography>
               </ListItemText>
@@ -166,7 +172,7 @@ const NavBar = (props: IProps) => {
         </div>
         <List>
           {shouldRenderHome && (
-            <Link href="?tab=home">
+            <Link to="/" component={RouterLink} underline="none">
               <ListItem
                 button
                 selected={isHomeSelected}
@@ -182,7 +188,7 @@ const NavBar = (props: IProps) => {
               </ListItem>
             </Link>
           )}
-          <Link href="?tab=week">
+          <Link to="/week" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isWeekSelected}
@@ -197,7 +203,7 @@ const NavBar = (props: IProps) => {
               />
             </ListItem>
           </Link>
-          <Link href="?tab=summary">
+          <Link to="/summary" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isSummarySelected}
@@ -213,7 +219,7 @@ const NavBar = (props: IProps) => {
             </ListItem>
           </Link>
           <ListSubheader>DATA</ListSubheader>
-          <Link href="?tab=meetings">
+          <Link to="/meetings" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isMeetingsSelected}
@@ -230,7 +236,7 @@ const NavBar = (props: IProps) => {
               />
             </ListItem>
           </Link>
-          <Link href="?tab=docs">
+          <Link to="/docs" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isDocsSelected}
@@ -247,7 +253,7 @@ const NavBar = (props: IProps) => {
               />
             </ListItem>
           </Link>
-          <Link href="?tab=people">
+          <Link to="/people" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isPeopleSelected}
@@ -270,7 +276,7 @@ const NavBar = (props: IProps) => {
           <ListItem
             button
             className={clsx(classes.listItem, 'ignore-react-onclickoutside')}
-            onClick={() => router.push('?tab=settings')}
+            onClick={() => history.push('/settings')}
           >
             <ListItemIcon className={classes.iconContainer}>
               <Avatar

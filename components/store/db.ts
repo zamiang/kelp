@@ -11,7 +11,6 @@ interface Db extends DBSchema {
   document: {
     value: IDocument;
     key: string;
-    indexes: { 'by-link': string };
   };
   driveActivity: {
     value: IFormattedDriveActivity;
@@ -81,10 +80,9 @@ async function database(environment: 'production' | 'test' | 'homepage') {
       personStore.createIndex('by-email', 'emailAddresses', { unique: false, multiEntry: true });
       personStore.createIndex('is-self', 'isCurrentUser', { unique: false });
 
-      const documentStore = db.createObjectStore('document', {
+      db.createObjectStore('document', {
         keyPath: 'id',
       });
-      documentStore.createIndex('by-link', 'link', { unique: true });
 
       const driveActivity = db.createObjectStore('driveActivity', {
         keyPath: 'id',

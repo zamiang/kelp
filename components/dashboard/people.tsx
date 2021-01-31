@@ -1,8 +1,8 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { getDayOfYear } from 'date-fns';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
 import { getWeek } from '../shared/date-helpers';
@@ -109,7 +109,7 @@ const People = (props: IStore) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('all');
-  const selectedPersonId = useRouter().query.slug as string;
+  const selectedPersonId = useLocation().pathname.replace('/people/', '').replace('/', '');
   const currentTitle = titleHash[currentTab];
   const tabHash = {
     all: <AllPeople selectedPersonId={selectedPersonId} {...props} />,

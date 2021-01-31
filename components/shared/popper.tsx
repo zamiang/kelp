@@ -7,6 +7,7 @@ import React from 'react';
 const useStyles = makeStyles((theme) => ({
   popper: {
     zIndex: 5, // above the avatar group
+    minHeight: 500, // helps with the bounce on init
   },
   paper: {
     maxWidth: 550,
@@ -29,10 +30,10 @@ const PopperContainer = (props: {
   offset?: string;
 }) => {
   const classes = useStyles();
+
   return (
     <Popper
       open={props.isOpen}
-      placement="bottom"
       anchorEl={props.anchorEl}
       className={classes.popper}
       modifiers={{

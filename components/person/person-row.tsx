@@ -4,8 +4,8 @@ import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
@@ -26,7 +26,7 @@ const PersonRow = (props: {
   const isSelected = props.selectedPersonId === props.person.id;
   const classes = useStyles();
   const rowStyles = useRowStyles();
-  const router = useRouter();
+  const router = useHistory();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [isOpen, setIsOpen] = useState(isSelected);
 
@@ -36,11 +36,12 @@ const PersonRow = (props: {
     }
   }, [!!referenceElement]);
 
-  const handleClick = () => {
-    setIsOpen(true);
-    void router.push(`?tab=people&slug=${props.person.id}`);
-    return false;
-  };
+  // handle going from person to person
+  useEffect(() => {
+    setIsOpen(isSelected);
+  }, [isSelected]);
+
+  const handleClick = () => router.push(`/people/${props.person.id}`);
 
   return (
     <ListItem
@@ -60,7 +61,7 @@ const PersonRow = (props: {
           <ExpandedPerson
             personId={props.person.id}
             close={() => setIsOpen(false)}
-            {...props.store}
+            store={props.store}
           />
         </PopperContainer>
         <Grid item>

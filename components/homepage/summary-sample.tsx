@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { addDays } from 'date-fns';
 import { times } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { DayContent } from '../dashboard/summary';
 import Tfidf from '../shared/tfidf';
 import { IStore } from '../store/use-store';
@@ -67,9 +68,11 @@ const Summary = (props: { store: IStore }) => {
   ));
 
   return (
-    <div className={classes.summary}>
-      <div>{dayRows}</div>
-    </div>
+    <Router>
+      <div className={classes.summary}>
+        <div>{dayRows}</div>
+      </div>
+    </Router>
   );
 };
 

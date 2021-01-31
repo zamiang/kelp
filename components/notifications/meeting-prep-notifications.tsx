@@ -1,16 +1,12 @@
 import Dialog from '@material-ui/core/Dialog';
 import { differenceInMilliseconds } from 'date-fns';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
-const createNotification = (
-  meeting: ISegment,
-  onClick: () => Promise<boolean>,
-  onClose: () => void,
-) => {
+const createNotification = (meeting: ISegment, onClick: () => void, onClose: () => void) => {
   if ('Notification' in window && Notification.permission === 'granted') {
     const title = `Prepare for: ${meeting.summary || 'Meeting notification'}`;
     const notification = new Notification(title, {
@@ -31,7 +27,7 @@ const createNotification = (
 };
 
 const MeetingPrepNotifications = (props: IStore) => {
-  const router = useRouter();
+  const router = useHistory();
   const [currentMeeting, setCurrentMeeting] = useState<ISegment | undefined>(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(
     currentMeeting ? Notification.permission === 'denied' : false,
@@ -45,7 +41,7 @@ const MeetingPrepNotifications = (props: IStore) => {
         if (newMeeting && newMeeting.id !== currentMeeting?.id) {
           createNotification(
             newMeeting,
-            () => router.push(`?tab=meetings&slug=${newMeeting.id}`),
+            () => router.push(`/meetings?slug=${newMeeting.id}`),
             () => setIsOpen(false),
           );
           setCurrentMeeting(newMeeting);

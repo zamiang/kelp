@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
     },
+    [theme.breakpoints.up('sm')]: {
+      minWidth: 800,
+    },
   },
   topRightButton: {
     marginLeft: 'auto',

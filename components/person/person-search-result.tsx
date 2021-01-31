@@ -1,11 +1,12 @@
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import Link from 'next/link';
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
@@ -49,13 +50,13 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
       onClick={handleClick}
       className={clsx('ignore-react-onclickoutside', rowStyles.row, classes.row)}
     >
-      <Link href={`?tab=people&slug=${props.person.id}`}>
+      <Link to={`/people/${props.person.id}`} component={RouterLink}>
         <Grid container spacing={1} alignItems="center">
           <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
             <ExpandedPerson
               close={() => setAnchorEl(null)}
               personId={props.person.id}
-              {...props.store}
+              store={props.store}
             />
           </PopperContainer>
           <Grid item className={classes.avatar}>

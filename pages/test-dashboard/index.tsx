@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-fake-store';
 import { DashboardContainer } from '../dashboard/index';
@@ -16,17 +17,17 @@ const TestDashboard = () => {
     void fetchData();
   }, []);
 
-  if (!store) {
-    return null;
-  }
-
   return (
-    <React.Fragment>
+    <div suppressHydrationWarning={true}>
       <Head>
         <title>Test Dashboard - Kelp</title>
       </Head>
-      <DashboardContainer store={store} />
-    </React.Fragment>
+      {(process as any).browser && store && (
+        <Router basename="/test-dashboard">
+          <DashboardContainer store={store} />
+        </Router>
+      )}
+    </div>
   );
 };
 

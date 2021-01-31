@@ -1,13 +1,14 @@
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format, getDate, getMonth } from 'date-fns';
 import { Dictionary } from 'lodash';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import config from '../../constants/config';
 import MeetingRow from '../meeting/meeting-row';
 import useButtonStyles from '../shared/button-styles';
@@ -31,6 +32,21 @@ const dayStyles = makeStyles((theme) => ({
   dayInfo: {
     textTransform: 'uppercase',
     fontWeight: theme.typography.fontWeightBold,
+  },
+  currentTime: {
+    marginTop: -6,
+    paddingLeft: 33,
+  },
+  currentTimeDot: {
+    borderRadius: '50%',
+    height: 12,
+    width: 12,
+    background: theme.palette.primary.dark,
+  },
+  currentTimeBorder: {
+    marginTop: 0,
+    width: '100%',
+    borderTop: `2px solid ${theme.palette.primary.dark}`,
   },
 }));
 
@@ -58,27 +74,86 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   );
 };
 
-const MeetingsByDay = (
-  props: IStore & {
-    selectedMeetingId: string | null;
+const dayContainerStyles = makeStyles((theme) => ({
+  currentTime: {
+    marginTop: -6,
+    paddingLeft: 33,
   },
-) => {
+  currentTimeDot: {
+    borderRadius: '50%',
+    height: 12,
+    width: 12,
+    background: theme.palette.primary.dark,
+  },
+  currentTimeBorder: {
+    marginTop: 0,
+    width: '100%',
+    borderTop: `2px solid ${theme.palette.primary.dark}`,
+  },
+}));
+
+const DayContainer = (props: {
+  setReferenceElement: any;
+  meetings: ISegment[];
+  store: IStore;
+  day: string;
+  selectedMeetingId: string | null;
+}) => {
+  const currentTime = new Date();
+  const classes = panelStyles();
+  const dayContainerclasses = dayContainerStyles();
+
+  let hasRenderedCurrentTime = false;
+  const byDay = props.meetings.sort((a, b) => (a.start > b.start ? 1 : -1));
+  return (
+    <div className={classes.row}>
+      <Day day={new Date(props.day)} currentDay={currentTime} />
+      {byDay.map((meeting) => {
+        let shouldRenderCurrentTime = false;
+        if (!hasRenderedCurrentTime && meeting.start > currentTime) {
+          hasRenderedCurrentTime = true;
+          shouldRenderCurrentTime = true;
+        }
+        return (
+          <div key={meeting.id} ref={shouldRenderCurrentTime ? props.setReferenceElement : null}>
+            {shouldRenderCurrentTime && (
+              <ListItem
+                className={dayContainerclasses.currentTime}
+                ref={shouldRenderCurrentTime ? props.setReferenceElement : null}
+              >
+                <div className={dayContainerclasses.currentTimeDot}></div>
+                <div className={dayContainerclasses.currentTimeBorder}></div>
+              </ListItem>
+            )}
+            <MeetingRow
+              shouldRenderCurrentTime={shouldRenderCurrentTime}
+              meeting={meeting}
+              selectedMeetingId={props.selectedMeetingId}
+              store={props.store}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const MeetingsByDay = (props: { store: IStore }) => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
+  const selectedMeetingId = useLocation().pathname.replace('/meetings/', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.timeDataStore.getSegmentsByDay();
+      const result = await props.store.timeDataStore.getSegmentsByDay();
       setMeetingsByDay(result);
     };
     void fetchData();
   }, []);
 
-  const currentTime = new Date();
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
-  let hasRenderedCurrentTime = false;
   const currentTitle = 'Meeting Schedule';
   return (
     <div className={classes.panel}>
@@ -93,44 +168,19 @@ const MeetingsByDay = (
         </Grid>
       </TopBar>
       {days.map((day) => (
-        <div key={day} className={classes.row}>
-          <Day day={new Date(day)} currentDay={currentTime} />
-          {meetingsByDay[day]
-            .sort((a, b) => (a.start > b.start ? 1 : -1))
-            .map((meeting) => {
-              let shouldRenderCurrentTime = false;
-              if (!hasRenderedCurrentTime && meeting.start > currentTime) {
-                hasRenderedCurrentTime = true;
-                shouldRenderCurrentTime = true;
-              }
-              return (
-                <div key={meeting.id} ref={shouldRenderCurrentTime ? setReferenceElement : null}>
-                  <MeetingRow
-                    shouldRenderCurrentTime={shouldRenderCurrentTime}
-                    meeting={meeting}
-                    selectedMeetingId={props.selectedMeetingId}
-                    store={props}
-                  />
-                </div>
-              );
-            })}
-        </div>
+        <DayContainer
+          key={day}
+          day={day}
+          setReferenceElement={setReferenceElement}
+          meetings={meetingsByDay[day]}
+          selectedMeetingId={selectedMeetingId}
+          store={props.store}
+        />
       ))}
     </div>
   );
 };
 
-const Meetings = (props: IStore) => {
-  const selectedMeetingId = useRouter().query.slug as string;
-  const [seconds, setSeconds] = useState(0);
-  // rerender every 5 seconds to update the current calendar events
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [seconds]);
-  return <MeetingsByDay selectedMeetingId={selectedMeetingId} {...props} />;
-};
+const Meetings = (props: IStore) => <MeetingsByDay store={props} />;
 
 export default Meetings;
