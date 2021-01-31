@@ -4,7 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
@@ -30,19 +30,18 @@ const PersonRow = (props: {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [isOpen, setIsOpen] = useState(isSelected);
 
-  /*
   useEffect(() => {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [!!referenceElement]);
-*/
 
-  const handleClick = () => {
-    setIsOpen(true);
-    void router.push(`/people/${props.person.id}`);
-    return false;
-  };
+  // handle going from person to person
+  useEffect(() => {
+    setIsOpen(isSelected);
+  }, [isSelected]);
+
+  const handleClick = () => router.push(`/people/${props.person.id}`);
 
   return (
     <ListItem

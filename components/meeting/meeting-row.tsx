@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
@@ -51,31 +51,28 @@ const MeetingRow = (props: {
   const classes = useStyles();
   const router = useHistory();
   const rowStyles = useRowStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const [isOpen, setIsOpen] = useState(isSelected);
 
-  /*
   useEffect(() => {
-    console.log(isSelected && referenceElement, 'ref');
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     } else if (referenceElement && !props.selectedMeetingId && props.shouldRenderCurrentTime) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [!!referenceElement]);
-*/
 
-  const handleClick = (event: any) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+  const handleClick = () => {
+    setIsOpen(true);
     void router.push(`/meetings/${props.meeting.id}`);
     return false;
   };
-  const isOpen = Boolean(anchorEl);
-
   return (
     <ListItem
       button={true}
       selected={isSelected}
       onClick={handleClick}
+      ref={setReferenceElement as any}
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
@@ -90,10 +87,14 @@ const MeetingRow = (props: {
       )}
     >
       <Grid container spacing={2} alignItems="center">
-        <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
+        <PopperContainer
+          anchorEl={referenceElement}
+          isOpen={isOpen}
+          setIsOpen={(isOpen) => setIsOpen(isOpen)}
+        >
           <ExpandedMeeting
             meetingId={props.meeting.id}
-            close={() => setAnchorEl(null)}
+            close={() => setIsOpen(false)}
             {...props.store}
           />
         </PopperContainer>
