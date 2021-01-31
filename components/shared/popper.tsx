@@ -7,17 +7,17 @@ import React from 'react';
 const useStyles = makeStyles((theme) => ({
   popper: {
     zIndex: 5, // above the avatar group
-    minHeight: 500, // helps with the bounce on init
   },
   paper: {
     maxWidth: 550,
+    minHeight: 200, // helps with the bounce on init
     maxHeight: '80vh',
     overflow: 'auto',
     minWidth: 500,
     overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
-      maxWidth: `calc(100vw - 20px)`,
-      minWidth: 0,
+      maxWidth: `calc(100vw - 40px)`,
+      minWidth: 300,
     },
   },
 }));
