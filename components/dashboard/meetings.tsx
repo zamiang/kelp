@@ -104,11 +104,10 @@ const DayContainer = (props: {
   const dayContainerclasses = dayContainerStyles();
 
   let hasRenderedCurrentTime = false;
-  const byDay = props.meetings.sort((a, b) => (a.start > b.start ? 1 : -1));
   return (
     <div className={classes.row}>
       <Day day={new Date(props.day)} currentDay={currentTime} />
-      {byDay.map((meeting) => {
+      {props.meetings.map((meeting) => {
         let shouldRenderCurrentTime = false;
         if (!hasRenderedCurrentTime && meeting.start > currentTime) {
           hasRenderedCurrentTime = true;
@@ -138,14 +137,14 @@ const DayContainer = (props: {
   );
 };
 
-const MeetingsByDay = (props: { store: IStore }) => {
+const MeetingsByDay = (props: IStore) => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const selectedMeetingId = useLocation().pathname.replace('/meetings/', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.store.timeDataStore.getSegmentsByDay();
+      const result = await props.timeDataStore.getSegmentsByDay();
       setMeetingsByDay(result);
     };
     void fetchData();
@@ -172,15 +171,13 @@ const MeetingsByDay = (props: { store: IStore }) => {
           key={day}
           day={day}
           setReferenceElement={setReferenceElement}
-          meetings={meetingsByDay[day]}
+          meetings={meetingsByDay[day].sort((a, b) => (a.start > b.start ? 1 : -1))}
           selectedMeetingId={selectedMeetingId}
-          store={props.store}
+          store={props}
         />
       ))}
     </div>
   );
 };
 
-const Meetings = (props: IStore) => <MeetingsByDay store={props} />;
-
-export default Meetings;
+export default MeetingsByDay;
