@@ -8,11 +8,13 @@ import clsx from 'clsx';
 import { format, getDate, getMonth } from 'date-fns';
 import { Dictionary } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
+import ExpandedMeeting from '../meeting/expand-meeting';
 import MeetingRow from '../meeting/meeting-row';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
+import PopperContainer from '../shared/popper';
 import TopBar from '../shared/top-bar';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -138,9 +140,10 @@ const DayContainer = (props: {
   );
 };
 
-const MeetingsByDay = (props: { store: IStore; selectedMeetingId: string | null }) => {
+const MeetingsByDay = (props: { store: IStore }) => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
+  const selectedMeetingId = useLocation().pathname.replace('/meetings/', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,7 +151,7 @@ const MeetingsByDay = (props: { store: IStore; selectedMeetingId: string | null 
       setMeetingsByDay(result);
     };
     void fetchData();
-  }, [props.lastUpdated]);
+  }, []);
 
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
@@ -172,7 +175,7 @@ const MeetingsByDay = (props: { store: IStore; selectedMeetingId: string | null 
           day={day}
           setReferenceElement={setReferenceElement}
           meetings={meetingsByDay[day]}
-          selectedMeetingId={props.selectedMeetingId}
+          selectedMeetingId={selectedMeetingId}
           store={props.store}
         />
       ))}
@@ -180,10 +183,6 @@ const MeetingsByDay = (props: { store: IStore; selectedMeetingId: string | null 
   );
 };
 
-const Meetings = (props: IStore) => {
-  const selectedMeetingId = useLocation().search;
-  console.log('selected meeting ie', selectedMeetingId);
-  return <MeetingsByDay selectedMeetingId={selectedMeetingId} store={props} />;
-};
+const Meetings = (props: IStore) => <MeetingsByDay store={props} />;
 
 export default Meetings;

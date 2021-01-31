@@ -156,10 +156,9 @@ export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
 
-  //const location = useLocation();
+  // const location = useLocation();
   // console.log(location, '<<<<<<<<<<<,');
   const shouldCenter = false; // ['docs', 'people', 'meetings'].indexOf(location) > -1;
-
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);

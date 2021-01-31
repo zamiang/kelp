@@ -69,6 +69,7 @@ const MeetingRow = (props: {
     void router.push(`/meetings/${props.meeting.id}`);
     return false;
   };
+  console.log('rendering row');
   return (
     <ListItem
       button={true}

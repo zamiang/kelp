@@ -29,9 +29,6 @@ const PopperContainer = (props: {
   offset?: string;
 }) => {
   const classes = useStyles();
-  if (!props.anchorEl) {
-    return null;
-  }
 
   return (
     <Popper
