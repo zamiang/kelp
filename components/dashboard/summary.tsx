@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
@@ -10,8 +11,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import { addDays, addWeeks, format, isSameDay, startOfWeek, subDays, subWeeks } from 'date-fns';
 import { times } from 'lodash';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import config from '../../constants/config';
 import useButtonStyles from '../shared/button-styles';
 import Tfidf from '../shared/tfidf';
@@ -240,7 +241,7 @@ export const DayContent = (props: IDayContentProps) => {
 
   const diff = getDayKey(props.day);
   const terms = props.tfidf.listTerms(Number(diff)).map((document) => (
-    <Link href={`/search?query=${document.term}`} key={document.term}>
+    <Link to={`/search?query=${document.term}`} key={document.term} component={RouterLink}>
       <Typography
         onMouseEnter={() => props.setHoveredItem(document.term)}
         onMouseLeave={() => props.setHoveredItem('')}

@@ -2,12 +2,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import MuiLink from '@material-ui/core/Link';
+import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import AttendeeList from '../shared/attendee-list';
 import AppBar from '../shared/elevate-app-bar';
@@ -142,18 +141,18 @@ const ExpandPerson = (props: { store: IStore; personId: string; close: () => voi
         {!person.isInContacts && (
           <Typography variant="body2">
             Add this person to your google contacts for more info{' '}
-            <MuiLink className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
+            <Link className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
               (guide)
-            </MuiLink>
+            </Link>
             <br />
             {person.emailAddresses && (
-              <MuiLink
+              <Link
                 className={classes.link}
                 target="_blank"
                 href={`https://mail.google.com/mail/u/0/#search/${person.emailAddresses[0]}`}
               >
                 (search Gmail)
-              </MuiLink>
+              </Link>
             )}
           </Typography>
         )}

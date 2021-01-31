@@ -2,6 +2,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import HomeIcon from '@material-ui/icons/Home';
@@ -11,9 +12,8 @@ import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
-import Link from 'next/link';
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -85,14 +85,14 @@ const NavBar = () => {
           </Grid>
         )}
         <Grid item>
-          <Link href="/home">
+          <Link to="/home" component={RouterLink}>
             <IconButton>
               <HomeIcon className={isHomeSelected ? classes.selected : classes.unSelected} />
             </IconButton>
           </Link>
         </Grid>
         <Grid item>
-          <Link href="/meetings">
+          <Link to="/meetings" component={RouterLink}>
             <IconButton>
               <CalendarViewDayIcon
                 className={isMeetingsSelected ? classes.selected : classes.unSelected}
@@ -101,7 +101,7 @@ const NavBar = () => {
           </Link>
         </Grid>
         <Grid item>
-          <Link href="/docs">
+          <Link to="/docs" component={RouterLink}>
             <IconButton>
               <InsertDriveFileIcon
                 className={isDocsSelected ? classes.selected : classes.unSelected}
@@ -110,7 +110,7 @@ const NavBar = () => {
           </Link>
         </Grid>
         <Grid item>
-          <Link href="/people">
+          <Link to="/people" component={RouterLink}>
             <IconButton>
               <PeopleIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
             </IconButton>
