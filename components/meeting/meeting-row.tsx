@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { reference } from '@popperjs/core';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';

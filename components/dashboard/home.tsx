@@ -49,7 +49,6 @@ const Home = (props: IStore) => {
             <MeetingRow
               isSmall={true}
               key={meeting.id}
-              currentTime={currentTime}
               meeting={meeting}
               selectedMeetingId={null}
               store={props}
