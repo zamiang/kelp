@@ -24,7 +24,6 @@ export const PeopleToday = (
     };
     void fetchData();
   }, []);
-  console.log('selectedperson', props.selectedPersonId, '<<');
   return (
     <div className={classes.rowNoBorder}>
       {people.map(

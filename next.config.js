@@ -10,6 +10,14 @@ module.exports = {
         source: '/sitemap.xml',
         destination: '/api/sitemap',
       },
+      {
+        source: '/dashboard/(.*)',
+        destination: '/dashboard',
+      },
+      {
+        source: '/test-dashboard/(.*)',
+        destination: '/test-dashboard',
+      },
     ];
   },
 
@@ -24,21 +32,15 @@ module.exports = {
               styleSrc: ["'self'", "'unsafe-inline'", 'https://rsms.me/inter/inter.css'],
               imgSrc: [
                 "'self'",
-                "data:",
+                'data:',
                 'https://placeimg.com',
                 'https://drive-thirdparty.googleusercontent.com',
                 'https://*.googleusercontent.com',
                 'https://platform.slack-edge.com',
                 'https://www.googletagmanager.com',
               ],
-              fontSrc: [
-                "'self'", 'https://rsms.me',
-              ],
-              scriptSrc: [
-                "'self'",
-                "'unsafe-eval'",
-                'https://apis.google.com',
-              ],
+              fontSrc: ["'self'", 'https://rsms.me'],
+              scriptSrc: ["'self'", "'unsafe-eval'", 'https://apis.google.com'],
               frameSrc: [
                 'https://auth.kelp.nyc',
                 'https://content.googleapis.com',
