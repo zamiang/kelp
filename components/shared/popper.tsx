@@ -7,6 +7,7 @@ import React from 'react';
 const useStyles = makeStyles((theme) => ({
   popper: {
     zIndex: 5, // above the avatar group
+    minHeight: 500, // helps with the bounce on init
   },
   paper: {
     maxWidth: 550,

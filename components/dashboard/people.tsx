@@ -109,8 +109,7 @@ const People = (props: IStore) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('all');
-  const selectedPersonId = useLocation().pathname;
-  console.log('seelcted person', selectedPersonId);
+  const selectedPersonId = useLocation().pathname.replace('/people/', '').replace('/', '');
   const currentTitle = titleHash[currentTab];
   const tabHash = {
     all: <AllPeople selectedPersonId={selectedPersonId} {...props} />,

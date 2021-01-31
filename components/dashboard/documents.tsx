@@ -101,8 +101,7 @@ const Documents = (props: IStore) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('all');
-  const selectedDocumentId = useLocation().pathname;
-  console.log('selected documentid');
+  const selectedDocumentId = useLocation().pathname.replace('/docs/', '').replace('/', '');
   const currentTitle = titleHash[currentTab];
   const tabHash = {
     all: <AllDocuments selectedDocumentId={selectedDocumentId} {...props} />,

@@ -51,8 +51,11 @@ const Search = (props: IStore) => {
   if (!searchIndex) {
     return null;
   }
-  console.log(router, '<<<<<<<< search');
-  const searchQuery = router.search.toLowerCase().replace(uncommonPunctuation, ' ');
+
+  const searchQuery = router.search
+    .replace('?query=', '')
+    .toLowerCase()
+    .replace(uncommonPunctuation, ' ');
   const results = searchQuery
     ? searchIndex.results.filter((item) => item.text.includes(searchQuery))
     : [];

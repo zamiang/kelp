@@ -51,7 +51,7 @@ const MeetingRow = (props: {
   const classes = useStyles();
   const router = useHistory();
   const rowStyles = useRowStyles();
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   /*
   useEffect(() => {
@@ -63,19 +63,19 @@ const MeetingRow = (props: {
     }
   }, [!!referenceElement]);
 */
-  const [isOpen, setIsOpen] = useState(isSelected);
-  const handleClick = () => {
-    setIsOpen(true);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
     void router.push(`/meetings/${props.meeting.id}`);
     return false;
   };
-  console.log('rendering row');
+  const isOpen = Boolean(anchorEl);
+
   return (
     <ListItem
       button={true}
       selected={isSelected}
       onClick={handleClick}
-      ref={setReferenceElement as any}
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
@@ -90,19 +90,13 @@ const MeetingRow = (props: {
       )}
     >
       <Grid container spacing={2} alignItems="center">
-        {referenceElement && (
-          <PopperContainer
-            anchorEl={referenceElement}
-            isOpen={isOpen}
-            setIsOpen={(isOpen) => setIsOpen(isOpen)}
-          >
-            <ExpandedMeeting
-              meetingId={props.meeting.id}
-              close={() => setIsOpen(false)}
-              {...props.store}
-            />
-          </PopperContainer>
-        )}
+        <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
+          <ExpandedMeeting
+            meetingId={props.meeting.id}
+            close={() => setAnchorEl(null)}
+            {...props.store}
+          />
+        </PopperContainer>
         <Grid item className={classes.dot}>
           <div
             className={clsx(
