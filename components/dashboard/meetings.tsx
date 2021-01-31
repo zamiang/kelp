@@ -115,7 +115,7 @@ const DayContainer = (props: {
         return (
           <div key={meeting.id} id={meeting.id}>
             {shouldRenderCurrentTime && (
-              <ListItem className={dayContainerclasses.currentTime}>
+              <ListItem className={dayContainerclasses.currentTime} id="current-time">
                 <div className={dayContainerclasses.currentTimeDot}></div>
                 <div className={dayContainerclasses.currentTimeBorder}></div>
               </ListItem>
@@ -135,7 +135,7 @@ const DayContainer = (props: {
 
 const MeetingsByDay = (props: IStore) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
-  const selectedMeetingId = useLocation().pathname.replace('/meetings/', '').replace('/', '');
+  const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -144,6 +144,16 @@ const MeetingsByDay = (props: IStore) => {
     };
     void fetchData();
   }, [props.lastUpdated]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (selectedMeetingId.length < 10) {
+        document
+          .getElementById('current-time')
+          ?.scrollIntoView({ behavior: 'auto', block: 'center' });
+      }
+    }, 300);
+  }, []);
 
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
@@ -157,7 +167,7 @@ const MeetingsByDay = (props: IStore) => {
             className={buttonClasses.unSelected}
             onClick={() =>
               document
-                .getElementById(selectedMeetingId)
+                .getElementById('current-time')
                 ?.scrollIntoView({ behavior: 'auto', block: 'center' })
             }
           >
