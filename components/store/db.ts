@@ -66,11 +66,12 @@ const dbNameHash = {
   production: 'kelp',
   test: 'test',
   homepage: 'homepage',
+  'extension-test': 'kelp-extension-test',
 };
 
 const databaseVerson = 1;
 
-async function database(environment: 'production' | 'test' | 'homepage') {
+async function database(environment: 'production' | 'test' | 'homepage' | 'extension-test') {
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db) {
       const personStore = db.createObjectStore('person', {

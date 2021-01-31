@@ -91,25 +91,19 @@ const LoadingDashboardContainer = () => {
   }
   return (
     <React.Fragment>
-      <Loading isOpen={!isSignedIn || isLoading} message="Loading" />
-      {database && isSignedIn && <LoadingStoreDashboardContainer database={database} />}
+      <Loading isOpen={!isSignedIn || isLoading || !database} message="Loading" />
+      {database && isSignedIn && !isLoading && (
+        <LoadingStoreDashboardContainer database={database} />
+      )}
     </React.Fragment>
   );
 };
 
 const LoadingStoreDashboardContainer = (props: { database: any }) => {
-  useGapi();
-  const router = useHistory();
-  const [session, isLoading] = useSession();
   const store = getStore(props.database);
-
-  if (!isLoading && !session?.user) {
-    void router.push('/');
-  }
   return (
     <div suppressHydrationWarning={true}>
-      <Loading isOpen={isLoading || store.isLoading} message="Loading" />
-      {(process as any).browser && !isLoading && !store.isLoading && (
+      {(process as any).browser && !store.isLoading && (
         <Router basename="/dashboard">
           <DashboardContainer store={store} />
         </Router>

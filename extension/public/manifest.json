@@ -1,19 +1,35 @@
 {
   "name": "Kelp",
   "description": "Your information filtration system.",
-  "manifest_version": 2,
+  "key": "gbfdenngcdfndmphcbgmglinnfoegenj",
+  "manifest_version": 3,
   "version": "1.0.0",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "browser_action": {
+  "oauth2": {
+    "client_id": "296254551365-u420n3ml7b8n23m1827de0cgha6bpaac.apps.googleusercontent.com",
+    "scopes":[
+      "https://www.googleapis.com/auth/calendar.events.readonly",
+      "https://www.googleapis.com/auth/contacts.readonly",
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/drive.metadata.readonly",
+      "https://www.googleapis.com/auth/drive.activity.readonly"
+    ]
+  },
+  "permissions": [
+    "identity",
+    "tabs"
+  ],
+  "actionaction": {
     "default_icon": {
       "16": "icon16.png",
       "48": "icon48.png"
     },
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_title": "Your information filtration system.."
   },
   "background": {
     "scripts": [
