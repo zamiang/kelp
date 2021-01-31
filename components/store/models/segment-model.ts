@@ -103,7 +103,10 @@ export default class SegmentModel {
 
   async getSegmentsByDay() {
     const segments = await this.getAll();
-    return groupBy(segments, (segment) => format(segment.start, 'EEEE, MMM d yyyy'));
+    return groupBy(
+      segments.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1)),
+      (segment) => format(segment.start, 'EEEE, MMM d yyyy'),
+    );
   }
 
   async getSegmentsForDay(day: Date) {

@@ -93,7 +93,6 @@ const dayContainerStyles = makeStyles((theme) => ({
 }));
 
 const DayContainer = (props: {
-  setReferenceElement: any;
   meetings: ISegment[];
   store: IStore;
   day: string;
@@ -114,12 +113,9 @@ const DayContainer = (props: {
           shouldRenderCurrentTime = true;
         }
         return (
-          <div key={meeting.id} ref={shouldRenderCurrentTime ? props.setReferenceElement : null}>
+          <div key={meeting.id} id={meeting.id}>
             {shouldRenderCurrentTime && (
-              <ListItem
-                className={dayContainerclasses.currentTime}
-                ref={shouldRenderCurrentTime ? props.setReferenceElement : null}
-              >
+              <ListItem className={dayContainerclasses.currentTime}>
                 <div className={dayContainerclasses.currentTimeDot}></div>
                 <div className={dayContainerclasses.currentTimeBorder}></div>
               </ListItem>
@@ -138,7 +134,6 @@ const DayContainer = (props: {
 };
 
 const MeetingsByDay = (props: IStore) => {
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const selectedMeetingId = useLocation().pathname.replace('/meetings/', '').replace('/', '');
 
@@ -148,11 +143,11 @@ const MeetingsByDay = (props: IStore) => {
       setMeetingsByDay(result);
     };
     void fetchData();
-  }, []);
+  }, [props.lastUpdated]);
 
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
-  const days = Object.keys(meetingsByDay).sort((a, b) => (new Date(a) > new Date(b) ? 1 : -1));
+  const days = Object.keys(meetingsByDay);
   const currentTitle = 'Meeting Schedule';
   return (
     <div className={classes.panel}>
@@ -160,7 +155,11 @@ const MeetingsByDay = (props: IStore) => {
         <Grid container justify="flex-end">
           <Button
             className={buttonClasses.unSelected}
-            onClick={() => referenceElement?.scrollIntoView({ behavior: 'auto', block: 'center' })}
+            onClick={() =>
+              document
+                .getElementById(selectedMeetingId)
+                ?.scrollIntoView({ behavior: 'auto', block: 'center' })
+            }
           >
             Now
           </Button>
@@ -170,8 +169,7 @@ const MeetingsByDay = (props: IStore) => {
         <DayContainer
           key={day}
           day={day}
-          setReferenceElement={setReferenceElement}
-          meetings={meetingsByDay[day].sort((a, b) => (a.start > b.start ? 1 : -1))}
+          meetings={meetingsByDay[day]}
           selectedMeetingId={selectedMeetingId}
           store={props}
         />
