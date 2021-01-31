@@ -137,7 +137,7 @@ const NavBar = (props: IProps) => {
     >
       <div>
         <List>
-          <Link href="/about">
+          <Link href="/about" underline="none">
             <ListItem className={classes.logoContainer}>
               <ListItemIcon className={classes.iconContainer}>
                 <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
