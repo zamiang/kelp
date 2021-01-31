@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
@@ -15,8 +16,9 @@ import { IStore } from '../store/use-store';
 const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
   const classes = useExpandStyles();
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
-  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+  const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
   const [people, setPeople] = useState<IPerson[]>([]);
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,8 +33,8 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
   useEffect(() => {
     const fetchData = async () => {
       if (props.documentId) {
-        const result = await props.segmentDocumentStore.getAllForDocumentId(props.documentId);
-        setSegmentDocuments(result.filter((segmentDocument) => segmentDocument.segmentId));
+        const result = await props.driveActivityStore.getDriveActivityForDocument(props.documentId);
+        setDriveActivity(result);
       }
     };
     void fetchData();
@@ -40,17 +42,27 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
 
   useEffect(() => {
     const fetchData = async () => {
-      if (segmentDocuments.length > 0) {
-        const peopleIds = uniqBy(segmentDocuments, 'personId')
-          .filter((segmentDocument) => segmentDocument.personId && segmentDocument.segmentId)
-          .map((segmentDocument) => segmentDocument.personId);
+      if (props.meetingId) {
+        const result = await props.segmentDocumentStore.getAllForSegmentId(props.meetingId);
+        setSegmentDocuments(result);
+      }
+    };
+    void fetchData();
+  }, [props.meetingId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (driveActivity.length > 0) {
+        const peopleIds = uniqBy(driveActivity, 'actorPersonId')
+          .map((item) => item.actorPersonId)
+          .filter(Boolean) as string[];
 
         const people = await props.personDataStore.getBulk(peopleIds);
         setPeople(people);
       }
     };
     void fetchData();
-  }, [segmentDocuments.length]);
+  }, [driveActivity.length]);
 
   if (!document) {
     return null;
