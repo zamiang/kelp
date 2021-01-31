@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { reference } from '@popperjs/core';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -59,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
 
 const MeetingRow = (props: {
   meeting: ISegment;
-  currentTime: Date;
   selectedMeetingId: string | null;
   shouldRenderCurrentTime: boolean;
   store: IStore;
@@ -70,13 +70,14 @@ const MeetingRow = (props: {
   const router = useRouter();
   const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+
   useEffect(() => {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     } else if (referenceElement && !props.selectedMeetingId && props.shouldRenderCurrentTime) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
-  }, [referenceElement]);
+  }, [!!referenceElement]);
 
   const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
@@ -111,17 +112,19 @@ const MeetingRow = (props: {
         )}
       >
         <Grid container spacing={2} alignItems="center">
-          <PopperContainer
-            anchorEl={referenceElement}
-            isOpen={isOpen}
-            setIsOpen={(isOpen) => setIsOpen(isOpen)}
-          >
-            <ExpandedMeeting
-              meetingId={props.meeting.id}
-              close={() => setIsOpen(false)}
-              {...props.store}
-            />
-          </PopperContainer>
+          {referenceElement && (
+            <PopperContainer
+              anchorEl={referenceElement}
+              isOpen={isOpen}
+              setIsOpen={(isOpen) => setIsOpen(isOpen)}
+            >
+              <ExpandedMeeting
+                meetingId={props.meeting.id}
+                close={() => setIsOpen(false)}
+                {...props.store}
+              />
+            </PopperContainer>
+          )}
           <Grid item className={classes.dot}>
             <div
               className={clsx(

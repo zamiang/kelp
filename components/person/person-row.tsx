@@ -34,7 +34,7 @@ const PersonRow = (props: {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
-  }, [referenceElement]);
+  }, [!!referenceElement]);
 
   const handleClick = () => {
     setIsOpen(true);

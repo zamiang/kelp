@@ -52,7 +52,7 @@ const Meeting = (props: {
     };
     void fetchData();
   }, [props.segmentDocument.personId]);
-  console.log(person, props.segmentDocument);
+
   const personText = person ? ` by ${person?.name || person?.emailAddresses}` : '';
   const tooltipText = `${capitalize(props.segmentDocument.reason)}${personText} on ${format(
     new Date(props.segmentDocument.date),

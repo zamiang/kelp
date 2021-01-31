@@ -85,7 +85,7 @@ const DocumentRow = (props: {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
-  }, [referenceElement]);
+  }, [!!referenceElement]);
 
   const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
@@ -106,7 +106,7 @@ const DocumentRow = (props: {
         props.isSmall && rowStyles.rowNoLeftMargin,
       )}
     >
-      <Grid container spacing={1} alignItems="center">
+      {referenceElement && (
         <PopperContainer anchorEl={referenceElement} isOpen={isOpen} setIsOpen={setIsOpen}>
           <ExpandedDocument
             documentId={props.doc.id}
@@ -114,6 +114,8 @@ const DocumentRow = (props: {
             {...props.store}
           />
         </PopperContainer>
+      )}
+      <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
           <IconButton>
             <img src={props.doc.iconLink} className={classes.image} />

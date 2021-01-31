@@ -292,14 +292,16 @@ const CalendarItem = (props: ICalendarItemProps) => {
       ref={setReferenceElement as any}
       onClick={() => setIsOpen(true)}
     >
-      <PopperContainer
-        anchorEl={referenceElement}
-        isOpen={isOpen}
-        setIsOpen={(isOpen) => setIsOpen(isOpen)}
-        offset="140, -250"
-      >
-        <ExpandedMeeting meetingId={props.id} close={() => setIsOpen(false)} {...props.store} />
-      </PopperContainer>
+      {referenceElement && (
+        <PopperContainer
+          anchorEl={referenceElement}
+          isOpen={isOpen}
+          setIsOpen={(isOpen) => setIsOpen(isOpen)}
+          offset="140, -250"
+        >
+          <ExpandedMeeting meetingId={props.id} close={() => setIsOpen(false)} {...props.store} />
+        </PopperContainer>
+      )}
       <Typography className={clsx(classes.title, height < 10 && classes.smallTitle)}>
         <b>{props.title}</b>, {format(props.start, 'hh:mm')}
       </Typography>
@@ -391,7 +393,7 @@ const DayContent = (props: IDayContentProps) => {
     if (isSameDay && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
-  }, [referenceElement]);
+  }, [!!referenceElement]);
 
   return (
     <div>

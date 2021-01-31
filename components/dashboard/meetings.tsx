@@ -72,7 +72,7 @@ const MeetingsByDay = (
       setMeetingsByDay(result);
     };
     void fetchData();
-  });
+  }, []);
 
   const currentTime = new Date();
   const classes = panelStyles();
@@ -106,7 +106,6 @@ const MeetingsByDay = (
               return (
                 <div key={meeting.id} ref={shouldRenderCurrentTime ? setReferenceElement : null}>
                   <MeetingRow
-                    currentTime={currentTime}
                     shouldRenderCurrentTime={shouldRenderCurrentTime}
                     meeting={meeting}
                     selectedMeetingId={props.selectedMeetingId}
