@@ -157,15 +157,26 @@ export const DashboardContainer = ({ store }: IProps) => {
   const ref = useRef(null);
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
-
   const location = useLocation().pathname.split('/')[1];
   const shouldCenter = ['docs', 'people', 'meetings', 'search'].indexOf(location) > -1;
+
+  const colorHash = {
+    week: classes.grayBackground,
+    summary: classes.grayBackground,
+    search: classes.grayBackground,
+    settings: classes.grayBackground,
+    meetings: classes.blueBackground,
+    docs: classes.pinkBackground,
+    people: classes.orangeBackground,
+    '': classes.grayBackground,
+  } as any;
+
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
     return () => clearInterval(interval);
   }, []);
   return (
-    <div ref={ref} className={classes.container}>
+    <div ref={ref} className={clsx(classes.container, colorHash[location])}>
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>

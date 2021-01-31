@@ -137,18 +137,18 @@ const NavBar = (props: IProps) => {
     >
       <div>
         <List>
-          <a href="/about">
+          <Link href="/about">
             <ListItem className={classes.logoContainer}>
               <ListItemIcon className={classes.iconContainer}>
                 <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
               </ListItemIcon>
               <ListItemText>
-                <Typography variant="h4">
+                <Typography variant="h4" color="textPrimary">
                   <b>Kelp</b>
                 </Typography>
               </ListItemText>
             </ListItem>
-          </a>
+          </Link>
           <Divider />
           {isLoading && (
             <ListItem>
@@ -172,7 +172,7 @@ const NavBar = (props: IProps) => {
         </div>
         <List>
           {shouldRenderHome && (
-            <Link to="/" component={RouterLink}>
+            <Link to="/" component={RouterLink} underline="none">
               <ListItem
                 button
                 selected={isHomeSelected}
@@ -188,7 +188,7 @@ const NavBar = (props: IProps) => {
               </ListItem>
             </Link>
           )}
-          <Link to="/week" component={RouterLink}>
+          <Link to="/week" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isWeekSelected}
@@ -203,7 +203,7 @@ const NavBar = (props: IProps) => {
               />
             </ListItem>
           </Link>
-          <Link to="/summary" component={RouterLink}>
+          <Link to="/summary" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isSummarySelected}
@@ -219,7 +219,7 @@ const NavBar = (props: IProps) => {
             </ListItem>
           </Link>
           <ListSubheader>DATA</ListSubheader>
-          <Link to="/meetings" component={RouterLink}>
+          <Link to="/meetings" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isMeetingsSelected}
@@ -236,7 +236,7 @@ const NavBar = (props: IProps) => {
               />
             </ListItem>
           </Link>
-          <Link to="/docs" component={RouterLink}>
+          <Link to="/docs" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isDocsSelected}
@@ -253,7 +253,7 @@ const NavBar = (props: IProps) => {
               />
             </ListItem>
           </Link>
-          <Link to="/people" component={RouterLink}>
+          <Link to="/people" component={RouterLink} underline="none">
             <ListItem
               button
               selected={isPeopleSelected}
