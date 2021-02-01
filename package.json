@@ -15,7 +15,7 @@
   "scripts": {
     "audit-dependencies": "npm audit --audit-level=high",
     "build": "next build",
-    "build-extension": "webpack --config=extension/webpack.config.js",
+    "build-extension": "rimraf extension/dist && webpack --config=extension/webpack.config.js",
     "dev": "next -p ${PORT:-3000}",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
     "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport='pages;components/timeline/timeline.tsx'",
@@ -76,6 +76,7 @@
     "react-onclickoutside": "6.10.0",
     "react-popper": "2.2.4",
     "react-router-dom": "5.2.0",
+    "rimraf": "3.0.2",
     "rollbar": "2.20.0",
     "sitemap": "6.3.5",
     "stopword": "1.0.6",

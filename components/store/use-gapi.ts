@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import config from '../../constants/config';
 
-const googleAPIRefs = [
+export const googleAPIRefs = [
   'https://www.googleapis.com/discovery/v1/apis/people/v1/rest',
   'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest',
   'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
