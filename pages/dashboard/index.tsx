@@ -112,7 +112,7 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
   );
 };
 
-const Loading = (props: { isOpen: boolean; message: string }) => {
+export const Loading = (props: { isOpen: boolean; message: string }) => {
   const classes = useBackdropStyles();
   return (
     <Backdrop className={classes.backdrop} open={props.isOpen}>

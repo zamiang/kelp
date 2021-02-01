@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { googleAPIRefs } from '../../components/store/use-gapi';
-import logo from './logo.svg';
-import './app.css';
-/*
+import { DocumentsForToday } from '../../components/dashboard/documents';
 import db from '../../components/store/db';
-import getStore from '../../components/store/use-homepage-store';
-
-const init = async () => {
-  console.log('starting');
-  const store = await getStore(await db('extension-test'));
-  console.log(store);
-};
-
-(chrome as any).scripting.executeScript({
-  function: init,
-});
-*/
+import { googleAPIRefs } from '../../components/store/use-gapi';
+import getStore from '../../components/store/use-store';
+import { Loading } from '../../pages/dashboard/index';
+import './app.css';
 
 const API_KEY = 'AIzaSyCEe5HmzHPg8mjJ_bfQmjEUncaqWlRXGx0';
 
-const onGAPILoad = (onSuccess: () => void) => {
+const onGAPILoad = (setToken: (token: string) => void) => {
   const loadLibraries = async () => {
     try {
       await gapi.client.init({
@@ -30,7 +19,8 @@ const onGAPILoad = (onSuccess: () => void) => {
         gapi.auth.setToken({
           access_token: token,
         } as any);
-        onSuccess();
+
+        setToken(token);
       });
     } catch (e) {
       console.error(e);
@@ -39,29 +29,30 @@ const onGAPILoad = (onSuccess: () => void) => {
   gapi.load('client', loadLibraries as any);
 };
 
+const Info = (props: { database: any }) => {
+  const store = getStore(props.database);
+  return <DocumentsForToday {...store} selectedDocumentId={null} isSmall={true} />;
+};
+
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
+  const [database, setDatabase] = useState<any>(undefined);
+
   useEffect(() => {
-    onGAPILoad(() => setIsLoading(false));
+    onGAPILoad(setToken);
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setDatabase(await db('production'));
+    };
+    void fetchData();
+  }, []);
   return (
     <div className="app">
       <header className="app-header">
-        <img src={logo} className="app-logo" alt="logo" />
-        <b>Loading: </b>
-        {isLoading}
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="app-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Loading isOpen={!token || !database} message="Loading" />
+        {token && database && <Info database={database} />}
       </header>
     </div>
   );
