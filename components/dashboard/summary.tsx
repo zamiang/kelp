@@ -22,6 +22,7 @@ import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
 const daysInWeek = 7;
+const mainNavHeight = 72;
 const topNavHeight = 99;
 const fontMin = 12;
 const fontMax = 18;
@@ -205,7 +206,7 @@ const useDayContentStyles = makeStyles((theme) => ({
     flex: 1,
     position: 'relative',
     borderLeft: `1px solid ${theme.palette.divider}`,
-    height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
+    height: `calc((100vh - ${topNavHeight}px - ${mainNavHeight}px) / ${numberWeeks})`,
     overflow: 'hidden',
   },
   noBorder: {
@@ -274,8 +275,11 @@ const DayContent = (props: IDayContentProps) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    background: 'white',
+  },
   days: {
-    height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
+    height: `calc((100vh - ${topNavHeight}px - ${mainNavHeight}px) / ${numberWeeks})`,
     width: '100%',
     overflow: 'hidden',
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -353,7 +357,7 @@ const Summary = (props: IStore) => {
     setFilters(filters);
   };
   return (
-    <div>
+    <div className={classes.container}>
       <TitleRow
         start={start}
         onBackClick={onBackClick}
