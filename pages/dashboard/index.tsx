@@ -1,5 +1,3 @@
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
@@ -26,6 +24,7 @@ import NavBar from '../../components/nav/nav-bar';
 import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
 import NotificationsPopup from '../../components/notifications/notifications-popup';
 import ExpandPerson from '../../components/person/expand-person';
+import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import useGapi from '../../components/store/use-gapi';
 import getStore, { IStore } from '../../components/store/use-store';
@@ -64,12 +63,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const useBackdropStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-}));
-
 const LoadingDashboardContainer = () => {
   const isSignedIn = useGapi();
   const router = useHistory();
@@ -105,22 +98,6 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
         <DashboardContainer store={store} />
       </Router>
     </div>
-  );
-};
-
-export const Loading = (props: { isOpen: boolean; message: string }) => {
-  const classes = useBackdropStyles();
-  return (
-    <Backdrop className={classes.backdrop} open={props.isOpen}>
-      <Grid container alignItems="center" justify="center">
-        <Grid item style={{ width: '100%', textAlign: 'center' }}>
-          <CircularProgress color="inherit" />
-        </Grid>
-        <Grid item>
-          <Typography variant="h5">{props.message}</Typography>
-        </Grid>
-      </Grid>
-    </Backdrop>
   );
 };
 

@@ -7,12 +7,12 @@ import React, { useEffect, useState } from 'react';
 import { DocumentsForToday } from '../../components/dashboard/documents';
 import { PeopleToday } from '../../components/dashboard/people';
 import MeetingRow from '../../components/meeting/meeting-row';
+import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import { ISegment } from '../../components/store/models/segment-model';
 import { googleAPIRefs } from '../../components/store/use-gapi';
 import getStore from '../../components/store/use-store';
 import theme from '../../constants/theme';
-import { Loading } from '../../pages/dashboard/index';
 
 const API_KEY = 'AIzaSyCEe5HmzHPg8mjJ_bfQmjEUncaqWlRXGx0';
 
