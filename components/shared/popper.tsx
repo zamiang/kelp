@@ -30,26 +30,8 @@ const PopperContainer = (props: {
   offset?: string;
 }) => {
   const classes = useStyles();
-
   return (
-    <Popper
-      open={props.isOpen}
-      anchorEl={props.anchorEl}
-      className={classes.popper}
-      modifiers={{
-        flip: {
-          enabled: true,
-        },
-        preventOverflow: {
-          enabled: true,
-          boundariesElement: 'viewport',
-        },
-        offset: {
-          enabled: true,
-          offset: props.offset || '0, -50',
-        },
-      }}
-    >
+    <Popper open={props.isOpen} anchorEl={props.anchorEl} className={classes.popper}>
       <ClickAwayListener
         onClickAway={() => {
           props.setIsOpen(false);

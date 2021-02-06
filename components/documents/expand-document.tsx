@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
 import AppBar from '../shared/elevate-app-bar';
@@ -13,8 +14,10 @@ import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
 
-const ExpandedDocument = (props: IStore & { documentId: string; close: () => void }) => {
+const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: () => void }) => {
   const classes = useExpandStyles();
+  const { slug }: any = useParams();
+  const documentId = props.documentId || slug;
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
   const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
   const [people, setPeople] = useState<IPerson[]>([]);
@@ -22,33 +25,33 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.documentId) {
-        const result = await props.documentDataStore.getByLink(props.documentId);
+      if (documentId) {
+        const result = await props.store.documentDataStore.getByLink(documentId);
         setDocument(result);
       }
     };
     void fetchData();
-  }, [props.documentId]);
+  }, [documentId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.documentId) {
-        const result = await props.driveActivityStore.getDriveActivityForDocument(props.documentId);
+      if (documentId) {
+        const result = await props.store.driveActivityStore.getDriveActivityForDocument(documentId);
         setDriveActivity(result);
       }
     };
     void fetchData();
-  }, [props.documentId]);
+  }, [documentId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.documentId) {
-        const result = await props.segmentDocumentStore.getAllForSegmentId(props.documentId);
+      if (documentId) {
+        const result = await props.store.segmentDocumentStore.getAllForSegmentId(documentId);
         setSegmentDocuments(result);
       }
     };
     void fetchData();
-  }, [props.documentId]);
+  }, [documentId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +60,7 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
           .map((item) => item.actorPersonId)
           .filter(Boolean) as string[];
 
-        const people = await props.personDataStore.getBulk(peopleIds);
+        const people = await props.store.personDataStore.getBulk(peopleIds);
         setPeople(people);
       }
     };
@@ -92,8 +95,8 @@ const ExpandedDocument = (props: IStore & { documentId: string; close: () => voi
         </Typography>
         <SegmentMeetingList
           segmentDocuments={segmentDocuments}
-          timeStore={props.timeDataStore}
-          personStore={props.personDataStore}
+          timeStore={props.store.timeDataStore}
+          personStore={props.store.personDataStore}
         />
       </div>
     </React.Fragment>

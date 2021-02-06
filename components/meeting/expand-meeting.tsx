@@ -8,6 +8,7 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format, isToday } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
+import { useParams } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
@@ -66,11 +67,16 @@ const createMeetingNotes = async (
   refetch();
 };
 
-const ExpandedMeeting = (
-  props: IStore & { meetingId: string; close: () => void; hideHeader?: boolean },
-) => {
+const ExpandedMeeting = (props: {
+  store: IStore;
+  meetingId?: string;
+  close?: () => void;
+  hideHeader?: boolean;
+}) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
+  const { slug }: any = useParams();
+  const meetingId = props.meetingId || slug;
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
@@ -79,33 +85,33 @@ const ExpandedMeeting = (
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.meetingId) {
-        const result = await props.timeDataStore.getById(props.meetingId);
+      if (meetingId) {
+        const result = await props.store.timeDataStore.getById(meetingId);
         setMeeting(result);
       }
     };
     void fetchData();
-  }, [props.meetingId]);
+  }, [meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.meetingId) {
-        const result = await props.attendeeDataStore.getAllForSegmentId(props.meetingId);
+      if (meetingId) {
+        const result = await props.store.attendeeDataStore.getAllForSegmentId(meetingId);
         setAttendees(result);
       }
     };
     void fetchData();
-  }, [props.meetingId]);
+  }, [meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.meetingId) {
-        const result = await props.segmentDocumentStore.getAllForSegmentId(props.meetingId);
+      if (meetingId) {
+        const result = await props.store.segmentDocumentStore.getAllForSegmentId(meetingId);
         setSegmentDocuments(result);
       }
     };
     void fetchData();
-  }, [props.meetingId]);
+  }, [meetingId]);
 
   if (!meeting) {
     return null;
@@ -149,14 +155,14 @@ const ExpandedMeeting = (
                   meeting,
                   documentsCurrentUserEditedWhileMeetingWithAttendees,
                   setMeetingNotesLoading,
-                  props.personDataStore,
-                  props.documentDataStore,
-                  props.attendeeDataStore,
-                  props.refetch,
+                  props.store.personDataStore,
+                  props.store.documentDataStore,
+                  props.store.attendeeDataStore,
+                  props.store.refetch,
                 )
               }
               variant="contained"
-              className={buttonClasses.selected}
+              className={buttonClasses.button}
               startIcon={
                 isMeetingNotesLoading ? (
                   <CircularProgress size={20} color={'paper' as any} />
@@ -173,11 +179,9 @@ const ExpandedMeeting = (
           {hasMeetingNotes && (
             <Grid item>
               <Button
-                onClick={async () => {
-                  window.open(meetingNotesLink, '_blank');
-                }}
+                onClick={() => window.open(meetingNotesLink, '_blank')}
                 variant="contained"
-                className={buttonClasses.selected}
+                className={buttonClasses.button}
                 startIcon={<InsertDriveFileIcon />}
                 disableElevation
               >
@@ -229,8 +233,8 @@ const ExpandedMeeting = (
         </Typography>
         <SegmentDocumentList
           segmentDocuments={segmentDocuments}
-          docStore={props.documentDataStore}
-          personStore={props.personDataStore}
+          docStore={props.store.documentDataStore}
+          personStore={props.store.personDataStore}
         />
         {hasAttendees && (
           <React.Fragment>
@@ -241,7 +245,7 @@ const ExpandedMeeting = (
               {guestStats}
             </Typography>
             <AttendeeList
-              personStore={props.personDataStore}
+              personStore={props.store.personDataStore}
               attendees={attendees}
               showAll={false}
             />

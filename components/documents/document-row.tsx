@@ -9,13 +9,11 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
-import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { getPeopleForDriveActivity } from '../store/helpers';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
-import ExpandedDocument from './expand-document';
 
 const useStyles = makeStyles((theme) => ({
   imageContainer: {},
@@ -87,9 +85,7 @@ const DocumentRow = (props: {
     }
   }, [!!referenceElement]);
 
-  const [isOpen, setIsOpen] = useState(isSelected);
   const handleClick = () => {
-    setIsOpen(true);
     void router.push(`/docs/${props.doc.id}`);
     return false;
   };
@@ -102,17 +98,9 @@ const DocumentRow = (props: {
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
-        isSelected && rowStyles.pinkBackground,
         props.isSmall && rowStyles.rowNoLeftMargin,
       )}
     >
-      <PopperContainer anchorEl={referenceElement} isOpen={isOpen} setIsOpen={setIsOpen}>
-        <ExpandedDocument
-          documentId={props.doc.id}
-          close={() => setIsOpen(false)}
-          {...props.store}
-        />
-      </PopperContainer>
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
           <IconButton>

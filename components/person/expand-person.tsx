@@ -8,10 +8,12 @@ import clsx from 'clsx';
 import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
+import panelStyles from '../shared/panel-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { getAssociates, getMeetingTime } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
@@ -24,45 +26,48 @@ import PersonNotes from './person-notes';
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
 
-const ExpandPerson = (props: { store: IStore; personId: string; close: () => void }) => {
+const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => void }) => {
   const classes = useExpandStyles();
+  const panelClasses = panelStyles();
+  const { slug }: any = useParams();
+  const personId = props.personId || slug;
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   const [segments, setSegments] = useState<ISegment[]>([]);
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const p = await props.store.personDataStore.getPersonById(props.personId);
+      const p = await props.store.personDataStore.getPersonById(personId);
       setPerson(p);
     };
     void fetchData();
-  }, [props.personId]);
+  }, [personId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const p = await props.store.segmentDocumentStore.getAllForPersonId(props.personId);
+      const p = await props.store.segmentDocumentStore.getAllForPersonId(personId);
       setSegmentDocuments(p);
     };
     void fetchData();
-  }, [props.personId]);
+  }, [personId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const s = await props.store.timeDataStore.getSegmentsForPersonId(props.personId);
+      const s = await props.store.timeDataStore.getSegmentsForPersonId(personId);
       if (s) {
         setSegments(s.filter(Boolean) as any);
       }
     };
     void fetchData();
-  }, [props.personId]);
+  }, [personId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const a = await getAssociates(props.personId, segments, props.store.attendeeDataStore);
+      const a = await getAssociates(personId, segments, props.store.attendeeDataStore);
       setAssociates(a);
     };
     void fetchData();
-  }, [segments.length]);
+  }, [personId, segments.length]);
 
   if (!person) {
     return null;
@@ -79,7 +84,7 @@ const ExpandPerson = (props: { store: IStore; personId: string; close: () => voi
   const hasName = !person.name.includes('people/') && !person.name.includes('@');
   const hasMeetingTime = meetingTime.lastWeekMs > 0;
   return (
-    <React.Fragment>
+    <div className={panelClasses.panel}>
       <AppBar
         linkedinName={hasName ? person.name : undefined}
         onClose={props.close}
@@ -183,7 +188,7 @@ const ExpandPerson = (props: { store: IStore; personId: string; close: () => voi
           <MeetingList segments={segments} personStore={props.store.personDataStore} />
         </React.Fragment>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

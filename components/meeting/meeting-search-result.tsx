@@ -66,7 +66,7 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
           <ExpandedMeeting
             meetingId={props.meeting.id}
             close={() => setAnchorEl(null)}
-            {...props.store}
+            store={props.store}
           />
         </PopperContainer>
         <Grid item className={classes.imageContainer}>

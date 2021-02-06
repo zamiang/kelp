@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import clsx from 'clsx';
 import { getDayOfYear } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -111,11 +112,14 @@ const Documents = (props: IStore) => {
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
-        <Grid container spacing={2} justify="flex-end">
+        <Grid container justify="flex-end" spacing={2}>
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'today' ? buttonClasses.selected : buttonClasses.unSelected}
+              disableRipple
+              className={clsx(
+                currentTab === 'today' ? buttonClasses.selected : buttonClasses.unSelected,
+              )}
               disableElevation
               onClick={() => changeTab('today')}
             >
@@ -125,9 +129,10 @@ const Documents = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={
-                currentTab === 'this-week' ? buttonClasses.selected : buttonClasses.unSelected
-              }
+              disableRipple
+              className={clsx(
+                currentTab === 'this-week' ? buttonClasses.selected : buttonClasses.unSelected,
+              )}
               disableElevation
               onClick={() => changeTab('this-week')}
             >
@@ -137,7 +142,10 @@ const Documents = (props: IStore) => {
           <Grid item>
             <Button
               variant="contained"
-              className={currentTab === 'all' ? buttonClasses.selected : buttonClasses.unSelected}
+              disableRipple
+              className={clsx(
+                currentTab === 'all' ? buttonClasses.selected : buttonClasses.unSelected,
+              )}
               disableElevation
               onClick={() => changeTab('all')}
             >

@@ -56,7 +56,11 @@ const MeetingPrepNotifications = (props: IStore) => {
   return (
     <Dialog open={isOpen}>
       {currentMeeting && (
-        <ExpandedMeeting close={() => setIsOpen(false)} meetingId={currentMeeting.id} {...props} />
+        <ExpandedMeeting
+          close={() => setIsOpen(false)}
+          meetingId={currentMeeting.id}
+          store={props}
+        />
       )}
     </Dialog>
   );

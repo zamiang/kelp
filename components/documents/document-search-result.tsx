@@ -61,7 +61,7 @@ const DocumentSearchResult = (props: { doc: IDocument; store: IStore }) => {
           <ExpandedDocument
             documentId={props.doc.id}
             close={() => setAnchorEl(null)}
-            {...props.store}
+            store={props.store}
           />
         </PopperContainer>
         <Grid item className={classes.imageContainer}>

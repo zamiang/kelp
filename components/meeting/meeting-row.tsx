@@ -6,11 +6,9 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import PopperContainer from '../shared/popper';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
-import ExpandedMeeting from './expand-meeting';
 
 const useStyles = makeStyles((theme) => ({
   time: { minWidth: 150, maxWidth: 180 },
@@ -52,7 +50,6 @@ const MeetingRow = (props: {
   const router = useHistory();
   const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const [isOpen, setIsOpen] = useState(isSelected);
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -63,7 +60,6 @@ const MeetingRow = (props: {
   }, [!!referenceElement]);
 
   const handleClick = () => {
-    setIsOpen(true);
     void router.push(`/meetings/${props.meeting.id}`);
     return false;
   };
@@ -87,17 +83,6 @@ const MeetingRow = (props: {
       )}
     >
       <Grid container spacing={2} alignItems="center">
-        <PopperContainer
-          anchorEl={referenceElement}
-          isOpen={isOpen}
-          setIsOpen={(isOpen) => setIsOpen(isOpen)}
-        >
-          <ExpandedMeeting
-            meetingId={props.meeting.id}
-            close={() => setIsOpen(false)}
-            {...props.store}
-          />
-        </PopperContainer>
         <Grid item className={classes.dot}>
           <div
             className={clsx(

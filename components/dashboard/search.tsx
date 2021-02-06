@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentSearchResult from '../documents/document-search-result';
 import MeetingSearchResult from '../meeting/meeting-search-result';
-import SearchBar from '../nav/search-bar';
 import PersonSearchResult from '../person/person-search-result';
 import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/models/document-model';
@@ -62,7 +61,6 @@ const Search = (props: IStore) => {
   return (
     <div className={classes.panel}>
       <TopBar title={`Search Results for: ${searchQuery || ''}`} />
-      <SearchBar />
       <div className={classes.rowNoBorder}>{renderSearchResults(results || [], props)}</div>
     </div>
   );

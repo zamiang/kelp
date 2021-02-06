@@ -46,7 +46,7 @@ const TopBar = (props: IProps) => {
     <div className={classes.topBar}>
       <Grid container justify="space-between" alignItems="center">
         <Grid item>
-          <Typography variant="h5" color="textPrimary">
+          <Typography variant="h6" color="textPrimary">
             {props.title}
           </Typography>
         </Grid>

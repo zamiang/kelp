@@ -7,6 +7,7 @@ import getStore from '../../components/store/use-fake-store';
 import { DashboardContainer } from '../dashboard/index';
 
 export const drawerWidth = 240;
+
 const TestDashboard = () => {
   const [store, setStore] = useState<any>(undefined);
   useEffect(() => {

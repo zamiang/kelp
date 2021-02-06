@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   externalLink?: string;
-  onClose: () => void;
+  onClose?: () => void;
   linkedinName?: string;
   emailLink?: string;
   emailAddress?: string;
@@ -36,7 +36,7 @@ interface IProps {
 const CustomAppBar = (props: IProps) => {
   const classes = useStyles();
   return (
-    <AppBar elevation={0} className={classes.navBar} color="transparent">
+    <AppBar elevation={0} className={classes.navBar} color="transparent" position="absolute">
       <Toolbar variant="dense">
         {props.emailLink && (
           <Tooltip title="Email guests">
@@ -79,11 +79,13 @@ const CustomAppBar = (props: IProps) => {
             </MuiLink>
           </Tooltip>
         )}
-        <Tooltip title="Close">
-          <IconButton onClick={props.onClose} className={classes.topButton}>
-            <CloseIcon />
-          </IconButton>
-        </Tooltip>
+        {props.onClose && (
+          <Tooltip title="Close">
+            <IconButton onClick={props.onClose} className={classes.topButton}>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </Toolbar>
     </AppBar>
   );

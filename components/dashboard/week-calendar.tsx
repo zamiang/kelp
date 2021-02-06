@@ -28,6 +28,7 @@ import { IStore } from '../store/use-store';
 const leftSpacer = 40;
 const topNavHeight = 110;
 const hourHeight = 38;
+const mainNavHeight = 72;
 const scrollBarWidth = 15;
 const shouldShowCalendarEvents = true;
 const CURRENT_TIME_ELEMENT_ID = 'meeting-at-current-time';
@@ -180,6 +181,7 @@ const useHourLabelStyles = makeStyles((theme) => ({
   container: {
     width: leftSpacer,
     color: theme.palette.text.hint,
+    marginTop: mainNavHeight,
   },
   hour: {
     height: hourHeight,
@@ -299,7 +301,11 @@ const CalendarItem = (props: ICalendarItemProps) => {
           setIsOpen={(isOpen) => setIsOpen(isOpen)}
           offset="140, -250"
         >
-          <ExpandedMeeting meetingId={props.id} close={() => setIsOpen(false)} {...props.store} />
+          <ExpandedMeeting
+            meetingId={props.id}
+            close={() => setIsOpen(false)}
+            store={props.store}
+          />
         </PopperContainer>
       )}
       <Typography className={clsx(classes.title, height < 10 && classes.smallTitle)}>
@@ -404,8 +410,11 @@ const DayContent = (props: IDayContentProps) => {
 };
 
 const useStyles = makeStyles(() => ({
+  container: {
+    background: 'white',
+  },
   calendar: {
-    height: `calc(100vh - ${topNavHeight}px)`,
+    height: `calc(100vh - ${topNavHeight}px - ${mainNavHeight}px)`,
     overflowY: 'scroll',
     overflowX: 'hidden',
   },
@@ -440,7 +449,7 @@ const Calendar = (props: IStore) => {
     </Grid>
   ));
   return (
-    <div>
+    <div className={classes.container}>
       <TitleRow
         start={start}
         onBackClick={onBackClick}

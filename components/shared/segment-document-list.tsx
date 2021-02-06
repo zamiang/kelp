@@ -30,6 +30,9 @@ const useRowStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  noWrap: {
+    overflow: 'hidden',
+  },
 }));
 
 const Activity = (props: {
@@ -51,13 +54,12 @@ const Activity = (props: {
     };
     void fetchData();
   }, [props.segmentDocument.personId]);
-
-  const tooltipText = `${capitalize(props.segmentDocument.reason)} by ${
-    actor?.name || actor?.emailAddresses
-  } on ${format(new Date(props.document.updatedAt!), "MMM do 'at' hh:mm a")}`;
-  const belowText = `Recent ${props.segmentDocument.reason} by ${
-    actor?.name || actor?.emailAddresses
-  }`;
+  const actorText = actor ? `by ${actor?.name || actor?.emailAddresses}` : '';
+  const tooltipText = `${capitalize(props.segmentDocument.reason)}${actorText} on ${format(
+    new Date(props.document.updatedAt!),
+    "MMM do 'at' hh:mm a",
+  )}`;
+  const belowText = `Recent ${props.segmentDocument.reason}${actorText}`;
 
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
@@ -65,15 +67,15 @@ const Activity = (props: {
         className={expandClasses.listItem}
         onClick={() => router.push(`/docs/${props.document.id}`)}
       >
-        <Grid container wrap="nowrap" spacing={1} alignItems="flex-start">
+        <Grid container spacing={1} alignItems="flex-start">
           <Grid item>
             <img src={props.document.iconLink} className={classes.icon} />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={11} sm={8} zeroMinWidth>
             <Typography variant="body2" noWrap>
               {props.document.name}
             </Typography>
-            <Typography variant="caption" noWrap>
+            <Typography variant="caption" noWrap className={classes.noWrap}>
               {belowText}
             </Typography>
           </Grid>
