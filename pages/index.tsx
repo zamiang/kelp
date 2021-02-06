@@ -14,13 +14,10 @@ import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfie
 import clsx from 'clsx';
 import { signIn } from 'next-auth/client';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
 import UiBlocks from '../components/homepage/ui-blocks';
-import ExpandedMeeting from '../components/meeting/expand-meeting';
-import db from '../components/store/db';
-import getStore, { meetingId } from '../components/store/use-homepage-store';
 import config from '../constants/config';
 
 export const useStyles = makeStyles((theme) => ({
@@ -130,15 +127,6 @@ export const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
-  const [store, setStore] = useState<any>(undefined);
-  useEffect(() => {
-    const fetchData = async () => {
-      const store = await getStore(await db('homepage'));
-      setStore(store);
-    };
-    void fetchData();
-  }, []);
-
   return (
     <div className={classes.container}>
       <Head>
@@ -190,14 +178,7 @@ const App = () => {
         <Divider />
         <Container maxWidth="md">
           <Paper className={classes.meetingContainer} elevation={2}>
-            {store && (
-              <ExpandedMeeting
-                hideHeader={true}
-                meetingId={meetingId}
-                close={() => undefined}
-                {...store}
-              />
-            )}
+            <b>todo</b>
           </Paper>
         </Container>
         <Divider />

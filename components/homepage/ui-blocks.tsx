@@ -131,7 +131,9 @@ const UiBlocks = () => {
           md={6}
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-        ></Grid>
+        >
+          <b>todo</b>
+        </Grid>
       </Grid>
     </div>
   );
