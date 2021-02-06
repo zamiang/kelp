@@ -228,7 +228,7 @@ const useDayContentStyles = makeStyles((theme) => ({
   },
 }));
 
-export const DayContent = (props: IDayContentProps) => {
+const DayContent = (props: IDayContentProps) => {
   const today = new Date();
   const isToday = isSameDay(props.day, today);
   const isInPast = props.day < today;

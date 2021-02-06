@@ -107,9 +107,6 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(4),
     marginLeft: 'auto',
     marginRight: 'auto',
-    '& button': {
-      // pointerEvents: 'none',
-    },
   },
   bodyCopySection: {
     paddingTop: theme.spacing(10),
@@ -204,7 +201,7 @@ const App = () => {
           </Paper>
         </Container>
         <Divider />
-        {store && <UiBlocks store={store} />}
+        <UiBlocks />
         <Container maxWidth="md" className={classes.bodyCopySection}>
           <Typography variant="h4">Your data is your data.</Typography>
           <br />

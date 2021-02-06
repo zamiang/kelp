@@ -86,8 +86,8 @@ const attendees = people.map((person) => ({
   responseStatus: 'accepted',
 }));
 
-export const startDate = new Date(new Date().setMinutes(0));
-export const endDate = addMinutes(startDate, 55);
+const startDate = new Date(new Date().setMinutes(0));
+const endDate = addMinutes(startDate, 55);
 
 const segments: ISegment[] = [
   {

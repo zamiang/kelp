@@ -4,10 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
-import { IStore } from '../store/use-store';
-import Documents from './documents-sample';
-import Notification from './notification';
-import Summary from './summary-sample';
 
 const useStyles = makeStyles((theme) => ({
   container: {},
@@ -74,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UiBlocks = (props: { store: IStore }) => {
+const UiBlocks = () => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
@@ -96,7 +92,7 @@ const UiBlocks = (props: { store: IStore }) => {
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
         >
           <Container maxWidth="xs" className={classes.documentContainer}>
-            <Documents store={props.store} />
+            <b>todo</b>
           </Container>
         </Grid>
       </Grid>
@@ -104,7 +100,7 @@ const UiBlocks = (props: { store: IStore }) => {
         <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
           <Grid container alignItems="center">
             <Container maxWidth="xs" className={classes.notificationContainer}>
-              <Notification />
+              <b>todo</b>
             </Container>
           </Grid>
         </Grid>
@@ -135,9 +131,7 @@ const UiBlocks = (props: { store: IStore }) => {
           md={6}
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-        >
-          <Summary store={props.store} />
-        </Grid>
+        ></Grid>
       </Grid>
     </div>
   );

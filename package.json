@@ -13,6 +13,7 @@
   },
   "main": "pages/_index.tsx",
   "scripts": {
+    "analyze": "ANALYZE=true next build",
     "audit-dependencies": "npm audit --audit-level=high",
     "build": "next build",
     "build-extension": "rimraf extension/dist && webpack --config=extension/webpack.config.js",
@@ -111,7 +112,8 @@
     "ts-loader": "8.0.15",
     "ts-unused-exports": "7.0.1",
     "tslint": "6.1.3",
-    "url-loader": "4.1.1"
+    "url-loader": "4.1.1",
+    "webpack-bundle-analyzer": "4.4.0"
   },
   "engines": {
     "node": "14.x",
