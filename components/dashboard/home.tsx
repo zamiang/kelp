@@ -28,49 +28,51 @@ const Home = (props: IStore) => {
 
   return (
     <div className={classes.panel}>
-      <Grid container className={clsx(classes.homeRow, classes.homeRowTop)} spacing={4}>
-        <Grid item xs={12} sm={4}>
-          <BarChart type="meetings" {...props} />
+      <div className={clsx(classes.homeRow, classes.homeRowTop)}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={4}>
+            <BarChart type="meetings" {...props} />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <BarChart type="people" {...props} />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <BarChart type="documents" {...props} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <BarChart type="people" {...props} />
+        <Grid container className={classes.homeRow} spacing={4}>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6" className={expandClasses.smallHeading}>
+              Today&apos;s schedule
+            </Typography>
+            <Divider />
+            {segments.map((meeting) => (
+              <MeetingRow
+                isSmall={true}
+                key={meeting.id}
+                meeting={meeting}
+                selectedMeetingId={null}
+                store={props}
+                shouldRenderCurrentTime={false}
+              />
+            ))}
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6" className={expandClasses.smallHeading}>
+              People you are meeting with today
+            </Typography>
+            <Divider />
+            <PeopleToday {...props} selectedPersonId={null} noLeftMargin={true} />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6" className={expandClasses.smallHeading}>
+              Documents you may need today
+            </Typography>
+            <Divider />
+            <DocumentsForToday {...props} selectedDocumentId={null} isSmall={true} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <BarChart type="documents" {...props} />
-        </Grid>
-      </Grid>
-      <Grid container className={classes.homeRow} spacing={4}>
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6" className={expandClasses.smallHeading}>
-            Today&apos;s schedule
-          </Typography>
-          <Divider />
-          {segments.map((meeting) => (
-            <MeetingRow
-              isSmall={true}
-              key={meeting.id}
-              meeting={meeting}
-              selectedMeetingId={null}
-              store={props}
-              shouldRenderCurrentTime={false}
-            />
-          ))}
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6" className={expandClasses.smallHeading}>
-            People you are meeting with today
-          </Typography>
-          <Divider />
-          <PeopleToday {...props} selectedPersonId={null} noLeftMargin={true} />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6" className={expandClasses.smallHeading}>
-            Documents you may need today
-          </Typography>
-          <Divider />
-          <DocumentsForToday {...props} selectedDocumentId={null} isSmall={true} />
-        </Grid>
-      </Grid>
+      </div>
     </div>
   );
 };

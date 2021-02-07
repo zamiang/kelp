@@ -33,7 +33,7 @@ import Settings from '../../components/user-profile/settings';
 export const drawerWidth = 240;
 export const MOBILE_WIDTH = 700;
 
-const ScrollToTop = () => {
+export const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -57,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(2),
     marginTop: theme.spacing(2),
     background: theme.palette.background.paper,
-    overflow: 'hidden',
+    overflowX: 'auto',
+    maxHeight: 'calc(100vh - 104px)',
     position: 'relative',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
   },
@@ -95,26 +96,31 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
     <div suppressHydrationWarning={true}>
       <Router basename="/dashboard">
         <ScrollToTop />
-        <DashboardContainer store={store} />
+        <DashboardContainer store={store} isLoading={store.isLoading} />
       </Router>
     </div>
   );
 };
 
-const Nav = (props: { lastUpdated: Date; handleRefreshClick: () => void }) => (
+const Nav = (props: { lastUpdated: Date; handleRefreshClick: () => void; isLoading: boolean }) => (
   <React.Fragment>
-    <NavBar lastUpdated={props.lastUpdated} handleRefreshClick={props.handleRefreshClick} />
+    <NavBar
+      lastUpdated={props.lastUpdated}
+      handleRefreshClick={props.handleRefreshClick}
+      isLoading={props.isLoading}
+    />
     <BottomNav />
   </React.Fragment>
 );
 
 interface IProps {
   store: IStore;
+  isLoading: boolean;
 }
 
 const is500Error = (error: Error) => (error as any).status === 500;
 
-export const DashboardContainer = ({ store }: IProps) => {
+export const DashboardContainer = ({ store, isLoading }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
 
@@ -132,7 +138,11 @@ export const DashboardContainer = ({ store }: IProps) => {
           background-color: #f3f4f6;
         }
       `}</style>
-      <Nav lastUpdated={store.lastUpdated} handleRefreshClick={handleRefreshClick} />
+      <Nav
+        lastUpdated={store.lastUpdated}
+        handleRefreshClick={handleRefreshClick}
+        isLoading={isLoading}
+      />
       <main className={classes.content}>
         <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
           <Alert severity="error">

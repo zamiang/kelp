@@ -1,4 +1,4 @@
-import { addDays, addMinutes, getDay, setDay, setHours } from 'date-fns';
+import { addDays, addMinutes, setDay, setHours } from 'date-fns';
 import Faker from 'faker';
 import { random, sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
@@ -26,7 +26,7 @@ times(PEOPLE_COUNT, () => {
     name,
     imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
     isInContacts: true,
-    googleId: emailAddress[0],
+    googleId: emailAddress,
     isCurrentUser: 0,
   });
 });
@@ -35,7 +35,7 @@ times(PEOPLE_COUNT, () => {
 people.push({
   id: CURRENT_USER_EMAIL,
   emailAddresses: [CURRENT_USER_EMAIL],
-  name: 'current user',
+  name: 'You! (current user)',
   googleId: CURRENT_USER_EMAIL,
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
   isInContacts: true,
@@ -94,7 +94,7 @@ documents.map((document) => {
       id: Faker.random.uuid(),
       time: Faker.date.recent(DAYS_IN_WEEK * WEEKS_TO_CREATE),
       action: 'comment', // TODO
-      actorPersonId: people[random(0, PEOPLE_COUNT)].id, // TODO use person id
+      actorPersonId: people[random(0, PEOPLE_COUNT)].id,
       title: Faker.lorem.lines(1),
       link: document.id,
     });
@@ -106,10 +106,6 @@ times(WEEKS_TO_CREATE, (week: number) => {
   times(DAYS_IN_WEEK, () => {
     date = setHours(addDays(date, 1), START_HOUR);
     times(Math.round(Math.random() * NUMBER_OF_MEETINGS), () => {
-      const currentDayOfWeek = getDay(date);
-      if (currentDayOfWeek > 5 || currentDayOfWeek < 1) {
-        return;
-      }
       date = addMinutes(date, 30);
       const endDate = addMinutes(date, 30);
       const attendees = sampleSize(people, Math.round(Math.random() * NUMBER_OF_ATTENDEES))

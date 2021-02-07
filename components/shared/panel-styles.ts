@@ -4,10 +4,8 @@ const TOP_BAR_HEIGHT = 104;
 
 const useStyles = makeStyles((theme) => ({
   panel: {
-    maxHeight: `calc(100vh - ${TOP_BAR_HEIGHT}px)`,
     paddingRight: 0,
     position: 'relative',
-    overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1),
     },

@@ -77,10 +77,16 @@ const ExpandedMeeting = (props: {
   const buttonClasses = useButtonStyles();
   const { slug }: any = useParams();
   const meetingId = props.meetingId || slug;
+  const [shouldDisplayNonAttendees, setShouldDisplayNonAttendees] = useState<boolean>(false);
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
-  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+  const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
+    ISegmentDocument[]
+  >([]);
+  const [segmentDocumentsForNonAttendees, setSegmentDocumentsForNonAttendees] = useState<
+    ISegmentDocument[]
+  >([]);
   const documentsCurrentUserEditedWhileMeetingWithAttendees = [] as any;
 
   useEffect(() => {
@@ -107,7 +113,8 @@ const ExpandedMeeting = (props: {
     const fetchData = async () => {
       if (meetingId) {
         const result = await props.store.segmentDocumentStore.getAllForSegmentId(meetingId);
-        setSegmentDocuments(result);
+        setSegmentDocumentsForAttendees(result.filter((s) => s.isPersonAttendee));
+        setSegmentDocumentsForNonAttendees(result.filter((s) => !s.isPersonAttendee));
       }
     };
     void fetchData();
@@ -130,6 +137,7 @@ const ExpandedMeeting = (props: {
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
   );
+
   return (
     <React.Fragment>
       {!props.hideHeader && (
@@ -232,10 +240,24 @@ const ExpandedMeeting = (props: {
           Documents you may need
         </Typography>
         <SegmentDocumentList
-          segmentDocuments={segmentDocuments}
+          segmentDocuments={segmentDocumentsForAttendees}
           docStore={props.store.documentDataStore}
           personStore={props.store.personDataStore}
         />
+        {segmentDocumentsForNonAttendees.length > 0 && !shouldDisplayNonAttendees && (
+          <div>
+            <Typography onClick={() => setShouldDisplayNonAttendees(true)} variant="caption">
+              + Show {segmentDocumentsForNonAttendees.length} documents from non-attendees
+            </Typography>
+          </div>
+        )}
+        {segmentDocumentsForNonAttendees.length > 0 && shouldDisplayNonAttendees && (
+          <SegmentDocumentList
+            segmentDocuments={segmentDocumentsForNonAttendees}
+            docStore={props.store.documentDataStore}
+            personStore={props.store.personDataStore}
+          />
+        )}
         {hasAttendees && (
           <React.Fragment>
             <Typography variant="h6" className={classes.smallHeading}>

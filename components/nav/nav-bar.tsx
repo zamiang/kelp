@@ -88,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   handleRefreshClick: () => void;
   lastUpdated: Date;
+  isLoading: boolean;
 }
 
 const NavBar = (props: IProps) => {
@@ -203,7 +204,11 @@ const NavBar = (props: IProps) => {
               </Grid>
             )}
             <Grid item>
-              <RefreshButton refresh={props.handleRefreshClick} lastUpdated={props.lastUpdated} />
+              <RefreshButton
+                isLoading={props.isLoading}
+                refresh={props.handleRefreshClick}
+                lastUpdated={props.lastUpdated}
+              />
             </Grid>
             {!isLoading && user && (
               <Grid item>

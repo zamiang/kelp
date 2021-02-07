@@ -9,9 +9,9 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 5, // above the avatar group
   },
   paper: {
-    maxWidth: 550,
+    maxWidth: 450,
     minHeight: 200, // helps with the bounce on init
-    maxHeight: '80vh',
+    maxHeight: '60vh',
     overflow: 'auto',
     minWidth: 500,
     overflowX: 'hidden',

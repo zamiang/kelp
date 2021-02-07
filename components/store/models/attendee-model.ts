@@ -58,7 +58,7 @@ export default class AttendeeModel {
               if (people[0] && people[0].id) {
                 return this.db.put('attendee', formatAttendee(attendee, people[0], segment));
               } else {
-                console.error('missing', attendee.email);
+                console.error('missing', attendee, people);
               }
             }),
           ),

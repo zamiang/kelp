@@ -72,6 +72,10 @@ const dbNameHash = {
 const databaseVerson = 1;
 
 async function database(environment: 'production' | 'test' | 'homepage' | 'extension-test') {
+  if (environment === 'test') {
+    indexedDB.deleteDatabase(dbNameHash[environment]);
+  }
+
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db) {
       const personStore = db.createObjectStore('person', {

@@ -14,6 +14,7 @@ export interface ISegmentDocument {
   segmentId?: string;
   date: Date;
   reason: string;
+  isPersonAttendee?: Boolean;
   personId: string;
   day: number;
   week: number;
@@ -22,6 +23,7 @@ export interface ISegmentDocument {
 const formatSegmentDocument = (
   driveActivity: IFormattedDriveActivity,
   segment?: ISegment,
+  isPersonAttendee?: boolean,
 ): ISegmentDocument => ({
   id: driveActivity.id,
   driveActivityId: driveActivity.id,
@@ -30,6 +32,7 @@ const formatSegmentDocument = (
   date: driveActivity.time,
   reason: driveActivity.action,
   personId: driveActivity.actorPersonId!,
+  isPersonAttendee,
   day: getDayOfYear(driveActivity.time),
   week: getWeek(driveActivity.time),
 });
@@ -77,7 +80,7 @@ export default class SegmentDocumentModel {
           );
         }
 
-        return formatSegmentDocument(driveActivityItem, isActorAttendee ? segment : undefined);
+        return formatSegmentDocument(driveActivityItem, segment, isActorAttendee);
       }),
     );
 
