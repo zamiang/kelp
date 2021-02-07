@@ -23,6 +23,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   const [people, setPeople] = useState<IPerson[]>([]);
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
+  console.log(documentId, '<<<<<<<<');
   useEffect(() => {
     const fetchData = async () => {
       if (documentId) {
@@ -46,7 +47,8 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   useEffect(() => {
     const fetchData = async () => {
       if (documentId) {
-        const result = await props.store.segmentDocumentStore.getAllForSegmentId(documentId);
+        const result = await props.store.segmentDocumentStore.getAllForDocumentId(documentId);
+        console.log(result, '<< segment document - todo');
         setSegmentDocuments(result);
       }
     };
@@ -60,7 +62,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           .map((item) => item.actorPersonId)
           .filter(Boolean) as string[];
 
-        const people = await props.store.personDataStore.getBulk(peopleIds);
+        const people = await props.store.personDataStore.getBulkByPersonId(peopleIds);
         setPeople(people);
       }
     };

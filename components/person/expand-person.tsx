@@ -55,19 +55,15 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
     const fetchData = async () => {
       const s = await props.store.timeDataStore.getSegmentsForPersonId(personId);
       if (s) {
-        setSegments(s.filter(Boolean) as any);
+        const filteredSegments = s.filter(Boolean) as any;
+        setSegments(filteredSegments);
+
+        const a = await getAssociates(personId, filteredSegments, props.store.attendeeDataStore);
+        setAssociates(a);
       }
     };
     void fetchData();
   }, [personId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const a = await getAssociates(personId, segments, props.store.attendeeDataStore);
-      setAssociates(a);
-    };
-    void fetchData();
-  }, [personId, segments.length]);
 
   if (!person) {
     return null;

@@ -138,6 +138,14 @@ export default class PersonModel {
     return people.filter(Boolean) as any;
   }
 
+  async getBulkByPersonId(personIds: string[]): Promise<IPerson[]> {
+    const uniqIds = uniq(personIds);
+    const people = await Promise.all(
+      uniqIds.map((email) => this.db.getFromIndex('person', 'by-google-id', email)),
+    );
+    return people.filter(Boolean) as any;
+  }
+
   async getBulk(ids: string[]): Promise<IPerson[]> {
     const uniqIds = uniq(ids);
     const people = await Promise.all(uniqIds.map((id) => this.db.get('person', id)));
