@@ -2,6 +2,7 @@ export interface person {
   id: string;
   name: string;
   isInContacts: boolean;
+  googleId?: string;
   emailAddresses: string[];
   notes?: string;
   imageUrl?: string | null;
@@ -9,18 +10,29 @@ export interface person {
 
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
+const shouldFormatGmailAddress = true;
+
+export const formatGmailAddress = (email: string) => {
+  if (shouldFormatGmailAddress && email.includes('@gmail.com')) {
+    const splitEmail = email.split('@');
+    return `${splitEmail[0].replaceAll('.', '')}@${splitEmail[1]}`.toLocaleLowerCase();
+  }
+  return email.toLocaleLowerCase();
+};
+
 const formatGooglePeopleResponse = (
   person: gapi.client.people.PersonResponse['person'],
   requestedResourceName?: string | null,
 ) => {
   const emailAddresses =
     (person?.emailAddresses
-      ?.map((address) => address.value?.toLocaleLowerCase())
+      ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
       .filter((Boolean as any) as ExcludesFalse) as string[]) || [];
   const displayName = person?.names && person?.names[0]?.displayName;
   return {
     id: requestedResourceName!,
     name: displayName || emailAddresses[0] || requestedResourceName!,
+    googleId: requestedResourceName || undefined,
     isInContacts: person && person.names ? true : false,
     notes: person?.biographies?.map((b) => b.value).join('<br />'),
     emailAddresses,

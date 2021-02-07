@@ -33,7 +33,7 @@ const PersonRow = (props: {
     }
   }, [!!referenceElement]);
 
-  const handleClick = () => router.push(`/people/${props.person.id}`);
+  const handleClick = () => router.push(`/people/${encodeURIComponent(props.person.id)}`);
 
   return (
     <ListItem

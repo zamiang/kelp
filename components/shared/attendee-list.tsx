@@ -70,7 +70,7 @@ const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personD
   return (
     <Button
       key={person.id}
-      onClick={() => router.push(`/people/${person.id}`)}
+      onClick={() => router.push(`/people/${encodeURIComponent(person.id)}`)}
       className={clsx(
         expandClasses.listItem,
         classes.person,

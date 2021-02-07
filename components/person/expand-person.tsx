@@ -30,7 +30,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
   const classes = useExpandStyles();
   const panelClasses = panelStyles();
   const { slug }: any = useParams();
-  const personId = props.personId || slug;
+  const personId = props.personId || decodeURIComponent(slug);
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   const [segments, setSegments] = useState<ISegment[]>([]);
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);

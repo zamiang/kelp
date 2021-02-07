@@ -50,7 +50,7 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
       onClick={handleClick}
       className={clsx('ignore-react-onclickoutside', rowStyles.row, classes.row)}
     >
-      <Link to={`/people/${props.person.id}`} component={RouterLink}>
+      <Link to={`/people/${encodeURIComponent(props.person.id)}`} component={RouterLink}>
         <Grid container spacing={1} alignItems="center">
           <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
             <ExpandedPerson

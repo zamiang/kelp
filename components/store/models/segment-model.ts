@@ -3,6 +3,7 @@ import getUrls from 'get-urls';
 import { first, flatten, groupBy } from 'lodash';
 import config from '../../../constants/config';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
+import { formatGmailAddress } from '../../fetch/fetch-people';
 import { dbType } from '../db';
 import { getGoogleDocsIdFromLink } from './document-model';
 
@@ -46,6 +47,10 @@ const formatSegments = (calendarEvents: ICalendarEvent[]) =>
       const documentIds = getDocumentIdsFromCalendarEvents(event);
       return {
         ...event,
+        attendees: event.attendees.map((a) => ({
+          ...a,
+          email: a.email ? formatGmailAddress(a.email) : undefined,
+        })),
         documentIdsFromDescription: documentIds,
         state: getStateForMeeting(event),
       };

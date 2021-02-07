@@ -1,7 +1,9 @@
 import { getDayOfYear } from 'date-fns';
+import { flatten } from 'lodash';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
+import AttendeeModel from './attendee-model';
 import DriveActivityModel from './drive-activity-model';
 import SegmentModel, { ISegment } from './segment-model';
 
@@ -56,30 +58,43 @@ export default class SegmentDocumentModel {
   async addSegmentDocumentsToStore(
     driveActivityStore: DriveActivityModel,
     timeStore: SegmentModel,
+    attendeeStore: AttendeeModel,
   ) {
     const driveActivity = await driveActivityStore.getAll();
     const segments = await timeStore.getAll();
 
-    const tx = this.db.transaction('segmentDocument', 'readwrite');
     // Add drive activity for meetings
-    await Promise.all(
-      driveActivity.map((driveActivityItem) => {
+    const driveActivityToAdd = await Promise.all(
+      driveActivity.map(async (driveActivityItem) => {
+        let isActorAttendee = false;
         const segment = segments.find(
           (s) => s.start < driveActivityItem.time && s.end > driveActivityItem.time,
         );
-        return tx.store.put(formatSegmentDocument(driveActivityItem, segment));
+        if (segment) {
+          const attendees = await attendeeStore.getAllForSegmentId(segment.id);
+          isActorAttendee = !!attendees.find(
+            (a) => a.personGoogleId === driveActivityItem.actorPersonId,
+          );
+        }
+
+        return formatSegmentDocument(driveActivityItem, isActorAttendee ? segment : undefined);
       }),
     );
+
     // Add drive activity in meeting descriptions
-    await Promise.all(
-      segments.map((segment) =>
+    const descriptionsToAdd = await Promise.all(
+      segments.map(async (segment) =>
         Promise.all(
-          segment.documentIdsFromDescription.map((documentId) =>
-            tx.store.put(formatSegmentDocumentFromDescription(segment, documentId)),
+          segment.documentIdsFromDescription.map(async (documentId) =>
+            formatSegmentDocumentFromDescription(segment, documentId),
           ),
         ),
       ),
     );
+
+    const tx = this.db.transaction('segmentDocument', 'readwrite');
+    await Promise.all(driveActivityToAdd.map((item) => tx.store.put(item)));
+    await Promise.all(flatten(descriptionsToAdd).map((item) => tx.store.put(item)));
     return tx.done;
   }
 

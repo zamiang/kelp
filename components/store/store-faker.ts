@@ -26,7 +26,7 @@ times(PEOPLE_COUNT, () => {
     name,
     imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
     isInContacts: true,
-    googleId: null,
+    googleId: emailAddress[0],
     isCurrentUser: 0,
   });
 });
@@ -36,7 +36,7 @@ people.push({
   id: CURRENT_USER_EMAIL,
   emailAddresses: [CURRENT_USER_EMAIL],
   name: 'current user',
-  googleId: null,
+  googleId: CURRENT_USER_EMAIL,
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
   isInContacts: true,
   isCurrentUser: 1,

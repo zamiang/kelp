@@ -1,4 +1,4 @@
-import { person } from './fetch-people';
+import { formatGmailAddress, person } from './fetch-people';
 
 const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
   biographies
@@ -25,16 +25,17 @@ const fetchContacts = async () => {
   const results = people.result?.connections?.map((person) => {
     const emailAddresses =
       (person?.emailAddresses
-        ?.map((address) => address.value?.toLocaleLowerCase())
+        ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
         .filter((Boolean as any) as ExcludesFalse) as string[]) || [];
     const displayName = person?.names && person?.names[0]?.displayName;
     if (!emailAddresses[0] || !person.resourceName) {
       return;
     }
     const formattedContact = {
-      id: person.resourceName.replace('people/', ''),
+      id: person.resourceName,
       name: displayName || emailAddresses[0] || person.resourceName,
       isInContacts: person.names ? true : false,
+      googleId: person.resourceName || undefined,
       emailAddresses,
       imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
       notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,

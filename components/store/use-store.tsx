@@ -59,7 +59,11 @@ const useStore = (db: dbType): IStore => {
         documentDataStore,
         attendeeDataStore,
       });
-      await segmentDocumentStore.addSegmentDocumentsToStore(driveActivityDataStore, timeDataStore);
+      await segmentDocumentStore.addSegmentDocumentsToStore(
+        driveActivityDataStore,
+        timeDataStore,
+        attendeeDataStore,
+      );
       setLoading(false);
     };
     void addData();

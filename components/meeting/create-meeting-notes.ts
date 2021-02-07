@@ -45,7 +45,9 @@ const getCreateDocumentRequestBody = async (
       if (attendee.personId) {
         const person = await personDataStore.getPersonById(attendee.personId);
         const name = person?.name || person?.emailAddresses;
-        return `<a href="https://www.kelp.nyc/dashboard/people/${person?.id}">${name}</a>`;
+        return `<a href="https://www.kelp.nyc/dashboard/people/${encodeURIComponent(
+          person?.id || '',
+        )}">${name}</a>`;
       }
     }),
   );

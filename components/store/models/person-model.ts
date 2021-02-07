@@ -1,25 +1,25 @@
 import { first, uniq } from 'lodash';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
-import { person as GooglePerson } from '../../fetch/fetch-people';
+import { person as GooglePerson, formatGmailAddress } from '../../fetch/fetch-people';
 import { dbType } from '../db';
 
 export interface IPerson {
   id: string;
   name: string;
   emailAddresses: string[];
-  imageUrl?: string | null;
+  imageUrl?: string;
   notes?: string;
-  googleId: string | null;
+  googleId?: string;
   isCurrentUser: number; // needs to be a number to be a valid index
   isInContacts: boolean;
 }
 
 export const formatPerson = (person: GooglePerson) => ({
-  id: person.id.replace('people/', ''),
+  id: person.id,
   name: person.name,
   googleId: person.id,
   emailAddresses: person.emailAddresses,
-  imageUrl: person.imageUrl,
+  imageUrl: person.imageUrl || undefined,
   isCurrentUser: 0,
   isInContacts: person.isInContacts,
   notes: person.notes,
@@ -28,16 +28,14 @@ export const formatPerson = (person: GooglePerson) => ({
 const createNewPersonFromEmail = (email: string): IPerson => ({
   id: email,
   name: email,
-  googleId: null,
   emailAddresses: [email],
-  imageUrl: null,
   isCurrentUser: 0,
   isInContacts: false,
 });
 
 const formatPersonForStore = (person: IPerson) => ({
   ...person,
-  id: person.id.replace('people/', ''),
+  id: person.id,
 });
 
 export default class PersonModel {
@@ -84,13 +82,15 @@ export default class PersonModel {
 
     // Add email addresses
     emailAddresses.forEach((emailAddress) => {
-      const formattedEmailAddress = emailAddress.toLocaleLowerCase();
-      const person = emailAddressToPersonIdHash[formattedEmailAddress];
-      if (!person) {
-        if (contactLookup[formattedEmailAddress]) {
-          filteredPeople.push(contactLookup[formattedEmailAddress]);
-        } else {
-          filteredPeople.push(createNewPersonFromEmail(formattedEmailAddress));
+      const formattedEmailAddress = formatGmailAddress(emailAddress);
+      if (!formattedEmailAddress.includes('@calendar.google.com')) {
+        const person = emailAddressToPersonIdHash[formattedEmailAddress];
+        if (!person) {
+          if (contactLookup[formattedEmailAddress]) {
+            filteredPeople.push(contactLookup[formattedEmailAddress]);
+          } else {
+            filteredPeople.push(createNewPersonFromEmail(formattedEmailAddress));
+          }
         }
       }
     });
@@ -98,12 +98,12 @@ export default class PersonModel {
     // get current user email
     (events[0]?.attendees || []).forEach((attendee) => {
       if (attendee && attendee.self && attendee.email) {
-        const person = contactLookup[attendee.email];
+        const formattedEmailAddress = formatGmailAddress(attendee.email);
+        const person = contactLookup[formattedEmailAddress];
         person.isCurrentUser = 1;
         filteredPeople.push(person);
       }
     });
-
     await Promise.all(filteredPeople.map((person) => tx.store.put(person)));
     return tx.done;
   }
@@ -120,7 +120,7 @@ export default class PersonModel {
 
   async getPersonById(id: string): Promise<IPerson | undefined> {
     if (id) {
-      return this.db.get('person', id.replace('people/', ''));
+      return this.db.get('person', id);
     }
     return undefined;
   }

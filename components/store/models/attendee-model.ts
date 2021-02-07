@@ -1,4 +1,5 @@
 import { getDayOfYear } from 'date-fns';
+import { formatGmailAddress } from '../../fetch/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
 import { IPerson } from './person-model';
@@ -7,6 +8,7 @@ import { ISegment } from './segment-model';
 export interface IFormattedAttendee {
   readonly id: string;
   readonly personId?: string;
+  readonly personGoogleId?: string;
   readonly emailAddress?: string;
   readonly responseStatus?: string;
   readonly self?: boolean;
@@ -30,9 +32,10 @@ const formatAttendee = (
   id: `${segment.id}-${person.id}`,
   segmentId: segment.id,
   personId: person.id,
+  personGoogleId: person.googleId || undefined,
   responseStatus: attendee.responseStatus,
   self: attendee.self,
-  emailAddress: attendee.email,
+  emailAddress: attendee.email ? formatGmailAddress(attendee.email) : undefined,
   week: getWeek(segment.start),
   day: getDayOfYear(segment.start),
   date: segment.start,
@@ -51,9 +54,9 @@ export default class AttendeeModel {
         async (segment) =>
           await Promise.all(
             segment.attendees.map(async (attendee) => {
-              const person = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
-              if (person[0] && person[0].id) {
-                return this.db.put('attendee', formatAttendee(attendee, person[0], segment));
+              const people = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
+              if (people[0] && people[0].id) {
+                return this.db.put('attendee', formatAttendee(attendee, people[0], segment));
               } else {
                 console.error('missing', attendee.email);
               }

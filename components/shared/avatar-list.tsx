@@ -57,7 +57,7 @@ const AvatarList = (props: IProps) => {
         return (
           <Tooltip key={person.id} title={person.name || person.emailAddresses}>
             <Avatar
-              onClick={() => router.push(`/people/${person.id}`)}
+              onClick={() => router.push(`/people/${encodeURIComponent(person.id)}`)}
               src={person.imageUrl || ''}
               className={classes.avatar}
             >

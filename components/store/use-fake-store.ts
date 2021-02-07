@@ -35,7 +35,11 @@ const useFakeStore = async (db: dbType): Promise<IStore> => {
   });
 
   const segmentDocumentStore = new SegmentDocumentModel(db);
-  await segmentDocumentStore.addSegmentDocumentsToStore(driveActivityDataStore, timeDataStore);
+  await segmentDocumentStore.addSegmentDocumentsToStore(
+    driveActivityDataStore,
+    timeDataStore,
+    attendeeDataStore,
+  );
 
   return {
     driveActivityStore: driveActivityDataStore,
