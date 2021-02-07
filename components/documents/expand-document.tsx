@@ -47,7 +47,6 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
     const fetchData = async () => {
       if (documentId) {
         const result = await props.store.segmentDocumentStore.getAllForDocumentId(documentId);
-        console.log(result, '<< segment document - todo');
         setSegmentDocuments(result.filter((r) => !!r.segmentId));
       }
     };

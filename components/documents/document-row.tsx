@@ -73,7 +73,7 @@ const DocumentRow = (props: {
     const fetchData = async () => {
       if (activity.length > 0) {
         const result = await getPeopleForDriveActivity(activity, props.store.personDataStore);
-        setPeople(result.slice(0, 5));
+        setPeople(result.slice(0, 3));
       }
     };
     void fetchData();
