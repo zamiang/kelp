@@ -1,5 +1,4 @@
 import { userPersonFields } from '../fetch/fetch-contacts';
-import { IPerson } from '../store/models/person-model';
 
 const contactEditScope = 'https://www.googleapis.com/auth/contacts';
 
@@ -16,34 +15,38 @@ const addScope = async () => {
   try {
     await googleUser.grant(option);
   } catch (e) {
-    console.error(e, '<<<<<addScope<<<<<<<');
+    alert(e);
   }
 };
 
-export const updateContactNotes = async (googleId: string, note: string, person: IPerson) => {
+export const updateContactNotes = async (googleId: string, note: string) => {
   await addScope();
 
-  const currentPerson = await gapi.client.people.people.get({
+  const person = await gapi.client.people.people.get({
     personFields: userPersonFields,
     resourceName: googleId,
+    sources: 'READ_SOURCE_TYPE_CONTACT',
   });
 
-  const etag = currentPerson?.result?.etag;
+  const etag = person?.result?.etag;
   if (!etag) {
     return alert('no etag');
   }
 
-  await gapi.client.people.people.updateContact({
-    updatePersonFields: 'biographies',
-    resource: {
-      etag,
-      biographies: [
-        {
-          value: note,
-        },
-      ],
-    },
-    resourceName: currentPerson.result.resourceName!,
-  });
-  person.notes = note;
+  try {
+    return gapi.client.people.people.updateContact({
+      updatePersonFields: 'biographies',
+      resource: {
+        etag,
+        biographies: [
+          {
+            value: note,
+          },
+        ],
+      },
+      resourceName: person.result.resourceName!,
+    });
+  } catch (e) {
+    alert(e);
+  }
 };

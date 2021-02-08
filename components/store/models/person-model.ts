@@ -1,5 +1,6 @@
 import { first, uniq } from 'lodash';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
+import { formatContact } from '../../fetch/fetch-contacts';
 import { person as GooglePerson, formatGmailAddress } from '../../fetch/fetch-people';
 import { dbType } from '../db';
 
@@ -106,6 +107,14 @@ export default class PersonModel {
     });
     await Promise.all(filteredPeople.map((person) => tx.store.put(person)));
     return tx.done;
+  }
+
+  async updatePersonFromGoogleContacts(person: gapi.client.people.Person) {
+    const formattedPerson = formatPerson(formatContact(person)!);
+    if (formattedPerson) {
+      await this.db.put('person', formattedPerson);
+    }
+    return formattedPerson;
   }
 
   async getAll(shouldExcludeSelf: boolean) {

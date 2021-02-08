@@ -8,6 +8,27 @@ const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
 
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
+export const formatContact = (person: gapi.client.people.Person) => {
+  const emailAddresses =
+    (person?.emailAddresses
+      ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
+      .filter((Boolean as any) as ExcludesFalse) as string[]) || [];
+  const displayName = person?.names && person?.names[0]?.displayName;
+  if (!emailAddresses[0] || !person.resourceName) {
+    return;
+  }
+  const formattedContact = {
+    id: person.resourceName,
+    name: displayName || emailAddresses[0] || person.resourceName,
+    isInContacts: person.names ? true : false,
+    googleId: person.resourceName || undefined,
+    emailAddresses,
+    imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
+    notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
+  };
+  return formattedContact;
+};
+
 export const userPersonFields = 'names,nicknames,emailAddresses,photos,biographies'; // NOTE: Google Contacts has a field called 'notes' that edits the 'biographies' field
 /**
  * There is no way to lookup contacts via the Google Contacts API,
@@ -22,26 +43,7 @@ const fetchContacts = async () => {
     sortOrder: 'LAST_MODIFIED_DESCENDING',
   });
 
-  const results = people.result?.connections?.map((person) => {
-    const emailAddresses =
-      (person?.emailAddresses
-        ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
-        .filter((Boolean as any) as ExcludesFalse) as string[]) || [];
-    const displayName = person?.names && person?.names[0]?.displayName;
-    if (!emailAddresses[0] || !person.resourceName) {
-      return;
-    }
-    const formattedContact = {
-      id: person.resourceName,
-      name: displayName || emailAddresses[0] || person.resourceName,
-      isInContacts: person.names ? true : false,
-      googleId: person.resourceName || undefined,
-      emailAddresses,
-      imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : null,
-      notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
-    };
-    return formattedContact;
-  });
+  const results = people.result?.connections?.map((person) => formatContact(person));
   return results?.filter(Boolean) as person[];
 };
 

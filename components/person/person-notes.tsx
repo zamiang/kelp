@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IPerson } from '../store/models/person-model';
+import { IStore } from '../store/use-store';
 import { updateContactNotes } from './update-contact';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,11 +40,22 @@ type FormValues = {
   note: string;
 };
 
-const NotesEditForm = (props: { person: IPerson; onCloseEdit: () => void }) => {
+const NotesEditForm = (props: {
+  person: IPerson;
+  onCloseEdit: () => void;
+  setPerson: (p: IPerson) => void;
+  personStore: IStore['personDataStore'];
+}) => {
   const { handleSubmit, register, setValue } = useForm<FormValues>();
   const classes = useStyles();
   const onSubmit = handleSubmit(async (data) => {
-    await updateContactNotes(props.person.googleId!, data.note, props.person);
+    const response = await updateContactNotes(props.person.googleId!, data.note);
+    if (response && response.result) {
+      const formattedPerson = await props.personStore.updatePersonFromGoogleContacts(
+        response.result,
+      );
+      props.setPerson(formattedPerson);
+    }
     props.onCloseEdit();
   });
 
@@ -70,7 +82,11 @@ const NotesEditForm = (props: { person: IPerson; onCloseEdit: () => void }) => {
   );
 };
 
-const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
+const PersonNotes = (props: {
+  person: IPerson;
+  setPerson: (p: IPerson) => void;
+  personStore: IStore['personDataStore'];
+}) => {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -92,7 +108,14 @@ const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
           </IconButton>
         )}
       </Typography>
-      {isEditing && <NotesEditForm person={props.person} onCloseEdit={onCloseEdit} />}
+      {isEditing && (
+        <NotesEditForm
+          setPerson={props.setPerson}
+          personStore={props.personStore}
+          person={props.person}
+          onCloseEdit={onCloseEdit}
+        />
+      )}
       {isEditing && (
         <IconButton onClick={onCloseEdit} size="small">
           <CloseIcon />

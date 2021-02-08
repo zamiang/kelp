@@ -143,7 +143,11 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <Typography variant="h6" className={classes.smallHeading}>
               Notes
             </Typography>
-            <PersonNotes person={person} refetch={props.store.refetch} />
+            <PersonNotes
+              person={person}
+              setPerson={(p: any) => setPerson(p)}
+              personStore={props.store.personDataStore}
+            />
           </React.Fragment>
         )}
         {!person.isInContacts && (
