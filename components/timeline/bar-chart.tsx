@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import useComponentSize from '@rehooks/component-size';
 import { addDays, differenceInCalendarDays, differenceInMinutes, format, subDays } from 'date-fns';
-import { times } from 'lodash';
+import { times, uniq } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import config from '../../constants/config';
 import { IStore } from '../store/use-store';
@@ -187,13 +187,19 @@ const getDataForType = async (
         type: 'segment',
       };
     });
+    const dayPeopleHash = {} as any;
     allMeetings.map((segment) => {
       // TOOD: potentially filter them?
       const date = format(segment.start, dateFormat);
-      const count = segment.attendees.length;
-      if (peopleCount[date]) {
-        peopleCount[date].rate += count;
+      const emails = segment.attendees.map((a) => a.email);
+      if (dayPeopleHash[date]) {
+        dayPeopleHash[date].push(emails);
+      } else {
+        dayPeopleHash[date] = emails;
       }
+    });
+    Object.keys(peopleCount).map((key) => {
+      peopleCount[key].rate = uniq(dayPeopleHash[key]).length;
     });
     return Object.values(peopleCount);
   }

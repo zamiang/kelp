@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
@@ -110,7 +110,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             Last meeting
           </Typography>
           {lastMeeting && (
-            <Link href={`/meetings/${lastMeeting.id}`}>
+            <Link to={`/meetings/${lastMeeting.id}`} component={RouterLink}>
               <Typography className={classes.highlight}>
                 <span className={classes.highlightValue} style={{ fontSize: '1.3094rem' }}>
                   {formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}

@@ -54,11 +54,9 @@ class D3BarChart {
     // Add x axis
     const xScale = scaleBand().rangeRound([0, this.width]).padding(0.4);
     const yScale = scaleLinear().range([this.height, 0]);
-    const maxValue = (max(this.data, (d) => d.rate) as number) + 20;
-    let minValue = (min(this.data, (d) => d.rate) as number) - 20;
-    if (minValue < 0) {
-      minValue = 0;
-    }
+    const maxValue = Math.floor((max(this.data, (d) => d.rate) as number) + 1.1);
+    const minValue = 0;
+
     xScale.domain(this.data.map((d) => d.date) as any);
     yScale.domain([minValue, maxValue]);
 
