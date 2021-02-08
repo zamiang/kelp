@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
   },
   text: { color: theme.palette.text.hint },
   button: {
-    borderRadius: `${theme.spacing(3)}px 0 0 ${theme.spacing(3)}px`,
     transition: theme.transitions.create(['transform'], {
       duration: theme.transitions.duration.short,
     }),
