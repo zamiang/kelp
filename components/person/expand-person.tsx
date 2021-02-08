@@ -100,7 +100,6 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           >
             {person.name}
           </Typography>
-          <PersonNotes person={person} refetch={props.store.refetch} />
         </Box>
       </div>
       <Divider />
@@ -139,6 +138,14 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
       </Grid>
       <Divider />
       <div className={classes.container}>
+        {person.isInContacts && (
+          <React.Fragment>
+            <Typography variant="h6" className={classes.smallHeading}>
+              Notes
+            </Typography>
+            <PersonNotes person={person} refetch={props.store.refetch} />
+          </React.Fragment>
+        )}
         {!person.isInContacts && (
           <Typography variant="body2">
             Add this person to your google contacts for more info{' '}

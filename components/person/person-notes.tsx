@@ -6,6 +6,7 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IPerson } from '../store/models/person-model';
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.grey[100],
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
+    minWidth: 400,
   },
   edit: {
     display: 'inline-block',
@@ -74,19 +76,20 @@ const PersonNotes = (props: { person: IPerson; refetch: () => void }) => {
 
   const onEdit = () => setIsEditing(true);
   const onCloseEdit = () => setIsEditing(false);
-  if (!props.person.isInContacts) {
-    return null;
-  }
   return (
     <div className={classes.relativeContainer}>
       <Typography variant="subtitle2">
         {!isEditing && (
-          <span>{props.person.notes || <span className={classes.addNotes}>add notes</span>}</span>
+          <span>
+            {props.person.notes || (
+              <span className={classes.addNotes}>Add a contact note to your Google Contact.</span>
+            )}
+          </span>
         )}
         {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
-          <span className={classes.edit} onClick={onEdit}>
-            Edit
-          </span>
+          <IconButton className={classes.edit} onClick={onEdit} size="small">
+            <EditIcon />
+          </IconButton>
         )}
       </Typography>
       {isEditing && <NotesEditForm person={props.person} onCloseEdit={onCloseEdit} />}
