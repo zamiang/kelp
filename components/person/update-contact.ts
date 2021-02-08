@@ -32,9 +32,9 @@ export const updateContactNotes = async (googleId: string, note: string) => {
   if (!etag) {
     return alert('no etag');
   }
-
+  let response;
   try {
-    return gapi.client.people.people.updateContact({
+    response = await gapi.client.people.people.updateContact({
       updatePersonFields: 'biographies',
       resource: {
         etag,
@@ -47,6 +47,7 @@ export const updateContactNotes = async (googleId: string, note: string) => {
       resourceName: person.result.resourceName!,
     });
   } catch (e) {
-    alert(e);
+    alert(JSON.stringify(e));
   }
+  return response;
 };

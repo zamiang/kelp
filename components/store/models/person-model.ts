@@ -55,7 +55,8 @@ export default class PersonModel {
     const tx = this.db.transaction('person', 'readwrite');
     const emailAddressToPersonIdHash: any = {};
     const contactLookup: any = {};
-    const filteredPeople: IPerson[] = [];
+    const peopleToAdd: IPerson[] = [];
+
     // Create contact lookup
     contacts.forEach((contact) => {
       contact.emailAddresses.map((email) => {
@@ -67,8 +68,11 @@ export default class PersonModel {
     // Add people first
     people.forEach((person) => {
       let isInStore = false;
+      let contact: GooglePerson | null = null;
       person.emailAddresses.map((email) => {
-        if (emailAddressToPersonIdHash[email]) {
+        if (!contact && contactLookup[email]) {
+          contact = contactLookup[email];
+        } else if (emailAddressToPersonIdHash[email]) {
           isInStore = true;
         } else {
           person.emailAddresses.map((email) => {
@@ -76,8 +80,10 @@ export default class PersonModel {
           });
         }
       });
-      if (!isInStore) {
-        filteredPeople.push(formatPersonForStore(person));
+      if (contact) {
+        peopleToAdd.push(contact);
+      } else if (!isInStore) {
+        peopleToAdd.push(formatPersonForStore(person));
       }
     });
 
@@ -88,9 +94,9 @@ export default class PersonModel {
         const person = emailAddressToPersonIdHash[formattedEmailAddress];
         if (!person) {
           if (contactLookup[formattedEmailAddress]) {
-            filteredPeople.push(contactLookup[formattedEmailAddress]);
+            peopleToAdd.push(contactLookup[formattedEmailAddress]);
           } else {
-            filteredPeople.push(createNewPersonFromEmail(formattedEmailAddress));
+            peopleToAdd.push(createNewPersonFromEmail(formattedEmailAddress));
           }
         }
       }
@@ -102,10 +108,10 @@ export default class PersonModel {
         const formattedEmailAddress = formatGmailAddress(attendee.email);
         const person = contactLookup[formattedEmailAddress];
         person.isCurrentUser = 1;
-        filteredPeople.push(person);
+        peopleToAdd.push(person);
       }
     });
-    await Promise.all(filteredPeople.map((person) => tx.store.put(person)));
+    await Promise.all(peopleToAdd.map((person) => tx.store.put(person)));
     return tx.done;
   }
 

@@ -29,7 +29,7 @@ export const formatContact = (person: gapi.client.people.Person) => {
   return formattedContact;
 };
 
-export const userPersonFields = 'names,nicknames,emailAddresses,photos,biographies'; // NOTE: Google Contacts has a field called 'notes' that edits the 'biographies' field
+export const userPersonFields = 'names,nicknames,emailAddresses,photos,biographies,metadata'; // NOTE: Google Contacts has a field called 'notes' that edits the 'biographies' field
 /**
  * There is no way to lookup contacts via the Google Contacts API,
  * so here we make our own lookups by ID and email
