@@ -4,12 +4,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
-import PopperContainer from '../shared/popper';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import useRowStyles from '../shared/row-styles';
 import { IDocument } from '../store/models/document-model';
 import { IStore } from '../store/use-store';
-import ExpandedDocument from './expand-document';
 
 const useStyles = makeStyles((theme) => ({
   imageContainer: {
@@ -37,15 +36,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DocumentSearchResult = (props: { doc: IDocument; store: IStore }) => {
+  const router = useHistory();
   const rowStyles = useRowStyles();
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event: any) => {
-    if (!anchorEl) {
-      setAnchorEl(anchorEl ? null : event?.currentTarget);
-    }
+  const handleClick = () => {
+    void router.push(`/search/docs/${props.doc.id}${window.location.search}`);
   };
-  const isOpen = Boolean(anchorEl);
   return (
     <ListItem
       onClick={handleClick}
@@ -57,25 +53,22 @@ const DocumentSearchResult = (props: { doc: IDocument; store: IStore }) => {
       )}
     >
       <Grid container spacing={1} alignItems="center" justify="flex-start">
-        <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
-          <ExpandedDocument
-            documentId={props.doc.id}
-            close={() => setAnchorEl(null)}
-            store={props.store}
-          />
-        </PopperContainer>
         <Grid item className={classes.imageContainer}>
           <img src={props.doc.iconLink} className={classes.image} />
         </Grid>
-        <Grid item zeroMinWidth>
-          <Typography noWrap variant="body2">
-            <b>{props.doc.name}</b>
-          </Typography>
-        </Grid>
-        <Grid item className={classes.time}>
-          <Typography variant="caption" color="textSecondary">
-            {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
-          </Typography>
+        <Grid item xs={11}>
+          <Grid container alignItems="center" justify="space-between">
+            <Grid item zeroMinWidth>
+              <Typography noWrap variant="body2">
+                <b>{props.doc.name}</b>
+              </Typography>
+            </Grid>
+            <Grid item className={classes.time}>
+              <Typography variant="caption" color="textSecondary">
+                {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </ListItem>

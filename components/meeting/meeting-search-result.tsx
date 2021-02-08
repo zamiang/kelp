@@ -5,12 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import EventIcon from '@material-ui/icons/Event';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
-import PopperContainer from '../shared/popper';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
-import ExpandedMeeting from './expand-meeting';
 
 const useStyles = makeStyles((theme) => ({
   time: {
@@ -41,13 +40,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
+  const router = useHistory();
   const classes = useStyles();
   const rowStyles = useRowStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event: any) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+  const handleClick = () => {
+    void router.push(`/search/meetings/${props.meeting.id}${window.location.search}`);
   };
-  const isOpen = Boolean(anchorEl);
   return (
     <ListItem
       onClick={handleClick}
@@ -62,26 +60,23 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
       )}
     >
       <Grid container spacing={1} alignItems="center" justify="flex-start">
-        <PopperContainer anchorEl={anchorEl} isOpen={isOpen} setIsOpen={() => setAnchorEl(null)}>
-          <ExpandedMeeting
-            meetingId={props.meeting.id}
-            close={() => setAnchorEl(null)}
-            store={props.store}
-          />
-        </PopperContainer>
         <Grid item className={classes.imageContainer}>
           <EventIcon className={classes.image} />
         </Grid>
-        <Grid item zeroMinWidth>
-          <Typography variant="body2">
-            <b>{props.meeting.summary || '(no title)'}</b>
-          </Typography>
-        </Grid>
-        <Grid item className={classes.time}>
-          <Typography variant="caption" color="textSecondary">
-            {format(props.meeting.start, 'MMM do, yyyy')} {format(props.meeting.start, 'p')} –{' '}
-            {format(props.meeting.end, 'p')}
-          </Typography>
+        <Grid item xs={11}>
+          <Grid container alignItems="center" justify="space-between">
+            <Grid item zeroMinWidth>
+              <Typography variant="body2">
+                <b>{props.meeting.summary || '(no title)'}</b>
+              </Typography>
+            </Grid>
+            <Grid item className={classes.time}>
+              <Typography variant="caption" color="textSecondary">
+                {format(props.meeting.start, 'MMM do, yyyy')} {format(props.meeting.start, 'p')} –{' '}
+                {format(props.meeting.end, 'p')}
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </ListItem>

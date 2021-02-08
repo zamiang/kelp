@@ -168,6 +168,27 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
                       <Search {...store} />
                     </div>
                   </Grid>
+                  <Route path="/search/docs/:slug">
+                    <Grid item xs={12} sm={6}>
+                      <div className={classes.center}>
+                        <ExpandedDocument store={store} />
+                      </div>
+                    </Grid>
+                  </Route>
+                  <Route path="/search/meetings/:slug">
+                    <Grid item xs={12} sm={6}>
+                      <div className={classes.center}>
+                        <ExpandedMeeting store={store} />
+                      </div>
+                    </Grid>
+                  </Route>
+                  <Route path="/search/people/:slug">
+                    <Grid item xs={12} sm={6}>
+                      <div className={classes.center}>
+                        <ExpandPerson store={store} />
+                      </div>
+                    </Grid>
+                  </Route>
                 </Grid>
               </Container>
             </Route>
