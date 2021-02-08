@@ -1,4 +1,4 @@
-import { axisBottom, max, mean, min, scaleBand, scaleLinear, select } from 'd3';
+import { axisBottom, max, mean, scaleBand, scaleLinear, select } from 'd3';
 import { format } from 'date-fns';
 
 export interface IBarChartItem {
