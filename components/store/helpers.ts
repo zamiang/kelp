@@ -1,7 +1,5 @@
 import { intervalToDuration, subWeeks } from 'date-fns';
-import { uniqBy } from 'lodash';
 import config from '../../constants/config';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { getWeek } from '../shared/date-helpers';
 import { IFormattedAttendee } from './models/attendee-model';
 import { ISegment } from './models/segment-model';
