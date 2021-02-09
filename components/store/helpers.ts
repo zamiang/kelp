@@ -79,18 +79,6 @@ export const getAssociates = async (
   return attendees.map((a) => attendeeLookup[a[0]]);
 };
 
-export const getPeopleForDriveActivity = async (
-  activity: IFormattedDriveActivity[],
-  personDataStore: IStore['personDataStore'],
-) => {
-  const peopleIds = uniqBy(activity, 'actorPersonId')
-    .filter((activity) => !!activity.actorPersonId)
-    .map((a) => a.actorPersonId!);
-
-  const people = await personDataStore.getBulk(peopleIds);
-  return people.filter((person) => person && person.id);
-};
-
 export const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {
   const guestStatsHash = {
     needsAction: 'awaiting response',
