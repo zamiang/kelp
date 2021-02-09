@@ -23,7 +23,7 @@ export const PeopleToday = (
       setPeople(p.sort((a, b) => (a.name < b.name ? -1 : 1)));
     };
     void fetchData();
-  }, []);
+  }, [props.isLoading, props.lastUpdated]);
   return (
     <div className={classes.rowNoBorder}>
       {people.map(
@@ -33,7 +33,6 @@ export const PeopleToday = (
               key={person.id}
               person={person}
               selectedPersonId={props.selectedPersonId}
-              store={{ ...props }}
               noLeftMargin={props.noLeftMargin}
             />
           ),
@@ -53,18 +52,13 @@ const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => 
       setPeople(p.sort((a, b) => (a.name < b.name ? -1 : 1)));
     };
     void fetchData();
-  }, []);
+  }, [props.isLoading, props.lastUpdated]);
   return (
     <div className={classes.rowNoBorder}>
       {people.map(
         (person: IPerson) =>
           person && (
-            <PersonRow
-              key={person.id}
-              person={person}
-              selectedPersonId={props.selectedPersonId}
-              store={{ ...props }}
-            />
+            <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
           ),
       )}
     </div>
@@ -81,17 +75,12 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
       setPeople(result.sort((a, b) => (a.name < b.name ? -1 : 1)));
     };
     void fetchData();
-  }, []);
+  }, [props.isLoading, props.lastUpdated]);
 
   return (
     <div className={classes.rowNoBorder}>
       {people.map((person) => (
-        <PersonRow
-          key={person.id}
-          person={person}
-          selectedPersonId={props.selectedPersonId}
-          store={{ ...props }}
-        />
+        <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
       ))}
     </div>
   );

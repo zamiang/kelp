@@ -1,14 +1,14 @@
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
-import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import AvatarList from '../shared/avatar-list';
+import SmallPersonRow from '../person/person-row-small';
 import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
+import { getPeopleSortedByCount } from '../store/helpers';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
@@ -21,6 +21,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
   const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
   const [people, setPeople] = useState<IPerson[]>([]);
+  const [peopleStats, setPeopleStats] = useState<any>({});
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
   useEffect(() => {
@@ -56,12 +57,12 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   useEffect(() => {
     const fetchData = async () => {
       if (driveActivity.length > 0) {
-        const peopleIds = uniqBy(driveActivity, 'actorPersonId')
-          .map((item) => item.actorPersonId)
-          .filter(Boolean) as string[];
-
-        const people = await props.store.personDataStore.getBulkByPersonId(peopleIds);
-        setPeople(people);
+        const people = await getPeopleSortedByCount(
+          driveActivity.map((a) => a.actorPersonId).filter(Boolean) as any,
+          props.store.personDataStore,
+        );
+        setPeople(people.sortedPeople.slice(0, 5));
+        setPeopleStats(people.peopleStats);
       }
     };
     void fetchData();
@@ -84,12 +85,26 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       </div>
       <Divider />
       <div className={classes.container}>
-        <Typography variant="h6" className={classes.triGroupHeading}>
-          Collaborators
-        </Typography>
-        <Typography className={classes.highlight}>
-          <AvatarList people={people} shouldDisplayNone={true} />
-        </Typography>
+        {people.length > 0 && (
+          <React.Fragment>
+            <Typography variant="h6" className={classes.triGroupHeading}>
+              Key Contributors
+            </Typography>
+            <div className={classes.list}>
+              {people.map(
+                (person: IPerson) =>
+                  person &&
+                  peopleStats[person.id] && (
+                    <SmallPersonRow
+                      key={person.id}
+                      person={person}
+                      info={`${peopleStats[person.id][person.id]} events`}
+                    />
+                  ),
+              )}
+            </div>
+          </React.Fragment>
+        )}
         <Typography variant="h6" className={classes.smallHeading}>
           Meetings
         </Typography>

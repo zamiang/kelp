@@ -143,7 +143,7 @@ const MeetingsByDay = (props: IStore) => {
       setMeetingsByDay(result);
     };
     void fetchData();
-  }, [props.lastUpdated]);
+  }, [props.lastUpdated, props.isLoading]);
 
   useEffect(() => {
     setTimeout(() => {

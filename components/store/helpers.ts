@@ -122,3 +122,21 @@ export const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {
     .filter((text) => !!text)
     .join(', ');
 };
+
+export const getPeopleSortedByCount = async (
+  peopleIds: string[],
+  personDataStore: IStore['personDataStore'],
+) => {
+  const peopleStats = peopleIds.reduce((acc: any, curr: any) => {
+    acc[curr] ??= { [curr]: 0 };
+    acc[curr][curr]++;
+    return acc;
+  }, {});
+  const people = await personDataStore.getBulkByPersonId(peopleIds);
+  console.log(peopleStats);
+  const sortedPeople = people.sort((a, b) => peopleStats[b.id][b.id] - peopleStats[a.id][a.id]);
+  return {
+    sortedPeople,
+    peopleStats,
+  };
+};

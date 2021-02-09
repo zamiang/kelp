@@ -202,7 +202,7 @@ const ExpandedMeeting = (props: {
               <Button
                 onClick={() => window.open(meeting.hangoutLink, '_blank')}
                 variant="contained"
-                className={buttonClasses.selected}
+                className={buttonClasses.button}
                 startIcon={<MeetingRoomIcon />}
                 disableElevation
               >

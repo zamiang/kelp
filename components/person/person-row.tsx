@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
-import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles(() => ({
   name: { minWidth: 300 },
@@ -19,7 +18,7 @@ const PersonRow = (props: {
   selectedPersonId: string | null;
   noLeftMargin?: boolean;
   person: IPerson;
-  store: IStore;
+  info?: string;
 }) => {
   const isSelected = props.selectedPersonId === props.person.id;
   const classes = useStyles();
@@ -76,6 +75,13 @@ const PersonRow = (props: {
             </Grid>
           </Grid>
         </Grid>
+        {props.info && (
+          <Grid item>
+            <Typography variant="body2" noWrap>
+              {props.info}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </ListItem>
   );

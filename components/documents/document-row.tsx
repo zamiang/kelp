@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AvatarList from '../shared/avatar-list';
 import useRowStyles from '../shared/row-styles';
-import { getPeopleForDriveActivity } from '../store/helpers';
+import { getPeopleSortedByCount } from '../store/helpers';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
@@ -72,8 +72,11 @@ const DocumentRow = (props: {
   useEffect(() => {
     const fetchData = async () => {
       if (activity.length > 0) {
-        const result = await getPeopleForDriveActivity(activity, props.store.personDataStore);
-        setPeople(result.slice(0, 3));
+        const peopleAndCounts = await getPeopleSortedByCount(
+          activity.map((a) => a.actorPersonId).filter(Boolean) as any,
+          props.store.personDataStore,
+        );
+        setPeople(peopleAndCounts.sortedPeople.slice(0, 3));
       }
     };
     void fetchData();

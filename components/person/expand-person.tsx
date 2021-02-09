@@ -138,7 +138,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
       </Grid>
       <Divider />
       <div className={classes.container}>
-        {person.isInContacts && (
+        {person.isInContacts && person.googleId && (
           <React.Fragment>
             <Typography variant="h6" className={classes.smallHeading}>
               Notes
@@ -150,7 +150,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             />
           </React.Fragment>
         )}
-        {!person.isInContacts && (
+        {(!person.isInContacts || !person.googleId) && (
           <Typography variant="body2">
             Add this person to your google contacts for more info{' '}
             <Link className={classes.link} target="_blank" href={ADD_SENDER_LINK}>

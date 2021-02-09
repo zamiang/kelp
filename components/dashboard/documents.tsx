@@ -20,7 +20,7 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
       setDocs(result.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
     };
     void fetchData();
-  }, []);
+  }, [props.lastUpdated, props.isLoading]);
 
   const classes = panelStyles();
   return (
@@ -49,7 +49,7 @@ export const DocumentsForToday = (
       setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
     };
     void fetchData();
-  }, []);
+  }, [props.lastUpdated, props.isLoading]);
   return (
     <div className={classes.rowNoBorder}>
       {docs.map((doc: IDocument) => (
@@ -75,7 +75,7 @@ const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | nul
       setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
     };
     void fetchData();
-  }, []);
+  }, [props.lastUpdated, props.isLoading]);
   return (
     <div className={classes.rowNoBorder}>
       {docs.map((doc: IDocument) => (

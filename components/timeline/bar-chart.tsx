@@ -223,7 +223,7 @@ const BarChart = (
       setData(result);
     };
     void fetchData();
-  }, [props.type]);
+  }, [props.type, props.isLoading, props.lastUpdated]);
 
   return (
     <div className={classes.barChart} ref={ref}>

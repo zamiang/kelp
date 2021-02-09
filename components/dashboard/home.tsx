@@ -24,7 +24,7 @@ const Home = (props: IStore) => {
       setSegments(result.sort((a, b) => (a.start < b.start ? -1 : 1)));
     };
     void fetchData();
-  }, []);
+  }, [props.isLoading, props.lastUpdated]);
 
   return (
     <div className={classes.panel}>
