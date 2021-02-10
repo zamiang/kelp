@@ -40,6 +40,7 @@ export interface ICalendarEvent {
     readonly self?: boolean;
   };
   readonly attendees: attendee[];
+  readonly attachments: gapi.client.calendar.EventAttachment[];
 }
 
 export const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
@@ -124,6 +125,7 @@ const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) 
         attendees: (event.attendees || []).filter(
           (attendee) => attendee.email && !attendee.resource, // filter out conference rooms
         ),
+        attachments: event.attachments || [],
         description: event.description,
       })),
     // calendar events return little attendee information beyond email addresses (contradicting docs)

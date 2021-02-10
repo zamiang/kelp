@@ -86,11 +86,9 @@ export default class SegmentDocumentModel {
 
     // Add drive activity in meeting descriptions
     const descriptionsToAdd = await Promise.all(
-      segments.map(async (segment) =>
-        Promise.all(
-          segment.documentIdsFromDescription.map(async (documentId) =>
-            formatSegmentDocumentFromDescription(segment, documentId),
-          ),
+      segments.map((segment) =>
+        segment.documentIdsFromDescription.map((documentId) =>
+          formatSegmentDocumentFromDescription(segment, documentId),
         ),
       ),
     );

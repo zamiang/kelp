@@ -1,5 +1,5 @@
 import { axisBottom, max, mean, scaleBand, scaleLinear, select } from 'd3';
-import { format } from 'date-fns';
+import { format, getDay, isToday } from 'date-fns';
 
 export interface IBarChartItem {
   date: Date;
@@ -104,6 +104,15 @@ class D3BarChart {
       .attr('transform', `translate(0, ${this.height})`)
       .call(xAxis);
 
+    svgBody.selectAll('.tick text').attr('class', (d: any) => {
+      const isSameDay = isToday(d);
+      const day = getDay(d);
+      if (day < 1 || day > 5) {
+        return `weekend${isSameDay ? ' today' : ''}`;
+      }
+      return isSameDay ? 'today' : null;
+    });
+
     svgBody
       .selectAll('rect')
       .data(props.data)
@@ -133,18 +142,10 @@ class D3BarChart {
       .enter()
       .append('line')
       .attr('class', 'date-line')
-      .attr('y1', function (d) {
-        return d.y1;
-      })
-      .attr('y2', function (d) {
-        return d.y2;
-      })
-      .attr('x1', function (d) {
-        return d.x1;
-      })
-      .attr('x2', function (d) {
-        return d.x2;
-      });
+      .attr('y1', (d) => d.y1)
+      .attr('y2', (d) => d.y2)
+      .attr('x1', (d) => d.x1)
+      .attr('x2', (d) => d.x2);
 
     const dailyAvg = Math.round(
       mean(this.data, function (d) {

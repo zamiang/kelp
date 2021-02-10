@@ -37,6 +37,11 @@ const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
       documentIds.push(getGoogleDocsIdFromLink(url));
     }
   });
+  (event.attachments || []).map((attachment) => {
+    if (attachment.fileId) {
+      documentIds.push(attachment.fileId);
+    }
+  });
   return documentIds;
 };
 

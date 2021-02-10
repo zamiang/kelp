@@ -119,7 +119,6 @@ export const getPeopleSortedByCount = async (
     return acc;
   }, {});
   const people = await personDataStore.getBulkByPersonId(peopleIds);
-  console.log(peopleStats);
   const sortedPeople = people.sort((a, b) => peopleStats[b.id][b.id] - peopleStats[a.id][a.id]);
   return {
     sortedPeople,

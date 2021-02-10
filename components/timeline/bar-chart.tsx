@@ -44,6 +44,12 @@ const d3Styles = makeStyles((theme) => ({
         fill: 'purple',
       },
     },
+    '& .weekend': {
+      opacity: 0.5,
+    },
+    '& .today': {
+      textDecoration: 'underline',
+    },
     '& .label-small': {
       fill: theme.palette.text.secondary,
       fillOpacity: 1,
