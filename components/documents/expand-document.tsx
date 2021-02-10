@@ -32,7 +32,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       }
     };
     void fetchData();
-  }, [documentId]);
+  }, [props.store.isLoading, documentId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +42,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       }
     };
     void fetchData();
-  }, [documentId]);
+  }, [props.store.isLoading, documentId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +52,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       }
     };
     void fetchData();
-  }, [documentId]);
+  }, [props.store.isLoading, documentId]);
 
   useEffect(() => {
     const fetchData = async () => {

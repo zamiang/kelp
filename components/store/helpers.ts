@@ -74,7 +74,12 @@ export const getAssociates = async (
   );
 
   const attendees = Object.entries(associates).sort((a: any, b: any) => b[1] - a[1]);
-  return attendees.map((a) => attendeeLookup[a[0]]);
+  const attendeeStats = {} as any;
+  attendees.forEach((a) => (attendeeStats[a[0]] = a[1]));
+  return {
+    attendees: attendees.map((a) => attendeeLookup[a[0]]),
+    attendeeStats,
+  };
 };
 
 export const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {

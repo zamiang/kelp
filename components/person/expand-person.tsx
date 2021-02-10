@@ -35,13 +35,15 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
   const [segments, setSegments] = useState<ISegment[]>([]);
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
+  const [associatesStats, setAssociatesStats] = useState<any>({});
+
   useEffect(() => {
     const fetchData = async () => {
       const p = await props.store.personDataStore.getPersonById(personId);
       setPerson(p);
     };
     void fetchData();
-  }, [personId]);
+  }, [props.store.isLoading, personId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +51,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
       setSegmentDocuments(p);
     };
     void fetchData();
-  }, [personId]);
+  }, [props.store.isLoading, personId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,11 +61,12 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         setSegments(filteredSegments);
 
         const a = await getAssociates(personId, filteredSegments, props.store.attendeeDataStore);
-        setAssociates(a);
+        setAssociates(a.attendees.slice(0, 5));
+        setAssociatesStats(a.attendeeStats);
       }
     };
     void fetchData();
-  }, [personId]);
+  }, [props.store.isLoading, personId]);
 
   if (!person) {
     return null;
@@ -185,6 +188,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           <AttendeeList
             personStore={props.store.personDataStore}
             attendees={associates}
+            attendeeMeetingCount={associatesStats}
             showAll={true}
           />
         </React.Fragment>

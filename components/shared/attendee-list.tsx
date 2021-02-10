@@ -17,6 +17,7 @@ interface IProps {
   attendees: IFormattedAttendee[];
   personStore: PersonDataStore;
   showAll: boolean;
+  attendeeMeetingCount?: any;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +50,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personDataStore'] }) => {
+const Row = (props: {
+  attendee: IFormattedAttendee;
+  personStore: IStore['personDataStore'];
+  meetingCount?: number;
+}) => {
   const classes = useStyles();
   const expandClasses = useExpandStyles();
   const router = useHistory();
@@ -95,6 +100,13 @@ const Row = (props: { attendee: IFormattedAttendee; personStore: IStore['personD
             {person.name || person.id}
           </Typography>
         </Grid>
+        {props.meetingCount && (
+          <Grid item>
+            <Typography variant="caption" noWrap>
+              {props.meetingCount} meetings
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </Button>
   );
@@ -106,7 +118,16 @@ const AttendeeRows = (props: IProps) => {
   return (
     <div className={expandClasses.list}>
       {orderedAttendees.map((attendee) => (
-        <Row key={attendee.id} attendee={attendee} personStore={props.personStore} />
+        <Row
+          key={attendee.id}
+          attendee={attendee}
+          personStore={props.personStore}
+          meetingCount={
+            props.attendeeMeetingCount &&
+            attendee.personId &&
+            props.attendeeMeetingCount[attendee.personId]
+          }
+        />
       ))}
     </div>
   );
