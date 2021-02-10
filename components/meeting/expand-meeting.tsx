@@ -17,6 +17,7 @@ import useExpandStyles from '../shared/expand-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { getFormattedGuestStats } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
+import { IDocument } from '../store/models/document-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -80,6 +81,9 @@ const ExpandedMeeting = (props: {
   const [shouldDisplayNonAttendees, setShouldDisplayNonAttendees] = useState<boolean>(false);
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
+  const [meetingNotesDocument, setMeetingNotesDocument] = useState<IDocument | undefined>(
+    undefined,
+  );
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
@@ -120,6 +124,18 @@ const ExpandedMeeting = (props: {
     void fetchData();
   }, [meetingId]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (meeting?.documentIdsFromDescription[0]) {
+        const result = await props.store.documentDataStore.getByLink(
+          meeting.documentIdsFromDescription[0],
+        );
+        setMeetingNotesDocument(result);
+      }
+    };
+    void fetchData();
+  }, [meeting?.documentIdsFromDescription[0]]);
+
   if (!meeting) {
     return null;
   }
@@ -131,7 +147,7 @@ const ExpandedMeeting = (props: {
   const guestStats = getFormattedGuestStats(attendees);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
-  const meetingNotesLink = meeting.documentIdsFromDescription[0];
+  const meetingNotesLink = meetingNotesDocument?.link;
   const hasMeetingNotes = !!meetingNotesLink;
   const editLink = meeting.link?.replace(
     'https://www.google.com/calendar/event?eid=',

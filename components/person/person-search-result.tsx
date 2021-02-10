@@ -39,7 +39,9 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
   const classes = useStyles();
   const rowStyles = useRowStyles();
   const handleClick = () => {
-    void router.push(`/search/people/${props.person.id}${window.location.search}`);
+    void router.push(
+      `/search/people/${encodeURIComponent(props.person.id)}${window.location.search}`,
+    );
   };
   return (
     <ListItem
