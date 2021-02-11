@@ -101,7 +101,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [meetingId]);
+  }, [props.store.isLoading, meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,7 +111,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [meetingId]);
+  }, [props.store.isLoading, meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,7 +122,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [meetingId]);
+  }, [props.store.isLoading, meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,10 +131,12 @@ const ExpandedMeeting = (props: {
           meeting.documentIdsFromDescription[0],
         );
         setMeetingNotesDocument(result);
+      } else {
+        setMeetingNotesDocument(undefined);
       }
     };
     void fetchData();
-  }, [meeting?.documentIdsFromDescription[0]]);
+  }, [props.store.isLoading, meetingId, meeting]);
 
   if (!meeting) {
     return null;

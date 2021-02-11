@@ -59,8 +59,9 @@ export default class PersonModel {
 
     // Create contact lookup
     contacts.forEach((contact) => {
-      contact.emailAddresses.map((email) => {
-        contactLookup[email] = contact;
+      contact.emailAddresses.forEach((emailAddress) => {
+        const formattedEmailAddress = formatGmailAddress(emailAddress);
+        contactLookup[formattedEmailAddress] = contact;
       });
       contactLookup[contact.id] = contact;
     });
@@ -69,14 +70,16 @@ export default class PersonModel {
     people.forEach((person) => {
       let isInStore = false;
       let contact: GooglePerson | null = null;
-      person.emailAddresses.map((email) => {
-        if (!contact && contactLookup[email]) {
-          contact = contactLookup[email];
-        } else if (emailAddressToPersonIdHash[email]) {
+      person.emailAddresses.forEach((emailAddress) => {
+        const formattedEmailAddress = formatGmailAddress(emailAddress);
+        if (!contact && contactLookup[formattedEmailAddress]) {
+          contact = contactLookup[formattedEmailAddress];
+        } else if (emailAddressToPersonIdHash[formattedEmailAddress]) {
           isInStore = true;
         } else {
-          person.emailAddresses.map((email) => {
-            emailAddressToPersonIdHash[email] = person.id;
+          person.emailAddresses.forEach((emailAddress) => {
+            const formattedEmailAddress = formatGmailAddress(emailAddress);
+            emailAddressToPersonIdHash[formattedEmailAddress] = person.id;
           });
         }
       });

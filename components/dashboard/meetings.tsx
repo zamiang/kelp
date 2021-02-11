@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format, getDate, getMonth } from 'date-fns';
-import { Dictionary } from 'lodash';
+import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import config from '../../constants/config';
@@ -97,40 +97,37 @@ const DayContainer = (props: {
   store: IStore;
   day: string;
   selectedMeetingId: string | null;
+  currentTimeMeetingId: string | null;
 }) => {
   const currentTime = new Date();
   const classes = panelStyles();
   const dayContainerclasses = dayContainerStyles();
 
-  let hasRenderedCurrentTime = false;
   return (
     <div className={classes.row}>
       <Day day={new Date(props.day)} currentDay={currentTime} />
-      {props.meetings.map((meeting) => {
-        let shouldRenderCurrentTime = false;
-        if (!hasRenderedCurrentTime && meeting.start > currentTime) {
-          hasRenderedCurrentTime = true;
-          shouldRenderCurrentTime = true;
-        }
-        return (
-          <div key={meeting.id} id={meeting.id}>
-            {shouldRenderCurrentTime && (
-              <ListItem className={dayContainerclasses.currentTime} id="current-time">
-                <div className={dayContainerclasses.currentTimeDot}></div>
-                <div className={dayContainerclasses.currentTimeBorder}></div>
-              </ListItem>
-            )}
-            <MeetingRow
-              shouldRenderCurrentTime={shouldRenderCurrentTime}
-              meeting={meeting}
-              selectedMeetingId={props.selectedMeetingId}
-              store={props.store}
-            />
-          </div>
-        );
-      })}
+      {props.meetings.map((meeting) => (
+        <div key={meeting.id} id={meeting.id}>
+          {meeting.id === props.currentTimeMeetingId && (
+            <ListItem className={dayContainerclasses.currentTime} id="current-time">
+              <div className={dayContainerclasses.currentTimeDot}></div>
+              <div className={dayContainerclasses.currentTimeBorder}></div>
+            </ListItem>
+          )}
+          <MeetingRow
+            shouldRenderCurrentTime={meeting.id === props.currentTimeMeetingId}
+            meeting={meeting}
+            selectedMeetingId={props.selectedMeetingId}
+            store={props.store}
+          />
+        </div>
+      ))}
     </div>
   );
+};
+
+const scrollCurrentTimeIntoView = () => {
+  document.getElementById('current-time')?.scrollIntoView({ behavior: 'auto', block: 'center' });
 };
 
 const MeetingsByDay = (props: IStore) => {
@@ -148,29 +145,33 @@ const MeetingsByDay = (props: IStore) => {
   useEffect(() => {
     setTimeout(() => {
       if (selectedMeetingId.length < 10) {
-        document
-          .getElementById('current-time')
-          ?.scrollIntoView({ behavior: 'auto', block: 'center' });
+        scrollCurrentTimeIntoView();
       }
     }, 300);
-  }, []);
+  }, [props.lastUpdated, props.isLoading]);
 
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const days = Object.keys(meetingsByDay);
   const currentTitle = 'Meeting Schedule';
+
+  let hasRenderedCurrentTime = false;
+  const currentTime = new Date();
+  const currentTimeId = flatten(Object.values(meetingsByDay)).filter((meeting) => {
+    let shouldRenderCurrentTime = false;
+    if (!hasRenderedCurrentTime && meeting.start > currentTime) {
+      console.log(shouldRenderCurrentTime, hasRenderedCurrentTime);
+      hasRenderedCurrentTime = true;
+      shouldRenderCurrentTime = true;
+    }
+    return shouldRenderCurrentTime;
+  })[0]?.id;
+
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
         <Grid container justify="flex-end">
-          <Button
-            className={buttonClasses.unSelected}
-            onClick={() =>
-              document
-                .getElementById('current-time')
-                ?.scrollIntoView({ behavior: 'auto', block: 'center' })
-            }
-          >
+          <Button className={buttonClasses.unSelected} onClick={() => scrollCurrentTimeIntoView()}>
             Now
           </Button>
         </Grid>
@@ -182,6 +183,7 @@ const MeetingsByDay = (props: IStore) => {
           meetings={meetingsByDay[day]}
           selectedMeetingId={selectedMeetingId}
           store={props}
+          currentTimeMeetingId={currentTimeId}
         />
       ))}
     </div>
