@@ -1,6 +1,4 @@
 import { format } from 'date-fns';
-import { uniqBy } from 'lodash';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
