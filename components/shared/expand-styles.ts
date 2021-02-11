@@ -160,6 +160,10 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: theme.spacing(0.5),
     },
   },
+  showMoreButton: {
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  },
 }));
 
 export default useStyles;

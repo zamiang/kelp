@@ -6,10 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format, isToday } from 'date-fns';
+import { uniq, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import AppBar from '../shared/elevate-app-bar';
@@ -28,7 +28,7 @@ const createMailtoLink = (meeting: ISegment) =>
 
 const createMeetingNotes = async (
   meeting: ISegment,
-  documentsCurrentUserEditedWhileMeetingWithAttendees: IFormattedDriveActivity[],
+  documentIds: string[],
   setMeetingNotesLoading: (isLoading: boolean) => void,
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
@@ -38,7 +38,7 @@ const createMeetingNotes = async (
   setMeetingNotesLoading(true);
   const document = await createDocument(
     meeting,
-    documentsCurrentUserEditedWhileMeetingWithAttendees,
+    documentIds,
     personDataStore,
     documentDataStore,
     attendeeDataStore,
@@ -91,7 +91,6 @@ const ExpandedMeeting = (props: {
   const [segmentDocumentsForNonAttendees, setSegmentDocumentsForNonAttendees] = useState<
     ISegmentDocument[]
   >([]);
-  const documentsCurrentUserEditedWhileMeetingWithAttendees = [] as any;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -155,7 +154,11 @@ const ExpandedMeeting = (props: {
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
   );
-
+  const meetingNotesDocumentIds = uniq(
+    segmentDocumentsForAttendees.concat(segmentDocumentsForNonAttendees).map((s) => s.documentId),
+  );
+  const segmentDocumentsForNonAttendeesCount = uniqBy(segmentDocumentsForNonAttendees, 'documentId')
+    .length;
   return (
     <React.Fragment>
       {!props.hideHeader && (
@@ -179,7 +182,7 @@ const ExpandedMeeting = (props: {
               onClick={() =>
                 createMeetingNotes(
                   meeting,
-                  documentsCurrentUserEditedWhileMeetingWithAttendees,
+                  meetingNotesDocumentIds,
                   setMeetingNotesLoading,
                   props.store.personDataStore,
                   props.store.documentDataStore,
@@ -262,14 +265,18 @@ const ExpandedMeeting = (props: {
           docStore={props.store.documentDataStore}
           personStore={props.store.personDataStore}
         />
-        {segmentDocumentsForNonAttendees.length > 0 && !shouldDisplayNonAttendees && (
+        {segmentDocumentsForNonAttendeesCount > 0 && !shouldDisplayNonAttendees && (
           <div>
-            <Typography onClick={() => setShouldDisplayNonAttendees(true)} variant="caption">
-              + Show {segmentDocumentsForNonAttendees.length} documents from non-attendees
+            <Typography
+              onClick={() => setShouldDisplayNonAttendees(true)}
+              variant="caption"
+              className={classes.showMoreButton}
+            >
+              + Show {segmentDocumentsForNonAttendeesCount} documents from non-attendees
             </Typography>
           </div>
         )}
-        {segmentDocumentsForNonAttendees.length > 0 && shouldDisplayNonAttendees && (
+        {segmentDocumentsForNonAttendeesCount > 0 && shouldDisplayNonAttendees && (
           <SegmentDocumentList
             segmentDocuments={segmentDocumentsForNonAttendees}
             docStore={props.store.documentDataStore}

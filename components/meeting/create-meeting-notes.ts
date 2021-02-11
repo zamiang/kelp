@@ -34,7 +34,7 @@ const addScope = async (): Promise<boolean> => {
 
 const getCreateDocumentRequestBody = async (
   meeting: ISegment,
-  documents: IFormattedDriveActivity[],
+  documentIds: string[],
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
   attendeeDataStore: IStore['attendeeDataStore'],
@@ -52,10 +52,9 @@ const getCreateDocumentRequestBody = async (
     }),
   );
 
-  const uniqueDocuments = uniqBy(documents, 'link');
   const relatedDocuments = await Promise.all(
-    uniqueDocuments.map(async (activity) => {
-      const document = await documentDataStore.getByLink(activity.link);
+    documentIds.map(async (id) => {
+      const document = await documentDataStore.get(id);
       return `<li><a href="${document?.link}">${document?.name}</a></li>`;
     }),
   );
@@ -84,7 +83,7 @@ const getCreateDocumentRequestBody = async (
 // Based on: https://developers.google.com/drive/api/v3/integrate-open#node.js
 export const createDocument = async (
   meeting: ISegment,
-  driveActivity: IFormattedDriveActivity[],
+  documentIds: string[],
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
   attendeeDataStore: IStore['attendeeDataStore'],
@@ -96,7 +95,7 @@ export const createDocument = async (
 
   const body = await getCreateDocumentRequestBody(
     meeting,
-    driveActivity,
+    documentIds,
     personDataStore,
     documentDataStore,
     attendeeDataStore,

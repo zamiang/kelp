@@ -160,7 +160,6 @@ const MeetingsByDay = (props: IStore) => {
   const currentTimeId = flatten(Object.values(meetingsByDay)).filter((meeting) => {
     let shouldRenderCurrentTime = false;
     if (!hasRenderedCurrentTime && meeting.start > currentTime) {
-      console.log(shouldRenderCurrentTime, hasRenderedCurrentTime);
       hasRenderedCurrentTime = true;
       shouldRenderCurrentTime = true;
     }
