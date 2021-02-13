@@ -10,6 +10,7 @@ interface IProps {
  */
 const FetchFourth = (props: IProps) => {
   // The goal is to only fetch if loading is false
+  console.log(props.missingGoogleDocIds.length.toString(), props.isLoading, 'watch this!');
   const missingGoogleDocs = useAsyncAbortable(
     () => fetchDriveFilesById(props.isLoading ? [] : props.missingGoogleDocIds),
     [props.isLoading, props.missingGoogleDocIds.length.toString()] as any,

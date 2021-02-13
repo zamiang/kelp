@@ -50,12 +50,8 @@ export const batchFetchPeople = async (peopleIds: string[]) => {
   }
 
   const uniquePeopleIdsChunks = chunk(uniq(peopleIds), 49);
-
-  // for debugging
-  // const allPersonFields = 'addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined';
   const usedPersonFields = 'names,nicknames,emailAddresses,photos,externalIds';
-
-  const { results, errors } = await PromisePool.withConcurrency(5)
+  const { results, errors } = await PromisePool.withConcurrency(3)
     .for(uniquePeopleIdsChunks)
     .process(async (uniquePeopleIds) =>
       gapi.client.people.people.getBatchGet({
