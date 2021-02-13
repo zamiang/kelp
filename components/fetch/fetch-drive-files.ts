@@ -18,10 +18,10 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) =>
 const fetchDriveFilePage = (pageToken?: string) =>
   new Promise((resolve) => {
     const options = {
-      // includeItemsFromAllDrives: true,
-      // includeTeamDriveItems: true,
-      // supportsAllDrives: true,
-      // supportsTeamDrives: true,
+      includeItemsFromAllDrives: true,
+      includeTeamDriveItems: true,
+      supportsAllDrives: true,
+      supportsTeamDrives: true,
       orderBy: 'modifiedTime desc',
       pageSize: 30,
       fields:
