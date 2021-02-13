@@ -159,6 +159,9 @@ const ExpandedMeeting = (props: {
   );
   const segmentDocumentsForNonAttendeesCount = uniqBy(segmentDocumentsForNonAttendees, 'documentId')
     .length;
+
+  console.log(segmentDocumentsForAttendees, 'segmentDocumentsForAttendees');
+  console.log(segmentDocumentsForNonAttendees, 'segmentDocumentsForNonAttendees');
   return (
     <React.Fragment>
       {!props.hideHeader && (

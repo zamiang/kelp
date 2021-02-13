@@ -43,6 +43,7 @@ const useStore = (db: dbType): IStore => {
       }
       await personDataStore.addPeopleToStore(
         people,
+        data.currentUser,
         data.contacts,
         data.emailAddresses,
         data.calendarEvents,

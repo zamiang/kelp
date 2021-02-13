@@ -31,8 +31,7 @@ times(PEOPLE_COUNT, () => {
   });
 });
 
-// add current user
-people.push({
+const currentUser = {
   id: CURRENT_USER_EMAIL,
   emailAddresses: [CURRENT_USER_EMAIL],
   name: 'You! (current user)',
@@ -40,7 +39,9 @@ people.push({
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
   isInContacts: true,
   isCurrentUser: 1,
-});
+};
+
+people.push(currentUser);
 
 /**
  * create 10 documents
@@ -147,4 +148,4 @@ times(WEEKS_TO_CREATE, (week: number) => {
   });
 });
 
-export default { people, documents, segments, driveActivity };
+export default { people, documents, segments, driveActivity, currentUser };

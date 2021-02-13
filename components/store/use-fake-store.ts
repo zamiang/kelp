@@ -23,7 +23,7 @@ const useFakeStore = (db: dbType): IStore => {
 
   useEffect(() => {
     const addData = async () => {
-      await personDataStore.addPeopleToStore(data.people);
+      await personDataStore.addPeopleToStore(data.people, data.currentUser);
       await timeDataStore.addSegments(data.segments);
       await documentDataStore.addDocsToStore(data.documents);
       await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);

@@ -1,3 +1,5 @@
+import { chunk, flatten, uniq } from 'lodash';
+
 export interface person {
   id: string;
   name: string;
@@ -23,7 +25,7 @@ export const formatGmailAddress = (email: string) => {
 const formatGooglePeopleResponse = (
   person: gapi.client.people.PersonResponse['person'],
   requestedResourceName?: string | null,
-) => {
+): person => {
   const emailAddresses =
     (person?.emailAddresses
       ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
@@ -40,31 +42,34 @@ const formatGooglePeopleResponse = (
   };
 };
 
-export const batchFetchPeople = async (
-  peopleIds: string[],
-  addPeopleToStore: (people: person[]) => void,
-) => {
+export const batchFetchPeople = async (peopleIds: string[]) => {
   if (peopleIds.length < 1) {
-    return { people: [] };
+    return [];
   }
+
+  const uniquePeopleIdsChunks = chunk(uniq(peopleIds), 49);
 
   // for debugging
   // const allPersonFields = 'addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined';
   const usedPersonFields = 'names,nicknames,emailAddresses,photos,externalIds';
 
-  const people = await gapi.client.people.people.getBatchGet({
-    personFields: usedPersonFields,
-    resourceNames: peopleIds,
-  });
-
-  // NOTE: This returns very little unless the person is in the user's contacts
-  const formattedPeople = people.result?.responses?.map((personResponse) =>
-    formatGooglePeopleResponse(personResponse.person, personResponse.requestedResourceName),
+  const people = await Promise.all(
+    uniquePeopleIdsChunks.map(async (uniquePeopleIds) =>
+      gapi.client.people.people.getBatchGet({
+        personFields: usedPersonFields,
+        resourceNames: uniquePeopleIds,
+      }),
+    ),
   );
 
-  if (formattedPeople) {
-    addPeopleToStore(formattedPeople);
-  }
+  // NOTE: This returns very little unless the person is in the user's contacts
+  const flattenedPeople = flatten(people.map((r) => r.result.responses));
 
-  return { people: formattedPeople };
+  const formattedPeople = flattenedPeople
+    .filter(Boolean)
+    .map((personResponse) =>
+      formatGooglePeopleResponse(personResponse!.person, personResponse!.requestedResourceName),
+    );
+
+  return formattedPeople;
 };

@@ -5,6 +5,7 @@ import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
 import fetchContacts from './fetch-contacts';
 import fetchDriveFiles from './fetch-drive-files';
 import { person } from './fetch-people';
+import { fetchSelf } from './fetch-self';
 
 const initialEmailList: string[] = [];
 
@@ -16,6 +17,7 @@ interface IResponse {
   readonly refetchCalendarEvents: () => Promise<any>;
   readonly refetchDriveFiles: () => Promise<any>;
   readonly contacts: person[];
+  readonly currentUser: person;
   readonly lastUpdated: Date;
   readonly emailAddresses: string[];
   readonly addEmailAddressesToStore: (addresses: string[]) => void;
@@ -35,6 +37,7 @@ const FetchFirst = (): IResponse => {
     () => fetchCalendarEvents(addEmailAddressesToStore),
     [] as any,
   );
+  const currentUser = fetchSelf();
   return {
     isLoading: driveResponse.loading || calendarResponse.loading || contactsResponse.loading,
     error: driveResponse.error || calendarResponse.error || contactsResponse.error,
@@ -43,6 +46,7 @@ const FetchFirst = (): IResponse => {
     refetchCalendarEvents: calendarResponse.execute,
     refetchDriveFiles: driveResponse.execute,
     contacts: contactsResponse.result || [],
+    currentUser,
     lastUpdated: new Date(),
     emailAddresses: emailList,
     addEmailAddressesToStore,

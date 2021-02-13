@@ -48,14 +48,20 @@ export default class PersonModel {
 
   async addPeopleToStore(
     people: IPerson[],
+    currentUser: GooglePerson,
     contacts: GooglePerson[] = [],
     emailAddresses: string[] = [],
     events: ICalendarEvent[] = [],
   ) {
-    const tx = this.db.transaction('person', 'readwrite');
+    const formattedCurrentUser = formatPerson(currentUser);
     const emailAddressToPersonIdHash: any = {};
     const contactLookup: any = {};
-    const peopleToAdd: IPerson[] = [];
+    const peopleToAdd: IPerson[] = [formattedCurrentUser];
+
+    contactLookup[formattedCurrentUser.id] = formattedCurrentUser;
+    formattedCurrentUser.emailAddresses.forEach((email) => {
+      emailAddressToPersonIdHash[formatGmailAddress(email)] = formattedCurrentUser.id;
+    });
 
     // Create contact lookup
     contacts.forEach((contact) => {
@@ -114,6 +120,7 @@ export default class PersonModel {
         peopleToAdd.push(person);
       }
     });
+    const tx = this.db.transaction('person', 'readwrite');
     await Promise.all(peopleToAdd.map((person) => tx.store.put(person)));
     return tx.done;
   }

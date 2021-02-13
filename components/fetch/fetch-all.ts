@@ -11,6 +11,7 @@ interface IReturnType {
   readonly personList: person[];
   readonly emailAddresses: string[];
   readonly contacts: person[];
+  readonly currentUser: person;
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
   readonly driveActivity: IFormattedDriveActivity[];
@@ -72,7 +73,6 @@ const FetchAll = (): IReturnType => {
 
   const thirdLayer = FetchThird({
     peopleIds,
-    emailAddresses: firstLayer.emailAddresses,
   });
   const debouncedIsLoading = useDebounce(
     firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading,
