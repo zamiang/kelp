@@ -2,6 +2,7 @@ import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import config from '../../constants/config';
 
+const IS_REFETCH_ENABLED = false;
 const driveFileFields =
   'id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime';
 
@@ -31,7 +32,7 @@ const fetchDriveFilePage = (pageToken?: string) =>
       supportsAllDrives: true,
       supportsTeamDrives: true,
       orderBy: 'modifiedTime desc',
-      pageSize: 60,
+      pageSize: 100, // ideally we don't refetch after this
       fields: `nextPageToken, files(${driveFileFields})`,
     } as any;
     if (pageToken) {
@@ -47,11 +48,13 @@ const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageTok
   const newResults = results.concat(driveResponse.result.files);
   const sortedResults = newResults.map((file) => getModifiedTimeProxy(file)).sort();
   const oldestDate = sortedResults[0];
-  const isWithinTimeWindow =
-    differenceInCalendarDays(currentDate, oldestDate!) < config.NUMBER_OF_DAYS_BACK;
+  if (IS_REFETCH_ENABLED) {
+    const isWithinTimeWindow =
+      differenceInCalendarDays(currentDate, oldestDate!) < config.NUMBER_OF_DAYS_BACK;
 
-  if (driveResponse.nextPageToken && isWithinTimeWindow) {
-    await fetchAllDriveFiles(newResults, driveResponse.nextPageToken);
+    if (driveResponse.nextPageToken && isWithinTimeWindow) {
+      await fetchAllDriveFiles(newResults, driveResponse.nextPageToken);
+    }
   }
   return newResults;
 };

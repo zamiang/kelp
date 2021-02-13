@@ -58,10 +58,11 @@ const useDebounce = (value: any, delay: number) => {
 
 const FetchAll = (): IReturnType => {
   const firstLayer = FetchFirst();
+
+  // Find documents that are in meeting descriptions and make sure to fetch them as well
   const potentiallyMissingGoogleDocIds = flatten(
     firstLayer.calendarEvents.map((event) => getDocumentIdsFromCalendarEvents(event)),
   ).filter(Boolean);
-
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
   const missingGoogleDocIds = potentiallyMissingGoogleDocIds.filter(
     (id) => !googleDocIds.includes(id),
@@ -71,7 +72,8 @@ const FetchAll = (): IReturnType => {
     missingGoogleDocIds,
     isLoading: firstLayer.isLoading,
   });
-  // TODO: This lookup is weird
+
+  // Find people who are in drive activity but not in contacts and try to fetch them.
   const contactsByPeopleId = {} as any;
   firstLayer.contacts.map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
@@ -84,9 +86,10 @@ const FetchAll = (): IReturnType => {
     isLoading: firstLayer.isLoading || secondLayer.isLoading,
     peopleIds,
   });
+
   const debouncedIsLoading = useDebounce(
     firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading,
-    500,
+    300,
   );
 
   return {
