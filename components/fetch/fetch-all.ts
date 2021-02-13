@@ -69,7 +69,7 @@ const FetchAll = (): IReturnType => {
   );
   const secondLayer = FetchSecond({
     googleDocIds: googleDocIds.concat(missingGoogleDocIds),
-    missingGoogleDocIds,
+    missingGoogleDocIds: uniq(missingGoogleDocIds),
     isLoading: firstLayer.isLoading,
   });
 
