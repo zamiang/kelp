@@ -95,15 +95,18 @@ export default class PersonModel {
         peopleToAdd.push(formatPersonForStore(person));
       }
     });
+    console.log(emailAddressToPersonIdHash, '<<<<<<<<<');
 
     // Add email addresses
     emailAddresses.forEach((emailAddress) => {
       const formattedEmailAddress = formatGmailAddress(emailAddress);
       if (!formattedEmailAddress.includes('@calendar.google.com')) {
+        console.log(formattedEmailAddress, emailAddress);
         const person = emailAddressToPersonIdHash[formattedEmailAddress];
         if (!person) {
-          if (contactLookup[formattedEmailAddress]) {
-            peopleToAdd.push(contactLookup[formattedEmailAddress]);
+          const personToAdd = contactLookup[formattedEmailAddress];
+          if (personToAdd) {
+            peopleToAdd.push(personToAdd);
           } else {
             peopleToAdd.push(createNewPersonFromEmail(formattedEmailAddress));
           }

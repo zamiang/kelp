@@ -1,4 +1,4 @@
-import { sortedUniq } from 'lodash';
+import { uniq } from 'lodash';
 import { useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
@@ -29,7 +29,7 @@ interface IResponse {
 const FetchFirst = (): IResponse => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
-    setEmailList(sortedUniq(emailAddresses.concat(emailList)));
+    setEmailList(uniq(emailAddresses.concat(emailList)));
   };
   const driveResponse = useAsyncAbortable(fetchDriveFiles, [] as any);
   const contactsResponse = useAsyncAbortable(fetchContacts, [] as any);
