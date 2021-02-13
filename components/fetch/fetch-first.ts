@@ -37,6 +37,7 @@ const FetchFirst = (): IResponse => {
     () => fetchCalendarEvents(addEmailAddressesToStore),
     [] as any,
   );
+
   const currentUser = fetchSelf();
   return {
     isLoading: driveResponse.loading || calendarResponse.loading || contactsResponse.loading,

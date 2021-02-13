@@ -1,6 +1,6 @@
 import { addMinutes, format, getDate, getWeek, isSameDay, subMinutes } from 'date-fns';
-import getUrls from 'get-urls';
 import { first, flatten, groupBy } from 'lodash';
+import urlRegex from 'url-regex';
 import config from '../../../constants/config';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
 import { formatGmailAddress } from '../../fetch/fetch-people';
@@ -31,8 +31,8 @@ export interface ISegment extends ICalendarEvent {
 const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
   const documentIds: string[] = [];
 
-  const urls: string[] = event.description ? (getUrls(event.description) as any) : [];
-  urls.forEach((url) => {
+  const urls = event.description ? event.description.match(urlRegex()) : [];
+  (urls || []).forEach((url) => {
     if (url.includes('https://docs.google.com')) {
       documentIds.push(getGoogleDocsIdFromLink(url));
     }
@@ -120,7 +120,7 @@ export default class SegmentModel {
   }
 
   async getSegmentsForDay(day: Date) {
-    // TODO: Use a where
+    // TODO: Use an index
     const segments = await this.getAll();
     return segments.filter((segment) => isSameDay(segment.start, day));
   }
@@ -131,7 +131,7 @@ export default class SegmentModel {
   }
 
   async getListedDocumentIdsForDay(date: Date) {
-    // TODO: Use a where
+    // TODO: Use an index
     const segments = await this.getAll();
     return flatten(
       segments
