@@ -4,18 +4,16 @@ import config from '../../constants/config';
 
 const currentDate = new Date();
 
+//
+const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
+  last([file.sharedWithMeTime, file.createdTime, file.viewedByMeTime].filter(Boolean).sort());
+
 const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
-  const modifiedTimeProxy = file.sharedWithMeTime || file.createdTime || file.viewedByMeTime;
+  const modifiedTimeProxy = getModifiedTimeProxy(file);
   return (
     !file.trashed &&
     modifiedTimeProxy &&
-    (!config.SHOULD_FILTER_OUT_FILES_MODIFIED_BEFORE_NUMBER_OF_DAYS_BACK ||
-      differenceInCalendarDays(currentDate, new Date(modifiedTimeProxy)) <
-        config.NUMBER_OF_DAYS_BACK) &&
-    (!config.SHOULD_FILTER_OUT_FILES_VIEWED_BY_ME_BEFORE_NUMBER_OF_DAYS_BACK ||
-      (file.viewedByMeTime &&
-        differenceInCalendarDays(currentDate, new Date(file.viewedByMeTime)) <
-          config.NUMBER_OF_DAYS_BACK))
+    differenceInCalendarDays(currentDate, new Date(modifiedTimeProxy)) < config.NUMBER_OF_DAYS_BACK
   );
 };
 
@@ -27,9 +25,9 @@ const fetchDriveFilePage = (pageToken?: string) =>
       supportsAllDrives: true,
       supportsTeamDrives: true,
       orderBy: 'modifiedTime desc',
-      pageSize: 30,
+      pageSize: 50,
       fields:
-        'nextPageToken, files(id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime)',
+        'nextPageToken, files(id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime)',
     } as any;
     if (pageToken) {
       options.pageToken = pageToken;
@@ -41,7 +39,11 @@ const fetchDriveFilePage = (pageToken?: string) =>
 const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageToken?: string) => {
   const driveResponse: any = await fetchDriveFilePage(nextPageToken);
   const newResults = results.concat(driveResponse.result.files);
-  const isWithinTimeWindow = isFileWithinTimeWindow(last(newResults)!);
+  const sortedResults = newResults.map((file) => getModifiedTimeProxy(file)).sort();
+  const oldestDate = sortedResults[0];
+  const isWithinTimeWindow =
+    differenceInCalendarDays(currentDate, new Date(oldestDate!)) < config.NUMBER_OF_DAYS_BACK;
+
   if (driveResponse.nextPageToken && isWithinTimeWindow) {
     await fetchAllDriveFiles(newResults, driveResponse.nextPageToken);
   }
