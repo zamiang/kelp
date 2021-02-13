@@ -17,7 +17,7 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.documentDataStore.getAll();
-      setDocs(result.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
+      setDocs(result.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
   }, [props.lastUpdated, props.isLoading]);
@@ -46,7 +46,7 @@ export const DocumentsForToday = (
     const fetchData = async () => {
       const result = await props.segmentDocumentStore.getAllForDay(getDayOfYear(new Date()));
       const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
-      setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
+      setDocs(documents.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
   }, [props.lastUpdated, props.isLoading]);
@@ -72,7 +72,7 @@ const DocumentsForThisWeek = (props: IStore & { selectedDocumentId: string | nul
     const fetchData = async () => {
       const result = await props.segmentDocumentStore.getAllForWeek(getWeek(new Date()));
       const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
-      setDocs(documents.sort((a, b) => (a.name! < b.name! ? -1 : 1)));
+      setDocs(documents.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
   }, [props.lastUpdated, props.isLoading]);

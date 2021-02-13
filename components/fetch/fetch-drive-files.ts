@@ -2,6 +2,9 @@ import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import config from '../../constants/config';
 
+const driveFileFields =
+  'id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime';
+
 export const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
   last(
     [file.sharedWithMeTime, file.createdTime, file.viewedByMeTime]
@@ -29,8 +32,7 @@ const fetchDriveFilePage = (pageToken?: string) =>
       supportsTeamDrives: true,
       orderBy: 'modifiedTime desc',
       pageSize: 60,
-      fields:
-        'nextPageToken, files(id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime)',
+      fields: `nextPageToken, files(${driveFileFields})`,
     } as any;
     if (pageToken) {
       options.pageToken = pageToken;
@@ -58,5 +60,20 @@ const fetchDriveFiles = async () => {
   const results = await fetchAllDriveFiles([]);
   return results.filter((file: gapi.client.drive.File) => isFileWithinTimeWindow(file));
 };
+
+export const fetchDriveFilesById = async (ids: string[]) =>
+  Promise.all(
+    ids.map(async (id) => {
+      try {
+        const file = await gapi.client.drive.files.get({
+          fileId: id,
+          fields: driveFileFields,
+        });
+        return file.result;
+      } catch (e) {
+        return null;
+      }
+    }),
+  );
 
 export default fetchDriveFiles;

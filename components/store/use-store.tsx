@@ -31,6 +31,9 @@ const useStore = (db: dbType): IStore => {
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
   const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));
+  const missingDocs = (data.missingDriveFiles || [])
+    .filter(Boolean)
+    .map((doc) => formatGoogleDoc(doc!));
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeModel(db);
   const tfidfStore = new TfidfDataStore(db);
@@ -50,7 +53,7 @@ const useStore = (db: dbType): IStore => {
       );
 
       await timeDataStore.addSegments(data.calendarEvents);
-      await documentDataStore.addDocsToStore(docs);
+      await documentDataStore.addDocsToStore(docs.concat(missingDocs));
       await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
       await tfidfStore.saveDocuments({

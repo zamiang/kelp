@@ -1,5 +1,6 @@
-import { uniq } from 'lodash';
+import { flatten, uniq } from 'lodash';
 import { useEffect, useState } from 'react';
+import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model';
 import { ICalendarEvent } from './fetch-calendar-events';
 import { IFormattedDriveActivity } from './fetch-drive-activity';
 import FetchFirst from './fetch-first';
@@ -14,6 +15,7 @@ interface IReturnType {
   readonly currentUser: person;
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
+  readonly missingDriveFiles: (gapi.client.drive.File | null)[];
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
   readonly refetch: () => void;
@@ -56,12 +58,19 @@ const useDebounce = (value: any, delay: number) => {
 
 const FetchAll = (): IReturnType => {
   const firstLayer = FetchFirst();
+  const potentiallyMissingGoogleDocIds = flatten(
+    firstLayer.calendarEvents.map((event) => getDocumentIdsFromCalendarEvents(event)),
+  ).filter(Boolean);
+
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
+  const missingGoogleDocIds = potentiallyMissingGoogleDocIds.filter(
+    (id) => !googleDocIds.includes(id),
+  );
   const secondLayer = FetchSecond({
-    googleDocIds,
+    googleDocIds: googleDocIds.concat(missingGoogleDocIds),
+    missingGoogleDocIds,
     isLoading: firstLayer.isLoading,
   });
-
   // TODO: This lookup is weird
   const contactsByPeopleId = {} as any;
   firstLayer.contacts.map((c) => (contactsByPeopleId[c.id] = c));

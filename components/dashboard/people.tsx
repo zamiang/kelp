@@ -20,7 +20,7 @@ export const PeopleToday = (
     const fetchData = async () => {
       const result = await props.attendeeDataStore.getForDay(getDayOfYear(new Date()));
       const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
-      setPeople(p.sort((a, b) => (a.name < b.name ? -1 : 1)));
+      setPeople(p.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
   }, [props.isLoading, props.lastUpdated]);
@@ -49,7 +49,7 @@ const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => 
       const result = await props.attendeeDataStore.getForWeek(getWeek(new Date()));
       const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
 
-      setPeople(p.sort((a, b) => (a.name < b.name ? -1 : 1)));
+      setPeople(p.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
   }, [props.isLoading, props.lastUpdated]);
@@ -72,7 +72,7 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.personDataStore.getAll(true);
-      setPeople(result.sort((a, b) => (a.name < b.name ? -1 : 1)));
+      setPeople(result.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
   }, [props.isLoading, props.lastUpdated]);

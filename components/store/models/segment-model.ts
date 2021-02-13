@@ -28,7 +28,7 @@ export interface ISegment extends ICalendarEvent {
   readonly documentIdsFromDescription: string[];
 }
 
-const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
+export const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
   const documentIds: string[] = [];
 
   const urls = event.description ? event.description.match(urlRegex()) : [];

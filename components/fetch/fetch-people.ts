@@ -15,6 +15,7 @@ type ExcludesFalse = <T>(x: T | false) => x is T;
 const shouldFormatGmailAddress = true;
 
 export const formatGmailAddress = (email: string) => {
+  // Not sure if this is a good idea - seems to work ok with Cityblock and no-dot
   if (shouldFormatGmailAddress && email.includes('@gmail.com')) {
     const splitEmail = email.split('@');
     return `${splitEmail[0].replaceAll('.', '')}@${splitEmail[1]}`.toLocaleLowerCase();
