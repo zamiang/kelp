@@ -2,7 +2,7 @@ import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import config from '../../constants/config';
 
-const IS_REFETCH_ENABLED = false;
+const isRefetchEnabled = false;
 const driveFileFields =
   'id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime';
 
@@ -48,7 +48,7 @@ const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageTok
   const newResults = results.concat(driveResponse.result.files);
   const sortedResults = newResults.map((file) => getModifiedTimeProxy(file)).sort();
   const oldestDate = sortedResults[0];
-  if (IS_REFETCH_ENABLED) {
+  if (isRefetchEnabled) {
     const isWithinTimeWindow =
       differenceInCalendarDays(currentDate, oldestDate!) < config.NUMBER_OF_DAYS_BACK;
 
