@@ -4,6 +4,7 @@ import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model'
 import { ICalendarEvent } from './fetch-calendar-events';
 import { IFormattedDriveActivity } from './fetch-drive-activity';
 import FetchFirst from './fetch-first';
+import FetchFourth from './fetch-fourth';
 import { person } from './fetch-people';
 import FetchSecond from './fetch-second';
 import FetchThird from './fetch-third';
@@ -69,7 +70,7 @@ const FetchAll = (): IReturnType => {
   );
   const secondLayer = FetchSecond({
     googleDocIds: googleDocIds.concat(missingGoogleDocIds),
-    missingGoogleDocIds: uniq(missingGoogleDocIds),
+
     isLoading: firstLayer.isLoading,
   });
 
@@ -87,8 +88,13 @@ const FetchAll = (): IReturnType => {
     peopleIds,
   });
 
+  const fourthLayer = FetchFourth({
+    missingGoogleDocIds: uniq(missingGoogleDocIds),
+    isLoading: firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading,
+  });
+
   const debouncedIsLoading = useDebounce(
-    firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading,
+    firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading || fourthLayer.isLoading,
     300,
   );
 
@@ -96,13 +102,15 @@ const FetchAll = (): IReturnType => {
     ...firstLayer,
     ...secondLayer,
     ...thirdLayer,
+    ...fourthLayer,
     refetch: async () => {
       await firstLayer.refetchCalendarEvents();
       await firstLayer.refetchDriveFiles();
       await thirdLayer.refetchPersonList();
+      await fourthLayer.refetchMissingDriveFiles();
     },
     isLoading: debouncedIsLoading,
-    error: firstLayer.error || secondLayer.error || thirdLayer.error,
+    error: firstLayer.error || secondLayer.error || thirdLayer.error || fourthLayer.error,
   };
 };
 
