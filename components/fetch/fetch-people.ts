@@ -1,3 +1,4 @@
+import PromisePool from '@supercharge/promise-pool';
 import { chunk, flatten, uniq } from 'lodash';
 
 export interface person {
@@ -54,17 +55,18 @@ export const batchFetchPeople = async (peopleIds: string[]) => {
   // const allPersonFields = 'addresses,ageRanges,biographies,birthdays,calendarUrls,clientData,coverPhotos,emailAddresses,events,externalIds,genders,imClients,interests,locales,locations,memberships,metadata,miscKeywords,names,nicknames,occupations,organizations,phoneNumbers,photos,relations,sipAddresses,skills,urls,userDefined';
   const usedPersonFields = 'names,nicknames,emailAddresses,photos,externalIds';
 
-  const people = await Promise.all(
-    uniquePeopleIdsChunks.map(async (uniquePeopleIds) =>
+  const { results, errors } = await PromisePool.withConcurrency(5)
+    .for(uniquePeopleIdsChunks)
+    .process(async (uniquePeopleIds) =>
       gapi.client.people.people.getBatchGet({
         personFields: usedPersonFields,
         resourceNames: uniquePeopleIds,
       }),
-    ),
-  );
+    );
 
+  console.log(results, errors, 'fetch people');
   // NOTE: This returns very little unless the person is in the user's contacts
-  const flattenedPeople = flatten(people.map((r) => r.result.responses));
+  const flattenedPeople = flatten(results.map((r) => r.result.responses));
 
   const formattedPeople = flattenedPeople
     .filter(Boolean)

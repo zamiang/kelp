@@ -1,3 +1,4 @@
+import PromisePool from '@supercharge/promise-pool';
 import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import config from '../../constants/config';
@@ -64,19 +65,18 @@ const fetchDriveFiles = async () => {
   return results.filter((file: gapi.client.drive.File) => isFileWithinTimeWindow(file));
 };
 
-export const fetchDriveFilesById = async (ids: string[]) =>
-  Promise.all(
-    ids.map(async (id) => {
-      try {
-        const file = await gapi.client.drive.files.get({
-          fileId: id,
-          fields: driveFileFields,
-        });
-        return file.result;
-      } catch (e) {
-        return null;
-      }
-    }),
-  );
+export const fetchDriveFilesById = async (ids: string[]) => {
+  const { results, errors } = await PromisePool.withConcurrency(5)
+    .for(ids)
+    .process(async (id) => {
+      const file = await gapi.client.drive.files.get({
+        fileId: id,
+        fields: driveFileFields,
+      });
+      return file.result;
+    });
+  console.log(results, errors, 'fetch drive files');
+  return results;
+};
 
 export default fetchDriveFiles;

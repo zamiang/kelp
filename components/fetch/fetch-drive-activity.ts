@@ -1,3 +1,4 @@
+import PromisePool from '@supercharge/promise-pool';
 import { flatten, uniq } from 'lodash';
 import config from '../../constants/config';
 
@@ -89,9 +90,12 @@ const fetchDriveActivityForDocument = async (documentId: string) => {
 };
 
 const fetchDriveActivityForDocumentIds = async (ids: string[]) => {
-  const result = await Promise.all(ids.map((id) => fetchDriveActivityForDocument(id)));
-  const peopleIds = uniq(flatten(result.map((result) => result.peopleIds)));
-  const activity = flatten(result.map((result) => result.activity));
+  const { results, errors } = await PromisePool.withConcurrency(5)
+    .for(ids)
+    .process(async (id) => fetchDriveActivityForDocument(id));
+  const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
+  const activity = flatten(results.map((result) => result.activity));
+  console.log(results, errors, 'fetch drive activity');
   return { peopleIds, activity };
 };
 
