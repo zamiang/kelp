@@ -5,6 +5,7 @@ import config from '../../constants/config';
 const currentDate = new Date();
 
 const isFileWithinTimeWindow = (file: gapi.client.drive.File) =>
+  !file.trashed &&
   file.modifiedTime &&
   (!config.SHOULD_FILTER_OUT_FILES_MODIFIED_BEFORE_NUMBER_OF_DAYS_BACK ||
     differenceInCalendarDays(currentDate, new Date(file.modifiedTime)) <
@@ -45,18 +46,7 @@ const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageTok
 
 const fetchDriveFiles = async () => {
   const results = await fetchAllDriveFiles([]);
-  return results.filter(
-    (file: gapi.client.drive.File) =>
-      !file.trashed &&
-      file.modifiedTime &&
-      (!config.SHOULD_FILTER_OUT_FILES_MODIFIED_BEFORE_NUMBER_OF_DAYS_BACK ||
-        differenceInCalendarDays(currentDate, new Date(file.modifiedTime)) <
-          config.NUMBER_OF_DAYS_BACK) &&
-      (!config.SHOULD_FILTER_OUT_FILES_VIEWED_BY_ME_BEFORE_NUMBER_OF_DAYS_BACK ||
-        (file.viewedByMeTime &&
-          differenceInCalendarDays(currentDate, new Date(file.viewedByMeTime)) <
-            config.NUMBER_OF_DAYS_BACK)),
-  );
+  return results.filter((file: gapi.client.drive.File) => isFileWithinTimeWindow(file));
 };
 
 export default fetchDriveFiles;
