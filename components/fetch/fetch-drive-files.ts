@@ -2,13 +2,11 @@ import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import config from '../../constants/config';
 
-const currentDate = new Date();
-
-//
-const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
+export const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
   last([file.sharedWithMeTime, file.createdTime, file.viewedByMeTime].filter(Boolean).sort());
 
 const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
+  const currentDate = new Date();
   const modifiedTimeProxy = getModifiedTimeProxy(file);
   return (
     !file.trashed &&
@@ -37,6 +35,7 @@ const fetchDriveFilePage = (pageToken?: string) =>
   });
 
 const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageToken?: string) => {
+  const currentDate = new Date();
   const driveResponse: any = await fetchDriveFilePage(nextPageToken);
   const newResults = results.concat(driveResponse.result.files);
   const sortedResults = newResults.map((file) => getModifiedTimeProxy(file)).sort();

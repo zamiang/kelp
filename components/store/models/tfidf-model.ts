@@ -9,8 +9,7 @@ import { IStore } from '../use-store';
  * Used so that a person's unique first+last name combo makes it through TFIDF and common first or last names are not misrepresented
  */
 export const uncommonPunctuation = 'æ';
-const currentDate = new Date();
-export const getDayKey = (day: Date) => differenceInCalendarDays(currentDate, day).toString();
+export const getDayKey = (day: Date) => differenceInCalendarDays(new Date(), day).toString();
 
 export interface IFilters {
   meetings: boolean;

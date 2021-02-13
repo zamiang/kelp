@@ -1,4 +1,5 @@
 import { uniq } from 'lodash';
+import { getModifiedTimeProxy } from '../../fetch/fetch-drive-files';
 import { dbType } from '../db';
 
 type DocumentType =
@@ -29,8 +30,8 @@ export const getGoogleDocsIdFromLink = (link: string) =>
 
 // handle one person w/ multiple email addresses
 export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => {
-  const modifiedTimeProxy =
-    googleDoc.sharedWithMeTime || googleDoc.createdTime || googleDoc.viewedByMeTime;
+  const modifiedTimeProxy = getModifiedTimeProxy(googleDoc);
+  googleDoc.sharedWithMeTime || googleDoc.createdTime || googleDoc.viewedByMeTime;
   return {
     id: googleDoc.id!,
     name: googleDoc.name,
