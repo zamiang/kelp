@@ -11,20 +11,21 @@ interface IProps {
  * Fetches 2nd layer of information.
  */
 const FetchSecond = (props: IProps) => {
+  // The goal is to only fetch if loading is false
   const activityResponse = useAsyncAbortable(
-    () => fetchDriveActivityForDocumentIds(props.googleDocIds),
+    () => fetchDriveActivityForDocumentIds(props.isLoading ? [] : props.googleDocIds),
     [props.isLoading, props.googleDocIds.length.toString()] as any, // unsure why this type is a failure
   );
   const missingGoogleDocs = useAsyncAbortable(
-    () => fetchDriveFilesById(props.missingGoogleDocIds),
+    () => fetchDriveFilesById(props.isLoading ? [] : props.missingGoogleDocIds),
     [props.isLoading, props.googleDocIds.length.toString()] as any,
   );
   return {
     missingDriveFiles: missingGoogleDocs.result ? missingGoogleDocs.result : [],
     driveActivity: activityResponse.result ? activityResponse.result.activity : [],
     refetchDriveActivity: activityResponse.execute,
-    isLoading: activityResponse.loading,
-    error: activityResponse.error,
+    isLoading: missingGoogleDocs.loading || activityResponse.loading,
+    error: activityResponse.error || activityResponse.error,
   };
 };
 

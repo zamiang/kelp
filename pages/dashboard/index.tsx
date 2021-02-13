@@ -125,7 +125,7 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
   const handleRefreshClick = () => store.refetch();
 
   useEffect(() => {
-    const interval = setInterval(store.refetch, 1000 * 60 * 10); // 10 minutes
+    const interval = setInterval(store.refetch, 1000 * 60 * 30); // 30 minutes
     return () => clearInterval(interval);
   }, []);
   return (

@@ -3,6 +3,7 @@ import { batchFetchPeople } from './fetch-people';
 
 interface IProps {
   readonly peopleIds: string[];
+  readonly isLoading: boolean;
 }
 
 /**
@@ -11,9 +12,10 @@ interface IProps {
  */
 const FetchThird = (props: IProps) => {
   // this has a sideffect of updating the store
-  const peopleResponse = useAsyncAbortable(() => batchFetchPeople(props.peopleIds), [
-    props.peopleIds.length,
-  ] as any);
+  const peopleResponse = useAsyncAbortable(
+    () => batchFetchPeople(props.isLoading ? [] : props.peopleIds),
+    [props.isLoading, props.peopleIds.length.toString()] as any,
+  );
   const error = peopleResponse ? peopleResponse.error : undefined;
 
   return {

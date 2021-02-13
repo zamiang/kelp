@@ -76,11 +76,12 @@ const FetchAll = (): IReturnType => {
   firstLayer.contacts.map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
     secondLayer.driveActivity
-      .map((activity) => activity.actorPersonId)
+      .map((activity) => activity.actorPersonId!)
       .filter((id) => !!id && !contactsByPeopleId[id]),
-  ) as string[];
+  );
 
   const thirdLayer = FetchThird({
+    isLoading: firstLayer.isLoading || secondLayer.isLoading,
     peopleIds,
   });
   const debouncedIsLoading = useDebounce(
