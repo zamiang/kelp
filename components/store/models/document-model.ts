@@ -28,18 +28,22 @@ export const getGoogleDocsIdFromLink = (link: string) =>
     .split('/')[0];
 
 // handle one person w/ multiple email addresses
-export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => ({
-  id: googleDoc.id || 'wtf',
-  name: googleDoc.name,
-  viewedByMe: googleDoc.viewedByMe,
-  viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
-  link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
-  iconLink: googleDoc.iconLink,
-  mimeType: googleDoc.mimeType as any,
-  isStarred: !!googleDoc.starred,
-  isShared: !!googleDoc.shared,
-  updatedAt: googleDoc.modifiedTime ? new Date(googleDoc.modifiedTime) : undefined,
-});
+export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => {
+  const modifiedTimeProxy =
+    googleDoc.sharedWithMeTime || googleDoc.createdTime || googleDoc.viewedByMeTime;
+  return {
+    id: googleDoc.id!,
+    name: googleDoc.name,
+    viewedByMe: googleDoc.viewedByMe,
+    viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
+    link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
+    iconLink: googleDoc.iconLink,
+    mimeType: googleDoc.mimeType as any,
+    isStarred: !!googleDoc.starred,
+    isShared: !!googleDoc.shared,
+    updatedAt: modifiedTimeProxy ? new Date(modifiedTimeProxy) : undefined,
+  };
+};
 
 export default class DocumentModel {
   private db: dbType;

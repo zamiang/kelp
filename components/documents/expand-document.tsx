@@ -71,7 +71,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   if (!document) {
     return null;
   }
-
+  console.log(document, '<<<<<<<<<');
   return (
     <React.Fragment>
       <AppBar onClose={props.close} externalLink={document.link} />
@@ -80,7 +80,9 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           {document.name || '(no title)'}
         </Typography>
         {document.updatedAt && (
-          <React.Fragment>Modified: {format(document.updatedAt, 'EEEE, MMMM d p')}</React.Fragment>
+          <React.Fragment>
+            Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
+          </React.Fragment>
         )}
       </div>
       <Divider />
