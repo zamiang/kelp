@@ -3,7 +3,12 @@ import { last } from 'lodash';
 import config from '../../constants/config';
 
 export const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
-  last([file.sharedWithMeTime, file.createdTime, file.viewedByMeTime].filter(Boolean).sort());
+  last(
+    [file.sharedWithMeTime, file.createdTime, file.viewedByMeTime]
+      .filter(Boolean)
+      .map((d) => new Date(d!))
+      .sort(),
+  );
 
 const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
   const currentDate = new Date();
@@ -11,7 +16,7 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
   return (
     !file.trashed &&
     modifiedTimeProxy &&
-    differenceInCalendarDays(currentDate, new Date(modifiedTimeProxy)) < config.NUMBER_OF_DAYS_BACK
+    differenceInCalendarDays(currentDate, modifiedTimeProxy) < config.NUMBER_OF_DAYS_BACK
   );
 };
 
@@ -23,7 +28,7 @@ const fetchDriveFilePage = (pageToken?: string) =>
       supportsAllDrives: true,
       supportsTeamDrives: true,
       orderBy: 'modifiedTime desc',
-      pageSize: 50,
+      pageSize: 60,
       fields:
         'nextPageToken, files(id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime)',
     } as any;
@@ -39,10 +44,9 @@ const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageTok
   const driveResponse: any = await fetchDriveFilePage(nextPageToken);
   const newResults = results.concat(driveResponse.result.files);
   const sortedResults = newResults.map((file) => getModifiedTimeProxy(file)).sort();
-  console.log(newResults, sortedResults);
   const oldestDate = sortedResults[0];
   const isWithinTimeWindow =
-    differenceInCalendarDays(currentDate, new Date(oldestDate!)) < config.NUMBER_OF_DAYS_BACK;
+    differenceInCalendarDays(currentDate, oldestDate!) < config.NUMBER_OF_DAYS_BACK;
 
   if (driveResponse.nextPageToken && isWithinTimeWindow) {
     await fetchAllDriveFiles(newResults, driveResponse.nextPageToken);
