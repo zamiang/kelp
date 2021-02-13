@@ -39,6 +39,7 @@ const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageTok
   const driveResponse: any = await fetchDriveFilePage(nextPageToken);
   const newResults = results.concat(driveResponse.result.files);
   const sortedResults = newResults.map((file) => getModifiedTimeProxy(file)).sort();
+  console.log(newResults, sortedResults);
   const oldestDate = sortedResults[0];
   const isWithinTimeWindow =
     differenceInCalendarDays(currentDate, new Date(oldestDate!)) < config.NUMBER_OF_DAYS_BACK;

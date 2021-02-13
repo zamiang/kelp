@@ -71,7 +71,6 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   if (!document) {
     return null;
   }
-  console.log(document, '<<<<<<<<<');
   return (
     <React.Fragment>
       <AppBar onClose={props.close} externalLink={document.link} />
