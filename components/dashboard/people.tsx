@@ -71,7 +71,7 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.personDataStore.getAll(true);
+      const result = await props.personDataStore.getAll(false);
       setPeople(result.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
     };
     void fetchData();

@@ -75,6 +75,7 @@ export default class SegmentDocumentModel {
         );
         if (segment) {
           const attendees = await attendeeStore.getAllForSegmentId(segment.id);
+          console.log(attendees, '<<<<<<<', driveActivityItem);
           isActorAttendee = !!attendees.find(
             (a) => a.personGoogleId === driveActivityItem.actorPersonId,
           );

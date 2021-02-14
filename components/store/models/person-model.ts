@@ -1,5 +1,4 @@
 import { first, uniq } from 'lodash';
-import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
 import { formatContact } from '../../fetch/fetch-contacts';
 import { person as GooglePerson, formatGmailAddress } from '../../fetch/fetch-people';
 import { dbType } from '../db';
@@ -51,25 +50,36 @@ export default class PersonModel {
     currentUser: GooglePerson,
     contacts: GooglePerson[] = [],
     emailAddresses: string[] = [],
-    events: ICalendarEvent[] = [],
   ) {
     const formattedCurrentUser = formatPerson(currentUser);
+    formattedCurrentUser.isCurrentUser = 1;
     const emailAddressToPersonIdHash: any = {};
     const contactLookup: any = {};
     const peopleToAdd: IPerson[] = [formattedCurrentUser];
 
     contactLookup[formattedCurrentUser.id] = formattedCurrentUser;
     formattedCurrentUser.emailAddresses.forEach((email) => {
+      contactLookup[email] = formattedCurrentUser;
       emailAddressToPersonIdHash[formatGmailAddress(email)] = formattedCurrentUser.id;
     });
 
     // Create contact lookup
     contacts.forEach((contact) => {
+      let isCurrentUser = false;
       contact.emailAddresses.forEach((emailAddress) => {
         const formattedEmailAddress = formatGmailAddress(emailAddress);
-        contactLookup[formattedEmailAddress] = contact;
+        if (contactLookup[formattedEmailAddress]) {
+          isCurrentUser = true;
+        } else {
+          contactLookup[formattedEmailAddress] = contact;
+        }
       });
-      contactLookup[contact.id] = contact;
+
+      if (isCurrentUser) {
+        contactLookup[contact.id] = formattedCurrentUser;
+      } else {
+        contactLookup[contact.id] = contact;
+      }
     });
 
     // Add people first
@@ -112,15 +122,6 @@ export default class PersonModel {
       }
     });
 
-    // get current user email
-    (events[0]?.attendees || []).forEach((attendee) => {
-      if (attendee && attendee.self && attendee.email) {
-        const formattedEmailAddress = formatGmailAddress(attendee.email);
-        const person = contactLookup[formattedEmailAddress];
-        person.isCurrentUser = 1;
-        peopleToAdd.push(person);
-      }
-    });
     const tx = this.db.transaction('person', 'readwrite');
     await Promise.all(peopleToAdd.map((person) => tx.store.put(person)));
     return tx.done;

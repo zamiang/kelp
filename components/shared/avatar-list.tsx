@@ -51,9 +51,6 @@ const AvatarList = (props: IProps) => {
         if (!person) {
           return null;
         }
-        if (person.isCurrentUser) {
-          return null;
-        }
         return (
           <Tooltip key={person.id} title={person.name || person.emailAddresses}>
             <Avatar

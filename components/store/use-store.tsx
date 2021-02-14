@@ -49,7 +49,6 @@ const useStore = (db: dbType): IStore => {
         data.currentUser,
         data.contacts,
         data.emailAddresses,
-        data.calendarEvents,
       );
 
       await timeDataStore.addSegments(data.calendarEvents);

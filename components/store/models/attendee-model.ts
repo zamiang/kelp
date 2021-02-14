@@ -48,23 +48,26 @@ export default class AttendeeModel {
     this.db = db;
   }
 
+  // We need to make sure the current user is an attendee of all meetings
   async addAttendeesToStore(segments: ISegment[]) {
-    await Promise.all(
-      segments.map(
-        async (segment) =>
-          await Promise.all(
-            segment.attendees.map(async (attendee) => {
-              const people = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
-              if (people[0] && people[0].id) {
-                return this.db.put('attendee', formatAttendee(attendee, people[0], segment));
-              } else {
-                console.error('missing', attendee, people);
-              }
-            }),
-          ),
-      ),
+    return Promise.all(
+      segments.map(async (segment) => {
+        const attendees = segment.attendees;
+        if (attendees.filter((a) => a.self).length < 1) {
+          attendees.push(segment.creator as any);
+        }
+        return await Promise.all(
+          attendees.map(async (attendee) => {
+            const people = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
+            if (people[0] && people[0].id) {
+              return this.db.put('attendee', formatAttendee(attendee, people[0], segment));
+            } else {
+              console.error('missing', attendee, people);
+            }
+          }),
+        );
+      }),
     );
-    return;
   }
 
   async getForWeek(week: number) {
