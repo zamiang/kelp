@@ -10,7 +10,6 @@ interface IProps {
  */
 const FetchSecond = (props: IProps) => {
   // The goal is to only fetch if loading is false
-  console.log(props.googleDocIds.length.toString(), props.isLoading, 'watch this!');
   const activityResponse = useAsyncAbortable(
     () => fetchDriveActivityForDocumentIds(props.isLoading ? [] : props.googleDocIds),
     [props.isLoading, props.googleDocIds.length.toString()] as any, // unsure why this type is a failure

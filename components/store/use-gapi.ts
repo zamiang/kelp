@@ -8,6 +8,10 @@ export const googleAPIRefs = [
   'https://www.googleapis.com/discovery/v1/apis/driveactivity/v2/rest',
   'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
 ];
+const isSafari = () =>
+  navigator.vendor.match(/apple/i) &&
+  !navigator.userAgent.match(/crios/i) &&
+  !navigator.userAgent.match(/fxios/i);
 
 // https://github.com/google/google-api-javascript-client/blob/master/samples/authSample.html
 const useGAPI = () => {
@@ -30,11 +34,10 @@ const useGAPI = () => {
           return setStatus(true);
         }
         // https://github.com/google/google-api-javascript-client/issues/342#issuecomment-601619334
-        const isSafari = navigator.userAgent.includes('Safari');
         const result = await authInstance.signIn({
           scope: config.GOOGLE_SCOPES.join(' '),
           redirect_uri: config.REDIRECT_URI,
-          ux_mode: isSafari ? 'popup' : 'redirect',
+          ux_mode: isSafari() ? 'popup' : 'redirect',
         });
         if (result) {
           setStatus(true);

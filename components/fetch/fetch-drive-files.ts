@@ -75,7 +75,6 @@ export const fetchDriveFilesById = async (ids: string[]) => {
       });
       return file.result;
     });
-  console.log(results, errors, 'fetch drive files');
   return results;
 };
 
