@@ -8,10 +8,9 @@ export const googleAPIRefs = [
   'https://www.googleapis.com/discovery/v1/apis/driveactivity/v2/rest',
   'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
 ];
-const isSafari = () =>
-  navigator.vendor.match(/apple/i) &&
-  !navigator.userAgent.match(/crios/i) &&
-  !navigator.userAgent.match(/fxios/i);
+
+// Detect safari and include chrome and firefox on iOS since they use safari as a renderer
+const isSafari = () => navigator.vendor.match(/apple/i); // && !navigator.userAgent.match(/crios/i) && !navigator.userAgent.match(/fxios/i);
 
 // https://github.com/google/google-api-javascript-client/blob/master/samples/authSample.html
 const useGAPI = () => {
