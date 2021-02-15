@@ -55,6 +55,11 @@ const useStore = (db: dbType): IStore => {
       await documentDataStore.addDocsToStore(docs.concat(missingDocs));
       await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
+      await segmentDocumentStore.addSegmentDocumentsToStore(
+        driveActivityDataStore,
+        timeDataStore,
+        attendeeDataStore,
+      );
       await tfidfStore.saveDocuments({
         driveActivityStore: driveActivityDataStore,
         timeDataStore,
@@ -62,11 +67,6 @@ const useStore = (db: dbType): IStore => {
         documentDataStore,
         attendeeDataStore,
       });
-      await segmentDocumentStore.addSegmentDocumentsToStore(
-        driveActivityDataStore,
-        timeDataStore,
-        attendeeDataStore,
-      );
       setLoading(false);
     };
     void addData();

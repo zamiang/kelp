@@ -1,4 +1,5 @@
 import { getDayOfYear } from 'date-fns';
+import { flatten } from 'lodash';
 import { formatGmailAddress } from '../../fetch/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
@@ -50,7 +51,7 @@ export default class AttendeeModel {
 
   // We need to make sure the current user is an attendee of all meetings
   async addAttendeesToStore(segments: ISegment[]) {
-    return Promise.all(
+    const attendees = await Promise.all(
       segments.map(async (segment) => {
         const attendees = segment.attendees;
         if (attendees.filter((a) => a.self).length < 1) {
@@ -60,7 +61,7 @@ export default class AttendeeModel {
           attendees.map(async (attendee) => {
             const people = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
             if (people[0] && people[0].id) {
-              return this.db.put('attendee', formatAttendee(attendee, people[0], segment));
+              return formatAttendee(attendee, people[0], segment);
             } else {
               console.error('missing', attendee, people);
             }
@@ -68,6 +69,9 @@ export default class AttendeeModel {
         );
       }),
     );
+    const tx = this.db.transaction('attendee', 'readwrite');
+    await Promise.all(flatten(attendees).map(async (s) => s && tx.store.put(s)));
+    return tx.done;
   }
 
   async getForWeek(week: number) {

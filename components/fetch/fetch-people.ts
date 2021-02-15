@@ -51,7 +51,7 @@ export const batchFetchPeople = async (peopleIds: string[]) => {
 
   const uniquePeopleIdsChunks = chunk(uniq(peopleIds), 49);
   const usedPersonFields = 'names,nicknames,emailAddresses,photos,externalIds';
-  const { results, errors } = await PromisePool.withConcurrency(3)
+  const { results } = await PromisePool.withConcurrency(3)
     .for(uniquePeopleIdsChunks)
     .process(async (uniquePeopleIds) =>
       gapi.client.people.people.getBatchGet({
@@ -60,7 +60,7 @@ export const batchFetchPeople = async (peopleIds: string[]) => {
       }),
     );
 
-  console.log(results, errors, 'fetch people');
+  // console.log(results, errors, 'fetch people');
   // NOTE: This returns very little unless the person is in the user's contacts
   const flattenedPeople = flatten(results.map((r) => r.result.responses));
 

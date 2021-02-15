@@ -66,8 +66,8 @@ export default class TfidfStore {
       activityList.map(async (activity) => {
         if (activity.link && activity.actorPersonId) {
           const person = await store.personDataStore.getPersonById(activity.actorPersonId);
-          if (person?.isCurrentUser) {
-            const doc = await store.documentDataStore.getByLink(activity.link);
+          if (person?.isCurrentUser && activity.documentId) {
+            const doc = await store.documentDataStore.get(activity.documentId);
             const day = getDayKey(activity.time);
             if (documentsByDay[day] && doc && doc.name) {
               documentsByDay[day].push(doc?.name);

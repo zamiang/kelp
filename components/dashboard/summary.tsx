@@ -182,6 +182,7 @@ interface IDayContentProps {
   day: Date;
   hoveredItem?: string;
   setHoveredItem: (s: string) => void;
+  scaleX: number;
 }
 
 const useDayContentStyles = makeStyles((theme) => ({
@@ -236,12 +237,13 @@ const DayContent = (props: IDayContentProps) => {
   const classes = useDayContentStyles();
 
   // interpolation yay
-  const scaleX = (props.tfidf.getMax() || 10) - (props.tfidf.getMin() || 0);
+  const scaleX = props.scaleX;
   const scaleY = fontMax - fontMin;
   const scale = scaleX / scaleY;
 
   const diff = getDayKey(props.day);
-  const terms = props.tfidf.listTerms(Number(diff)).map((document) => (
+  const text = props.tfidf.listTerms(Number(diff));
+  const terms = text.map((document) => (
     <Link
       to={`/search?query=${document.term}`}
       key={document.term}
@@ -343,6 +345,7 @@ const Summary = (props: IStore) => {
         key={day.toISOString()}
         hoveredItem={hoveredItem}
         setHoveredItem={setHoveredItem}
+        scaleX={100} // TODO: figure out how to calculate the max from tfidf
       />
     ));
   };

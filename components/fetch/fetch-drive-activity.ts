@@ -90,12 +90,12 @@ const fetchDriveActivityForDocument = async (documentId: string) => {
 };
 
 const fetchDriveActivityForDocumentIds = async (ids: string[]) => {
-  const { results, errors } = await PromisePool.withConcurrency(3)
+  const { results } = await PromisePool.withConcurrency(3)
     .for(ids)
     .process(async (id) => fetchDriveActivityForDocument(id));
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
   const activity = flatten(results.map((result) => result.activity));
-  console.log(results, errors, 'fetch drive activity');
+  // console.log(results, errors, 'fetch drive activity');
   return { peopleIds, activity };
 };
 

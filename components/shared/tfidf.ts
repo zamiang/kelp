@@ -1,5 +1,3 @@
-import { flatten, max, min } from 'lodash';
-
 interface IDocumentument {
   [text: string]: number;
 }
@@ -120,12 +118,8 @@ const stopwords = [
   'i',
 ];
 
-const removeStopwords = (tokens: string[]) => {
-  if (typeof tokens !== 'object' || typeof stopwords !== 'object') {
-    throw new Error('expected Arrays try: removeStopwords(Array[, Array])');
-  }
-  return tokens.filter((value) => stopwords.includes(value.toLowerCase()));
-};
+const removeStopwords = (tokens: string[]) =>
+  tokens.filter((value) => !stopwords.includes(value.toLowerCase()));
 
 const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 
@@ -207,6 +201,7 @@ export default class Tfidf {
   listTerms(documentIndex: number) {
     const terms: { tfidf: number; term: string }[] = [];
     const documentsToSearch: any = [];
+    const addedTerms = {} as any;
     this.documents.forEach((item) => {
       if (item.__key === (documentIndex.toString() as any)) {
         documentsToSearch.push(item);
@@ -216,10 +211,13 @@ export default class Tfidf {
     documentsToSearch.forEach((document: any) => {
       for (const term in document) {
         if (term !== '__key')
-          terms.push({
-            term,
-            tfidf: this.tfidf(term, documentIndex),
-          });
+          if (!addedTerms[term]) {
+            terms.push({
+              term,
+              tfidf: this.tfidf(term, documentIndex),
+            });
+            addedTerms[term] = true;
+          }
       }
     });
     return terms.sort((x: any, y: any) => y.tfidf - x.tfidf);
@@ -229,11 +227,5 @@ export default class Tfidf {
     return this.documents.map((_document, index) => this.tfidf(terms, index));
   }
 
-  getMin() {
-    return min(flatten(this.documents.map((document) => Object.values(document))));
-  }
-
-  getMax() {
-    return max(flatten(this.documents.map((document) => Object.values(document))));
-  }
+  // TODO: write a get max function
 }

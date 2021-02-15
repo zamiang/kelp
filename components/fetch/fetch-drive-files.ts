@@ -66,7 +66,7 @@ const fetchDriveFiles = async () => {
 };
 
 export const fetchDriveFilesById = async (ids: string[]) => {
-  const { results, errors } = await PromisePool.withConcurrency(3)
+  const { results } = await PromisePool.withConcurrency(3)
     .for(ids)
     .process(async (id) => {
       const file = await gapi.client.drive.files.get({
@@ -75,7 +75,7 @@ export const fetchDriveFilesById = async (ids: string[]) => {
       });
       return file.result;
     });
-  console.log(results, errors, 'fetchdrivefilesbyid');
+  // console.log(results, errors, 'fetchdrivefilesbyid');
   return results;
 };
 
