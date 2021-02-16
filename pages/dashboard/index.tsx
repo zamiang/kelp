@@ -67,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
 const LoadingDashboardContainer = () => {
   const [session, isLoading] = useSession();
   const [database, setDatabase] = useState<any>(undefined);
-  const [token, setToken] = useState<any>(undefined);
+  const [token, setToken] = useState<string | undefined>(undefined);
+  const [scope, setScope] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,11 +79,13 @@ const LoadingDashboardContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const t = await fetchToken();
-      setToken(t);
+      const t = fetchToken();
+      setToken(t.accessToken);
+      setScope(t.scope);
     };
     void fetchData();
   }, []);
+  console.log(scope, '<<scopes');
 
   if (!isLoading && !session?.user) {
     window.location.pathname = '/';
@@ -90,15 +93,23 @@ const LoadingDashboardContainer = () => {
   return (
     <React.Fragment>
       <Loading isOpen={!token || isLoading || !database} message="Loading" />
-      {(process as any).browser && database && session && token && (
-        <LoadingStoreDashboardContainer database={database} googleOauthToken={token} />
+      {(process as any).browser && database && session && token && scope && (
+        <LoadingStoreDashboardContainer
+          database={database}
+          googleOauthToken={token}
+          scope={scope}
+        />
       )}
     </React.Fragment>
   );
 };
 
-const LoadingStoreDashboardContainer = (props: { database: any; googleOauthToken: string }) => {
-  const store = getStore(props.database, props.googleOauthToken);
+const LoadingStoreDashboardContainer = (props: {
+  database: any;
+  googleOauthToken: string;
+  scope: string;
+}) => {
+  const store = getStore(props.database, props.googleOauthToken, props.scope);
   return (
     <div suppressHydrationWarning={true}>
       <Router basename="/dashboard">

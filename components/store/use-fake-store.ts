@@ -55,6 +55,8 @@ const useFakeStore = (db: dbType): IStore => {
     tfidfStore,
     isLoading,
     lastUpdated: new Date(),
+    scope: 'n/a',
+    googleOauthToken: 'none',
     refetch: () => null,
   };
 };

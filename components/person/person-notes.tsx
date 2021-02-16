@@ -45,15 +45,20 @@ const NotesEditForm = (props: {
   onCloseEdit: () => void;
   setPerson: (p: IPerson) => void;
   personStore: IStore['personDataStore'];
+  scope: string;
+  accessToken: string;
 }) => {
   const { handleSubmit, register, setValue } = useForm<FormValues>();
   const classes = useStyles();
   const onSubmit = handleSubmit(async (data) => {
-    const response = await updateContactNotes(props.person.googleId!, data.note);
-    if (response && response.result) {
-      const formattedPerson = await props.personStore.updatePersonFromGoogleContacts(
-        response.result,
-      );
+    const response = await updateContactNotes(
+      props.person.googleId!,
+      data.note,
+      props.scope,
+      props.accessToken,
+    );
+    if (response) {
+      const formattedPerson = await props.personStore.updatePersonFromGoogleContacts(response);
       props.setPerson(formattedPerson);
     }
     props.onCloseEdit();
@@ -86,6 +91,8 @@ const PersonNotes = (props: {
   person: IPerson;
   setPerson: (p: IPerson) => void;
   personStore: IStore['personDataStore'];
+  scope: string;
+  accessToken: string;
 }) => {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -114,6 +121,8 @@ const PersonNotes = (props: {
           personStore={props.personStore}
           person={props.person}
           onCloseEdit={onCloseEdit}
+          scope={props.scope}
+          accessToken={props.accessToken}
         />
       )}
       {isEditing && (

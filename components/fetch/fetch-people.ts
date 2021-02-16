@@ -46,6 +46,23 @@ export const formatGooglePeopleResponse = (
   };
 };
 
+export const fetchPerson = async (personId: string, authToken: string) => {
+  const params = {
+    personFields: usedPersonFields,
+  };
+
+  const personResponse = await fetch(
+    `https://people.googleapis.com/v1/${personId}?${new URLSearchParams(params).toString()}`,
+    {
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+    },
+  );
+  const result = await personResponse.json();
+  return result as gapi.client.people.Person;
+};
+
 export const batchFetchPeople = async (peopleIds: string[], authToken: string) => {
   if (peopleIds.length < 1) {
     return [];

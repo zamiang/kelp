@@ -1,53 +1,52 @@
-import { usedPersonFields } from '../fetch/fetch-people';
+import { fetchPerson } from '../fetch/fetch-people';
+import { addScope } from '../fetch/fetch-token';
 
 const contactEditScope = 'https://www.googleapis.com/auth/contacts';
 
-const addScope = async () => {
-  const grantedScopes = gapi.auth2.getAuthInstance().currentUser.get().getGrantedScopes();
-  if (grantedScopes.includes(contactEditScope + ' ')) {
+export const updateContactNotes = async (
+  googleId: string,
+  note: string,
+  scope: string,
+  accessToken: string,
+) => {
+  const isScopeAdded = await addScope(scope, contactEditScope);
+  if (!isScopeAdded) {
     return;
   }
 
-  const option = new gapi.auth2.SigninOptionsBuilder();
-  option.setScope(contactEditScope);
-
-  const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-  try {
-    await googleUser.grant(option);
-  } catch (e) {
-    alert(e);
-  }
-};
-
-export const updateContactNotes = async (googleId: string, note: string) => {
-  await addScope();
-
-  const person = await gapi.client.people.people.get({
-    personFields: usedPersonFields,
-    resourceName: googleId,
-    sources: 'READ_SOURCE_TYPE_CONTACT',
-  });
-
-  const etag = person?.result?.etag;
+  const person = await fetchPerson(googleId, accessToken);
+  const etag = person.etag;
   if (!etag) {
     return alert('no etag');
   }
-  let response;
-  try {
-    response = await gapi.client.people.people.updateContact({
-      updatePersonFields: 'biographies',
-      resource: {
-        etag,
-        biographies: [
-          {
-            value: note,
-          },
-        ],
+  const params = {
+    updatePersonFields: 'biographies',
+  };
+  const body = {
+    etag,
+    biographies: [
+      {
+        value: note,
       },
-      resourceName: person.result.resourceName!,
-    });
+    ],
+  };
+
+  try {
+    const response = await fetch(
+      `https://people.googleapis.com/v1/${person.resourceName}:updateContact?${new URLSearchParams(
+        params,
+      ).toString()}`,
+      {
+        method: 'PATCH',
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(body),
+      },
+    );
+    const result = await response.json();
+    return result as gapi.client.people.Person;
   } catch (e) {
     alert(JSON.stringify(e));
   }
-  return response;
 };

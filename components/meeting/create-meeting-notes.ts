@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { addScope } from '../fetch/fetch-token';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
@@ -7,28 +8,6 @@ const contentType = 'text/html';
 const boundary = '-------314159265358979323846';
 const delimiter = `\r\n--${boundary}\r\n`;
 const closeDelim = `\r\n--${boundary}--`;
-
-const addScope = async (): Promise<boolean> => {
-  if (!gapi.auth2) {
-    alert('You are either in test mode or should reauthenticate');
-    return false;
-  }
-  const grantedScopes = gapi.auth2.getAuthInstance().currentUser.get().getGrantedScopes();
-  if (grantedScopes.includes(documentCreateScope + ' ')) {
-    return true;
-  }
-
-  const option = new gapi.auth2.SigninOptionsBuilder();
-  option.setScope(documentCreateScope);
-
-  const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-  try {
-    await googleUser.grant(option);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
 
 const getCreateDocumentRequestBody = async (
   meeting: ISegment,
@@ -85,8 +64,10 @@ export const createDocument = async (
   personDataStore: IStore['personDataStore'],
   documentDataStore: IStore['documentDataStore'],
   attendeeDataStore: IStore['attendeeDataStore'],
+  scope: string,
+  authToken: string,
 ) => {
-  const isScopeAdded = await addScope();
+  const isScopeAdded = await addScope(scope, documentCreateScope);
   if (!isScopeAdded) {
     return;
   }
@@ -99,20 +80,22 @@ export const createDocument = async (
     attendeeDataStore,
   );
 
-  const document = await gapi.client.request({
-    path: '/upload/drive/v3/files',
-    method: 'POST',
-    params: { uploadType: 'multipart' },
-    headers: {
-      'Content-Type': `multipart/related; boundary="${boundary}"`,
+  const documentResponse = await fetch(
+    'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': `multipart/related; boundary="${boundary}"`,
+        authorization: `Bearer ${authToken}`,
+      },
+      body,
     },
-    body,
-  });
-
-  const id = document.result.id;
+  );
+  const result = await documentResponse.json();
+  const id = result.id;
   if (!id) {
     return alert(`no id for ${JSON.stringify(document)}`);
   }
 
-  return document.result;
+  return result;
 };

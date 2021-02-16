@@ -15,14 +15,29 @@ const params: any = {
   response_type: 'token',
 };
 
+export const addScope = async (grantedScopes: string, newScope: string): Promise<boolean> => {
+  // NOTE: the space after newScope is to distinguish between general vs specific scopes ie: people vs people/readonly
+  if (grantedScopes.includes(`${newScope} `)) {
+    return true;
+  }
+  // TODO: handle custom state
+  oauth2SignIn(newScope);
+  // the above thing will redirect
+  return false;
+};
+
 /*
  * Create form to request access token from Google's OAuth 2.0 server.
  */
-const oauth2SignIn = async () => {
+const oauth2SignIn = (additionalScope?: string) => {
   // Create element to open OAuth 2.0 endpoint in new window.
   const form = document.createElement('form');
   form.setAttribute('method', 'GET'); // Send as a GET request.
   form.setAttribute('action', oauth2Endpoint);
+
+  if (additionalScope) {
+    params.scope = `${params.scope} ${additionalScope}`;
+  }
 
   // Add form parameters as hidden input values.
   for (const p in params) {
@@ -34,10 +49,10 @@ const oauth2SignIn = async () => {
   }
   // Add form to page and submit it to open the OAuth 2.0 endpoint.
   document.body.appendChild(form);
-  form.submit();
+  return form.submit();
 };
 
-export const fetchToken = async () => {
+export const fetchToken = () => {
   const fragmentString = location.hash.substring(1);
 
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -50,7 +65,10 @@ export const fetchToken = async () => {
   if (Object.keys(params).length > 0) {
     localStorage.setItem('oauth2', JSON.stringify(params));
   } else {
-    await oauth2SignIn();
+    oauth2SignIn();
   }
-  return params.access_token;
+  return {
+    accessToken: params.access_token,
+    scope: params.scope,
+  };
 };

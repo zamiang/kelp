@@ -20,10 +20,12 @@ export interface IStore {
   readonly segmentDocumentStore: SegmentDocumentModel;
   readonly refetch: () => void;
   readonly isLoading: boolean;
+  readonly scope: string;
+  readonly googleOauthToken: string;
   readonly error?: Error;
 }
 
-const useStore = (db: dbType, googleOauthToken: string): IStore => {
+const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
   const data = FetchAll(googleOauthToken);
   const [isLoading, setLoading] = useState<boolean>(true);
   const people = (data.personList || []).map((person) => formatPerson(person));
@@ -83,6 +85,8 @@ const useStore = (db: dbType, googleOauthToken: string): IStore => {
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,
     refetch: () => data.refetch(),
+    scope,
+    googleOauthToken,
     error: data.error,
   };
 };

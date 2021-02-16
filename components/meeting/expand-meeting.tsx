@@ -34,6 +34,8 @@ const createMeetingNotes = async (
   documentDataStore: IStore['documentDataStore'],
   attendeeDataStore: IStore['attendeeDataStore'],
   refetch: () => void,
+  scope: string,
+  authToken: string,
 ) => {
   setMeetingNotesLoading(true);
   const document = await createDocument(
@@ -42,6 +44,8 @@ const createMeetingNotes = async (
     personDataStore,
     documentDataStore,
     attendeeDataStore,
+    scope,
+    authToken,
   );
   // Not sure if a good idea
   // await addDocumentToCalendarEvent(meeting, document);
@@ -189,6 +193,8 @@ const ExpandedMeeting = (props: {
                   props.store.documentDataStore,
                   props.store.attendeeDataStore,
                   props.store.refetch,
+                  props.store.scope,
+                  props.store.googleOauthToken,
                 )
               }
               variant="contained"
