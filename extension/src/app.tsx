@@ -13,7 +13,14 @@ import { ISegment } from '../../components/store/models/segment-model';
 import getStore from '../../components/store/use-store';
 import theme from '../../constants/theme';
 
-// const API_KEY = 'AIzaSyCEe5HmzHPg8mjJ_bfQmjEUncaqWlRXGx0';
+// NOTE: Copied from manifest.json - remember to update both
+const scopes = [
+  'https://www.googleapis.com/auth/calendar.events.readonly',
+  'https://www.googleapis.com/auth/contacts.readonly',
+  'https://www.googleapis.com/auth/userinfo.email',
+  'https://www.googleapis.com/auth/drive.metadata.readonly',
+  'https://www.googleapis.com/auth/drive.activity.readonly',
+].join(' ');
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -48,8 +55,8 @@ const useInfoStyles = makeStyles((theme) => ({
   },
 }));
 
-const Info = (props: { database: any; accessToken: string }) => {
-  const store = getStore(props.database, props.accessToken);
+const Info = (props: { database: any; accessToken: string; scope: string }) => {
+  const store = getStore(props.database, props.accessToken, props.scope);
   const classes = useInfoStyles();
   const currentTime = new Date();
   const [segments, setSegments] = useState<ISegment[]>([]);
@@ -121,7 +128,7 @@ const App = () => {
         <header className={classes.header}>
           <Loading isOpen={!token || !database} message="Loading" />
         </header>
-        {token && database && <Info database={database} accessToken={token} />}
+        {token && database && <Info database={database} accessToken={token} scope={scopes} />}
       </div>
     </ThemeProvider>
   );
