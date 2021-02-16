@@ -1,4 +1,4 @@
-import { userPersonFields } from '../fetch/fetch-contacts';
+import { usedPersonFields } from '../fetch/fetch-people';
 
 const contactEditScope = 'https://www.googleapis.com/auth/contacts';
 
@@ -23,7 +23,7 @@ export const updateContactNotes = async (googleId: string, note: string) => {
   await addScope();
 
   const person = await gapi.client.people.people.get({
-    personFields: userPersonFields,
+    personFields: usedPersonFields,
     resourceName: googleId,
     sources: 'READ_SOURCE_TYPE_CONTACT',
   });

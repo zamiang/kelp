@@ -4,6 +4,7 @@ import fetchDriveActivityForDocumentIds from './fetch-drive-activity';
 interface IProps {
   readonly googleDocIds: string[];
   readonly isLoading: boolean;
+  readonly googleOauthToken: string;
 }
 /**
  * Fetches 2nd layer of information.
@@ -11,8 +12,12 @@ interface IProps {
 const FetchSecond = (props: IProps) => {
   // The goal is to only fetch if loading is false
   const activityResponse = useAsyncAbortable(
-    () => fetchDriveActivityForDocumentIds(props.isLoading ? [] : props.googleDocIds),
-    [props.isLoading, props.googleDocIds.length.toString()] as any, // unsure why this type is a failure
+    () =>
+      fetchDriveActivityForDocumentIds(
+        props.isLoading ? [] : props.googleDocIds,
+        props.googleOauthToken,
+      ),
+    [props.googleDocIds.length.toString()] as any, // unsure why this type is a failure
   );
   return {
     driveActivity: activityResponse.result ? activityResponse.result.activity : [],

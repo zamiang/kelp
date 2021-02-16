@@ -41,16 +41,31 @@ export interface IFormattedDriveActivity {
 
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
-const fetchDriveActivityForDocument = async (documentId: string) => {
+const fetchDriveActivityForDocument = async (documentId: string, googleOauthToken: string) => {
   try {
-    const activityResponse = await gapi.client.driveactivity.activity.query({
-      pageSize: 50,
+    const params = {
+      pageSize: '50',
       filter: `detail.action_detail_case:(CREATE EDIT COMMENT RENAME) AND time >= "${config.startDate.toISOString()}"`,
       itemName: `items/${documentId}`,
-    } as any);
+    };
+
+    const activityResponse = await fetch(
+      `https://content-driveactivity.googleapis.com/v2/activity:query?alt=json`,
+      {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+          authorization: `Bearer ${googleOauthToken}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    const response: {
+      activities: gapi.client.driveactivity.DriveActivity[];
+    } = await activityResponse.json();
     const activity =
-      activityResponse && activityResponse.result && activityResponse.result.activities
-        ? activityResponse.result.activities.filter(
+      response && response.activities
+        ? response.activities.filter(
             (activity) => activity.actors && activity.actors[0] && activity.actors[0].user,
           )
         : [];
@@ -89,10 +104,10 @@ const fetchDriveActivityForDocument = async (documentId: string) => {
   }
 };
 
-const fetchDriveActivityForDocumentIds = async (ids: string[]) => {
+const fetchDriveActivityForDocumentIds = async (ids: string[], googleOauthToken: string) => {
   const { results } = await PromisePool.withConcurrency(3)
     .for(ids)
-    .process(async (id) => fetchDriveActivityForDocument(id));
+    .process(async (id) => fetchDriveActivityForDocument(id, googleOauthToken));
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
   const activity = flatten(results.map((result) => result.activity));
   // console.log(results, errors, 'fetch drive activity');

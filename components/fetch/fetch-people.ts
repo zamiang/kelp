@@ -1,6 +1,8 @@
 import PromisePool from '@supercharge/promise-pool';
 import { chunk, flatten, uniq } from 'lodash';
 
+export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
+
 export interface person {
   id: string;
   name: string;
@@ -24,8 +26,8 @@ export const formatGmailAddress = (email: string) => {
   return email.toLocaleLowerCase();
 };
 
-const formatGooglePeopleResponse = (
-  person: gapi.client.people.PersonResponse['person'],
+export const formatGooglePeopleResponse = (
+  person?: gapi.client.people.Person,
   requestedResourceName?: string | null,
 ): person => {
   const emailAddresses =
@@ -44,30 +46,40 @@ const formatGooglePeopleResponse = (
   };
 };
 
-export const batchFetchPeople = async (peopleIds: string[]) => {
+export const batchFetchPeople = async (peopleIds: string[], authToken: string) => {
   if (peopleIds.length < 1) {
     return [];
   }
 
   const uniquePeopleIdsChunks = chunk(uniq(peopleIds), 49);
-  const usedPersonFields = 'names,nicknames,emailAddresses,photos,externalIds';
+
   const { results } = await PromisePool.withConcurrency(3)
     .for(uniquePeopleIdsChunks)
-    .process(async (uniquePeopleIds) =>
-      gapi.client.people.people.getBatchGet({
+    .process(async (uniquePeopleIds) => {
+      const searchParams = new URLSearchParams({
         personFields: usedPersonFields,
-        resourceNames: uniquePeopleIds,
-      }),
-    );
+      });
+      uniquePeopleIds.forEach((id) => searchParams.append('resourceNames', id));
 
-  // console.log(results, errors, 'fetch people');
+      const personResponse = await fetch(
+        `https://people.googleapis.com/v1/people:batchGet?${searchParams.toString()}`,
+        {
+          headers: {
+            authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
+      const result = await personResponse.json();
+
+      return result;
+    });
+
   // NOTE: This returns very little unless the person is in the user's contacts
-  const flattenedPeople = flatten(results.map((r) => r.result.responses));
-
+  const flattenedPeople = flatten(results.map((r) => r.responses));
   const formattedPeople = flattenedPeople
     .filter(Boolean)
     .map((personResponse) =>
-      formatGooglePeopleResponse(personResponse!.person, personResponse!.requestedResourceName),
+      formatGooglePeopleResponse(personResponse.person, personResponse.requestedResourceName),
     );
 
   return formattedPeople;

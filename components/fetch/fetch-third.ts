@@ -4,6 +4,7 @@ import { batchFetchPeople } from './fetch-people';
 interface IProps {
   readonly peopleIds: string[];
   readonly isLoading: boolean;
+  readonly googleOauthToken: string;
 }
 
 /**
@@ -13,8 +14,8 @@ interface IProps {
 const FetchThird = (props: IProps) => {
   // this has a sideffect of updating the store
   const peopleResponse = useAsyncAbortable(
-    () => batchFetchPeople(props.isLoading ? [] : props.peopleIds),
-    [props.isLoading, props.peopleIds.length.toString()] as any,
+    () => batchFetchPeople(props.isLoading ? [] : props.peopleIds, props.googleOauthToken),
+    [props.peopleIds.length.toString()] as any,
   );
   const error = peopleResponse ? peopleResponse.error : undefined;
 

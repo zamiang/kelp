@@ -8,7 +8,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, useLocation } from 'react-router-dom';
 import Docs from '../../components/dashboard/documents';
 import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
@@ -18,6 +18,7 @@ import Summary from '../../components/dashboard/summary';
 import WeekCalendar from '../../components/dashboard/week-calendar';
 import ExpandedDocument from '../../components/documents/expand-document';
 import ErrorBoundaryComponent from '../../components/error-tracking/error-boundary';
+import { fetchToken } from '../../components/fetch/fetch-token';
 import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import BottomNav from '../../components/nav/bottom-nav-bar';
 import NavBar from '../../components/nav/nav-bar';
@@ -26,7 +27,6 @@ import NotificationsPopup from '../../components/notifications/notifications-pop
 import ExpandPerson from '../../components/person/expand-person';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
-import useGapi from '../../components/store/use-gapi';
 import getStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
 
@@ -65,10 +65,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoadingDashboardContainer = () => {
-  const isSignedIn = useGapi();
-  const router = useHistory();
   const [session, isLoading] = useSession();
   const [database, setDatabase] = useState<any>(undefined);
+  const [token, setToken] = useState<any>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,21 +76,29 @@ const LoadingDashboardContainer = () => {
     void fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const t = await fetchToken();
+      setToken(t);
+    };
+    void fetchData();
+  }, []);
+
   if (!isLoading && !session?.user) {
-    void router.push('/');
+    window.location.pathname = '/';
   }
   return (
     <React.Fragment>
-      <Loading isOpen={!isSignedIn || isLoading || !database} message="Loading" />
-      {(process as any).browser && database && isSignedIn && (
-        <LoadingStoreDashboardContainer database={database} />
+      <Loading isOpen={!token || isLoading || !database} message="Loading" />
+      {(process as any).browser && database && session && token && (
+        <LoadingStoreDashboardContainer database={database} googleOauthToken={token} />
       )}
     </React.Fragment>
   );
 };
 
-const LoadingStoreDashboardContainer = (props: { database: any }) => {
-  const store = getStore(props.database);
+const LoadingStoreDashboardContainer = (props: { database: any; googleOauthToken: string }) => {
+  const store = getStore(props.database, props.googleOauthToken);
   return (
     <div suppressHydrationWarning={true}>
       <Router basename="/dashboard">

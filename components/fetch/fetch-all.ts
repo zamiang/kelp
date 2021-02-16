@@ -13,7 +13,7 @@ interface IReturnType {
   readonly personList: person[];
   readonly emailAddresses: string[];
   readonly contacts: person[];
-  readonly currentUser: person;
+  readonly currentUser?: person;
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
   readonly missingDriveFiles: (gapi.client.drive.File | null)[];
@@ -57,8 +57,8 @@ const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
-const FetchAll = (): IReturnType => {
-  const firstLayer = FetchFirst();
+const FetchAll = (googleOauthToken: string): IReturnType => {
+  const firstLayer = FetchFirst(googleOauthToken);
 
   // Find documents that are in meeting descriptions and make sure to fetch them as well
   const potentiallyMissingGoogleDocIds = flatten(
@@ -70,8 +70,8 @@ const FetchAll = (): IReturnType => {
   );
   const secondLayer = FetchSecond({
     googleDocIds: googleDocIds.concat(missingGoogleDocIds),
-
     isLoading: firstLayer.isLoading,
+    googleOauthToken,
   });
 
   // Find people who are in drive activity but not in contacts and try to fetch them.
@@ -86,11 +86,13 @@ const FetchAll = (): IReturnType => {
   const thirdLayer = FetchThird({
     isLoading: firstLayer.isLoading || secondLayer.isLoading,
     peopleIds,
+    googleOauthToken,
   });
 
   const fourthLayer = FetchFourth({
     missingGoogleDocIds: uniq(missingGoogleDocIds),
     isLoading: firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading,
+    googleOauthToken,
   });
 
   const debouncedIsLoading = useDebounce(

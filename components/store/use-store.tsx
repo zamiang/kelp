@@ -23,8 +23,8 @@ export interface IStore {
   readonly error?: Error;
 }
 
-const useStore = (db: dbType): IStore => {
-  const data = FetchAll();
+const useStore = (db: dbType, googleOauthToken: string): IStore => {
+  const data = FetchAll(googleOauthToken);
   const [isLoading, setLoading] = useState<boolean>(true);
   const people = (data.personList || []).map((person) => formatPerson(person));
   const personDataStore = new PersonDataStore(db);

@@ -10,11 +10,10 @@ import MeetingRow from '../../components/meeting/meeting-row';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import { ISegment } from '../../components/store/models/segment-model';
-import { googleAPIRefs } from '../../components/store/use-gapi';
 import getStore from '../../components/store/use-store';
 import theme from '../../constants/theme';
 
-const API_KEY = 'AIzaSyCEe5HmzHPg8mjJ_bfQmjEUncaqWlRXGx0';
+// const API_KEY = 'AIzaSyCEe5HmzHPg8mjJ_bfQmjEUncaqWlRXGx0';
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -26,27 +25,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
 }));
-
-const onGAPILoad = (setToken: (token: string) => void) => {
-  const loadLibraries = async () => {
-    try {
-      await gapi.client.init({
-        apiKey: API_KEY,
-        discoveryDocs: googleAPIRefs,
-      });
-      chrome.identity.getAuthToken({ interactive: true }, (token) => {
-        gapi.auth.setToken({
-          access_token: token,
-        } as any);
-
-        setToken(token);
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  gapi.load('client', loadLibraries as any);
-};
 
 const useInfoStyles = makeStyles((theme) => ({
   homeRow: {
@@ -70,8 +48,8 @@ const useInfoStyles = makeStyles((theme) => ({
   },
 }));
 
-const Info = (props: { database: any }) => {
-  const store = getStore(props.database);
+const Info = (props: { database: any; accessToken: string }) => {
+  const store = getStore(props.database, props.accessToken);
   const classes = useInfoStyles();
   const currentTime = new Date();
   const [segments, setSegments] = useState<ISegment[]>([]);
@@ -126,7 +104,9 @@ const App = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    onGAPILoad(setToken);
+    chrome.identity.getAuthToken({ interactive: true }, (token) => {
+      setToken(token);
+    });
   }, []);
 
   useEffect(() => {
@@ -141,7 +121,7 @@ const App = () => {
         <header className={classes.header}>
           <Loading isOpen={!token || !database} message="Loading" />
         </header>
-        {token && database && <Info database={database} />}
+        {token && database && <Info database={database} accessToken={token} />}
       </div>
     </ThemeProvider>
   );

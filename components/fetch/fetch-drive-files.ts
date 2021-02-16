@@ -25,28 +25,40 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
   );
 };
 
-const fetchDriveFilePage = (pageToken?: string) =>
-  new Promise((resolve) => {
-    const options = {
-      includeItemsFromAllDrives: true,
-      includeTeamDriveItems: true,
-      supportsAllDrives: true,
-      supportsTeamDrives: true,
-      orderBy: 'modifiedTime desc',
-      pageSize: 100, // ideally we don't refetch after this
-      fields: `nextPageToken, files(${driveFileFields})`,
-    } as any;
-    if (pageToken) {
-      options.pageToken = pageToken;
-    }
-    const request = gapi.client.drive.files.list(options);
-    request.execute(resolve);
-  });
+const fetchDriveFilePage = async (googleOauthToken: string, pageToken?: string) => {
+  const params = {
+    includeItemsFromAllDrives: true,
+    includeTeamDriveItems: true,
+    supportsAllDrives: true,
+    supportsTeamDrives: true,
+    orderBy: 'modifiedTime desc',
+    pageSize: 100, // ideally we don't refetch after this
+    fields: `nextPageToken, files(${driveFileFields})`,
+  } as any;
+  if (pageToken) {
+    params.pageToken = pageToken;
+  }
+  // gapi.client.drive.files.list(options);
+  const driveResponse = await fetch(
+    `https://content.googleapis.com/drive/v3/files?${new URLSearchParams(params).toString()}`,
+    {
+      headers: {
+        authorization: `Bearer ${googleOauthToken}`,
+      },
+    },
+  );
+  const body = await driveResponse.json();
+  return body;
+};
 
-const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageToken?: string) => {
+const fetchAllDriveFiles = async (
+  googleOauthToken: string,
+  results: gapi.client.drive.File[],
+  nextPageToken?: string,
+) => {
   const currentDate = new Date();
-  const driveResponse: any = await fetchDriveFilePage(nextPageToken);
-  const newResults = results.concat(driveResponse.result.files);
+  const driveResponse: any = await fetchDriveFilePage(googleOauthToken, nextPageToken);
+  const newResults = results.concat(driveResponse.files);
   const sortedResults = newResults.map((file) => getModifiedTimeProxy(file)).sort();
   const oldestDate = sortedResults[0];
   if (isRefetchEnabled) {
@@ -54,28 +66,36 @@ const fetchAllDriveFiles = async (results: gapi.client.drive.File[], nextPageTok
       differenceInCalendarDays(currentDate, oldestDate!) < config.NUMBER_OF_DAYS_BACK;
 
     if (driveResponse.nextPageToken && isWithinTimeWindow) {
-      await fetchAllDriveFiles(newResults, driveResponse.nextPageToken);
+      await fetchAllDriveFiles(googleOauthToken, newResults, driveResponse.nextPageToken);
     }
   }
   return newResults;
 };
 
-const fetchDriveFiles = async () => {
-  const results = await fetchAllDriveFiles([]);
+const fetchDriveFiles = async (googleOauthToken: string) => {
+  const results = await fetchAllDriveFiles(googleOauthToken, []);
   return results.filter((file: gapi.client.drive.File) => isFileWithinTimeWindow(file));
 };
 
-export const fetchDriveFilesById = async (ids: string[]) => {
+export const fetchDriveFilesById = async (ids: string[], authToken: string) => {
+  const params = {
+    fields: driveFileFields,
+  };
+  const searchParams = new URLSearchParams(params).toString();
   const { results } = await PromisePool.withConcurrency(3)
     .for(ids)
     .process(async (id) => {
-      const file = await gapi.client.drive.files.get({
-        fileId: id,
-        fields: driveFileFields,
-      });
-      return file.result;
+      const fileResponse = await fetch(
+        `https://www.googleapis.com/drive/v3/files/${id}?${searchParams}`,
+        {
+          headers: {
+            authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
+      const file = await fileResponse.json();
+      return file;
     });
-  // console.log(results, errors, 'fetchdrivefilesbyid');
   return results;
 };
 

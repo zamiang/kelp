@@ -47,10 +47,14 @@ export default class PersonModel {
 
   async addPeopleToStore(
     people: IPerson[],
-    currentUser: GooglePerson,
+    currentUser?: GooglePerson,
     contacts: GooglePerson[] = [],
     emailAddresses: string[] = [],
   ) {
+    // TODO: Better handlie missing current user in chrome plugin
+    if (!currentUser) {
+      return;
+    }
     const formattedCurrentUser = formatPerson(currentUser);
     formattedCurrentUser.isCurrentUser = 1;
     const emailAddressToPersonIdHash: any = {};
@@ -58,7 +62,7 @@ export default class PersonModel {
     const peopleToAdd: IPerson[] = [formattedCurrentUser];
 
     contactLookup[formattedCurrentUser.id] = formattedCurrentUser;
-    formattedCurrentUser.emailAddresses.forEach((email) => {
+    formattedCurrentUser.emailAddresses.forEach((email: string) => {
       contactLookup[email] = formattedCurrentUser;
       emailAddressToPersonIdHash[formatGmailAddress(email)] = formattedCurrentUser.id;
     });

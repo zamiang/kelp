@@ -70,19 +70,32 @@ const isSelfConfirmedAttending = (attendees: attendee[], creator?: attendee) => 
   return true;
 };
 
-const fetchCalendarEvents = async (addEmailAddressesToStore: (emails: string[]) => any) => {
-  const calendarResponse = await gapi.client.calendar.events.list({
+const fetchCalendarEvents = async (
+  addEmailAddressesToStore: (emails: string[]) => any,
+  authToken: string,
+) => {
+  const params = {
     calendarId: 'primary',
-    maxResults: 2500, // Max before building pagination
-    singleEvents: true,
+    maxResults: '2500', // Max before building pagination
+    singleEvents: 'true',
     orderBy: 'updated', // starttime does not work :shrug:
     timeMin: config.startDate.toISOString(),
     timeMax: config.endDate.toISOString(),
-  });
+  };
+
+  const calendarResponse = await fetch(
+    `https://content.googleapis.com/calendar/v3/calendars/primary/events?${new URLSearchParams(
+      params,
+    ).toString()}`,
+    {
+      headers: {
+        authorization: `Bearer ${authToken}`,
+      },
+    },
+  );
+  const calendarBody = await calendarResponse.json();
   const filteredCalendarEvents =
-    calendarResponse && calendarResponse.result && calendarResponse.result.items
-      ? calendarResponse.result.items
-      : [];
+    calendarBody && calendarBody.items ? (calendarBody.items as gapi.client.calendar.Event[]) : [];
 
   const emailAddresses: string[] = [];
   filteredCalendarEvents.map((event) => {
