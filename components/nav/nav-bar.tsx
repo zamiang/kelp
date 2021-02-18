@@ -209,7 +209,7 @@ const NavBar = (props: IProps) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <b>Labs features</b>
+              <div style={{ fontWeight: 500 }}>Labs features</div>
               <Divider />
               <MenuItem
                 onClick={() => {

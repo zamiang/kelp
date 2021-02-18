@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     cursor: 'pointer',
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: theme.typography.fontWeightMedium,
   },
 }));
 

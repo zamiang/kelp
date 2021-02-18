@@ -178,7 +178,7 @@ const App = () => {
         <Divider />
         <Container maxWidth="md">
           <Paper className={classes.meetingContainer} elevation={2}>
-            <b>todo</b>
+            <div style={{ fontWeight: 500 }}>todo</div>
           </Paper>
         </Container>
         <Divider />

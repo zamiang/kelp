@@ -59,8 +59,8 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
           )}
         </Grid>
         <Grid item className={classes.name} zeroMinWidth>
-          <Typography variant="body2" noWrap>
-            <b>{props.person.name || props.person.id}</b>
+          <Typography variant="body2" noWrap style={{ fontWeight: 500 }}>
+            {props.person.name || props.person.id}
           </Typography>
         </Grid>
       </Grid>

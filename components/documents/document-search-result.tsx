@@ -60,7 +60,7 @@ const DocumentSearchResult = (props: { doc: IDocument; store: IStore }) => {
           <Grid container alignItems="center" justify="space-between">
             <Grid item zeroMinWidth>
               <Typography noWrap variant="body2">
-                <b>{props.doc.name}</b>
+                <span style={{ fontWeight: 500 }}>{props.doc.name}</span>
               </Typography>
             </Grid>
             <Grid item className={classes.time}>

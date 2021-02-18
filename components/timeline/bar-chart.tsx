@@ -26,7 +26,7 @@ const d3Styles = makeStyles((theme) => ({
     },
     '& .tick text': {
       fill: theme.palette.text.secondary,
-      fontWeight: theme.typography.fontWeightBold,
+      fontWeight: theme.typography.fontWeightMedium,
     },
     '& .date-line': {
       fill: 'none',
@@ -57,7 +57,7 @@ const d3Styles = makeStyles((theme) => ({
     },
     '& .label-large': {
       fill: theme.palette.text.secondary,
-      fontWeight: theme.typography.fontWeightBold,
+      fontWeight: theme.typography.fontWeightMedium,
       fillOpacity: 1,
       fontSize: 16,
     },

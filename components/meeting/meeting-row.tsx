@@ -98,11 +98,11 @@ const MeetingRow = (props: {
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
           <Grid container>
             <Grid item xs={12}>
-              <Typography variant="subtitle2">
+              <Typography variant="h6">
                 {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
               </Typography>
               <Typography variant="body2" noWrap>
-                <b>{props.meeting.summary || '(no title)'}</b>{' '}
+                <span style={{ fontWeight: 500 }}>{props.meeting.summary || '(no title)'}</span>{' '}
                 {!props.isSmall && props.meeting.description
                   ? props.meeting.description.replace(/<[^>]+>/g, '')
                   : ''}

@@ -71,7 +71,7 @@ const useDayTitleStyles = makeStyles((theme) => ({
     height: 27,
     display: 'inline-block',
     padding: 3,
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: theme.typography.fontWeightMedium,
   },
   dayOfWeek: {
     display: 'inline-block',
@@ -309,7 +309,7 @@ const CalendarItem = (props: ICalendarItemProps) => {
         </PopperContainer>
       )}
       <Typography className={clsx(classes.title, height < 10 && classes.smallTitle)}>
-        <b>{props.title}</b>, {format(props.start, 'hh:mm')}
+        <span style={{ fontWeight: 500 }}>{props.title}</span>, {format(props.start, 'hh:mm')}
       </Typography>
     </div>
   );

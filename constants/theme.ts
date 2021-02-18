@@ -1,6 +1,6 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
-const bodyFontFamily = "'Inter var', '-apple-system', 'Helvetica Neue', sans-serif;";
+const bodyFontFamily = "'reason-new', 'Inter var', '-apple-system', 'Helvetica Neue', sans-serif;";
 
 const theme = createMuiTheme({
   palette: {
@@ -43,25 +43,34 @@ const theme = createMuiTheme({
   typography: {
     fontSize: 13,
     fontFamily: bodyFontFamily,
-    fontWeightRegular: 500,
+    fontWeightRegular: 400,
     h1: {
-      fontWeight: 500,
+      fontWeight: 400,
+      fontFamily: 'reason-new, sans-serif',
+      fontStyle: 'normal',
     },
     h2: {
-      fontWeight: 500,
+      fontWeight: 400,
+      fontFamily: 'reason-new, sans-serif',
+      fontStyle: 'normal',
     },
     h3: {
-      fontWeight: 500,
+      fontWeight: 400,
+      fontFamily: 'reason-new, sans-serif',
+      fontStyle: 'normal',
     },
     h5: {
       fontSize: '1.875rem',
-      fontWeight: 700,
+      fontWeight: 500,
+      fontFamily: 'reason-new, sans-serif',
+      fontStyle: 'normal',
     },
     h6: {
       fontSize: '0.875rem',
       // color: theme.palette.primary.dark,
+      fontWeight: 400,
       textTransform: 'none',
-      fontWeight: 500,
+      fontStyle: 'normal',
     },
     subtitle1: {
       fontFamily: bodyFontFamily,
@@ -82,7 +91,7 @@ const theme = createMuiTheme({
       fontFamily: bodyFontFamily,
     },
     button: {
-      fontWeight: 700,
+      fontWeight: 500,
     },
   },
   overrides: {

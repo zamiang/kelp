@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: theme.spacing(2),
     textTransform: 'uppercase',
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: theme.typography.fontWeightMedium,
   },
   row: {
     marginBottom: theme.spacing(4),

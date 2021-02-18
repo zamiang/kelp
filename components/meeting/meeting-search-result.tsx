@@ -66,8 +66,8 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
         <Grid item xs={11}>
           <Grid container alignItems="center" justify="space-between">
             <Grid item zeroMinWidth>
-              <Typography variant="body2">
-                <b>{props.meeting.summary || '(no title)'}</b>
+              <Typography variant="body2" style={{ fontWeight: 500 }}>
+                {props.meeting.summary || '(no title)'}
               </Typography>
             </Grid>
             <Grid item className={classes.time}>

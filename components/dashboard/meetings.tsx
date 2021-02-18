@@ -31,7 +31,7 @@ const dayStyles = makeStyles((theme) => ({
   },
   dayInfo: {
     textTransform: 'uppercase',
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: theme.typography.fontWeightMedium,
   },
   currentTime: {
     marginTop: -6,

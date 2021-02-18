@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   highlightValue: {
     fontSize: theme.typography.h4.fontSize,
     color: theme.palette.primary.dark,
-    fontWeight: 600,
+    fontWeight: 500,
   },
   highlightSub: {
     fontSize: '0.875rem',

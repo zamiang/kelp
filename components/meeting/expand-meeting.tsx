@@ -310,7 +310,7 @@ const ExpandedMeeting = (props: {
             <Typography variant="h6" className={classes.smallHeading}>
               Location
             </Typography>
-            <Typography variant="subtitle2" className={classes.overflowEllipsis}>
+            <Typography variant="body2" className={classes.overflowEllipsis}>
               {meeting.location}
             </Typography>
           </React.Fragment>

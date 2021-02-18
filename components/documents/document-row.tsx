@@ -112,7 +112,7 @@ const DocumentRow = (props: {
         </Grid>
         <Grid item zeroMinWidth xs>
           <Typography noWrap variant="body2">
-            <b>{props.doc.name}</b>
+            <span style={{ fontWeight: 500 }}>{props.doc.name}</span>
           </Typography>
         </Grid>
         {!props.isSmall && (

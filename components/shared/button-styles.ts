@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
     background: theme.palette.primary.main,
     color: theme.palette.getContrastText(theme.palette.primary.main),
-    fontWeight: 600,
+    fontWeight: 500,
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
     borderRadius: theme.spacing(3),

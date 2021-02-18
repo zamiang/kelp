@@ -59,8 +59,8 @@ const PersonRow = (props: {
         <Grid item xs zeroMinWidth>
           <Grid container>
             <Grid item xs={12} className={classes.name} zeroMinWidth>
-              <Typography variant="body2" noWrap>
-                <b>{props.person.name || props.person.id}</b>
+              <Typography variant="body2" noWrap style={{ fontWeight: 500 }}>
+                {props.person.name || props.person.id}
               </Typography>
             </Grid>
             <Grid item xs={12} className={classes.email}>

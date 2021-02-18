@@ -43,7 +43,13 @@ module.exports = {
           contentSecurityPolicy: {
             directives: {
               defaultSrc: "'self'",
-              styleSrc: ["'self'", "'unsafe-inline'", 'https://rsms.me/inter/inter.css'],
+              styleSrc: [
+                "'self'",
+                "'unsafe-inline'",
+                'https://rsms.me/inter/inter.css',
+                'https://use.typekit.net/obt3xmb.css',
+                'https://p.typekit.net',
+              ],
               imgSrc: [
                 "'self'",
                 'data:',
@@ -53,7 +59,7 @@ module.exports = {
                 //'https://platform.slack-edge.com',
                 'https://www.googletagmanager.com',
               ],
-              fontSrc: ["'self'", 'https://rsms.me'],
+              fontSrc: ["'self'", 'https://rsms.me', 'https://use.typekit.net'],
               scriptSrc: ["'self'", "'unsafe-eval'", 'https://apis.google.com'],
               frameSrc: [
                 'https://auth.kelp.nyc',
