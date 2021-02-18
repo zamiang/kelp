@@ -79,7 +79,7 @@
     "react-router-dom": "5.2.0",
     "rimraf": "3.0.2",
     "rollbar": "2.21.0",
-    "sitemap": "6.3.6",
+    "sitemap": "6.4.0",
     "stopword": "1.0.6",
     "styled-components": "5.2.1",
     "typescript": "4.1.5",
