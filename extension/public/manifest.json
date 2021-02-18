@@ -10,6 +10,9 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "oauth2": {
     "client_id": "296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com",
     "scopes":[
@@ -21,7 +24,8 @@
     ]
   },
   "permissions": [
-    "identity"
+    "identity",
+    "activeTab"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
