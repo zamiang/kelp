@@ -8,7 +8,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Switch, useLocation } from 'react-router-dom';
+import { Redirect, Route, BrowserRouter as Router, Switch, useLocation } from 'react-router-dom';
 import Docs from '../../components/dashboard/documents';
 import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
@@ -79,13 +79,12 @@ const LoadingDashboardContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const t = fetchToken();
+      const t = await fetchToken();
       setToken(t.accessToken);
       setScope(t.scope);
     };
     void fetchData();
   }, []);
-  console.log(scope, '<<scopes');
 
   if (!isLoading && !session?.user) {
     window.location.pathname = '/';
@@ -267,8 +266,11 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
                 </Grid>
               </Container>
             </Route>
-            <Route path="/">
+            <Route path="/dashboard">
               <Home {...store} />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/meetings" />
             </Route>
           </Switch>
         </ErrorBoundaryComponent>

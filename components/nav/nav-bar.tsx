@@ -1,17 +1,20 @@
 import Avatar from '@material-ui/core/Avatar';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
+import GroupIcon from '@material-ui/icons/Group';
+import HomeIcon from '@material-ui/icons/Home';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/client';
 import React from 'react';
-import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import RefreshButton from './refresh-button';
 import SearchBar from './search-bar';
 
@@ -61,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 6,
   },
   logo: {
-    width: 50,
-    height: 50,
+    width: 24,
+    height: 24,
   },
   noOverflow: {
     overflow: 'hidden',
@@ -98,93 +101,66 @@ const NavBar = (props: IProps) => {
   const [session, isLoading] = useSession();
   const user = session && session.user;
   const tab = router.pathname;
-  const isSummarySelected = tab.includes('summary');
   const isMeetingsSelected = tab.includes('meetings');
   const isDocsSelected = tab.includes('docs');
   const isPeopleSelected = tab.includes('people');
-  const isWeekSelected = tab.includes('week');
-  const isHomeSelected = tab === '/';
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <header className={classes.drawerPaper}>
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
-          <Grid container spacing={2} alignItems="center">
+          <Grid container alignItems="center">
             <Grid item>
-              <Link href="/about" underline="none">
+              <IconButton
+                className={clsx('ignore-react-onclickoutside')}
+                onClick={() => (window.location.pathname = '/about')}
+              >
                 <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
-              </Link>
+              </IconButton>
             </Grid>
             <Grid item>
-              <Link to="/" component={RouterLink} underline="none">
-                <ListItem className={'ignore-react-onclickoutside'}>
-                  <ListItemText
-                    primary="Dashboard"
-                    className={isHomeSelected ? classes.selected : classes.unSelected}
-                  />
-                </ListItem>
-              </Link>
+              <IconButton
+                className={clsx('ignore-react-onclickoutside')}
+                onClick={() => history.push('/meetings')}
+              >
+                <HomeIcon className={isMeetingsSelected ? classes.selected : classes.unSelected} />
+              </IconButton>
             </Grid>
             <Grid item>
-              <Link to="/week" component={RouterLink} underline="none">
-                <ListItem className={'ignore-react-onclickoutside'}>
-                  <ListItemText
-                    primary="Calendar"
-                    className={isWeekSelected ? classes.selected : classes.unSelected}
-                  />
-                </ListItem>
-              </Link>
+              <IconButton
+                className={clsx('ignore-react-onclickoutside')}
+                onClick={() => history.push('/docs')}
+              >
+                <InsertDriveFileIcon
+                  className={isDocsSelected ? classes.selected : classes.unSelected}
+                />
+              </IconButton>
             </Grid>
             <Grid item>
-              <Link to="/summary" component={RouterLink} underline="none">
-                <ListItem className={'ignore-react-onclickoutside'}>
-                  <ListItemText
-                    primary="Summary"
-                    className={isSummarySelected ? classes.selected : classes.unSelected}
-                  />
-                </ListItem>
-              </Link>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item>
-          <Grid container>
-            <Grid item>
-              <Link to="/meetings" component={RouterLink} underline="none">
-                <ListItem className={clsx('ignore-react-onclickoutside')}>
-                  <ListItemText
-                    primary="Meetings"
-                    className={isMeetingsSelected ? classes.selected : classes.unSelected}
-                  />
-                </ListItem>
-              </Link>
+              <IconButton
+                className={clsx('ignore-react-onclickoutside')}
+                onClick={() => history.push('/people')}
+              >
+                <GroupIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
+              </IconButton>
             </Grid>
             <Grid item>
-              <Link to="/docs" component={RouterLink} underline="none">
-                <ListItem className={clsx('ignore-react-onclickoutside')}>
-                  <ListItemText
-                    primary="Documents"
-                    className={isDocsSelected ? classes.selected : classes.unSelected}
-                  />
-                </ListItem>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link to="/people" component={RouterLink} underline="none">
-                <ListItem className={clsx('ignore-react-onclickoutside')}>
-                  <ListItemText
-                    primary="People"
-                    className={isPeopleSelected ? classes.selected : classes.unSelected}
-                  />
-                </ListItem>
-              </Link>
+              <SearchBar />
             </Grid>
           </Grid>
         </Grid>
         <Grid item>
           <Grid container alignItems="center">
-            <Grid item>
-              <SearchBar />
-            </Grid>
             {isLoading && (
               <Grid item>
                 <Tooltip title="Loading">
@@ -214,7 +190,9 @@ const NavBar = (props: IProps) => {
               <Grid item>
                 <IconButton
                   className={clsx('ignore-react-onclickoutside')}
-                  onClick={() => history.push('/settings')}
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleClick}
                 >
                   <Avatar
                     className={clsx(classes.unSelected, classes.icon)}
@@ -224,6 +202,50 @@ const NavBar = (props: IProps) => {
                 </IconButton>
               </Grid>
             )}
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <b>Labs features</b>
+              <Divider />
+              <MenuItem
+                onClick={() => {
+                  history.push('/week');
+                  handleClose();
+                }}
+              >
+                Calendar
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  history.push('/dashboard');
+                  handleClose();
+                }}
+              >
+                Dashboard
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  history.push('/summary');
+                  handleClose();
+                }}
+              >
+                Summary
+              </MenuItem>
+              <Divider />
+              <MenuItem
+                onClick={() => {
+                  history.push('/settings');
+                  handleClose();
+                }}
+              >
+                Settings
+              </MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Menu>
           </Grid>
         </Grid>
       </Grid>

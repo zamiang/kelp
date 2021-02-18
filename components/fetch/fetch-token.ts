@@ -1,4 +1,5 @@
 import config from '../../constants/config';
+import { fetchSelf } from './fetch-self';
 
 // https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow#oauth-2.0-endpoints_4
 
@@ -52,23 +53,36 @@ const oauth2SignIn = (additionalScope?: string) => {
   return form.submit();
 };
 
-export const fetchToken = () => {
+export const fetchToken = async () => {
+  const currentAccessToken = localStorage.getItem('oauth2');
+  if (currentAccessToken) {
+    // Test the auth token with an endpoint
+    const result = await fetchSelf(currentAccessToken);
+    if (result.id) {
+      return {
+        accessToken: currentAccessToken,
+        scope: params.scope,
+      };
+    }
+  }
+
   const fragmentString = location.hash.substring(1);
 
   // Parse query string to see if page request is coming from OAuth 2.0 server.
-  const params: any = {};
+  const urlParams: any = {};
   const regex = /([^&=]+)=([^&]*)/g;
   let m = null;
   while ((m = regex.exec(fragmentString))) {
-    params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+    urlParams[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
   }
-  if (Object.keys(params).length > 0) {
-    localStorage.setItem('oauth2', JSON.stringify(params));
+  if (Object.keys(urlParams).length > 0) {
+    localStorage.setItem('oauth2', urlParams.access_token);
+    window.location.hash = '';
   } else {
     oauth2SignIn();
   }
   return {
-    accessToken: params.access_token,
-    scope: params.scope,
+    accessToken: urlParams.access_token,
+    scope: urlParams.scope,
   };
 };
