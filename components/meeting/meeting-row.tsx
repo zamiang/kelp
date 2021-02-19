@@ -44,12 +44,14 @@ const MeetingRow = (props: {
   shouldRenderCurrentTime: boolean;
   store: IStore;
   isSmall?: boolean;
+  shoudlGreyOutPastEvents?: boolean;
 }) => {
   const isSelected = props.selectedMeetingId === props.meeting.id;
   const classes = useStyles();
   const router = useHistory();
   const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const isPast = props.shoudlGreyOutPastEvents && props.meeting.end < new Date();
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -78,6 +80,7 @@ const MeetingRow = (props: {
         props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
         props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
         props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
+        isPast && rowStyles.rowHint,
         isSelected && rowStyles.rowPrimaryMain,
         props.isSmall && classes.noLeftMargin,
       )}

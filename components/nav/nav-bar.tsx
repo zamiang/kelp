@@ -208,9 +208,8 @@ const NavBar = (props: IProps) => {
               keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
+              style={{ marginTop: 0 }}
             >
-              <div style={{ fontWeight: 500 }}>Labs features</div>
-              <Divider />
               <MenuItem
                 onClick={() => {
                   history.push('/week');

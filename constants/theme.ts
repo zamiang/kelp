@@ -3,6 +3,11 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 const bodyFontFamily = "'reason-new', 'Inter var', '-apple-system', 'Helvetica Neue', sans-serif;";
 
 const theme = createMuiTheme({
+  props: {
+    MuiButtonBase: {
+      disableRipple: true, // No more ripple, on the whole application
+    },
+  },
   palette: {
     common: {
       black: '#000',

@@ -115,6 +115,7 @@ const DayContainer = (props: {
             </ListItem>
           )}
           <MeetingRow
+            shoudlGreyOutPastEvents={true}
             shouldRenderCurrentTime={meeting.id === props.currentTimeMeetingId}
             meeting={meeting}
             selectedMeetingId={props.selectedMeetingId}

@@ -36,14 +36,14 @@ const About = () => {
               <Typography variant="h3" className={classes.heading}>
                 About Kelp
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 Kelp organizes your documents, events and contacts to make work make sense.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 We are trying to help working professionals to quickly gather the information they
                 need to be effective across an increasingly vast set of information sources.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 We meet you where you are instead of asking you to adopt yet another organizational
                 scheme. Our strategy is to find novel approaches to passive information organization
                 in order to reduce the time working professionals (like you!) spend searching for
@@ -54,19 +54,17 @@ const About = () => {
               <br />
               <Typography variant="h4">We make your data work for you</Typography>
               <br />
-              <Typography variant="h6">
-                <b>
-                  Our data can be used for so much more than selling us stuff we don&rsquo;t need.
-                </b>
+              <Typography>
+                Our data can be used for so much more than selling us stuff we don&rsquo;t need.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 Much like a fixer-upper house, our data is not renovated for our use. Our data has
                 mostly been used to sell us products. Our communication tools are separate from our
                 collaboration tools which are separate from our scheduling tools. Each of these
                 individual tools could benefit from information in the other but there is also data
                 in each that we just don&rsquo;t yet use.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 For example, a Slack message contains the text and serves as a signal about the
                 relationship between two people, a piece of information and a point in time. Events
                 organize information as they have a topic, and involve a group of people working to
@@ -74,7 +72,7 @@ const About = () => {
                 artifacts created. A collaborative document, piece of code or design have people,
                 information and time attached to them.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 The mission of Kelp is to figure out how to link that information together in a way
                 that provides meaningful value to working professionals.
               </Typography>
@@ -82,10 +80,10 @@ const About = () => {
               <Divider />
               <br />
               <Typography variant="h4">We put your privacy first</Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 Everything you do in Kelp is anonymous and your data stays on your computer.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 The credentials for third party services are stored securely. All extensions
                 communicate directly via{' '}
                 <MuiLink
@@ -112,12 +110,12 @@ const About = () => {
                 as necessary. None of the data fetched from third party services leaves your
                 computer. Data is fetched when you have Kelp open and gone when you close Kelp.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 Kelp does not don’t track any sensitive data. Only completely anonymous usage
                 statistics and error logging are sent to us. We interpret the usage data in order to
                 improve Kelp. None of the data is sold and we don’t use it for advertisements.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 We deeply believe that limiting Kelp’s access to your data is both our best interest
                 and your best interest and hope to be an example of privacy forward companies.
               </Typography>
@@ -125,7 +123,7 @@ const About = () => {
               <Divider />
               <br />
               <Typography variant="h4">We value security</Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 Kelp does not store your passwords or personal data. We take security seriously and
                 apply experience from e-commerce, and healthcare data security. Kelp’s security
                 practices include but are not limited to:{' '}
@@ -170,11 +168,11 @@ const About = () => {
               <Divider />
               <br />
               <Typography variant="h4">We are building a business for the long term</Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 We are self funded with the goal of building a sustainable product. Our vision is to
                 create a useful tool with an active community paired with a clear business model.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 During our public beta, Kelp is free to use. Eventually, we’ll add paid features and
                 integrations. The clear monetization guarantees that we are able to maintain the
                 tool for the long term.
@@ -183,7 +181,7 @@ const About = () => {
               <Divider />
               <br />
               <Typography variant="h4">About Me</Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 My name is{' '}
                 <MuiLink href="http://www.zamiang.com/" target="_blank" className={classes.link}>
                   Brennan Moore
@@ -230,14 +228,14 @@ const About = () => {
                 . That research with Max, combined with my work experience is what inspired the
                 creation of Kelp.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 Across all of those experiences, I&rsquo;ve made a lot of simple mistakes.
                 I&rsquo;ve lost documents, missed emails, created events with the missing attendees
                 and I&rsquo;ve had coworker relationships languish. While we are responsible for our
                 actions, humans are not well suited to dealing with the amount of information and
                 notifications we receive every day across an increasingly vast set of sources.
               </Typography>
-              <Typography variant="h6" className={classes.body}>
+              <Typography className={classes.body}>
                 I hope to use my experience to build tools that help people take back their time and
                 attention to focus on what is most important rather than what appears urgent.
               </Typography>
