@@ -122,7 +122,10 @@ export default class SegmentModel {
   async getSegmentsForDay(day: Date) {
     // TODO: Use an index
     const segments = await this.getAll();
-    return segments.filter((segment) => isSameDay(segment.start, day));
+    return segments.filter((segment) => {
+      console.log(isSameDay(segment.start, day), segment.start, day, '<<<<<<<');
+      return isSameDay(segment.start, day);
+    });
   }
 
   async getSegmentsForWeek(week: number) {

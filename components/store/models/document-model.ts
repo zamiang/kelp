@@ -31,7 +31,6 @@ export const getGoogleDocsIdFromLink = (link: string) =>
 // handle one person w/ multiple email addresses
 export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => {
   const modifiedTimeProxy = getModifiedTimeProxy(googleDoc);
-  googleDoc.sharedWithMeTime || googleDoc.createdTime || googleDoc.viewedByMeTime;
   return {
     id: googleDoc.id!,
     name: googleDoc.name,

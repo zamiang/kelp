@@ -9,7 +9,7 @@ const driveFileFields =
 
 export const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
   last(
-    [file.sharedWithMeTime, file.createdTime, file.viewedByMeTime]
+    [file?.sharedWithMeTime, file?.createdTime, file?.viewedByMeTime]
       .filter(Boolean)
       .map((d) => new Date(d!))
       .sort(),

@@ -1,11 +1,11 @@
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { DocumentsForToday } from '../../components/dashboard/documents';
-import { PeopleToday } from '../../components/dashboard/people';
 import MeetingRow from '../../components/meeting/meeting-row';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const useInfoStyles = makeStyles((theme) => ({
+  logo: {
+    width: 24,
+    height: 24,
+  },
   homeRow: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
@@ -58,19 +62,26 @@ const useInfoStyles = makeStyles((theme) => ({
 const Info = (props: { database: any; accessToken: string; scope: string }) => {
   const store = getStore(props.database, props.accessToken, props.scope);
   const classes = useInfoStyles();
-  const currentTime = new Date();
   const [segments, setSegments] = useState<ISegment[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
+      const currentTime = new Date();
       const result = await store.timeDataStore.getSegmentsForDay(currentTime);
       setSegments(result.sort((a, b) => (a.start < b.start ? -1 : 1)));
     };
     void fetchData();
-  }, [store]);
+  }, [props.accessToken]);
 
   return (
     <Grid container className={classes.homeRow} spacing={4}>
+      <Grid item>
+        <Link href="https://www.kelp.nyc">
+          <img className={classes.logo} src="/logo.svg" alt="Kelp logo" />
+          <Typography variant="h2">Kelp</Typography>
+        </Link>
+      </Grid>
+      <Divider />
       <Grid item xs={12} sm={4}>
         <Typography variant="h6" className={classes.smallHeading}>
           Today&apos;s schedule
@@ -86,13 +97,6 @@ const Info = (props: { database: any; accessToken: string; scope: string }) => {
             shouldRenderCurrentTime={false}
           />
         ))}
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Typography variant="h6" className={classes.smallHeading}>
-          People you are meeting with today
-        </Typography>
-        <Divider />
-        <PeopleToday {...store} selectedPersonId={null} noLeftMargin={true} />
       </Grid>
       <Grid item xs={12} sm={4}>
         <Typography variant="h6" className={classes.smallHeading}>
