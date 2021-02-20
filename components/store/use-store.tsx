@@ -117,6 +117,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   }, [data.isLoading]);
 
   // When everything is all done do the tfidf one
+  /*
   useEffect(() => {
     const addData = async () => {
       if (data.isLoading) {
@@ -133,6 +134,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     };
     void addData();
   }, [data.isLoading]);
+  */
 
   return {
     driveActivityStore: driveActivityDataStore,

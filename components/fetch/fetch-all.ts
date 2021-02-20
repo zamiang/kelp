@@ -139,7 +139,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       await calendarResponse.execute();
       await driveResponse.execute();
       await formattedPeopleResponse.refetchPersonList();
-      await missingGoogleDocs.refetchMissingDriveFiles();
     },
     lastUpdated: new Date(),
     currentUserLoading: currentUser.loading,
@@ -158,6 +157,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       missingGoogleDocs.missingGoogleDocsLoading,
     error:
       peopleResponse.error ||
+      currentUser.error ||
       contactsResponse.error ||
       driveResponse.error ||
       calendarResponse.error ||
