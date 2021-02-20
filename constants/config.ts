@@ -9,7 +9,7 @@ const scopes = [
   'https://www.googleapis.com/auth/drive.activity.readonly',
 ];
 
-const NUMBER_OF_DAYS_BACK = 56;
+const NUMBER_OF_DAYS_BACK = 40;
 const NUMBER_OF_DAYS_FORWARD = 7;
 
 export default {
