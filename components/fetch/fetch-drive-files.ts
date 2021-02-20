@@ -91,6 +91,7 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string) => {
     fields: driveFileFields,
   };
   const searchParams = new URLSearchParams(params).toString();
+  const idsToRefetch: string[] = [];
   const results = await Promise.all(
     ids.map(async (id) => {
       const fileResponse = await limit(async () =>
@@ -100,10 +101,15 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string) => {
           },
         }),
       );
-      const file = await fileResponse.json();
-      return file;
+      if (fileResponse.status === 200) {
+        const file = await fileResponse.json();
+        return file;
+      } else if (fileResponse.status === 429 || fileResponse.status === 403) {
+        idsToRefetch.push(id);
+      }
     }),
   );
+  console.log('ids to refetch drive files', idsToRefetch);
   return results;
 };
 

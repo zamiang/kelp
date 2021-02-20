@@ -55,7 +55,7 @@ export default class DocumentModel {
 
   async addDocsToStore(documents: IDocument[]) {
     const tx = this.db.transaction('document', 'readwrite');
-    console.log(documents, 'about to save documents');
+    // console.log(documents, 'about to save documents');
     await Promise.all(
       documents.map((document) => {
         if (document.id) {
