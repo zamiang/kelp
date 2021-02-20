@@ -58,7 +58,7 @@ export default class DocumentModel {
     // console.log(documents, 'about to save documents');
     await Promise.all(
       documents.map((document) => {
-        if (document.id) {
+        if (document?.id) {
           return tx.store.put(document);
         }
       }),
