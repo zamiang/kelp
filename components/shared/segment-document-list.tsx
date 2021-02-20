@@ -4,7 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { format, formatDistanceToNow } from 'date-fns';
-import { capitalize, uniqBy } from 'lodash';
+import { capitalize, unionBy, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IDocument } from '../store/models/document-model';
@@ -59,7 +59,7 @@ const Activity = (props: {
     new Date(props.document.updatedAt!),
     "MMM do 'at' hh:mm a",
   )}`;
-  const belowText = `Recent ${props.segmentDocument.reason}${actorText}`;
+  const belowText = `${props.segmentDocument.reason}${actorText}`;
 
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
@@ -96,7 +96,7 @@ const SegmentDocumentItem = (props: {
   segmentDocument: ISegmentDocument;
 }) => {
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
-
+  console.log(props.segmentDocument, '<<<<<<<');
   useEffect(() => {
     const fetchData = async () => {
       if (props.segmentDocument.documentId) {
@@ -121,30 +121,92 @@ const SegmentDocumentItem = (props: {
   );
 };
 
+const SegmentDocumentForNonAttendees = (props: {
+  readonly segmentDocumentsForNonAttendeesCount: number;
+  readonly segmentDocumentsForNonAttendees: ISegmentDocument[];
+  readonly personStore: IStore['personDataStore'];
+  readonly docStore: IStore['documentDataStore'];
+}) => {
+  const [shouldDisplayNonAttendees, setShouldDisplayNonAttendees] = useState<boolean>(false);
+  const classes = useExpandStyles();
+  return (
+    <div className={classes.list}>
+      {props.segmentDocumentsForNonAttendeesCount > 0 && !shouldDisplayNonAttendees && (
+        <div>
+          <Typography
+            onClick={() => setShouldDisplayNonAttendees(true)}
+            variant="caption"
+            className={classes.showMoreButton}
+          >
+            + Show {props.segmentDocumentsForNonAttendeesCount} documents from non-attendees
+          </Typography>
+        </div>
+      )}
+      {props.segmentDocumentsForNonAttendeesCount > 0 &&
+        shouldDisplayNonAttendees &&
+        props.segmentDocumentsForNonAttendees.map((segmentDocument) => (
+          <SegmentDocumentItem
+            key={segmentDocument.id}
+            personStore={props.personStore}
+            segmentDocument={segmentDocument}
+            docStore={props.docStore}
+          />
+        ))}
+    </div>
+  );
+};
+
 const SegmentDocumentList = (props: {
-  segmentDocuments: ISegmentDocument[];
-  personStore: IStore['personDataStore'];
-  docStore: IStore['documentDataStore'];
+  readonly segmentDocuments?: ISegmentDocument[];
+  readonly segmentDocumentsForAttendees?: ISegmentDocument[];
+  readonly segmentDocumentsFromPastMeetings?: ISegmentDocument[];
+  readonly segmentDocumentsForNonAttendees?: ISegmentDocument[];
+  readonly personStore: IStore['personDataStore'];
+  readonly docStore: IStore['documentDataStore'];
 }) => {
   const classes = useExpandStyles();
-  const segmentDocuments = uniqBy(
-    props.segmentDocuments.sort((a, b) => (a.date > b.date ? -1 : 1)),
-    'documentId',
-  );
-  if (segmentDocuments.length < 1) {
+  const segmentsToRender = props.segmentDocuments
+    ? uniqBy(props.segmentDocuments, 'documentId')
+    : unionBy(
+        props.segmentDocumentsForAttendees,
+        props.segmentDocumentsFromPastMeetings,
+        'documentId',
+      );
+  const documentIds = segmentsToRender.map((s) => s.documentId);
+  const filteredSegmentDocumentsForNonAttendees =
+    props.segmentDocumentsForNonAttendees && props.segmentDocumentsForNonAttendees.length > 0
+      ? uniqBy(
+          props.segmentDocumentsForNonAttendees.filter(
+            (segment) => !documentIds.includes(segment.documentId),
+          ),
+          'documentId',
+        )
+      : [];
+  const segmentDocumentsForNonAttendeesCount = filteredSegmentDocumentsForNonAttendees.length;
+  if (segmentsToRender.length < 1) {
     return <Typography variant="caption">None</Typography>;
   }
   return (
-    <div className={classes.list}>
-      {segmentDocuments.map((segmentDocument) => (
-        <SegmentDocumentItem
-          key={segmentDocument.id}
+    <React.Fragment>
+      <div className={classes.list}>
+        {segmentsToRender.map((segmentDocument) => (
+          <SegmentDocumentItem
+            key={segmentDocument.id}
+            personStore={props.personStore}
+            segmentDocument={segmentDocument}
+            docStore={props.docStore}
+          />
+        ))}
+      </div>
+      {segmentDocumentsForNonAttendeesCount > 0 && (
+        <SegmentDocumentForNonAttendees
+          segmentDocumentsForNonAttendeesCount={segmentDocumentsForNonAttendeesCount}
+          segmentDocumentsForNonAttendees={filteredSegmentDocumentsForNonAttendees}
           personStore={props.personStore}
-          segmentDocument={segmentDocument}
           docStore={props.docStore}
         />
-      ))}
-    </div>
+      )}
+    </React.Fragment>
   );
 };
 

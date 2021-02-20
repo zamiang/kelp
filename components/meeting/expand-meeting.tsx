@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format, isToday } from 'date-fns';
-import { uniq, uniqBy } from 'lodash';
+import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
@@ -82,7 +82,6 @@ const ExpandedMeeting = (props: {
   const buttonClasses = useButtonStyles();
   const { slug }: any = useParams();
   const meetingId = props.meetingId || slug;
-  const [shouldDisplayNonAttendees, setShouldDisplayNonAttendees] = useState<boolean>(false);
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [meetingNotesDocument, setMeetingNotesDocument] = useState<IDocument | undefined>(
@@ -136,7 +135,7 @@ const ExpandedMeeting = (props: {
         const result = await props.store.segmentDocumentStore.getAllForMeetingName(
           meeting?.summary,
         );
-        setSegmentDocumentsFromPastMeetings(result || []);
+        setSegmentDocumentsFromPastMeetings(result ? result.filter((s) => s.isPersonAttendee) : []);
       } else {
         setSegmentDocumentsFromPastMeetings([]);
       }
@@ -178,9 +177,6 @@ const ExpandedMeeting = (props: {
   const meetingNotesDocumentIds = uniq(
     segmentDocumentsForAttendees.concat(segmentDocumentsForNonAttendees).map((s) => s.documentId),
   );
-  const segmentDocumentsForNonAttendeesCount = uniqBy(segmentDocumentsForNonAttendees, 'documentId')
-    .length;
-
   return (
     <React.Fragment>
       {!props.hideHeader && (
@@ -285,34 +281,12 @@ const ExpandedMeeting = (props: {
           Documents you may need
         </Typography>
         <SegmentDocumentList
-          segmentDocuments={segmentDocumentsForAttendees}
+          segmentDocumentsForAttendees={segmentDocumentsForAttendees}
+          segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
+          segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
           docStore={props.store.documentDataStore}
           personStore={props.store.personDataStore}
         />
-        <b>past meetings</b>
-        <SegmentDocumentList
-          segmentDocuments={segmentDocumentsFromPastMeetings}
-          docStore={props.store.documentDataStore}
-          personStore={props.store.personDataStore}
-        />
-        {segmentDocumentsForNonAttendeesCount > 0 && !shouldDisplayNonAttendees && (
-          <div>
-            <Typography
-              onClick={() => setShouldDisplayNonAttendees(true)}
-              variant="caption"
-              className={classes.showMoreButton}
-            >
-              + Show {segmentDocumentsForNonAttendeesCount} documents from non-attendees
-            </Typography>
-          </div>
-        )}
-        {segmentDocumentsForNonAttendeesCount > 0 && shouldDisplayNonAttendees && (
-          <SegmentDocumentList
-            segmentDocuments={segmentDocumentsForNonAttendees}
-            docStore={props.store.documentDataStore}
-            personStore={props.store.personDataStore}
-          />
-        )}
         {hasAttendees && (
           <React.Fragment>
             <Typography variant="h6" className={classes.smallHeading}>
