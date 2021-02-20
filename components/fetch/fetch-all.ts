@@ -4,8 +4,7 @@ import { useAsyncAbortable } from 'react-async-hook';
 import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model';
 import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
 import fetchContacts from './fetch-contacts';
-import { IFormattedDriveActivity } from './fetch-drive-activity';
-import FetchDriveActivity from './fetch-drive-activity-hook';
+import fetchDriveActivityForDocumentIds, { IFormattedDriveActivity } from './fetch-drive-activity';
 import fetchDriveFiles from './fetch-drive-files';
 import FetchMissingGoogleDocs from './fetch-missing-google-docs';
 import { batchFetchPeople, person } from './fetch-people';
@@ -92,15 +91,16 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const idsForDriveActivity = uniq(
     googleDocIds.concat(missingGoogleDocs.missingDriveFiles.map((f) => f?.id).filter(Boolean)),
   );
-  const driveActivity = FetchDriveActivity({
-    googleDocIds:
-      driveResponse.loading ||
-      calendarResponse.loading ||
-      missingGoogleDocs.missingGoogleDocsLoading
-        ? []
-        : (idsForDriveActivity as any),
-    googleOauthToken,
-  });
+  const googleDocIdsToFetchActivity =
+    driveResponse.loading || calendarResponse.loading || missingGoogleDocs.missingGoogleDocsLoading
+      ? []
+      : (idsForDriveActivity as any);
+
+  const driveActivityResponse = useAsyncAbortable(
+    () => fetchDriveActivityForDocumentIds(googleDocIdsToFetchActivity, googleOauthToken),
+    [googleDocIdsToFetchActivity.length.toString()] as any, // unsure why this type is a failure
+  );
+  const driveActivity = driveActivityResponse.result ? driveActivityResponse.result.activity : [];
 
   /**
    * People
@@ -109,7 +109,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const contactsByPeopleId = {} as any;
   (contactsResponse.result || []).map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
-    driveActivity.driveActivity
+    driveActivity
       .map((activity) => activity?.actorPersonId)
       .filter((id) => !!id && !contactsByPeopleId[id]),
   );
@@ -125,7 +125,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   };
 
   return {
-    ...driveActivity,
+    driveActivity,
     ...formattedPeopleResponse,
     ...missingGoogleDocs,
     calendarEvents: calendarResponse.result
@@ -144,6 +144,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     lastUpdated: new Date(),
     currentUserLoading: currentUser.loading,
     driveResponseLoading: driveResponse.loading,
+    driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading,
     isLoading:
@@ -152,7 +153,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       driveResponse.loading ||
       calendarResponse.loading ||
       contactsResponse.loading ||
-      driveActivity.driveActivityLoading ||
+      driveActivityResponse.loading ||
       formattedPeopleResponse.peopleLoading ||
       missingGoogleDocs.missingGoogleDocsLoading,
     error:
@@ -160,7 +161,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       contactsResponse.error ||
       driveResponse.error ||
       calendarResponse.error ||
-      driveActivity.error ||
+      driveActivityResponse.error ||
       formattedPeopleResponse.peopleError ||
       missingGoogleDocs.missingGoogleDocsError,
   };
