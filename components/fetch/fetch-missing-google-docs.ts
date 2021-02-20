@@ -15,7 +15,7 @@ const FetchMissingGoogleDocs = (props: IProps) => {
     missingDriveFiles: missingGoogleDocs.result ? missingGoogleDocs.result : [],
     refetchMissingDriveFiles: missingGoogleDocs.execute,
     missingGoogleDocsLoading: missingGoogleDocs.loading,
-    error: missingGoogleDocs.error,
+    missingGoogleDocsError: missingGoogleDocs.error,
   };
 };
 

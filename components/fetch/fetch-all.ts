@@ -1,12 +1,15 @@
 import { flatten, uniq } from 'lodash';
+import { useState } from 'react';
+import { useAsyncAbortable } from 'react-async-hook';
 import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model';
-import { ICalendarEvent } from './fetch-calendar-events';
+import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
+import fetchContacts from './fetch-contacts';
 import { IFormattedDriveActivity } from './fetch-drive-activity';
 import FetchDriveActivity from './fetch-drive-activity-hook';
-import FetchFirst from './fetch-first';
+import fetchDriveFiles from './fetch-drive-files';
 import FetchMissingGoogleDocs from './fetch-missing-google-docs';
-import { person } from './fetch-people';
-import FetchThird from './fetch-third';
+import { batchFetchPeople, person } from './fetch-people';
+import { fetchSelf } from './fetch-self';
 
 interface IReturnType {
   readonly personList: person[];
@@ -28,100 +31,138 @@ interface IReturnType {
   readonly currentUserLoading: boolean;
 }
 
-// Our hook
-/*
-const useDebounce = (value: any, delay: number) => {
-  // State and setters for debounced value
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(
-    () => {
-      // Set debouncedValue to value (passed in) after the specified delay
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
-
-      // Return a cleanup function that will be called every time ...
-      // ... useEffect is re-called. useEffect will only be re-called ...
-      // ... if value changes (see the inputs array below).
-      // This is how we prevent debouncedValue from changing if value is ...
-      // ... changed within the delay period. Timeout gets cleared and restarted.
-      // To put it in context, if the user is typing within our app's ...
-      // ... search box, we don't want the debouncedValue to update until ...
-      // ... they've stopped typing for more than 500ms.
-      return () => {
-        clearTimeout(handler);
-      };
-    },
-    // Only re-call effect if value changes
-    // You could also add the "delay" var to inputs array if you ...
-    // ... need to be able to change that dynamically.
-    [value],
-  );
-
-  return debouncedValue;
-};
-*/
+const initialEmailList: string[] = [];
 
 const FetchAll = (googleOauthToken: string): IReturnType => {
-  const firstLayer = FetchFirst(googleOauthToken);
+  const [emailList, setEmailList] = useState(initialEmailList);
+  const addEmailAddressesToStore = (emailAddresses: string[]) => {
+    setEmailList(uniq(emailAddresses.concat(emailList)));
+  };
 
+  /**
+   * CURRENT USER
+   */
+  const currentUser = useAsyncAbortable(() => fetchSelf(googleOauthToken), [
+    googleOauthToken,
+  ] as any);
+
+  /**
+   * DRIVE FILES
+   */
+  const driveResponse = useAsyncAbortable(() => fetchDriveFiles(googleOauthToken), [
+    googleOauthToken,
+  ] as any);
+
+  /**
+   * CONTACTS
+   */
+  const contactsResponse = useAsyncAbortable(() => fetchContacts(googleOauthToken), [
+    googleOauthToken,
+  ] as any);
+
+  /**
+   * CALENDAR
+   */
+  const calendarResponse = useAsyncAbortable(
+    () => fetchCalendarEvents(addEmailAddressesToStore, googleOauthToken),
+    [googleOauthToken] as any,
+  );
+
+  /**
+   * MISSING GOOGLE DOCS
+   */
   // Find documents that are in meeting descriptions and make sure to fetch them as well
   const potentiallyMissingGoogleDocIds = flatten(
-    firstLayer.calendarEvents.map((event) => getDocumentIdsFromCalendarEvents(event)),
+    (calendarResponse.result?.calendarEvents || []).map((event) =>
+      getDocumentIdsFromCalendarEvents(event),
+    ),
   ).filter(Boolean);
-  const googleDocIds = firstLayer.driveFiles.map((file) => file?.id).filter(Boolean);
+  const googleDocIds = (driveResponse.result || []).map((file) => file?.id).filter(Boolean);
   const missingGoogleDocIds = uniq(
     potentiallyMissingGoogleDocIds.filter((id) => !googleDocIds.includes(id)),
   );
-
   const missingGoogleDocs = FetchMissingGoogleDocs({
     missingGoogleDocIds,
     googleOauthToken,
   });
 
+  /**
+   * DRIVE ACTIVITY
+   */
   const idsForDriveActivity = uniq(
     googleDocIds.concat(missingGoogleDocs.missingDriveFiles.map((f) => f?.id).filter(Boolean)),
   );
   const driveActivity = FetchDriveActivity({
     googleDocIds:
-      firstLayer.isLoading || missingGoogleDocs.missingGoogleDocsLoading
+      driveResponse.loading ||
+      calendarResponse.loading ||
+      missingGoogleDocs.missingGoogleDocsLoading
         ? []
         : (idsForDriveActivity as any),
     googleOauthToken,
   });
 
+  /**
+   * People
+   */
   // Find people who are in drive activity but not in contacts and try to fetch them.
   const contactsByPeopleId = {} as any;
-  firstLayer.contacts.map((c) => (contactsByPeopleId[c.id] = c));
+  (contactsResponse.result || []).map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
     driveActivity.driveActivity
       .map((activity) => activity?.actorPersonId)
       .filter((id) => !!id && !contactsByPeopleId[id]),
   );
-
-  const thirdLayer = FetchThird({
-    peopleIds: peopleIds as any,
-    googleOauthToken,
-  });
+  const peopleResponse = useAsyncAbortable(
+    () => batchFetchPeople(peopleIds as any, googleOauthToken),
+    [peopleIds.length.toString()] as any,
+  );
+  const formattedPeopleResponse = {
+    peopleLoading: peopleResponse.loading,
+    peopleError: peopleResponse ? peopleResponse.error : undefined,
+    personList: peopleResponse.result ? peopleResponse.result : [],
+    refetchPersonList: peopleResponse.execute,
+  };
 
   return {
-    ...firstLayer,
     ...driveActivity,
-    ...thirdLayer,
+    ...formattedPeopleResponse,
     ...missingGoogleDocs,
+    calendarEvents: calendarResponse.result
+      ? calendarResponse.result.calendarEvents.filter(Boolean) || []
+      : [],
+    driveFiles: driveResponse.result ? driveResponse.result.filter(Boolean) : [],
+    contacts: contactsResponse.result ? contactsResponse.result.filter(Boolean) : [],
+    currentUser: currentUser.result,
+    emailAddresses: emailList,
     refetch: async () => {
-      await firstLayer.refetchCalendarEvents();
-      await firstLayer.refetchDriveFiles();
-      await thirdLayer.refetchPersonList();
+      await calendarResponse.execute();
+      await driveResponse.execute();
+      await formattedPeopleResponse.refetchPersonList();
       await missingGoogleDocs.refetchMissingDriveFiles();
     },
+    lastUpdated: new Date(),
+    currentUserLoading: currentUser.loading,
+    driveResponseLoading: driveResponse.loading,
+    calendarResponseLoading: calendarResponse.loading,
+    contactsResponseLoading: contactsResponse.loading,
     isLoading:
-      firstLayer.isLoading ||
+      peopleResponse.loading ||
+      currentUser.loading ||
+      driveResponse.loading ||
+      calendarResponse.loading ||
+      contactsResponse.loading ||
       driveActivity.driveActivityLoading ||
-      thirdLayer.peopleLoading ||
-      missingGoogleDocs.missingGoogleDocsLoading, // debouncedIsLoading,
-    error: firstLayer.error || driveActivity.error || thirdLayer.error || missingGoogleDocs.error,
+      formattedPeopleResponse.peopleLoading ||
+      missingGoogleDocs.missingGoogleDocsLoading,
+    error:
+      peopleResponse.error ||
+      contactsResponse.error ||
+      driveResponse.error ||
+      calendarResponse.error ||
+      driveActivity.error ||
+      formattedPeopleResponse.peopleError ||
+      missingGoogleDocs.missingGoogleDocsError,
   };
 };
 

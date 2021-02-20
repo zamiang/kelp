@@ -44,7 +44,7 @@ type ExcludesFalse = <T>(x: T | false) => x is T;
 // create a rate limiter that allows up to x API calls per second, with max concurrency of y
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
-  rate: 6,
+  rate: 5,
   concurrency: 4,
   maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
 });
@@ -72,7 +72,7 @@ const fetchDriveActivityForDocument = async (
   );
 
   if (activityResponse.status !== 200) {
-    if (activityResponse.status === 403) {
+    if (activityResponse.status === 429) {
       idsToRefetch.push(documentId);
     }
     return { peopleIds: [], activity: [] };
@@ -126,10 +126,9 @@ const fetchDriveActivityForDocumentIds = async (ids: string[], googleOauthToken:
   const results = await Promise.all(
     ids.map(async (id) => fetchDriveActivityForDocument(id, googleOauthToken, idsToRefetch)),
   );
-  console.log(idsToRefetch, 'ids to refetch drive activity');
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
   const activity = flatten(results.map((result) => result.activity));
-  return { peopleIds, activity };
+  return { peopleIds, activity, driveActivityIdsToRefetch: idsToRefetch };
 };
 
 export default fetchDriveActivityForDocumentIds;

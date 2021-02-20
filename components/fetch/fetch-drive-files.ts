@@ -104,7 +104,7 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string) => {
       if (fileResponse.status === 200) {
         const file = await fileResponse.json();
         return file;
-      } else if (fileResponse.status === 429 || fileResponse.status === 403) {
+      } else if (fileResponse.status === 429) {
         idsToRefetch.push(id);
       }
     }),
