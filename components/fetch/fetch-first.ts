@@ -31,11 +31,13 @@ const FetchFirst = (googleOauthToken: string) => {
     contactsResponseLoading: contactsResponse.loading,
     currentUserLoading: currentUser.loading,
     error: driveResponse.error || calendarResponse.error || contactsResponse.error,
-    calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents || [] : [],
-    driveFiles: driveResponse.result || [],
+    calendarEvents: calendarResponse.result
+      ? calendarResponse.result.calendarEvents.filter(Boolean) || []
+      : [],
+    driveFiles: driveResponse.result ? driveResponse.result.filter(Boolean) : [],
     refetchCalendarEvents: calendarResponse.execute,
     refetchDriveFiles: driveResponse.execute,
-    contacts: contactsResponse.result || [],
+    contacts: contactsResponse.result ? contactsResponse.result.filter(Boolean) : [],
     currentUser: currentUser.result,
     lastUpdated: new Date(),
     emailAddresses: emailList,

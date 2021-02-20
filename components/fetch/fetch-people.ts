@@ -1,5 +1,5 @@
-import PromisePool from '@supercharge/promise-pool';
 import { chunk, flatten, uniq } from 'lodash';
+import { pRateLimit } from 'p-ratelimit';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
 
@@ -63,6 +63,14 @@ export const fetchPerson = async (personId: string, authToken: string) => {
   return result as gapi.client.people.Person;
 };
 
+// create a rate limiter that allows up to x API calls per second, with max concurrency of y
+const limit = pRateLimit({
+  interval: 1000 * 60, // 1000 ms == 1 second
+  rate: 100,
+  concurrency: 4,
+  maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
+});
+
 export const batchFetchPeople = async (peopleIds: string[], authToken: string) => {
   if (peopleIds.length < 1) {
     return [];
@@ -70,26 +78,29 @@ export const batchFetchPeople = async (peopleIds: string[], authToken: string) =
 
   const uniquePeopleIdsChunks = chunk(uniq(peopleIds), 49);
 
-  const { results } = await PromisePool.withConcurrency(3)
-    .for(uniquePeopleIdsChunks)
-    .process(async (uniquePeopleIds) => {
+  const results = await Promise.all(
+    uniquePeopleIdsChunks.map(async (uniquePeopleIds) => {
       const searchParams = new URLSearchParams({
         personFields: usedPersonFields,
       });
       uniquePeopleIds.forEach((id) => searchParams.append('resourceNames', id));
 
-      const personResponse = await fetch(
-        `https://people.googleapis.com/v1/people:batchGet?${searchParams.toString()}`,
-        {
-          headers: {
-            authorization: `Bearer ${authToken}`,
-          },
-        },
+      const personResponse = await limit(
+        async () =>
+          await fetch(
+            `https://people.googleapis.com/v1/people:batchGet?${searchParams.toString()}`,
+            {
+              headers: {
+                authorization: `Bearer ${authToken}`,
+              },
+            },
+          ),
       );
       const result = await personResponse.json();
 
       return result;
-    });
+    }),
+  );
 
   // NOTE: This returns very little unless the person is in the user's contacts
   const flattenedPeople = flatten(results.map((r) => r.responses));
