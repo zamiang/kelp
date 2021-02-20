@@ -103,7 +103,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const driveActivity = driveActivityResponse.result ? driveActivityResponse.result.activity : [];
 
   /**
-   * People
+   * PEOPLE
    */
   // Find people who are in drive activity but not in contacts and try to fetch them.
   const contactsByPeopleId = {} as any;

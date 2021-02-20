@@ -45,6 +45,7 @@ interface Db extends DBSchema {
       'by-segment-id': string;
       'by-document-id': string;
       'by-drive-activity-id': string;
+      'by-segment-title': string;
       'by-person-id': string;
       'by-day': number;
       'by-week': number;
@@ -123,6 +124,7 @@ async function database(environment: 'production' | 'test' | 'homepage' | 'exten
       segmentDocumentStore.createIndex('by-day', 'day', { unique: false });
       segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
       segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
+      segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
     },
     terminated: () => {
       console.error('Terminated');

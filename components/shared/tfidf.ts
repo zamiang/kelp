@@ -121,7 +121,7 @@ const stopwords = [
 const removeStopwords = (tokens: string[]) =>
   tokens.filter((value) => !stopwords.includes(value.toLowerCase()));
 
-const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
+export const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 
 const buildDocument = (text: string, key: string): IDocumentument =>
   removeStopwords(text.replace(removePunctuationRegex, '').split(' ')).reduce(

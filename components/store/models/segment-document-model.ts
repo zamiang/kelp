@@ -2,6 +2,7 @@ import { getDayOfYear } from 'date-fns';
 import { flatten } from 'lodash';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
+import { removePunctuationRegex } from '../../shared/tfidf';
 import { dbType } from '../db';
 import AttendeeModel from './attendee-model';
 import DriveActivityModel from './drive-activity-model';
@@ -12,6 +13,7 @@ export interface ISegmentDocument {
   driveActivityId?: string;
   documentId: string;
   segmentId?: string;
+  segmentTitle?: string;
   date: Date;
   reason: string;
   isPersonAttendee?: Boolean;
@@ -19,6 +21,11 @@ export interface ISegmentDocument {
   day: number;
   week: number;
 }
+
+const formatSegmentTitle = (text?: string) =>
+  text
+    ? text.replace(removePunctuationRegex, '').split(' ').join('').toLocaleLowerCase()
+    : undefined;
 
 const formatSegmentDocument = (
   driveActivity: IFormattedDriveActivity,
@@ -29,6 +36,7 @@ const formatSegmentDocument = (
   driveActivityId: driveActivity.id,
   documentId: driveActivity.documentId!,
   segmentId: segment?.id,
+  segmentTitle: formatSegmentTitle(segment?.summary),
   date: driveActivity.time,
   reason: driveActivity.action,
   personId: driveActivity.actorPersonId!,
@@ -44,6 +52,7 @@ const formatSegmentDocumentFromDescription = (
   id: `${segment.id}-${documentId}`,
   documentId,
   segmentId: segment.id,
+  segmentTitle: formatSegmentTitle(segment.summary),
   date: segment.start,
   reason: 'Listed in meeting description',
   personId: segment.organizer!.id!,
@@ -115,6 +124,13 @@ export default class SegmentDocumentModel {
 
   async getAllForSegmentId(segmentId: string) {
     return this.db.getAllFromIndex('segmentDocument', 'by-segment-id', segmentId);
+  }
+
+  async getAllForMeetingName(title: string) {
+    const formattedTitle = formatSegmentTitle(title);
+    if (formattedTitle) {
+      return this.db.getAllFromIndex('segmentDocument', 'by-segment-title', formattedTitle);
+    }
   }
 
   async getAllForDocumentId(documentId: string) {

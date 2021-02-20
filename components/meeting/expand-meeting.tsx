@@ -95,6 +95,9 @@ const ExpandedMeeting = (props: {
   const [segmentDocumentsForNonAttendees, setSegmentDocumentsForNonAttendees] = useState<
     ISegmentDocument[]
   >([]);
+  const [segmentDocumentsFromPastMeetings, setSegmentDocumentsFromPastMeetings] = useState<
+    ISegmentDocument[]
+  >([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,6 +129,20 @@ const ExpandedMeeting = (props: {
     };
     void fetchData();
   }, [props.store.isLoading, meetingId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (meeting?.summary) {
+        const result = await props.store.segmentDocumentStore.getAllForMeetingName(
+          meeting?.summary,
+        );
+        setSegmentDocumentsFromPastMeetings(result || []);
+      } else {
+        setSegmentDocumentsFromPastMeetings([]);
+      }
+    };
+    void fetchData();
+  }, [props.store.isLoading, meeting?.summary]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -269,6 +286,12 @@ const ExpandedMeeting = (props: {
         </Typography>
         <SegmentDocumentList
           segmentDocuments={segmentDocumentsForAttendees}
+          docStore={props.store.documentDataStore}
+          personStore={props.store.personDataStore}
+        />
+        <b>past meetings</b>
+        <SegmentDocumentList
+          segmentDocuments={segmentDocumentsFromPastMeetings}
           docStore={props.store.documentDataStore}
           personStore={props.store.personDataStore}
         />
