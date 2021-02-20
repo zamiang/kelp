@@ -43,8 +43,8 @@ type ExcludesFalse = <T>(x: T | false) => x is T;
 
 // create a rate limiter that allows up to x API calls per second, with max concurrency of y
 const limit = pRateLimit({
-  interval: 1000, // 1000 ms == 1 second
-  rate: 10,
+  interval: 1000 & 60, // 1000 ms == 1 second
+  rate: 100,
   concurrency: 4,
   maxDelay: 2000, // an API call delayed > 2 sec is rejected
 });
