@@ -17,9 +17,12 @@ export default class DriveActivityModel {
   async addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
     const tx = this.db.transaction('driveActivity', 'readwrite');
     await Promise.all(
-      driveActivity.map((driveActivityItem) =>
-        tx.store.put(formatDriveActivity(driveActivityItem)),
-      ),
+      driveActivity.map((driveActivityItem) => {
+        const formattedItem = formatDriveActivity(driveActivityItem);
+        if (formattedItem.id) {
+          return tx.store.put(formattedItem);
+        }
+      }),
     );
     return tx.done;
   }

@@ -80,7 +80,12 @@ export default class SegmentDocumentModel {
           );
         }
 
-        return formatSegmentDocument(driveActivityItem, segment, isActorAttendee);
+        const formattedDocument = formatSegmentDocument(
+          driveActivityItem,
+          segment,
+          isActorAttendee,
+        );
+        return formattedDocument;
       }),
     );
 
@@ -94,8 +99,8 @@ export default class SegmentDocumentModel {
     );
 
     const tx = this.db.transaction('segmentDocument', 'readwrite');
-    await Promise.all(driveActivityToAdd.map((item) => tx.store.put(item)));
-    await Promise.all(flatten(descriptionsToAdd).map((item) => tx.store.put(item)));
+    await Promise.all(driveActivityToAdd.map((item) => item?.id && tx.store.put(item)));
+    await Promise.all(flatten(descriptionsToAdd).map((item) => item?.id && tx.store.put(item)));
     return tx.done;
   }
 
