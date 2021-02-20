@@ -81,7 +81,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   });
 
   const idsForDriveActivity = uniq(
-    googleDocIds.concat(missingGoogleDocs.missingDriveFiles.map((f) => f.id)).filter(Boolean),
+    googleDocIds.concat(missingGoogleDocs.missingDriveFiles.map((f) => f.id).filter(Boolean)),
   );
   const driveActivity = FetchDriveActivity({
     googleDocIds:
