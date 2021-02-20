@@ -70,7 +70,12 @@ export default class AttendeeModel {
       }),
     );
     const tx = this.db.transaction('attendee', 'readwrite');
-    await Promise.all(flatten(attendees).map(async (s) => s && tx.store.put(s)));
+    console.log(attendees, 'about to save attendees');
+    try {
+      await Promise.all(flatten(attendees).map(async (s) => s && tx.store.put(s)));
+    } catch (e) {
+      console.log(e);
+    }
     return tx.done;
   }
 

@@ -127,7 +127,12 @@ export default class PersonModel {
     });
 
     const tx = this.db.transaction('person', 'readwrite');
-    await Promise.all(peopleToAdd.map((person) => tx.store.put(person)));
+    console.log(peopleToAdd, 'about to save people');
+    try {
+      await Promise.all(peopleToAdd.map((person) => tx.store.put(person)));
+    } catch (e) {
+      console.log(e);
+    }
     return tx.done;
   }
 

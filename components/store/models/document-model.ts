@@ -53,9 +53,14 @@ export default class DocumentModel {
     this.db = db;
   }
 
-  async addDocsToStore(docs: IDocument[]) {
+  async addDocsToStore(documents: IDocument[]) {
     const tx = this.db.transaction('document', 'readwrite');
-    await Promise.all(docs.map((document) => tx.store.put(document)));
+    console.log(documents, 'about to save documents');
+    try {
+      await Promise.all(documents.map((document) => tx.store.put(document)));
+    } catch (e) {
+      console.log(e);
+    }
     return tx.done;
   }
 

@@ -79,7 +79,6 @@ export default class SegmentDocumentModel {
             (a) => a.personGoogleId === driveActivityItem.actorPersonId,
           );
         }
-
         const formattedDocument = formatSegmentDocument(
           driveActivityItem,
           segment,
@@ -99,8 +98,18 @@ export default class SegmentDocumentModel {
     );
 
     const tx = this.db.transaction('segmentDocument', 'readwrite');
-    await Promise.all(driveActivityToAdd.map((item) => item?.id && tx.store.put(item)));
-    await Promise.all(flatten(descriptionsToAdd).map((item) => item?.id && tx.store.put(item)));
+    console.log(driveActivityToAdd, 'about to save segment documents');
+    try {
+      await Promise.all(driveActivityToAdd.map((item) => item?.id && tx.store.put(item)));
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(flatten(descriptionsToAdd), 'about to save description items');
+    try {
+      await Promise.all(flatten(descriptionsToAdd).map((item) => item?.id && tx.store.put(item)));
+    } catch (e) {
+      console.log(e);
+    }
     return tx.done;
   }
 

@@ -105,46 +105,48 @@ export default class TfidfStore {
         );
       }),
     );
-    const tx = this.db.transaction('tfidf', 'readwrite');
-    Object.keys(documentsByDay)
+
+    const documentItems = Object.keys(documentsByDay)
       .map((key) => ({
         key,
         text: documentsByDay[key].join(' '),
       }))
-      .map((item) =>
-        tx.store.put({
-          id: `documents-${item.key}`,
-          key: item.key,
-          type: 'documents',
-          text: item.text,
-        }),
-      );
-    Object.keys(meetingsByDay)
+      .map((item) => ({
+        id: `documents-${item.key}`,
+        key: item.key,
+        type: 'documents' as any,
+        text: item.text,
+      }));
+    const meetingItems = Object.keys(meetingsByDay)
       .map((key) => ({
         key,
         text: meetingsByDay[key].join(' '),
       }))
-      .map((item) =>
-        tx.store.put({
-          id: `meetings-${item.key}`,
-          key: item.key,
-          type: 'meetings',
-          text: item.text,
-        }),
-      );
-    Object.keys(peopleByDay)
+      .map((item) => ({
+        id: `meetings-${item.key}`,
+        key: item.key,
+        type: 'meetings' as any,
+        text: item.text,
+      }));
+    const peopleItems = Object.keys(peopleByDay)
       .map((key) => ({
         key,
         text: peopleByDay[key].join(' '),
       }))
-      .map((item) =>
-        tx.store.put({
-          id: `activityList-${item.key}`,
-          key: item.key,
-          type: 'people',
-          text: item.text,
-        }),
-      );
+      .map((item) => ({
+        id: `activityList-${item.key}`,
+        key: item.key,
+        type: 'people' as any,
+        text: item.text,
+      }));
+    const tx = this.db.transaction('tfidf', 'readwrite');
+    console.log(documentItems, 'about to save documentitems tfidf');
+    await Promise.all(documentItems.map(async (item) => tx.store.put(item)));
+    console.log(meetingItems, 'about to save meetingitems tfidf');
+    await Promise.all(meetingItems.map(async (item) => tx.store.put(item)));
+    console.log(peopleItems, 'about to save peopleItems - tfidf');
+    await Promise.all(peopleItems.map(async (item) => tx.store.put(item)));
+
     return tx.done;
   }
 

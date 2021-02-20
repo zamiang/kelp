@@ -86,11 +86,13 @@ const fetchDriveActivityForDocument = async (documentId: string, googleOauthToke
         const actor = activity.actors && activity.actors[0];
         const actorPersonId =
           actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
-        if (!targetInfo || !targetInfo.link) {
+        if (!targetInfo || !targetInfo.link || !activity.timestamp) {
+          console.log('weird data', activity);
           return false; // typescript and filter don't get along
         }
+
         return {
-          id: activity.timestamp || 'noid',
+          id: `${activity.timestamp}-${actorPersonId}`,
           time: activity.timestamp ? new Date(activity.timestamp) : new Date(),
           action,
           actorPersonId,
@@ -112,11 +114,9 @@ const fetchDriveActivityForDocument = async (documentId: string, googleOauthToke
 };
 
 const fetchDriveActivityForDocumentIds = async (ids: string[], googleOauthToken: string) => {
-  console.log('starting fetching', ids);
   const results = await Promise.all(
     ids.map(async (id) => fetchDriveActivityForDocument(id, googleOauthToken)),
   );
-  console.log('done', results);
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
   const activity = flatten(results.map((result) => result.activity));
   return { peopleIds, activity };
