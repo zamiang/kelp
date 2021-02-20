@@ -1,5 +1,4 @@
 import { flatten, uniq } from 'lodash';
-import { useEffect, useState } from 'react';
 import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model';
 import { ICalendarEvent } from './fetch-calendar-events';
 import { IFormattedDriveActivity } from './fetch-drive-activity';
@@ -22,9 +21,15 @@ interface IReturnType {
   readonly refetch: () => void;
   readonly lastUpdated: Date;
   readonly error: Error | undefined;
+  readonly driveResponseLoading: boolean;
+  readonly calendarResponseLoading: boolean;
+  readonly contactsResponseLoading: boolean;
+  readonly driveActivityLoading: boolean;
+  readonly currentUserLoading: boolean;
 }
 
 // Our hook
+/*
 const useDebounce = (value: any, delay: number) => {
   // State and setters for debounced value
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -56,6 +61,7 @@ const useDebounce = (value: any, delay: number) => {
 
   return debouncedValue;
 };
+*/
 
 const FetchAll = (googleOauthToken: string): IReturnType => {
   const firstLayer = FetchFirst(googleOauthToken);
@@ -65,12 +71,11 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     firstLayer.calendarEvents.map((event) => getDocumentIdsFromCalendarEvents(event)),
   ).filter(Boolean);
   const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
-  const missingGoogleDocIds = potentiallyMissingGoogleDocIds.filter(
-    (id) => !googleDocIds.includes(id),
+  const missingGoogleDocIds = uniq(
+    potentiallyMissingGoogleDocIds.filter((id) => !googleDocIds.includes(id)),
   );
   const secondLayer = FetchSecond({
     googleDocIds: googleDocIds.concat(missingGoogleDocIds),
-    isLoading: firstLayer.isLoading,
     googleOauthToken,
   });
 
@@ -84,21 +89,14 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   );
 
   const thirdLayer = FetchThird({
-    isLoading: firstLayer.isLoading || secondLayer.isLoading,
     peopleIds,
     googleOauthToken,
   });
 
   const fourthLayer = FetchFourth({
-    missingGoogleDocIds: uniq(missingGoogleDocIds),
-    isLoading: firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading,
+    missingGoogleDocIds,
     googleOauthToken,
   });
-
-  const debouncedIsLoading = useDebounce(
-    firstLayer.isLoading || secondLayer.isLoading || thirdLayer.isLoading || fourthLayer.isLoading,
-    300,
-  );
 
   return {
     ...firstLayer,
@@ -111,7 +109,11 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       await thirdLayer.refetchPersonList();
       await fourthLayer.refetchMissingDriveFiles();
     },
-    isLoading: debouncedIsLoading,
+    isLoading:
+      firstLayer.isLoading ||
+      secondLayer.driveActivityLoading ||
+      thirdLayer.peopleLoading ||
+      fourthLayer.missingGoogleDocsLoading, // debouncedIsLoading,
     error: firstLayer.error || secondLayer.error || thirdLayer.error || fourthLayer.error,
   };
 };

@@ -3,7 +3,6 @@ import fetchDriveActivityForDocumentIds from './fetch-drive-activity';
 
 interface IProps {
   readonly googleDocIds: string[];
-  readonly isLoading: boolean;
   readonly googleOauthToken: string;
 }
 /**
@@ -12,17 +11,13 @@ interface IProps {
 const FetchSecond = (props: IProps) => {
   // The goal is to only fetch if loading is false
   const activityResponse = useAsyncAbortable(
-    () =>
-      fetchDriveActivityForDocumentIds(
-        props.isLoading ? [] : props.googleDocIds,
-        props.googleOauthToken,
-      ),
+    () => fetchDriveActivityForDocumentIds(props.googleDocIds, props.googleOauthToken),
     [props.googleDocIds.length.toString()] as any, // unsure why this type is a failure
   );
   return {
     driveActivity: activityResponse.result ? activityResponse.result.activity : [],
     refetchDriveActivity: activityResponse.execute,
-    isLoading: activityResponse.loading,
+    driveActivityLoading: activityResponse.loading,
     error: activityResponse.error,
   };
 };

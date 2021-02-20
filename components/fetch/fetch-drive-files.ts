@@ -19,6 +19,7 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
   const currentDate = new Date();
   const modifiedTimeProxy = getModifiedTimeProxy(file);
   return (
+    file &&
     !file.trashed &&
     modifiedTimeProxy &&
     differenceInCalendarDays(currentDate, modifiedTimeProxy) < config.NUMBER_OF_DAYS_BACK

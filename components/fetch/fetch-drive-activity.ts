@@ -44,7 +44,7 @@ type ExcludesFalse = <T>(x: T | false) => x is T;
 const fetchDriveActivityForDocument = async (documentId: string, googleOauthToken: string) => {
   try {
     const params = {
-      pageSize: '50',
+      pageSize: 50,
       filter: `detail.action_detail_case:(CREATE EDIT COMMENT RENAME) AND time >= "${config.startDate.toISOString()}"`,
       itemName: `items/${documentId}`,
     };
@@ -105,7 +105,7 @@ const fetchDriveActivityForDocument = async (documentId: string, googleOauthToke
 };
 
 const fetchDriveActivityForDocumentIds = async (ids: string[], googleOauthToken: string) => {
-  const { results } = await PromisePool.withConcurrency(3)
+  const { results } = await PromisePool.withConcurrency(2)
     .for(ids)
     .process(async (id) => fetchDriveActivityForDocument(id, googleOauthToken));
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));

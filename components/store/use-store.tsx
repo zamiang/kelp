@@ -21,11 +21,13 @@ export interface IStore {
   readonly refetch: () => void;
   readonly isLoading: boolean;
   readonly scope: string;
+  readonly loadingMessage?: string;
   readonly googleOauthToken: string;
   readonly error?: Error;
 }
 
 const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
+  const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken);
   const [isLoading, setLoading] = useState<boolean>(true);
   const people = (data.personList || []).map((person) => formatPerson(person));
@@ -41,27 +43,86 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentModel(db);
 
+  // Save calendar events
+  useEffect(() => {
+    const addData = async () => {
+      if (!data.calendarResponseLoading) {
+        setLoadingMessage('Saving Calendar Events');
+        await timeDataStore.addSegments(data.calendarEvents);
+      }
+    };
+    void addData();
+  }, [data.calendarEvents.length.toString()]);
+
+  // Save drive activity
+  useEffect(() => {
+    const addData = async () => {
+      if (!data.driveActivityLoading) {
+        setLoadingMessage('Saving Drive Activity');
+        await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);
+      }
+    };
+    void addData();
+  }, [data.driveActivity.length.toString()]);
+
+  // Save people and meeting attendees
+  const isPeopleDoneFetching =
+    !data.contactsResponseLoading && !data.calendarResponseLoading && !data.currentUserLoading;
+  useEffect(() => {
+    const addData = async () => {
+      if (isPeopleDoneFetching) {
+        setLoadingMessage('Saving Contacts');
+        await personDataStore.addPeopleToStore(
+          people,
+          data.currentUser,
+          data.contacts,
+          data.emailAddresses,
+        );
+        setLoadingMessage('Saving Meeting Attendee');
+        await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
+      }
+    };
+    void addData();
+  }, [isPeopleDoneFetching]);
+
+  // Save documents
+  const documentsToAdd = docs.concat(missingDocs);
+  useEffect(() => {
+    const addData = async () => {
+      if (!data.driveResponseLoading) {
+        setLoadingMessage('Saving Documents');
+        await documentDataStore.addDocsToStore(documentsToAdd);
+      }
+    };
+    void addData();
+  }, [documentsToAdd.length.toString()]);
+
+  // Relationships
   useEffect(() => {
     const addData = async () => {
       if (data.isLoading) {
         return;
       }
-      await personDataStore.addPeopleToStore(
-        people,
-        data.currentUser,
-        data.contacts,
-        data.emailAddresses,
-      );
 
-      await timeDataStore.addSegments(data.calendarEvents);
-      await documentDataStore.addDocsToStore(docs.concat(missingDocs));
-      await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);
-      await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
+      setLoadingMessage('Calculating Document and Meeting relationships');
       await segmentDocumentStore.addSegmentDocumentsToStore(
         driveActivityDataStore,
         timeDataStore,
         attendeeDataStore,
       );
+      setLoadingMessage(undefined);
+      setLoading(false);
+    };
+    void addData();
+  }, [data.isLoading]);
+
+  // When everything is all done do the tfidf one
+  useEffect(() => {
+    const addData = async () => {
+      if (data.isLoading) {
+        return;
+      }
+      // TFIDF for calendar view
       await tfidfStore.saveDocuments({
         driveActivityStore: driveActivityDataStore,
         timeDataStore,
@@ -69,7 +130,6 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
         documentDataStore,
         attendeeDataStore,
       });
-      setLoading(false);
     };
     void addData();
   }, [data.isLoading]);
@@ -84,6 +144,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     tfidfStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,
+    loadingMessage,
     refetch: () => data.refetch(),
     scope,
     googleOauthToken,

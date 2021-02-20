@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -92,6 +93,8 @@ interface IProps {
   handleRefreshClick: () => void;
   lastUpdated: Date;
   isLoading: boolean;
+  loadingMessage?: string;
+  error?: Error;
 }
 
 const NavBar = (props: IProps) => {
@@ -161,12 +164,19 @@ const NavBar = (props: IProps) => {
         </Grid>
         <Grid item>
           <Grid container alignItems="center">
+            {props.error && (
+              <Grid item>
+                <Typography variant="h6">{props.error.message}</Typography>
+              </Grid>
+            )}
             {isLoading && (
               <Grid item>
                 <Tooltip title="Loading">
-                  <IconButton>
-                    <LoopIcon className={classes.unSelected} />
-                  </IconButton>
+                  <React.Fragment>
+                    <IconButton>
+                      <LoopIcon className={classes.unSelected} />
+                    </IconButton>
+                  </React.Fragment>
                 </Tooltip>
               </Grid>
             )}
@@ -184,6 +194,7 @@ const NavBar = (props: IProps) => {
                 isLoading={props.isLoading}
                 refresh={props.handleRefreshClick}
                 lastUpdated={props.lastUpdated}
+                loadingMessage={props.loadingMessage}
               />
             </Grid>
             {!isLoading && user && (

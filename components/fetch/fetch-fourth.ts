@@ -3,23 +3,18 @@ import { fetchDriveFilesById } from './fetch-drive-files';
 
 interface IProps {
   readonly missingGoogleDocIds: string[];
-  readonly isLoading: boolean;
   readonly googleOauthToken: string;
 }
-/**
- * Fetches 4th layer of information.
- */
+
 const FetchFourth = (props: IProps) => {
-  // The goal is to only fetch if loading is false
   const missingGoogleDocs = useAsyncAbortable(
-    () =>
-      fetchDriveFilesById(props.isLoading ? [] : props.missingGoogleDocIds, props.googleOauthToken),
+    () => fetchDriveFilesById(props.missingGoogleDocIds, props.googleOauthToken),
     [props.missingGoogleDocIds.length.toString()] as any,
   );
   return {
     missingDriveFiles: missingGoogleDocs.result ? missingGoogleDocs.result : [],
     refetchMissingDriveFiles: missingGoogleDocs.execute,
-    isLoading: missingGoogleDocs.loading,
+    missingGoogleDocsLoading: missingGoogleDocs.loading,
     error: missingGoogleDocs.error,
   };
 };

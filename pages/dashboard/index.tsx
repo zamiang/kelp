@@ -119,17 +119,6 @@ const LoadingStoreDashboardContainer = (props: {
   );
 };
 
-const Nav = (props: { lastUpdated: Date; handleRefreshClick: () => void; isLoading: boolean }) => (
-  <React.Fragment>
-    <NavBar
-      lastUpdated={props.lastUpdated}
-      handleRefreshClick={props.handleRefreshClick}
-      isLoading={props.isLoading}
-    />
-    <BottomNav />
-  </React.Fragment>
-);
-
 interface IProps {
   store: IStore;
   isLoading: boolean;
@@ -140,6 +129,7 @@ const is500Error = (error: Error) => (error as any).status === 500;
 export const DashboardContainer = ({ store, isLoading }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
+  console.log(store.loadingMessage, '<<<<<<<');
 
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 30); // 30 minutes
@@ -155,11 +145,14 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
           background-color: #f3f4f6;
         }
       `}</style>
-      <Nav
+      <NavBar
         lastUpdated={store.lastUpdated}
         handleRefreshClick={handleRefreshClick}
         isLoading={isLoading}
+        error={store.error}
+        loadingMessage={store.loadingMessage}
       />
+      <BottomNav />
       <main className={classes.content}>
         <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
           <Alert severity="error">
