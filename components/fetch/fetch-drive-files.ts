@@ -80,8 +80,8 @@ const fetchDriveFiles = async (googleOauthToken: string) => {
 
 // create a rate limiter that allows up to x API calls per second, with max concurrency of y
 const limit = pRateLimit({
-  interval: 1000 * 60, // 1000 ms == 1 second
-  rate: 100,
+  interval: 1000, // 1000 ms == 1 second
+  rate: 6,
   concurrency: 4,
   maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
 });
