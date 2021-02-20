@@ -112,9 +112,11 @@ const fetchDriveActivityForDocument = async (documentId: string, googleOauthToke
 };
 
 const fetchDriveActivityForDocumentIds = async (ids: string[], googleOauthToken: string) => {
+  console.log('starting fetching', ids);
   const results = await Promise.all(
     ids.map(async (id) => fetchDriveActivityForDocument(id, googleOauthToken)),
   );
+  console.log('done', results);
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
   const activity = flatten(results.map((result) => result.activity));
   return { peopleIds, activity };
