@@ -75,7 +75,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     potentiallyMissingGoogleDocIds.filter((id) => !googleDocIds.includes(id)),
   );
   const secondLayer = FetchSecond({
-    googleDocIds: googleDocIds.concat(missingGoogleDocIds),
+    googleDocIds: firstLayer.isLoading ? [] : googleDocIds.concat(missingGoogleDocIds),
     googleOauthToken,
   });
 
