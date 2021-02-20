@@ -70,7 +70,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const potentiallyMissingGoogleDocIds = flatten(
     firstLayer.calendarEvents.map((event) => getDocumentIdsFromCalendarEvents(event)),
   ).filter(Boolean);
-  const googleDocIds = firstLayer.driveFiles.map((file) => file.id!);
+  const googleDocIds = firstLayer.driveFiles.map((file) => file.id!).filter(Boolean);
   const missingGoogleDocIds = uniq(
     potentiallyMissingGoogleDocIds.filter((id) => !googleDocIds.includes(id)),
   );
