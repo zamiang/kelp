@@ -22,7 +22,7 @@ export default class DriveActivityModel {
       }
     });
     const tx = this.db.transaction('driveActivity', 'readwrite');
-    // console.log(formattedActivity, 'about to save drive activity');
+    console.log(formattedActivity, 'about to save drive activity');
     await Promise.all(formattedActivity.map((item) => item && tx.store.put(item)));
     return tx.done;
   }

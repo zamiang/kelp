@@ -140,11 +140,11 @@ export default class TfidfStore {
         text: item.text,
       }));
     const tx = this.db.transaction('tfidf', 'readwrite');
-    // console.log(documentItems, 'about to save documentitems tfidf');
+    console.log(documentItems, 'about to save documentitems tfidf');
     await Promise.all(documentItems.map(async (item) => tx.store.put(item)));
-    // console.log(meetingItems, 'about to save meetingitems tfidf');
+    console.log(meetingItems, 'about to save meetingitems tfidf');
     await Promise.all(meetingItems.map(async (item) => tx.store.put(item)));
-    // console.log(peopleItems, 'about to save peopleItems - tfidf');
+    console.log(peopleItems, 'about to save peopleItems - tfidf');
     await Promise.all(peopleItems.map(async (item) => tx.store.put(item)));
     return tx.done;
   }
