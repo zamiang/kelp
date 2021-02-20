@@ -6,7 +6,7 @@ interface IProps {
   readonly googleOauthToken: string;
 }
 
-const FetchFourth = (props: IProps) => {
+const FetchMissingGoogleDocs = (props: IProps) => {
   const missingGoogleDocs = useAsyncAbortable(
     () => fetchDriveFilesById(props.missingGoogleDocIds, props.googleOauthToken),
     [props.missingGoogleDocIds.length.toString()] as any,
@@ -19,4 +19,4 @@ const FetchFourth = (props: IProps) => {
   };
 };
 
-export default FetchFourth;
+export default FetchMissingGoogleDocs;

@@ -129,8 +129,7 @@ const is500Error = (error: Error) => (error as any).status === 500;
 export const DashboardContainer = ({ store, isLoading }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
-  console.log(store.loadingMessage, '<<<<<<<');
-
+  console.log('loading message', store.loadingMessage);
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 30); // 30 minutes
     return () => clearInterval(interval);

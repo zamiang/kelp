@@ -34,7 +34,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
-  const docs = (data.driveFiles || []).map((doc) => formatGoogleDoc(doc));
+  const docs = (data.driveFiles || []).map((doc) => doc && formatGoogleDoc(doc)).filter(Boolean);
   const missingDocs = (data.missingDriveFiles || [])
     .filter(Boolean)
     .map((doc) => formatGoogleDoc(doc!));

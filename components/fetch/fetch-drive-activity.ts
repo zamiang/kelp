@@ -43,8 +43,8 @@ type ExcludesFalse = <T>(x: T | false) => x is T;
 
 // create a rate limiter that allows up to x API calls per second, with max concurrency of y
 const limit = pRateLimit({
-  interval: 1000, // 1000 ms == 1 second
-  rate: 6,
+  interval: 1000 * 60, // 1000 ms == 1 second
+  rate: 100,
   concurrency: 4,
   maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
 });
@@ -87,7 +87,7 @@ const fetchDriveActivityForDocument = async (documentId: string, googleOauthToke
         const actorPersonId =
           actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
         if (!targetInfo || !targetInfo.link || !activity.timestamp) {
-          console.log('weird data', activity);
+          console.error('Bad data in formatted drive activity', activity);
           return false; // typescript and filter don't get along
         }
 

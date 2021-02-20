@@ -2,10 +2,10 @@ import { flatten, uniq } from 'lodash';
 import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model';
 import { ICalendarEvent } from './fetch-calendar-events';
 import { IFormattedDriveActivity } from './fetch-drive-activity';
+import FetchDriveActivity from './fetch-drive-activity-hook';
 import FetchFirst from './fetch-first';
-import FetchFourth from './fetch-fourth';
+import FetchMissingGoogleDocs from './fetch-missing-google-docs';
 import { person } from './fetch-people';
-import FetchSecond from './fetch-second';
 import FetchThird from './fetch-third';
 
 interface IReturnType {
@@ -74,8 +74,18 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const missingGoogleDocIds = uniq(
     potentiallyMissingGoogleDocIds.filter((id) => !googleDocIds.includes(id)),
   );
-  const secondLayer = FetchSecond({
-    googleDocIds: firstLayer.isLoading ? [] : googleDocIds.concat(missingGoogleDocIds),
+
+  const missingGoogleDocs = FetchMissingGoogleDocs({
+    missingGoogleDocIds,
+    googleOauthToken,
+  });
+
+  const idsForDriveActivity = googleDocIds.concat(
+    missingGoogleDocs.missingDriveFiles.map((f) => f.id),
+  );
+  const driveActivity = FetchDriveActivity({
+    googleDocIds:
+      firstLayer.isLoading || missingGoogleDocs.missingGoogleDocsLoading ? [] : idsForDriveActivity,
     googleOauthToken,
   });
 
@@ -83,7 +93,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const contactsByPeopleId = {} as any;
   firstLayer.contacts.map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
-    secondLayer.driveActivity
+    driveActivity.driveActivity
       .map((activity) => activity?.actorPersonId)
       .filter((id) => !!id && !contactsByPeopleId[id]),
   );
@@ -93,28 +103,23 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     googleOauthToken,
   });
 
-  const fourthLayer = FetchFourth({
-    missingGoogleDocIds,
-    googleOauthToken,
-  });
-
   return {
     ...firstLayer,
-    ...secondLayer,
+    ...driveActivity,
     ...thirdLayer,
-    ...fourthLayer,
+    ...missingGoogleDocs,
     refetch: async () => {
       await firstLayer.refetchCalendarEvents();
       await firstLayer.refetchDriveFiles();
       await thirdLayer.refetchPersonList();
-      await fourthLayer.refetchMissingDriveFiles();
+      await missingGoogleDocs.refetchMissingDriveFiles();
     },
     isLoading:
       firstLayer.isLoading ||
-      secondLayer.driveActivityLoading ||
+      driveActivity.driveActivityLoading ||
       thirdLayer.peopleLoading ||
-      fourthLayer.missingGoogleDocsLoading, // debouncedIsLoading,
-    error: firstLayer.error || secondLayer.error || thirdLayer.error || fourthLayer.error,
+      missingGoogleDocs.missingGoogleDocsLoading, // debouncedIsLoading,
+    error: firstLayer.error || driveActivity.error || thirdLayer.error || missingGoogleDocs.error,
   };
 };
 

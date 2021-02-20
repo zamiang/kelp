@@ -98,18 +98,10 @@ export default class SegmentDocumentModel {
     );
 
     const tx = this.db.transaction('segmentDocument', 'readwrite');
-    console.log(driveActivityToAdd, 'about to save segment documents');
-    try {
-      await Promise.all(driveActivityToAdd.map((item) => item?.id && tx.store.put(item)));
-    } catch (e) {
-      console.log(e);
-    }
-    console.log(flatten(descriptionsToAdd), 'about to save description items');
-    try {
-      await Promise.all(flatten(descriptionsToAdd).map((item) => item?.id && tx.store.put(item)));
-    } catch (e) {
-      console.log(e);
-    }
+    // console.log(driveActivityToAdd, 'about to save segment documents');
+    await Promise.all(driveActivityToAdd.map((item) => item?.id && tx.store.put(item)));
+    // console.log(flatten(descriptionsToAdd), 'about to save description items');
+    await Promise.all(flatten(descriptionsToAdd).map((item) => item?.id && tx.store.put(item)));
     return tx.done;
   }
 

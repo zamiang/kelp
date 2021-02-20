@@ -8,7 +8,8 @@ interface IProps {
 /**
  * Fetches 2nd layer of information.
  */
-const FetchSecond = (props: IProps) => {
+const FetchDriveActivity = (props: IProps) => {
+  console.log('fetching drive activity', props.googleDocIds);
   // The goal is to only fetch if loading is false
   const activityResponse = useAsyncAbortable(
     () => fetchDriveActivityForDocumentIds(props.googleDocIds, props.googleOauthToken),
@@ -22,4 +23,4 @@ const FetchSecond = (props: IProps) => {
   };
 };
 
-export default FetchSecond;
+export default FetchDriveActivity;
