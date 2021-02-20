@@ -41,9 +41,10 @@ export interface IFormattedDriveActivity {
 
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
+// create a rate limiter that allows up to 30 API calls per second, with max concurrency of 4
 const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
-  rate: 30, // 30 API calls per interval
+  rate: 20, // 30 API calls per interval
   concurrency: 4, // no more than 10 running at once
   maxDelay: 2000, // an API call delayed > 2 sec is rejected
 });
