@@ -70,7 +70,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const potentiallyMissingGoogleDocIds = flatten(
     firstLayer.calendarEvents.map((event) => getDocumentIdsFromCalendarEvents(event)),
   ).filter(Boolean);
-  const googleDocIds = firstLayer.driveFiles.map((file) => file.id!).filter(Boolean);
+  const googleDocIds = firstLayer.driveFiles.map((file) => file?.id).filter(Boolean);
   const missingGoogleDocIds = uniq(
     potentiallyMissingGoogleDocIds.filter((id) => !googleDocIds.includes(id)),
   );
@@ -81,11 +81,13 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   });
 
   const idsForDriveActivity = uniq(
-    googleDocIds.concat(missingGoogleDocs.missingDriveFiles.map((f) => f.id).filter(Boolean)),
+    googleDocIds.concat(missingGoogleDocs.missingDriveFiles.map((f) => f?.id).filter(Boolean)),
   );
   const driveActivity = FetchDriveActivity({
     googleDocIds:
-      firstLayer.isLoading || missingGoogleDocs.missingGoogleDocsLoading ? [] : idsForDriveActivity,
+      firstLayer.isLoading || missingGoogleDocs.missingGoogleDocsLoading
+        ? []
+        : (idsForDriveActivity as any),
     googleOauthToken,
   });
 
