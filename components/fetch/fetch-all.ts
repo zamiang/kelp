@@ -84,12 +84,12 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   firstLayer.contacts.map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
     secondLayer.driveActivity
-      .map((activity) => activity.actorPersonId!)
+      .map((activity) => activity?.actorPersonId)
       .filter((id) => !!id && !contactsByPeopleId[id]),
   );
 
   const thirdLayer = FetchThird({
-    peopleIds,
+    peopleIds: peopleIds as any,
     googleOauthToken,
   });
 

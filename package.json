@@ -66,6 +66,7 @@
     "next": "10.0.7",
     "next-auth": "3.4.2",
     "next-secure-headers": "2.1.0",
+    "p-ratelimit": "1.0.1",
     "pg": "8.5.1",
     "pg-connection-string": "2.4.0",
     "pluralize": "8.0.0",

@@ -1,5 +1,5 @@
-import PromisePool from '@supercharge/promise-pool';
 import { flatten, uniq } from 'lodash';
+import { pRateLimit } from 'p-ratelimit';
 import config from '../../constants/config';
 
 const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
@@ -41,24 +41,30 @@ export interface IFormattedDriveActivity {
 
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
+const limit = pRateLimit({
+  interval: 1000, // 1000 ms == 1 second
+  rate: 30, // 30 API calls per interval
+  concurrency: 4, // no more than 10 running at once
+  maxDelay: 2000, // an API call delayed > 2 sec is rejected
+});
+
 const fetchDriveActivityForDocument = async (documentId: string, googleOauthToken: string) => {
   try {
     const params = {
-      pageSize: 50,
+      pageSize: '50', // NOTE: does nothing
       filter: `detail.action_detail_case:(CREATE EDIT COMMENT RENAME) AND time >= "${config.startDate.toISOString()}"`,
       itemName: `items/${documentId}`,
     };
 
-    const activityResponse = await fetch(
-      `https://content-driveactivity.googleapis.com/v2/activity:query?alt=json`,
-      {
+    const activityResponse = await limit(async () =>
+      fetch(`https://content-driveactivity.googleapis.com/v2/activity:query?alt=json`, {
         method: 'POST',
         body: JSON.stringify(params),
         headers: {
           authorization: `Bearer ${googleOauthToken}`,
           'Content-Type': 'application/json',
         },
-      },
+      }),
     );
     const response: {
       activities: gapi.client.driveactivity.DriveActivity[];
@@ -105,12 +111,11 @@ const fetchDriveActivityForDocument = async (documentId: string, googleOauthToke
 };
 
 const fetchDriveActivityForDocumentIds = async (ids: string[], googleOauthToken: string) => {
-  const { results } = await PromisePool.withConcurrency(2)
-    .for(ids)
-    .process(async (id) => fetchDriveActivityForDocument(id, googleOauthToken));
+  const results = await Promise.all(
+    ids.map(async (id) => fetchDriveActivityForDocument(id, googleOauthToken)),
+  );
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
   const activity = flatten(results.map((result) => result.activity));
-  // console.log(results, errors, 'fetch drive activity');
   return { peopleIds, activity };
 };
 
