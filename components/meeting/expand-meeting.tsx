@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
-import { format, isToday } from 'date-fns';
+import { format } from 'date-fns';
 import { first, uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
