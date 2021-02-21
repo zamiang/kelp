@@ -51,7 +51,6 @@ export default class PersonModel {
     contacts: GooglePerson[] = [],
     emailAddresses: string[] = [],
   ) {
-    console.log('adding people to store!!!!');
     // TODO: Better handlie missing current user in chrome plugin
     if (!currentUser) {
       return;

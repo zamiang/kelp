@@ -172,7 +172,12 @@ const ExpandedMeeting = (props: {
   const guestStats = getFormattedGuestStats(attendees);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
-  const meetingNotesLink = meetingNotesDocument?.link;
+  let meetingNotesLink = meetingNotesDocument?.link;
+  if (!meetingNotesLink) {
+    meetingNotesLink = first(
+      meetingDescriptionLinks?.filter((link) => link.includes('https://docs.google.com')),
+    );
+  }
 
   const hasMeetingNotes = !!meetingNotesLink;
 
