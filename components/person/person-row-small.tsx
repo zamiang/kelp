@@ -24,6 +24,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
   },
+  copyButton: {
+    textAlign: 'right',
+    textDecoration: 'underline',
+    transition: 'opacity 0.3s',
+    '&:active': {
+      opacity: 0.7,
+    },
+  },
 }));
 
 const SmallPersonRow = (props: { person: IPerson; info?: string }) => {
@@ -31,6 +39,7 @@ const SmallPersonRow = (props: { person: IPerson; info?: string }) => {
   const router = useHistory();
   const expandClasses = useExpandStyles();
 
+  const emailAddress = props.person.emailAddresses[0];
   const handleClick = () => router.push(`/people/${encodeURIComponent(props.person.id)}`);
   return (
     <Button
@@ -56,6 +65,21 @@ const SmallPersonRow = (props: { person: IPerson; info?: string }) => {
           <Grid item>
             <Typography variant="caption" noWrap>
               {props.info}
+            </Typography>
+          </Grid>
+        )}
+        {emailAddress && (
+          <Grid
+            item
+            className={classes.copyButton}
+            onClick={(event) => {
+              event.stopPropagation();
+              void navigator.clipboard.writeText(emailAddress);
+              return false;
+            }}
+          >
+            <Typography variant="caption" noWrap>
+              Copy Email
             </Typography>
           </Grid>
         )}
