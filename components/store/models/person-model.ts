@@ -51,6 +51,7 @@ export default class PersonModel {
     contacts: GooglePerson[] = [],
     emailAddresses: string[] = [],
   ) {
+    console.log('adding people to store!!!!');
     // TODO: Better handlie missing current user in chrome plugin
     if (!currentUser) {
       return;
@@ -106,8 +107,6 @@ export default class PersonModel {
       }
     });
 
-    console.log(emailAddressToPersonIdHash);
-
     // Add email addresses from calendar events
     emailAddresses.forEach((emailAddress) => {
       const formattedEmailAddress = formatGmailAddress(emailAddress);
@@ -115,7 +114,6 @@ export default class PersonModel {
         return;
       }
       const personId = emailAddressToPersonIdHash[formattedEmailAddress];
-      console.log(formattedEmailAddress, personId);
       if (!personId) {
         const personToAdd = contactLookup[formattedEmailAddress];
         if (personToAdd) {

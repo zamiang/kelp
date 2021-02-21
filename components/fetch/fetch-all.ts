@@ -1,5 +1,5 @@
 import { flatten, uniq } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model';
 import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
@@ -30,6 +30,35 @@ interface IReturnType {
   readonly currentUserLoading: boolean;
   readonly peopleLoading: boolean;
 }
+
+const useDebounce = (value: any, delay: number) => {
+  // State and setters for debounced value
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(
+    () => {
+      // Set debouncedValue to value (passed in) after the specified delay
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      // Return a cleanup function that will be called every time ...
+      // ... useEffect is re-called. useEffect will only be re-called ...
+      // ... if value changes (see the inputs array below).
+      // This is how we prevent debouncedValue from changing if value is ...
+      // ... changed within the delay period. Timeout gets cleared and restarted.
+      // To put it in context, if the user is typing within our app's ...
+      // ... search box, we don't want the debouncedValue to update until ...
+      // ... they've stopped typing for more than 500ms.
+      return () => {
+        clearTimeout(handler);
+      };
+    },
+    // Only re-call effect if value changes
+    // You could also add the "delay" var to inputs array if you ...
+    // ... need to be able to change that dynamically.
+    [value],
+  );
+  return debouncedValue;
+};
 
 const initialEmailList: string[] = [];
 
@@ -118,6 +147,19 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     () => batchFetchPeople(peopleIds as any, googleOauthToken),
     [peopleIds.length.toString()] as any,
   );
+
+  const debouncedIsLoading = useDebounce(
+    peopleResponse.loading ||
+      currentUser.loading ||
+      driveResponse.loading ||
+      calendarResponse.loading ||
+      contactsResponse.loading ||
+      driveActivityResponse.loading ||
+      peopleResponse.loading ||
+      missingGoogleDocs.missingGoogleDocsLoading,
+    200,
+  );
+
   return {
     ...missingGoogleDocs,
     personList: peopleResponse.result ? peopleResponse.result : [],
@@ -141,15 +183,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     calendarResponseLoading: calendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading,
     peopleLoading: peopleResponse.loading,
-    isLoading:
-      peopleResponse.loading ||
-      currentUser.loading ||
-      driveResponse.loading ||
-      calendarResponse.loading ||
-      contactsResponse.loading ||
-      driveActivityResponse.loading ||
-      peopleResponse.loading ||
-      missingGoogleDocs.missingGoogleDocsLoading,
+    isLoading: debouncedIsLoading,
     error:
       peopleResponse.error ||
       currentUser.error ||
