@@ -66,14 +66,14 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   }, [data.driveActivity.length.toString()]);
 
   // Save people and meeting attendees
-  const isPeopleDoneFetching =
-    !data.contactsResponseLoading &&
-    !data.calendarResponseLoading &&
-    !data.currentUserLoading &&
-    !data.peopleLoading;
+  const isPeopleFetching =
+    data.contactsResponseLoading ||
+    data.calendarResponseLoading ||
+    data.currentUserLoading ||
+    data.peopleLoading;
   useEffect(() => {
     const addData = async () => {
-      if (isPeopleDoneFetching) {
+      if (!isPeopleFetching) {
         setLoadingMessage('Saving Contacts');
         await personDataStore.addPeopleToStore(
           people,
@@ -86,7 +86,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
       }
     };
     void addData();
-  }, [isPeopleDoneFetching]);
+  }, [isPeopleFetching]);
 
   // Save documents
   const documentsToAdd = docs.concat(missingDocs);

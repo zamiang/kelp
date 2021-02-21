@@ -118,16 +118,10 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     () => batchFetchPeople(peopleIds as any, googleOauthToken),
     [peopleIds.length.toString()] as any,
   );
-  const formattedPeopleResponse = {
-    peopleLoading: peopleResponse.loading,
-    peopleError: peopleResponse ? peopleResponse.error : undefined,
-    personList: peopleResponse.result ? peopleResponse.result : [],
-    refetchPersonList: peopleResponse.execute,
-  };
   return {
-    driveActivity,
-    ...formattedPeopleResponse,
     ...missingGoogleDocs,
+    personList: peopleResponse.result ? peopleResponse.result : [],
+    driveActivity,
     calendarEvents: calendarResponse.result
       ? calendarResponse.result.calendarEvents.filter(Boolean) || []
       : [],
@@ -138,7 +132,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     refetch: async () => {
       await calendarResponse.execute();
       await driveResponse.execute();
-      await formattedPeopleResponse.refetchPersonList();
+      await peopleResponse.execute();
     },
     lastUpdated: new Date(),
     currentUserLoading: currentUser.loading,
@@ -146,6 +140,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading,
+    peopleLoading: peopleResponse.loading,
     isLoading:
       peopleResponse.loading ||
       currentUser.loading ||
@@ -153,7 +148,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       calendarResponse.loading ||
       contactsResponse.loading ||
       driveActivityResponse.loading ||
-      formattedPeopleResponse.peopleLoading ||
+      peopleResponse.loading ||
       missingGoogleDocs.missingGoogleDocsLoading,
     error:
       peopleResponse.error ||
@@ -162,7 +157,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       driveResponse.error ||
       calendarResponse.error ||
       driveActivityResponse.error ||
-      formattedPeopleResponse.peopleError ||
+      peopleResponse.error ||
       missingGoogleDocs.missingGoogleDocsError,
   };
 };

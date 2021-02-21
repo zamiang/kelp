@@ -109,12 +109,14 @@ export default class PersonModel {
         peopleToAdd.push(formatPersonForStore(person));
       }
     });
+    console.log(emailAddressToPersonIdHash);
 
     // Add email addresses
     emailAddresses.forEach((emailAddress) => {
       const formattedEmailAddress = formatGmailAddress(emailAddress);
       if (!formattedEmailAddress.includes('@calendar.google.com')) {
         const person = emailAddressToPersonIdHash[formattedEmailAddress];
+        console.log(formattedEmailAddress, person);
         if (!person) {
           const personToAdd = contactLookup[formattedEmailAddress];
           if (personToAdd) {
