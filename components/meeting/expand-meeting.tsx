@@ -6,10 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format, isToday } from 'date-fns';
-import { uniq } from 'lodash';
+import { first, uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
+import urlRegex from 'url-regex';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import AppBar from '../shared/elevate-app-bar';
@@ -47,8 +48,7 @@ const createMeetingNotes = async (
     scope,
     authToken,
   );
-  // Not sure if a good idea
-  // await addDocumentToCalendarEvent(meeting, document);
+
   setMeetingNotesLoading(false);
   const emailsToInvite = meeting.attendees
     .map((a) => {
@@ -161,15 +161,21 @@ const ExpandedMeeting = (props: {
     return null;
   }
 
+  const meetingDescriptionLinks = meeting.description ? meeting.description.match(urlRegex()) : [];
+  const zoomLink = first(meetingDescriptionLinks?.filter((link) => link.includes('zoom.us')));
+  const videoLink = meeting.hangoutLink || zoomLink;
+  const videoLinkDomain = videoLink ? new URL(videoLink).hostname : undefined;
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
-  const shouldShowMeetingLink = !!meeting.hangoutLink && isToday(meeting.start);
+  const shouldShowMeetingLink = !!videoLink;
 
   const guestStats = getFormattedGuestStats(attendees);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const meetingNotesLink = meetingNotesDocument?.link;
+
   const hasMeetingNotes = !!meetingNotesLink;
+
   const editLink = meeting.link?.replace(
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
@@ -241,13 +247,13 @@ const ExpandedMeeting = (props: {
           {shouldShowMeetingLink && (
             <Grid item>
               <Button
-                onClick={() => window.open(meeting.hangoutLink, '_blank')}
+                onClick={() => window.open(videoLink, '_blank')}
                 variant="contained"
                 className={buttonClasses.button}
                 startIcon={<MeetingRoomIcon />}
                 disableElevation
               >
-                Join with Google Meet
+                Join {videoLinkDomain}
               </Button>
             </Grid>
           )}

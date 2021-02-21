@@ -34,7 +34,8 @@ export const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
   const urls = event.description ? event.description.match(urlRegex()) : [];
   (urls || []).forEach((url) => {
     if (url.includes('https://docs.google.com')) {
-      documentIds.push(getGoogleDocsIdFromLink(url));
+      const link = getGoogleDocsIdFromLink(url);
+      documentIds.push(link);
     }
   });
   (event.attachments || []).map((attachment) => {
