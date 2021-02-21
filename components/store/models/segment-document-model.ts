@@ -121,7 +121,13 @@ export default class SegmentDocumentModel {
     // console.log(driveActivityToAdd, 'about to save segment documents');
     await Promise.all(driveActivityToAdd.map((item) => item?.id && tx.store.put(item)));
     // console.log(flatten(descriptionsToAdd), 'about to save description items');
-    await Promise.all(flatten(descriptionsToAdd).map((item) => item?.id && tx.store.put(item)));
+    await Promise.all(
+      flatten(descriptionsToAdd).map((item: any) => {
+        if (item && item.id) {
+          return tx.store.put(item);
+        }
+      }),
+    );
     return tx.done;
   }
 
