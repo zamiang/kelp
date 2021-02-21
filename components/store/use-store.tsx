@@ -91,6 +91,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
         data.contacts,
         data.emailAddresses,
       );
+
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
 

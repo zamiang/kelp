@@ -110,7 +110,7 @@ export default class PersonModel {
     // Add email addresses from calendar events
     emailAddresses.forEach((emailAddress) => {
       const formattedEmailAddress = formatGmailAddress(emailAddress);
-      if (formattedEmailAddress.includes('@calendar.google.com')) {
+      if (formattedEmailAddress.includes('calendar.google.com')) {
         return;
       }
       const personId = emailAddressToPersonIdHash[formattedEmailAddress];
