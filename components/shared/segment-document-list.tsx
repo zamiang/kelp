@@ -96,7 +96,6 @@ const SegmentDocumentItem = (props: {
   segmentDocument: ISegmentDocument;
 }) => {
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
-  console.log(props.segmentDocument, '<<<<<<<');
   useEffect(() => {
     const fetchData = async () => {
       if (props.segmentDocument.documentId) {
@@ -165,10 +164,10 @@ const SegmentDocumentList = (props: {
   readonly docStore: IStore['documentDataStore'];
 }) => {
   const classes = useExpandStyles();
-  console.log(props.segmentDocuments, '<<<<<');
-  console.log(props.segmentDocumentsForAttendees, '<<<<<');
-  console.log(props.segmentDocumentsFromPastMeetings, '<<<<<<');
-  console.log(props.segmentDocumentsForNonAttendees, '<<<<<<');
+  console.log(props.segmentDocuments, '<<<<< segment documents');
+  console.log(props.segmentDocumentsForAttendees, '<<<<< segment documetns for attendees');
+  console.log(props.segmentDocumentsFromPastMeetings, '<<<<<< for past meetings');
+  console.log(props.segmentDocumentsForNonAttendees, '<<<<<< non attendees');
   const segmentsToRender =
     props.segmentDocuments && props.segmentDocuments.length > 0
       ? uniqBy(props.segmentDocuments, 'documentId')
