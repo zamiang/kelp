@@ -76,7 +76,6 @@ export default class PersonModel {
           isCurrentUser = true;
         } else {
           contactLookup[formattedEmailAddress] = contact;
-          emailAddressToPersonIdHash[formattedEmailAddress] = contact.id;
         }
       });
 
@@ -93,8 +92,10 @@ export default class PersonModel {
       let contact: GooglePerson | null = null;
       person.emailAddresses.forEach((emailAddress) => {
         const formattedEmailAddress = formatGmailAddress(emailAddress);
-        if (!contact && contactLookup[formattedEmailAddress]) {
-          contact = contactLookup[formattedEmailAddress];
+        const lookedUpContact = contactLookup[formattedEmailAddress];
+        if (!contact && lookedUpContact) {
+          contact = lookedUpContact;
+          emailAddressToPersonIdHash[formattedEmailAddress] = lookedUpContact.id;
         } else if (emailAddressToPersonIdHash[formattedEmailAddress]) {
           isInStore = true;
         } else {
@@ -116,16 +117,17 @@ export default class PersonModel {
     // Add email addresses
     emailAddresses.forEach((emailAddress) => {
       const formattedEmailAddress = formatGmailAddress(emailAddress);
-      if (!formattedEmailAddress.includes('@calendar.google.com')) {
-        const person = emailAddressToPersonIdHash[formattedEmailAddress];
-        console.log(formattedEmailAddress, person);
-        if (!person) {
-          const personToAdd = contactLookup[formattedEmailAddress];
-          if (personToAdd) {
-            peopleToAdd.push(personToAdd);
-          } else {
-            peopleToAdd.push(createNewPersonFromEmail(formattedEmailAddress));
-          }
+      if (formattedEmailAddress.includes('@calendar.google.com')) {
+        return;
+      }
+      const person = emailAddressToPersonIdHash[formattedEmailAddress];
+      console.log(formattedEmailAddress, person);
+      if (!person) {
+        const personToAdd = contactLookup[formattedEmailAddress];
+        if (personToAdd) {
+          peopleToAdd.push(personToAdd);
+        } else {
+          peopleToAdd.push(createNewPersonFromEmail(formattedEmailAddress));
         }
       }
     });
