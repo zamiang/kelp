@@ -83,7 +83,11 @@ const Row = (props: {
   return (
     <Button
       key={person.id}
-      onClick={() => router.push(`/people/${encodeURIComponent(person.id)}`)}
+      onClick={(event) => {
+        event.stopPropagation();
+        router.push(`/people/${encodeURIComponent(person.id)}`);
+        return false;
+      }}
       className={clsx(
         expandClasses.listItem,
         classes.person,

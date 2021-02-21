@@ -66,7 +66,11 @@ const Activity = (props: {
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button
         className={expandClasses.listItem}
-        onClick={() => router.push(`/docs/${props.document.id}`)}
+        onClick={(event) => {
+          event.stopPropagation();
+          router.push(`/docs/${props.document.id}`);
+          return false;
+        }}
       >
         <Grid container spacing={1} alignItems="flex-start">
           <Grid item>
@@ -205,7 +209,7 @@ const SegmentDocumentList = (props: {
       : [];
   const segmentDocumentsForNonAttendeesCount = filteredSegmentDocumentsForNonAttendees.length;
   if (segmentsToRender.length < 1) {
-    return <Typography variant="caption">None</Typography>;
+    return null;
   }
   return (
     <React.Fragment>
