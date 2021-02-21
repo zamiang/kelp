@@ -56,6 +56,7 @@ const formatSegmentDocumentFromDescription = (
   date: segment.start,
   reason: 'Listed in meeting description',
   personId: segment.organizer!.id!,
+  isPersonAttendee: true,
   day: getDayOfYear(segment.start),
   week: getWeek(segment.start),
 });

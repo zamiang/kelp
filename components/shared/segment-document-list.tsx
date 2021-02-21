@@ -55,7 +55,7 @@ const Activity = (props: {
     void fetchData();
   }, [props.segmentDocument.personId]);
   const actorText = actor ? `by ${actor?.name || actor?.emailAddresses}` : '';
-  const tooltipText = `${capitalize(props.segmentDocument.reason)}${actorText} on ${format(
+  const tooltipText = `${capitalize(props.segmentDocument.reason)} ${actorText} on ${format(
     new Date(props.document.updatedAt!),
     "MMM do 'at' hh:mm a",
   )}`;
