@@ -57,7 +57,7 @@ export default class PersonModel {
     }
     const formattedCurrentUser = formatPerson(currentUser);
     formattedCurrentUser.isCurrentUser = 1;
-    const emailAddressToPersonIdHash: any = {};
+    const emailAddressToPersonIdHash: any = {}; // used for mapping between docs and calendar events
     const contactLookup: any = {};
     const peopleToAdd: IPerson[] = [formattedCurrentUser];
 
@@ -86,9 +86,8 @@ export default class PersonModel {
       }
     });
 
-    // Add people first
+    // Add people first from google drive activity
     people.forEach((person) => {
-      let isInStore = false;
       let contact: GooglePerson | null = null;
       person.emailAddresses.forEach((emailAddress) => {
         const formattedEmailAddress = formatGmailAddress(emailAddress);
@@ -96,33 +95,28 @@ export default class PersonModel {
         if (!contact && lookedUpContact) {
           contact = lookedUpContact;
           emailAddressToPersonIdHash[formattedEmailAddress] = lookedUpContact.id;
-        } else if (emailAddressToPersonIdHash[formattedEmailAddress]) {
-          isInStore = true;
         } else {
-          person.emailAddresses.forEach((emailAddress) => {
-            const formattedEmailAddress = formatGmailAddress(emailAddress);
-            emailAddressToPersonIdHash[formattedEmailAddress] = person.id;
-          });
+          emailAddressToPersonIdHash[formattedEmailAddress] = person.id;
         }
       });
       if (contact) {
         peopleToAdd.push(contact);
-      } else if (!isInStore) {
+      } else {
         peopleToAdd.push(formatPersonForStore(person));
       }
     });
 
     console.log(emailAddressToPersonIdHash);
 
-    // Add email addresses
+    // Add email addresses from calendar events
     emailAddresses.forEach((emailAddress) => {
       const formattedEmailAddress = formatGmailAddress(emailAddress);
       if (formattedEmailAddress.includes('@calendar.google.com')) {
         return;
       }
-      const person = emailAddressToPersonIdHash[formattedEmailAddress];
-      console.log(formattedEmailAddress, person);
-      if (!person) {
+      const personId = emailAddressToPersonIdHash[formattedEmailAddress];
+      console.log(formattedEmailAddress, personId);
+      if (!personId) {
         const personToAdd = contactLookup[formattedEmailAddress];
         if (personToAdd) {
           peopleToAdd.push(personToAdd);
