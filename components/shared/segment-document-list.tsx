@@ -165,13 +165,18 @@ const SegmentDocumentList = (props: {
   readonly docStore: IStore['documentDataStore'];
 }) => {
   const classes = useExpandStyles();
-  const segmentsToRender = props.segmentDocuments
-    ? uniqBy(props.segmentDocuments, 'documentId')
-    : unionBy(
-        props.segmentDocumentsForAttendees,
-        props.segmentDocumentsFromPastMeetings,
-        'documentId',
-      );
+  console.log(props.segmentDocuments, '<<<<<');
+  console.log(props.segmentDocumentsForAttendees, '<<<<<');
+  console.log(props.segmentDocumentsFromPastMeetings, '<<<<<<');
+  console.log(props.segmentDocumentsForNonAttendees, '<<<<<<');
+  const segmentsToRender =
+    props.segmentDocuments && props.segmentDocuments.length > 0
+      ? uniqBy(props.segmentDocuments, 'documentId')
+      : unionBy(
+          props.segmentDocumentsForAttendees,
+          props.segmentDocumentsFromPastMeetings,
+          'documentId',
+        );
   const documentIds = segmentsToRender.map((s) => s.documentId);
   const filteredSegmentDocumentsForNonAttendees =
     props.segmentDocumentsForNonAttendees && props.segmentDocumentsForNonAttendees.length > 0

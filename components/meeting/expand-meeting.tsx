@@ -265,6 +265,16 @@ const ExpandedMeeting = (props: {
             </Typography>
           </React.Fragment>
         )}
+        <Typography variant="h6" className={classes.smallHeading}>
+          Documents you may need
+        </Typography>
+        <SegmentDocumentList
+          segmentDocumentsForAttendees={segmentDocumentsForAttendees}
+          segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
+          segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
+          docStore={props.store.documentDataStore}
+          personStore={props.store.personDataStore}
+        />
         {hasDescription && isHtml && (
           <React.Fragment>
             <Typography variant="h6" className={classes.smallHeading}>
@@ -277,16 +287,6 @@ const ExpandedMeeting = (props: {
             />
           </React.Fragment>
         )}
-        <Typography variant="h6" className={classes.smallHeading}>
-          Documents you may need
-        </Typography>
-        <SegmentDocumentList
-          segmentDocumentsForAttendees={segmentDocumentsForAttendees}
-          segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
-          segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
-          docStore={props.store.documentDataStore}
-          personStore={props.store.personDataStore}
-        />
         {hasAttendees && (
           <React.Fragment>
             <Typography variant="h6" className={classes.smallHeading}>
