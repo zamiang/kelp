@@ -28,6 +28,7 @@ interface IReturnType {
   readonly contactsResponseLoading: boolean;
   readonly driveActivityLoading: boolean;
   readonly currentUserLoading: boolean;
+  readonly peopleLoading: boolean;
 }
 
 const initialEmailList: string[] = [];
@@ -110,8 +111,8 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   (contactsResponse.result || []).map((c) => (contactsByPeopleId[c.id] = c));
   const peopleIds = uniq(
     driveActivity
-      .map((activity) => activity?.actorPersonId)
-      .filter((id) => !!id && !contactsByPeopleId[id]),
+      .map((activity) => activity && activity.actorPersonId)
+      .filter((id) => id && !contactsByPeopleId[id]),
   );
   const peopleResponse = useAsyncAbortable(
     () => batchFetchPeople(peopleIds as any, googleOauthToken),
@@ -123,7 +124,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     personList: peopleResponse.result ? peopleResponse.result : [],
     refetchPersonList: peopleResponse.execute,
   };
-  console.log(driveActivityResponse, '<<<<<<< drive activity');
   return {
     driveActivity,
     ...formattedPeopleResponse,

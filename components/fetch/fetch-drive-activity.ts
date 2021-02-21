@@ -97,7 +97,6 @@ const fetchDriveActivityForDocument = async (
       const actor = activity.actors && activity.actors[0];
       const actorPersonId =
         actor && actor.user && actor.user.knownUser && actor.user.knownUser.personName;
-      console.log(actorPersonId, '<<<<<<');
       if (!targetInfo || !targetInfo.link || !activity.timestamp) {
         console.error('Bad data in formatted drive activity', activity);
         return false; // typescript and filter don't get along

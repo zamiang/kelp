@@ -58,7 +58,7 @@ const Meeting = (props: {
     new Date(props.segmentDocument.date),
     "MMM do 'at' hh:mm a",
   )}`;
-  const belowText = `${props.segmentDocument.reason}${personText} during the meeting`;
+  const belowText = `${props.segmentDocument.reason}${personText}`;
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>
       <Button

@@ -67,7 +67,10 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
 
   // Save people and meeting attendees
   const isPeopleDoneFetching =
-    !data.contactsResponseLoading && !data.calendarResponseLoading && !data.currentUserLoading;
+    !data.contactsResponseLoading &&
+    !data.calendarResponseLoading &&
+    !data.currentUserLoading &&
+    !data.peopleLoading;
   useEffect(() => {
     const addData = async () => {
       if (isPeopleDoneFetching) {

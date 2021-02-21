@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { format, formatDistanceToNow } from 'date-fns';
 import { capitalize, unionBy, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -95,6 +96,7 @@ const SegmentDocumentItem = (props: {
   docStore: IStore['documentDataStore'];
   segmentDocument: ISegmentDocument;
 }) => {
+  const classes = useRowStyles();
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
   useEffect(() => {
     const fetchData = async () => {
@@ -107,7 +109,26 @@ const SegmentDocumentItem = (props: {
   }, [props.segmentDocument.documentId]);
 
   if (!document) {
-    return null;
+    return (
+      <Grid container spacing={1} alignItems="flex-start">
+        <Grid item>
+          <HelpOutlineIcon className={classes.icon} />
+        </Grid>
+        <Grid item xs={11} sm={8} zeroMinWidth>
+          <Typography variant="body2" noWrap>
+            {props.segmentDocument.documentId}
+          </Typography>
+          <Typography variant="caption" noWrap className={classes.noWrap}>
+            Unknown document
+          </Typography>
+        </Grid>
+        <Grid item xs={3} className={classes.distanceToNow}>
+          <Typography variant="caption" color="textSecondary" noWrap>
+            {formatDistanceToNow(new Date(props.segmentDocument.date))} ago
+          </Typography>
+        </Grid>
+      </Grid>
+    );
   }
 
   return (
@@ -164,10 +185,6 @@ const SegmentDocumentList = (props: {
   readonly docStore: IStore['documentDataStore'];
 }) => {
   const classes = useExpandStyles();
-  console.log(props.segmentDocuments, '<<<<< segment documents');
-  console.log(props.segmentDocumentsForAttendees, '<<<<< segment documetns for attendees');
-  console.log(props.segmentDocumentsFromPastMeetings, '<<<<<< for past meetings');
-  console.log(props.segmentDocumentsForNonAttendees, '<<<<<< non attendees');
   const segmentsToRender =
     props.segmentDocuments && props.segmentDocuments.length > 0
       ? uniqBy(props.segmentDocuments, 'documentId')
