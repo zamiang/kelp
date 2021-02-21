@@ -4,6 +4,7 @@ import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import CloseIcon from '@material-ui/icons/Close';
 import EmailIcon from '@material-ui/icons/Email';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -47,14 +48,29 @@ const CustomAppBar = (props: IProps) => {
             </MuiLink>
           </Tooltip>
         )}
+
         {props.emailAddress && (
-          <Tooltip title="Email contact">
-            <MuiLink href={`mailto:${props.emailAddress}`} target="_blank" className={classes.link}>
-              <IconButton className={classes.topButton}>
-                <EmailIcon fontSize="small" />
+          <React.Fragment>
+            <Tooltip title="Copy email">
+              <IconButton
+                className={classes.topButton}
+                onClick={() => navigator.clipboard.writeText(props.emailAddress!)}
+              >
+                <AlternateEmailIcon fontSize="small" />
               </IconButton>
-            </MuiLink>
-          </Tooltip>
+            </Tooltip>
+            <Tooltip title="Email contact">
+              <MuiLink
+                href={`mailto:${props.emailAddress}`}
+                target="_blank"
+                className={classes.link}
+              >
+                <IconButton className={classes.topButton}>
+                  <EmailIcon fontSize="small" />
+                </IconButton>
+              </MuiLink>
+            </Tooltip>
+          </React.Fragment>
         )}
         {props.linkedinName && (
           <Tooltip title="Linkedin">

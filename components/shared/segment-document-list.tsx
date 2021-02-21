@@ -60,7 +60,7 @@ const Activity = (props: {
     new Date(props.document.updatedAt!),
     "MMM do 'at' hh:mm a",
   )}`;
-  const belowText = `${props.segmentDocument.reason}${actorText}`;
+  const belowText = `${props.segmentDocument.reason} ${actorText}`;
 
   return (
     <Tooltip title={tooltipText} aria-label={tooltipText}>

@@ -48,6 +48,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
   },
+  copyButton: {
+    textAlign: 'right',
+    textDecoration: 'underline',
+    transition: 'opacity 0.3s',
+    '&:active': {
+      opacity: 0.7,
+    },
+  },
 }));
 
 const Row = (props: {
@@ -107,6 +115,19 @@ const Row = (props: {
             </Typography>
           </Grid>
         )}
+        <Grid
+          item
+          className={classes.copyButton}
+          onClick={(event) => {
+            event.stopPropagation();
+            void navigator.clipboard.writeText(person.emailAddresses[0]);
+            return false;
+          }}
+        >
+          <Typography variant="caption" noWrap>
+            Copy Email
+          </Typography>
+        </Grid>
       </Grid>
     </Button>
   );
