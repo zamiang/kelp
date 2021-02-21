@@ -48,6 +48,7 @@ const formatSegmentDocument = (
 const formatSegmentDocumentFromDescription = (
   segment: ISegment,
   documentId: string,
+  personId: string,
 ): ISegmentDocument => ({
   id: `${segment.id}-${documentId}`,
   documentId,
@@ -55,7 +56,7 @@ const formatSegmentDocumentFromDescription = (
   segmentTitle: formatSegmentTitle(segment.summary),
   date: segment.start,
   reason: 'Listed in meeting description',
-  personId: segment.organizer!.id!,
+  personId,
   isPersonAttendee: true,
   day: getDayOfYear(segment.start),
   week: getWeek(segment.start),
@@ -100,11 +101,20 @@ export default class SegmentDocumentModel {
 
     // Add drive activity in meeting descriptions
     const descriptionsToAdd = await Promise.all(
-      segments.map((segment) =>
-        segment.documentIdsFromDescription.map((documentId) =>
-          formatSegmentDocumentFromDescription(segment, documentId),
-        ),
-      ),
+      segments.map(async (segment) => {
+        const attendees = await attendeeStore.getAllForSegmentId(segment.id);
+        return await Promise.all(
+          segment.documentIdsFromDescription.map(async (documentId) =>
+            Promise.all(
+              attendees.map(
+                (attendee) =>
+                  attendee.personId &&
+                  formatSegmentDocumentFromDescription(segment, documentId, attendee.personId),
+              ),
+            ),
+          ),
+        );
+      }),
     );
 
     const tx = this.db.transaction('segmentDocument', 'readwrite');

@@ -11,7 +11,7 @@ const PEOPLE_COUNT = 10;
 const DOCUMENT_COUNT = 50;
 const CURRENT_USER_EMAIL = 'support@kelp.nyc';
 const NUMBER_OF_MEETINGS = 12;
-const NUMBER_OF_DRIVE_ACTIVITY = 5;
+const NUMBER_OF_DRIVE_ACTIVITY = 20;
 const NUMBER_OF_ATTENDEES = 6;
 /**
  * create name/email pairs to be used across the fake data
