@@ -76,6 +76,7 @@ export default class PersonModel {
           isCurrentUser = true;
         } else {
           contactLookup[formattedEmailAddress] = contact;
+          emailAddressToPersonIdHash[formattedEmailAddress] = contact.id;
         }
       });
 
@@ -109,6 +110,7 @@ export default class PersonModel {
         peopleToAdd.push(formatPersonForStore(person));
       }
     });
+
     console.log(emailAddressToPersonIdHash);
 
     // Add email addresses
