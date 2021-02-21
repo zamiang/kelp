@@ -123,7 +123,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     personList: peopleResponse.result ? peopleResponse.result : [],
     refetchPersonList: peopleResponse.execute,
   };
-
+  console.log(driveActivityResponse, '<<<<<<< drive activity');
   return {
     driveActivity,
     ...formattedPeopleResponse,

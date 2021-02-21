@@ -110,8 +110,10 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
         timeDataStore,
         attendeeDataStore,
       );
-      setLoadingMessage(undefined);
-      setLoading(false);
+      if (!data.isLoading) {
+        setLoadingMessage(undefined);
+        setLoading(false);
+      }
     };
     void addData();
   }, [data.isLoading]);
