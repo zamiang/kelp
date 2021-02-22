@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -174,9 +175,20 @@ const MeetingRow = (props: {
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
           <Grid container>
             <Grid item xs={12}>
-              <Typography variant="h6">
-                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-              </Typography>
+              <Grid container justify="space-between">
+                <Grid item>
+                  <Typography variant="h6">
+                    {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+                  </Typography>
+                </Grid>
+                {props.meeting.videoLink && (
+                  <Grid item>
+                    <Link target="_blank" href={props.meeting.videoLink}>
+                      Join Meeting
+                    </Link>
+                  </Grid>
+                )}
+              </Grid>
               <Typography variant="body2" noWrap>
                 <span style={{ fontWeight: 500 }}>{props.meeting.summary || '(no title)'}</span>{' '}
                 {!props.isSmall && props.meeting.description

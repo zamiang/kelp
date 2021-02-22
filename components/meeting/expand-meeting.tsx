@@ -6,11 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format } from 'date-fns';
-import { first, uniq } from 'lodash';
+import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
-import urlRegex from 'url-regex';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import AppBar from '../shared/elevate-app-bar';
@@ -18,7 +17,6 @@ import useExpandStyles from '../shared/expand-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { getFormattedGuestStats } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
-import { IDocument } from '../store/models/document-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -84,9 +82,6 @@ const ExpandedMeeting = (props: {
   const meetingId = props.meetingId || slug;
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
-  const [meetingNotesDocument, setMeetingNotesDocument] = useState<IDocument | undefined>(
-    undefined,
-  );
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
@@ -143,50 +138,23 @@ const ExpandedMeeting = (props: {
     void fetchData();
   }, [props.store.isLoading, meeting?.summary]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (meeting?.documentIdsFromDescription[0]) {
-        const result = await props.store.documentDataStore.getByLink(
-          meeting.documentIdsFromDescription[0],
-        );
-        setMeetingNotesDocument(result);
-      } else {
-        setMeetingNotesDocument(undefined);
-      }
-    };
-    void fetchData();
-  }, [props.store.isLoading, meetingId, meeting]);
-
   if (!meeting) {
     return null;
   }
 
-  const meetingDescriptionLinks = meeting.description ? meeting.description.match(urlRegex()) : [];
-  const zoomLink = first(meetingDescriptionLinks?.filter((link) => link.includes('zoom.us')));
-  const videoLink = meeting.hangoutLink || zoomLink;
-  const videoLinkDomain = videoLink ? new URL(videoLink).hostname : undefined;
+  const videoLinkDomain = meeting.videoLink ? new URL(meeting.videoLink).hostname : undefined;
+  const shouldShowMeetingLink = !!meeting.videoLink;
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
-  const shouldShowMeetingLink = !!videoLink;
 
   const guestStats = getFormattedGuestStats(attendees);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
-  let meetingNotesLink = meetingNotesDocument?.link;
-  if (!meetingNotesLink) {
-    meetingNotesLink = first(
-      meetingDescriptionLinks?.filter((link) => link.includes('https://docs.google.com')),
-    );
-  }
-
-  const hasMeetingNotes = !!meetingNotesLink;
+  const hasMeetingNotes = !!meeting.meetingNotesLink;
 
   const editLink = meeting.link?.replace(
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
-  );
-  const meetingNotesDocumentIds = uniq(
-    segmentDocumentsForAttendees.concat(segmentDocumentsForNonAttendees).map((s) => s.documentId),
   );
   return (
     <React.Fragment>
@@ -208,8 +176,14 @@ const ExpandedMeeting = (props: {
         <Grid container spacing={2}>
           <Grid item>
             <Button
-              onClick={() =>
-                createMeetingNotes(
+              onClick={() => {
+                const meetingNotesDocumentIds = uniq(
+                  segmentDocumentsForAttendees
+                    .concat()
+                    .map((s) => s.documentId)
+                    .concat(meeting.documentIdsFromDescription),
+                );
+                return createMeetingNotes(
                   meeting,
                   meetingNotesDocumentIds,
                   setMeetingNotesLoading,
@@ -219,8 +193,8 @@ const ExpandedMeeting = (props: {
                   props.store.refetch,
                   props.store.scope,
                   props.store.googleOauthToken,
-                )
-              }
+                );
+              }}
               variant="contained"
               className={buttonClasses.button}
               startIcon={
@@ -239,7 +213,7 @@ const ExpandedMeeting = (props: {
           {hasMeetingNotes && (
             <Grid item>
               <Button
-                onClick={() => window.open(meetingNotesLink, '_blank')}
+                onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
                 variant="contained"
                 className={buttonClasses.button}
                 startIcon={<InsertDriveFileIcon />}
@@ -252,7 +226,7 @@ const ExpandedMeeting = (props: {
           {shouldShowMeetingLink && (
             <Grid item>
               <Button
-                onClick={() => window.open(videoLink, '_blank')}
+                onClick={() => window.open(meeting.videoLink, '_blank')}
                 variant="contained"
                 className={buttonClasses.button}
                 startIcon={<MeetingRoomIcon />}

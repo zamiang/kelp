@@ -36,7 +36,6 @@ const scopes = [
 
 const Handle404 = () => {
   const newURL = `https://www.kelp.nyc/dashboard${useLocation().pathname}`;
-  console.log(newURL, '<<<<<<<<');
 
   useEffect(() => {
     chrome.tabs.create({ url: newURL });
@@ -132,28 +131,30 @@ const Info = (props: { database: any; accessToken: string; scope: string }) => {
           </Grid>
           <Grid item>
             <Grid container alignItems="center">
-              <RefreshButton
-                isLoading={store.isLoading}
-                refresh={store.refetch}
-                lastUpdated={store.lastUpdated}
-                loadingMessage={store.loadingMessage}
-              />
-            </Grid>
-            {user && (
               <Grid item>
-                <IconButton
-                  className={'ignore-react-onclickoutside'}
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                >
-                  <Avatar
-                    className={clsx(classes.unSelected, classes.icon)}
-                    src={user.imageUrl || undefined}
-                    alt={user.name || user.emailAddresses[0] || undefined}
-                  />
-                </IconButton>
+                <RefreshButton
+                  isLoading={store.isLoading}
+                  refresh={store.refetch}
+                  lastUpdated={store.lastUpdated}
+                  loadingMessage={store.loadingMessage}
+                />
               </Grid>
-            )}
+              {user && (
+                <Grid item>
+                  <IconButton
+                    className={'ignore-react-onclickoutside'}
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                  >
+                    <Avatar
+                      className={clsx(classes.unSelected, classes.icon)}
+                      src={user.imageUrl || undefined}
+                      alt={user.name || user.emailAddresses[0] || undefined}
+                    />
+                  </IconButton>
+                </Grid>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </header>
@@ -191,7 +192,7 @@ const Info = (props: { database: any; accessToken: string; scope: string }) => {
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    width: 300,
+    width: 360,
     minHeight: 300,
   },
   header: {

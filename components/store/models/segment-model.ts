@@ -1,5 +1,5 @@
 import { addMinutes, format, getDate, getWeek, isSameDay, subMinutes } from 'date-fns';
-import { first, flatten, groupBy } from 'lodash';
+import { first, flatten, groupBy, uniq } from 'lodash';
 import urlRegex from 'url-regex';
 import config from '../../../constants/config';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
@@ -26,12 +26,14 @@ export const getStateForMeeting = (event: IEvent): SegmentState => {
 export interface ISegment extends ICalendarEvent {
   readonly state: SegmentState;
   readonly documentIdsFromDescription: string[];
+  readonly videoLink?: string;
+  readonly meetingNotesLink?: string;
 }
 
-export const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
+export const getDocumentsFromCalendarEvents = (event: ICalendarEvent) => {
   const documentIds: string[] = [];
 
-  const urls = event.description ? event.description.match(urlRegex()) : [];
+  const urls = event.description ? uniq(event.description.match(urlRegex())) : [];
   (urls || []).forEach((url) => {
     if (url.includes('https://docs.google.com')) {
       const link = getGoogleDocsIdFromLink(url);
@@ -43,21 +45,32 @@ export const getDocumentIdsFromCalendarEvents = (event: ICalendarEvent) => {
       documentIds.push(attachment.fileId);
     }
   });
-  return documentIds;
+  return { documentIds, urls };
+};
+
+const getVideoLinkFromCalendarEvent = (event: ICalendarEvent) => {
+  if (event.hangoutLink) {
+    return event.hangoutLink;
+  }
+  const meetingDescriptionLinks = event.description ? event.description.match(urlRegex()) : [];
+  return first(meetingDescriptionLinks?.filter((link) => link.includes('zoom.us')));
 };
 
 const formatSegments = (calendarEvents: ICalendarEvent[]) =>
   calendarEvents
     .filter((event) => event.start && event.end)
     .map((event) => {
-      const documentIds = getDocumentIdsFromCalendarEvents(event);
+      const documents = getDocumentsFromCalendarEvents(event);
+      const videoLink = getVideoLinkFromCalendarEvent(event);
       return {
         ...event,
         attendees: event.attendees.map((a) => ({
           ...a,
           email: a.email ? formatGmailAddress(a.email) : undefined,
         })),
-        documentIdsFromDescription: documentIds,
+        documentIdsFromDescription: documents.documentIds,
+        meetingNotesLink: first(documents.urls),
+        videoLink,
         state: getStateForMeeting(event),
       };
     });

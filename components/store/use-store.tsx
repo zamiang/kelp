@@ -95,7 +95,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
 
-      setLoadingMessage('Calculating Document and Meeting relationships');
+      setLoadingMessage('Matching Documents and Meetings');
       await segmentDocumentStore.addSegmentDocumentsToStore(
         driveActivityDataStore,
         timeDataStore,

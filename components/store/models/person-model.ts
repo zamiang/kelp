@@ -143,7 +143,7 @@ export default class PersonModel {
   }
 
   async getSelf(): Promise<IPerson | undefined> {
-    const currentUser = await this.db.getAllFromIndex('person', 'is-self', 'true');
+    const currentUser = await this.db.getAllFromIndex('person', 'is-self', 1 as any);
     return first(currentUser);
   }
 

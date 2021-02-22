@@ -1,7 +1,7 @@
 import { flatten, uniq } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
-import { getDocumentIdsFromCalendarEvents } from '../store/models/segment-model';
+import { getDocumentsFromCalendarEvents } from '../store/models/segment-model';
 import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
 import fetchContacts from './fetch-contacts';
 import fetchDriveActivityForDocumentIds, { IFormattedDriveActivity } from './fetch-drive-activity';
@@ -102,8 +102,8 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
    */
   // Find documents that are in meeting descriptions and make sure to fetch them as well
   const potentiallyMissingGoogleDocIds = flatten(
-    (calendarResponse.result?.calendarEvents || []).map((event) =>
-      getDocumentIdsFromCalendarEvents(event),
+    (calendarResponse.result?.calendarEvents || []).map(
+      (event) => getDocumentsFromCalendarEvents(event).documentIds,
     ),
   ).filter(Boolean);
   const googleDocIds = (driveResponse.result || []).map((file) => file?.id).filter(Boolean);
