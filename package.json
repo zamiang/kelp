@@ -80,7 +80,7 @@
     "rollbar": "2.21.0",
     "sitemap": "6.4.0",
     "styled-components": "5.2.1",
-    "typescript": "4.1.5",
+    "typescript": "4.2.2",
     "url-regex": "5.0.0",
     "webpack": "4.46.0",
     "webpack-bundle-analyzer": "4.4.0",
