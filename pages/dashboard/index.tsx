@@ -144,24 +144,25 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
           background-color: #f3f4f6;
         }
       `}</style>
-      <NavBar
-        lastUpdated={store.lastUpdated}
-        handleRefreshClick={handleRefreshClick}
-        isLoading={isLoading}
-        error={store.error}
-        loadingMessage={store.loadingMessage}
-      />
-      <BottomNav />
-      <main className={classes.content}>
-        <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
-          <Alert severity="error">
-            <AlertTitle>Error</AlertTitle>Please reload the page
-            <Typography>{store.error}</Typography>
-          </Alert>
-        </Dialog>
-        <NotificationsPopup />
-        <MeetingPrepNotifications {...store} />
-        <ErrorBoundaryComponent>
+      <ErrorBoundaryComponent>
+        <NavBar
+          lastUpdated={store.lastUpdated}
+          handleRefreshClick={handleRefreshClick}
+          isLoading={isLoading}
+          error={store.error}
+          loadingMessage={store.loadingMessage}
+        />
+        <BottomNav />
+        <main className={classes.content}>
+          <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>Please reload the page
+              <Typography>{store.error}</Typography>
+            </Alert>
+          </Dialog>
+          <NotificationsPopup />
+          <MeetingPrepNotifications {...store} />
+
           <Switch>
             <Route path="/week">
               <WeekCalendar {...store} />
@@ -265,8 +266,8 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
               <Redirect to="/meetings" />
             </Route>
           </Switch>
-        </ErrorBoundaryComponent>
-      </main>
+        </main>
+      </ErrorBoundaryComponent>
     </div>
   );
 };

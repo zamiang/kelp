@@ -14,7 +14,7 @@ const RollbarErrorTracking = (() => {
   };
 
   const logErrorInRollbar = (error: string) => {
-    throw new Error(error);
+    RollbarObj.error(error);
   };
 
   return { logErrorInfo, logErrorInRollbar };
