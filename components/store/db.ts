@@ -65,14 +65,13 @@ interface Db extends DBSchema {
 
 const dbNameHash = {
   production: 'kelp',
-  test: 'test',
-  homepage: 'homepage',
-  'extension-test': 'kelp-extension-test',
+  test: 'kelp-test',
+  extension: 'kelp-extension',
 };
 
 const databaseVerson = 1;
 
-async function database(environment: 'production' | 'test' | 'homepage' | 'extension-test') {
+async function database(environment: 'production' | 'test' | 'extension') {
   if (environment === 'test') {
     indexedDB.deleteDatabase(dbNameHash[environment]);
   }
