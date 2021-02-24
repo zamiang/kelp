@@ -1,5 +1,6 @@
 import { uniq } from 'lodash';
 import config from '../../constants/config';
+import RollbarErrorTracking from '../error-tracking/rollbar';
 
 /**
  * The attendee's response status. Possible values are:
@@ -94,6 +95,10 @@ const fetchCalendarEvents = async (
     },
   );
   const calendarBody = await calendarResponse.json();
+  if (!calendarResponse.ok) {
+    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
+    RollbarErrorTracking.logErrorInRollbar(calendarResponse.statusText);
+  }
   const filteredCalendarEvents =
     calendarBody && calendarBody.items ? (calendarBody.items as gapi.client.calendar.Event[]) : [];
 

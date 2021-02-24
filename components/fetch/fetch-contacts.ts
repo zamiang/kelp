@@ -1,3 +1,4 @@
+import RollbarErrorTracking from '../error-tracking/rollbar';
 import { formatGmailAddress, person, usedPersonFields } from './fetch-people';
 
 const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
@@ -53,6 +54,11 @@ const fetchContacts = async (authToken: string) => {
     },
   );
   const peopleBody = await peopleResponse.json();
+  if (!peopleResponse.ok) {
+    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
+    RollbarErrorTracking.logErrorInRollbar(peopleResponse.statusText);
+  }
+
   const results = peopleBody?.connections?.map((person: gapi.client.people.Person) =>
     formatContact(person),
   );

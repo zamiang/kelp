@@ -1,4 +1,5 @@
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
+import RollbarErrorTracking from '../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { IFormattedAttendee } from './models/attendee-model';
 import { IDocument } from './models/document-model';
@@ -128,7 +129,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
     },
     terminated: () => {
-      console.error('Terminated');
+      RollbarErrorTracking.logErrorInRollbar('db terminated');
     },
   });
   return db;

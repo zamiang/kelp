@@ -2,6 +2,7 @@ import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
 import config from '../../constants/config';
+import RollbarErrorTracking from '../error-tracking/rollbar';
 
 const isRefetchEnabled = false;
 const driveFileFields =
@@ -49,6 +50,11 @@ const fetchDriveFilePage = async (googleOauthToken: string, pageToken?: string) 
     },
   );
   const body = await driveResponse.json();
+  if (!driveResponse.ok) {
+    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
+    RollbarErrorTracking.logErrorInRollbar(driveResponse.statusText);
+  }
+
   return body;
 };
 
@@ -101,6 +107,11 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string) => {
           },
         }),
       );
+      if (!fileResponse.ok) {
+        RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
+        RollbarErrorTracking.logErrorInRollbar(fileResponse.statusText);
+      }
+
       if (fileResponse.status === 200) {
         const file = await fileResponse.json();
         return file;

@@ -1,6 +1,7 @@
 import { flatten, uniq } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
 import config from '../../constants/config';
+import RollbarErrorTracking from '../error-tracking/rollbar';
 
 const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
   if (target.drive) {
@@ -76,6 +77,11 @@ const fetchDriveActivityForDocument = async (
       idsToRefetch.push(documentId);
     }
     return { peopleIds: [], activity: [] };
+  }
+
+  if (!activityResponse.ok) {
+    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
+    RollbarErrorTracking.logErrorInRollbar(activityResponse.statusText);
   }
 
   const response: {
