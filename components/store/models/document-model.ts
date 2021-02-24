@@ -1,4 +1,5 @@
 import { uniq } from 'lodash';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { getModifiedTimeProxy } from '../../fetch/fetch-drive-files';
 import { dbType } from '../db';
 
@@ -56,14 +57,21 @@ export default class DocumentModel {
   async addDocsToStore(documents: IDocument[]) {
     const tx = this.db.transaction('document', 'readwrite');
     // console.log(documents, 'about to save documents');
-    await Promise.all(
-      documents.map((document) => {
-        if (document?.id) {
-          return tx.store.put(document);
-        }
-      }),
-    );
-    return tx.done;
+    const promises = documents.map((document) => {
+      if (document?.id) {
+        return tx.store.put(document);
+      }
+    });
+
+    const results = await Promise.allSettled(promises);
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        RollbarErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   /**

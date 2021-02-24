@@ -1,5 +1,6 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten } from 'lodash';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { formatGmailAddress } from '../../fetch/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
@@ -71,8 +72,18 @@ export default class AttendeeModel {
     );
     const tx = this.db.transaction('attendee', 'readwrite');
     // console.log(attendees, 'about to save attendees');
-    await Promise.all(flatten(attendees).map(async (s) => s && tx.store.put(s)));
-    return tx.done;
+
+    const results = await Promise.allSettled(
+      flatten(attendees).map(async (s) => s && tx.store.put(s)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        RollbarErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async getForWeek(week: number) {

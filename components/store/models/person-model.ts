@@ -1,4 +1,5 @@
 import { first, uniq } from 'lodash';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { formatContact } from '../../fetch/fetch-contacts';
 import { person as GooglePerson, formatGmailAddress } from '../../fetch/fetch-people';
 import { dbType } from '../db';
@@ -124,15 +125,25 @@ export default class PersonModel {
     });
 
     const tx = this.db.transaction('person', 'readwrite');
-    // console.log(peopleToAdd, 'about to save people');
-    await Promise.all(peopleToAdd.map((person) => tx.store.put(person)));
-    return tx.done;
+    const results = await Promise.allSettled(peopleToAdd.map((person) => tx.store.put(person)));
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        RollbarErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async updatePersonFromGoogleContacts(person: gapi.client.people.Person) {
     const formattedPerson = formatPerson(formatContact(person)!);
     if (formattedPerson) {
-      await this.db.put('person', formattedPerson);
+      try {
+        await this.db.put('person', formattedPerson);
+      } catch (e) {
+        RollbarErrorTracking.logErrorInRollbar(e);
+      }
     }
     return formattedPerson;
   }

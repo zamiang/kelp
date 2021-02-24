@@ -1,5 +1,6 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten } from 'lodash';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
@@ -103,32 +104,31 @@ export default class SegmentDocumentModel {
     const descriptionsToAdd = await Promise.all(
       segments.map(async (segment) => {
         const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-        return await Promise.all(
-          segment.documentIdsFromDescription.map(async (documentId) =>
-            Promise.all(
-              attendees.map(
-                (attendee) =>
-                  attendee.personId &&
-                  formatSegmentDocumentFromDescription(segment, documentId, attendee.personId),
-              ),
-            ),
+        return segment.documentIdsFromDescription.map((documentId) =>
+          attendees.map(
+            (attendee) =>
+              attendee.personId &&
+              formatSegmentDocumentFromDescription(segment, documentId, attendee.personId),
           ),
         );
       }),
     );
 
+    const flatDescriptions = flatten(flatten(descriptionsToAdd)) as any;
+
     const tx = this.db.transaction('segmentDocument', 'readwrite');
     // console.log(driveActivityToAdd, 'about to save segment documents');
-    await Promise.all(driveActivityToAdd.map((item) => item?.id && tx.store.put(item)));
-    // console.log(flatten(descriptionsToAdd), 'about to save description items');
-    await Promise.all(
-      flatten(descriptionsToAdd).map((item: any) => {
-        if (item && item.id) {
-          return tx.store.put(item);
-        }
-      }),
+    const results = await Promise.allSettled(
+      driveActivityToAdd.concat(flatDescriptions).map((item) => item?.id && tx.store.put(item)),
     );
-    return tx.done;
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        RollbarErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async getAllForWeek(week: number) {

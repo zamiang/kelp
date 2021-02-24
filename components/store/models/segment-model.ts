@@ -2,6 +2,7 @@ import { addMinutes, format, getDate, getWeek, isSameDay, subMinutes } from 'dat
 import { first, flatten, groupBy, uniq } from 'lodash';
 import urlRegex from 'url-regex';
 import config from '../../../constants/config';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
 import { formatGmailAddress } from '../../fetch/fetch-people';
 import { dbType } from '../db';
@@ -86,8 +87,15 @@ export default class SegmentModel {
     const formattedSegments = formatSegments(calendarEvents);
     // console.log(formattedSegments, 'about to save segments');
     const tx = this.db.transaction('meeting', 'readwrite');
-    await Promise.all(formattedSegments.map((event) => tx.store.put(event)));
-    return tx.done;
+    const results = await Promise.allSettled(formattedSegments.map((event) => tx.store.put(event)));
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        RollbarErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async getById(id: string): Promise<ISegment | undefined> {

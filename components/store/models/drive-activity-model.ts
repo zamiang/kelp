@@ -1,3 +1,4 @@
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { dbType } from '../db';
 import { getGoogleDocsIdFromLink } from './document-model';
@@ -21,10 +22,19 @@ export default class DriveActivityModel {
         return formattedItem;
       }
     });
+
     const tx = this.db.transaction('driveActivity', 'readwrite');
-    // console.log(formattedActivity, 'about to save drive activity');
-    await Promise.all(formattedActivity.map((item) => item && tx.store.put(item)));
-    return tx.done;
+    const results = await Promise.allSettled(
+      formattedActivity.map((item) => item && tx.store.put(item)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        RollbarErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async getDriveActivityForDocument(documentId: string) {
