@@ -71,7 +71,9 @@ const dbNameHash = {
 
 const databaseVerson = 1;
 
-async function database(environment: 'production' | 'test' | 'extension') {
+export type dbType = IDBPDatabase<Db>;
+
+const setupDatabase = async (environment: 'production' | 'test' | 'extension') => {
   if (environment === 'test') {
     indexedDB.deleteDatabase(dbNameHash[environment]);
   }
@@ -130,8 +132,6 @@ async function database(environment: 'production' | 'test' | 'extension') {
     },
   });
   return db;
-}
+};
 
-export type dbType = IDBPDatabase<Db>;
-
-export default database;
+export default setupDatabase;
