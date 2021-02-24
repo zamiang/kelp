@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import RollbarErrorTracking from '../error-tracking/rollbar';
 import FetchAll from '../fetch/fetch-all';
 import { dbType } from './db';
 import AttendeeModel from './models/attendee-model';
@@ -104,6 +105,14 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
       if (!data.isLoading) {
         setLoadingMessage(undefined);
         setLoading(false);
+        if (data.missingDriveFiles) {
+          RollbarErrorTracking.logErrorInRollbar(
+            `Missing drive files ${data.missingDriveFiles.length}`,
+          );
+        }
+        if (data.error) {
+          RollbarErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
+        }
       }
     };
     void addData();
