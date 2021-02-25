@@ -396,7 +396,7 @@ const DayContent = (props: IDayContentProps) => {
 
   // Scroll the current time thing into view
   useEffect(() => {
-    if (isSameDay && referenceElement) {
+    if (isSameDay(currentDay, props.day) && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [!!referenceElement]);
