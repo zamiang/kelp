@@ -3,7 +3,7 @@ import { signOut } from 'next-auth/client';
 import React from 'react';
 
 const LogoutButton = () => (
-  <Button size="small" onClick={() => signOut()}>
+  <Button size="small" onClick={() => signOut({ callbackUrl: 'https://www.kelp.nyc' })}>
     Log Out
   </Button>
 );

@@ -254,7 +254,9 @@ const NavBar = (props: IProps) => {
               >
                 Settings
               </MenuItem>
-              <MenuItem onClick={() => signOut()}>Logout</MenuItem>
+              <MenuItem onClick={() => signOut({ callbackUrl: 'https://www.kelp.nyc' })}>
+                Logout
+              </MenuItem>
             </Menu>
           </Grid>
         </Grid>

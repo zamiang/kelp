@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
-import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch, useLocation } from 'react-router-dom';
@@ -65,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoadingDashboardContainer = () => {
-  const [session, isLoading] = useSession();
   const [database, setDatabase] = useState<any>(undefined);
   const [token, setToken] = useState<string | undefined>(undefined);
   const [scope, setScope] = useState<string | undefined>(undefined);
@@ -86,13 +84,10 @@ const LoadingDashboardContainer = () => {
     void fetchData();
   }, []);
 
-  if (!isLoading && !session?.user) {
-    window.location.pathname = '/';
-  }
   return (
     <React.Fragment>
-      <Loading isOpen={!token || isLoading || !database} message="Loading" />
-      {(process as any).browser && database && session && token && scope && (
+      <Loading isOpen={!token || !database} message="Loading" />
+      {(process as any).browser && database && token && scope && (
         <LoadingStoreDashboardContainer
           database={database}
           googleOauthToken={token}
@@ -162,7 +157,6 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
           </Dialog>
           <NotificationsPopup />
           <MeetingPrepNotifications {...store} />
-
           <Switch>
             <Route path="/week">
               <WeekCalendar {...store} />
