@@ -14,15 +14,8 @@
     "service_worker": "background.js"
   },
   "oauth2": {
-    "client_id": "296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com",
-    "scopes":[
-      "https://www.googleapis.com/auth/calendar.events.readonly",
-      "https://www.googleapis.com/auth/contacts.readonly",
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/drive.metadata.readonly",
-      "https://www.googleapis.com/auth/drive.activity.readonly"
-    ]
+    "client_id": "REPLACED IN WEBPACK CONFIG",
+    "scopes": "REPLACED IN WEBPACK CONFIG"
   },
   "permissions": [
     "identity"

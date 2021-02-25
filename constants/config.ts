@@ -1,5 +1,6 @@
 import { addDays, subDays } from 'date-fns';
 
+// NOTE: Update in webpack.config.js
 const scopes = [
   'https://www.googleapis.com/auth/calendar.events.readonly',
   'https://www.googleapis.com/auth/contacts.readonly',
