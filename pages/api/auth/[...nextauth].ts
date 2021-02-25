@@ -32,6 +32,7 @@ const options = {
     signingKey: process.env.JWT_SIGNING_KEY,
     encryptionKey: process.env.JWT_ENCRYPTION_KEY,
   },
+  /*
   callbacks: {
     session: async (session: any, user: any) =>
       Promise.resolve({
@@ -39,7 +40,27 @@ const options = {
         slackOauthToken: user.slackOauthToken,
         googleOauthToken: user.googleOauthToken,
       }),
+    jwt: async (token: any, user: any, account: any) => {
+      const isSignIn = user ? true : false;
+      console.log(user, token);
+      // https://github.com/nextauthjs/next-auth/issues/625
+      if (isSignIn) {
+        token.user = { id: user.id };
+      }
+      if (account && account.provider === 'slack') {
+        token.slackOauthToken = account.accessToken;
+      }
+      if (account && account.provider === 'google') {
+        token.googleOauthToken = account.accessToken;
+      }
+      // Add auth_time to token on signin in
+      if (isSignIn) {
+        token.auth_time = Math.floor(Date.now() / 1000);
+      }
+      return Promise.resolve(token);
+    },
   },
+  */
   providers: [
     {
       id: 'google',
