@@ -53,7 +53,7 @@ export default class PersonModel {
     emailAddresses: string[] = [],
   ) {
     // TODO: Better handlie missing current user in chrome plugin
-    if (!currentUser) {
+    if (!currentUser?.id) {
       return;
     }
     const formattedCurrentUser = formatPerson(currentUser);
@@ -70,6 +70,9 @@ export default class PersonModel {
 
     // Create contact lookup
     contacts.forEach((contact) => {
+      if (!contact.id) {
+        return;
+      }
       let isCurrentUser = false;
       contact.emailAddresses.forEach((emailAddress) => {
         const formattedEmailAddress = formatGmailAddress(emailAddress);
@@ -102,7 +105,7 @@ export default class PersonModel {
       });
       if (contact) {
         peopleToAdd.push(contact);
-      } else {
+      } else if (person.id) {
         peopleToAdd.push(formatPersonForStore(person));
       }
     });
@@ -116,7 +119,7 @@ export default class PersonModel {
       const personId = emailAddressToPersonIdHash[formattedEmailAddress];
       if (!personId) {
         const personToAdd = contactLookup[formattedEmailAddress];
-        if (personToAdd) {
+        if (personToAdd && personToAdd.id) {
           peopleToAdd.push(personToAdd);
         } else {
           peopleToAdd.push(createNewPersonFromEmail(formattedEmailAddress));
@@ -125,7 +128,9 @@ export default class PersonModel {
     });
 
     const tx = this.db.transaction('person', 'readwrite');
-    const results = await Promise.allSettled(peopleToAdd.map((person) => tx.store.put(person)));
+    const results = await Promise.allSettled(
+      peopleToAdd.map(async (person) => await tx.store.put(person)),
+    );
     await tx.done;
 
     results.forEach((result) => {

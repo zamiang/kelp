@@ -23,16 +23,10 @@ import db from '../../components/store/db';
 import { IPerson } from '../../components/store/models/person-model';
 import { ISegment } from '../../components/store/models/segment-model';
 import getStore from '../../components/store/use-store';
+import config from '../../constants/config';
 import theme from '../../constants/theme';
 
-// NOTE: Copied from manifest.json - remember to update both
-const scopes = [
-  'https://www.googleapis.com/auth/calendar.events.readonly',
-  'https://www.googleapis.com/auth/contacts.readonly',
-  'https://www.googleapis.com/auth/userinfo.email',
-  'https://www.googleapis.com/auth/drive.metadata.readonly',
-  'https://www.googleapis.com/auth/drive.activity.readonly',
-].join(' ');
+const scopes = config.GOOGLE_SCOPES.join(' ');
 
 const Handle404 = () => {
   const newURL = `https://www.kelp.nyc/dashboard${useLocation().pathname}`;
