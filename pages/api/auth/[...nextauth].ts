@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import NextAuth from 'next-auth';
+import Providers from 'next-auth/providers';
 import PostgressConnectionStringParser from 'pg-connection-string';
 import config from '../../../constants/config';
 
@@ -62,12 +63,20 @@ const options = {
   },
   */
   providers: [
+    Providers.Google({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      scope: config.GOOGLE_SCOPES.join(' '),
+      state: false,
+      authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth?response_type=code',
+    }),
+    /*
+
     {
       id: 'google',
       name: 'Google',
       type: 'oauth',
       version: '2.0',
-      scope: config.GOOGLE_SCOPES.join(' '),
       params: { grant_type: 'authorization_code' },
       accessTokenUrl: 'https://accounts.google.com/o/oauth2/token',
       requestTokenUrl: 'https://accounts.google.com/o/oauth2/auth',
@@ -84,11 +93,8 @@ const options = {
         }
         return user;
       },
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       state: false,
     },
-    /*
     {
       id: 'slack',
       name: 'Slack',
