@@ -124,6 +124,8 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// <meta name="slack-app-id" content="A01E5A9263B" />
+
 const App = () => {
   const classes = useStyles();
   return (
@@ -134,7 +136,6 @@ const App = () => {
           name="description"
           content="Kelp automatically organizes your documents, events and contacts to make work make sense."
         />
-        <meta name="slack-app-id" content="A01E5A9263B" />
       </Head>
       <style jsx global>{`
         html body {

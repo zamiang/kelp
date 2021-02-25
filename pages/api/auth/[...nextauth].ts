@@ -39,25 +39,6 @@ const options = {
         slackOauthToken: user.slackOauthToken,
         googleOauthToken: user.googleOauthToken,
       }),
-    jwt: async (token: any, user: any, account: any) => {
-      const isSignIn = user ? true : false;
-
-      // https://github.com/nextauthjs/next-auth/issues/625
-      if (isSignIn) {
-        token.user = { id: user.id };
-      }
-      if (account && account.provider === 'slack') {
-        token.slackOauthToken = account.accessToken;
-      }
-      if (account && account.provider === 'google') {
-        token.googleOauthToken = account.accessToken;
-      }
-      // Add auth_time to token on signin in
-      if (isSignIn) {
-        token.auth_time = Math.floor(Date.now() / 1000);
-      }
-      return Promise.resolve(token);
-    },
   },
   providers: [
     {
@@ -85,6 +66,7 @@ const options = {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
+    /*
     {
       id: 'slack',
       name: 'Slack',
@@ -107,6 +89,7 @@ const options = {
       clientId: process.env.SLACK_CLIENT_ID!,
       clientSecret: process.env.SLACK_CLIENT_SECRET!,
     },
+    */
   ],
 };
 

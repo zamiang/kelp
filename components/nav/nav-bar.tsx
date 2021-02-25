@@ -13,7 +13,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import clsx from 'clsx';
-import { useSession } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/client';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import RefreshButton from './refresh-button';
@@ -254,7 +254,7 @@ const NavBar = (props: IProps) => {
               >
                 Settings
               </MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={() => signOut()}>Logout</MenuItem>
             </Menu>
           </Grid>
         </Grid>

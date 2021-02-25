@@ -4,7 +4,6 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { signIn } from 'next-auth/client';
 import React from 'react';
 import config from '../../constants/config';
 import panelStyles from '../shared/panel-styles';
@@ -55,19 +54,6 @@ const Settings = () => {
                   type={'text'}
                   value={config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION}
                 />
-              </FormControl>
-            </div>
-            <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
-              <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  fullWidth
-                  onClick={() => signIn('slack', { callbackUrl: config.REDIRECT_URI })}
-                >
-                  Add Slack
-                </Button>
               </FormControl>
             </div>
             <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>

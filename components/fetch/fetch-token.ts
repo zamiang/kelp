@@ -31,6 +31,9 @@ export const addScope = async (grantedScopes: string, newScope: string): Promise
  * Create form to request access token from Google's OAuth 2.0 server.
  */
 const oauth2SignIn = (additionalScope?: string) => {
+  // Detect safari and include chrome and firefox on iOS since they use safari as a renderer
+  const isSafari = () => navigator.vendor.match(/apple/i); // && !navigator.userAgent.match(/crios/i) && !navigator.userAgent.match(/fxios/i);
+
   // Create element to open OAuth 2.0 endpoint in new window.
   const form = document.createElement('form');
   form.setAttribute('method', 'GET'); // Send as a GET request.

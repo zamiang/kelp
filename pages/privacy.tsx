@@ -195,7 +195,9 @@ const Terms = () => {
                 For performance and overload protection, we direct your traffic through Vercel. They
                 have access to some basic technical information to perform this role, such as your
                 IP address.{' '}
-                <a href="https://vercel.com/legal/privacy-policy">Vercel&#x27;s Privacy Policy.</a>
+                <MuiLink href="https://vercel.com/legal/privacy-policy">
+                  Vercel&#x27;s Privacy Policy.
+                </MuiLink>
               </Typography>
               <br />
               <Typography variant="h4" id="874e477a-d0cd-4ad9-ad1d-9085a3560063">
@@ -222,8 +224,8 @@ const Terms = () => {
               </Typography>
               <Typography className={classes.body}>
                 Place of processing: United States –{' '}
-                <a href="https://policies.google.com/privacy">Privacy Policy</a>. Privacy Shield
-                participant.
+                <MuiLink href="https://policies.google.com/privacy">Privacy Policy</MuiLink>.
+                Privacy Shield participant.
               </Typography>
               <br />
               <Typography variant="h4" id="f69625a1-ef0e-40cb-af26-74a4b3db82d6">
