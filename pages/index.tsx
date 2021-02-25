@@ -85,7 +85,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   body: {
     marginTop: theme.spacing(3),
-    fontWeight: theme.typography.fontWeightMedium,
     fontSize: '0.9285714285714286rem',
     color: theme.palette.text.secondary,
   },
