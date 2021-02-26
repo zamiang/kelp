@@ -17,6 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { person } from '../fetch/fetch-people';
 import { IStore } from '../store/use-store';
+import { logout } from '../user-profile/logout-button';
 import RefreshButton from './refresh-button';
 import SearchBar from './search-bar';
 
@@ -265,14 +266,7 @@ const NavBar = (props: IProps) => {
               >
                 Settings
               </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  localStorage.removeItem('oauth2');
-                  window.location.pathname = '/';
-                }}
-              >
-                Logout
-              </MenuItem>
+              <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
           </Grid>
         </Grid>

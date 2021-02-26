@@ -26,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
 const LoginButton = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [currentUser, setCurrentUser] = useState<person | undefined>();
-  const accessToken = localStorage.getItem('oauth2');
 
   useEffect(() => {
     const fetchData = async () => {
+      const accessToken = localStorage.getItem('oauth2');
       if (accessToken) {
         const result = await fetchSelf(accessToken);
         if (result) {
@@ -39,7 +39,7 @@ const LoginButton = () => {
       setIsLoading(false);
     };
     void fetchData();
-  }, [accessToken]);
+  }, []);
 
   const classes = useStyles();
   if (isLoading) {
