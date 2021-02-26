@@ -1,6 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
-import { Provider } from 'next-auth/client';
 import React, { useEffect } from 'react';
 import theme from '../constants/theme';
 
@@ -16,12 +15,10 @@ const App = (props: any) => {
   }, []);
 
   return (
-    <Provider session={pageProps.session}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Component {...pageProps} />
+    </ThemeProvider>
   );
 };
 

@@ -15,7 +15,7 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
     <div suppressHydrationWarning={true}>
       <Router basename="/test-dashboard">
         <ScrollToTop />
-        <DashboardContainer store={store} isLoading={store.isLoading} />
+        <DashboardContainer store={store} />
       </Router>
     </div>
   );

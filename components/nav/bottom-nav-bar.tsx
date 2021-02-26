@@ -11,9 +11,10 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
-import { useSession } from 'next-auth/client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
+import { person } from '../fetch/fetch-people';
+import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
@@ -50,12 +51,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = () => {
+const NavBar = (props: { store: IStore }) => {
   const classes = useStyles();
-  const [session, isLoading] = useSession();
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [currentUser, setCurrentUser] = useState<person | undefined>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.store.personDataStore.getSelf();
+      if (result) {
+        setCurrentUser(result);
+      }
+      setIsLoading(false);
+    };
+    void fetchData();
+  }, [props.store.lastUpdated]);
+
   const tab = useLocation().pathname;
-  const user = session && session.user;
   const isMeetingsSelected = tab.includes('meetings');
   const isDocsSelected = tab.includes('docs');
   const isPeopleSelected = tab.includes('people');
@@ -77,7 +90,7 @@ const NavBar = () => {
             </IconButton>
           </Grid>
         )}
-        {!session && (
+        {!currentUser && (
           <Grid item>
             <IconButton>
               <LockOpenIcon className={classes.unSelected} />
@@ -116,13 +129,13 @@ const NavBar = () => {
             </IconButton>
           </Link>
         </Grid>
-        {!isLoading && user && (
+        {!isLoading && currentUser && (
           <Grid item>
             <IconButton onClick={() => history.push('/settings')}>
               <Avatar
                 className={clsx(classes.unSelected, classes.icon)}
-                src={user.image || undefined}
-                alt={user.name || user.email || undefined}
+                src={currentUser.imageUrl || undefined}
+                alt={currentUser.name || currentUser.emailAddresses[0] || undefined}
               />
             </IconButton>
           </Grid>
