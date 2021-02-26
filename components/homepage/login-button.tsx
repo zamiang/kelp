@@ -2,10 +2,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import { signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
-import React from 'react';
-import config from '../../constants/config';
+import React, { useEffect, useState } from 'react';
+import { person } from '../fetch/fetch-people';
+import { fetchSelf } from '../fetch/fetch-self';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -24,21 +24,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginButton = () => {
-  const [session, isLoading] = useSession();
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [currentUser, setCurrentUser] = useState<person | undefined>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const accessToken = localStorage.getItem('oauth2');
+      if (accessToken) {
+        const result = await fetchSelf(accessToken);
+        if (result) {
+          setCurrentUser(result);
+        }
+      }
+      setIsLoading(false);
+    };
+    void fetchData();
+  }, []);
+
   const classes = useStyles();
-  const user = session && session.user;
   if (isLoading) {
     return <CircularProgress size={22} className={classes.avatar} color="inherit" />;
   }
 
-  if (user) {
+  if (currentUser) {
     return (
       <Link href="/dashboard">
         <Button className={classes.button} variant="outlined" disableElevation={true}>
           <Avatar
             className={classes.avatar}
-            src={user.image || undefined}
-            alt={user.email || undefined}
+            src={currentUser.imageUrl || undefined}
+            alt={currentUser.emailAddresses[0] || undefined}
           />
           My Dashboard
         </Button>
@@ -47,7 +62,7 @@ const LoginButton = () => {
   }
   return (
     <Button
-      onClick={() => signIn('google', { callbackUrl: config.REDIRECT_URI })}
+      onClick={() => (window.location.pathname = '/dashboard')}
       className={classes.button}
       variant="outlined"
       disableElevation={true}

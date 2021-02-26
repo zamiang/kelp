@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import clsx from 'clsx';
-import { signIn } from 'next-auth/client';
 import Head from 'next/head';
 import React from 'react';
 import Footer from '../components/homepage/footer';
@@ -159,7 +158,7 @@ const App = () => {
                 size="large"
                 color="primary"
                 className={classes.login}
-                onClick={() => signIn('google', { callbackUrl: config.REDIRECT_URI })}
+                onClick={() => (window.location.pathname = '/dashboard')}
                 disableElevation={true}
               >
                 Log In with Google
@@ -224,7 +223,7 @@ const App = () => {
                   size="large"
                   color="primary"
                   className={classes.login}
-                  onClick={() => signIn('google', { callbackUrl: config.REDIRECT_URI })}
+                  onClick={() => (window.location.pathname = '/dashboard')}
                   disableElevation={true}
                 >
                   Log In with Google

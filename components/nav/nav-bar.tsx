@@ -13,9 +13,11 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import LoopIcon from '@material-ui/icons/Loop';
 import clsx from 'clsx';
-import { signOut, useSession } from 'next-auth/client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { person } from '../fetch/fetch-people';
+import { IStore } from '../store/use-store';
+import { logout } from '../user-profile/logout-button';
 import RefreshButton from './refresh-button';
 import SearchBar from './search-bar';
 
@@ -91,18 +93,17 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   handleRefreshClick: () => void;
-  lastUpdated: Date;
-  isLoading: boolean;
-  loadingMessage?: string;
-  error?: Error;
+  store: IStore;
 }
 
 const NavBar = (props: IProps) => {
   const classes = useStyles();
   const router = useLocation();
   const history = useHistory();
-  const [session, isLoading] = useSession();
-  const user = session && session.user;
+
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [currentUser, setCurrentUser] = useState<person | undefined>();
+
   const tab = router.pathname;
   const isMeetingsSelected = tab.includes('meetings');
   const isDocsSelected = tab.includes('docs');
@@ -117,6 +118,17 @@ const NavBar = (props: IProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.store.personDataStore.getSelf();
+      if (result) {
+        setCurrentUser(result);
+      }
+      setIsLoading(false);
+    };
+    void fetchData();
+  }, [props.store.lastUpdated]);
 
   return (
     <header className={classes.drawerPaper}>
@@ -164,9 +176,9 @@ const NavBar = (props: IProps) => {
         </Grid>
         <Grid item>
           <Grid container alignItems="center">
-            {props.error && (
+            {props.store.error && (
               <Grid item>
-                <Typography variant="h6">{props.error.message}</Typography>
+                <Typography variant="h6">{props.store.error.message}</Typography>
               </Grid>
             )}
             {isLoading && (
@@ -180,7 +192,7 @@ const NavBar = (props: IProps) => {
                 </Tooltip>
               </Grid>
             )}
-            {!session && (
+            {!isLoading && !currentUser && (
               <Grid item>
                 <Tooltip title="Not authenticated">
                   <IconButton>
@@ -191,13 +203,13 @@ const NavBar = (props: IProps) => {
             )}
             <Grid item>
               <RefreshButton
-                isLoading={props.isLoading}
+                isLoading={props.store.isLoading}
                 refresh={props.handleRefreshClick}
-                lastUpdated={props.lastUpdated}
-                loadingMessage={props.loadingMessage}
+                lastUpdated={props.store.lastUpdated}
+                loadingMessage={props.store.loadingMessage}
               />
             </Grid>
-            {!isLoading && user && (
+            {!isLoading && currentUser && (
               <Grid item>
                 <IconButton
                   className={clsx('ignore-react-onclickoutside')}
@@ -207,8 +219,8 @@ const NavBar = (props: IProps) => {
                 >
                   <Avatar
                     className={clsx(classes.unSelected, classes.icon)}
-                    src={user.image || undefined}
-                    alt={user.name || user.email || undefined}
+                    src={currentUser.imageUrl || undefined}
+                    alt={currentUser.name || currentUser.emailAddresses[0] || undefined}
                   />
                 </IconButton>
               </Grid>
@@ -254,9 +266,7 @@ const NavBar = (props: IProps) => {
               >
                 Settings
               </MenuItem>
-              <MenuItem onClick={() => signOut({ callbackUrl: 'https://www.kelp.nyc' })}>
-                Logout
-              </MenuItem>
+              <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
           </Grid>
         </Grid>

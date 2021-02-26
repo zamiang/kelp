@@ -1,9 +1,13 @@
 import Button from '@material-ui/core/Button';
-import { signOut } from 'next-auth/client';
 import React from 'react';
 
+export const logout = () => {
+  localStorage.removeItem('oauth2');
+  window.location.pathname = '';
+};
+
 const LogoutButton = () => (
-  <Button size="small" onClick={() => signOut({ callbackUrl: 'https://www.kelp.nyc' })}>
+  <Button size="small" onClick={logout}>
     Log Out
   </Button>
 );

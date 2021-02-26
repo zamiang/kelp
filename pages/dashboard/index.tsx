@@ -108,7 +108,7 @@ const LoadingStoreDashboardContainer = (props: {
     <div suppressHydrationWarning={true}>
       <Router basename="/dashboard">
         <ScrollToTop />
-        <DashboardContainer store={store} isLoading={store.isLoading} />
+        <DashboardContainer store={store} />
       </Router>
     </div>
   );
@@ -116,12 +116,11 @@ const LoadingStoreDashboardContainer = (props: {
 
 interface IProps {
   store: IStore;
-  isLoading: boolean;
 }
 
 const is500Error = (error: Error) => (error as any).status === 500;
 
-export const DashboardContainer = ({ store, isLoading }: IProps) => {
+export const DashboardContainer = ({ store }: IProps) => {
   const classes = useStyles();
   const handleRefreshClick = () => store.refetch();
   console.log('loading message', store.loadingMessage);
@@ -140,14 +139,8 @@ export const DashboardContainer = ({ store, isLoading }: IProps) => {
         }
       `}</style>
       <ErrorBoundaryComponent>
-        <NavBar
-          lastUpdated={store.lastUpdated}
-          handleRefreshClick={handleRefreshClick}
-          isLoading={isLoading}
-          error={store.error}
-          loadingMessage={store.loadingMessage}
-        />
-        <BottomNav />
+        <NavBar handleRefreshClick={handleRefreshClick} store={store} />
+        <BottomNav store={store} />
         <main className={classes.content}>
           <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
             <Alert severity="error">

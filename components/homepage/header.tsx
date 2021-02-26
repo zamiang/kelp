@@ -8,10 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
-import { signIn } from 'next-auth/client';
 import Link from 'next/link';
 import React from 'react';
-import config from '../../constants/config';
 import LoginButton from './login-button';
 
 const useStyles = makeStyles((theme) => ({
@@ -139,8 +137,10 @@ const Header = (props: { isFullWidth?: boolean }) => {
                   <MenuItem component="a" href="https://updates.kelp.nyc">
                     Updates
                   </MenuItem>
-                  <MenuItem onClick={() => signIn('google', { callbackUrl: config.REDIRECT_URI })}>
-                    <Typography>Log In</Typography>
+                  <MenuItem>
+                    <Link href="/dashboard">
+                      <Typography>Log In</Typography>
+                    </Link>
                   </MenuItem>
                 </Menu>
               </React.Fragment>
