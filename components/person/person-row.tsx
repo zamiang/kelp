@@ -2,17 +2,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
-
-const useStyles = makeStyles(() => ({
-  name: { minWidth: 300 },
-  email: { minWidth: 200 },
-}));
 
 const PersonRow = (props: {
   selectedPersonId: string | null;
@@ -21,7 +15,6 @@ const PersonRow = (props: {
   info?: string;
 }) => {
   const isSelected = props.selectedPersonId === props.person.id;
-  const classes = useStyles();
   const rowStyles = useRowStyles();
   const router = useHistory();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -58,12 +51,12 @@ const PersonRow = (props: {
         </Grid>
         <Grid item xs zeroMinWidth>
           <Grid container>
-            <Grid item xs={12} className={classes.name} zeroMinWidth>
+            <Grid item xs={12} zeroMinWidth>
               <Typography variant="body2" noWrap style={{ fontWeight: 500 }}>
                 {props.person.name || props.person.id}
               </Typography>
             </Grid>
-            <Grid item xs={12} className={classes.email}>
+            <Grid item xs={12}>
               <Typography variant="body2" noWrap>
                 {props.person.emailAddresses.join(', ')}
               </Typography>

@@ -11,11 +11,6 @@ import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
-  name: {
-    [theme.breakpoints.up('sm')]: {
-      minWidth: 300,
-    },
-  },
   email: {
     [theme.breakpoints.up('sm')]: {
       minWidth: 200,
@@ -58,7 +53,7 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
             </Avatar>
           )}
         </Grid>
-        <Grid item className={classes.name} zeroMinWidth>
+        <Grid item zeroMinWidth>
           <Typography variant="body2" noWrap style={{ fontWeight: 500 }}>
             {props.person.name || props.person.id}
           </Typography>
