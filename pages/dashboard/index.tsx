@@ -190,14 +190,14 @@ export const DashboardContainer = ({ store }: IProps) => {
               </Container>
             </Route>
             <Route path="/settings">
-              <Settings />
+              <Settings shouldRenderHeader={true} />
             </Route>
             <Route path="/meetings">
               <Container>
                 <Grid container spacing={4} alignItems="flex-start">
                   <Grid item xs={12} sm={6}>
                     <div className={classes.center}>
-                      <Meetings {...store} />
+                      <Meetings store={store} />
                     </div>
                   </Grid>
                   <Route path="/meetings/:slug">

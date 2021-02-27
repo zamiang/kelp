@@ -131,17 +131,17 @@ const scrollCurrentTimeIntoView = () => {
   document.getElementById('current-time')?.scrollIntoView({ behavior: 'auto', block: 'center' });
 };
 
-const MeetingsByDay = (props: IStore) => {
+const MeetingsByDay = (props: { store: IStore; hideHeading?: boolean }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.timeDataStore.getSegmentsByDay();
+      const result = await props.store.timeDataStore.getSegmentsByDay();
       setMeetingsByDay(result);
     };
     void fetchData();
-  }, [props.lastUpdated, props.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -149,7 +149,7 @@ const MeetingsByDay = (props: IStore) => {
         scrollCurrentTimeIntoView();
       }
     }, 300);
-  }, [props.lastUpdated, props.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
@@ -167,6 +167,23 @@ const MeetingsByDay = (props: IStore) => {
     return shouldRenderCurrentTime;
   })[0]?.id;
 
+  if (props.hideHeading) {
+    return (
+      <React.Fragment>
+        {days.map((day) => (
+          <DayContainer
+            key={day}
+            day={day}
+            meetings={meetingsByDay[day]}
+            selectedMeetingId={selectedMeetingId}
+            store={props.store}
+            currentTimeMeetingId={currentTimeId}
+          />
+        ))}
+      </React.Fragment>
+    );
+  }
+
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
@@ -182,7 +199,7 @@ const MeetingsByDay = (props: IStore) => {
           day={day}
           meetings={meetingsByDay[day]}
           selectedMeetingId={selectedMeetingId}
-          store={props}
+          store={props.store}
           currentTimeMeetingId={currentTimeId}
         />
       ))}

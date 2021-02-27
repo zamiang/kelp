@@ -27,12 +27,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Settings = () => {
+const Settings = (props: { shouldRenderHeader: boolean }) => {
   const classes = panelStyles();
   const formClasses = useStyles();
   return (
-    <div className={classes.panel}>
-      <TopBar title="Settings"></TopBar>
+    <div className={props.shouldRenderHeader ? classes.panel : undefined}>
+      {props.shouldRenderHeader && <TopBar title="Settings"></TopBar>}
       <div className={classes.section}>
         {shouldRenderSettings && (
           <React.Fragment>
