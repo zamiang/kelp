@@ -117,7 +117,7 @@ const Popup = (props: { database: any; accessToken: string; scope: string }) => 
             <Documents hideHeading store={store} />
           </Route>
           <Route path="/settings">
-            <Settings />
+            <Settings shouldRenderHeader={false} />
           </Route>
           <Route>
             <Handle404 />

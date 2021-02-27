@@ -80,7 +80,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           <Grid item>
             <IconButton
               onClick={() => {
-                history.goBack();
+                history.push('/meetings');
                 setSearchInputVisible(false);
               }}
             >
@@ -111,13 +111,6 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
         </Grid>
         <Grid item>
           <Grid container alignItems="center">
-            {isSearchInputVisible && (
-              <Grid item>
-                <IconButton>
-                  <CloseIcon />
-                </IconButton>
-              </Grid>
-            )}
             <Grid item>
               <RefreshButton
                 isLoading={props.store.isLoading}

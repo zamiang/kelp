@@ -1,10 +1,9 @@
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import clsx from 'clsx';
-import { formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 
 interface IProps {
@@ -19,7 +18,13 @@ const useStyles = makeStyles((theme) => ({
     from: { transform: 'rotate(0deg)' },
     to: { transform: 'rotate(360deg)' },
   },
-  text: { color: theme.palette.text.hint },
+  text: {
+    color: theme.palette.text.hint,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'pre',
+    maxWidth: 170,
+  },
   button: {
     transition: theme.transitions.create(['transform'], {
       duration: theme.transitions.duration.short,
@@ -40,11 +45,13 @@ const RefreshButton = (props: IProps) => {
     return () => clearInterval(interval);
   }, [seconds]);
   return (
-    <Tooltip title={`${formatDistanceToNow(props.lastUpdated)} ago`}>
-      <React.Fragment>
-        <Typography style={{ display: 'inline-block' }} variant="body1">
+    <Grid container alignItems="center" wrap="nowrap">
+      <Grid item>
+        <Typography noWrap variant="body1" className={classes.text}>
           {props.loadingMessage}
         </Typography>
+      </Grid>
+      <Grid item>
         <IconButton
           onClick={props.refresh}
           className={clsx(
@@ -55,8 +62,8 @@ const RefreshButton = (props: IProps) => {
         >
           <RefreshIcon />
         </IconButton>
-      </React.Fragment>
-    </Tooltip>
+      </Grid>
+    </Grid>
   );
 };
 
