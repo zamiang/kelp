@@ -1,10 +1,13 @@
 import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import GroupIcon from '@material-ui/icons/Group';
+import HomeIcon from '@material-ui/icons/Home';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import SearchIcon from '@material-ui/icons/Search';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
@@ -13,51 +16,30 @@ import {
   MemoryRouter as Router,
   Link as RouterLink,
   Switch,
+  useHistory,
   useLocation,
 } from 'react-router-dom';
-import { DocumentsForToday } from '../../components/dashboard/documents';
+import Documents from '../../components/dashboard/documents';
+import People from '../../components/dashboard/people';
+import Search from '../../components/dashboard/search';
+import ExpandedDocument from '../../components/documents/expand-document';
+import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import MeetingRow from '../../components/meeting/meeting-row';
 import RefreshButton from '../../components/nav/refresh-button';
+import SearchBar from '../../components/nav/search-bar';
+import ExpandPerson from '../../components/person/expand-person';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import { IPerson } from '../../components/store/models/person-model';
 import { ISegment } from '../../components/store/models/segment-model';
-import getStore from '../../components/store/use-store';
+import getStore, { IStore } from '../../components/store/use-store';
+import Settings from '../../components/user-profile/settings';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
 
-const Handle404 = () => {
-  const newURL = `https://www.kelp.nyc/dashboard${useLocation().pathname}`;
-
-  useEffect(() => {
-    chrome.tabs.create({ url: newURL });
-  }, [newURL]);
-
-  return null;
-};
-
-const useInfoStyles = makeStyles((theme) => ({
-  homeRow: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
-    },
-  },
-  smallHeading: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    width: '100%',
-    fontWeight: 500,
-    display: 'block',
-    '&:first-child': {
-      marginTop: 0,
-    },
-  },
+const useHeaderStyles = makeStyles((theme) => ({
   logo: {
     width: 24,
     height: 24,
@@ -88,9 +70,141 @@ const useInfoStyles = makeStyles((theme) => ({
   },
 }));
 
+const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
+  const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
+  const classes = useHeaderStyles();
+  const history = useHistory();
+
+  if (isSearchInputVisible) {
+    return (
+      <header className={classes.drawerPaper}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <SearchBar />
+          </Grid>
+          <Grid item>
+            <IconButton
+              onClick={() => {
+                history.push('/meetings');
+                setSearchInputVisible(false);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+      </header>
+    );
+  }
+
+  return (
+    <header className={classes.drawerPaper}>
+      <Grid container alignItems="center" justify="space-between">
+        <Grid item>
+          <Grid container alignItems="center">
+            <Grid item>
+              <Link to="/meetings" component={RouterLink}>
+                <img className={classes.logo} src="/logo.svg" alt="Kelp logo" />
+              </Link>
+            </Grid>
+            <Grid item>
+              <IconButton onClick={() => setSearchInputVisible(true)}>
+                <SearchIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Grid container alignItems="center">
+            {isSearchInputVisible && (
+              <Grid item>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+              </Grid>
+            )}
+            <Grid item>
+              <RefreshButton
+                isLoading={props.store.isLoading}
+                refresh={props.store.refetch}
+                lastUpdated={props.store.lastUpdated}
+                loadingMessage={props.store.loadingMessage}
+              />
+            </Grid>
+            {props.user && (
+              <Grid item>
+                <IconButton
+                  className={'ignore-react-onclickoutside'}
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={() => history.push('/settings')}
+                >
+                  <Avatar
+                    className={clsx(classes.unSelected, classes.icon)}
+                    src={props.user.imageUrl || undefined}
+                    alt={props.user.name || props.user.emailAddresses[0] || undefined}
+                  />
+                </IconButton>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+    </header>
+  );
+};
+
+const Handle404 = () => {
+  const newURL = `https://www.kelp.nyc/dashboard${useLocation().pathname}`;
+  useEffect(() => {
+    chrome.tabs.create({ url: newURL });
+  }, [newURL]);
+
+  return null;
+};
+
+const useInfoStyles = makeStyles((theme) => ({
+  homeRow: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
+  },
+  smallHeading: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
+    width: '100%',
+    fontWeight: 500,
+    display: 'block',
+    '&:first-child': {
+      marginTop: 0,
+    },
+  },
+  container: {
+    position: 'relative',
+    maxHeight: 504,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+  footer: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+    background: theme.palette.background.paper,
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    textAlign: 'center',
+    zIndex: 15,
+  },
+}));
+
 const Info = (props: { database: any; accessToken: string; scope: string }) => {
   const store = getStore(props.database, props.accessToken, props.scope);
   const classes = useInfoStyles();
+  const history = useHistory();
   const [segments, setSegments] = useState<ISegment[]>([]);
   const [user, setUser] = useState<IPerson | undefined>(undefined);
   const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
@@ -116,79 +230,93 @@ const Info = (props: { database: any; accessToken: string; scope: string }) => {
 
   return (
     <div>
-      <header className={classes.drawerPaper}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <Link to="/meetings" component={RouterLink}>
-              <img className={classes.logo} src="/logo.svg" alt="Kelp logo" />
-            </Link>
-          </Grid>
-          <Grid item>
-            <Grid container alignItems="center">
-              <Grid item>
-                <RefreshButton
-                  isLoading={store.isLoading}
-                  refresh={store.refetch}
-                  lastUpdated={store.lastUpdated}
-                  loadingMessage={store.loadingMessage}
+      <PluginHeader user={user} store={store} />
+      <div className={classes.container}>
+        <Switch>
+          <Route path="/search/docs/:slug">
+            <ExpandedDocument store={store} />
+          </Route>
+          <Route path="/search/meetings/:slug">
+            <ExpandedMeeting store={store} />
+          </Route>
+          <Route path="/search/people/:slug">
+            <ExpandPerson store={store} />
+          </Route>
+          <Route path="/search">
+            <Search store={store} />
+          </Route>
+          <Route path="/people/:slug">
+            <ExpandPerson store={store} />
+          </Route>
+          <Route path="/docs/:slug">
+            <ExpandedDocument store={store} />
+          </Route>
+          <Route path="/meetings/:slug">
+            <ExpandedMeeting store={store} />
+          </Route>
+          <Route path="/meetings">
+            <div className={classes.homeRow}>
+              {segments.map((meeting) => (
+                <MeetingRow
+                  key={meeting.id}
+                  meeting={meeting}
+                  selectedMeetingId={selectedMeetingId}
+                  store={store}
+                  shouldRenderCurrentTime={false}
                 />
-              </Grid>
-              {user && (
-                <Grid item>
-                  <IconButton
-                    className={'ignore-react-onclickoutside'}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                  >
-                    <Avatar
-                      className={clsx(classes.unSelected, classes.icon)}
-                      src={user.imageUrl || undefined}
-                      alt={user.name || user.emailAddresses[0] || undefined}
-                    />
-                  </IconButton>
-                </Grid>
-              )}
-            </Grid>
+              ))}
+            </div>
+          </Route>
+          <Route path="/people">
+            <People hideHeading store={store} />
+          </Route>
+          <Route path="/documents">
+            <Documents hideHeading store={store} />
+          </Route>
+          <Route path="/settings">
+            <Settings />
+          </Route>
+          <Route>
+            <Handle404 />
+          </Route>
+        </Switch>
+      </div>
+      <footer className={classes.footer}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item xs={4}>
+            <IconButton
+              onClick={() => {
+                history.push('/meetings');
+              }}
+            >
+              <HomeIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={4}>
+            <IconButton
+              onClick={() => {
+                history.push('/people');
+              }}
+            >
+              <GroupIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={4}>
+            <IconButton
+              onClick={() => {
+                history.push('/documents');
+              }}
+            >
+              <InsertDriveFileIcon />
+            </IconButton>
           </Grid>
         </Grid>
-      </header>
-      <Switch>
-        <Route path="/meetings">
-          <div className={classes.homeRow}>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Today&apos;s schedule
-            </Typography>
-            <Divider />
-            {segments.map((meeting) => (
-              <MeetingRow
-                key={meeting.id}
-                meeting={meeting}
-                selectedMeetingId={selectedMeetingId}
-                store={store}
-                shouldRenderCurrentTime={false}
-              />
-            ))}
-            <Typography variant="h6" className={classes.smallHeading}>
-              Documents you may need today
-            </Typography>
-            <Divider />
-            <DocumentsForToday {...store} selectedDocumentId={null} isSmall={true} />
-          </div>
-        </Route>
-        <Route path="/settings"></Route>
-        <Route>
-          <Handle404 />
-        </Route>
-      </Switch>
+      </footer>
     </div>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  app: {
-    width: 360,
-    minHeight: 300,
-  },
   header: {
     backgroundColor: theme.palette.background.paper,
   },
@@ -213,16 +341,16 @@ const App = () => {
   }, []);
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.app}>
+      {(!token || !database) && (
         <header className={classes.header}>
           <Loading isOpen={!token || !database} message="Loading" />
         </header>
-        {token && database && (
-          <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
-            <Info database={database} accessToken={token} scope={scopes} />
-          </Router>
-        )}
-      </div>
+      )}
+      {token && database && (
+        <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
+          <Info database={database} accessToken={token} scope={scopes} />
+        </Router>
+      )}
     </ThemeProvider>
   );
 };

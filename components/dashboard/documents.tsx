@@ -98,17 +98,21 @@ const titleHash = {
   all: 'Documents',
 };
 
-const Documents = (props: IStore) => {
+const Documents = (props: { store: IStore; hideHeading?: boolean }) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('all');
   const selectedDocumentId = useLocation().pathname.replace('/docs/', '').replace('/', '');
   const currentTitle = titleHash[currentTab];
   const tabHash = {
-    all: <AllDocuments selectedDocumentId={selectedDocumentId} {...props} />,
-    'this-week': <DocumentsForThisWeek selectedDocumentId={selectedDocumentId} {...props} />,
-    today: <DocumentsForToday selectedDocumentId={selectedDocumentId} {...props} />,
+    all: <AllDocuments selectedDocumentId={selectedDocumentId} {...props.store} />,
+    'this-week': <DocumentsForThisWeek selectedDocumentId={selectedDocumentId} {...props.store} />,
+    today: <DocumentsForToday selectedDocumentId={selectedDocumentId} {...props.store} />,
   };
+  if (props.hideHeading) {
+    return tabHash[currentTab];
+  }
+
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>

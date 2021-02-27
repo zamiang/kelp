@@ -162,7 +162,7 @@ export const DashboardContainer = ({ store }: IProps) => {
                 <Grid container spacing={4} alignItems="flex-start">
                   <Grid item xs={12} sm={6}>
                     <div className={classes.center}>
-                      <Search {...store} />
+                      <Search store={store} />
                     </div>
                   </Grid>
                   <Route path="/search/docs/:slug">
@@ -215,7 +215,7 @@ export const DashboardContainer = ({ store }: IProps) => {
                 <Grid container spacing={4} alignItems="flex-start">
                   <Grid item xs={12} sm={6}>
                     <div className={classes.center}>
-                      <Docs {...store} />
+                      <Docs store={store} />
                     </div>
                   </Grid>
                   <Route path="/docs/:slug">
@@ -233,7 +233,7 @@ export const DashboardContainer = ({ store }: IProps) => {
                 <Grid container spacing={4} alignItems="flex-start">
                   <Grid item xs={12} sm={6}>
                     <div className={classes.center}>
-                      <People {...store} />
+                      <People store={store} />
                     </div>
                   </Grid>
                   <Route path="/people/:slug">

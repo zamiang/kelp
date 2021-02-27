@@ -16,6 +16,7 @@
     "analyze": "ANALYZE=true next build",
     "audit-dependencies": "npm audit --audit-level=high",
     "build": "next build",
+    "dev:extension": "webpack --watch --config=extension/webpack.dev.js",
     "build-extension": "rimraf extension/dist && webpack --config=extension/webpack.config.js",
     "dev": "next -p ${PORT:-3000}",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",

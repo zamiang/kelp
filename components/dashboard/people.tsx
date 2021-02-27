@@ -94,7 +94,7 @@ const titleHash = {
   all: 'Contacts',
 };
 
-const People = (props: IStore) => {
+const People = (props: { store: IStore; hideHeading?: boolean }) => {
   const classes = panelStyles();
   const buttonClasses = useButtonStyles();
   const [currentTab, changeTab] = useState<tab>('all');
@@ -103,10 +103,13 @@ const People = (props: IStore) => {
   );
   const currentTitle = titleHash[currentTab];
   const tabHash = {
-    all: <AllPeople selectedPersonId={selectedPersonId} {...props} />,
-    'this-week': <PeopleThisWeek selectedPersonId={selectedPersonId} {...props} />,
-    today: <PeopleToday selectedPersonId={selectedPersonId} {...props} />,
+    all: <AllPeople selectedPersonId={selectedPersonId} {...props.store} />,
+    'this-week': <PeopleThisWeek selectedPersonId={selectedPersonId} {...props.store} />,
+    today: <PeopleToday selectedPersonId={selectedPersonId} {...props.store} />,
   };
+  if (props.hideHeading) {
+    return tabHash[currentTab];
+  }
   return (
     <div className={classes.panel}>
       <TopBar title={currentTitle}>

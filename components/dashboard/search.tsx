@@ -34,7 +34,7 @@ const renderSearchResults = (searchResults: ISearchItem[], store: IStore) =>
     }
   });
 
-const Search = (props: IStore) => {
+const Search = (props: { store: IStore }) => {
   const classes = panelStyles();
   const router = useLocation();
   const [searchIndex, setSearchIndex] = useState<SearchIndex | undefined>(undefined);
@@ -42,7 +42,7 @@ const Search = (props: IStore) => {
   useEffect(() => {
     const fetchData = async () => {
       const searchIndex = new SearchIndex();
-      await searchIndex.addData(props);
+      await searchIndex.addData(props.store);
       setSearchIndex(searchIndex);
     };
     void fetchData();
@@ -61,7 +61,7 @@ const Search = (props: IStore) => {
   return (
     <div className={classes.panel}>
       <TopBar title={`Search Results for: ${searchQuery || ''}`} />
-      <div className={classes.rowNoBorder}>{renderSearchResults(results || [], props)}</div>
+      <div className={classes.rowNoBorder}>{renderSearchResults(results || [], props.store)}</div>
     </div>
   );
 };
