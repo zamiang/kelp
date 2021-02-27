@@ -56,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.7,
     },
   },
+  hideOnMobile: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
 }));
 
 const Row = (props: {
@@ -107,13 +112,13 @@ const Row = (props: {
             {(person.name || person.id)[0]}
           </Avatar>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item>
           <Typography variant="body2" noWrap>
             {person.name || person.id}
           </Typography>
         </Grid>
         {props.meetingCount && (
-          <Grid item>
+          <Grid item className={classes.hideOnMobile}>
             <Typography variant="caption" noWrap>
               {props.meetingCount} meetings
             </Typography>

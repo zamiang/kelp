@@ -18,11 +18,11 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
       onClick={() => router.push(`/meetings/${props.segment.id}`)}
     >
       <Grid container wrap="nowrap" spacing={2} alignItems="center">
-        <Grid item>
+        <Grid item xs={1}>
           <EventIcon style={{ fontSize: 16, display: 'block' }} />
         </Grid>
         <Grid item xs={11}>
-          <Grid container justify="space-between" spacing={2} alignItems="center">
+          <Grid container justify="space-between" alignItems="center">
             <Grid item xs={12} md={8}>
               <Typography variant="body2" noWrap>
                 {props.segment.summary || '(No title)'}

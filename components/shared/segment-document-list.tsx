@@ -73,7 +73,7 @@ const Activity = (props: {
         }}
       >
         <Grid container spacing={1} alignItems="flex-start">
-          <Grid item>
+          <Grid item xs={1}>
             <img src={props.document.iconLink} className={classes.icon} />
           </Grid>
           <Grid item xs={11} sm={8} zeroMinWidth>
@@ -101,6 +101,7 @@ const SegmentDocumentItem = (props: {
   segmentDocument: ISegmentDocument;
 }) => {
   const classes = useRowStyles();
+  const expandClasses = useExpandStyles();
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
   useEffect(() => {
     const fetchData = async () => {
@@ -114,24 +115,35 @@ const SegmentDocumentItem = (props: {
 
   if (!document) {
     return (
-      <Grid container spacing={1} alignItems="flex-start">
-        <Grid item>
-          <HelpOutlineIcon className={classes.icon} />
+      <Button
+        className={expandClasses.listItem}
+        onClick={() => {
+          // TODO handle slides?
+          window.open(
+            `https://docs.google.com/document/d/${props.segmentDocument.documentId}`,
+            '_blank',
+          );
+        }}
+      >
+        <Grid container spacing={2} alignItems="flex-start">
+          <Grid item xs={1}>
+            <HelpOutlineIcon className={classes.icon} />
+          </Grid>
+          <Grid item xs={11} sm={8} zeroMinWidth>
+            <Typography variant="body2" noWrap>
+              {props.segmentDocument.documentId}
+            </Typography>
+            <Typography variant="caption" noWrap className={classes.noWrap}>
+              Unknown document
+            </Typography>
+          </Grid>
+          <Grid item xs={3} className={classes.distanceToNow}>
+            <Typography variant="caption" color="textSecondary" noWrap>
+              {formatDistanceToNow(new Date(props.segmentDocument.date))} ago
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item xs={11} sm={8} zeroMinWidth>
-          <Typography variant="body2" noWrap>
-            {props.segmentDocument.documentId}
-          </Typography>
-          <Typography variant="caption" noWrap className={classes.noWrap}>
-            Unknown document
-          </Typography>
-        </Grid>
-        <Grid item xs={3} className={classes.distanceToNow}>
-          <Typography variant="caption" color="textSecondary" noWrap>
-            {formatDistanceToNow(new Date(props.segmentDocument.date))} ago
-          </Typography>
-        </Grid>
-      </Grid>
+      </Button>
     );
   }
 
