@@ -34,8 +34,10 @@ const SearchBar = () => {
     void router.push(`/search?query=${data.query}`);
     setValue('query', '');
   });
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue('query', e.target.value);
+    void router.push(`/search?query=${e.target.value}`);
+  };
 
   return (
     <React.Fragment>
