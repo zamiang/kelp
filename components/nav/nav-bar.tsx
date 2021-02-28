@@ -47,16 +47,15 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(9),
   },
   selected: {
-    color: theme.palette.text.primary,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    transition: 'border 0.3s',
+    color: theme.palette.secondary.dark,
+    borderBottom: `3px solid ${theme.palette.primary.main}`,
   },
-  unSelected: {
-    color: theme.palette.text.primary,
+  icon: {
+    color: theme.palette.secondary.light,
     transition: 'border 0.3s',
-    borderBottom: `1px solid ${theme.palette.background.paper}`,
+    borderBottom: `3px solid ${theme.palette.background.paper}`,
     '&:hover': {
-      borderBottom: `1px solid ${theme.palette.divider}`,
+      borderBottom: `3px solid ${theme.palette.divider}`,
     },
   },
   iconContainer: {
@@ -69,25 +68,12 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     width: 24,
     height: 24,
+    borderBottom: 0,
   },
   noOverflow: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-  },
-  icon: {
-    width: 22,
-    height: 22,
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    transition: 'opacity 0.3s',
-    opacity: 1,
-    cursor: 'pointer',
-    '&:hover': {
-      opacity: 0.6,
-    },
   },
 }));
 
@@ -143,30 +129,28 @@ const NavBar = (props: IProps) => {
                 <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
               </IconButton>
             </Grid>
-            <Grid item>
+            <Grid item className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
               <IconButton
                 className={clsx('ignore-react-onclickoutside')}
                 onClick={() => history.push('/meetings')}
               >
-                <HomeIcon className={isMeetingsSelected ? classes.selected : classes.unSelected} />
+                <HomeIcon />
               </IconButton>
             </Grid>
-            <Grid item>
+            <Grid item className={clsx(classes.icon, isDocsSelected && classes.selected)}>
               <IconButton
                 className={clsx('ignore-react-onclickoutside')}
                 onClick={() => history.push('/docs')}
               >
-                <InsertDriveFileIcon
-                  className={isDocsSelected ? classes.selected : classes.unSelected}
-                />
+                <InsertDriveFileIcon />
               </IconButton>
             </Grid>
-            <Grid item>
+            <Grid item className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
               <IconButton
                 className={clsx('ignore-react-onclickoutside')}
                 onClick={() => history.push('/people')}
               >
-                <GroupIcon className={isPeopleSelected ? classes.selected : classes.unSelected} />
+                <GroupIcon />
               </IconButton>
             </Grid>
             <Grid item>
@@ -186,7 +170,7 @@ const NavBar = (props: IProps) => {
                 <Tooltip title="Loading">
                   <React.Fragment>
                     <IconButton>
-                      <LoopIcon className={classes.unSelected} />
+                      <LoopIcon className={classes.icon} />
                     </IconButton>
                   </React.Fragment>
                 </Tooltip>
@@ -196,7 +180,7 @@ const NavBar = (props: IProps) => {
               <Grid item>
                 <Tooltip title="Not authenticated">
                   <IconButton>
-                    <LockOpenIcon className={classes.unSelected} />
+                    <LockOpenIcon className={classes.icon} />
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -218,7 +202,7 @@ const NavBar = (props: IProps) => {
                   onClick={handleClick}
                 >
                   <Avatar
-                    className={clsx(classes.unSelected, classes.icon)}
+                    className={classes.logo}
                     src={currentUser.imageUrl || undefined}
                     alt={currentUser.name || currentUser.emailAddresses[0] || undefined}
                   />
