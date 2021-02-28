@@ -4,6 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { format } from 'date-fns';
@@ -21,7 +22,6 @@ import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
-
 const createMailtoLink = (meeting: ISegment) =>
   `mailto:${meeting.attendees.map((a) => a.email).join(',')}?subject=${meeting.summary}`;
 
@@ -169,8 +169,21 @@ const ExpandedMeeting = (props: {
         {format(meeting.end, 'p')}
         <br />
         <br />
-        <Grid container spacing={2}>
-          <Grid item>
+        <Grid container>
+          {shouldShowMeetingLink && (
+            <Grid item xs={12}>
+              <Button
+                onClick={() => window.open(meeting.videoLink, '_blank')}
+                variant="contained"
+                className={buttonClasses.button}
+                startIcon={<MeetingRoomIcon />}
+                disableElevation
+              >
+                Join {videoLinkDomain}
+              </Button>
+            </Grid>
+          )}
+          <Grid item xs={12}>
             <Button
               onClick={() => {
                 const meetingNotesDocumentIds = uniq(
@@ -191,13 +204,11 @@ const ExpandedMeeting = (props: {
                   props.store.googleOauthToken,
                 );
               }}
-              variant="contained"
-              className={buttonClasses.button}
               startIcon={
                 isMeetingNotesLoading ? (
                   <CircularProgress size={20} color={'paper' as any} />
                 ) : (
-                  <InsertDriveFileIcon />
+                  <AddIcon />
                 )
               }
               disabled={isMeetingNotesLoading}
@@ -207,40 +218,25 @@ const ExpandedMeeting = (props: {
             </Button>
           </Grid>
           {hasMeetingNotes && (
-            <Grid item>
+            <Grid item xs={12}>
               <Button
                 onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
-                variant="contained"
                 className={buttonClasses.button}
                 startIcon={<InsertDriveFileIcon />}
-                disableElevation
               >
                 View Meeting Notes
               </Button>
             </Grid>
           )}
-          {shouldShowMeetingLink && (
-            <Grid item>
-              <Button
-                onClick={() => window.open(meeting.videoLink, '_blank')}
-                variant="contained"
-                className={buttonClasses.button}
-                startIcon={<MeetingRoomIcon />}
-                disableElevation
-              >
-                Join {videoLinkDomain}
-              </Button>
-            </Grid>
-          )}
-          <Grid item>
-            <MuiLink href={createMailtoLink(meeting)} target="_blank" className={classes.link}>
+          <Grid item xs={12}>
+            <Button href={createMailtoLink(meeting)} className={classes.link}>
               Email guests
-            </MuiLink>
+            </Button>
           </Grid>
-          <Grid item>
-            <MuiLink href={editLink} target="_blank" className={classes.link}>
+          <Grid item xs={12}>
+            <Button href={editLink} className={classes.link}>
               View in Google
-            </MuiLink>
+            </Button>
           </Grid>
         </Grid>
       </div>
