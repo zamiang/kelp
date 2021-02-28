@@ -60,17 +60,17 @@ const MeetingSearchResult = (props: { meeting: ISegment; store: IStore }) => {
       )}
     >
       <Grid container spacing={1} alignItems="center" justify="flex-start">
-        <Grid item className={classes.imageContainer}>
+        <Grid item xs={1} className={classes.imageContainer}>
           <EventIcon className={classes.image} />
         </Grid>
         <Grid item xs={11}>
           <Grid container alignItems="center" justify="space-between">
-            <Grid item zeroMinWidth>
+            <Grid item zeroMinWidth xs={12}>
               <Typography variant="body2" style={{ fontWeight: 500 }}>
                 {props.meeting.summary || '(no title)'}
               </Typography>
             </Grid>
-            <Grid item className={classes.time}>
+            <Grid item xs={12}>
               <Typography variant="caption" color="textSecondary">
                 {format(props.meeting.start, 'MMM do, yyyy')} {format(props.meeting.start, 'p')} –{' '}
                 {format(props.meeting.end, 'p')}

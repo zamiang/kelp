@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { format, formatDistanceToNow } from 'date-fns';
-import { capitalize, unionBy, uniqBy } from 'lodash';
+import { capitalize, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IDocument } from '../store/models/document-model';
@@ -204,11 +204,14 @@ const SegmentDocumentList = (props: {
   const segmentsToRender =
     props.segmentDocuments && props.segmentDocuments.length > 0
       ? uniqBy(props.segmentDocuments, 'documentId')
-      : unionBy(
-          props.segmentDocumentsForAttendees,
-          props.segmentDocumentsFromPastMeetings,
+      : uniqBy(
+          (props.segmentDocumentsForAttendees || []).concat(
+            props.segmentDocumentsFromPastMeetings || [],
+          ),
           'documentId',
         );
+  console.log(segmentsToRender, '<<<<<<');
+
   const documentIds = segmentsToRender.map((s) => s.documentId);
   const filteredSegmentDocumentsForNonAttendees =
     props.segmentDocumentsForNonAttendees && props.segmentDocumentsForNonAttendees.length > 0
@@ -220,21 +223,20 @@ const SegmentDocumentList = (props: {
         )
       : [];
   const segmentDocumentsForNonAttendeesCount = filteredSegmentDocumentsForNonAttendees.length;
-  if (segmentsToRender.length < 1) {
-    return null;
-  }
   return (
     <React.Fragment>
-      <div className={classes.list}>
-        {segmentsToRender.map((segmentDocument) => (
-          <SegmentDocumentItem
-            key={segmentDocument.id}
-            personStore={props.personStore}
-            segmentDocument={segmentDocument}
-            docStore={props.docStore}
-          />
-        ))}
-      </div>
+      {segmentsToRender.length > 0 && (
+        <div className={classes.list}>
+          {segmentsToRender.map((segmentDocument) => (
+            <SegmentDocumentItem
+              key={segmentDocument.id}
+              personStore={props.personStore}
+              segmentDocument={segmentDocument}
+              docStore={props.docStore}
+            />
+          ))}
+        </div>
+      )}
       {segmentDocumentsForNonAttendeesCount > 0 && (
         <SegmentDocumentForNonAttendees
           segmentDocumentsForNonAttendeesCount={segmentDocumentsForNonAttendeesCount}

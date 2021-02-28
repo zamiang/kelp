@@ -18,11 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     display: 'block',
-    width: '100%',
-    minHeight: 22,
-    minWidth: 22,
+    height: 22,
+    width: 22,
   },
-  time: { minWidth: 160, maxWidth: 180, textAlign: 'right' },
   row: {
     margin: 0,
     paddingTop: theme.spacing(2),
@@ -53,17 +51,17 @@ const DocumentSearchResult = (props: { doc: IDocument; store: IStore }) => {
       )}
     >
       <Grid container spacing={1} alignItems="center" justify="flex-start">
-        <Grid item className={classes.imageContainer}>
+        <Grid item xs={1} className={classes.imageContainer}>
           <img src={props.doc.iconLink} className={classes.image} />
         </Grid>
         <Grid item xs={11}>
           <Grid container alignItems="center" justify="space-between">
-            <Grid item zeroMinWidth>
+            <Grid item zeroMinWidth xs={12}>
               <Typography noWrap variant="body2">
                 <span style={{ fontWeight: 500 }}>{props.doc.name}</span>
               </Typography>
             </Grid>
-            <Grid item className={classes.time}>
+            <Grid item xs={12}>
               <Typography variant="caption" color="textSecondary">
                 {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
               </Typography>

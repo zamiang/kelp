@@ -151,7 +151,15 @@ const ExpandedMeeting = (props: {
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const hasMeetingNotes = !!meeting.meetingNotesLink;
-
+  const hasDocuments =
+    segmentDocumentsForAttendees.length > 0 ||
+    segmentDocumentsForNonAttendees.length > 0 ||
+    segmentDocumentsFromPastMeetings.length > 0;
+  console.log(
+    segmentDocumentsForAttendees,
+    segmentDocumentsForNonAttendees,
+    segmentDocumentsFromPastMeetings,
+  );
   const editLink = meeting.link?.replace(
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
@@ -250,16 +258,20 @@ const ExpandedMeeting = (props: {
             </Typography>
           </React.Fragment>
         )}
-        <Typography variant="h6" className={classes.smallHeading}>
-          Documents you may need
-        </Typography>
-        <SegmentDocumentList
-          segmentDocumentsForAttendees={segmentDocumentsForAttendees}
-          segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
-          segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
-          docStore={props.store.documentDataStore}
-          personStore={props.store.personDataStore}
-        />
+        {hasDocuments && (
+          <React.Fragment>
+            <Typography variant="h6" className={classes.smallHeading}>
+              Documents you may need
+            </Typography>
+            <SegmentDocumentList
+              segmentDocumentsForAttendees={segmentDocumentsForAttendees}
+              segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
+              segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
+              docStore={props.store.documentDataStore}
+              personStore={props.store.personDataStore}
+            />
+          </React.Fragment>
+        )}
         {hasDescription && isHtml && (
           <React.Fragment>
             <Typography variant="h6" className={classes.smallHeading}>

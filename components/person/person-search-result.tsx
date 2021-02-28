@@ -11,12 +11,6 @@ import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
-  email: {
-    [theme.breakpoints.up('sm')]: {
-      minWidth: 200,
-    },
-  },
-  avatar: { marginLeft: -5 },
   row: {
     margin: 0,
     paddingTop: theme.spacing(2),
@@ -44,7 +38,7 @@ const PersonSearchResult = (props: { person: IPerson; store: IStore }) => {
       className={clsx('ignore-react-onclickoutside', rowStyles.row, classes.row)}
     >
       <Grid container spacing={1} alignItems="center">
-        <Grid item className={classes.avatar}>
+        <Grid item xs={1}>
           {props.person.imageUrl ? (
             <Avatar style={{ height: 24, width: 24 }} src={props.person.imageUrl} />
           ) : (
