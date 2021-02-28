@@ -46,7 +46,7 @@ const LoginButton = () => {
     return <CircularProgress size={22} className={classes.avatar} color="inherit" />;
   }
 
-  if (currentUser) {
+  if (currentUser?.id) {
     return (
       <Link href="/dashboard">
         <Button className={classes.button} variant="outlined" disableElevation={true}>
