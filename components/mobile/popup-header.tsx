@@ -9,10 +9,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
-import RefreshButton from '../../../components/nav/refresh-button';
-import SearchBar from '../../../components/nav/search-bar';
-import { IPerson } from '../../../components/store/models/person-model';
-import { IStore } from '../../../components/store/use-store';
+import RefreshButton from '../nav/refresh-button';
+import SearchBar from '../nav/search-bar';
+import { IPerson } from '../store/models/person-model';
+import { IStore } from '../store/use-store';
 
 const useHeaderStyles = makeStyles((theme) => ({
   logo: {
@@ -99,7 +99,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           <Grid container alignItems="center">
             <Grid item>
               <Link to="/meetings" component={RouterLink}>
-                <img className={classes.logo} src="/logo.svg" alt="Kelp logo" />
+                <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
               </Link>
             </Grid>
             <Grid item>

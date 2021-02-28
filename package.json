@@ -20,7 +20,7 @@
     "build-extension": "rimraf extension/dist && webpack --config=extension/webpack.config.js",
     "dev": "next -p ${PORT:-3000}",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
-    "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport='pages;components/timeline/timeline.tsx'",
+    "lint:exports": "npx ts-unused-exports tsconfig.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport='pages;components/timeline/timeline.tsx;components/mobile/app.tsx'",
     "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
     "prettier": "prettier --write \"{pages,components,constants,extension}/**/*.{ts,tsx,js}\"",
     "prettier:check": "prettier --list-different \"{pages,components,constants}/**/*.{ts,tsx,js}\"",

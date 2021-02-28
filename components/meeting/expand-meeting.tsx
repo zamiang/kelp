@@ -297,10 +297,6 @@ const ExpandedMeeting = (props: {
             </Typography>
           </React.Fragment>
         )}
-        <Typography variant="h6" className={classes.smallHeading}>
-          Did you mean to invite…
-        </Typography>
-        [todo]
       </div>
     </React.Fragment>
   );

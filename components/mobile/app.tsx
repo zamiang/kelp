@@ -7,24 +7,42 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { Route, MemoryRouter as Router, Switch, useHistory } from 'react-router-dom';
-import Documents from '../../../components/dashboard/documents';
-import Meetings from '../../../components/dashboard/meetings';
-import People from '../../../components/dashboard/people';
-import Search from '../../../components/dashboard/search';
-import ExpandedDocument from '../../../components/documents/expand-document';
-import ExpandedMeeting from '../../../components/meeting/expand-meeting';
-import ExpandPerson from '../../../components/person/expand-person';
-import Loading from '../../../components/shared/loading';
-import db from '../../../components/store/db';
-import { IPerson } from '../../../components/store/models/person-model';
-import getStore from '../../../components/store/use-store';
-import Settings from '../../../components/user-profile/settings';
-import config from '../../../constants/config';
-import theme from '../../../constants/theme';
+import config from '../../constants/config';
+import theme from '../../constants/theme';
+import Documents from '../dashboard/documents';
+import Meetings from '../dashboard/meetings';
+import People from '../dashboard/people';
+import Search from '../dashboard/search';
+import ExpandedDocument from '../documents/expand-document';
+import ExpandedMeeting from '../meeting/expand-meeting';
+import ExpandPerson from '../person/expand-person';
+import Loading from '../shared/loading';
+import { ScrollToTop } from '../shared/scroll-to-top';
+import db from '../store/db';
+import { IPerson } from '../store/models/person-model';
+import getStore, { IStore } from '../store/use-store';
+import Settings from '../user-profile/settings';
 import Handle404 from './handle-404';
 import PopupHeader from './popup-header';
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
+
+const LoadingMobileDashboardContainer = (props: {
+  database: any;
+  accessToken: string;
+  scope: string;
+}) => {
+  const store = getStore(props.database, props.accessToken, props.scope);
+
+  return (
+    <div>
+      <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
+        <ScrollToTop />
+        <MobileDashboard store={store} />
+      </Router>
+    </div>
+  );
+};
 
 const useInfoStyles = makeStyles((theme) => ({
   homeRow: {
@@ -48,7 +66,7 @@ const useInfoStyles = makeStyles((theme) => ({
   },
   container: {
     position: 'relative',
-    maxHeight: 504,
+    maxHeight: 'calc(100vh - 92px)',
     overflowY: 'auto',
     overflowX: 'hidden',
   },
@@ -64,8 +82,8 @@ const useInfoStyles = makeStyles((theme) => ({
   },
 }));
 
-const Popup = (props: { database: any; accessToken: string; scope: string }) => {
-  const store = getStore(props.database, props.accessToken, props.scope);
+export const MobileDashboard = (props: { store: IStore }) => {
+  const store = props.store;
   const classes = useInfoStyles();
   const history = useHistory();
 
@@ -79,7 +97,7 @@ const Popup = (props: { database: any; accessToken: string; scope: string }) => 
       }
     };
     void fetchData();
-  }, [props.accessToken, store.isLoading]);
+  }, [store.isLoading]);
 
   return (
     <div>
@@ -165,7 +183,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = () => {
+const MobileDashboardSetup = () => {
   const [token, setToken] = useState<string | null>(null);
   const [database, setDatabase] = useState<any>(undefined);
   const classes = useStyles();
@@ -190,12 +208,10 @@ const App = () => {
         </div>
       )}
       {token && database && (
-        <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
-          <Popup database={database} accessToken={token} scope={scopes} />
-        </Router>
+        <LoadingMobileDashboardContainer database={database} accessToken={token} scope={scopes} />
       )}
     </ThemeProvider>
   );
 };
 
-export default App;
+export default MobileDashboardSetup;
