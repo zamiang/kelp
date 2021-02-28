@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   inputContainer: {
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
-    marginTop: -14,
+    marginTop: -10,
     marginBottom: -12,
   },
   input: {

@@ -63,9 +63,6 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(0),
     },
   },
-  rowBorderRadius: {
-    borderRadius: theme.spacing(4),
-  },
   rowDefault: {},
   rowHint: {
     color: theme.palette.text.hint,

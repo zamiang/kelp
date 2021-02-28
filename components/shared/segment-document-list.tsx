@@ -20,10 +20,10 @@ const useRowStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   icon: {
-    height: 16,
-    width: 16,
+    height: 24,
+    width: 24,
     display: 'block',
-    marginTop: 2,
+    margin: '0px auto',
   },
   distanceToNow: {
     textAlign: 'right',
@@ -73,7 +73,7 @@ const Activity = (props: {
         }}
       >
         <Grid container spacing={1} alignItems="flex-start">
-          <Grid item xs={1}>
+          <Grid item>
             <img src={props.document.iconLink} className={classes.icon} />
           </Grid>
           <Grid item xs={11} sm={8} zeroMinWidth>
@@ -126,7 +126,7 @@ const SegmentDocumentItem = (props: {
         }}
       >
         <Grid container spacing={2} alignItems="flex-start">
-          <Grid item xs={1}>
+          <Grid item>
             <HelpOutlineIcon className={classes.icon} />
           </Grid>
           <Grid item xs={11} sm={8} zeroMinWidth>
@@ -210,8 +210,6 @@ const SegmentDocumentList = (props: {
           ),
           'documentId',
         );
-  console.log(segmentsToRender, '<<<<<<');
-
   const documentIds = segmentsToRender.map((s) => s.documentId);
   const filteredSegmentDocumentsForNonAttendees =
     props.segmentDocumentsForNonAttendees && props.segmentDocumentsForNonAttendees.length > 0

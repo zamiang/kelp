@@ -87,7 +87,6 @@ const useStyles = makeStyles((theme) => ({
   time: { minWidth: 150, maxWidth: 180 },
   row: {
     paddingLeft: 0,
-    marginLeft: 4,
     width: 'auto',
     [theme.breakpoints.down('sm')]: {
       marginLeft: -4,
@@ -148,7 +147,6 @@ const MeetingRow = (props: {
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
-        rowStyles.rowBorderRadius,
         classes.row,
         props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
         props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,

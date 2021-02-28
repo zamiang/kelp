@@ -65,9 +65,9 @@ const Meeting = (props: {
         className={expandClasses.listItem}
         onClick={() => router.push(`/meetings/${props.meeting.id}`)}
       >
-        <Grid container wrap="nowrap" spacing={2} alignItems="flex-start">
+        <Grid container wrap="nowrap" spacing={1} alignItems="flex-start">
           <Grid item>
-            <EventIcon style={{ fontSize: 16, display: 'block' }} />
+            <EventIcon style={{ fontSize: 24, display: 'block' }} />
           </Grid>
           <Grid item xs={8}>
             <Typography variant="body2" noWrap>

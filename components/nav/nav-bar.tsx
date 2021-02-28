@@ -47,12 +47,12 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(9),
   },
   selected: {
-    color: theme.palette.secondary.dark,
-    borderBottom: `3px solid ${theme.palette.primary.main}`,
+    color: `${theme.palette.secondary.dark} !important`,
+    borderBottom: `3px solid ${theme.palette.primary.main} !important`,
   },
   icon: {
     color: theme.palette.secondary.light,
-    transition: 'border 0.3s',
+    transition: 'border-color 0.6s',
     borderBottom: `3px solid ${theme.palette.background.paper}`,
     '&:hover': {
       borderBottom: `3px solid ${theme.palette.divider}`,
@@ -74,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+  },
+  iconButton: {
+    borderRadius: 0,
+    paddingBottom: 10,
   },
 }));
 
@@ -123,7 +127,7 @@ const NavBar = (props: IProps) => {
           <Grid container alignItems="center">
             <Grid item>
               <IconButton
-                className={clsx('ignore-react-onclickoutside')}
+                className={clsx('ignore-react-onclickoutside', classes.iconButton)}
                 onClick={() => (window.location.pathname = '/about')}
               >
                 <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
@@ -131,7 +135,7 @@ const NavBar = (props: IProps) => {
             </Grid>
             <Grid item className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
               <IconButton
-                className={clsx('ignore-react-onclickoutside')}
+                className={clsx('ignore-react-onclickoutside', classes.iconButton)}
                 onClick={() => history.push('/meetings')}
               >
                 <HomeIcon />
@@ -139,7 +143,7 @@ const NavBar = (props: IProps) => {
             </Grid>
             <Grid item className={clsx(classes.icon, isDocsSelected && classes.selected)}>
               <IconButton
-                className={clsx('ignore-react-onclickoutside')}
+                className={clsx('ignore-react-onclickoutside', classes.iconButton)}
                 onClick={() => history.push('/docs')}
               >
                 <InsertDriveFileIcon />
@@ -147,7 +151,7 @@ const NavBar = (props: IProps) => {
             </Grid>
             <Grid item className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
               <IconButton
-                className={clsx('ignore-react-onclickoutside')}
+                className={clsx('ignore-react-onclickoutside', classes.iconButton)}
                 onClick={() => history.push('/people')}
               >
                 <GroupIcon />
