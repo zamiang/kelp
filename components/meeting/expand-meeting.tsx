@@ -220,7 +220,6 @@ const ExpandedMeeting = (props: {
             <Grid item xs={12}>
               <Button
                 onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
-                className={buttonClasses.button}
                 startIcon={<InsertDriveFileIcon />}
               >
                 View Meeting Notes

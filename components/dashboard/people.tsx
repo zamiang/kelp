@@ -1,15 +1,53 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 import { getDayOfYear } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
-import useButtonStyles from '../shared/button-styles';
 import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import TopBar from '../shared/top-bar';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
+
+const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
+  const classes = panelStyles();
+  const [people, setPeople] = useState<IPerson[]>([]);
+  const [featuredPeople, setFeaturedPeople] = useState<IPerson[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.personDataStore.getAll(false);
+      setPeople(result.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
+    };
+    void fetchData();
+  }, [props.isLoading, props.lastUpdated]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.attendeeDataStore.getForWeek(getWeek(new Date()));
+      const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
+
+      setFeaturedPeople(p.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
+    };
+    void fetchData();
+  }, [props.isLoading, props.lastUpdated]);
+
+  return (
+    <React.Fragment>
+      <div className={classes.rowHighlight}>
+        {featuredPeople.map((person) => (
+          <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
+        ))}
+        <Divider />
+      </div>
+      <div className={classes.rowNoBorder}>
+        {people.map((person) => (
+          <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
+        ))}
+      </div>
+    </React.Fragment>
+  );
+};
 
 export const PeopleToday = (
   props: IStore & { selectedPersonId: string | null; noLeftMargin?: boolean },
@@ -41,114 +79,19 @@ export const PeopleToday = (
   );
 };
 
-const PeopleThisWeek = (props: IStore & { selectedPersonId: string | null }) => {
-  const classes = panelStyles();
-  const [people, setPeople] = useState<IPerson[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await props.attendeeDataStore.getForWeek(getWeek(new Date()));
-      const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
-
-      setPeople(p.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
-    };
-    void fetchData();
-  }, [props.isLoading, props.lastUpdated]);
-  return (
-    <div className={classes.rowNoBorder}>
-      {people.map(
-        (person: IPerson) =>
-          person && (
-            <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
-          ),
-      )}
-    </div>
-  );
-};
-
-const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
-  const classes = panelStyles();
-  const [people, setPeople] = useState<IPerson[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await props.personDataStore.getAll(false);
-      setPeople(result.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
-    };
-    void fetchData();
-  }, [props.isLoading, props.lastUpdated]);
-
-  return (
-    <div className={classes.rowNoBorder}>
-      {people.map((person) => (
-        <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
-      ))}
-    </div>
-  );
-};
-
-type tab = 'today' | 'this-week' | 'all';
-
-const titleHash = {
-  today: 'Contacts',
-  'this-week': 'Contacts',
-  all: 'Contacts',
-};
-
 const People = (props: { store: IStore; hideHeading?: boolean }) => {
   const classes = panelStyles();
-  const buttonClasses = useButtonStyles();
-  const [currentTab, changeTab] = useState<tab>('all');
   const selectedPersonId = decodeURIComponent(
     useLocation().pathname.replace('/people/', '').replace('/', ''),
   );
-  const currentTitle = titleHash[currentTab];
-  const tabHash = {
-    all: <AllPeople selectedPersonId={selectedPersonId} {...props.store} />,
-    'this-week': <PeopleThisWeek selectedPersonId={selectedPersonId} {...props.store} />,
-    today: <PeopleToday selectedPersonId={selectedPersonId} {...props.store} />,
-  };
+
   if (props.hideHeading) {
-    return tabHash[currentTab];
+    return <AllPeople selectedPersonId={selectedPersonId} {...props.store} />;
   }
   return (
     <div className={classes.panel}>
-      <TopBar title={currentTitle}>
-        <Grid container spacing={2} justify="flex-end">
-          <Grid item>
-            <Button
-              variant="contained"
-              className={currentTab === 'today' ? buttonClasses.selected : buttonClasses.unSelected}
-              disableElevation
-              onClick={() => changeTab('today')}
-            >
-              Today
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              className={
-                currentTab === 'this-week' ? buttonClasses.selected : buttonClasses.unSelected
-              }
-              disableElevation
-              onClick={() => changeTab('this-week')}
-            >
-              This Week
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              className={currentTab === 'all' ? buttonClasses.selected : buttonClasses.unSelected}
-              disableElevation
-              onClick={() => changeTab('all')}
-            >
-              All
-            </Button>
-          </Grid>
-        </Grid>
-      </TopBar>
-      {tabHash[currentTab]}
+      <TopBar title="People" />
+      <AllPeople selectedPersonId={selectedPersonId} {...props.store} />
     </div>
   );
 };

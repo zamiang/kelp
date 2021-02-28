@@ -72,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(1),
     },
   },
+  rowHighlight: {
+    background: theme.palette.secondary.light,
+  },
 }));
 
 export default useStyles;

@@ -78,9 +78,9 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           {document.name || '(no title)'}
         </Typography>
         {document.updatedAt && (
-          <React.Fragment>
+          <Typography>
             Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
-          </React.Fragment>
+          </Typography>
         )}
         <MuiLink href={document.link} target="_blank" className={classes.link}>
           View in Google

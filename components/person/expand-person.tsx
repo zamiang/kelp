@@ -1,6 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -103,14 +102,12 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           </Typography>
         </Box>
         {emailAddress && (
-          <React.Fragment>
-            <Button onClick={() => navigator.clipboard.writeText(emailAddress)}>
-              copy email {emailAddress}
-            </Button>
+          <div style={{ textAlign: 'center' }}>
             <Link href={`mailto:${emailAddress}`} target="_blank" className={classes.link}>
-              Email
-            </Link>
-          </React.Fragment>
+              {emailAddress}
+            </Link>{' '}
+            <Link onClick={() => navigator.clipboard.writeText(emailAddress)}>(copy)</Link>
+          </div>
         )}
         {hasName && (
           <Tooltip title="Linkedin">
