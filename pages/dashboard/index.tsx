@@ -20,7 +20,7 @@ import ExpandedDocument from '../../components/documents/expand-document';
 import ErrorBoundaryComponent from '../../components/error-tracking/error-boundary';
 import { fetchToken } from '../../components/fetch/fetch-token';
 import ExpandedMeeting from '../../components/meeting/expand-meeting';
-import { MobileDashboard } from '../../components/mobile/app';
+import MobileDashboard from '../../components/mobile/dashboard';
 import BottomNav from '../../components/nav/bottom-nav-bar';
 import NavBar from '../../components/nav/nav-bar';
 import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
