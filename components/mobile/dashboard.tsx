@@ -1,11 +1,11 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { makeStyles } from '@material-ui/core/styles';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import Documents from '../dashboard/documents';
 import Meetings from '../dashboard/meetings';
 import People from '../dashboard/people';
@@ -61,7 +61,7 @@ const MobileDashboard = (props: { store: IStore }) => {
   const store = props.store;
   const classes = useInfoStyles();
   const history = useHistory();
-
+  const location = useLocation();
   const [user, setUser] = useState<IPerson | undefined>(undefined);
 
   useEffect(() => {
@@ -73,6 +73,8 @@ const MobileDashboard = (props: { store: IStore }) => {
     };
     void fetchData();
   }, [store.isLoading]);
+
+  const currentTab = location.pathname.split('/')[1];
 
   return (
     <div>
@@ -117,37 +119,20 @@ const MobileDashboard = (props: { store: IStore }) => {
           </Route>
         </Switch>
       </div>
-      <footer className={classes.footer}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item xs={4}>
-            <IconButton
-              onClick={() => {
-                history.push('/meetings');
-              }}
-            >
-              <HomeIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={4}>
-            <IconButton
-              onClick={() => {
-                history.push('/people');
-              }}
-            >
-              <GroupIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={4}>
-            <IconButton
-              onClick={() => {
-                history.push('/documents');
-              }}
-            >
-              <InsertDriveFileIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </footer>
+      <BottomNavigation
+        onChange={(_event, value) => history.push(`/${value}`)}
+        className={classes.footer}
+        value={currentTab}
+        showLabels
+      >
+        <BottomNavigationAction label="Meetings" value="meetings" icon={<HomeIcon />} />
+        <BottomNavigationAction label="People" value="people" icon={<GroupIcon />} />
+        <BottomNavigationAction
+          label="Documents"
+          value="documents"
+          icon={<InsertDriveFileIcon />}
+        />
+      </BottomNavigation>
     </div>
   );
 };

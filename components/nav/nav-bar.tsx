@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 6,
     justifyContent: 'space-between',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
   drawerPaperClose: {
     overflowX: 'hidden',

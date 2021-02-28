@@ -17,9 +17,9 @@ const Meeting = (props: { segment: ISegment; personStore: PersonDataStore }) => 
       className={expandClasses.listItem}
       onClick={() => router.push(`/meetings/${props.segment.id}`)}
     >
-      <Grid container wrap="nowrap" spacing={2} alignItems="center">
-        <Grid item xs={1}>
-          <EventIcon style={{ fontSize: 16, display: 'block' }} />
+      <Grid container wrap="nowrap" spacing={1} alignItems="center">
+        <Grid item>
+          <EventIcon style={{ fontSize: 24, display: 'block' }} />
         </Grid>
         <Grid item xs={11}>
           <Grid container justify="space-between" alignItems="center">

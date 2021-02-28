@@ -125,7 +125,7 @@ const SegmentDocumentItem = (props: {
           );
         }}
       >
-        <Grid container spacing={2} alignItems="flex-start">
+        <Grid container spacing={1} alignItems="flex-start">
           <Grid item>
             <HelpOutlineIcon className={classes.icon} />
           </Grid>

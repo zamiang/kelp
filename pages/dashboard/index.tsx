@@ -21,7 +21,6 @@ import ErrorBoundaryComponent from '../../components/error-tracking/error-bounda
 import { fetchToken } from '../../components/fetch/fetch-token';
 import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import MobileDashboard from '../../components/mobile/dashboard';
-import BottomNav from '../../components/nav/bottom-nav-bar';
 import NavBar from '../../components/nav/nav-bar';
 import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
 import NotificationsPopup from '../../components/notifications/notifications-popup';
@@ -115,7 +114,6 @@ const DesktopDashboard = (props: { store: IStore }) => {
   return (
     <ErrorBoundaryComponent>
       <NavBar handleRefreshClick={handleRefreshClick} store={store} />
-      <BottomNav store={store} />
       <main className={classes.content}>
         <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
           <Alert severity="error">
