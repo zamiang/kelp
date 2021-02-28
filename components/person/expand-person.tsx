@@ -1,16 +1,18 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { formatDistance, formatDuration } from 'date-fns';
 import { last } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
-import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import panelStyles from '../shared/panel-styles';
@@ -82,20 +84,16 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
 
   const hasName = !person.name.includes('people/') && !person.name.includes('@');
   const hasMeetingTime = meetingTime.lastWeekMs > 0;
+  const emailAddress = person.emailAddresses[0];
   return (
     <div className={panelClasses.panel}>
-      <AppBar
-        linkedinName={hasName ? person.name : undefined}
-        onClose={props.close}
-        emailAddress={person.emailAddresses[0]}
-      />
       <div className={classes.topContainer}>
         <Box flexDirection="column" alignItems="center" display="flex">
           <Avatar className={classes.avatar} src={person.imageUrl || ''}>
             {(person.name || person.id)[0]}
           </Avatar>
           <Typography
-            className={clsx(classes.title, classes.titleCenter)}
+            className={classes.titleCenter}
             variant="h5"
             color="textPrimary"
             gutterBottom
@@ -104,6 +102,30 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             {person.name}
           </Typography>
         </Box>
+        {emailAddress && (
+          <React.Fragment>
+            <Button onClick={() => navigator.clipboard.writeText(emailAddress)}>
+              copy email {emailAddress}
+            </Button>
+            <Link href={`mailto:${emailAddress}`} target="_blank" className={classes.link}>
+              Email
+            </Link>
+          </React.Fragment>
+        )}
+        {hasName && (
+          <Tooltip title="Linkedin">
+            <Link
+              target="_blank"
+              rel="noreferrer"
+              className={classes.link}
+              href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
+            >
+              <IconButton>
+                <LinkedInIcon fontSize="small" />
+              </IconButton>
+            </Link>
+          </Tooltip>
+        )}
       </div>
       <Divider />
       <Grid container className={classes.triGroup} justify="space-between">

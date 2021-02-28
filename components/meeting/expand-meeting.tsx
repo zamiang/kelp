@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
@@ -12,7 +13,6 @@ import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
-import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { getFormattedGuestStats } from '../store/helpers';
@@ -155,26 +155,14 @@ const ExpandedMeeting = (props: {
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
-  console.log(
-    segmentDocumentsForAttendees,
-    segmentDocumentsForNonAttendees,
-    segmentDocumentsFromPastMeetings,
-  );
   const editLink = meeting.link?.replace(
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
   );
   return (
     <React.Fragment>
-      {!props.hideHeader && (
-        <AppBar
-          emailLink={createMailtoLink(meeting)}
-          externalLink={editLink}
-          onClose={props.close}
-        />
-      )}
       <div className={classes.topContainer}>
-        <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
+        <Typography variant="h5" color="textPrimary" gutterBottom>
           {meeting.summary || '(no title)'}
         </Typography>
         {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
@@ -244,6 +232,16 @@ const ExpandedMeeting = (props: {
               </Button>
             </Grid>
           )}
+          <Grid item>
+            <MuiLink href={createMailtoLink(meeting)} target="_blank" className={classes.link}>
+              Email guests
+            </MuiLink>
+          </Grid>
+          <Grid item>
+            <MuiLink href={editLink} target="_blank" className={classes.link}>
+              View in Google
+            </MuiLink>
+          </Grid>
         </Grid>
       </div>
       <Divider />

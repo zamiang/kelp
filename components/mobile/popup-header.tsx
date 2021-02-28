@@ -31,6 +31,17 @@ const useHeaderStyles = makeStyles((theme) => ({
     zIndex: 6,
     justifyContent: 'space-between',
   },
+  transparentHeader: {
+    border: '0px',
+    position: 'sticky',
+    top: 0,
+    left: 0,
+    background: 'transparent',
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    zIndex: 6,
+    justifyContent: 'space-between',
+  },
   unSelected: {
     color: theme.palette.text.primary,
     transition: 'border 0.3s',
@@ -54,7 +65,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
 
   if (isOnSubpage) {
     return (
-      <header className={classes.drawerPaper}>
+      <header className={classes.transparentHeader}>
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <IconButton

@@ -1,11 +1,11 @@
 import Divider from '@material-ui/core/Divider';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import SmallPersonRow from '../person/person-row-small';
-import AppBar from '../shared/elevate-app-bar';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
 import { getPeopleSortedByCount } from '../store/helpers';
@@ -73,9 +73,8 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   }
   return (
     <React.Fragment>
-      <AppBar onClose={props.close} externalLink={document.link} />
       <div className={classes.topContainer}>
-        <Typography variant="h5" color="textPrimary" gutterBottom className={classes.title}>
+        <Typography variant="h5" color="textPrimary" gutterBottom>
           {document.name || '(no title)'}
         </Typography>
         {document.updatedAt && (
@@ -83,6 +82,9 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
             Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
           </React.Fragment>
         )}
+        <MuiLink href={document.link} target="_blank" className={classes.link}>
+          View in Google
+        </MuiLink>
       </div>
       <Divider />
       <div className={classes.container}>
