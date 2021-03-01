@@ -21,6 +21,7 @@ import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
+
 const createMailtoLink = (meeting: ISegment) =>
   `mailto:${meeting.attendees.map((a) => a.email).join(',')}?subject=${meeting.summary}`;
 
@@ -150,6 +151,7 @@ const ExpandedMeeting = (props: {
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const hasMeetingNotes = !!meeting.meetingNotesLink;
+
   const hasDocuments =
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
@@ -227,7 +229,7 @@ const ExpandedMeeting = (props: {
             </Grid>
           )}
           <Grid item xs={12}>
-            <Button href={createMailtoLink(meeting)} className={classes.link}>
+            <Button href={createMailtoLink(meeting)} target="_blank" className={classes.link}>
               Email guests
             </Button>
           </Grid>

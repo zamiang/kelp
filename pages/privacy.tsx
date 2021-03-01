@@ -314,7 +314,9 @@ const Terms = () => {
               </Typography>
               <Typography className={classes.body} id="e7f2691f-4747-4daf-9daf-ad397de219ef">
                 You can report a security or privacy vulnerability by emailing us at{' '}
-                <MuiLink href="mailto:security@kelp.nyc">security@kelp.nyc</MuiLink>
+                <MuiLink href="mailto:security@kelp.nyc" target="_blank">
+                  security@kelp.nyc
+                </MuiLink>
               </Typography>
               <Typography className={classes.body} id="1514f8e0-db44-43b6-a742-7f4b7d99e049">
                 In your message, please include:
@@ -353,7 +355,10 @@ const Terms = () => {
               </Typography>
               <Typography className={classes.body} id="056e16f1-72ac-48be-812b-39b5f11a7a50">
                 You may access or change your information or delete your account by emailing{' '}
-                <MuiLink href="mailto:support@kelp.nyc">support@kelp.nyc</MuiLink>.
+                <MuiLink href="mailto:support@kelp.nyc" target="_blank">
+                  support@kelp.nyc
+                </MuiLink>
+                .
               </Typography>
               <Typography className={classes.body} id="600357df-16ba-46fd-b4e5-6fe855298c5f">
                 Kelp may delete your information at any time and for any reason, such as technical
@@ -435,7 +440,9 @@ const Terms = () => {
               <Typography className={classes.body} id="60849061-52e9-4e86-bed3-85020714d06f">
                 If you have questions or concerns regarding these terms, privacy, or security,
                 please contact us at{' '}
-                <MuiLink href="mailto:support@kelp.nyc">support@kelp.nyc.</MuiLink>
+                <MuiLink href="mailto:support@kelp.nyc" target="_blank">
+                  support@kelp.nyc.
+                </MuiLink>
               </Typography>
               <Footer shouldAlignLeft={true} />
             </Container>

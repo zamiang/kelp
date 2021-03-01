@@ -33,12 +33,13 @@ export interface ISegment extends ICalendarEvent {
 
 export const getDocumentsFromCalendarEvents = (event: ICalendarEvent) => {
   const documentIds: string[] = [];
-
+  const documentUrls: string[] = [];
   const urls = event.description ? uniq(event.description.match(urlRegex())) : [];
   (urls || []).forEach((url) => {
     if (url.includes('https://docs.google.com')) {
       const link = getGoogleDocsIdFromLink(url);
       documentIds.push(link);
+      documentUrls.push(url);
     }
   });
   (event.attachments || []).map((attachment) => {
@@ -46,7 +47,7 @@ export const getDocumentsFromCalendarEvents = (event: ICalendarEvent) => {
       documentIds.push(attachment.fileId);
     }
   });
-  return { documentIds, urls };
+  return { documentIds, documentUrls };
 };
 
 const getVideoLinkFromCalendarEvent = (event: ICalendarEvent) => {
@@ -70,7 +71,7 @@ const formatSegments = (calendarEvents: ICalendarEvent[]) =>
           email: a.email ? formatGmailAddress(a.email) : undefined,
         })),
         documentIdsFromDescription: documents.documentIds,
-        meetingNotesLink: first(documents.urls),
+        meetingNotesLink: first(documents.documentUrls),
         videoLink,
         state: getStateForMeeting(event),
       };
