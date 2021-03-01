@@ -17,13 +17,44 @@ import useExpandStyles from '../shared/expand-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { getFormattedGuestStats } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
+import { IDocument } from '../store/models/document-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createDocument } from './create-meeting-notes';
 
-const createMailtoLink = (meeting: ISegment) =>
-  `mailto:${meeting.attendees.map((a) => a.email).join(',')}?subject=${meeting.summary}`;
+const EmailGuestsButton = (props: {
+  meeting: ISegment;
+  segmentDocuments: ISegmentDocument[];
+  documentDataStore: IStore['documentDataStore'];
+}) => {
+  const classes = useExpandStyles();
+  const [documents, setDocuments] = useState<(IDocument | undefined)[]>([]);
+
+  const documentIds = props.segmentDocuments.map((s) => s.documentId);
+  useEffect(() => {
+    const fetchData = async () => {
+      const docs = await Promise.all(
+        documentIds.map(async (id) => props.documentDataStore.get(id)),
+      );
+      setDocuments(docs);
+    };
+    void fetchData();
+  }, [props.meeting.id]);
+
+  const bodyText = `Hello, %0D%0A%0D%0A${documents
+    .map((d) => `${d?.name} - ${d?.link}%0D%0A`)
+    .join(' ')}`;
+  const link = `mailto:${props.meeting.attendees.map((a) => a.email).join(',')}?subject=${
+    props.meeting.summary
+  }&body=${bodyText}`;
+
+  return (
+    <Button href={link} target="_blank" className={classes.link}>
+      Email guests
+    </Button>
+  );
+};
 
 const createMeetingNotes = async (
   meeting: ISegment,
@@ -160,6 +191,11 @@ const ExpandedMeeting = (props: {
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
   );
+  console.log(
+    segmentDocumentsForAttendees,
+    segmentDocumentsForNonAttendees,
+    segmentDocumentsFromPastMeetings,
+  );
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
@@ -229,9 +265,13 @@ const ExpandedMeeting = (props: {
             </Grid>
           )}
           <Grid item xs={12}>
-            <Button href={createMailtoLink(meeting)} target="_blank" className={classes.link}>
-              Email guests
-            </Button>
+            <EmailGuestsButton
+              meeting={meeting}
+              segmentDocuments={segmentDocumentsForAttendees.concat(
+                segmentDocumentsFromPastMeetings,
+              )}
+              documentDataStore={props.store.documentDataStore}
+            />
           </Grid>
           <Grid item xs={12}>
             <Button href={editLink} className={classes.link}>
