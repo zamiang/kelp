@@ -146,11 +146,6 @@ const ExpandedMeeting = (props: {
     'https://www.google.com/calendar/event?eid=',
     'https://calendar.google.com/calendar/u/0/r/eventedit/',
   );
-  console.log(
-    segmentDocumentsForAttendees,
-    segmentDocumentsForNonAttendees,
-    segmentDocumentsFromPastMeetings,
-  );
   return (
     <React.Fragment>
       <div className={classes.topContainer}>

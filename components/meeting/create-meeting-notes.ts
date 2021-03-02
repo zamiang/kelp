@@ -140,7 +140,6 @@ export const createMeetingNotes = async (
   const documentShareUrl = document
     ? `https://docs.google.com/document/d/${document.id}?${params.toString()}`
     : null;
-  console.log(documentShareUrl, '<<<<<<<<<<<<');
   if (documentShareUrl) {
     window.open(documentShareUrl, '_blank');
   }

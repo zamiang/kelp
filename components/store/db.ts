@@ -128,7 +128,14 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
       segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
     },
+    blocked() {
+      console.log('blocked');
+    },
+    blocking() {
+      console.log('blocking');
+    },
     terminated: () => {
+      console.log('terminated');
       RollbarErrorTracking.logErrorInRollbar('db terminated');
     },
   });
