@@ -21,7 +21,7 @@ import { IDocument } from '../store/models/document-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
-import { createDocument } from './create-meeting-notes';
+import { createMeetingNotes } from './create-meeting-notes';
 
 const EmailGuestsButton = (props: {
   meeting: ISegment;
@@ -54,51 +54,6 @@ const EmailGuestsButton = (props: {
       Email guests
     </Button>
   );
-};
-
-const createMeetingNotes = async (
-  meeting: ISegment,
-  documentIds: string[],
-  setMeetingNotesLoading: (isLoading: boolean) => void,
-  personDataStore: IStore['personDataStore'],
-  documentDataStore: IStore['documentDataStore'],
-  attendeeDataStore: IStore['attendeeDataStore'],
-  refetch: () => void,
-  scope: string,
-  authToken: string,
-) => {
-  setMeetingNotesLoading(true);
-  const document = await createDocument(
-    meeting,
-    documentIds,
-    personDataStore,
-    documentDataStore,
-    attendeeDataStore,
-    scope,
-    authToken,
-  );
-
-  setMeetingNotesLoading(false);
-  const emailsToInvite = meeting.attendees
-    .map((a) => {
-      const shouldInvite = !a.self && a.responseStatus === 'accepted';
-      if (shouldInvite) {
-        return a.email;
-      }
-    })
-    .filter(Boolean);
-
-  const params = new URLSearchParams({
-    actionButton: '1',
-    userstoinvite: emailsToInvite.join(','),
-  });
-  const documentShareUrl = document
-    ? `https://docs.google.com/document/d/${document.id}?${params.toString()}`
-    : null;
-  if (documentShareUrl) {
-    window.open(documentShareUrl, '_blank');
-  }
-  refetch();
 };
 
 const ExpandedMeeting = (props: {
@@ -241,13 +196,7 @@ const ExpandedMeeting = (props: {
                   props.store.googleOauthToken,
                 );
               }}
-              startIcon={
-                isMeetingNotesLoading ? (
-                  <CircularProgress size={20} color={'paper' as any} />
-                ) : (
-                  <AddIcon />
-                )
-              }
+              startIcon={isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon />}
               disabled={isMeetingNotesLoading}
               disableElevation
             >

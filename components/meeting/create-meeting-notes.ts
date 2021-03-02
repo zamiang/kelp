@@ -58,7 +58,7 @@ const getCreateDocumentRequestBody = async (
 };
 
 // Based on: https://developers.google.com/drive/api/v3/integrate-open#node.js
-export const createDocument = async (
+const createDocument = async (
   meeting: ISegment,
   documentIds: string[],
   personDataStore: IStore['personDataStore'],
@@ -94,8 +94,56 @@ export const createDocument = async (
   const result = await documentResponse.json();
   const id = result.id;
   if (!id) {
-    return alert(`no id for ${JSON.stringify(document)}`);
+    console.error(result);
+    return;
   }
 
   return result;
+};
+
+export const createMeetingNotes = async (
+  meeting: ISegment,
+  documentIds: string[],
+  setMeetingNotesLoading: (isLoading: boolean) => void,
+  personDataStore: IStore['personDataStore'],
+  documentDataStore: IStore['documentDataStore'],
+  attendeeDataStore: IStore['attendeeDataStore'],
+  refetch: () => void,
+  scope: string,
+  authToken: string,
+) => {
+  setMeetingNotesLoading(true);
+  const document = await createDocument(
+    meeting,
+    documentIds,
+    personDataStore,
+    documentDataStore,
+    attendeeDataStore,
+    scope,
+    authToken,
+  );
+
+  setMeetingNotesLoading(false);
+  const emailsToInvite = meeting.attendees
+    .map((a) => {
+      const shouldInvite = !a.self && a.responseStatus === 'accepted';
+      if (shouldInvite) {
+        return a.email;
+      }
+    })
+    .filter(Boolean);
+
+  const params = new URLSearchParams({
+    actionButton: '1',
+    userstoinvite: emailsToInvite.join(','),
+  });
+  const documentShareUrl = document
+    ? `https://docs.google.com/document/d/${document.id}?${params.toString()}`
+    : null;
+  console.log(documentShareUrl, '<<<<<<<<<<<<');
+  if (documentShareUrl) {
+    window.open(documentShareUrl, '_blank');
+  }
+
+  refetch();
 };

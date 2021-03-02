@@ -3,6 +3,7 @@ import React from 'react';
 
 export const logout = () => {
   localStorage.removeItem('oauth2');
+  localStorage.removeItem('scope');
   window.location.pathname = '';
 };
 

@@ -8,7 +8,7 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Redirect, Route, BrowserRouter as Router, Switch, useHistory } from 'react-router-dom';
 import Docs from '../../components/dashboard/documents';
 import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
