@@ -68,7 +68,7 @@ export const PeopleToday = (
     void fetchData();
   }, [props.isLoading, props.lastUpdated]);
   return (
-    <div className={classes.rowNoBorder}>
+    <div className={classes.section}>
       {people.map(
         (person: IPerson) =>
           person && (

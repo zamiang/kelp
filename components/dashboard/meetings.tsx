@@ -104,7 +104,7 @@ const DayContainer = (props: {
   const dayContainerclasses = dayContainerStyles();
 
   return (
-    <div className={classes.row}>
+    <div className={classes.section}>
       <Day day={new Date(props.day)} currentDay={currentTime} />
       {props.meetings.map((meeting) => (
         <div key={meeting.id} id={meeting.id}>

@@ -1,7 +1,6 @@
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import MeetingRow from '../meeting/meeting-row';
 import panelStyles from '../shared/panel-styles';
@@ -26,7 +25,7 @@ const Home = (props: IStore) => {
 
   return (
     <div className={classes.panel}>
-      <div className={clsx(classes.homeRow, classes.homeRowTop)}>
+      <div>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
             <BarChart type="meetings" {...props} />
@@ -38,7 +37,7 @@ const Home = (props: IStore) => {
             <BarChart type="documents" {...props} />
           </Grid>
         </Grid>
-        <Grid container className={classes.homeRow} spacing={4}>
+        <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6">Today&apos;s schedule</Typography>
             <Divider />
