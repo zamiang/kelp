@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   container: {
     transition: 'background 0.3s',
-    background: '#F3F4F6',
   },
   content: {
     overscrollBehavior: 'contain',
@@ -252,11 +251,6 @@ export const DashboardContainer = ({ store }: IProps) => {
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
-      <style jsx global>{`
-        html body {
-          background-color: #f3f4f6;
-        }
-      `}</style>
       {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
     </div>
   );

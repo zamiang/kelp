@@ -1,11 +1,10 @@
-import { Divider, Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import panelStyles from '../../components/shared/panel-styles';
-import DocumentSearchResult from '../documents/document-search-result';
+import DocumentRow from '../documents/document-row';
 import MeetingSearchResult from '../meeting/meeting-search-result';
-import PersonSearchResult from '../person/person-search-result';
-import TopBar from '../shared/top-bar';
+import PersonRow from '../person/person-row';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { ISegment } from '../store/models/segment-model';
@@ -62,15 +61,14 @@ const Search = (props: { store: IStore }) => {
   const filteredResults = filterSearchResults(results);
   return (
     <div className={classes.panel}>
-      <TopBar title={`Search Results for: ${searchQuery || ''}`} />
       {filteredResults.documents.length > 0 && (
-        <div className={classes.rowNoBorder}>
-          <Typography className={classes.headingPadding} variant="h5">
+        <div className={classes.section}>
+          <Typography className={classes.headingPadding} variant="body2">
             Documents
           </Typography>
-          <Divider />
           {filteredResults.documents.map((result) => (
-            <DocumentSearchResult
+            <DocumentRow
+              selectedDocumentId={null}
               key={result.item.id}
               doc={result.item as IDocument}
               store={props.store}
@@ -79,26 +77,24 @@ const Search = (props: { store: IStore }) => {
         </div>
       )}
       {filteredResults.people.length > 0 && (
-        <div className={classes.rowNoBorder}>
-          <Typography className={classes.headingPadding} variant="h5">
+        <div className={classes.section}>
+          <Typography className={classes.headingPadding} variant="body2">
             People
           </Typography>
-          <Divider />
           {filteredResults.people.map((result) => (
-            <PersonSearchResult
+            <PersonRow
+              selectedPersonId={null}
               key={result.item.id}
               person={result.item as IPerson}
-              store={props.store}
             />
           ))}
         </div>
       )}
       {filteredResults.meetings.length > 0 && (
-        <div className={classes.rowNoBorder}>
-          <Typography className={classes.headingPadding} variant="h5">
+        <div className={classes.section}>
+          <Typography className={classes.headingPadding} variant="body2">
             Meetings
           </Typography>
-          <Divider />
           {filteredResults.meetings.map((result) => (
             <MeetingSearchResult
               key={result.item.id}

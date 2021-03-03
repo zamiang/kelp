@@ -33,47 +33,11 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'uppercase',
     fontWeight: theme.typography.fontWeightMedium,
   },
-  row: {
-    marginBottom: theme.spacing(4),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    '&:last-child': {
-      borderbottom: '0px solid',
-    },
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
-    },
-  },
-  rowNoBorder: {
-    marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
-    },
-  },
-  homeRow: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
-    },
-  },
-  homeRowTop: {
-    paddingTop: theme.spacing(2),
-    marginBottom: theme.spacing(0),
-  },
   headingPadding: {
     paddingLeft: theme.spacing(4),
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(1),
     },
-  },
-  rowHighlight: {
-    background: theme.palette.secondary.light,
   },
 }));
 

@@ -76,7 +76,7 @@ const Activity = (props: {
           <Grid item>
             <img src={props.document.iconLink} className={classes.icon} />
           </Grid>
-          <Grid item xs={11} sm={8} zeroMinWidth>
+          <Grid item xs={10} sm={8} zeroMinWidth>
             <Typography variant="body2" noWrap>
               {props.document.name}
             </Typography>
@@ -129,7 +129,7 @@ const SegmentDocumentItem = (props: {
           <Grid item>
             <HelpOutlineIcon className={classes.icon} />
           </Grid>
-          <Grid item xs={11} sm={8} zeroMinWidth>
+          <Grid item xs={10} sm={8} zeroMinWidth>
             <Typography variant="body2" noWrap>
               {props.segmentDocument.documentId}
             </Typography>
@@ -166,7 +166,7 @@ const SegmentDocumentForNonAttendees = (props: {
   const [shouldDisplayNonAttendees, setShouldDisplayNonAttendees] = useState<boolean>(false);
   const classes = useExpandStyles();
   return (
-    <div className={classes.list}>
+    <div>
       {props.segmentDocumentsForNonAttendeesCount > 0 && !shouldDisplayNonAttendees && (
         <div>
           <Typography
@@ -200,7 +200,6 @@ const SegmentDocumentList = (props: {
   readonly personStore: IStore['personDataStore'];
   readonly docStore: IStore['documentDataStore'];
 }) => {
-  const classes = useExpandStyles();
   const segmentsToRender =
     props.segmentDocuments && props.segmentDocuments.length > 0
       ? uniqBy(props.segmentDocuments, 'documentId')
@@ -224,7 +223,7 @@ const SegmentDocumentList = (props: {
   return (
     <React.Fragment>
       {segmentsToRender.length > 0 && (
-        <div className={classes.list}>
+        <div>
           {segmentsToRender.map((segmentDocument) => (
             <SegmentDocumentItem
               key={segmentDocument.id}

@@ -1,16 +1,17 @@
-import Divider from '@material-ui/core/Divider';
+import { Typography } from '@material-ui/core';
 import { getDayOfYear } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
 import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
+import rowStyles from '../shared/row-styles';
 import TopBar from '../shared/top-bar';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 
 const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
-  const classes = panelStyles();
+  const classes = rowStyles();
   const [people, setPeople] = useState<IPerson[]>([]);
   const [featuredPeople, setFeaturedPeople] = useState<IPerson[]>([]);
 
@@ -34,13 +35,17 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
 
   return (
     <React.Fragment>
-      <div className={classes.rowHighlight}>
-        {featuredPeople.map((person) => (
-          <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
-        ))}
-        <Divider />
-      </div>
-      <div className={classes.rowNoBorder}>
+      {featuredPeople.length > 0 && (
+        <div className={classes.rowHighlight}>
+          <Typography className={classes.rowText} variant="body2">
+            People you are likely to meet with this week
+          </Typography>
+          {featuredPeople.map((person) => (
+            <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
+          ))}
+        </div>
+      )}
+      <div>
         {people.map((person) => (
           <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
         ))}

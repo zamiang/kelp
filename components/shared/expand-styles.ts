@@ -33,16 +33,7 @@ const useStyles = makeStyles((theme) => ({
   titleCenter: {
     textAlign: 'center',
   },
-  smallHeading: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    width: '100%',
-    fontWeight: 500,
-    display: 'block',
-    '&:first-child': {
-      marginTop: 0,
-    },
-  },
+
   highlight: {
     marginTop: -theme.spacing(1),
   },
@@ -128,12 +119,6 @@ const useStyles = makeStyles((theme) => ({
   },
   triGroupHeading: {
     paddingBottom: theme.spacing(1),
-  },
-  list: {
-    borderRadius: theme.shape.borderRadius,
-    border: '1px solid',
-    borderColor: theme.palette.divider,
-    width: '100%',
   },
   listItem: {
     borderBottom: '1px solid',

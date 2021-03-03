@@ -47,7 +47,6 @@ const MeetingList = (props: {
   segments: (ISegment | undefined)[];
   personStore: PersonDataStore;
 }) => {
-  const classes = useExpandStyles();
   if (props.segments.length < 1) {
     return <Typography variant="caption">None</Typography>;
   }
@@ -56,7 +55,7 @@ const MeetingList = (props: {
     .filter((item) => !!item)
     .sort((a, b) => (a!.start < b!.start ? -1 : 1));
   return (
-    <div className={classes.list}>
+    <div>
       {sortedSegments.map(
         (segment) =>
           segment && <Meeting key={segment.id} segment={segment} personStore={props.personStore} />,

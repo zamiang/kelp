@@ -143,10 +143,9 @@ const Row = (props: {
 };
 
 const AttendeeRows = (props: IProps) => {
-  const expandClasses = useExpandStyles();
   const orderedAttendees = orderBy(props.attendees || [], 'responseStatus');
   return (
-    <div className={expandClasses.list}>
+    <div>
       {orderedAttendees.map((attendee) => (
         <Row
           key={attendee.id}

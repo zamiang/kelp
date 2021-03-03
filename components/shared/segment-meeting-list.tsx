@@ -124,7 +124,6 @@ const SegmentMeetingList = (props: {
   personStore: IStore['personDataStore'];
   timeStore: IStore['timeDataStore'];
 }) => {
-  const classes = useExpandStyles();
   const segmentDocuments = uniqBy(
     props.segmentDocuments.sort((a, b) => (a.date > b.date ? -1 : 1)),
     'documentId',
@@ -133,7 +132,7 @@ const SegmentMeetingList = (props: {
     return <Typography variant="caption">None</Typography>;
   }
   return (
-    <div className={classes.list}>
+    <div>
       {segmentDocuments.map((segmentDocument) => (
         <SegmentDocumentItem
           key={segmentDocument.id}

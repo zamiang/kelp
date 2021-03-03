@@ -47,7 +47,6 @@ const DocumentRow = (props: {
   doc: IDocument;
   selectedDocumentId: string | null;
   store: IStore;
-  isSmall?: boolean;
 }) => {
   const isSelected = props.selectedDocumentId === props.doc.id;
   const router = useHistory();
@@ -98,11 +97,7 @@ const DocumentRow = (props: {
       selected={isSelected}
       onClick={handleClick}
       ref={setReferenceElement as any}
-      className={clsx(
-        'ignore-react-onclickoutside',
-        rowStyles.row,
-        props.isSmall && rowStyles.rowNoLeftMargin,
-      )}
+      className={clsx('ignore-react-onclickoutside', rowStyles.row)}
     >
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
@@ -110,25 +105,23 @@ const DocumentRow = (props: {
             <img src={props.doc.iconLink} className={classes.image} />
           </IconButton>
         </Grid>
-        <Grid item zeroMinWidth xs>
-          <Typography noWrap variant="body2">
-            <span style={{ fontWeight: 500 }}>{props.doc.name}</span>
-          </Typography>
-        </Grid>
-        {!props.isSmall && (
-          <Grid item sm={2}>
-            <Grid container spacing={1} alignItems="center">
-              <AvatarList people={people as any} shouldDisplayNone={false} />
+        <Grid item xs={8}>
+          <Grid container>
+            <Grid item xs={12} zeroMinWidth>
+              <Typography noWrap>{props.doc.name}</Typography>
+            </Grid>
+            <Grid item xs={12} zeroMinWidth>
+              <Typography variant="body2">
+                {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
+              </Typography>
             </Grid>
           </Grid>
-        )}
-        {!props.isSmall && (
-          <Grid item className={classes.time}>
-            <Typography variant="caption" color="textSecondary">
-              {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
-            </Typography>
+        </Grid>
+        <Grid item sm={2}>
+          <Grid container spacing={1} alignItems="center">
+            <AvatarList people={people as any} shouldDisplayNone={false} />
           </Grid>
-        )}
+        </Grid>
       </Grid>
     </ListItem>
   );

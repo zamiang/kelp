@@ -1,22 +1,17 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import { formatDistance, formatDuration } from 'date-fns';
-import { last } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import panelStyles from '../shared/panel-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { getAssociates, getMeetingTime } from '../store/helpers';
+import { getAssociates } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
 import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
@@ -72,17 +67,6 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
   if (!person) {
     return null;
   }
-  const lastMeeting = last(segments);
-  const meetingTime = getMeetingTime(segments);
-  const timeInMeetings = formatDuration(meetingTime.thisWeek)
-    .replace(' hours', 'h')
-    .replace(' minutes', 'm');
-  const timeInMeetingsLastWeek = formatDuration(meetingTime.lastWeek)
-    .replace(' hours', 'h')
-    .replace(' minutes', 'm');
-
-  const hasName = !person.name.includes('people/') && !person.name.includes('@');
-  const hasMeetingTime = meetingTime.lastWeekMs > 0;
   const emailAddress = person.emailAddresses[0];
   return (
     <div className={panelClasses.panel}>
@@ -93,7 +77,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           </Avatar>
           <Typography
             className={classes.titleCenter}
-            variant="h5"
+            variant="h1"
             color="textPrimary"
             gutterBottom
             noWrap
@@ -103,68 +87,20 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         </Box>
         {emailAddress && (
           <div style={{ textAlign: 'center' }}>
-            <Link href={`mailto:${emailAddress}`} target="_blank" className={classes.link}>
-              {emailAddress}
-            </Link>{' '}
-            <Link onClick={() => navigator.clipboard.writeText(emailAddress)}>(copy)</Link>
+            {emailAddress}{' '}
+            <Link onClick={() => navigator.clipboard.writeText(emailAddress)}>copy</Link>
+            <br />
+            <Button variant="outlined" href={`mailto:${emailAddress}`} target="_blank">
+              Email Contact{' '}
+            </Button>
           </div>
         )}
-        {hasName && (
-          <Tooltip title="Linkedin">
-            <Link
-              target="_blank"
-              rel="noreferrer"
-              className={classes.link}
-              href={`https://www.linkedin.com/search/results/people/?keywords=${person.name}`}
-            >
-              <IconButton>
-                <LinkedInIcon fontSize="small" />
-              </IconButton>
-            </Link>
-          </Tooltip>
-        )}
       </div>
-      <Divider />
-      <Grid container className={classes.triGroup} justify="space-between">
-        <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.triGroupHeading}>
-            Last meeting
-          </Typography>
-          {lastMeeting && (
-            <Link to={`/meetings/${lastMeeting.id}`} component={RouterLink}>
-              <Typography className={classes.highlight}>
-                <span className={classes.highlightValue} style={{ fontSize: '1.3094rem' }}>
-                  {formatDistance(lastMeeting.start, new Date(), { addSuffix: true })}
-                </span>
-              </Typography>
-            </Link>
-          )}
-          {!lastMeeting && (
-            <Typography className={classes.highlight}>
-              <span className={classes.highlightValue}>None</span>
-            </Typography>
-          )}
-        </Grid>
-        <div className={classes.triGroupBorder}></div>
-        <Grid item xs className={classes.triGroupItem}>
-          <Typography variant="h6" className={classes.triGroupHeading}>
-            Meetings this week
-          </Typography>
-          <Typography className={classes.highlight}>
-            <span className={classes.highlightValue}>{timeInMeetings || 'None'} </span>
-            {hasMeetingTime && (
-              <span className={classes.highlightSub}>from {timeInMeetingsLastWeek || 'None'}</span>
-            )}
-          </Typography>
-        </Grid>
-      </Grid>
       <Divider />
       <div className={classes.container}>
         {person.isInContacts && person.googleId && (
           <React.Fragment>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Notes
-            </Typography>
+            <Typography variant="h6">Notes</Typography>
             <PersonNotes
               person={person}
               setPerson={(p: any) => setPerson(p)}
@@ -177,13 +113,12 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         {(!person.isInContacts || !person.googleId) && (
           <Typography variant="body2">
             Add this person to your google contacts for more info{' '}
-            <Link className={classes.link} target="_blank" href={ADD_SENDER_LINK}>
+            <Link target="_blank" href={ADD_SENDER_LINK}>
               (guide)
             </Link>
             <br />
             {person.emailAddresses && (
               <Link
-                className={classes.link}
                 target="_blank"
                 href={`https://mail.google.com/mail/u/0/#search/${person.emailAddresses[0]}`}
               >
@@ -193,9 +128,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           </Typography>
         )}
         <React.Fragment>
-          <Typography variant="h6" className={classes.smallHeading}>
-            Documents they have edited
-          </Typography>
+          <Typography variant="h6">Documents they have edited</Typography>
           <SegmentDocumentList
             segmentDocuments={segmentDocuments}
             personStore={props.store.personDataStore}
@@ -203,9 +136,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           />
         </React.Fragment>
         <React.Fragment>
-          <Typography variant="h6" className={classes.smallHeading}>
-            Associates
-          </Typography>
+          <Typography variant="h6">Associates</Typography>
           <AttendeeList
             personStore={props.store.personDataStore}
             attendees={associates}
@@ -214,9 +145,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           />
         </React.Fragment>
         <React.Fragment>
-          <Typography variant="h6" className={classes.smallHeading}>
-            Meetings you both attended
-          </Typography>
+          <Typography variant="h6">Meetings you both attended</Typography>
           <MeetingList segments={segments} personStore={props.store.personDataStore} />
         </React.Fragment>
       </div>

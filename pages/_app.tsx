@@ -1,6 +1,7 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useEffect } from 'react';
+import homepageTheme from '../constants/homepage-theme';
 import theme from '../constants/theme';
 
 const App = (props: any) => {
@@ -13,9 +14,9 @@ const App = (props: any) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
-
+  const isDashboard = props.router.route.includes('/dashboard');
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={isDashboard ? theme : homepageTheme}>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>
