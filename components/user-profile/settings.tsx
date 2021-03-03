@@ -36,7 +36,7 @@ const Settings = (props: { shouldRenderHeader: boolean }) => {
       <div className={classes.section}>
         {shouldRenderSettings && (
           <React.Fragment>
-            <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
+            <div className={clsx(classes.section, formClasses.maxWidth)}>
               <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
                 <InputLabel htmlFor="days-back">Number of days to look back</InputLabel>
                 <Input id="days-back" type={'text'} value={config.NUMBER_OF_DAYS_BACK} />
@@ -56,7 +56,7 @@ const Settings = (props: { shouldRenderHeader: boolean }) => {
                 />
               </FormControl>
             </div>
-            <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
+            <div className={clsx(classes.section, formClasses.maxWidth)}>
               <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
                 <Button variant="contained" color="primary" disableElevation>
                   Save
@@ -65,7 +65,7 @@ const Settings = (props: { shouldRenderHeader: boolean }) => {
             </div>
           </React.Fragment>
         )}
-        <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
+        <div className={clsx(classes.section, formClasses.maxWidth)}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
             <InputLabel htmlFor="notifications">Notifications</InputLabel>
             <br />
@@ -82,7 +82,7 @@ const Settings = (props: { shouldRenderHeader: boolean }) => {
             Current status: {Notification.permission}
           </FormControl>
         </div>
-        <div className={clsx(classes.rowNoBorder, formClasses.maxWidth)}>
+        <div className={clsx(classes.section, formClasses.maxWidth)}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
             <LogoutButton />
           </FormControl>

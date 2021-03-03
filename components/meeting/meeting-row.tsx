@@ -1,14 +1,15 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import ListItem from '@material-ui/core/ListItem';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
-import useRowStyles from '../shared/row-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee } from '../store/models/attendee-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
@@ -107,7 +108,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column-reverse',
     overflow: 'hidden',
   },
-  dot: {},
+  container: {
+    display: 'block',
+    width: '100%',
+    textAlign: 'left',
+  },
 }));
 
 const MeetingRow = (props: {
@@ -116,14 +121,11 @@ const MeetingRow = (props: {
   shouldRenderCurrentTime: boolean;
   store: IStore;
   isSmall?: boolean;
-  shoudlGreyOutPastEvents?: boolean;
 }) => {
   const isSelected = props.selectedMeetingId === props.meeting.id;
   const classes = useStyles();
   const router = useHistory();
-  const rowStyles = useRowStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const isPast = props.shoudlGreyOutPastEvents && props.meeting.end < new Date();
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -138,56 +140,20 @@ const MeetingRow = (props: {
     return false;
   };
   return (
-    <ListItem
-      button={true}
-      selected={isSelected}
-      onClick={handleClick}
-      ref={setReferenceElement as any}
-      style={{ display: 'block' }}
-      className={clsx(
-        'ignore-react-onclickoutside',
-        rowStyles.row,
-        classes.row,
-        props.meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
-        props.meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
-        props.meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
-        props.meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
-        isPast && rowStyles.rowHint,
-        isSelected && rowStyles.rowPrimaryMain,
-        props.isSmall && classes.noLeftMargin,
-      )}
-    >
-      <Grid container spacing={2} alignItems="center">
-        <Grid item className={classes.dot}>
-          <div
-            className={clsx(
-              rowStyles.border,
-              props.meeting.selfResponseStatus === 'accepted' && rowStyles.borderSecondaryMain,
-              props.meeting.selfResponseStatus === 'tentative' && rowStyles.borderSecondaryLight,
-              props.meeting.selfResponseStatus === 'declined' && rowStyles.borderSecondaryLight,
-              props.meeting.selfResponseStatus === 'needsAction' && rowStyles.borderSecondaryLight,
-              props.selectedMeetingId === props.meeting.id && rowStyles.borderInfoMain,
-            )}
-          />
+    <Button onClick={handleClick} ref={setReferenceElement as any} className={classes.container}>
+      <Grid container spacing={1} alignItems="center">
+        <Grid item>
+          <KeyboardArrowRightIcon />
         </Grid>
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
-          <Grid container>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
-              <Grid container justify="space-between">
-                <Grid item>
-                  <Typography variant="h6">
-                    {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-                  </Typography>
-                </Grid>
-                {props.meeting.videoLink && (
-                  <Grid item>
-                    <Link target="_blank" href={props.meeting.videoLink}>
-                      Join Meeting
-                    </Link>
-                  </Grid>
-                )}
-              </Grid>
-              <Typography variant="body2" noWrap>
+              <Typography variant="body2">
+                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography noWrap>
                 <span style={{ fontWeight: 500 }}>{props.meeting.summary || '(no title)'}</span>{' '}
                 {!props.isSmall && props.meeting.description
                   ? props.meeting.description.replace(/<[^>]+>/g, '')
@@ -196,9 +162,16 @@ const MeetingRow = (props: {
             </Grid>
           </Grid>
         </Grid>
+        {props.meeting.videoLink && (
+          <Grid item>
+            <IconButton target="_blank" href={props.meeting.videoLink}>
+              <VideocamIcon color="primary" />
+            </IconButton>
+          </Grid>
+        )}
       </Grid>
       {isSelected && <MeetingRowBelow meeting={props.meeting} store={props.store} />}
-    </ListItem>
+    </Button>
   );
 };
 

@@ -1,10 +1,8 @@
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import MeetingRow from '../meeting/meeting-row';
-import expandStyles from '../shared/expand-styles';
 import panelStyles from '../shared/panel-styles';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -14,7 +12,6 @@ import { PeopleToday } from './people';
 
 const Home = (props: IStore) => {
   const classes = panelStyles();
-  const expandClasses = expandStyles();
   const currentTime = new Date();
   const [segments, setSegments] = useState<ISegment[]>([]);
 
@@ -28,7 +25,7 @@ const Home = (props: IStore) => {
 
   return (
     <div className={classes.panel}>
-      <div className={clsx(classes.homeRow, classes.homeRowTop)}>
+      <div>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
             <BarChart type="meetings" {...props} />
@@ -40,11 +37,9 @@ const Home = (props: IStore) => {
             <BarChart type="documents" {...props} />
           </Grid>
         </Grid>
-        <Grid container className={classes.homeRow} spacing={4}>
+        <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" className={expandClasses.smallHeading}>
-              Today&apos;s schedule
-            </Typography>
+            <Typography variant="h6">Today&apos;s schedule</Typography>
             <Divider />
             {segments.map((meeting) => (
               <MeetingRow
@@ -58,16 +53,12 @@ const Home = (props: IStore) => {
             ))}
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" className={expandClasses.smallHeading}>
-              People you are meeting with today
-            </Typography>
+            <Typography variant="h6">People you are meeting with today</Typography>
             <Divider />
             <PeopleToday {...props} selectedPersonId={null} noLeftMargin={true} />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" className={expandClasses.smallHeading}>
-              Documents you may need today
-            </Typography>
+            <Typography variant="h6">Documents you may need today</Typography>
             <Divider />
             <DocumentsForToday {...props} selectedDocumentId={null} isSmall={true} />
           </Grid>

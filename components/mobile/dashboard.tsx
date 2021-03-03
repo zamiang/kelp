@@ -29,20 +29,11 @@ const useInfoStyles = makeStyles((theme) => ({
       paddingRight: theme.spacing(1),
     },
   },
-  smallHeading: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    width: '100%',
-    fontWeight: 500,
-    display: 'block',
-    '&:first-child': {
-      marginTop: 0,
-    },
-  },
   container: {
     position: 'relative',
-    maxHeight: 'calc(100vh - 92px)',
+    maxHeight: 'calc(100vh - 119px)',
     overflowY: 'auto',
+    background: theme.palette.background.paper,
     overflowX: 'hidden',
   },
   footer: {

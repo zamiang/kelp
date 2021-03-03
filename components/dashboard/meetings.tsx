@@ -13,6 +13,7 @@ import config from '../../constants/config';
 import MeetingRow from '../meeting/meeting-row';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
+import useRowStyles from '../shared/row-styles';
 import TopBar from '../shared/top-bar';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -23,15 +24,17 @@ const dayStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
   },
   dayNumber: {
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.background.paper,
+    color: 'rgba(0,0,0,0.3)',
+    backgroundColor: '#E5E5E5',
+    width: 40,
+    height: 40,
   },
   dayNumberToday: {
     backgroundColor: config.BLUE_BACKGROUND,
   },
   dayInfo: {
     textTransform: 'uppercase',
-    fontWeight: theme.typography.fontWeightMedium,
+    color: 'rgba(0,0,0,0.87)',
   },
   currentTime: {
     marginTop: -6,
@@ -66,9 +69,7 @@ const Day = (props: { day: Date; currentDay: Date }) => {
         </Avatar>
       </Grid>
       <Grid item>
-        <Typography variant="caption" className={classes.dayInfo}>
-          {dayInfo}
-        </Typography>
+        <Typography className={classes.dayInfo}>{dayInfo}</Typography>
       </Grid>
     </Grid>
   );
@@ -102,12 +103,26 @@ const DayContainer = (props: {
   const currentTime = new Date();
   const classes = panelStyles();
   const dayContainerclasses = dayContainerStyles();
+  const rowStyles = useRowStyles();
 
   return (
-    <div className={classes.row}>
+    <div className={classes.section}>
       <Day day={new Date(props.day)} currentDay={currentTime} />
       {props.meetings.map((meeting) => (
-        <div key={meeting.id} id={meeting.id}>
+        <div
+          key={meeting.id}
+          id={meeting.id}
+          className={clsx(
+            'ignore-react-onclickoutside',
+            rowStyles.row,
+            meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
+            meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
+            meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
+            meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
+            meeting.end < new Date() && rowStyles.rowHint,
+            props.selectedMeetingId === meeting.id && rowStyles.rowPrimaryMain,
+          )}
+        >
           {meeting.id === props.currentTimeMeetingId && (
             <ListItem className={dayContainerclasses.currentTime} id="current-time">
               <div className={dayContainerclasses.currentTimeDot}></div>
@@ -115,7 +130,6 @@ const DayContainer = (props: {
             </ListItem>
           )}
           <MeetingRow
-            shoudlGreyOutPastEvents={true}
             shouldRenderCurrentTime={meeting.id === props.currentTimeMeetingId}
             meeting={meeting}
             selectedMeetingId={props.selectedMeetingId}

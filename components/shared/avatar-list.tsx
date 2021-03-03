@@ -1,6 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React from 'react';
@@ -9,7 +8,7 @@ import { IPerson } from '../store/models/person-model';
 
 interface IProps {
   people: IPerson[];
-  shouldDisplayNone?: boolean;
+  maxAvatars?: number;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -40,13 +39,10 @@ const AvatarList = (props: IProps) => {
   const classes = useStyles();
   const router = useHistory();
   if (props.people.filter((p) => !p.isCurrentUser).length < 1) {
-    if (props.shouldDisplayNone) {
-      return <Typography variant="caption">None</Typography>;
-    }
     return null;
   }
   return (
-    <AvatarGroup max={5}>
+    <AvatarGroup max={props.maxAvatars || 5}>
       {props.people.map((person) => {
         if (!person) {
           return null;

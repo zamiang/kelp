@@ -228,9 +228,7 @@ const ExpandedMeeting = (props: {
       <div className={classes.container}>
         {hasDescription && !isHtml && (
           <React.Fragment>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Description
-            </Typography>
+            <Typography variant="h6">Description</Typography>
             <Typography variant="body2" className={classes.description}>
               <Linkify>{meeting.description?.trim()}</Linkify>
             </Typography>
@@ -238,9 +236,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasDocuments && (
           <React.Fragment>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Documents you may need
-            </Typography>
+            <Typography variant="h6">Documents you may need</Typography>
             <SegmentDocumentList
               segmentDocumentsForAttendees={segmentDocumentsForAttendees}
               segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
@@ -252,9 +248,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasDescription && isHtml && (
           <React.Fragment>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Description
-            </Typography>
+            <Typography variant="h6">Description</Typography>
             <Typography
               variant="body2"
               className={classes.description}
@@ -264,9 +258,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasAttendees && (
           <React.Fragment>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Guests
-            </Typography>
+            <Typography variant="h6">Guests</Typography>
             <Typography variant="caption" className={classes.smallCaption}>
               {guestStats}
             </Typography>
@@ -279,9 +271,7 @@ const ExpandedMeeting = (props: {
         )}
         {meeting.location && (
           <React.Fragment>
-            <Typography variant="h6" className={classes.smallHeading}>
-              Location
-            </Typography>
+            <Typography variant="h6">Location</Typography>
             <Typography variant="body2" className={classes.overflowEllipsis}>
               {meeting.location}
             </Typography>

@@ -46,7 +46,7 @@ module.exports = {
               styleSrc: [
                 "'self'",
                 "'unsafe-inline'",
-                'https://rsms.me/inter/inter.css',
+                'https://fonts.googleapis.com/css2',
                 'https://use.typekit.net/obt3xmb.css',
                 'https://p.typekit.net',
               ],
@@ -59,7 +59,7 @@ module.exports = {
                 //'https://platform.slack-edge.com',
                 'https://www.googletagmanager.com',
               ],
-              fontSrc: ["'self'", 'https://rsms.me', 'https://use.typekit.net'],
+              fontSrc: ["'self'", 'https://fonts.googleapis.com', 'https://use.typekit.net'],
               scriptSrc: ["'self'", "'unsafe-eval'", 'https://apis.google.com'],
               frameSrc: [
                 'https://auth.kelp.nyc',

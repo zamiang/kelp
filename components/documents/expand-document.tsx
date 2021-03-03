@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import SmallPersonRow from '../person/person-row-small';
+import PersonRow from '../person/person-row';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
 import { getPeopleSortedByCount } from '../store/helpers';
@@ -93,13 +93,14 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
             <Typography variant="h6" className={classes.triGroupHeading}>
               Key Contributors
             </Typography>
-            <div className={classes.list}>
+            <div>
               {people.map(
                 (person: IPerson) =>
                   person &&
                   peopleStats[person.id] && (
-                    <SmallPersonRow
+                    <PersonRow
                       key={person.id}
+                      selectedPersonId={null}
                       person={person}
                       info={`${peopleStats[person.id][person.id]} events`}
                     />
@@ -108,9 +109,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
             </div>
           </React.Fragment>
         )}
-        <Typography variant="h6" className={classes.smallHeading}>
-          Meetings
-        </Typography>
+        <Typography variant="h6">Meetings</Typography>
         <SegmentMeetingList
           segmentDocuments={segmentDocuments}
           timeStore={props.store.timeDataStore}

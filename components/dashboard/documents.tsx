@@ -1,16 +1,16 @@
-import Divider from '@material-ui/core/Divider';
 import { getDayOfYear } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import DocumentRow from '../documents/document-row';
 import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
+import rowStyles from '../shared/row-styles';
 import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/models/document-model';
 import { IStore } from '../store/use-store';
 
 const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => {
-  const classes = panelStyles();
+  const classes = rowStyles();
   const [docs, setDocs] = useState<IDocument[]>([]);
   const [topDocuments, setTopDocuments] = useState<IDocument[]>([]);
 
@@ -35,18 +35,19 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
 
   return (
     <React.Fragment>
-      <div className={classes.rowHighlight}>
-        {topDocuments.map((doc) => (
-          <DocumentRow
-            key={doc.id}
-            doc={doc}
-            store={props}
-            selectedDocumentId={props.selectedDocumentId}
-          />
-        ))}
-        <Divider />
-      </div>
-      <div className={classes.rowNoBorder}>
+      {topDocuments.length > 0 && (
+        <div className={classes.rowHighlight}>
+          {topDocuments.map((doc) => (
+            <DocumentRow
+              key={doc.id}
+              doc={doc}
+              store={props}
+              selectedDocumentId={props.selectedDocumentId}
+            />
+          ))}
+        </div>
+      )}
+      <div>
         {docs.map((doc) => (
           <DocumentRow
             key={doc.id}
@@ -74,14 +75,13 @@ export const DocumentsForToday = (
     void fetchData();
   }, [props.lastUpdated, props.isLoading]);
   return (
-    <div className={classes.rowNoBorder}>
+    <div className={classes.section}>
       {docs.map((doc: IDocument) => (
         <DocumentRow
           key={doc.id}
           doc={doc}
           store={props}
           selectedDocumentId={props.selectedDocumentId}
-          isSmall={props.isSmall}
         />
       ))}
     </div>

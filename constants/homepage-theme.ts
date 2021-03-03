@@ -1,6 +1,6 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
-const bodyFontFamily = "'Inter', sans-serif";
+const bodyFontFamily = "'reason-new', '-apple-system', 'Helvetica Neue', sans-serif;";
 
 const theme = createMuiTheme({
   props: {
@@ -51,29 +51,31 @@ const theme = createMuiTheme({
     fontWeightRegular: 400,
     h1: {
       fontWeight: 400,
+      fontFamily: 'reason-new, sans-serif',
       fontStyle: 'normal',
-      fontSize: '1.875rem',
     },
     h2: {
       fontWeight: 400,
+      fontFamily: 'reason-new, sans-serif',
       fontStyle: 'normal',
     },
     h3: {
       fontWeight: 400,
+      fontFamily: 'reason-new, sans-serif',
       fontStyle: 'normal',
     },
     h5: {
       fontSize: '1.875rem',
       fontWeight: 500,
+      fontFamily: 'reason-new, sans-serif',
       fontStyle: 'normal',
     },
     h6: {
       fontSize: '0.875rem',
-      color: 'rgba(0,0,0,0.5)',
+      // color: theme.palette.primary.dark,
       fontWeight: 400,
       textTransform: 'none',
       fontStyle: 'normal',
-      lineHeight: '28px',
     },
     subtitle1: {
       fontFamily: bodyFontFamily,
@@ -83,13 +85,9 @@ const theme = createMuiTheme({
     },
     body1: {
       fontFamily: bodyFontFamily,
-      fontSize: '14px',
-      color: '#000000',
     },
     body2: {
       fontFamily: bodyFontFamily,
-      color: 'rgba(0,0,0,0.5)',
-      fontSize: '14px',
     },
     caption: {
       fontFamily: bodyFontFamily,
@@ -116,12 +114,13 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
+        fontWeight: 500,
       },
     },
     MuiAvatar: {
       root: {
-        height: 30,
-        width: 30,
+        height: 36,
+        width: 36,
         fontSize: '1rem',
         textTransform: 'uppercase',
         color: '#ffffffcf',

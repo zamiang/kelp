@@ -33,14 +33,28 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.info.main,
     },
   },
+  hoverButton: {
+    textTransform: 'uppercase',
+    transition: 'opacity 0.3s',
+    color: theme.palette.primary.dark,
+    fontWeight: 500,
+    '&:active': {
+      opacity: 0.7,
+    },
+  },
   row: {
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',
     cursor: 'pointer',
+    textAlign: 'left',
     opacity: 1,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    paddingLeft: theme.spacing(4),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    '&:last-child': {
+      borderBottom: `1px solid transparent`,
+    },
     '&:hover': {
       backgroundColor: theme.palette.secondary.light,
     },
@@ -51,11 +65,6 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
       borderColor: theme.palette.secondary.main,
     },
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(1),
-      marginLeft: 0,
-      borderRadius: `${theme.spacing(1)}px 0 0 ${theme.spacing(1)}px`,
-    },
   },
   rowNoLeftMargin: {
     paddingLeft: theme.spacing(2),
@@ -63,7 +72,16 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(0),
     },
   },
+  rowHighlight: {
+    background: theme.palette.secondary.light,
+    margin: theme.spacing(2),
+    borderRadius: theme.spacing(1),
+  },
   rowDefault: {},
+  rowText: {
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+  },
   rowHint: {
     color: theme.palette.text.hint,
   },

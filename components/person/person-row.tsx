@@ -1,4 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
@@ -52,9 +53,7 @@ const PersonRow = (props: {
         <Grid item xs zeroMinWidth>
           <Grid container>
             <Grid item xs={12} zeroMinWidth>
-              <Typography variant="body2" noWrap style={{ fontWeight: 500 }}>
-                {props.person.name || props.person.id}
-              </Typography>
+              <Typography noWrap>{props.person.name || props.person.id}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" noWrap>
@@ -66,13 +65,27 @@ const PersonRow = (props: {
                 {props.person.notes}
               </Typography>
             </Grid>
+            {props.info && (
+              <Grid item xs={12}>
+                <Typography variant="body2" noWrap>
+                  {props.info}
+                </Typography>
+              </Grid>
+            )}
           </Grid>
         </Grid>
-        {props.info && (
+        {props.person.emailAddresses[0] && (
           <Grid item>
-            <Typography variant="body2" noWrap>
-              {props.info}
-            </Typography>
+            <Button
+              className={rowStyles.hoverButton}
+              onClick={(event) => {
+                event.stopPropagation();
+                void navigator.clipboard.writeText(props.person.emailAddresses[0]);
+                return false;
+              }}
+            >
+              Copy
+            </Button>
           </Grid>
         )}
       </Grid>
