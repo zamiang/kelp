@@ -31,7 +31,7 @@ const useInfoStyles = makeStyles((theme) => ({
   },
   container: {
     position: 'relative',
-    maxHeight: 'calc(100vh - 92px)',
+    maxHeight: 'calc(100vh - 119px)',
     overflowY: 'auto',
     background: theme.palette.background.paper,
     overflowX: 'hidden',

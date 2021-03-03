@@ -119,7 +119,7 @@ const DocumentRow = (props: {
         </Grid>
         <Grid item sm={2}>
           <Grid container spacing={1} alignItems="center">
-            <AvatarList people={people as any} shouldDisplayNone={false} />
+            <AvatarList people={people as any} maxAvatars={2} />
           </Grid>
         </Grid>
       </Grid>

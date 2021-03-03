@@ -70,14 +70,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
-    height: 77,
-    width: 77,
+    height: 73,
+    width: 73,
     fontSize: 50,
-    [theme.breakpoints.down('sm')]: {
-      height: 50,
-      width: 50,
-      fontSize: 35,
-    },
   },
   link: {
     color: theme.palette.primary.dark,

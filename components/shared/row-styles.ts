@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',
     cursor: 'pointer',
+    textAlign: 'left',
     opacity: 1,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),

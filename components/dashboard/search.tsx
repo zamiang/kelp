@@ -1,9 +1,9 @@
 import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Meeting } from '../../components/shared/meeting-list';
 import panelStyles from '../../components/shared/panel-styles';
 import DocumentRow from '../documents/document-row';
-import MeetingSearchResult from '../meeting/meeting-search-result';
 import PersonRow from '../person/person-row';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
@@ -96,10 +96,10 @@ const Search = (props: { store: IStore }) => {
             Meetings
           </Typography>
           {filteredResults.meetings.map((result) => (
-            <MeetingSearchResult
+            <Meeting
               key={result.item.id}
               meeting={result.item as ISegment}
-              store={props.store}
+              personStore={props.store['personDataStore']}
             />
           ))}
         </div>
