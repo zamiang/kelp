@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +13,7 @@ import { IFormattedAttendee } from '../store/models/attendee-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
+import { createSmartMeetingNotes } from './expand-meeting';
 
 const useBelowStyles = makeStyles((theme) => ({
   container: {
@@ -38,6 +40,7 @@ const useBelowStyles = makeStyles((theme) => ({
 
 const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
   const classes = useBelowStyles();
+  const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
@@ -103,16 +106,29 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Button
+              onClick={() =>
+                createSmartMeetingNotes(
+                  props.meeting,
+                  props.store,
+                  segmentDocumentsForAttendees,
+                  setMeetingNotesLoading,
+                )
+              }
               variant="outlined"
               className={clsx(classes.buttonStyle, classes.buttonPrimary)}
-              startIcon={<AddIcon color="primary" />}
+              startIcon={
+                isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon color="primary" />
+              }
+              disabled={isMeetingNotesLoading}
             >
               Smart Notes
             </Button>
           </Grid>
           <Grid item xs={6}>
             <Button
+              onClick={() => window.open(props.meeting.videoLink, '_blank')}
               variant="contained"
+              disableElevation
               color="primary"
               startIcon={<VideocamIcon color={'paper' as any} />}
               className={classes.buttonStyle}
