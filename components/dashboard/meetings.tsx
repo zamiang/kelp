@@ -202,9 +202,7 @@ const MeetingsByDay = (props: { store: IStore; hideHeading?: boolean }) => {
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
         <Grid container justify="flex-end">
-          <Button className={buttonClasses.unSelected} onClick={() => scrollCurrentTimeIntoView()}>
-            Now
-          </Button>
+          <Button onClick={() => scrollCurrentTimeIntoView()}>Today</Button>
         </Grid>
       </TopBar>
       {days.map((day) => (
