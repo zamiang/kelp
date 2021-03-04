@@ -9,80 +9,9 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import AttendeeList from '../shared/attendee-list';
-import SegmentDocumentList from '../shared/segment-document-list';
-import { IFormattedAttendee } from '../store/models/attendee-model';
-import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
-
-const useBelowStyles = makeStyles((theme) => ({
-  container: {
-    marginLeft: theme.spacing(6),
-  },
-}));
-
-const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
-  const classes = useBelowStyles();
-  const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
-  const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
-    ISegmentDocument[]
-  >([]);
-  const [segmentDocumentsForNonAttendees, setSegmentDocumentsForNonAttendees] = useState<
-    ISegmentDocument[]
-  >([]);
-  const [segmentDocumentsFromPastMeetings, setSegmentDocumentsFromPastMeetings] = useState<
-    ISegmentDocument[]
-  >([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await props.store.attendeeDataStore.getAllForSegmentId(props.meeting.id);
-      setAttendees(result);
-    };
-    void fetchData();
-  }, [props.store.isLoading, props.meeting.id]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await props.store.segmentDocumentStore.getAllForSegmentId(props.meeting.id);
-      setSegmentDocumentsForAttendees(result.filter((s) => s.isPersonAttendee));
-      setSegmentDocumentsForNonAttendees(result.filter((s) => !s.isPersonAttendee));
-    };
-    void fetchData();
-  }, [props.store.isLoading, props.meeting.id]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (props.meeting.summary) {
-        const result = await props.store.segmentDocumentStore.getAllForMeetingName(
-          props.meeting.summary,
-        );
-        setSegmentDocumentsFromPastMeetings(result ? result.filter((s) => s.isPersonAttendee) : []);
-      } else {
-        setSegmentDocumentsFromPastMeetings([]);
-      }
-    };
-    void fetchData();
-  }, [props.store.isLoading, props.meeting?.summary]);
-
-  return (
-    <div className={classes.container}>
-      <SegmentDocumentList
-        segmentDocumentsForAttendees={segmentDocumentsForAttendees}
-        segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
-        segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
-        docStore={props.store.documentDataStore}
-        personStore={props.store.personDataStore}
-      />
-      <AttendeeList
-        personStore={props.store.personDataStore}
-        attendees={attendees}
-        showAll={false}
-      />
-    </div>
-  );
-};
+import MeetingRowBelow from './meeting-row-below';
 
 const useStyles = makeStyles((theme) => ({
   time: { minWidth: 150, maxWidth: 180 },
@@ -112,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     width: '100%',
     textAlign: 'left',
+    '&:hover': {
+      background: 'transparent',
+    },
   },
 }));
 

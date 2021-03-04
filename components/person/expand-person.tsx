@@ -129,11 +129,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         )}
         <React.Fragment>
           <Typography variant="h6">Documents they have edited</Typography>
-          <SegmentDocumentList
-            segmentDocuments={segmentDocuments}
-            personStore={props.store.personDataStore}
-            docStore={props.store.documentDataStore}
-          />
+          <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
         </React.Fragment>
         <React.Fragment>
           <Typography variant="h6">Associates</Typography>

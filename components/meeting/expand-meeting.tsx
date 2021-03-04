@@ -241,8 +241,8 @@ const ExpandedMeeting = (props: {
               segmentDocumentsForAttendees={segmentDocumentsForAttendees}
               segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
               segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
-              docStore={props.store.documentDataStore}
-              personStore={props.store.personDataStore}
+              store={props.store}
+              isSmall={false}
             />
           </React.Fragment>
         )}

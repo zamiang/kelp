@@ -1,8 +1,9 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -13,15 +14,71 @@ import useRowStyles from '../shared/row-styles';
 import { getPeopleSortedByCount } from '../store/helpers';
 import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
+import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
+
+export const MissingDocumentRow = (props: {
+  segmentDocument: ISegmentDocument;
+  isSmall?: boolean;
+}) => {
+  const rowStyles = useRowStyles();
+  const classes = useStyles();
+  return (
+    <Button
+      className={clsx(
+        'ignore-react-onclickoutside',
+        props.isSmall && rowStyles.row,
+        !props.isSmall && rowStyles.rowSmall,
+      )}
+      onClick={() => {
+        // TODO handle slides?
+        window.open(
+          `https://docs.google.com/document/d/${props.segmentDocument.documentId}`,
+          '_blank',
+        );
+      }}
+    >
+      <Grid container spacing={1} alignItems="center">
+        <Grid item className={classes.imageContainer}>
+          {!props.isSmall && (
+            <IconButton>
+              <HelpOutlineIcon className={classes.image} />
+            </IconButton>
+          )}
+          {props.isSmall && (
+            <HelpOutlineIcon className={clsx(classes.image, classes.imageSpacing)} />
+          )}
+        </Grid>
+        <Grid item xs={8}>
+          <Grid container>
+            <Grid item xs={12} zeroMinWidth>
+              <Typography noWrap>{props.segmentDocument.documentId}</Typography>
+            </Grid>
+            {!props.isSmall && (
+              <Grid item xs={12} zeroMinWidth>
+                <Typography variant="body2">
+                  {format(new Date(props.segmentDocument.date), "MMM do, yyyy 'at' hh:mm a")}
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+    </Button>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   imageContainer: {},
   image: {
     display: 'block',
-    width: '100%',
-    maxHeight: 24,
-    maxWidth: 24,
+    height: 24,
+    width: 24,
+  },
+  imageSpacing: {
+    marginRight: theme.spacing(0.5),
+    maxHeight: 18,
+    maxWidth: 18,
   },
   time: {
     minWidth: 160,
@@ -47,6 +104,7 @@ const DocumentRow = (props: {
   doc: IDocument;
   selectedDocumentId: string | null;
   store: IStore;
+  isSmall?: boolean;
 }) => {
   const isSelected = props.selectedDocumentId === props.doc.id;
   const router = useHistory();
@@ -87,43 +145,50 @@ const DocumentRow = (props: {
     }
   }, [!!referenceElement]);
 
-  const handleClick = () => {
-    void router.push(`/docs/${props.doc.id}`);
-    return false;
-  };
   return (
-    <ListItem
-      button={true}
-      selected={isSelected}
-      onClick={handleClick}
+    <Button
+      onClick={(event) => {
+        event.stopPropagation();
+        void router.push(`/docs/${props.doc.id}`);
+        return false;
+      }}
       ref={setReferenceElement as any}
-      className={clsx('ignore-react-onclickoutside', rowStyles.row)}
+      className={clsx(
+        'ignore-react-onclickoutside',
+        !props.isSmall && rowStyles.row,
+        props.isSmall && rowStyles.rowSmall,
+      )}
     >
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
-          <IconButton>
-            <img src={props.doc.iconLink} className={classes.image} />
-          </IconButton>
+          {!props.isSmall && <img src={props.doc.iconLink} className={classes.image} />}
+          {props.isSmall && (
+            <img src={props.doc.iconLink} className={clsx(classes.image, classes.imageSpacing)} />
+          )}
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={props.isSmall ? 10 : 8}>
           <Grid container>
             <Grid item xs={12} zeroMinWidth>
               <Typography noWrap>{props.doc.name}</Typography>
             </Grid>
-            <Grid item xs={12} zeroMinWidth>
-              <Typography variant="body2">
-                {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
-              </Typography>
+            {!props.isSmall && (
+              <Grid item xs={12} zeroMinWidth>
+                <Typography variant="body2">
+                  {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+        {!props.isSmall && (
+          <Grid item sm={2}>
+            <Grid container spacing={1} alignItems="center">
+              <AvatarList people={people as any} maxAvatars={2} />
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item sm={2}>
-          <Grid container spacing={1} alignItems="center">
-            <AvatarList people={people as any} maxAvatars={2} />
-          </Grid>
-        </Grid>
+        )}
       </Grid>
-    </ListItem>
+    </Button>
   );
 };
 
