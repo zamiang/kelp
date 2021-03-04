@@ -117,7 +117,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
                 )
               }
               variant="outlined"
-              className={clsx(buttonClasses.buttonStyle, buttonClasses.buttonPrimary)}
+              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               startIcon={
                 isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon color="primary" />
               }
@@ -133,7 +133,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
               disableElevation
               color="primary"
               startIcon={<VideocamIcon color={'paper' as any} />}
-              className={buttonClasses.buttonStyle}
+              className={buttonClasses.button}
             >
               Join
             </Button>
