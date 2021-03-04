@@ -24,7 +24,7 @@ const SegmentDocumentItem = (props: {
   }, [props.segmentDocument.documentId]);
 
   if (!document) {
-    return <MissingDocumentRow segmentDocument={props.segmentDocument} />;
+    return <MissingDocumentRow segmentDocument={props.segmentDocument} isSmall={props.isSmall} />;
   }
 
   return (

@@ -82,18 +82,25 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
     };
     void fetchData();
   }, [props.store.isLoading, props.meeting?.summary]);
-
+  const hasDocuments =
+    segmentDocumentsForAttendees.length > 0 ||
+    segmentDocumentsForNonAttendees.length > 0 ||
+    segmentDocumentsFromPastMeetings.length > 0;
   return (
     <div>
       <div className={classes.container}>
-        <Typography variant="h6">Documents you may need</Typography>
-        <SegmentDocumentList
-          segmentDocumentsForAttendees={segmentDocumentsForAttendees}
-          segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
-          segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
-          store={props.store}
-          isSmall
-        />
+        {hasDocuments && (
+          <React.Fragment>
+            <Typography variant="h6">Documents you may need</Typography>
+            <SegmentDocumentList
+              segmentDocumentsForAttendees={segmentDocumentsForAttendees}
+              segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
+              segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
+              store={props.store}
+              isSmall
+            />
+          </React.Fragment>
+        )}
         <Typography variant="h6">Attendees</Typography>
         <AttendeeList
           personStore={props.store.personDataStore}

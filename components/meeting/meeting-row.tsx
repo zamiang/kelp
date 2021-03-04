@@ -45,6 +45,16 @@ const useStyles = makeStyles((theme) => ({
       background: 'transparent',
     },
   },
+  rotateIcon: {
+    transform: 'rotate(90deg)',
+  },
+  icon: {
+    transition: 'transform 0.3s',
+  },
+  iconContainer: {
+    marginLeft: -20,
+    marginRight: -2,
+  },
 }));
 
 const MeetingRow = (props: {
@@ -75,7 +85,11 @@ const MeetingRow = (props: {
     <Button onClick={handleClick} ref={setReferenceElement as any} className={classes.container}>
       <Grid container spacing={1} alignItems="center">
         <Grid item>
-          <KeyboardArrowRightIcon />
+          <IconButton onClick={() => null} className={classes.iconContainer}>
+            <KeyboardArrowRightIcon
+              className={clsx(classes.icon, isSelected && classes.rotateIcon)}
+            />
+          </IconButton>
         </Grid>
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
           <Grid container spacing={1}>

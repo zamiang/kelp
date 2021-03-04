@@ -27,8 +27,8 @@ export const MissingDocumentRow = (props: {
     <Button
       className={clsx(
         'ignore-react-onclickoutside',
-        props.isSmall && rowStyles.row,
-        !props.isSmall && rowStyles.rowSmall,
+        !props.isSmall && rowStyles.row,
+        props.isSmall && rowStyles.rowSmall,
       )}
       onClick={() => {
         // TODO handle slides?
@@ -40,11 +40,7 @@ export const MissingDocumentRow = (props: {
     >
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
-          {!props.isSmall && (
-            <IconButton>
-              <HelpOutlineIcon className={classes.image} />
-            </IconButton>
-          )}
+          {!props.isSmall && <HelpOutlineIcon className={classes.image} />}
           {props.isSmall && (
             <HelpOutlineIcon className={clsx(classes.image, classes.imageSpacing)} />
           )}
