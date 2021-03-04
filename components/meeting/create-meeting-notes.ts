@@ -20,7 +20,7 @@ const getCreateDocumentRequestBody = async (
   const attendeesText = await Promise.all(
     attendees.map(async (attendee) => {
       if (attendee.personId) {
-        const person = await personDataStore.getPersonById(attendee.personId);
+        const person = await personDataStore.getById(attendee.personId);
         const name = person?.name || person?.emailAddresses;
         return `<a href="https://www.kelp.nyc/dashboard/people/${encodeURIComponent(
           person?.id || '',
@@ -31,7 +31,7 @@ const getCreateDocumentRequestBody = async (
 
   const relatedDocuments = await Promise.all(
     documentIds.map(async (id) => {
-      const document = await documentDataStore.get(id);
+      const document = await documentDataStore.getById(id);
       return `<li><a href="${document?.link}">${document?.name}</a></li>`;
     }),
   );

@@ -83,7 +83,7 @@ export default class DocumentModel {
     return this.db.get('document', getGoogleDocsIdFromLink(link));
   }
 
-  async get(id: string): Promise<IDocument | undefined> {
+  async getById(id: string): Promise<IDocument | undefined> {
     return this.db.get('document', id);
   }
 

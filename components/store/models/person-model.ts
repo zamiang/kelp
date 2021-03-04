@@ -163,7 +163,7 @@ export default class PersonModel {
     return first(currentUser);
   }
 
-  async getPersonById(id: string): Promise<IPerson | undefined> {
+  async getById(id: string): Promise<IPerson | undefined> {
     if (id) {
       return this.db.get('person', id);
     }

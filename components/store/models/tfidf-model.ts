@@ -65,9 +65,9 @@ export default class TfidfStore {
     await Promise.all(
       activityList.map(async (activity) => {
         if (activity.link && activity.actorPersonId) {
-          const person = await store.personDataStore.getPersonById(activity.actorPersonId);
+          const person = await store.personDataStore.getById(activity.actorPersonId);
           if (person?.isCurrentUser && activity.documentId) {
-            const doc = await store.documentDataStore.get(activity.documentId);
+            const doc = await store.documentDataStore.getById(activity.documentId);
             const day = getDayKey(activity.time);
             if (documentsByDay[day] && doc && doc.name) {
               documentsByDay[day].push(doc?.name);
@@ -89,7 +89,7 @@ export default class TfidfStore {
         return Promise.all(
           attendees.map(async (attendee) => {
             if (attendee.personId) {
-              const person = await store.personDataStore.getPersonById(attendee.personId);
+              const person = await store.personDataStore.getById(attendee.personId);
               // TODO: Remove need to do indexof
               if (
                 peopleByDay[day] &&

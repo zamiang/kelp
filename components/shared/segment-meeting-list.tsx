@@ -28,7 +28,7 @@ const SegmentDocumentItem = (props: {
   useEffect(() => {
     const fetchData = async () => {
       if (props.segmentDocument.personId) {
-        const result = await props.personStore.getPersonById(props.segmentDocument.personId);
+        const result = await props.personStore.getById(props.segmentDocument.personId);
         setPerson(result);
       }
     };

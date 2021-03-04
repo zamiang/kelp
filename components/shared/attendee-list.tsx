@@ -19,7 +19,7 @@ const Row = (props: {
   useEffect(() => {
     const fetchData = async () => {
       if (props.attendee.personId) {
-        const result = await props.personStore.getPersonById(props.attendee.personId);
+        const result = await props.personStore.getById(props.attendee.personId);
         setPerson(result);
       }
     };

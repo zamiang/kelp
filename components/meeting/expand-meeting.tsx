@@ -37,7 +37,7 @@ const EmailGuestsButton = (props: {
   useEffect(() => {
     const fetchData = async () => {
       const docs = await Promise.all(
-        documentIds.map(async (id) => props.documentDataStore.get(id)),
+        documentIds.map(async (id) => props.documentDataStore.getById(id)),
       );
       setDocuments(docs);
     };

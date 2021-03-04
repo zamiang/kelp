@@ -5,9 +5,10 @@ import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
 import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import RefreshButton from '../nav/refresh-button';
 import SearchBar from '../nav/search-bar';
@@ -55,6 +56,42 @@ const useHeaderStyles = makeStyles((theme) => ({
   },
 }));
 
+const GoToSourceButton = (props: { store: IStore; type: string; id: string }) => {
+  const [link, setLink] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.type === 'meetings') {
+        const meeting = await props.store.timeDataStore.getById(props.id);
+        if (meeting) {
+          const editLink = meeting.link?.replace(
+            'https://www.google.com/calendar/event?eid=',
+            'https://calendar.google.com/calendar/u/0/r/eventedit/',
+          );
+          setLink(editLink);
+        }
+      } else if (props.type === 'docs') {
+        const p = await props.store.documentDataStore.getById(props.id);
+        if (p && p.link) {
+          setLink(p.link);
+        }
+      } else if (props.type === 'people') {
+        const p = await props.store.personDataStore.getById(props.id);
+        if (p) {
+          setLink(`http://contacts.google.com/search/${p?.name}`);
+        }
+      }
+    };
+    void fetchData();
+  }, [props.type, props.id]);
+
+  return (
+    <IconButton href={link || ''} target="_blank">
+      <EditIcon />
+    </IconButton>
+  );
+};
+
 const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
   const classes = useHeaderStyles();
@@ -63,6 +100,8 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const isOnSubpage = location.pathname.split('/').length > 2;
 
   if (isOnSubpage) {
+    const type = location.pathname.split('/')[1];
+    const id = decodeURIComponent(location.pathname.split('/')[2]);
     return (
       <header className={classes.transparentHeader}>
         <Grid container alignItems="center" justify="space-between">
@@ -74,6 +113,9 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             >
               <BackIcon />
             </IconButton>
+          </Grid>
+          <Grid item>
+            <GoToSourceButton store={props.store} type={type} id={id} />
           </Grid>
         </Grid>
       </header>
