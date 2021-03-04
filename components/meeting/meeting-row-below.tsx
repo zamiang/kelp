@@ -105,7 +105,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
         />
       </div>
       <div className={classes.buttonContainer}>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           <Grid item xs={6}>
             <Button
               onClick={() =>
