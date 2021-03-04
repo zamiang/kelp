@@ -55,7 +55,7 @@ const Home = (props: IStore) => {
           <Grid item xs={12} sm={4}>
             <Typography variant="h6">People you are meeting with today</Typography>
             <Divider />
-            <PeopleToday {...props} selectedPersonId={null} noLeftMargin={true} />
+            <PeopleToday {...props} selectedPersonId={null} isSmall />
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6">Documents you may need today</Typography>

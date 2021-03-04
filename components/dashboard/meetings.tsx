@@ -11,7 +11,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import config from '../../constants/config';
 import MeetingRow from '../meeting/meeting-row';
-import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import TopBar from '../shared/top-bar';
@@ -166,7 +165,6 @@ const MeetingsByDay = (props: { store: IStore; hideHeading?: boolean }) => {
   }, [props.store.lastUpdated, props.store.isLoading]);
 
   const classes = panelStyles();
-  const buttonClasses = useButtonStyles();
   const days = Object.keys(meetingsByDay);
   const currentTitle = 'Meeting Schedule';
 
@@ -202,9 +200,7 @@ const MeetingsByDay = (props: { store: IStore; hideHeading?: boolean }) => {
     <div className={classes.panel}>
       <TopBar title={currentTitle}>
         <Grid container justify="flex-end">
-          <Button className={buttonClasses.unSelected} onClick={() => scrollCurrentTimeIntoView()}>
-            Now
-          </Button>
+          <Button onClick={() => scrollCurrentTimeIntoView()}>Today</Button>
         </Grid>
       </TopBar>
       {days.map((day) => (

@@ -64,14 +64,14 @@ export const MissingDocumentRow = (props: {
 };
 
 const useStyles = makeStyles((theme) => ({
-  imageContainer: {},
+  imageContainer: {
+    height: 32,
+    width: 32,
+  },
   image: {
     display: 'block',
-    height: 24,
-    width: 24,
   },
   imageSpacing: {
-    marginRight: theme.spacing(0.5),
     maxHeight: 18,
     maxWidth: 18,
   },

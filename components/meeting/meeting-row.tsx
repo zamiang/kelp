@@ -64,10 +64,11 @@ const MeetingRow = (props: {
   store: IStore;
   isSmall?: boolean;
 }) => {
-  const isSelected = props.selectedMeetingId === props.meeting.id;
   const classes = useStyles();
   const router = useHistory();
+  const [isClickedOpen, setOpen] = useState(false);
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const isSelected = props.selectedMeetingId === props.meeting.id || isClickedOpen;
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -77,15 +78,25 @@ const MeetingRow = (props: {
     }
   }, [!!referenceElement]);
 
-  const handleClick = () => {
-    void router.push(`/meetings/${props.meeting.id}`);
-    return false;
-  };
   return (
-    <Button onClick={handleClick} ref={setReferenceElement as any} className={classes.container}>
+    <Button
+      onClick={() => {
+        void router.push(`/meetings/${props.meeting.id}`);
+        return false;
+      }}
+      ref={setReferenceElement as any}
+      className={classes.container}
+    >
       <Grid container spacing={1} alignItems="center">
         <Grid item>
-          <IconButton onClick={() => null} className={classes.iconContainer}>
+          <IconButton
+            onClick={(event) => {
+              event.stopPropagation();
+              setOpen(!isClickedOpen);
+              return false;
+            }}
+            className={classes.iconContainer}
+          >
             <KeyboardArrowRightIcon
               className={clsx(classes.icon, isSelected && classes.rotateIcon)}
             />

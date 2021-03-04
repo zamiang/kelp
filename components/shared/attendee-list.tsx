@@ -1,68 +1,13 @@
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import config from '../../constants/config';
-import useRowStyles from '../shared/row-styles';
+import PersonRow from '../person/person-row';
 import { IFormattedAttendee } from '../store/models/attendee-model';
 import PersonDataStore, { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
-
-interface IProps {
-  attendees: IFormattedAttendee[];
-  personStore: PersonDataStore;
-  showAll: boolean;
-  attendeeMeetingCount?: any;
-  isSmall: boolean;
-}
-
-const useStyles = makeStyles((theme) => ({
-  person: {
-    transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
-    opacity: 1,
-    '& > *': {
-      borderBottom: 'unset',
-    },
-    '&.MuiListItem-button:hover': {
-      opacity: 0.8,
-    },
-  },
-  personAccepted: {},
-  personTentative: {
-    opacity: 0.8,
-  },
-  personDeclined: {
-    textDecoration: 'line-through',
-    '&.MuiListItem-button:hover': {
-      textDecoration: 'line-through',
-    },
-  },
-  personNeedsAction: {
-    opacity: 0.8,
-  },
-  avatar: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.secondary.contrastText,
-  },
-  copyButton: {
-    textAlign: 'right',
-    textDecoration: 'underline',
-    transition: 'opacity 0.3s',
-    '&:active': {
-      opacity: 0.7,
-    },
-  },
-  hideOnMobile: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-}));
 
 const Row = (props: {
   attendee: IFormattedAttendee;
@@ -70,9 +15,6 @@ const Row = (props: {
   meetingCount?: number;
   isSmall?: boolean;
 }) => {
-  const classes = useStyles();
-  const rowClasses = useRowStyles();
-  const router = useHistory();
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   useEffect(() => {
     const fetchData = async () => {
@@ -88,62 +30,22 @@ const Row = (props: {
     return null;
   }
   return (
-    <Button
-      key={person.id}
-      onClick={(event) => {
-        event.stopPropagation();
-        router.push(`/people/${encodeURIComponent(person.id)}`);
-        return false;
-      }}
-      className={clsx(
-        !props.isSmall && rowClasses.row,
-        props.isSmall && rowClasses.rowSmall,
-        classes.person,
-        props.attendee.responseStatus === 'accepted' && classes.personAccepted,
-        props.attendee.responseStatus === 'tentative' && classes.personTentative,
-        props.attendee.responseStatus === 'declined' && classes.personDeclined,
-        props.attendee.responseStatus === 'needsAction' && classes.personNeedsAction,
-      )}
-    >
-      <Grid container alignItems="center" spacing={1} wrap="nowrap">
-        <Grid item>
-          <Avatar
-            style={{ height: 24, width: 24 }}
-            src={person.imageUrl || ''}
-            className={classes.avatar}
-          >
-            {(person.name || person.id)[0]}
-          </Avatar>
-        </Grid>
-        <Grid item>
-          <Typography noWrap>{person.name || person.id}</Typography>
-        </Grid>
-        {props.meetingCount && (
-          <Grid item className={classes.hideOnMobile}>
-            <Typography variant="body2" noWrap>
-              {props.meetingCount} meetings
-            </Typography>
-          </Grid>
-        )}
-        {!props.isSmall && (
-          <Grid
-            item
-            className={classes.copyButton}
-            onClick={(event) => {
-              event.stopPropagation();
-              void navigator.clipboard.writeText(person.emailAddresses[0]);
-              return false;
-            }}
-          >
-            <Typography variant="body2" noWrap>
-              Copy Email
-            </Typography>
-          </Grid>
-        )}
-      </Grid>
-    </Button>
+    <PersonRow
+      responseStatus={props.attendee.responseStatus}
+      selectedPersonId={null}
+      person={person}
+      isSmall={props.isSmall}
+    />
   );
 };
+
+interface IProps {
+  attendees: IFormattedAttendee[];
+  personStore: PersonDataStore;
+  showAll: boolean;
+  attendeeMeetingCount?: any;
+  isSmall?: boolean;
+}
 
 const AttendeeRows = (props: IProps) => {
   const orderedAttendees = orderBy(props.attendees || [], 'responseStatus');
@@ -155,11 +57,6 @@ const AttendeeRows = (props: IProps) => {
           attendee={attendee}
           personStore={props.personStore}
           isSmall={props.isSmall}
-          meetingCount={
-            props.attendeeMeetingCount &&
-            attendee.personId &&
-            props.attendeeMeetingCount[attendee.personId]
-          }
         />
       ))}
     </div>

@@ -8,6 +8,7 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import AttendeeList from '../shared/attendee-list';
+import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee } from '../store/models/attendee-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
@@ -28,18 +29,11 @@ const useBelowStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(4),
   },
-  buttonStyle: {
-    width: '100%',
-    borderRadius: theme.spacing(2),
-    fontWeight: 500,
-  },
-  buttonPrimary: {
-    color: theme.palette.primary.main,
-  },
 }));
 
 const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
   const classes = useBelowStyles();
+  const buttonClasses = useButtonStyles();
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
@@ -99,6 +93,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
               store={props.store}
               isSmall
             />
+            <br />
           </React.Fragment>
         )}
         <Typography variant="h6">Attendees</Typography>
@@ -122,7 +117,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
                 )
               }
               variant="outlined"
-              className={clsx(classes.buttonStyle, classes.buttonPrimary)}
+              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               startIcon={
                 isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon color="primary" />
               }
@@ -138,7 +133,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
               disableElevation
               color="primary"
               startIcon={<VideocamIcon color={'paper' as any} />}
-              className={classes.buttonStyle}
+              className={buttonClasses.button}
             >
               Join
             </Button>

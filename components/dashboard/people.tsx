@@ -55,7 +55,7 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
 };
 
 export const PeopleToday = (
-  props: IStore & { selectedPersonId: string | null; noLeftMargin?: boolean },
+  props: IStore & { selectedPersonId: string | null; isSmall?: boolean },
 ) => {
   const classes = panelStyles();
   const [people, setPeople] = useState<IPerson[]>([]);
@@ -76,7 +76,7 @@ export const PeopleToday = (
               key={person.id}
               person={person}
               selectedPersonId={props.selectedPersonId}
-              noLeftMargin={props.noLeftMargin}
+              isSmall={props.isSmall}
             />
           ),
       )}
