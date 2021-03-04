@@ -56,6 +56,31 @@ const EmailGuestsButton = (props: {
   );
 };
 
+export const createSmartMeetingNotes = (
+  meeting: ISegment,
+  store: IStore,
+  segmentDocumentsForAttendees: ISegmentDocument[],
+  setMeetingNotesLoading: (isLoading: boolean) => void,
+) => {
+  const meetingNotesDocumentIds = uniq(
+    segmentDocumentsForAttendees
+      .concat()
+      .map((s) => s.documentId)
+      .concat(meeting.documentIdsFromDescription),
+  );
+  return createMeetingNotes(
+    meeting,
+    meetingNotesDocumentIds,
+    setMeetingNotesLoading,
+    store.personDataStore,
+    store.documentDataStore,
+    store.attendeeDataStore,
+    store.refetch,
+    store.scope,
+    store.googleOauthToken,
+  );
+};
+
 const ExpandedMeeting = (props: {
   store: IStore;
   meetingId?: string;
@@ -172,25 +197,14 @@ const ExpandedMeeting = (props: {
           )}
           <Grid item xs={12}>
             <Button
-              onClick={() => {
-                const meetingNotesDocumentIds = uniq(
-                  segmentDocumentsForAttendees
-                    .concat()
-                    .map((s) => s.documentId)
-                    .concat(meeting.documentIdsFromDescription),
-                );
-                return createMeetingNotes(
+              onClick={() =>
+                createSmartMeetingNotes(
                   meeting,
-                  meetingNotesDocumentIds,
+                  props.store,
+                  segmentDocumentsForAttendees,
                   setMeetingNotesLoading,
-                  props.store.personDataStore,
-                  props.store.documentDataStore,
-                  props.store.attendeeDataStore,
-                  props.store.refetch,
-                  props.store.scope,
-                  props.store.googleOauthToken,
-                );
-              }}
+                )
+              }
               startIcon={isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon />}
               disabled={isMeetingNotesLoading}
               disableElevation
@@ -241,8 +255,8 @@ const ExpandedMeeting = (props: {
               segmentDocumentsForAttendees={segmentDocumentsForAttendees}
               segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
               segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
-              docStore={props.store.documentDataStore}
-              personStore={props.store.personDataStore}
+              store={props.store}
+              isSmall={false}
             />
           </React.Fragment>
         )}
@@ -266,6 +280,7 @@ const ExpandedMeeting = (props: {
               personStore={props.store.personDataStore}
               attendees={attendees}
               showAll={false}
+              isSmall={false}
             />
           </React.Fragment>
         )}

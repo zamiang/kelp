@@ -44,10 +44,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   center: {
-    borderRadius: theme.spacing(2),
     marginTop: theme.spacing(2),
     background: theme.palette.background.paper,
-    overflowX: 'auto',
+    overflowX: 'hidden',
     maxHeight: 'calc(100vh - 104px)',
     position: 'relative',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',

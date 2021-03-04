@@ -115,16 +115,6 @@ const useStyles = makeStyles((theme) => ({
   triGroupHeading: {
     paddingBottom: theme.spacing(1),
   },
-  listItem: {
-    borderBottom: '1px solid',
-    borderBottomColor: theme.palette.divider,
-    borderRadius: 0,
-    width: '100%',
-    textAlign: 'left',
-    '&:last-child': {
-      borderBottom: '0px solid',
-    },
-  },
   date: {
     textAlign: 'right',
     paddingRight: theme.spacing(2),

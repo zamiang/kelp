@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(2),
+    width: '100%',
     borderBottom: `1px solid ${theme.palette.divider}`,
     '&:last-child': {
       borderBottom: `1px solid transparent`,
@@ -66,11 +67,12 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.secondary.main,
     },
   },
-  rowNoLeftMargin: {
-    paddingLeft: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing(0),
-    },
+  rowSmall: {
+    width: '100%',
+    background: 'transparent',
+    transition: 'background 0.3s, opacity 0.3s',
+    cursor: 'pointer',
+    textAlign: 'left',
   },
   rowHighlight: {
     background: theme.palette.secondary.light,

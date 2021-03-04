@@ -8,7 +8,7 @@ import { orderBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import config from '../../constants/config';
-import useExpandStyles from '../shared/expand-styles';
+import useRowStyles from '../shared/row-styles';
 import { IFormattedAttendee } from '../store/models/attendee-model';
 import PersonDataStore, { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
@@ -18,6 +18,7 @@ interface IProps {
   personStore: PersonDataStore;
   showAll: boolean;
   attendeeMeetingCount?: any;
+  isSmall: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -67,9 +68,10 @@ const Row = (props: {
   attendee: IFormattedAttendee;
   personStore: IStore['personDataStore'];
   meetingCount?: number;
+  isSmall?: boolean;
 }) => {
   const classes = useStyles();
-  const expandClasses = useExpandStyles();
+  const rowClasses = useRowStyles();
   const router = useHistory();
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   useEffect(() => {
@@ -94,7 +96,8 @@ const Row = (props: {
         return false;
       }}
       className={clsx(
-        expandClasses.listItem,
+        !props.isSmall && rowClasses.row,
+        props.isSmall && rowClasses.rowSmall,
         classes.person,
         props.attendee.responseStatus === 'accepted' && classes.personAccepted,
         props.attendee.responseStatus === 'tentative' && classes.personTentative,
@@ -113,30 +116,30 @@ const Row = (props: {
           </Avatar>
         </Grid>
         <Grid item>
-          <Typography variant="body2" noWrap>
-            {person.name || person.id}
-          </Typography>
+          <Typography noWrap>{person.name || person.id}</Typography>
         </Grid>
         {props.meetingCount && (
           <Grid item className={classes.hideOnMobile}>
-            <Typography variant="caption" noWrap>
+            <Typography variant="body2" noWrap>
               {props.meetingCount} meetings
             </Typography>
           </Grid>
         )}
-        <Grid
-          item
-          className={classes.copyButton}
-          onClick={(event) => {
-            event.stopPropagation();
-            void navigator.clipboard.writeText(person.emailAddresses[0]);
-            return false;
-          }}
-        >
-          <Typography variant="caption" noWrap>
-            Copy Email
-          </Typography>
-        </Grid>
+        {!props.isSmall && (
+          <Grid
+            item
+            className={classes.copyButton}
+            onClick={(event) => {
+              event.stopPropagation();
+              void navigator.clipboard.writeText(person.emailAddresses[0]);
+              return false;
+            }}
+          >
+            <Typography variant="body2" noWrap>
+              Copy Email
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </Button>
   );
@@ -151,6 +154,7 @@ const AttendeeRows = (props: IProps) => {
           key={attendee.id}
           attendee={attendee}
           personStore={props.personStore}
+          isSmall={props.isSmall}
           meetingCount={
             props.attendeeMeetingCount &&
             attendee.personId &&
