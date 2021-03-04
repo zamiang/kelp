@@ -280,6 +280,7 @@ const ExpandedMeeting = (props: {
               personStore={props.store.personDataStore}
               attendees={attendees}
               showAll={false}
+              isSmall={false}
             />
           </React.Fragment>
         )}

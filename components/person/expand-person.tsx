@@ -138,6 +138,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             attendees={associates}
             attendeeMeetingCount={associatesStats}
             showAll={true}
+            isSmall={false}
           />
         </React.Fragment>
         <React.Fragment>

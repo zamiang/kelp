@@ -37,7 +37,7 @@ const PersonRow = (props: {
       className={clsx(
         'ignore-react-onclickoutside',
         rowStyles.row,
-        props.noLeftMargin && rowStyles.rowNoLeftMargin,
+        props.noLeftMargin && rowStyles.rowSmall,
       )}
     >
       <Grid container spacing={2} alignItems="center" wrap="nowrap">
