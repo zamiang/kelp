@@ -4,12 +4,14 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
+import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
-import panelStyles from '../shared/panel-styles';
+import usePanelStyles from '../shared/panel-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { getAssociates } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
@@ -24,7 +26,8 @@ const ADD_SENDER_LINK =
 
 const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => void }) => {
   const classes = useExpandStyles();
-  const panelClasses = panelStyles();
+  const buttonClasses = useButtonStyles();
+  const panelClasses = usePanelStyles();
   const { slug }: any = useParams();
   const personId = props.personId || decodeURIComponent(slug);
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
@@ -75,13 +78,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           <Avatar className={classes.avatar} src={person.imageUrl || ''}>
             {(person.name || person.id)[0]}
           </Avatar>
-          <Typography
-            className={classes.titleCenter}
-            variant="h1"
-            color="textPrimary"
-            gutterBottom
-            noWrap
-          >
+          <Typography className={classes.titleCenter} variant="h5" color="textPrimary" gutterBottom>
             {person.name}
           </Typography>
         </Box>
@@ -90,9 +87,16 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             {emailAddress}{' '}
             <Link onClick={() => navigator.clipboard.writeText(emailAddress)}>copy</Link>
             <br />
-            <Button variant="outlined" href={`mailto:${emailAddress}`} target="_blank">
-              Email Contact{' '}
-            </Button>
+            <div style={{ maxWidth: 150, margin: '10px auto 0 ' }}>
+              <Button
+                className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+                variant="outlined"
+                href={`mailto:${emailAddress}`}
+                target="_blank"
+              >
+                Email Contact
+              </Button>
+            </div>
           </div>
         )}
       </div>
@@ -127,20 +131,23 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             )}
           </Typography>
         )}
-        <React.Fragment>
-          <Typography variant="h6">Documents they have edited</Typography>
-          <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
-        </React.Fragment>
-        <React.Fragment>
-          <Typography variant="h6">Associates</Typography>
-          <AttendeeList
-            personStore={props.store.personDataStore}
-            attendees={associates}
-            attendeeMeetingCount={associatesStats}
-            showAll={true}
-            isSmall={false}
-          />
-        </React.Fragment>
+        {segmentDocuments.length > 0 && (
+          <React.Fragment>
+            <Typography variant="h6">Documents they have edited</Typography>
+            <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
+          </React.Fragment>
+        )}
+        {associates.length > 0 && (
+          <React.Fragment>
+            <Typography variant="h6">Associates</Typography>
+            <AttendeeList
+              personStore={props.store.personDataStore}
+              attendees={associates}
+              attendeeMeetingCount={associatesStats}
+              showAll={true}
+            />
+          </React.Fragment>
+        )}
         <React.Fragment>
           <Typography variant="h6">Meetings you both attended</Typography>
           <MeetingList segments={segments} personStore={props.store.personDataStore} />

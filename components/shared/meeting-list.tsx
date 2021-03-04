@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import EventIcon from '@material-ui/icons/Event';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -10,12 +11,20 @@ import useRowStyles from '../shared/row-styles';
 import PersonDataStore from '../store/models/person-model';
 import { ISegment } from '../store/models/segment-model';
 
+const useStyles = makeStyles(() => ({
+  imageContainer: {
+    height: 32,
+    width: 32,
+  },
+}));
+
 export const Meeting = (props: {
   meeting: ISegment;
   personStore: PersonDataStore;
   info?: string;
 }) => {
   const rowStyles = useRowStyles();
+  const classes = useStyles();
   const router = useHistory();
   return (
     <Button
@@ -23,8 +32,8 @@ export const Meeting = (props: {
       className={clsx('ignore-react-onclickoutside', rowStyles.row)}
     >
       <Grid container wrap="nowrap" spacing={1} alignItems="center">
-        <Grid item>
-          <EventIcon style={{ fontSize: 24, display: 'block' }} />
+        <Grid item className={classes.imageContainer}>
+          <EventIcon style={{ fontSize: 17, display: 'block' }} />
         </Grid>
         <Grid item xs={11}>
           <Grid container justify="space-between" alignItems="center">

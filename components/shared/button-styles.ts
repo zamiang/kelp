@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonPrimary: {
     color: theme.palette.primary.main,
+    padding: '5px 14px',
   },
   selected: {
     borderBottom: `2px solid ${theme.palette.primary.main}`,
