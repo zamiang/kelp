@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core';
 import { getDayOfYear } from 'date-fns';
+import { Dictionary, groupBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
@@ -12,13 +13,18 @@ import { IStore } from '../store/use-store';
 
 const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = rowStyles();
-  const [people, setPeople] = useState<IPerson[]>([]);
+  const [people, setPeople] = useState<Dictionary<IPerson[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IPerson[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.personDataStore.getAll(false);
-      setPeople(result.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
+      const sortedPeople = result.sort((a, b) =>
+        a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
+      );
+      const groupedPeople = groupBy(sortedPeople, (p) => p.name.toLocaleLowerCase()[0]);
+      console.log(groupedPeople);
+      setPeople(groupedPeople);
     };
     void fetchData();
   }, [props.isLoading, props.lastUpdated]);
@@ -46,8 +52,19 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
         </div>
       )}
       <div>
-        {people.map((person) => (
-          <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
+        {Object.keys(people).map((key) => (
+          <React.Fragment key={key}>
+            <Typography variant="h6" className={classes.heading}>
+              {key}
+            </Typography>
+            {people[key].map((person) => (
+              <PersonRow
+                key={person.id}
+                person={person}
+                selectedPersonId={props.selectedPersonId}
+              />
+            ))}
+          </React.Fragment>
         ))}
       </div>
     </React.Fragment>

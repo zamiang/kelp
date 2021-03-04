@@ -15,6 +15,12 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(1),
     },
   },
+  heading: {
+    fontWeight: 500,
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    textTransform: 'uppercase',
+  },
   borderSecondaryMain: {
     background: theme.palette.secondary.main,
     '&.MuiListItem-button:hover': {
