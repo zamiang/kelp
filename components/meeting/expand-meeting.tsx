@@ -5,7 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -28,7 +29,8 @@ const EmailGuestsButton = (props: {
   segmentDocuments: ISegmentDocument[];
   documentDataStore: IStore['documentDataStore'];
 }) => {
-  const classes = useExpandStyles();
+  const buttonClasses = useButtonStyles();
+
   const [documents, setDocuments] = useState<(IDocument | undefined)[]>([]);
   const documentIds = props.segmentDocuments.map((s) => s.documentId);
 
@@ -50,7 +52,12 @@ const EmailGuestsButton = (props: {
   }&body=${bodyText}`;
 
   return (
-    <Button href={link} target="_blank" className={classes.link}>
+    <Button
+      href={link}
+      target="_blank"
+      variant="outlined"
+      className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+    >
       Email guests
     </Button>
   );
@@ -167,10 +174,6 @@ const ExpandedMeeting = (props: {
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
-  const editLink = meeting.link?.replace(
-    'https://www.google.com/calendar/event?eid=',
-    'https://calendar.google.com/calendar/u/0/r/eventedit/',
-  );
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
@@ -181,48 +184,41 @@ const ExpandedMeeting = (props: {
         {format(meeting.end, 'p')}
         <br />
         <br />
-        <Grid container>
-          {shouldShowMeetingLink && (
-            <Grid item xs={12}>
+        <Grid container spacing={2}>
+          {!hasMeetingNotes && (
+            <Grid item xs={6}>
               <Button
-                onClick={() => window.open(meeting.videoLink, '_blank')}
-                variant="contained"
-                className={buttonClasses.button}
-                startIcon={<MeetingRoomIcon />}
+                onClick={() =>
+                  createSmartMeetingNotes(
+                    meeting,
+                    props.store,
+                    segmentDocumentsForAttendees,
+                    setMeetingNotesLoading,
+                  )
+                }
+                startIcon={isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon />}
+                disabled={isMeetingNotesLoading}
                 disableElevation
+                variant="outlined"
+                className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               >
-                Join {videoLinkDomain}
+                Smart Notes
               </Button>
             </Grid>
           )}
-          <Grid item xs={12}>
-            <Button
-              onClick={() =>
-                createSmartMeetingNotes(
-                  meeting,
-                  props.store,
-                  segmentDocumentsForAttendees,
-                  setMeetingNotesLoading,
-                )
-              }
-              startIcon={isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon />}
-              disabled={isMeetingNotesLoading}
-              disableElevation
-            >
-              Create Smart Meeting Notes
-            </Button>
-          </Grid>
           {hasMeetingNotes && (
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <Button
+                variant="outlined"
                 onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
                 startIcon={<InsertDriveFileIcon />}
+                className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               >
-                View Meeting Notes
+                View Notes
               </Button>
             </Grid>
           )}
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <EmailGuestsButton
               meeting={meeting}
               segmentDocuments={segmentDocumentsForAttendees.concat(
@@ -231,11 +227,20 @@ const ExpandedMeeting = (props: {
               documentDataStore={props.store.documentDataStore}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Button href={editLink} className={classes.link}>
-              View in Google
-            </Button>
-          </Grid>
+          {shouldShowMeetingLink && (
+            <Grid item xs={12}>
+              <Button
+                onClick={() => window.open(meeting.videoLink, '_blank')}
+                variant="contained"
+                disableElevation
+                color="primary"
+                startIcon={<VideocamIcon color={'paper' as any} />}
+                className={buttonClasses.button}
+              >
+                Join {videoLinkDomain}
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </div>
       <Divider />
