@@ -90,9 +90,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       <div className={classes.container}>
         {people.length > 0 && (
           <React.Fragment>
-            <Typography variant="h6" className={classes.triGroupHeading}>
-              Key Contributors
-            </Typography>
+            <Typography variant="h6">Key Contributors</Typography>
             <div>
               {people.map(
                 (person: IPerson) =>
@@ -109,12 +107,16 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
             </div>
           </React.Fragment>
         )}
-        <Typography variant="h6">Meetings</Typography>
-        <SegmentMeetingList
-          segmentDocuments={segmentDocuments}
-          timeStore={props.store.timeDataStore}
-          personStore={props.store.personDataStore}
-        />
+        {segmentDocuments.length > 0 && (
+          <React.Fragment>
+            <Typography variant="h6">Meetings</Typography>
+            <SegmentMeetingList
+              segmentDocuments={segmentDocuments}
+              timeStore={props.store.timeDataStore}
+              personStore={props.store.personDataStore}
+            />
+          </React.Fragment>
+        )}
       </div>
     </React.Fragment>
   );

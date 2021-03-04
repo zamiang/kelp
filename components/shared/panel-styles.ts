@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 0,
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(1),
+      padding: 0,
     },
   },
   topRightButton: {

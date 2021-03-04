@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(2),
+      paddingTop: 0,
     },
   },
   container: {
