@@ -35,6 +35,9 @@ const useInfoStyles = makeStyles((theme) => ({
     overflowY: 'auto',
     background: theme.palette.background.paper,
     overflowX: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: 'calc(100vh - 100px)',
+    },
   },
   footer: {
     borderTop: `1px solid ${theme.palette.divider}`,

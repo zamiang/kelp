@@ -12,6 +12,7 @@ import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import usePanelStyles from '../shared/panel-styles';
+import useRowStyles from '../shared/row-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { getAssociates } from '../store/helpers';
 import { IFormattedAttendee } from '../store/models/attendee-model';
@@ -28,10 +29,12 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
   const panelClasses = usePanelStyles();
+  const rowStyles = useRowStyles();
   const { slug }: any = useParams();
   const personId = props.personId || decodeURIComponent(slug);
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   const [segments, setSegments] = useState<ISegment[]>([]);
+  const [upcomingSegments, setUpcomingSegments] = useState<ISegment[]>([]);
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   const [associatesStats, setAssociatesStats] = useState<any>({});
@@ -58,6 +61,10 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
       if (s) {
         const filteredSegments = s.filter(Boolean) as any;
         setSegments(filteredSegments);
+
+        const currentDay = new Date();
+        const upcommingSegments = s.filter((s) => s && s.start && s.start > currentDay);
+        setUpcomingSegments(upcommingSegments as any);
 
         const a = await getAssociates(personId, filteredSegments, props.store.attendeeDataStore);
         setAssociates(a.attendees.slice(0, 5));
@@ -102,6 +109,14 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
       </div>
       <Divider />
       <div className={classes.container}>
+        {upcomingSegments.length > 0 && (
+          <div className={rowStyles.rowHighlight}>
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Upcoming Meetings
+            </Typography>
+            <MeetingList segments={upcomingSegments} personStore={props.store.personDataStore} />
+          </div>
+        )}
         {person.isInContacts && person.googleId && (
           <React.Fragment>
             <Typography variant="h6">Notes</Typography>

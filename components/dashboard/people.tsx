@@ -6,13 +6,13 @@ import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
 import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
-import rowStyles from '../shared/row-styles';
+import useRowStyles from '../shared/row-styles';
 import TopBar from '../shared/top-bar';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 
 const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
-  const classes = rowStyles();
+  const classes = useRowStyles();
   const [people, setPeople] = useState<Dictionary<IPerson[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IPerson[]>([]);
 

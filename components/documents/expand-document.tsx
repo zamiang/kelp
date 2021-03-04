@@ -1,5 +1,4 @@
 import Divider from '@material-ui/core/Divider';
-import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -78,13 +77,10 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           {document.name || '(no title)'}
         </Typography>
         {document.updatedAt && (
-          <Typography>
+          <Typography variant="body2">
             Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
           </Typography>
         )}
-        <MuiLink href={document.link} target="_blank" className={classes.link}>
-          View in Google
-        </MuiLink>
       </div>
       <Divider />
       <div className={classes.container}>
