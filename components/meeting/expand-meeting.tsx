@@ -180,9 +180,10 @@ const ExpandedMeeting = (props: {
         <Typography variant="h5" color="textPrimary" gutterBottom>
           {meeting.summary || '(no title)'}
         </Typography>
-        {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
-        {format(meeting.end, 'p')}
-        <br />
+        <Typography variant="body2">
+          {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
+          {format(meeting.end, 'p')}
+        </Typography>
         <br />
         <Grid container spacing={2}>
           {!hasMeetingNotes && (
