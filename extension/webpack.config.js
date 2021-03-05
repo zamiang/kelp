@@ -1,8 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 // COPIED FROM constancs/config unsure why import doesn't work
 const GOOGLE_OAUTH_TOKEN =
   '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';

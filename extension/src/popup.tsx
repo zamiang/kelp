@@ -44,7 +44,16 @@ const App = () => {
 
   useEffect(() => {
     chrome.identity.getAuthToken({ interactive: true }, (token) => {
-      setToken(token);
+      if (chrome.runtime.lastError) {
+        console.error(chrome.runtime.lastError);
+        if (
+          chrome.runtime.lastError.message?.includes('Service has been disabled for this account')
+        ) {
+          console.log('error');
+        }
+      } else {
+        setToken(token);
+      }
     });
   }, []);
 

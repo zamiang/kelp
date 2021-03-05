@@ -1,4 +1,4 @@
-import { subDays, subHours } from 'date-fns';
+import { subHours } from 'date-fns';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
