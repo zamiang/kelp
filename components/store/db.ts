@@ -1,3 +1,4 @@
+import { subDays, subHours } from 'date-fns';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
@@ -75,9 +76,20 @@ const databaseVerson = 1;
 export type dbType = IDBPDatabase<Db>;
 
 const setupDatabase = async (environment: 'production' | 'test' | 'extension') => {
+  /**
+   * Delete the database if it is old
+   * This helps solve contact dupe issues and old calendar events that were removed
+   */
+  const lastUpdated = localStorage.getItem('kelpLastUpdated');
+  const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
+  if (!lastUpdatedDate || lastUpdatedDate < subHours(new Date(), 12)) {
+    console.log('deleting the database and starting from scratch');
+    indexedDB.deleteDatabase(dbNameHash[environment]);
+  }
   if (environment === 'test') {
     indexedDB.deleteDatabase(dbNameHash[environment]);
   }
+  localStorage.setItem('kelpLastUpdated', new Date().toISOString());
 
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db) {
