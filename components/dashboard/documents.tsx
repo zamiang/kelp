@@ -1,3 +1,4 @@
+import Typography from '@material-ui/core/Typography';
 import { getDayOfYear } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -37,6 +38,9 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
     <React.Fragment>
       {topDocuments.length > 0 && (
         <div className={classes.rowHighlight}>
+          <Typography className={classes.rowText} variant="body2">
+            Documents for this week
+          </Typography>
           {topDocuments.map((doc) => (
             <DocumentRow
               key={doc.id}

@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { getDayOfYear } from 'date-fns';
 import { Dictionary, groupBy } from 'lodash';
 import React, { useEffect, useState } from 'react';

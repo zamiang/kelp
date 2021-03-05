@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
   relativeContainer: {
     position: 'relative',
   },
+  section: {
+    marginTop: theme.spacing(2),
+    '&:first-child': {
+      marginTop: 0,
+    },
+  },
   edit: {},
   title: {
     wordBreak: 'break-word',

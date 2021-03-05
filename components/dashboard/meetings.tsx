@@ -9,7 +9,6 @@ import { format, getDate, getMonth } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import config from '../../constants/config';
 import MeetingRow from '../meeting/meeting-row';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
@@ -29,7 +28,7 @@ const dayStyles = makeStyles((theme) => ({
     height: 40,
   },
   dayNumberToday: {
-    backgroundColor: config.BLUE_BACKGROUND,
+    backgroundColor: theme.palette.primary.main,
   },
   dayInfo: {
     textTransform: 'uppercase',

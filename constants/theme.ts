@@ -18,13 +18,13 @@ const theme = createMuiTheme({
       default: '#fff',
     },
     primary: {
-      light: 'rgba(29, 215, 212, 1)',
-      main: 'rgba(10, 126, 194, 1)',
+      light: '#FAF7FE',
+      main: '#6200EE',
       dark: '#303f9f',
       contrastText: '#fff',
     },
     secondary: {
-      light: 'rgba(196, 211, 217, 1)',
+      light: '#ddf7ff',
       main: 'rgba(116, 124, 129, 1)',
       dark: 'rgba(20, 21, 21, 1)',
       contrastText: '#fff',
@@ -41,9 +41,6 @@ const theme = createMuiTheme({
       disabled: 'rgba(0, 0, 0, 0.38)',
       hint: 'rgba(0, 0, 0, 0.38)',
     },
-    // primary: { main: config.BLUE_BACKGROUND, dark: '#0d2f81' },
-    // secondary: { main: '#e8eaf6', light: '#ffffff', dark: '#b6b8c3' },
-    // info: { main: '#D6F9F5' },
   },
   typography: {
     fontSize: 13,
@@ -116,6 +113,7 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
+        fontWeight: 600,
       },
     },
     MuiAvatar: {

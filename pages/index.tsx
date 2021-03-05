@@ -61,18 +61,6 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(12),
     width: '100%',
   },
-  yellowBackground: {
-    backgroundColor: config.YELLOW_BACKGROUND,
-  },
-  orangeBackground: {
-    backgroundColor: config.ORANGE_BACKGROUND,
-  },
-  purpleBackground: {
-    backgroundColor: config.PURPLE_BACKGROUND,
-  },
-  pinkBackground: {
-    backgroundColor: config.PINK_BACKGROUND,
-  },
   buttonContainer: {
     marginTop: theme.spacing(2),
   },

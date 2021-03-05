@@ -4,7 +4,6 @@ const useStyles = makeStyles((theme) => ({
   button: {
     width: '100%',
     borderRadius: theme.spacing(2),
-    fontWeight: 500,
     textTransform: 'uppercase',
   },
   buttonPrimary: {

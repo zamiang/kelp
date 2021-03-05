@@ -33,5 +33,5 @@ export default {
   ORANGE_BACKGROUND: '#fff9e1', // '#ffd12a',
   PURPLE_BACKGROUND: '#722aff',
   PINK_BACKGROUND: '#ffe2f5', //#ff2ab4',
-  BLUE_BACKGROUND: '#ddf7ff', // '#2aceff',
+  BLUE_BACKGROUND: '#E5F7FF', // '#2aceff',
 };

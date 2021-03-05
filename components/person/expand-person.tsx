@@ -118,7 +118,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           </div>
         )}
         {person.isInContacts && person.googleId && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Notes</Typography>
             <PersonNotes
               person={person}
@@ -127,7 +127,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
               scope={props.store.scope}
               accessToken={props.store.googleOauthToken}
             />
-          </React.Fragment>
+          </div>
         )}
         {(!person.isInContacts || !person.googleId) && (
           <Typography variant="body2">
@@ -147,13 +147,13 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           </Typography>
         )}
         {segmentDocuments.length > 0 && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Documents they have edited</Typography>
             <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
-          </React.Fragment>
+          </div>
         )}
         {associates.length > 0 && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Associates</Typography>
             <AttendeeList
               personStore={props.store.personDataStore}
@@ -161,7 +161,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
               attendeeMeetingCount={associatesStats}
               showAll={true}
             />
-          </React.Fragment>
+          </div>
         )}
         <React.Fragment>
           <Typography variant="h6">Meetings you both attended</Typography>

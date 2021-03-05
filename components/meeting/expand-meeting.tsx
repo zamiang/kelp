@@ -247,12 +247,12 @@ const ExpandedMeeting = (props: {
       <Divider />
       <div className={classes.container}>
         {hasDescription && !isHtml && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Description</Typography>
             <Typography variant="body2" className={classes.description}>
               <Linkify>{meeting.description?.trim()}</Linkify>
             </Typography>
-          </React.Fragment>
+          </div>
         )}
         {hasDocuments && (
           <React.Fragment>
@@ -266,17 +266,17 @@ const ExpandedMeeting = (props: {
           </React.Fragment>
         )}
         {hasDescription && isHtml && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Description</Typography>
             <Typography
               variant="body2"
               className={classes.description}
               dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
             />
-          </React.Fragment>
+          </div>
         )}
         {hasAttendees && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Guests</Typography>
             <Typography variant="caption" className={classes.smallCaption}>
               {guestStats}
@@ -286,15 +286,15 @@ const ExpandedMeeting = (props: {
               attendees={attendees}
               showAll={false}
             />
-          </React.Fragment>
+          </div>
         )}
         {meeting.location && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Location</Typography>
             <Typography variant="body2" className={classes.overflowEllipsis}>
               {meeting.location}
             </Typography>
-          </React.Fragment>
+          </div>
         )}
       </div>
     </React.Fragment>

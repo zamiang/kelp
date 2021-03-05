@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import config from '../../constants/config';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'uppercase',
     transition: 'opacity 0.3s',
     color: theme.palette.primary.dark,
-    fontWeight: 500,
     '&:active': {
       opacity: 0.7,
     },
@@ -63,14 +61,14 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: `1px solid transparent`,
     },
     '&:hover': {
-      backgroundColor: theme.palette.secondary.light,
+      backgroundColor: theme.palette.primary.light,
     },
     '& > *': {
       borderBottom: 'unset',
     },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
-      borderColor: theme.palette.secondary.main,
+      borderColor: theme.palette.primary.main,
     },
   },
   rowSmall: {
@@ -82,7 +80,8 @@ const useStyles = makeStyles((theme) => ({
   },
   rowHighlight: {
     background: theme.palette.secondary.light,
-    margin: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
     borderRadius: theme.spacing(1),
   },
   rowDefault: {},
@@ -104,38 +103,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rowPrimaryMain: {
-    background: config.BLUE_BACKGROUND,
+    background: theme.palette.primary.light,
     '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
-      borderColor: config.BLUE_BACKGROUND,
-      background: config.BLUE_BACKGROUND,
-    },
-  },
-  yellowBackground: {
-    backgroundColor: config.YELLOW_BACKGROUND,
-    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
-      borderColor: config.YELLOW_BACKGROUND,
-      backgroundColor: config.YELLOW_BACKGROUND,
-    },
-  },
-  orangeBackground: {
-    backgroundColor: config.ORANGE_BACKGROUND,
-    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
-      borderColor: config.ORANGE_BACKGROUND,
-      backgroundColor: config.ORANGE_BACKGROUND,
-    },
-  },
-  purpleBackground: {
-    backgroundColor: config.PURPLE_BACKGROUND,
-    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
-      borderColor: config.PURPLE_BACKGROUND,
-      backgroundColor: config.PURPLE_BACKGROUND,
-    },
-  },
-  pinkBackground: {
-    backgroundColor: config.PINK_BACKGROUND,
-    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
-      borderColor: config.PINK_BACKGROUND,
-      backgroundColor: config.PINK_BACKGROUND,
+      borderColor: theme.palette.primary.light,
+      background: theme.palette.primary.light,
     },
   },
 }));
