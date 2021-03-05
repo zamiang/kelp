@@ -240,7 +240,6 @@ export const DashboardContainer = ({ store }: IProps) => {
   console.log('loading message', store.loadingMessage);
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
 
-  // fork for mobile here!!!
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 30); // 30 minutes
     return () => clearInterval(interval);
