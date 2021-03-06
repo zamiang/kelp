@@ -91,9 +91,10 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         </Box>
         {emailAddress && (
           <div style={{ textAlign: 'center' }}>
-            {emailAddress}{' '}
-            <Link onClick={() => navigator.clipboard.writeText(emailAddress)}>copy</Link>
-            <br />
+            <Typography>
+              {emailAddress}{' '}
+              <Link onClick={() => navigator.clipboard.writeText(emailAddress)}>copy</Link>
+            </Typography>
             <div style={{ maxWidth: 150, margin: '10px auto 0 ' }}>
               <Button
                 className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
