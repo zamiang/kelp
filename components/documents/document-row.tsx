@@ -7,12 +7,8 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import AvatarList from '../shared/avatar-list';
 import useRowStyles from '../shared/row-styles';
-import { getPeopleSortedByCount } from '../store/helpers';
 import { IDocument } from '../store/models/document-model';
-import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
 
@@ -106,33 +102,6 @@ const DocumentRow = (props: {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const [activity, setActivity] = useState<IFormattedDriveActivity[]>([]);
-  const [people, setPeople] = useState<IPerson[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (props.doc.id) {
-        const result = await props.store.driveActivityStore.getDriveActivityForDocument(
-          props.doc.id,
-        );
-        setActivity(result);
-      }
-    };
-    void fetchData();
-  }, [props.doc.id]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (activity.length > 0) {
-        const peopleAndCounts = await getPeopleSortedByCount(
-          activity.map((a) => a.actorPersonId).filter(Boolean) as any,
-          props.store.personDataStore,
-        );
-        setPeople(peopleAndCounts.sortedPeople.slice(0, 3));
-      }
-    };
-    void fetchData();
-  }, [activity.length]);
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -144,7 +113,9 @@ const DocumentRow = (props: {
     <Button
       onClick={(event) => {
         event.stopPropagation();
-        void router.push(`/docs/${props.doc.id}`);
+        if (props.doc.link) {
+          window.open(props.doc.link);
+        }
         return false;
       }}
       ref={setReferenceElement as any}
@@ -161,7 +132,7 @@ const DocumentRow = (props: {
             <img src={props.doc.iconLink} className={clsx(classes.image, classes.imageSpacing)} />
           )}
         </Grid>
-        <Grid item xs={props.isSmall ? 10 : 8}>
+        <Grid item xs={8}>
           <Grid container>
             <Grid item xs={12} zeroMinWidth>
               <Typography noWrap>{props.doc.name}</Typography>
@@ -175,13 +146,18 @@ const DocumentRow = (props: {
             )}
           </Grid>
         </Grid>
-        {!props.isSmall && (
-          <Grid item sm={2}>
-            <Grid container spacing={1} alignItems="center">
-              <AvatarList people={people as any} maxAvatars={2} />
-            </Grid>
-          </Grid>
-        )}
+        <Grid item style={{ marginLeft: 'auto' }}>
+          <Button
+            className={rowStyles.hoverButton}
+            onClick={(event) => {
+              event.stopPropagation();
+              void router.push(`/docs/${props.doc.id}`);
+              return false;
+            }}
+          >
+            Details
+          </Button>
+        </Grid>
       </Grid>
     </Button>
   );

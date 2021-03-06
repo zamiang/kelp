@@ -70,6 +70,7 @@ const App = () => {
     };
     void fetchData();
   }, []);
+  const shouldShowLoading = !hasAuthError && (!token || !database);
   return (
     <ThemeProvider theme={theme}>
       {hasAuthError && (
@@ -107,12 +108,12 @@ const App = () => {
           </Typography>
         </Alert>
       )}
-      {(!token || !database) && (
+      {shouldShowLoading && (
         <div className={classes.header}>
           <Loading isOpen={!token || !database} message="Loading" />
         </div>
       )}
-      {token && database && (
+      {!hasAuthError && token && database && (
         <LoadingMobileDashboardContainer database={database} accessToken={token} scope={scopes} />
       )}
     </ThemeProvider>

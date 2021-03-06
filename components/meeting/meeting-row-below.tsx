@@ -80,6 +80,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
+  const hasAttendees = attendees.length > 0;
   return (
     <div>
       <div className={classes.container}>
@@ -96,13 +97,17 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
             <br />
           </React.Fragment>
         )}
-        <Typography variant="h6">Attendees</Typography>
-        <AttendeeList
-          personStore={props.store.personDataStore}
-          attendees={attendees}
-          showAll={false}
-          isSmall={true}
-        />
+        {hasAttendees && (
+          <React.Fragment>
+            <Typography variant="h6">Attendees</Typography>
+            <AttendeeList
+              personStore={props.store.personDataStore}
+              attendees={attendees}
+              showAll={false}
+              isSmall={true}
+            />
+          </React.Fragment>
+        )}
       </div>
       <div className={classes.buttonContainer}>
         <Grid container spacing={1}>

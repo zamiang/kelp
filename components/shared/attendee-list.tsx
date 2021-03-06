@@ -76,7 +76,7 @@ const AttendeeList = (props: IProps) => {
     props.showAll || props.attendees.length < config.ATTENDEE_MAX,
   );
   if (props.attendees.length < 1) {
-    return <Typography variant="body2">None</Typography>;
+    return null;
   }
   return (
     <React.Fragment>

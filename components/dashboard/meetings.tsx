@@ -29,6 +29,7 @@ const dayStyles = makeStyles((theme) => ({
   },
   dayNumberToday: {
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.background.paper,
   },
   dayInfo: {
     textTransform: 'uppercase',

@@ -112,7 +112,7 @@ const PersonRow = (props: {
           </Grid>
         </Grid>
         {!props.isSmall && props.person.emailAddresses[0] && (
-          <Grid item>
+          <Grid item style={{ marginLeft: 'auto' }}>
             <Button
               className={rowStyles.hoverButton}
               onClick={(event) => {
