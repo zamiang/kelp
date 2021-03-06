@@ -128,7 +128,7 @@ const PersonRow = (props: {
           <Grid item style={{ marginLeft: 'auto' }}>
             <Button
               className={rowStyles.hoverButton}
-              size="smll"
+              size="small"
               onClick={(event) => {
                 event.stopPropagation();
                 void navigator.clipboard.writeText(props.person.emailAddresses[0]);
