@@ -1,17 +1,16 @@
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format, getDate, getMonth } from 'date-fns';
+import { format, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import MeetingRow from '../meeting/meeting-row';
+import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
-import TopBar from '../shared/top-bar';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
@@ -60,7 +59,13 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   const currentMonthNumber = getMonth(props.currentDay);
   const isToday = currentDayNumber == dayNumber && currentMonthNumber == monthNumber;
   return (
-    <Grid container className={clsx(classes.day)} spacing={1} alignItems="center">
+    <Grid
+      container
+      className={clsx(classes.day)}
+      spacing={1}
+      alignItems="center"
+      id={`${dayNumber}-day`}
+    >
       <Grid item>
         <Avatar
           alt={dayNumber.toString()}
@@ -142,17 +147,28 @@ const DayContainer = (props: {
   );
 };
 
+const scrollDayIntoView = (date: Date) => {
+  document
+    .getElementById(`${getDate(date)}-day`)
+    ?.scrollIntoView({ behavior: 'auto', block: 'center' });
+};
+
 const scrollCurrentTimeIntoView = () => {
   document.getElementById('current-time')?.scrollIntoView({ behavior: 'auto', block: 'center' });
 };
 
-const MeetingsByDay = (props: { store: IStore; hideHeading?: boolean }) => {
+const DAYS_BACK = 5;
+
+const MeetingsByDay = (props: { store: IStore }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
+  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.store.timeDataStore.getSegmentsByDay();
+      const result = await props.store.timeDataStore.getSegmentsByDay(
+        subDays(new Date(), DAYS_BACK),
+      );
       setMeetingsByDay(result);
     };
     void fetchData();
@@ -168,7 +184,6 @@ const MeetingsByDay = (props: { store: IStore; hideHeading?: boolean }) => {
 
   const classes = panelStyles();
   const days = Object.keys(meetingsByDay);
-  const currentTitle = 'Meeting Schedule';
 
   let hasRenderedCurrentTime = false;
   const currentTime = new Date();
@@ -181,30 +196,21 @@ const MeetingsByDay = (props: { store: IStore; hideHeading?: boolean }) => {
     return shouldRenderCurrentTime;
   })[0]?.id;
 
-  if (props.hideHeading) {
-    return (
-      <React.Fragment>
-        {days.map((day) => (
-          <DayContainer
-            key={day}
-            day={day}
-            meetings={meetingsByDay[day]}
-            selectedMeetingId={selectedMeetingId}
-            store={props.store}
-            currentTimeMeetingId={currentTimeId}
-          />
-        ))}
-      </React.Fragment>
-    );
-  }
-
   return (
     <div className={classes.panel}>
-      <TopBar title={currentTitle}>
-        <Grid container justify="flex-end">
-          <Button onClick={() => scrollCurrentTimeIntoView()}>Today</Button>
-        </Grid>
-      </TopBar>
+      <MeetingBar
+        store={props.store}
+        selectedDay={selectedDay}
+        onDayClick={(d: Date) => {
+          setSelectedDay(d);
+          scrollDayIntoView(d);
+        }}
+        currentDay={new Date()}
+        onNowClick={() => {
+          setSelectedDay(new Date());
+          scrollCurrentTimeIntoView();
+        }}
+      />
       {days.map((day) => (
         <DayContainer
           key={day}

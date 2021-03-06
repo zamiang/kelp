@@ -135,10 +135,12 @@ export default class SegmentModel {
     );
   }
 
-  async getSegmentsByDay() {
+  async getSegmentsByDay(start: Date) {
     const segments = await this.getAll();
+    const filteredSegments = segments.filter((s) => s.start > start);
+
     return groupBy(
-      segments.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1)),
+      filteredSegments.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1)),
       (segment) => format(segment.start, 'EEEE, MMM d yyyy'),
     );
   }

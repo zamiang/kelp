@@ -94,7 +94,7 @@ const MobileDashboard = (props: { store: IStore }) => {
             <ExpandedMeeting store={store} />
           </Route>
           <Route path="/meetings">
-            <Meetings hideHeading store={store} />
+            <Meetings store={store} />
           </Route>
           <Route path="/people">
             <People hideHeading store={store} />
