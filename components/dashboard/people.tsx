@@ -23,7 +23,6 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
         a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
       );
       const groupedPeople = groupBy(sortedPeople, (p) => p.name.toLocaleLowerCase()[0]);
-      console.log(groupedPeople);
       setPeople(groupedPeople);
     };
     void fetchData();

@@ -54,6 +54,7 @@ const RefreshButton = (props: IProps) => {
       <Grid item>
         <IconButton
           onClick={props.refresh}
+          aria-label="refresh data"
           className={clsx(
             classes.button,
             props.isLoading && classes.loading,

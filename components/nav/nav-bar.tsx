@@ -134,6 +134,7 @@ const NavBar = (props: IProps) => {
               <IconButton
                 className={clsx('ignore-react-onclickoutside', classes.iconButton)}
                 onClick={() => history.push('/meetings')}
+                aria-label="Meetings"
               >
                 <HomeIcon />
               </IconButton>
@@ -142,6 +143,7 @@ const NavBar = (props: IProps) => {
               <IconButton
                 className={clsx('ignore-react-onclickoutside', classes.iconButton)}
                 onClick={() => history.push('/docs')}
+                aria-label="Documents"
               >
                 <InsertDriveFileIcon />
               </IconButton>
@@ -150,6 +152,7 @@ const NavBar = (props: IProps) => {
               <IconButton
                 className={clsx('ignore-react-onclickoutside', classes.iconButton)}
                 onClick={() => history.push('/people')}
+                aria-label="People"
               >
                 <GroupIcon />
               </IconButton>
@@ -169,11 +172,9 @@ const NavBar = (props: IProps) => {
             {isLoading && (
               <Grid item>
                 <Tooltip title="Loading">
-                  <React.Fragment>
-                    <IconButton>
-                      <LoopIcon className={classes.icon} />
-                    </IconButton>
-                  </React.Fragment>
+                  <IconButton aria-label="loading">
+                    <LoopIcon className={classes.icon} />
+                  </IconButton>
                 </Tooltip>
               </Grid>
             )}
@@ -200,12 +201,15 @@ const NavBar = (props: IProps) => {
                   className={clsx('ignore-react-onclickoutside')}
                   aria-controls="simple-menu"
                   aria-haspopup="true"
+                  aria-label="menu"
                   onClick={handleClick}
                 >
                   <Avatar
                     className={classes.logo}
                     src={currentUser.imageUrl || undefined}
-                    alt={currentUser.name || currentUser.emailAddresses[0] || undefined}
+                    alt={`Profile photo for ${
+                      currentUser.name || currentUser.emailAddresses[0] || undefined
+                    }`}
                   />
                 </IconButton>
               </Grid>

@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
   imageSpacing: {
     maxHeight: 18,
     maxWidth: 18,
+    marginTop: 5,
   },
   time: {
     minWidth: 160,
@@ -127,12 +128,14 @@ const DocumentRow = (props: {
     >
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
-          {!props.isSmall && <img src={props.doc.iconLink} className={classes.image} />}
+          {!props.isSmall && (
+            <img alt="Document Icon" src={props.doc.iconLink} className={classes.image} />
+          )}
           {props.isSmall && (
             <img src={props.doc.iconLink} className={clsx(classes.image, classes.imageSpacing)} />
           )}
         </Grid>
-        <Grid item xs={8}>
+        <Grid item zeroMinWidth xs>
           <Grid container>
             <Grid item xs={12} zeroMinWidth>
               <Typography noWrap>{props.doc.name}</Typography>
@@ -149,6 +152,7 @@ const DocumentRow = (props: {
         <Grid item style={{ marginLeft: 'auto' }}>
           <Button
             className={rowStyles.hoverButton}
+            size="small"
             onClick={(event) => {
               event.stopPropagation();
               void router.push(`/docs/${props.doc.id}`);

@@ -82,7 +82,11 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
     <div className={panelClasses.panel}>
       <div className={classes.topContainer}>
         <Box flexDirection="column" alignItems="center" display="flex">
-          <Avatar className={classes.avatar} src={person.imageUrl || ''}>
+          <Avatar
+            alt={`Profile photo for ${person.name || person.emailAddresses[0] || undefined}`}
+            className={classes.avatar}
+            src={person.imageUrl || ''}
+          >
             {(person.name || person.id)[0]}
           </Avatar>
           <Typography className={classes.titleCenter} variant="h5" color="textPrimary" gutterBottom>

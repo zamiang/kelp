@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
 
@@ -46,6 +47,7 @@ const PersonRow = (props: {
   const isSelected = props.selectedPersonId === props.person.id;
   const rowStyles = useRowStyles();
   const router = useHistory();
+  const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -61,6 +63,8 @@ const PersonRow = (props: {
         router.push(`/people/${encodeURIComponent(props.person.id)}`);
         return false;
       }}
+      onMouseEnter={() => setDetailsVisible(true)}
+      onMouseLeave={() => setDetailsVisible(false)}
       ref={setReferenceElement as any}
       className={clsx(
         'ignore-react-onclickoutside',
@@ -76,9 +80,18 @@ const PersonRow = (props: {
       <Grid container spacing={2} alignItems="center" wrap="nowrap">
         <Grid item>
           {props.person.imageUrl ? (
-            <Avatar className={rowStyles.avatar} src={props.person.imageUrl} />
+            <Avatar
+              alt={`Profile photo for ${
+                props.person.name || props.person.emailAddresses[0] || undefined
+              }`}
+              className={rowStyles.avatar}
+              src={props.person.imageUrl}
+            />
           ) : (
-            <Avatar className={rowStyles.avatar}>
+            <Avatar
+              alt={props.person.name || props.person.emailAddresses[0] || undefined}
+              className={rowStyles.avatar}
+            >
               {(props.person.name || props.person.id)[0]}
             </Avatar>
           )}
@@ -111,10 +124,11 @@ const PersonRow = (props: {
             )}
           </Grid>
         </Grid>
-        {!props.isSmall && props.person.emailAddresses[0] && (
+        {!props.isSmall && isDetailsVisible && props.person.emailAddresses[0] && (
           <Grid item style={{ marginLeft: 'auto' }}>
             <Button
               className={rowStyles.hoverButton}
+              size="smll"
               onClick={(event) => {
                 event.stopPropagation();
                 void navigator.clipboard.writeText(props.person.emailAddresses[0]);

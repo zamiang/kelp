@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import isTouchEnabled from '../shared/is-touch-enabled';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import MeetingRowBelow from './meeting-row-below';
@@ -69,6 +70,7 @@ const MeetingRow = (props: {
   const [isClickedOpen, setOpen] = useState(false);
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const isSelected = props.selectedMeetingId === props.meeting.id || isClickedOpen;
+  const [isVideoVisible, setVideoVisible] = useState(isTouchEnabled());
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -84,6 +86,8 @@ const MeetingRow = (props: {
         void router.push(`/meetings/${props.meeting.id}`);
         return false;
       }}
+      onMouseEnter={() => setVideoVisible(true)}
+      onMouseLeave={() => setVideoVisible(false)}
       ref={setReferenceElement as any}
       className={classes.container}
     >
@@ -96,6 +100,7 @@ const MeetingRow = (props: {
               return false;
             }}
             className={classes.iconContainer}
+            aria-label="See Details"
           >
             <KeyboardArrowRightIcon
               className={clsx(classes.icon, isSelected && classes.rotateIcon)}
@@ -119,9 +124,9 @@ const MeetingRow = (props: {
             </Grid>
           </Grid>
         </Grid>
-        {props.meeting.videoLink && (
-          <Grid item>
-            <IconButton target="_blank" href={props.meeting.videoLink}>
+        {isVideoVisible && props.meeting.videoLink && (
+          <Grid item style={{ marginLeft: 'auto' }}>
+            <IconButton aria-label="Join meeting" target="_blank" href={props.meeting.videoLink}>
               <VideocamIcon color="primary" />
             </IconButton>
           </Grid>

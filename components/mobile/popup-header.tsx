@@ -182,7 +182,9 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                   <Avatar
                     className={clsx(classes.unSelected, classes.icon)}
                     src={props.user.imageUrl || undefined}
-                    alt={props.user.name || props.user.emailAddresses[0] || undefined}
+                    alt={`Profile photo for ${
+                      props.user.name || props.user.emailAddresses[0] || undefined
+                    }`}
                   />
                 </IconButton>
               </Grid>

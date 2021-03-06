@@ -1,7 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -63,7 +62,10 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   return (
     <Grid container className={clsx(classes.day)} spacing={1} alignItems="center">
       <Grid item>
-        <Avatar className={clsx(classes.dayNumber, isToday && classes.dayNumberToday)}>
+        <Avatar
+          alt={dayNumber.toString()}
+          className={clsx(classes.dayNumber, isToday && classes.dayNumberToday)}
+        >
           {dayNumber}
         </Avatar>
       </Grid>
@@ -77,7 +79,7 @@ const Day = (props: { day: Date; currentDay: Date }) => {
 const dayContainerStyles = makeStyles((theme) => ({
   currentTime: {
     marginTop: -6,
-    paddingLeft: 33,
+    paddingLeft: 4,
   },
   currentTimeDot: {
     borderRadius: '50%',
@@ -86,7 +88,7 @@ const dayContainerStyles = makeStyles((theme) => ({
     background: theme.palette.primary.dark,
   },
   currentTimeBorder: {
-    marginTop: 0,
+    marginTop: -6,
     width: '100%',
     borderTop: `2px solid ${theme.palette.primary.dark}`,
   },
@@ -123,10 +125,10 @@ const DayContainer = (props: {
           )}
         >
           {meeting.id === props.currentTimeMeetingId && (
-            <ListItem className={dayContainerclasses.currentTime} id="current-time">
+            <div className={dayContainerclasses.currentTime} id="current-time">
               <div className={dayContainerclasses.currentTimeDot}></div>
               <div className={dayContainerclasses.currentTimeBorder}></div>
-            </ListItem>
+            </div>
           )}
           <MeetingRow
             shouldRenderCurrentTime={meeting.id === props.currentTimeMeetingId}
