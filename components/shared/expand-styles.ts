@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   topContainer: {
     padding: theme.spacing(4),
-    paddingTop: theme.spacing(6),
     margin: 0,
     width: 'auto',
     [theme.breakpoints.down('sm')]: {

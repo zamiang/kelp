@@ -25,7 +25,7 @@ const App = (props: any) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
-  const isDashboard = props.router.route.includes('/dashboard');
+  const isDashboard = props.router.route.includes('dashboard');
   return (
     <ThemeProvider theme={isDashboard ? theme : homepageTheme}>
       <CssBaseline />

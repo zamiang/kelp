@@ -50,15 +50,18 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'hidden',
     background: theme.palette.background.paper,
     borderRight: `1px solid ${theme.palette.divider}`,
+    width: '100%',
   },
   center: {
     margin: '0px auto',
     marginTop: theme.spacing(2),
     background: theme.palette.background.paper,
-    maxHeight: 'calc(100vh - 49px)',
     maxWidth: 708,
     position: 'relative',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+    maxHeight: 'calc(100vh - 85px)',
+    overflow: 'auto',
+    width: '100%',
   },
 }));
 
