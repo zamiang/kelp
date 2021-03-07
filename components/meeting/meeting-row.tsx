@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import isTouchEnabled from '../shared/is-touch-enabled';
@@ -77,6 +77,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: -20,
     marginRight: -2,
   },
+  meetingTimeInWords: {
+    color: theme.palette.secondary.dark,
+    fontWeight: 600,
+    display: 'inline-block',
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const MeetingRow = (props: {
@@ -130,9 +136,14 @@ const MeetingRow = (props: {
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <Typography variant="body2">
+              <Typography variant="body2" style={{ display: 'inline-block' }}>
                 {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
               </Typography>
+              {props.shouldRenderCurrentTime && (
+                <Typography className={classes.meetingTimeInWords}>
+                  (In {formatDistanceToNow(props.meeting.start)})
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Typography noWrap>

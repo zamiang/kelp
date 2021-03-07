@@ -114,14 +114,24 @@ const MobileDashboard = (props: { store: IStore }) => {
         onChange={(_event, value) => history.push(`/${value}`)}
         className={classes.footer}
         value={currentTab}
-        showLabels
       >
-        <BottomNavigationAction label="Meetings" value="meetings" icon={<HomeIcon />} />
-        <BottomNavigationAction label="People" value="people" icon={<GroupIcon />} />
         <BottomNavigationAction
+          showLabel={false}
+          label="Meetings"
+          value="meetings"
+          icon={<HomeIcon />}
+        />
+        <BottomNavigationAction
+          showLabel={false}
           label="Documents"
           value="documents"
           icon={<InsertDriveFileIcon />}
+        />
+        <BottomNavigationAction
+          showLabel={false}
+          label="People"
+          value="people"
+          icon={<GroupIcon />}
         />
       </BottomNavigation>
     </div>

@@ -44,6 +44,9 @@ const RefreshButton = (props: IProps) => {
     }, 5000);
     return () => clearInterval(interval);
   }, [seconds]);
+  if (!props.isLoading) {
+    return null;
+  }
   return (
     <Grid container alignItems="center" wrap="nowrap">
       <Grid item>
