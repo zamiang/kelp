@@ -41,7 +41,7 @@ const MeetingPrepNotifications = (props: IStore) => {
         if (newMeeting && newMeeting.id !== currentMeeting?.id) {
           createNotification(
             newMeeting,
-            () => router.push(`/meetings?slug=${newMeeting.id}`),
+            () => router.push(`/meetings/${newMeeting.id}`),
             () => setIsOpen(false),
           );
           setCurrentMeeting(newMeeting);

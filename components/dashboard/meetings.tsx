@@ -6,7 +6,8 @@ import clsx from 'clsx';
 import { format, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
@@ -160,6 +161,7 @@ const scrollCurrentTimeIntoView = () => {
 const DAYS_BACK = 5;
 
 const MeetingsByDay = (props: { store: IStore }) => {
+  const router = useHistory();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
@@ -192,6 +194,9 @@ const MeetingsByDay = (props: { store: IStore }) => {
     if (!hasRenderedCurrentTime && meeting.start > currentTime) {
       hasRenderedCurrentTime = true;
       shouldRenderCurrentTime = true;
+      if (!selectedMeetingId) {
+        router.push(`/meetings/${meeting.id}`);
+      }
     }
     return shouldRenderCurrentTime;
   })[0]?.id;

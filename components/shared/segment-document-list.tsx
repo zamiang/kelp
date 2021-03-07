@@ -1,8 +1,10 @@
 import Typography from '@material-ui/core/Typography';
-import { uniqBy } from 'lodash';
+import { format } from 'date-fns';
+import { capitalize, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import DocumentRow, { MissingDocumentRow } from '../documents/document-row';
 import { IDocument } from '../store/models/document-model';
+import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
 import useExpandStyles from './expand-styles';
@@ -13,6 +15,8 @@ const SegmentDocumentItem = (props: {
   isSmall?: boolean;
 }) => {
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
+  const [person, setPerson] = useState<IPerson | undefined>(undefined);
+
   useEffect(() => {
     const fetchData = async () => {
       if (props.segmentDocument.documentId) {
@@ -25,9 +29,25 @@ const SegmentDocumentItem = (props: {
     void fetchData();
   }, [props.segmentDocument.documentId]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.segmentDocument.personId) {
+        const result = await props.store.personDataStore.getById(props.segmentDocument.personId);
+        setPerson(result);
+      }
+    };
+    void fetchData();
+  }, [props.segmentDocument.personId]);
+
   if (!document) {
     return <MissingDocumentRow segmentDocument={props.segmentDocument} isSmall={props.isSmall} />;
   }
+
+  const personText = person ? ` by ${person?.name || person?.emailAddresses}` : '';
+  const tooltipText = `${capitalize(props.segmentDocument.reason)}${personText} on ${format(
+    new Date(props.segmentDocument.date),
+    "MMM do 'at' hh:mm a",
+  )}`;
 
   return (
     <DocumentRow
@@ -36,6 +56,7 @@ const SegmentDocumentItem = (props: {
       doc={document}
       selectedDocumentId={null}
       isSmall={props.isSmall}
+      tooltipText={tooltipText}
     />
   );
 };

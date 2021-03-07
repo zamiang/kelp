@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.paper,
     transition: 'background 0.3s',
     textAlign: 'center',
-    minWidth: 48,
+    width: 32,
     '&:hover': {
       background: theme.palette.primary.light,
     },
