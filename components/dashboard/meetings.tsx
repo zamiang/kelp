@@ -23,7 +23,7 @@ const dayStyles = makeStyles((theme) => ({
     color: 'rgba(0,0,0,0.87)',
   },
   dayNumberToday: {
-    color: theme.palette.primary.main,
+    color: theme.palette.secondary.dark,
   },
   dayNumberPast: {
     color: theme.palette.text.hint,

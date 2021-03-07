@@ -66,12 +66,12 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.grey[200],
   },
   dotFuture: {
-    backgroundColor: theme.palette.secondary.dark,
-    borderColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.grey[900],
+    borderColor: theme.palette.grey[900],
   },
   dotPresent: {
     backgroundColor: theme.palette.background.paper,
-    borderColor: theme.palette.secondary.dark,
+    borderColor: theme.palette.grey[900],
   },
   iconContainer: {
     marginLeft: -20,

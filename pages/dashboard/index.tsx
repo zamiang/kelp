@@ -1,4 +1,3 @@
-import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -36,13 +35,11 @@ export const MOBILE_WIDTH = 700;
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
-  container: {
-    transition: 'background 0.3s',
-  },
   content: {
     overscrollBehavior: 'contain',
     flexGrow: 1,
     overflowX: 'hidden',
+    minHeight: 'calc(100vh - 49px)',
   },
   left: {
     maxWidth: 440,
@@ -141,36 +138,34 @@ const DesktopDashboard = (props: { store: IStore }) => {
             <Summary {...store} />
           </Route>
           <Route path="/search">
-            <Container>
-              <Grid container spacing={4} alignItems="flex-start">
-                <Grid item xs={12} sm={6}>
+            <Grid container spacing={4} alignItems="flex-start">
+              <Grid item xs>
+                <div className={classes.center}>
+                  <Search store={store} />
+                </div>
+              </Grid>
+              <Route path="/search/docs/:slug">
+                <Grid item xs>
                   <div className={classes.center}>
-                    <Search store={store} />
+                    <ExpandedDocument store={store} />
                   </div>
                 </Grid>
-                <Route path="/search/docs/:slug">
-                  <Grid item xs={12} sm={6}>
-                    <div className={classes.center}>
-                      <ExpandedDocument store={store} />
-                    </div>
-                  </Grid>
-                </Route>
-                <Route path="/search/meetings/:slug">
-                  <Grid item xs={12} sm={6}>
-                    <div className={classes.center}>
-                      <ExpandedMeeting store={store} />
-                    </div>
-                  </Grid>
-                </Route>
-                <Route path="/search/people/:slug">
-                  <Grid item xs={12} sm={6}>
-                    <div className={classes.center}>
-                      <ExpandPerson store={store} />
-                    </div>
-                  </Grid>
-                </Route>
-              </Grid>
-            </Container>
+              </Route>
+              <Route path="/search/meetings/:slug">
+                <Grid item xs>
+                  <div className={classes.center}>
+                    <ExpandedMeeting store={store} />
+                  </div>
+                </Grid>
+              </Route>
+              <Route path="/search/people/:slug">
+                <Grid item xs>
+                  <div className={classes.center}>
+                    <ExpandPerson store={store} />
+                  </div>
+                </Grid>
+              </Route>
+            </Grid>
           </Route>
           <Route path="/settings">
             <Settings shouldRenderHeader={true} />
@@ -242,7 +237,6 @@ interface IProps {
 const is500Error = (error: Error) => (error as any).status === 500;
 
 export const DashboardContainer = ({ store }: IProps) => {
-  const classes = useStyles();
   console.log('loading message', store.loadingMessage);
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
 
@@ -251,7 +245,7 @@ export const DashboardContainer = ({ store }: IProps) => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className={classes.container}>
+    <div>
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
