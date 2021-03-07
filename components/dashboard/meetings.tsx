@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format, getDate, getMonth, subDays } from 'date-fns';
+import { format, formatDistanceToNow, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -23,7 +23,7 @@ const dayStyles = makeStyles((theme) => ({
     color: 'rgba(0,0,0,0.87)',
   },
   dayNumberToday: {
-    color: theme.palette.secondary.dark,
+    textDecoration: 'underline',
   },
   dayNumberPast: {
     color: theme.palette.text.hint,
@@ -132,6 +132,27 @@ const DayContainer = (props: {
   );
 };
 
+const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
+  //const currentTime = new Date();
+  const rowStyles = useRowStyles();
+
+  return (
+    <div className={clsx(rowStyles.rowHighlight, rowStyles.rowHighlightPadding)}>
+      <Typography className={rowStyles.rowText} variant="body2" style={{ paddingLeft: 0 }}>
+        In {formatDistanceToNow(props.meeting.start)}
+      </Typography>
+      <br />
+      <MeetingRow
+        shouldRenderCurrentTime={false}
+        meeting={props.meeting}
+        selectedMeetingId={props.meeting.id}
+        store={props.store}
+        hideDot
+      />
+    </div>
+  );
+};
+
 const scrollDayIntoView = (date: Date) => {
   document
     .getElementById(`${getDate(date)}-day`)
@@ -159,24 +180,18 @@ const MeetingsByDay = (props: { store: IStore }) => {
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (selectedMeetingId.length < 10) {
-        scrollCurrentTimeIntoView();
-      }
-    }, 300);
-  }, [props.store.lastUpdated, props.store.isLoading]);
-
   const classes = panelStyles();
   const days = Object.keys(meetingsByDay);
 
   let hasRenderedCurrentTime = false;
+  let featuredMeeting: ISegment | undefined;
   const currentTime = new Date();
   const currentTimeId = flatten(Object.values(meetingsByDay)).filter((meeting) => {
     let shouldRenderCurrentTime = false;
     if (!hasRenderedCurrentTime && meeting.start > currentTime) {
       hasRenderedCurrentTime = true;
       shouldRenderCurrentTime = true;
+      featuredMeeting = meeting;
       /**
        * figure out a better way
       if (!selectedMeetingId) {
@@ -202,6 +217,7 @@ const MeetingsByDay = (props: { store: IStore }) => {
           scrollCurrentTimeIntoView();
         }}
       />
+      {featuredMeeting && <FeaturedMeeting meeting={featuredMeeting} store={props.store} />}
       {days.map((day) => (
         <DayContainer
           key={day}

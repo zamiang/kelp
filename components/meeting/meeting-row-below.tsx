@@ -29,9 +29,12 @@ const useBelowStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(4),
   },
+  containerNoLeftMargin: {
+    marginLeft: 0,
+  },
 }));
 
-const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
+const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLeft: boolean }) => {
   const classes = useBelowStyles();
   const buttonClasses = useButtonStyles();
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
@@ -83,7 +86,9 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
   const hasAttendees = attendees.length > 0;
   return (
     <div>
-      <div className={classes.container}>
+      <div
+        className={clsx(classes.container, !props.shouldPadLeft && classes.containerNoLeftMargin)}
+      >
         {hasDocuments && (
           <React.Fragment>
             <Typography variant="h6">Documents you may need</Typography>
@@ -109,7 +114,12 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore }) => {
           </React.Fragment>
         )}
       </div>
-      <div className={classes.buttonContainer}>
+      <div
+        className={clsx(
+          classes.buttonContainer,
+          !props.shouldPadLeft && classes.containerNoLeftMargin,
+        )}
+      >
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <Button

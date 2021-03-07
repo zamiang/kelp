@@ -97,7 +97,12 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           <div style={{ textAlign: 'center' }}>
             <Typography>
               {emailAddress}{' '}
-              <Link onClick={() => navigator.clipboard.writeText(emailAddress)}>copy</Link>
+              <Link
+                style={{ cursor: 'pointer' }}
+                onClick={() => navigator.clipboard.writeText(emailAddress)}
+              >
+                copy
+              </Link>
             </Typography>
             <div style={{ maxWidth: 150, margin: '10px auto 0 ' }}>
               <Button
@@ -135,21 +140,23 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           </div>
         )}
         {(!person.isInContacts || !person.googleId) && (
-          <Typography variant="body2">
-            Add this person to your google contacts for more info{' '}
-            <Link target="_blank" href={ADD_SENDER_LINK}>
-              (guide)
-            </Link>
-            <br />
-            {person.emailAddresses && (
-              <Link
-                target="_blank"
-                href={`https://mail.google.com/mail/u/0/#search/${person.emailAddresses[0]}`}
-              >
-                (search Gmail)
+          <div className={classes.section}>
+            <Typography variant="body2">
+              Add this person to your google contacts for more info{' '}
+              <Link target="_blank" href={ADD_SENDER_LINK}>
+                (guide)
               </Link>
-            )}
-          </Typography>
+              <br />
+              {person.emailAddresses && (
+                <Link
+                  target="_blank"
+                  href={`https://mail.google.com/mail/u/0/#search/${person.emailAddresses[0]}`}
+                >
+                  (search Gmail)
+                </Link>
+              )}
+            </Typography>
+          </div>
         )}
         {segmentDocuments.length > 0 && (
           <div className={classes.section}>
@@ -168,10 +175,10 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             />
           </div>
         )}
-        <React.Fragment>
+        <div className={classes.section}>
           <Typography variant="h6">Meetings you both attended</Typography>
           <MeetingList segments={segments} personStore={props.store.personDataStore} />
-        </React.Fragment>
+        </div>
       </div>
     </div>
   );

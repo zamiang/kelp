@@ -86,10 +86,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     borderRadius: theme.spacing(1),
   },
+  rowHighlightPadding: {
+    paddingLeft: theme.spacing(2),
+  },
   rowDefault: {},
   rowText: {
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
+    color: theme.palette.secondary.dark,
+    fontWeight: 600,
   },
   rowHint: {
     color: theme.palette.text.hint,

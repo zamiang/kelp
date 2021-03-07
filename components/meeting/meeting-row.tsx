@@ -86,6 +86,7 @@ const MeetingRow = (props: {
   store: IStore;
   isSmall?: boolean;
   isOpen?: boolean;
+  hideDot?: boolean;
 }) => {
   const classes = useStyles();
   const router = useHistory();
@@ -95,8 +96,6 @@ const MeetingRow = (props: {
 
   useEffect(() => {
     if (isSelected && referenceElement) {
-      referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
-    } else if (referenceElement && !props.selectedMeetingId && props.shouldRenderCurrentTime) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [!!referenceElement]);
@@ -116,16 +115,18 @@ const MeetingRow = (props: {
       className={classes.container}
     >
       <Grid container spacing={1} alignItems="center">
-        <Grid item>
-          <div
-            className={clsx(
-              classes.dot,
-              props.shouldRenderCurrentTime && classes.dotPresent,
-              !props.shouldRenderCurrentTime && isFuture && classes.dotFuture,
-              !props.shouldRenderCurrentTime && isPast && classes.dotPast,
-            )}
-          />
-        </Grid>
+        {!props.hideDot && (
+          <Grid item>
+            <div
+              className={clsx(
+                classes.dot,
+                props.shouldRenderCurrentTime && classes.dotPresent,
+                !props.shouldRenderCurrentTime && isFuture && classes.dotFuture,
+                !props.shouldRenderCurrentTime && isPast && classes.dotPast,
+              )}
+            />
+          </Grid>
+        )}
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
@@ -151,7 +152,13 @@ const MeetingRow = (props: {
           </Grid>
         )}
       </Grid>
-      {isSelected && <MeetingRowBelow meeting={props.meeting} store={props.store} />}
+      {isSelected && (
+        <MeetingRowBelow
+          meeting={props.meeting}
+          store={props.store}
+          shouldPadLeft={!props.hideDot}
+        />
+      )}
     </Button>
   );
 };
