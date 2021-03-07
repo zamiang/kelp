@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -42,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     width: '100%',
     textAlign: 'left',
+    paddingLeft: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
     '&:hover': {
       background: 'transparent',
     },
@@ -51,6 +53,25 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     transition: 'transform 0.3s',
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 5,
+    border: `2px solid`,
+    marginRight: theme.spacing(1),
+  },
+  dotPast: {
+    backgroundColor: theme.palette.grey[200],
+    borderColor: theme.palette.grey[200],
+  },
+  dotFuture: {
+    backgroundColor: theme.palette.secondary.dark,
+    borderColor: theme.palette.secondary.dark,
+  },
+  dotPresent: {
+    backgroundColor: theme.palette.background.paper,
+    borderColor: theme.palette.secondary.dark,
   },
   iconContainer: {
     marginLeft: -20,
@@ -64,12 +85,12 @@ const MeetingRow = (props: {
   shouldRenderCurrentTime: boolean;
   store: IStore;
   isSmall?: boolean;
+  isOpen?: boolean;
 }) => {
   const classes = useStyles();
   const router = useHistory();
-  const [isClickedOpen, setOpen] = useState(false);
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const isSelected = props.selectedMeetingId === props.meeting.id || isClickedOpen;
+  const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
   const [isVideoVisible, setVideoVisible] = useState(isTouchEnabled());
 
   useEffect(() => {
@@ -79,6 +100,9 @@ const MeetingRow = (props: {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
     }
   }, [!!referenceElement]);
+
+  const isPast = new Date() > props.meeting.end;
+  const isFuture = new Date() < props.meeting.start;
 
   return (
     <Button
@@ -93,19 +117,14 @@ const MeetingRow = (props: {
     >
       <Grid container spacing={1} alignItems="center">
         <Grid item>
-          <IconButton
-            onClick={(event) => {
-              event.stopPropagation();
-              setOpen(!isClickedOpen);
-              return false;
-            }}
-            className={classes.iconContainer}
-            aria-label="See Details"
-          >
-            <KeyboardArrowRightIcon
-              className={clsx(classes.icon, isSelected && classes.rotateIcon)}
-            />
-          </IconButton>
+          <div
+            className={clsx(
+              classes.dot,
+              props.shouldRenderCurrentTime && classes.dotPresent,
+              !props.shouldRenderCurrentTime && isFuture && classes.dotFuture,
+              !props.shouldRenderCurrentTime && isPast && classes.dotPast,
+            )}
+          />
         </Grid>
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
           <Grid container spacing={1}>

@@ -42,12 +42,21 @@ const useStyles = makeStyles((theme) => ({
   content: {
     overscrollBehavior: 'contain',
     flexGrow: 1,
+    overflowX: 'hidden',
+  },
+  left: {
+    maxWidth: 440,
+    maxHeight: 'calc(100vh - 49px)', // calc(100vh - 104px)',
+    overflowX: 'hidden',
+    background: theme.palette.background.paper,
+    borderRight: `1px solid ${theme.palette.divider}`,
   },
   center: {
+    margin: '0px auto',
     marginTop: theme.spacing(2),
     background: theme.palette.background.paper,
-    overflowX: 'hidden',
-    maxHeight: 'calc(100vh - 104px)',
+    maxHeight: 'calc(100vh - 49px)',
+    maxWidth: 708,
     position: 'relative',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
   },
@@ -164,58 +173,52 @@ const DesktopDashboard = (props: { store: IStore }) => {
             <Settings shouldRenderHeader={true} />
           </Route>
           <Route path="/meetings">
-            <Container>
-              <Grid container spacing={4} alignItems="flex-start">
-                <Grid item xs={12} sm={6}>
+            <Grid container alignItems="flex-start">
+              <Grid item>
+                <div className={classes.left}>
+                  <Meetings store={store} />
+                </div>
+              </Grid>
+              <Route path="/meetings/:slug">
+                <Grid item xs>
                   <div className={classes.center}>
-                    <Meetings store={store} />
+                    <ExpandedMeeting store={store} />
                   </div>
                 </Grid>
-                <Route path="/meetings/:slug">
-                  <Grid item xs={12} sm={6}>
-                    <div className={classes.center}>
-                      <ExpandedMeeting store={store} />
-                    </div>
-                  </Grid>
-                </Route>
-              </Grid>
-            </Container>
+              </Route>
+            </Grid>
           </Route>
           <Route path="/docs">
-            <Container>
-              <Grid container spacing={4} alignItems="flex-start">
-                <Grid item xs={12} sm={6}>
+            <Grid container alignItems="flex-start">
+              <Grid item>
+                <div className={classes.left}>
+                  <Docs store={store} />
+                </div>
+              </Grid>
+              <Route path="/docs/:slug">
+                <Grid item xs>
                   <div className={classes.center}>
-                    <Docs store={store} />
+                    <ExpandedDocument store={store} />
                   </div>
                 </Grid>
-                <Route path="/docs/:slug">
-                  <Grid item xs={12} sm={6}>
-                    <div className={classes.center}>
-                      <ExpandedDocument store={store} />
-                    </div>
-                  </Grid>
-                </Route>
-              </Grid>
-            </Container>
+              </Route>
+            </Grid>
           </Route>
           <Route path="/people">
-            <Container>
-              <Grid container spacing={4} alignItems="flex-start">
-                <Grid item xs={12} sm={6}>
+            <Grid container alignItems="flex-start">
+              <Grid item>
+                <div className={classes.left}>
+                  <People store={store} />
+                </div>
+              </Grid>
+              <Route path="/people/:slug">
+                <Grid item xs>
                   <div className={classes.center}>
-                    <People store={store} />
+                    <ExpandPerson store={store} />
                   </div>
                 </Grid>
-                <Route path="/people/:slug">
-                  <Grid item xs={12} sm={6}>
-                    <div className={classes.center}>
-                      <ExpandPerson store={store} />
-                    </div>
-                  </Grid>
-                </Route>
-              </Grid>
-            </Container>
+              </Route>
+            </Grid>
           </Route>
           <Route path="/dashboard">
             <Home {...store} />

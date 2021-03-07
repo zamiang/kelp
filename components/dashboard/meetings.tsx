@@ -1,13 +1,10 @@
-import Avatar from '@material-ui/core/Avatar';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
@@ -18,21 +15,18 @@ import { IStore } from '../store/use-store';
 const dayStyles = makeStyles((theme) => ({
   day: {
     marginTop: theme.spacing(2),
-    paddingLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
   },
   dayNumber: {
-    color: 'rgba(0,0,0,0.3)',
-    backgroundColor: '#E5E5E5',
-    width: 40,
-    height: 40,
-  },
-  dayNumberToday: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.background.paper,
-  },
-  dayInfo: {
+    fontWeight: 600,
     textTransform: 'uppercase',
     color: 'rgba(0,0,0,0.87)',
+  },
+  dayNumberToday: {
+    color: theme.palette.primary.main,
+  },
+  dayNumberPast: {
+    color: theme.palette.text.hint,
   },
   currentTime: {
     marginTop: -6,
@@ -40,7 +34,6 @@ const dayStyles = makeStyles((theme) => ({
   },
   currentTimeDot: {
     borderRadius: '50%',
-    height: 12,
     width: 12,
     background: theme.palette.primary.dark,
   },
@@ -55,30 +48,24 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   const classes = dayStyles();
   const dayNumber = getDate(props.day);
   const monthNumber = getMonth(props.day);
-  const dayInfo = format(props.day, 'MMM, EEE');
+  const dayInfo = format(props.day, 'EEE MMM d');
   const currentDayNumber = getDate(props.currentDay);
   const currentMonthNumber = getMonth(props.currentDay);
+  const isPast = props.day < props.currentDay;
   const isToday = currentDayNumber == dayNumber && currentMonthNumber == monthNumber;
   return (
-    <Grid
-      container
-      className={clsx(classes.day)}
-      spacing={1}
-      alignItems="center"
-      id={`${dayNumber}-day`}
-    >
-      <Grid item>
-        <Avatar
-          alt={dayNumber.toString()}
-          className={clsx(classes.dayNumber, isToday && classes.dayNumberToday)}
-        >
-          {dayNumber}
-        </Avatar>
-      </Grid>
-      <Grid item>
-        <Typography className={classes.dayInfo}>{dayInfo}</Typography>
-      </Grid>
-    </Grid>
+    <div className={classes.day} id={`${dayNumber}-day`}>
+      <Typography
+        className={clsx(
+          classes.dayNumber,
+          isToday && classes.dayNumberToday,
+          !isToday && isPast && classes.dayNumberPast,
+        )}
+      >
+        {isToday ? 'Today ‧ ' : ''}
+        {dayInfo}
+      </Typography>
+    </div>
   );
 };
 
@@ -131,10 +118,7 @@ const DayContainer = (props: {
           )}
         >
           {meeting.id === props.currentTimeMeetingId && (
-            <div className={dayContainerclasses.currentTime} id="current-time">
-              <div className={dayContainerclasses.currentTimeDot}></div>
-              <div className={dayContainerclasses.currentTimeBorder}></div>
-            </div>
+            <div className={dayContainerclasses.currentTime} id="current-time"></div>
           )}
           <MeetingRow
             shouldRenderCurrentTime={meeting.id === props.currentTimeMeetingId}
@@ -161,7 +145,6 @@ const scrollCurrentTimeIntoView = () => {
 const DAYS_BACK = 5;
 
 const MeetingsByDay = (props: { store: IStore }) => {
-  const router = useHistory();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
@@ -194,9 +177,12 @@ const MeetingsByDay = (props: { store: IStore }) => {
     if (!hasRenderedCurrentTime && meeting.start > currentTime) {
       hasRenderedCurrentTime = true;
       shouldRenderCurrentTime = true;
+      /**
+       * figure out a better way
       if (!selectedMeetingId) {
         router.push(`/meetings/${meeting.id}`);
       }
+      */
     }
     return shouldRenderCurrentTime;
   })[0]?.id;

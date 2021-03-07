@@ -246,14 +246,6 @@ const ExpandedMeeting = (props: {
       </div>
       <Divider />
       <div className={classes.container}>
-        {hasDescription && !isHtml && (
-          <div className={classes.section}>
-            <Typography variant="h6">Description</Typography>
-            <Typography variant="body2" className={classes.description}>
-              <Linkify>{meeting.description?.trim()}</Linkify>
-            </Typography>
-          </div>
-        )}
         {hasDocuments && (
           <React.Fragment>
             <Typography variant="h6">Documents you may need</Typography>
@@ -265,11 +257,18 @@ const ExpandedMeeting = (props: {
             />
           </React.Fragment>
         )}
+        {hasDescription && !isHtml && (
+          <div className={classes.section}>
+            <Typography variant="h6">Description</Typography>
+            <Typography className={classes.description}>
+              <Linkify>{meeting.description?.trim()}</Linkify>
+            </Typography>
+          </div>
+        )}
         {hasDescription && isHtml && (
           <div className={classes.section}>
             <Typography variant="h6">Description</Typography>
             <Typography
-              variant="body2"
               className={classes.description}
               dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
             />
