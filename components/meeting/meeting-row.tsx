@@ -108,14 +108,13 @@ const MeetingRow = (props: {
 
   const isPast = new Date() > props.meeting.end;
   const isFuture = new Date() < props.meeting.start;
-
   return (
     <Button
       onClick={() => {
         void router.push(`/meetings/${props.meeting.id}`);
         return false;
       }}
-      onMouseEnter={() => setVideoVisible(true)}
+      onMouseEnter={() => !isSelected && setVideoVisible(true)}
       onMouseLeave={() => setVideoVisible(false)}
       ref={setReferenceElement as any}
       className={classes.container}

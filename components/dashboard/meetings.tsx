@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { format, formatDistanceToNow, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
@@ -156,16 +156,17 @@ const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
 const scrollDayIntoView = (date: Date) => {
   document
     .getElementById(`${getDate(date)}-day`)
-    ?.scrollIntoView({ behavior: 'auto', block: 'center' });
+    ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
 const scrollCurrentTimeIntoView = () => {
-  document.getElementById('current-time')?.scrollIntoView({ behavior: 'auto', block: 'center' });
+  document.getElementById('current-time')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
 const DAYS_BACK = 5;
 
 const MeetingsByDay = (props: { store: IStore }) => {
+  const router = useHistory();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
@@ -192,12 +193,10 @@ const MeetingsByDay = (props: { store: IStore }) => {
       hasRenderedCurrentTime = true;
       shouldRenderCurrentTime = true;
       featuredMeeting = meeting;
-      /**
-       * figure out a better way
-      if (!selectedMeetingId) {
+
+      if (window.innerWidth > 800 && !selectedMeetingId) {
         router.push(`/meetings/${meeting.id}`);
       }
-      */
     }
     return shouldRenderCurrentTime;
   })[0]?.id;

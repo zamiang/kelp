@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
+    position: 'sticky',
+    top: 0,
+    left: 0,
+    background: theme.palette.background.paper,
+    zIndex: 10,
   },
   day: {
     cursor: 'pointer',

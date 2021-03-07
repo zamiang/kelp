@@ -1,10 +1,13 @@
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import PersonRow from '../person/person-row';
+import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
 import { getPeopleSortedByCount } from '../store/helpers';
@@ -15,6 +18,7 @@ import { IStore } from '../store/use-store';
 
 const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: () => void }) => {
   const classes = useExpandStyles();
+  const buttonClasses = useButtonStyles();
   const { slug }: any = useParams();
   const documentId = props.documentId || slug;
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
@@ -70,6 +74,12 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   if (!document) {
     return null;
   }
+
+  const shareParams = new URLSearchParams({
+    actionButton: '1',
+    userstoinvite: '',
+  });
+
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
@@ -81,6 +91,28 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
             Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
           </Typography>
         )}
+        <div style={{ margin: '10px auto 0 ' }}>
+          <Button
+            className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+            variant="outlined"
+            href={`${document.link}?${shareParams.toString()}`}
+            target="_blank"
+          >
+            Share Document
+          </Button>
+        </div>
+        <div style={{ margin: '10px auto 0 ' }}>
+          <Button
+            className={buttonClasses.button}
+            variant="contained"
+            disableElevation
+            color="primary"
+            href={document.link!}
+            target="_blank"
+          >
+            Edit Document
+          </Button>
+        </div>
       </div>
       <Divider />
       <div className={classes.container}>
