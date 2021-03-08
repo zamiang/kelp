@@ -76,6 +76,7 @@ const PersonRow = (props: {
         props.responseStatus === 'tentative' && classes.personTentative,
         props.responseStatus === 'declined' && classes.personDeclined,
         props.responseStatus === 'needsAction' && classes.personNeedsAction,
+        isSelected && rowStyles.rowPrimaryMain,
       )}
     >
       <Grid container spacing={2} alignItems="center" wrap="nowrap">

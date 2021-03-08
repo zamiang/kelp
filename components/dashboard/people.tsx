@@ -87,9 +87,7 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // TODO: better handle sunday
       const fp = await getFeaturedPeople(props);
-
       setFeaturedPeople(fp);
     };
     void fetchData();

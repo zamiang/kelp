@@ -130,6 +130,7 @@ const DocumentRow = (props: {
         'ignore-react-onclickoutside',
         !props.isSmall && rowStyles.row,
         props.isSmall && rowStyles.rowSmall,
+        isSelected && rowStyles.rowPrimaryMain,
       )}
     >
       <ConditionalWrapper
