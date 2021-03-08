@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
-import { getDayOfYear } from 'date-fns';
-import { Dictionary, groupBy } from 'lodash';
+import { format, getDayOfYear } from 'date-fns';
+import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
@@ -9,12 +9,64 @@ import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import TopBar from '../shared/top-bar';
 import { IPerson } from '../store/models/person-model';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
+
+interface IFeaturedPerson {
+  person: IPerson;
+  meetings: ISegment[];
+  nextMeetingStartAt?: Date;
+  text?: string;
+}
+
+/**
+ * Gets people in the featured section by looking through attendees for the coming week
+ * Finds attendees
+ */
+const maxResult = 5;
+const getFeaturedPeople = async (props: IStore) => {
+  const currentDate = new Date();
+  const week = getWeek(currentDate);
+  const result = await props.attendeeDataStore.getForWeek(week);
+
+  const peopleForAttendees = await props.personDataStore.getBulk(result.map((r) => r.personId!));
+  const meetingsForAttendees: any = {};
+  await Promise.all(
+    result.map(async (r) => {
+      const meeting = await props.timeDataStore.getById(r.segmentId);
+      if (r.personId && meetingsForAttendees[r.personId]) {
+        meetingsForAttendees[r.personId].push(meeting);
+      } else if (r.personId) {
+        meetingsForAttendees[r.personId] = [meeting];
+      }
+    }),
+  );
+
+  const p = peopleForAttendees
+    .map((person) => {
+      const meetings = sortBy(meetingsForAttendees[person.id], 'start').filter(
+        (m) => m.start > currentDate,
+      );
+      const nextMeetingStartAt = meetings[0] ? meetings[0].start : undefined;
+      const text = meetings[0]
+        ? `${meetings[0].summary} on ${format(nextMeetingStartAt, 'EEEE, MMMM d')}`
+        : undefined;
+      return {
+        person,
+        meetings,
+        nextMeetingStartAt,
+        text,
+      };
+    })
+    .filter((m) => m.nextMeetingStartAt && !m.person.isCurrentUser);
+
+  return sortBy(p, 'nextMeetingStartAt').slice(0, maxResult);
+};
 
 const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   const classes = useRowStyles();
   const [people, setPeople] = useState<Dictionary<IPerson[]>>({});
-  const [featuredPeople, setFeaturedPeople] = useState<IPerson[]>([]);
+  const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,10 +82,10 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.attendeeDataStore.getForWeek(getWeek(new Date()));
-      const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
+      // TODO: better handle sunday
+      const fp = await getFeaturedPeople(props);
 
-      setFeaturedPeople(p.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
+      setFeaturedPeople(fp);
     };
     void fetchData();
   }, [props.isLoading, props.lastUpdated]);
@@ -43,10 +95,15 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
       {featuredPeople.length > 0 && (
         <div className={classes.rowHighlight}>
           <Typography className={classes.rowText} variant="body2">
-            People you are likely to meet with this week
+            People you are meeting with next
           </Typography>
-          {featuredPeople.map((person) => (
-            <PersonRow key={person.id} person={person} selectedPersonId={props.selectedPersonId} />
+          {featuredPeople.map((featuredPerson) => (
+            <PersonRow
+              key={featuredPerson.person.id}
+              person={featuredPerson.person}
+              selectedPersonId={props.selectedPersonId}
+              text={featuredPerson.text}
+            />
           ))}
         </div>
       )}

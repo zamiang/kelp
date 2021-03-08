@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   rowText: {
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
-    color: theme.palette.secondary.dark,
+    color: '#9D9D99',
     fontWeight: 600,
   },
   rowHint: {

@@ -8,7 +8,7 @@ import ArrowRight from '@material-ui/icons/ArrowRight';
 import clsx from 'clsx';
 import { addDays, format, getDate, isPast, isSameDay, isToday, subDays } from 'date-fns';
 import React from 'react';
-import useRowStyles from '../shared/row-styles';
+import useButtonStyles from '../shared/button-styles';
 import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +66,7 @@ const MeetingTopBar = (props: {
   selectedDay: Date;
   currentDay: Date;
 }) => {
-  const rowStyles = useRowStyles();
+  const buttonClasses = useButtonStyles();
   const classes = useStyles();
   const days: Date[] = [
     subDays(props.currentDay, 1),
@@ -126,7 +126,12 @@ const MeetingTopBar = (props: {
         </IconButton>
       </Grid>
       <Grid item>
-        <Button className={rowStyles.hoverButton} size="small" onClick={props.onNowClick}>
+        <Button
+          variant="outlined"
+          className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+          size="small"
+          onClick={props.onNowClick}
+        >
           Today
         </Button>
       </Grid>

@@ -42,6 +42,7 @@ const PersonRow = (props: {
   info?: string;
   isSmall?: boolean;
   responseStatus?: string;
+  text?: string;
 }) => {
   const classes = useStyles();
   const isSelected = props.selectedPersonId === props.person.id;
@@ -104,7 +105,7 @@ const PersonRow = (props: {
             {!props.isSmall && (
               <Grid item xs={12}>
                 <Typography variant="body2" noWrap>
-                  {props.person.emailAddresses.join(', ')}
+                  {props.text || props.person.emailAddresses.join(', ')}
                 </Typography>
               </Grid>
             )}

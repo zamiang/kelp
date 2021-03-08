@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format, formatDistanceToNow, getDate, getMonth, subDays } from 'date-fns';
+import { format, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -92,7 +92,7 @@ const DayContainer = (props: {
   store: IStore;
   day: string;
   selectedMeetingId: string | null;
-  currentTimeMeetingId: string | null;
+  currentTimeMeetingId?: string;
 }) => {
   const currentTime = new Date();
   const classes = panelStyles();
@@ -133,14 +133,9 @@ const DayContainer = (props: {
 };
 
 const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
-  //const currentTime = new Date();
   const rowStyles = useRowStyles();
-
   return (
     <div className={clsx(rowStyles.rowHighlight, rowStyles.rowHighlightPadding)}>
-      <Typography className={rowStyles.rowText} variant="body2" style={{ paddingLeft: 0 }}>
-        In {formatDistanceToNow(props.meeting.start)}
-      </Typography>
       <br />
       <MeetingRow
         shouldRenderCurrentTime={false}
@@ -184,22 +179,18 @@ const MeetingsByDay = (props: { store: IStore }) => {
   const classes = panelStyles();
   const days = Object.keys(meetingsByDay);
 
-  let hasRenderedCurrentTime = false;
   let featuredMeeting: ISegment | undefined;
   const currentTime = new Date();
-  const currentTimeId = flatten(Object.values(meetingsByDay)).filter((meeting) => {
-    let shouldRenderCurrentTime = false;
-    if (!hasRenderedCurrentTime && meeting.start > currentTime) {
-      hasRenderedCurrentTime = true;
-      shouldRenderCurrentTime = true;
+  // Assumes meetings are already sorted
+  flatten(Object.values(meetingsByDay)).forEach((meeting) => {
+    if (!featuredMeeting && currentTime < meeting.end) {
       featuredMeeting = meeting;
-
-      if (window.innerWidth > 800 && !selectedMeetingId) {
-        router.push(`/meetings/${meeting.id}`);
-      }
     }
-    return shouldRenderCurrentTime;
-  })[0]?.id;
+  });
+
+  if (window.innerWidth > 800 && !selectedMeetingId && featuredMeeting) {
+    router.push(`/meetings/${featuredMeeting.id}`);
+  }
 
   return (
     <div className={classes.panel}>
@@ -224,7 +215,7 @@ const MeetingsByDay = (props: { store: IStore }) => {
           meetings={meetingsByDay[day]}
           selectedMeetingId={selectedMeetingId}
           store={props.store}
-          currentTimeMeetingId={currentTimeId}
+          currentTimeMeetingId={featuredMeeting?.id}
         />
       ))}
     </div>

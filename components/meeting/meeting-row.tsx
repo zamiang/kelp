@@ -108,6 +108,7 @@ const MeetingRow = (props: {
 
   const isPast = new Date() > props.meeting.end;
   const isFuture = new Date() < props.meeting.start;
+  const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
   return (
     <Button
       onClick={() => {
@@ -135,13 +136,22 @@ const MeetingRow = (props: {
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <Typography variant="body2" style={{ display: 'inline-block' }}>
-                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-              </Typography>
-              {props.shouldRenderCurrentTime && (
-                <Typography className={classes.meetingTimeInWords}>
-                  (In {formatDistanceToNow(props.meeting.start)})
+              {isHappeningNow && (
+                <Typography className={classes.meetingTimeInWords} style={{ marginLeft: 0 }}>
+                  Happening Now
                 </Typography>
+              )}
+              {!isHappeningNow && (
+                <React.Fragment>
+                  <Typography variant="body2" style={{ display: 'inline-block' }}>
+                    {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+                  </Typography>
+                  {props.shouldRenderCurrentTime && isFuture && (
+                    <Typography className={classes.meetingTimeInWords}>
+                      (In {formatDistanceToNow(props.meeting.start)})
+                    </Typography>
+                  )}
+                </React.Fragment>
               )}
             </Grid>
             <Grid item xs={12}>

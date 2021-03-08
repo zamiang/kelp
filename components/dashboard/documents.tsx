@@ -39,7 +39,7 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
       {topDocuments.length > 0 && (
         <div className={classes.rowHighlight}>
           <Typography className={classes.rowText} variant="body2">
-            Documents for this week
+            Documents you may need
           </Typography>
           {topDocuments.map((doc) => (
             <DocumentRow
