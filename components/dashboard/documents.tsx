@@ -50,7 +50,6 @@ const getFeaturedDocuments = async (props: IStore) => {
       }
     }),
   );
-  console.log(meetingsForDocument, '<<<meetings for document<<<<', documents);
   const d = documents
     .map((document) => {
       const meetings = sortBy(meetingsForDocument[document.id], 'start');

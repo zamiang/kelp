@@ -78,62 +78,68 @@ const MeetingTopBar = (props: {
   ];
 
   return (
-    <Grid container className={classes.container} spacing={1} alignItems="center">
+    <Grid container className={classes.container} alignItems="center" justify="space-between">
       <Grid item>
-        <IconButton>
-          <ArrowLeft />
-        </IconButton>
-      </Grid>
-      {days.map((d) => (
-        <Grid item key={getDate(d)} className={classes.day} onClick={() => props.onDayClick(d)}>
-          <Grid container alignItems="center">
-            <Grid item xs={12}>
-              <Typography
-                className={clsx(
-                  classes.dayName,
-                  isToday(d) && classes.daySelected,
-                  !isToday(d) && isPast(d) && classes.past,
-                )}
-              >
-                {format(d, 'EEE')}
-              </Typography>
+        <Grid container spacing={1} alignItems="center">
+          <Grid item>
+            <IconButton size="small">
+              <ArrowLeft />
+            </IconButton>
+          </Grid>
+          {days.map((d) => (
+            <Grid item key={getDate(d)} className={classes.day} onClick={() => props.onDayClick(d)}>
+              <Grid container alignItems="center">
+                <Grid item xs={12}>
+                  <Typography
+                    className={clsx(
+                      classes.dayName,
+                      isToday(d) && classes.daySelected,
+                      !isToday(d) && isPast(d) && classes.past,
+                    )}
+                  >
+                    {format(d, 'EEE')}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    className={clsx(
+                      classes.dayNumber,
+                      isToday(d) && classes.daySelected,
+                      !isToday(d) && isPast(d) && classes.past,
+                    )}
+                  >
+                    {getDate(d)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <div
+                    className={clsx(
+                      classes.dayDot,
+                      isSameDay(d, props.selectedDay) && classes.dayDotSelected,
+                    )}
+                  ></div>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Typography
-                className={clsx(
-                  classes.dayNumber,
-                  isToday(d) && classes.daySelected,
-                  !isToday(d) && isPast(d) && classes.past,
-                )}
-              >
-                {getDate(d)}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <div
-                className={clsx(
-                  classes.dayDot,
-                  isSameDay(d, props.selectedDay) && classes.dayDotSelected,
-                )}
-              ></div>
-            </Grid>
+          ))}
+          <Grid item>
+            <IconButton size="small">
+              <ArrowRight />
+            </IconButton>
           </Grid>
         </Grid>
-      ))}
-      <Grid item>
-        <IconButton>
-          <ArrowRight />
-        </IconButton>
       </Grid>
-      <Grid item>
-        <Button
-          variant="outlined"
-          className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-          size="small"
-          onClick={props.onNowClick}
-        >
-          Today
-        </Button>
+      <Grid>
+        <Grid item style={{ marginRight: 5 }}>
+          <Button
+            variant="outlined"
+            className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+            size="small"
+            onClick={props.onNowClick}
+          >
+            Today
+          </Button>
+        </Grid>
       </Grid>
     </Grid>
   );
