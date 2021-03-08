@@ -21,23 +21,27 @@ interface IFeaturedPerson {
 
 /**
  * Gets people in the featured section by looking through attendees for the coming week
- * Finds attendees
+ * Finds attendees and then the upcoming meetings for those attendees
+ * It sorts in decending order so upcoming people are next
  */
 const maxResult = 5;
 const getFeaturedPeople = async (props: IStore) => {
   const currentDate = new Date();
   const week = getWeek(currentDate);
   const result = await props.attendeeDataStore.getForWeek(week);
-
   const peopleForAttendees = await props.personDataStore.getBulk(result.map((r) => r.personId!));
-  const meetingsForAttendees: any = {};
+
+  // Hash of personId to meeting array
+  const meetingsForAttendees: { [id: string]: ISegment[] } = {};
   await Promise.all(
     result.map(async (r) => {
       const meeting = await props.timeDataStore.getById(r.segmentId);
-      if (r.personId && meetingsForAttendees[r.personId]) {
-        meetingsForAttendees[r.personId].push(meeting);
-      } else if (r.personId) {
-        meetingsForAttendees[r.personId] = [meeting];
+      if (meeting) {
+        if (r.personId && meetingsForAttendees[r.personId]) {
+          meetingsForAttendees[r.personId].push(meeting);
+        } else if (r.personId) {
+          meetingsForAttendees[r.personId] = [meeting];
+        }
       }
     }),
   );
@@ -48,9 +52,10 @@ const getFeaturedPeople = async (props: IStore) => {
         (m) => m.start > currentDate,
       );
       const nextMeetingStartAt = meetings[0] ? meetings[0].start : undefined;
-      const text = meetings[0]
-        ? `${meetings[0].summary} on ${format(nextMeetingStartAt, 'EEEE, MMMM d')}`
-        : undefined;
+      const text =
+        meetings[0] && nextMeetingStartAt
+          ? `${meetings[0].summary} on ${format(nextMeetingStartAt, 'EEEE, MMMM d')}`
+          : undefined;
       return {
         person,
         meetings,
