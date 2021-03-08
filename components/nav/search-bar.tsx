@@ -6,6 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
+import isTouchEnabled from '../shared/is-touch-enabled';
 
 const useStyles = makeStyles((theme) => ({
   inputContainer: {
@@ -58,6 +59,7 @@ const SearchBar = () => {
               placeholder="Search…"
               fullWidth
               autoComplete="off"
+              autoFocus={isTouchEnabled()}
               onChange={handleChange}
               name="query"
               margin="dense"
