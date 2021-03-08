@@ -1,5 +1,6 @@
 import Typography from '@material-ui/core/Typography';
-import { getDayOfYear } from 'date-fns';
+import { format, getDayOfYear } from 'date-fns';
+import { sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import DocumentRow from '../documents/document-row';
@@ -8,12 +9,72 @@ import panelStyles from '../shared/panel-styles';
 import rowStyles from '../shared/row-styles';
 import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/models/document-model';
+import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
+
+interface IFeaturedDocument {
+  document: IDocument;
+  meetings: ISegment[];
+  nextMeetingStartAt?: Date;
+  text?: string;
+}
+
+/**
+ * Gets documents in the featured section by looking through meetings for the coming week
+ * Finds meeetings documents associated with those meetings
+ * It sorts in decending order so upcoming meetings are next
+ */
+const maxResult = 5;
+const getFeaturedDocuments = async (props: IStore) => {
+  const currentDate = new Date();
+  const week = getWeek(currentDate);
+  const result = await props.segmentDocumentStore.getAllForWeek(week);
+  const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
+
+  // Hash of personId to meeting array
+  const meetingsForDocument: { [id: string]: ISegment[] } = {};
+
+  await Promise.all(
+    result.map(async (r) => {
+      if (!r.segmentId) {
+        return;
+      }
+      const meeting = await props.timeDataStore.getById(r.segmentId);
+      const documentId = r.documentId;
+      if (meeting) {
+        if (documentId && meetingsForDocument[documentId]) {
+          meetingsForDocument[documentId].push(meeting);
+        } else if (documentId) {
+          meetingsForDocument[documentId] = [meeting];
+        }
+      }
+    }),
+  );
+  console.log(meetingsForDocument, '<<<meetings for document<<<<', documents);
+  const d = documents
+    .map((document) => {
+      const meetings = sortBy(meetingsForDocument[document.id], 'start');
+      const nextMeetingStartAt = meetings[0] ? meetings[0].start : undefined;
+      const text =
+        meetings[0] && nextMeetingStartAt
+          ? `${meetings[0].summary} on ${format(nextMeetingStartAt, 'EEEE, MMMM d')}`
+          : undefined;
+      return {
+        document,
+        meetings,
+        nextMeetingStartAt,
+        text,
+      };
+    })
+    .filter((m) => m.nextMeetingStartAt);
+
+  return sortBy(d, 'nextMeetingStartAt').slice(0, maxResult);
+};
 
 const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => {
   const classes = rowStyles();
   const [docs, setDocs] = useState<IDocument[]>([]);
-  const [topDocuments, setTopDocuments] = useState<IDocument[]>([]);
+  const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,11 +86,8 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.segmentDocumentStore.getAllForWeek(getWeek(new Date()));
-      const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
-      setTopDocuments(
-        documents.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)),
-      );
+      const featuredDocuments = await getFeaturedDocuments(props);
+      setTopDocuments(featuredDocuments);
     };
     void fetchData();
   }, [props.lastUpdated, props.isLoading]);
@@ -39,14 +97,15 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
       {topDocuments.length > 0 && (
         <div className={classes.rowHighlight}>
           <Typography className={classes.rowText} variant="body2">
-            Documents you may need
+            Recent documents
           </Typography>
           {topDocuments.map((doc) => (
             <DocumentRow
-              key={doc.id}
-              doc={doc}
+              key={doc.document.id}
+              doc={doc.document}
               store={props}
               selectedDocumentId={props.selectedDocumentId}
+              text={doc.text}
             />
           ))}
         </div>

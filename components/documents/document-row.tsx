@@ -102,6 +102,7 @@ const DocumentRow = (props: {
   store: IStore;
   isSmall?: boolean;
   tooltipText?: string;
+  text?: string;
 }) => {
   const isSelected = props.selectedDocumentId === props.doc.id;
   const router = useHistory();
@@ -152,7 +153,9 @@ const DocumentRow = (props: {
               {!props.isSmall && (
                 <Grid item xs={12} zeroMinWidth>
                   <Typography variant="body2">
-                    {format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
+                    {props.text
+                      ? props.text
+                      : format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
                   </Typography>
                 </Grid>
               )}
