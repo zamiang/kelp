@@ -1,10 +1,13 @@
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import useComponentSize from '@rehooks/component-size';
 import clsx from 'clsx';
-import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import { addDays, differenceInCalendarDays, format, subDays } from 'date-fns';
+import { times } from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import config from '../../constants/config';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
@@ -15,10 +18,15 @@ import { IDocument } from '../store/models/document-model';
 import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
+import { D3Component } from '../timeline/bar-chart';
+
+const dateFormat = 'MM/dd/yyyy';
 
 const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: () => void }) => {
+  const ref = useRef(null);
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
+  const size = useComponentSize(ref);
   const { slug }: any = useParams();
   const documentId = props.documentId || slug;
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
@@ -26,6 +34,9 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   const [people, setPeople] = useState<IPerson[]>([]);
   const [peopleStats, setPeopleStats] = useState<any>({});
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+
+  const minDate = new Date(subDays(new Date(), 12));
+  const maxDate = new Date(addDays(new Date(), 2));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,6 +86,26 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
     return null;
   }
 
+  // chart data
+  const chartData = {} as any;
+  times(differenceInCalendarDays(maxDate, minDate), (interval: number) => {
+    const date = addDays(minDate, interval);
+    const dateFormatted = format(date, dateFormat);
+    chartData[dateFormatted] = {
+      rate: 0,
+      date,
+      type: 'document',
+    };
+  });
+
+  segmentDocuments.map((activity) => {
+    const date = format(activity.date, dateFormat);
+    if (chartData[date]) {
+      chartData[date].rate++;
+    }
+  });
+
+  // share button
   const shareParams = new URLSearchParams({
     actionButton: '1',
     userstoinvite: '',
@@ -117,7 +148,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       <Divider />
       <div className={classes.container}>
         {people.length > 0 && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Key Contributors</Typography>
             <div>
               {people.map(
@@ -133,18 +164,31 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
                   ),
               )}
             </div>
-          </React.Fragment>
+          </div>
         )}
         {segmentDocuments.length > 0 && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6">Meetings</Typography>
             <SegmentMeetingList
               segmentDocuments={segmentDocuments}
               timeStore={props.store.timeDataStore}
               personStore={props.store.personDataStore}
             />
-          </React.Fragment>
+          </div>
         )}
+        <div className={classes.section} ref={ref}>
+          <D3Component
+            data={Object.values(chartData)}
+            width={size.width < 300 ? 300 : size.width}
+            height={300}
+            minDate={minDate}
+            maxDate={maxDate}
+            startGradient={config.BLUE_BACKGROUND}
+            endGradient={config.BLUE_BACKGROUND}
+            label={'Activity Graph'}
+            smallLabel={'for this document'}
+          />
+        </div>
       </div>
     </React.Fragment>
   );

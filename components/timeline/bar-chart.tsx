@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => ({
 
 const d3Styles = makeStyles((theme) => ({
   svg: {
+    fill: 'white',
     '& .background': {
       shapeRendering: 'geometricPrecision',
     },
@@ -70,7 +71,7 @@ const d3Styles = makeStyles((theme) => ({
   },
 }));
 
-const D3Component = (props: {
+export const D3Component = (props: {
   data: IBarChartItem[];
   height: number;
   width: number;
