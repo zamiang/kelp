@@ -141,9 +141,9 @@ const theme = createMuiTheme({
         minWidth: 0,
       },
     },
-    MuiSvgIcon: {
+    MuiIconButton: {
       root: {
-        fill: '#000000',
+        color: '#000000',
       },
     },
     MuiListItem: {

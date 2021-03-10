@@ -6,6 +6,19 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(2),
     textTransform: 'uppercase',
   },
+  circleButton: {
+    marginLeft: 'auto',
+    display: 'block',
+    background: theme.palette.primary.main,
+    color: theme.palette.background.paper,
+    opacity: 1,
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      background: theme.palette.primary.main,
+      color: theme.palette.background.paper,
+      opacity: 0.8,
+    },
+  },
   buttonPrimary: {
     color: theme.palette.primary.main,
     padding: '5px 14px',

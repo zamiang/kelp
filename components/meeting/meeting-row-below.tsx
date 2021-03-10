@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -142,16 +143,13 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button
+            <IconButton
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
-              variant="contained"
-              disableElevation
-              color="primary"
-              startIcon={<VideocamIcon color={'paper' as any} />}
-              className={buttonClasses.button}
+              className={buttonClasses.circleButton}
+              size="small"
             >
-              Join
-            </Button>
+              <VideocamIcon color={'paper' as any} />
+            </IconButton>
           </Grid>
         </Grid>
       </div>
