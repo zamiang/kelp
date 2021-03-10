@@ -9,9 +9,12 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
 import Docs from '../../components/dashboard/documents';
+import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
 import People from '../../components/dashboard/people';
 import Search from '../../components/dashboard/search';
+import Summary from '../../components/dashboard/summary';
+import WeekCalendar from '../../components/dashboard/week-calendar';
 import ExpandedDocument from '../../components/documents/expand-document';
 import ErrorBoundaryComponent from '../../components/error-tracking/error-boundary';
 import { fetchToken } from '../../components/fetch/fetch-token';
@@ -166,6 +169,15 @@ const DesktopDashboard = (props: { store: IStore }) => {
             <Grid item xs className={classes.right}>
               <NavRight handleRefreshClick={handleRefreshClick} store={store} />
               <div className={classes.center}>
+                <Route path="/dashboard">
+                  <Home {...store} />
+                </Route>
+                <Route path="/week">
+                  <WeekCalendar {...store} />
+                </Route>
+                <Route path="/summary">
+                  <Summary {...store} />
+                </Route>
                 <Route path="/search/docs/:slug">
                   <ExpandedDocument store={store} />
                 </Route>
