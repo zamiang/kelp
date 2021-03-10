@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     color: '#9D9D99',
-    fontWeight: 600,
+    fontWeight: 500,
   },
   rowHint: {
     color: theme.palette.text.hint,

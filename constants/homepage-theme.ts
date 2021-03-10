@@ -1,6 +1,44 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
+import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
+import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 
-const bodyFontFamily = "'reason-new', '-apple-system', 'Helvetica Neue', sans-serif;";
+const bodyFontFamily = "'basis-grotesque-pro', sans-serif";
+
+const basisRegular = {
+  fontFamily: 'basis-grotesque-pro',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `
+    local('basis-grotesque-pro'),
+    local('basis-grotesque'),
+    url(${BasisGrotesqueRegularWoff2}) format('woff2')
+  `,
+};
+const basisItalic = {
+  fontFamily: 'basis-grotesque-pro',
+  fontStyle: 'italic',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `
+    local('basis-grotesque-pro'),
+    local('basis-grotesque'),
+    url(${BasisGrotesqueItalicWoff2}) format('woff2')
+  `,
+};
+
+const basisMediumg = {
+  fontFamily: 'basis-grotesque-pro',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 500,
+  src: `
+    local('basis-grotesque-pro'),
+    local('basis-grotesque'),
+    url(${BasisGrotesqueMediumWoff2}) format('woff2')
+  `,
+};
 
 const theme = createMuiTheme({
   props: {
@@ -100,6 +138,11 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': [basisRegular, basisMediumg, basisItalic],
+      },
+    },
     MuiListItemIcon: {
       root: {
         minWidth: 0,

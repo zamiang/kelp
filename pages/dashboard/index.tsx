@@ -7,20 +7,18 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
 import Docs from '../../components/dashboard/documents';
-import Home from '../../components/dashboard/home';
 import Meetings from '../../components/dashboard/meetings';
 import People from '../../components/dashboard/people';
 import Search from '../../components/dashboard/search';
-import Summary from '../../components/dashboard/summary';
-import WeekCalendar from '../../components/dashboard/week-calendar';
 import ExpandedDocument from '../../components/documents/expand-document';
 import ErrorBoundaryComponent from '../../components/error-tracking/error-boundary';
 import { fetchToken } from '../../components/fetch/fetch-token';
 import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import MobileDashboard from '../../components/mobile/dashboard';
 import NavBar from '../../components/nav/nav-bar';
+import NavRight from '../../components/nav/nav-right';
 import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
 import NotificationsPopup from '../../components/notifications/notifications-popup';
 import ExpandPerson from '../../components/person/expand-person';
@@ -38,25 +36,29 @@ const useStyles = makeStyles((theme) => ({
   content: {
     overscrollBehavior: 'contain',
     flexGrow: 1,
-    overflowX: 'hidden',
-    minHeight: 'calc(100vh - 49px)',
+    background: theme.palette.secondary.light,
+    minHeight: '100vh',
   },
   left: {
     maxWidth: 440,
-    maxHeight: 'calc(100vh - 49px)', // calc(100vh - 104px)',
-    overflowX: 'hidden',
     background: theme.palette.background.paper,
     borderRight: `1px solid ${theme.palette.divider}`,
-    width: '100%',
+    width: '33vw',
+  },
+  right: {
+    position: 'sticky',
+    top: 0,
+    right: 0,
   },
   center: {
     margin: '0px auto',
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(4),
+    borderRadius: theme.shape.borderRadius,
     background: theme.palette.background.paper,
     maxWidth: 708,
     position: 'relative',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    maxHeight: 'calc(100vh - 85px)',
+    maxHeight: 'calc(100vh - 33px)',
     overflow: 'auto',
     width: '100%',
   },
@@ -114,116 +116,80 @@ const LoadingStoreDashboardContainer = (props: {
 };
 
 const DesktopDashboard = (props: { store: IStore }) => {
+  const history = useHistory();
   const classes = useStyles();
   const store = props.store;
   const handleRefreshClick = () => store.refetch();
 
+  // Unsure why the <Redirect component doesn't work anymore
+  if (useLocation().pathname === '/') {
+    history.push(`/meetings`);
+  }
+
   return (
     <ErrorBoundaryComponent>
-      <NavBar handleRefreshClick={handleRefreshClick} store={store} />
+      <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>Please reload the page
+          <Typography>{store.error}</Typography>
+        </Alert>
+      </Dialog>
+      <NotificationsPopup />
+      <MeetingPrepNotifications {...store} />
       <main className={classes.content}>
-        <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
-          <Alert severity="error">
-            <AlertTitle>Error</AlertTitle>Please reload the page
-            <Typography>{store.error}</Typography>
-          </Alert>
-        </Dialog>
-        <NotificationsPopup />
-        <MeetingPrepNotifications {...store} />
         <Switch>
-          <Route path="/week">
-            <WeekCalendar {...store} />
-          </Route>
-          <Route path="/summary">
-            <Summary {...store} />
-          </Route>
-          <Route path="/search">
-            <Grid container spacing={4} alignItems="flex-start">
-              <Grid item xs>
-                <div className={classes.center}>
-                  <Search store={store} />
-                </div>
+          <Grid container alignItems="flex-start">
+            <Route path="/search">
+              <Grid item className={classes.left}>
+                <NavBar />
+                <Search store={store} />
               </Grid>
-              <Route path="/search/docs/:slug">
-                <Grid item xs>
-                  <div className={classes.center}>
-                    <ExpandedDocument store={store} />
-                  </div>
-                </Grid>
-              </Route>
-              <Route path="/search/meetings/:slug">
-                <Grid item xs>
-                  <div className={classes.center}>
-                    <ExpandedMeeting store={store} />
-                  </div>
-                </Grid>
-              </Route>
-              <Route path="/search/people/:slug">
-                <Grid item xs>
-                  <div className={classes.center}>
-                    <ExpandPerson store={store} />
-                  </div>
-                </Grid>
-              </Route>
-            </Grid>
-          </Route>
-          <Route path="/settings">
-            <Settings shouldRenderHeader={true} />
-          </Route>
-          <Route path="/meetings">
-            <Grid container alignItems="flex-start">
-              <Grid item>
-                <div className={classes.left}>
-                  <Meetings store={store} />
-                </div>
+            </Route>
+            <Route path="/meetings">
+              <Grid item className={classes.left}>
+                <NavBar />
+                <Meetings store={store} />
               </Grid>
-              <Route path="/meetings/:slug">
-                <Grid item xs>
-                  <div className={classes.center}>
-                    <ExpandedMeeting store={store} />
-                  </div>
-                </Grid>
-              </Route>
-            </Grid>
-          </Route>
-          <Route path="/docs">
-            <Grid container alignItems="flex-start">
-              <Grid item>
-                <div className={classes.left}>
-                  <Docs store={store} />
-                </div>
+            </Route>
+            <Route path="/docs">
+              <Grid item className={classes.left}>
+                <NavBar />
+                <Docs store={store} />
               </Grid>
-              <Route path="/docs/:slug">
-                <Grid item xs>
-                  <div className={classes.center}>
-                    <ExpandedDocument store={store} />
-                  </div>
-                </Grid>
-              </Route>
-            </Grid>
-          </Route>
-          <Route path="/people">
-            <Grid container alignItems="flex-start">
-              <Grid item>
-                <div className={classes.left}>
-                  <People store={store} />
-                </div>
+            </Route>
+            <Route path="/people">
+              <Grid item className={classes.left}>
+                <NavBar />
+                <People store={store} />
               </Grid>
-              <Route path="/people/:slug">
-                <Grid item xs>
-                  <div className={classes.center}>
-                    <ExpandPerson store={store} />
-                  </div>
-                </Grid>
-              </Route>
+            </Route>
+            <Grid item xs className={classes.right}>
+              <NavRight handleRefreshClick={handleRefreshClick} store={store} />
+              <div className={classes.center}>
+                <Route path="/search/docs/:slug">
+                  <ExpandedDocument store={store} />
+                </Route>
+                <Route path="/search/meetings/:slug">
+                  <ExpandedMeeting store={store} />
+                </Route>
+                <Route path="/search/people/:slug">
+                  <ExpandPerson store={store} />
+                </Route>
+                <Route path="/settings">
+                  <Settings shouldRenderHeader={true} />
+                </Route>
+                <Route path="/meetings/:slug">
+                  <ExpandedMeeting store={store} />
+                </Route>
+                <Route path="/docs/:slug">
+                  <ExpandedDocument store={store} />
+                </Route>
+                <Route path="/people/:slug">
+                  <ExpandPerson store={store} />
+                </Route>
+              </div>
             </Grid>
-          </Route>
-          <Route path="/dashboard">
-            <Home {...store} />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/meetings" />
-          </Route>
+          </Grid>
         </Switch>
       </main>
     </ErrorBoundaryComponent>
@@ -238,7 +204,7 @@ const is500Error = (error: Error) => (error as any).status === 500;
 
 export const DashboardContainer = ({ store }: IProps) => {
   console.log('loading message', store.loadingMessage);
-  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const interval = setInterval(store.refetch, 1000 * 60 * 30); // 30 minutes

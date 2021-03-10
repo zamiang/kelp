@@ -29,7 +29,7 @@ export const Meeting = (props: {
   return (
     <Button
       onClick={() => router.push(`/meetings/${props.meeting.id}`)}
-      className={clsx('ignore-react-onclickoutside', rowStyles.row)}
+      className={clsx(rowStyles.row)}
     >
       <Grid container wrap="nowrap" spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>

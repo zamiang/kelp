@@ -1,10 +1,15 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const Handle404 = () => {
+  const history = useHistory();
   const newURL = `https://www.kelp.nyc/dashboard${useLocation().pathname}`;
   useEffect(() => {
-    chrome.tabs.create({ url: newURL });
+    if (chrome && chrome.tabs) {
+      chrome.tabs.create({ url: newURL });
+    } else {
+      history.push(`/meetings`);
+    }
   }, [newURL]);
 
   return null;

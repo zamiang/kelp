@@ -58,11 +58,7 @@ const RefreshButton = (props: IProps) => {
         <IconButton
           onClick={props.refresh}
           aria-label="refresh data"
-          className={clsx(
-            classes.button,
-            props.isLoading && classes.loading,
-            'ignore-react-onclickoutside',
-          )}
+          className={clsx(classes.button, props.isLoading && classes.loading)}
         >
           <RefreshIcon />
         </IconButton>

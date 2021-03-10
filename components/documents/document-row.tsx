@@ -21,11 +21,7 @@ export const MissingDocumentRow = (props: {
   const classes = useStyles();
   return (
     <Button
-      className={clsx(
-        'ignore-react-onclickoutside',
-        !props.isSmall && rowStyles.row,
-        props.isSmall && rowStyles.rowSmall,
-      )}
+      className={clsx(!props.isSmall && rowStyles.row, props.isSmall && rowStyles.rowSmall)}
       onClick={() => {
         // TODO handle slides?
         window.open(
@@ -127,7 +123,6 @@ const DocumentRow = (props: {
       }}
       ref={setReferenceElement as any}
       className={clsx(
-        'ignore-react-onclickoutside',
         !props.isSmall && rowStyles.row,
         props.isSmall && rowStyles.rowSmall,
         isSelected && rowStyles.rowPrimaryMain,

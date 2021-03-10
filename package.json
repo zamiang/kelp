@@ -64,6 +64,7 @@
     "lodash": "4.17.21",
     "material-ui-popup-state": "1.7.2",
     "next": "10.0.8",
+    "next-fonts": "1.5.1",
     "next-secure-headers": "2.2.0",
     "p-ratelimit": "1.0.1",
     "pg": "8.5.1",

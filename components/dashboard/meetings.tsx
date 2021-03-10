@@ -18,7 +18,7 @@ const dayStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
   dayNumber: {
-    fontWeight: 600,
+    fontWeight: 500,
     textTransform: 'uppercase',
     color: 'rgba(0,0,0,0.87)',
   },
@@ -107,7 +107,6 @@ const DayContainer = (props: {
           key={meeting.id}
           id={meeting.id}
           className={clsx(
-            'ignore-react-onclickoutside',
             rowStyles.row,
             meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
             meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,

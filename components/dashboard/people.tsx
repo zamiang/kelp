@@ -7,7 +7,6 @@ import PersonRow from '../person/person-row';
 import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
-import TopBar from '../shared/top-bar';
 import { IPerson } from '../store/models/person-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -171,7 +170,6 @@ const People = (props: { store: IStore; hideHeading?: boolean }) => {
   }
   return (
     <div className={classes.panel}>
-      <TopBar title="People" />
       <AllPeople selectedPersonId={selectedPersonId} {...props.store} />
     </div>
   );

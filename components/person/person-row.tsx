@@ -68,7 +68,6 @@ const PersonRow = (props: {
       onMouseLeave={() => setDetailsVisible(false)}
       ref={setReferenceElement as any}
       className={clsx(
-        'ignore-react-onclickoutside',
         !props.isSmall && rowStyles.row,
         props.isSmall && rowStyles.rowSmall,
         classes.person,

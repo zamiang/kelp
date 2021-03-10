@@ -1,7 +1,8 @@
 const { createSecureHeaders } = require('next-secure-headers');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const withFonts = require('next-fonts');
 
-module.exports = {
+module.exports = withFonts({
   reactStrictMode: true,
   poweredByHeader: false,
 
@@ -43,13 +44,7 @@ module.exports = {
           contentSecurityPolicy: {
             directives: {
               defaultSrc: "'self'",
-              styleSrc: [
-                "'self'",
-                "'unsafe-inline'",
-                'https://fonts.googleapis.com/css2',
-                'https://use.typekit.net/obt3xmb.css',
-                'https://p.typekit.net',
-              ],
+              styleSrc: ["'self'", "'unsafe-inline'"],
               imgSrc: [
                 "'self'",
                 'data:',
@@ -59,12 +54,7 @@ module.exports = {
                 //'https://platform.slack-edge.com',
                 'https://www.googletagmanager.com',
               ],
-              fontSrc: [
-                "'self'",
-                'https://fonts.googleapis.com',
-                'https://fonts.gstatic.com',
-                'https://use.typekit.net',
-              ],
+              fontSrc: ["'self'"],
               scriptSrc: ["'self'", "'unsafe-eval'", 'https://apis.google.com'],
               frameSrc: [
                 'https://auth.kelp.nyc',
@@ -95,4 +85,4 @@ module.exports = {
       },
     ];
   },
-};
+});

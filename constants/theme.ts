@@ -1,6 +1,32 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
+import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
+import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 
-const bodyFontFamily = "'Inter', sans-serif";
+const bodyFontFamily = "'basis-grotesque', sans-serif";
+
+const basisRegular = {
+  fontFamily: 'basis-grotesque',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `url(${BasisGrotesqueRegularWoff2}) format('woff2')`,
+};
+const basisItalic = {
+  fontFamily: 'basis-grotesque',
+  fontStyle: 'italic',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `url(${BasisGrotesqueItalicWoff2}) format('woff2')`,
+};
+
+const basisMediumg = {
+  fontFamily: 'basis-grotesque',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 500,
+  src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
+};
 
 const theme = createMuiTheme({
   props: {
@@ -99,6 +125,11 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': [basisRegular, basisMediumg, basisItalic],
+      },
+    },
     MuiListItemIcon: {
       root: {
         minWidth: 0,
@@ -113,7 +144,7 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
-        fontWeight: 600,
+        fontWeight: 500,
       },
     },
     MuiAvatar: {

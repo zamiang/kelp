@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   meetingTimeInWords: {
     color: theme.palette.secondary.dark,
-    fontWeight: 600,
+    fontWeight: 500,
     display: 'inline-block',
     marginLeft: theme.spacing(1),
   },
