@@ -34,7 +34,7 @@
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.57",
     "@material-ui/styles": "4.11.2",
-    "@popperjs/core": "2.9.0",
+    "@popperjs/core": "2.9.1",
     "@rehooks/component-size": "1.0.3",
     "@slack/web-api": "6.0.0",
     "@types/chrome": "0.0.133",
