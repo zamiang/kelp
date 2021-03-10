@@ -26,7 +26,6 @@ import MeetingPrepNotifications from '../../components/notifications/meeting-pre
 import NotificationsPopup from '../../components/notifications/notifications-popup';
 import ExpandPerson from '../../components/person/expand-person';
 import Loading from '../../components/shared/loading';
-import { ScrollToTop } from '../../components/shared/scroll-to-top';
 import db from '../../components/store/db';
 import getStore, { IStore } from '../../components/store/use-store';
 import Settings from '../../components/user-profile/settings';
@@ -112,7 +111,6 @@ const LoadingStoreDashboardContainer = (props: {
   return (
     <div suppressHydrationWarning={true}>
       <Router basename="/dashboard">
-        <ScrollToTop />
         <DashboardContainer store={store} />
       </Router>
     </div>
