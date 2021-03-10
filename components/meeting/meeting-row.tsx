@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import { format, formatDistanceToNow } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
 import useButtonStyles from '../shared/button-styles';
@@ -96,15 +96,8 @@ const MeetingRow = (props: {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
   const router = useHistory();
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
   const [isVideoVisible, setVideoVisible] = useState(isTouchEnabled());
-
-  useEffect(() => {
-    if (isSelected && referenceElement) {
-      referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
-    }
-  }, [!!referenceElement]);
 
   const isPast = new Date() > props.meeting.end;
   const isFuture = new Date() < props.meeting.start;
@@ -117,7 +110,6 @@ const MeetingRow = (props: {
       }}
       onMouseEnter={() => !isSelected && setVideoVisible(true)}
       onMouseLeave={() => setVideoVisible(false)}
-      ref={setReferenceElement as any}
       className={classes.container}
     >
       <Grid container spacing={1} alignItems="center">

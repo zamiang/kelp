@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { format, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
@@ -162,10 +162,9 @@ const scrollCurrentTimeIntoView = () => {
 const DAYS_BACK = 5;
 
 const MeetingsByDay = (props: { store: IStore }) => {
-  const router = useHistory();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
-  const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
+  let selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -190,7 +189,7 @@ const MeetingsByDay = (props: { store: IStore }) => {
   });
 
   if (window.innerWidth > 800 && !selectedMeetingId && featuredMeeting) {
-    router.push(`/meetings/${featuredMeeting.id}`);
+    selectedMeetingId = featuredMeeting.id;
   }
 
   return (
