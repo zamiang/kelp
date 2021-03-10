@@ -89,10 +89,10 @@ const useStyles = makeStyles((theme) => ({
   rowHighlight: {
     background: theme.palette.secondary.light,
     marginTop: theme.spacing(2),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
   },
   rowHighlightPadding: {
     paddingLeft: theme.spacing(2),
@@ -119,10 +119,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rowPrimaryMain: {
-    background: theme.palette.primary.light,
+    background: theme.palette.secondary.light,
     '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
-      borderColor: theme.palette.primary.light,
-      background: theme.palette.primary.light,
+      borderColor: theme.palette.secondary.light,
+      background: theme.palette.secondary.light,
     },
   },
 }));

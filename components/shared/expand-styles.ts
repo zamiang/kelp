@@ -11,13 +11,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
     paddingTop: theme.spacing(2),
     margin: 0,
     width: 'auto',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(2),
     },
+  },
+  headingContainer: {
+    marginBottom: theme.spacing(3),
   },
   relativeContainer: {
     position: 'relative',
@@ -65,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
     height: 73,
     width: 73,
     fontSize: 50,
+    marginBottom: theme.spacing(2),
   },
   link: {
     color: theme.palette.primary.dark,

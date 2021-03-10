@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IDocument } from '../store/models/document-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
@@ -63,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     display: 'block',
+    maxWidth: 18,
   },
   imageSpacing: {
     maxHeight: 18,
@@ -105,6 +107,7 @@ const DocumentRow = (props: {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -114,6 +117,8 @@ const DocumentRow = (props: {
 
   return (
     <Button
+      onMouseEnter={() => setDetailsVisible(true)}
+      onMouseLeave={() => setDetailsVisible(false)}
       onClick={(event) => {
         event.stopPropagation();
         if (props.doc.link) {
@@ -148,7 +153,7 @@ const DocumentRow = (props: {
               </Grid>
               {!props.isSmall && (
                 <Grid item xs={12} zeroMinWidth>
-                  <Typography variant="body2">
+                  <Typography variant="body2" noWrap>
                     {props.text
                       ? props.text
                       : format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
@@ -157,19 +162,21 @@ const DocumentRow = (props: {
               )}
             </Grid>
           </Grid>
-          <Grid item style={{ marginLeft: 'auto' }}>
-            <Button
-              className={rowStyles.hoverButton}
-              size="small"
-              onClick={(event) => {
-                event.stopPropagation();
-                void router.push(`/docs/${props.doc.id}`);
-                return false;
-              }}
-            >
-              Details
-            </Button>
-          </Grid>
+          {!props.isSmall && isDetailsVisible && (
+            <Grid item style={{ marginLeft: 'auto' }}>
+              <Button
+                className={rowStyles.hoverButton}
+                size="small"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  void router.push(`/docs/${props.doc.id}`);
+                  return false;
+                }}
+              >
+                Details
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </ConditionalWrapper>
     </Button>

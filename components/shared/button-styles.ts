@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   button: {
     width: '100%',
-    borderRadius: theme.spacing(2),
+    borderRadius: 30,
     textTransform: 'uppercase',
   },
   circleButton: {
@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonPrimary: {
     color: theme.palette.primary.main,
-    padding: '5px 14px',
+    paddingTop: 3,
+    paddingBottom: 3,
   },
   selected: {
     borderBottom: `2px solid ${theme.palette.primary.main}`,

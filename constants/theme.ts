@@ -71,7 +71,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: bodyFontFamily,
     fontWeightRegular: 400,
     h1: {
@@ -84,21 +84,33 @@ const theme = createMuiTheme({
       fontStyle: 'normal',
     },
     h3: {
-      fontWeight: 400,
-      fontStyle: 'normal',
-    },
-    h5: {
-      fontSize: '1.875rem',
+      fontSize: 20,
       fontStyle: 'normal',
       fontFamily: mediumFontFamily,
+      fontWeight: 500,
+      color: '#000',
+    },
+    h4: {
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      fontWeight: 400,
+      color: '#000',
+    },
+    h5: {
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      color: 'rgba(0,0,0,0.5)',
     },
     h6: {
-      fontSize: '0.875rem',
+      fontSize: 14,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
       color: 'rgba(0,0,0,0.5)',
       fontWeight: 400,
       textTransform: 'none',
-      fontStyle: 'normal',
-      lineHeight: '28px',
+      marginBottom: 12,
     },
     subtitle1: {
       fontFamily: bodyFontFamily,
@@ -158,12 +170,15 @@ const theme = createMuiTheme({
         textTransform: 'none',
         fontWeight: 500,
         fontFamily: mediumFontFamily,
+        fontSize: 16,
+        paddingTop: 4,
+        paddingBottom: 4,
       },
     },
     MuiAvatar: {
       root: {
-        height: 30,
-        width: 30,
+        height: 32,
+        width: 32,
         fontSize: '1rem',
         textTransform: 'uppercase',
         color: '#ffffff',

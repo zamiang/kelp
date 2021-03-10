@@ -21,15 +21,14 @@ const dayStyles = makeStyles((theme) => ({
   dayNumber: {
     fontWeight: 500,
     fontFamily: mediumFontFamily,
+    fontSize: 16,
     textTransform: 'uppercase',
     color: 'rgba(0,0,0,0.87)',
   },
   dayNumberToday: {
-    textDecoration: 'underline',
+    color: theme.palette.primary.main,
   },
-  dayNumberPast: {
-    color: theme.palette.text.hint,
-  },
+  dayNumberPast: {},
   currentTime: {
     marginTop: -6,
     paddingLeft: 33,
@@ -159,7 +158,7 @@ const scrollCurrentTimeIntoView = () => {
   document.getElementById('current-time')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
-const DAYS_BACK = 5;
+const DAYS_BACK = 1;
 
 const MeetingsByDay = (props: { store: IStore }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});

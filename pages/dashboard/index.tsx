@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
     borderRadius: theme.shape.borderRadius,
     background: theme.palette.background.paper,
-    maxWidth: 708,
+    maxWidth: 530,
     position: 'relative',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
     maxHeight: 'calc(100vh - 33px)',

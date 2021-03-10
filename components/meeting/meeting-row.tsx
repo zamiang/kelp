@@ -57,20 +57,24 @@ const useStyles = makeStyles((theme) => ({
     transition: 'transform 0.3s',
   },
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     marginRight: theme.spacing(1),
   },
   dotPast: {
     backgroundColor: theme.palette.grey[200],
   },
   dotFuture: {
-    backgroundColor: theme.palette.grey[900],
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   dotPresent: {
     backgroundColor: theme.palette.secondary.main,
   },
+  text: {},
+  textPast: { color: 'rgba(0,0,0,0.3)' },
+  textFuture: {},
+  textPresent: { color: theme.palette.primary.main },
   iconContainer: {
     marginLeft: -20,
     marginRight: -2,
@@ -133,7 +137,7 @@ const MeetingRow = (props: {
           )}
           {!isHappeningNow && (
             <React.Fragment>
-              <Typography variant="body2" style={{ display: 'inline-block' }}>
+              <Typography className={clsx(classes.textPast)} style={{ display: 'inline-block' }}>
                 {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
               </Typography>
               {props.shouldRenderCurrentTime && isFuture && (
@@ -143,11 +147,17 @@ const MeetingRow = (props: {
               )}
             </React.Fragment>
           )}
-          <Typography noWrap>
-            <span style={{ fontWeight: 500 }}>{props.meeting.summary || '(no title)'}</span>{' '}
-            {!props.isSmall && props.meeting.description
-              ? props.meeting.description.replace(/<[^>]+>/g, '')
-              : ''}
+          <Typography
+            noWrap
+            variant="h4"
+            className={clsx(
+              classes.text,
+              props.shouldRenderCurrentTime && classes.textPresent,
+              !props.shouldRenderCurrentTime && isFuture && classes.textFuture,
+              !props.shouldRenderCurrentTime && isPast && classes.textPast,
+            )}
+          >
+            {props.meeting.summary || '(no title)'}{' '}
           </Typography>
         </Grid>
         {isVideoVisible && props.meeting.videoLink && (

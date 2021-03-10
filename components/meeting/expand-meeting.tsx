@@ -177,14 +177,15 @@ const ExpandedMeeting = (props: {
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
-        <Typography variant="h5" color="textPrimary" gutterBottom>
-          {meeting.summary || '(no title)'}
-        </Typography>
-        <Typography variant="body2">
-          {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
-          {format(meeting.end, 'p')}
-        </Typography>
-        <br />
+        <div className={classes.headingContainer}>
+          <Typography variant="h3" gutterBottom>
+            {meeting.summary || '(no title)'}
+          </Typography>
+          <Typography variant="h5">
+            {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
+            {format(meeting.end, 'p')}
+          </Typography>
+        </div>
         <Grid container spacing={2}>
           {!hasMeetingNotes && (
             <Grid item xs={6}>

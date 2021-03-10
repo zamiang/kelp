@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'uppercase',
     fontSize: 9,
     display: 'block',
+    color: 'rgba(0,0,0,0.5)',
   },
   dayNumber: {
     fontSize: 16,
@@ -111,8 +112,8 @@ const MeetingTopBar = (props: {
             <Button
               variant="outlined"
               className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-              size="small"
               onClick={props.onNowClick}
+              style={{ fontSize: 14 }}
             >
               Today
             </Button>

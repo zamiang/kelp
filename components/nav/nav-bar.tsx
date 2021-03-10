@@ -1,9 +1,9 @@
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import GroupIcon from '@material-ui/icons/Group';
-import HomeIcon from '@material-ui/icons/Home';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DescriptionIcon from '@material-ui/icons/Description';
+import EventIcon from '@material-ui/icons/Event';
 import clsx from 'clsx';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -25,26 +25,31 @@ const useStyles = makeStyles((theme) => ({
   },
   selected: {
     color: `${theme.palette.secondary.dark} !important`,
-    borderBottom: `3px solid ${theme.palette.primary.main} !important`,
+    borderBottom: `1px solid ${theme.palette.primary.main} !important`,
   },
   icon: {
     color: theme.palette.secondary.light,
     transition: 'border-color 0.6s',
     textAlign: 'center',
-    borderBottom: `3px solid ${theme.palette.background.paper}`,
+    borderBottom: `1px solid ${theme.palette.background.paper}`,
     '&:hover': {
-      borderBottom: `3px solid ${theme.palette.divider}`,
+      borderBottom: `1px solid ${theme.palette.divider}`,
     },
   },
   logo: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
     borderBottom: 0,
   },
   iconButton: {
     borderRadius: 0,
     width: '100%',
     paddingBottom: 10,
+  },
+  iconButtonLarge: {
+    borderRadius: 0,
+    width: '100%',
+    padding: 20,
   },
 }));
 
@@ -76,29 +81,29 @@ const NavBar = () => {
       <Grid container alignItems="center" justify="space-between">
         <Grid item xs className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
           <IconButton
-            className={classes.iconButton}
+            className={classes.iconButtonLarge}
             onClick={() => history.push('/meetings')}
             aria-label="Meetings"
           >
-            <HomeIcon />
+            <EventIcon />
           </IconButton>
         </Grid>
         <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
           <IconButton
-            className={classes.iconButton}
+            className={classes.iconButtonLarge}
             onClick={() => history.push('/docs')}
             aria-label="Documents"
           >
-            <InsertDriveFileIcon />
+            <DescriptionIcon />
           </IconButton>
         </Grid>
         <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
           <IconButton
-            className={classes.iconButton}
+            className={classes.iconButtonLarge}
             onClick={() => history.push('/people')}
             aria-label="People"
           >
-            <GroupIcon />
+            <AccountCircleIcon />
           </IconButton>
         </Grid>
       </Grid>

@@ -89,13 +89,13 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           >
             {(person.name || person.id)[0]}
           </Avatar>
-          <Typography className={classes.titleCenter} variant="h5" color="textPrimary" gutterBottom>
+          <Typography className={classes.titleCenter} variant="h3" color="textPrimary" gutterBottom>
             {person.name}
           </Typography>
         </Box>
         {emailAddress && (
           <div style={{ textAlign: 'center' }}>
-            <Typography>
+            <Typography variant="h5">
               {emailAddress}{' '}
               <Link
                 style={{ cursor: 'pointer' }}
@@ -104,7 +104,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
                 copy
               </Link>
             </Typography>
-            <div style={{ maxWidth: 150, margin: '10px auto 0 ' }}>
+            <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
                 className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
                 variant="outlined"

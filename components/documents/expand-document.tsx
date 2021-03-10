@@ -114,24 +114,24 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
-        <Typography variant="h5" color="textPrimary" gutterBottom>
-          {document.name || '(no title)'}
-        </Typography>
-        {document.updatedAt && (
-          <Typography variant="body2">
-            Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
+        <div className={classes.headingContainer}>
+          <Typography variant="h3" color="textPrimary" gutterBottom>
+            {document.name || '(no title)'}
           </Typography>
-        )}
-        <div style={{ margin: '10px auto 0 ' }}>
-          <Button
-            className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-            variant="outlined"
-            href={`${document.link}?${shareParams.toString()}`}
-            target="_blank"
-          >
-            Share Document
-          </Button>
+          {document.updatedAt && (
+            <Typography variant="h5">
+              Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
+            </Typography>
+          )}
         </div>
+        <Button
+          className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+          variant="outlined"
+          href={`${document.link}?${shareParams.toString()}`}
+          target="_blank"
+        >
+          Share Document
+        </Button>
         <div style={{ margin: '10px auto 0 ' }}>
           <Button
             className={buttonClasses.button}
