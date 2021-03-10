@@ -1,6 +1,34 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
+import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
+import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 
-const bodyFontFamily = "'Inter', sans-serif";
+const bodyFontFamily = "'basis-grotesque', sans-serif";
+export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
+const italicFontFamily = "'basis-grotesque-italic', sans-serif";
+
+const basisRegular = {
+  fontFamily: 'basis-grotesque',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `url(${BasisGrotesqueRegularWoff2}) format('woff2')`,
+};
+const basisItalic = {
+  fontFamily: 'basis-grotesque-italic',
+  fontStyle: 'italic',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `url(${BasisGrotesqueItalicWoff2}) format('woff2')`,
+};
+
+const basisMedium = {
+  fontFamily: 'basis-grotesque-medium',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
+};
 
 const theme = createMuiTheme({
   props: {
@@ -61,8 +89,8 @@ const theme = createMuiTheme({
     },
     h5: {
       fontSize: '1.875rem',
-      fontWeight: 500,
       fontStyle: 'normal',
+      fontFamily: mediumFontFamily,
     },
     h6: {
       fontSize: '0.875rem',
@@ -95,13 +123,27 @@ const theme = createMuiTheme({
       fontFamily: bodyFontFamily,
     },
     button: {
+      fontFamily: mediumFontFamily,
       fontWeight: 500,
+    },
+    em: {
+      fontFamily: italicFontFamily,
     },
   },
   overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': [basisRegular, basisItalic, basisMedium],
+      },
+    },
     MuiListItemIcon: {
       root: {
         minWidth: 0,
+      },
+    },
+    MuiIconButton: {
+      root: {
+        color: '#000000',
       },
     },
     MuiListItem: {
@@ -113,7 +155,8 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
-        fontWeight: 600,
+        fontWeight: 500,
+        fontFamily: mediumFontFamily,
       },
     },
     MuiAvatar: {
@@ -122,7 +165,9 @@ const theme = createMuiTheme({
         width: 30,
         fontSize: '1rem',
         textTransform: 'uppercase',
-        color: '#ffffffcf',
+        color: '#ffffff',
+        fontWeight: 500,
+        fontFamily: mediumFontFamily,
       },
     },
     MuiAvatarGroup: {

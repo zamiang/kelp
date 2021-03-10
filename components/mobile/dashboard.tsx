@@ -5,7 +5,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import Documents from '../dashboard/documents';
 import Meetings from '../dashboard/meetings';
 import People from '../dashboard/people';
@@ -104,6 +104,9 @@ const MobileDashboard = (props: { store: IStore }) => {
           </Route>
           <Route path="/settings">
             <Settings shouldRenderHeader={false} />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/meetings" />
           </Route>
           <Route>
             <Handle404 />

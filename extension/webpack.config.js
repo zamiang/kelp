@@ -62,7 +62,7 @@ const getConfig = () => ({
         include: /\.module\.css$/,
       },
       {
-        test: /\.svg$/,
+        test: /\.(svg|woff2)$/,
         use: 'file-loader',
       },
       {

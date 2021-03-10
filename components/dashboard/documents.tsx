@@ -7,7 +7,6 @@ import DocumentRow from '../documents/document-row';
 import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import rowStyles from '../shared/row-styles';
-import TopBar from '../shared/top-bar';
 import { IDocument } from '../store/models/document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -159,7 +158,6 @@ const Documents = (props: { store: IStore; hideHeading?: boolean }) => {
   }
   return (
     <div className={classes.panel}>
-      <TopBar title="Documents" />
       <AllDocuments selectedDocumentId={selectedDocumentId} {...props.store} />
     </div>
   );

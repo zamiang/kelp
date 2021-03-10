@@ -39,20 +39,6 @@ const useStyles = makeStyles((theme) => ({
   titleCenter: {
     textAlign: 'center',
   },
-
-  highlight: {
-    marginTop: -theme.spacing(1),
-  },
-  highlightValue: {
-    fontSize: theme.typography.h4.fontSize,
-    color: theme.palette.primary.dark,
-    fontWeight: 500,
-  },
-  highlightSub: {
-    fontSize: '0.875rem',
-    color: theme.palette.secondary.main,
-    fontWeight: 500,
-  },
   overflowEllipsis: {
     textOverflow: 'ellipsis',
     width: '100%',
