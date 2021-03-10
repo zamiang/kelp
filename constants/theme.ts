@@ -141,6 +141,11 @@ const theme = createMuiTheme({
         minWidth: 0,
       },
     },
+    MuiSvgIcon: {
+      root: {
+        fill: '#000000',
+      },
+    },
     MuiListItem: {
       root: {
         paddingTop: 6,
@@ -160,7 +165,9 @@ const theme = createMuiTheme({
         width: 30,
         fontSize: '1rem',
         textTransform: 'uppercase',
-        color: '#ffffffcf',
+        color: '#ffffff',
+        fontWeight: 500,
+        fontFamily: mediumFontFamily,
       },
     },
     MuiAvatarGroup: {

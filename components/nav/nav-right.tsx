@@ -151,6 +151,30 @@ const NavRight = (props: IProps) => {
         >
           <MenuItem
             onClick={() => {
+              history.push('/meetings');
+              handleClose();
+            }}
+          >
+            Meetings
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              history.push('/documents');
+              handleClose();
+            }}
+          >
+            Documents
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              history.push('/people');
+              handleClose();
+            }}
+          >
+            People
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
               history.push('/week');
               handleClose();
             }}
