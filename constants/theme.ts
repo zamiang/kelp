@@ -123,6 +123,7 @@ const theme = createMuiTheme({
       fontFamily: bodyFontFamily,
     },
     button: {
+      fontFamily: mediumFontFamily,
       fontWeight: 500,
     },
     em: {

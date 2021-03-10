@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { format, formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { mediumFontFamily } from '../../constants/theme';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -80,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
   meetingTimeInWords: {
     color: theme.palette.secondary.dark,
     fontWeight: 500,
+    fontFamily: mediumFontFamily,
     display: 'inline-block',
     marginLeft: theme.spacing(1),
   },

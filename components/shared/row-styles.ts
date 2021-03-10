@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { mediumFontFamily } from '../../constants/theme';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     textTransform: 'uppercase',
+    fontFamily: mediumFontFamily,
   },
   borderSecondaryMain: {
     background: theme.palette.secondary.main,
@@ -95,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(2),
     color: '#9D9D99',
     fontWeight: 500,
+    fontFamily: mediumFontFamily,
   },
   rowHint: {
     color: theme.palette.text.hint,

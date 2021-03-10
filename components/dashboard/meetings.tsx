@@ -5,6 +5,7 @@ import { format, getDate, getMonth, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { mediumFontFamily } from '../../constants/theme';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
@@ -19,6 +20,7 @@ const dayStyles = makeStyles((theme) => ({
   },
   dayNumber: {
     fontWeight: 500,
+    fontFamily: mediumFontFamily,
     textTransform: 'uppercase',
     color: 'rgba(0,0,0,0.87)',
   },

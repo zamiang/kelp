@@ -4,6 +4,8 @@ import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pr
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
+const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
+const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 
 const basisRegular = {
   fontFamily: 'basis-grotesque',
@@ -13,7 +15,7 @@ const basisRegular = {
   src: `url(${BasisGrotesqueRegularWoff2}) format('woff2')`,
 };
 const basisItalic = {
-  fontFamily: 'basis-grotesque',
+  fontFamily: 'basis-grotesque-italic',
   fontStyle: 'italic',
   fontDisplay: 'swap',
   fontWeight: 400,
@@ -21,10 +23,10 @@ const basisItalic = {
 };
 
 const basisMedium = {
-  fontFamily: 'basis-grotesque',
+  fontFamily: 'basis-grotesque-medium',
   fontStyle: 'normal',
   fontDisplay: 'swap',
-  fontWeight: 500,
+  fontWeight: 400,
   src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
 };
 
@@ -77,23 +79,20 @@ const theme = createMuiTheme({
     fontWeightRegular: 400,
     h1: {
       fontWeight: 400,
-      fontFamily: 'reason-new, sans-serif',
       fontStyle: 'normal',
     },
     h2: {
       fontWeight: 400,
-      fontFamily: 'reason-new, sans-serif',
       fontStyle: 'normal',
     },
     h3: {
       fontWeight: 400,
-      fontFamily: 'reason-new, sans-serif',
       fontStyle: 'normal',
     },
     h5: {
       fontSize: '1.875rem',
       fontWeight: 500,
-      fontFamily: 'reason-new, sans-serif',
+      fontFamily: mediumFontFamily,
       fontStyle: 'normal',
     },
     h6: {
@@ -122,7 +121,11 @@ const theme = createMuiTheme({
       fontFamily: bodyFontFamily,
     },
     button: {
+      fontFamily: mediumFontFamily,
       fontWeight: 500,
+    },
+    em: {
+      fontFamily: italicFontFamily,
     },
   },
   overrides: {
@@ -146,6 +149,7 @@ const theme = createMuiTheme({
       root: {
         textTransform: 'none',
         fontWeight: 500,
+        fontFamily: mediumFontFamily,
       },
     },
     MuiAvatar: {
