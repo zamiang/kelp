@@ -72,8 +72,8 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.grey[900],
   },
   dotPresent: {
-    backgroundColor: theme.palette.background.paper,
-    borderColor: theme.palette.grey[900],
+    backgroundColor: theme.palette.secondary.main,
+    borderColor: theme.palette.secondary.main,
   },
   iconContainer: {
     marginLeft: -20,
@@ -138,35 +138,29 @@ const MeetingRow = (props: {
           </Grid>
         )}
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              {isHappeningNow && (
-                <Typography className={classes.meetingTimeInWords} style={{ marginLeft: 0 }}>
-                  Happening Now
+          {isHappeningNow && (
+            <Typography className={classes.meetingTimeInWords} style={{ marginLeft: 0 }}>
+              Happening Now
+            </Typography>
+          )}
+          {!isHappeningNow && (
+            <React.Fragment>
+              <Typography variant="body2" style={{ display: 'inline-block' }}>
+                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+              </Typography>
+              {props.shouldRenderCurrentTime && isFuture && (
+                <Typography className={classes.meetingTimeInWords}>
+                  (In {formatDistanceToNow(props.meeting.start)})
                 </Typography>
               )}
-              {!isHappeningNow && (
-                <React.Fragment>
-                  <Typography variant="body2" style={{ display: 'inline-block' }}>
-                    {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-                  </Typography>
-                  {props.shouldRenderCurrentTime && isFuture && (
-                    <Typography className={classes.meetingTimeInWords}>
-                      (In {formatDistanceToNow(props.meeting.start)})
-                    </Typography>
-                  )}
-                </React.Fragment>
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <Typography noWrap>
-                <span style={{ fontWeight: 500 }}>{props.meeting.summary || '(no title)'}</span>{' '}
-                {!props.isSmall && props.meeting.description
-                  ? props.meeting.description.replace(/<[^>]+>/g, '')
-                  : ''}
-              </Typography>
-            </Grid>
-          </Grid>
+            </React.Fragment>
+          )}
+          <Typography noWrap>
+            <span style={{ fontWeight: 500 }}>{props.meeting.summary || '(no title)'}</span>{' '}
+            {!props.isSmall && props.meeting.description
+              ? props.meeting.description.replace(/<[^>]+>/g, '')
+              : ''}
+          </Typography>
         </Grid>
         {isVideoVisible && props.meeting.videoLink && (
           <Grid item style={{ marginLeft: 'auto' }}>

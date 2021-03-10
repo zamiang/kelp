@@ -121,7 +121,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
           !props.shouldPadLeft && classes.containerNoLeftMargin,
         )}
       >
-        <Grid container spacing={1}>
+        <Grid container spacing={1} alignItems="center">
           <Grid item xs={6}>
             <Button
               onClick={() =>
@@ -146,6 +146,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
             <IconButton
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
               className={buttonClasses.circleButton}
+              style={{ marginRight: 8 }}
               size="small"
             >
               <VideocamIcon color={'paper' as any} />
