@@ -3,11 +3,13 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import ArrowLeft from '@material-ui/icons/ArrowLeft';
-import ArrowRight from '@material-ui/icons/ArrowRight';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import clsx from 'clsx';
 import { addDays, format, getDate, isPast, isSameDay, isToday, subDays } from 'date-fns';
 import React from 'react';
+import { mediumFontFamily } from '../../constants/theme';
 import useButtonStyles from '../shared/button-styles';
 import { IStore } from '../store/use-store';
 
@@ -39,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     borderBottom: `1px solid ${theme.palette.divider}`,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     position: 'sticky',
     top: 0,
     left: 0,
@@ -56,6 +58,22 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       background: theme.palette.primary.light,
     },
+  },
+  topPadding: {
+    paddingBottom: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+  },
+  topHeading: {
+    textTransform: 'uppercase',
+    fontWeight: 500,
+    fontFamily: mediumFontFamily,
+    display: 'inline-block',
+  },
+  bottomPadding: {
+    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    margin: '0px auto',
   },
 }));
 
@@ -75,30 +93,44 @@ const MeetingTopBar = (props: {
     addDays(props.currentDay, 2),
     addDays(props.currentDay, 3),
     addDays(props.currentDay, 4),
+    addDays(props.currentDay, 5),
+    addDays(props.currentDay, 6),
   ];
 
   return (
-    <Grid container className={classes.container} alignItems="center" justify="space-between">
-      <Grid item>
-        <Grid container spacing={1} alignItems="center">
+    <div className={classes.container}>
+      <div className={classes.topPadding}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <Typography className={classes.topHeading}>{format(new Date(), 'MMM yyyy')}</Typography>
+            <IconButton size="small">
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+              size="small"
+              onClick={props.onNowClick}
+            >
+              Today
+            </Button>
+          </Grid>
+        </Grid>
+      </div>
+      <div className={classes.bottomPadding}>
+        <Grid container spacing={1} alignItems="center" justify="space-between">
           <Grid item>
             <IconButton size="small">
-              <ArrowLeft />
+              <KeyboardArrowLeftIcon />
             </IconButton>
           </Grid>
           {days.map((d) => (
             <Grid item key={getDate(d)} className={classes.day} onClick={() => props.onDayClick(d)}>
               <Grid container alignItems="center">
                 <Grid item xs={12}>
-                  <Typography
-                    className={clsx(
-                      classes.dayName,
-                      isToday(d) && classes.daySelected,
-                      !isToday(d) && isPast(d) && classes.past,
-                    )}
-                  >
-                    {format(d, 'EEE')}
-                  </Typography>
+                  <Typography className={clsx(classes.dayName)}>{format(d, 'EEE')}</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography
@@ -124,24 +156,12 @@ const MeetingTopBar = (props: {
           ))}
           <Grid item>
             <IconButton size="small">
-              <ArrowRight />
+              <KeyboardArrowRightIcon />
             </IconButton>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid>
-        <Grid item style={{ marginRight: 5 }}>
-          <Button
-            variant="outlined"
-            className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-            size="small"
-            onClick={props.onNowClick}
-          >
-            Today
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 

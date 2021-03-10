@@ -47,13 +47,13 @@ const theme = createMuiTheme({
     },
     primary: {
       light: '#DEEBFF',
-      main: '#0052CC',
-      dark: '#0052CC',
+      main: '#FF4600',
+      dark: '#FF4600',
       contrastText: '#fff',
     },
     secondary: {
       light: '#FAF8F5',
-      main: '#FF4601',
+      main: '#FF4600',
       dark: '#FF4601',
       contrastText: '#fff',
     },
@@ -144,6 +144,7 @@ const theme = createMuiTheme({
     MuiIconButton: {
       root: {
         color: '#000000',
+        padding: 10,
       },
     },
     MuiListItem: {

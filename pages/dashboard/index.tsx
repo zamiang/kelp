@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   left: {
     maxWidth: 440,
+    minHeight: '100vh',
     background: theme.palette.background.paper,
     borderRight: `1px solid ${theme.palette.divider}`,
     width: '33vw',

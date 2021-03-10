@@ -147,7 +147,6 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
               className={buttonClasses.circleButton}
               style={{ marginRight: 8 }}
-              size="small"
             >
               <VideocamIcon color={'paper' as any} />
             </IconButton>

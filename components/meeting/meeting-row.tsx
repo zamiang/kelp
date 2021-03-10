@@ -57,23 +57,19 @@ const useStyles = makeStyles((theme) => ({
     transition: 'transform 0.3s',
   },
   dot: {
-    width: 8,
-    height: 8,
+    width: 10,
+    height: 10,
     borderRadius: 5,
-    border: `2px solid`,
     marginRight: theme.spacing(1),
   },
   dotPast: {
     backgroundColor: theme.palette.grey[200],
-    borderColor: theme.palette.grey[200],
   },
   dotFuture: {
     backgroundColor: theme.palette.grey[900],
-    borderColor: theme.palette.grey[900],
   },
   dotPresent: {
     backgroundColor: theme.palette.secondary.main,
-    borderColor: theme.palette.secondary.main,
   },
   iconContainer: {
     marginLeft: -20,
@@ -166,7 +162,6 @@ const MeetingRow = (props: {
           <Grid item style={{ marginLeft: 'auto' }}>
             <IconButton
               aria-label="Join meeting"
-              size="small"
               target="_blank"
               href={props.meeting.videoLink}
               className={buttonClasses.circleButton}
