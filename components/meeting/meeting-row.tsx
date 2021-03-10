@@ -9,6 +9,7 @@ import { format, formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
+import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
@@ -97,6 +98,7 @@ const MeetingRow = (props: {
   hideDot?: boolean;
 }) => {
   const classes = useStyles();
+  const buttonClasses = useButtonStyles();
   const router = useHistory();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
@@ -168,8 +170,14 @@ const MeetingRow = (props: {
         </Grid>
         {isVideoVisible && props.meeting.videoLink && (
           <Grid item style={{ marginLeft: 'auto' }}>
-            <IconButton aria-label="Join meeting" target="_blank" href={props.meeting.videoLink}>
-              <VideocamIcon color="primary" />
+            <IconButton
+              aria-label="Join meeting"
+              size="small"
+              target="_blank"
+              href={props.meeting.videoLink}
+              className={buttonClasses.circleButton}
+            >
+              <VideocamIcon />
             </IconButton>
           </Grid>
         )}

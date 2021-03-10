@@ -43,9 +43,15 @@ const useStyles = makeStyles((theme) => ({
   hoverButton: {
     textTransform: 'uppercase',
     transition: 'opacity 0.3s',
-    color: theme.palette.primary.dark,
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.background.paper,
     '&:active': {
       opacity: 0.7,
+      backgroundColor: theme.palette.primary.dark,
+    },
+    '&:hover': {
+      opacity: 0.7,
+      backgroundColor: theme.palette.primary.dark,
     },
   },
   row: {
@@ -63,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: `1px solid transparent`,
     },
     '&:hover': {
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: theme.palette.secondary.light,
     },
     '& > *': {
       borderBottom: 'unset',
