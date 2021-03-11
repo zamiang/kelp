@@ -17,8 +17,10 @@ import { IStore } from '../store/use-store';
 
 const useHeaderStyles = makeStyles((theme) => ({
   logo: {
-    width: 24,
-    height: 24,
+    width: 32,
+    height: 35,
+    paddingRight: 0,
+    marginRight: 0,
   },
   drawerPaper: {
     border: '0px',
