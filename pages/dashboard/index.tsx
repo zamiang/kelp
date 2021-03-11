@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.paper,
     maxWidth: 530,
     position: 'relative',
-    maxHeight: 'calc(100vh - 33px)',
+    maxHeight: 'calc(100vh - 66px)',
     overflow: 'auto',
     width: '100%',
   },
