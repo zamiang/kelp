@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   dotPresent: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   text: {},
   textPast: { color: 'rgba(0,0,0,0.3)' },

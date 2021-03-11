@@ -44,7 +44,7 @@ const SegmentDocumentItem = (props: {
   }
 
   const personText = person ? ` by ${person?.name || person?.emailAddresses}` : '';
-  const tooltipText = `${capitalize(props.segmentDocument.reason)}${personText} on ${format(
+  const tooltipText = `${capitalize(props.segmentDocument.reason)}d${personText} on ${format(
     new Date(props.segmentDocument.date),
     "MMM do 'at' hh:mm a",
   )}`;

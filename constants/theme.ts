@@ -53,8 +53,8 @@ const theme = createMuiTheme({
     },
     secondary: {
       light: '#FAF8F5',
-      main: '#FF4600',
-      dark: '#FF4601',
+      main: '#47B7B8',
+      dark: '#47B7B8',
       contrastText: '#fff',
     },
     error: {

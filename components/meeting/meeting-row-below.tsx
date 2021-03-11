@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import { mediumFontFamily } from '../../constants/theme';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
@@ -34,6 +35,12 @@ const useBelowStyles = makeStyles((theme) => ({
   },
   containerNoLeftMargin: {
     marginLeft: 0,
+  },
+  heading: {
+    color: theme.palette.secondary.main,
+    fontWeight: 500,
+    fontFamily: mediumFontFamily,
+    marginBottom: theme.spacing(0.5),
   },
 }));
 
@@ -94,7 +101,9 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
       >
         {hasDocuments && (
           <React.Fragment>
-            <Typography variant="h6">Documents you may need</Typography>
+            <Typography variant="h6" className={classes.heading}>
+              Documents you may need
+            </Typography>
             <SegmentDocumentList
               segmentDocumentsForAttendees={segmentDocumentsForAttendees}
               segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
