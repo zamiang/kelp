@@ -2,10 +2,12 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import CloseIcon from '@material-ui/icons/Close';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EventIcon from '@material-ui/icons/Event';
+import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import SearchBar from './search-bar';
 
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   border: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    paddingRight: theme.spacing(2),
   },
   selected: {
     color: `${theme.palette.secondary.dark} !important`,
@@ -37,14 +40,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logo: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     borderBottom: 0,
   },
   iconButton: {
     borderRadius: 0,
     width: '100%',
     paddingBottom: 10,
+    paddingRight: 0,
   },
   iconButtonLarge: {
     borderRadius: 0,
@@ -53,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = () => {
+const NavBarLayer = () => {
   const classes = useStyles();
   const router = useLocation();
   const history = useHistory();
@@ -62,6 +66,83 @@ const NavBar = () => {
   const isMeetingsSelected = tab.includes('meetings');
   const isDocsSelected = tab.includes('docs');
   const isPeopleSelected = tab.includes('people');
+
+  return (
+    <Grid container alignItems="center" justify="space-between">
+      <Grid item xs className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
+        <IconButton
+          className={classes.iconButtonLarge}
+          onClick={() => history.push('/meetings')}
+          aria-label="Meetings"
+        >
+          <EventIcon />
+        </IconButton>
+      </Grid>
+      <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
+        <IconButton
+          className={classes.iconButtonLarge}
+          onClick={() => history.push('/docs')}
+          aria-label="Documents"
+        >
+          <DescriptionIcon />
+        </IconButton>
+      </Grid>
+      <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
+        <IconButton
+          className={classes.iconButtonLarge}
+          onClick={() => history.push('/people')}
+          aria-label="People"
+        >
+          <AccountCircleIcon />
+        </IconButton>
+      </Grid>
+    </Grid>
+  );
+};
+
+const NavBar = () => {
+  const classes = useStyles();
+  const history = useHistory();
+  const router = useLocation();
+
+  const hasSearchParams = router.search.length > 0;
+
+  const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(hasSearchParams);
+
+  if (isSearchInputVisible) {
+    return (
+      <header className={classes.container}>
+        <Grid container alignItems="center" justify="space-between" className={classes.border}>
+          <Grid item>
+            <Grid container alignItems="center">
+              <Grid item>
+                <IconButton
+                  className={classes.iconButton}
+                  onClick={() => (window.location.pathname = '/about')}
+                >
+                  <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <SearchBar />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <IconButton
+              onClick={() => {
+                history.push('/meetings');
+                setSearchInputVisible(false);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+        <NavBarLayer />
+      </header>
+    );
+  }
 
   return (
     <header className={classes.container}>
@@ -75,38 +156,12 @@ const NavBar = () => {
           </IconButton>
         </Grid>
         <Grid item>
-          <SearchBar />
-        </Grid>
-      </Grid>
-      <Grid container alignItems="center" justify="space-between">
-        <Grid item xs className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
-          <IconButton
-            className={classes.iconButtonLarge}
-            onClick={() => history.push('/meetings')}
-            aria-label="Meetings"
-          >
-            <EventIcon />
-          </IconButton>
-        </Grid>
-        <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
-          <IconButton
-            className={classes.iconButtonLarge}
-            onClick={() => history.push('/docs')}
-            aria-label="Documents"
-          >
-            <DescriptionIcon />
-          </IconButton>
-        </Grid>
-        <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
-          <IconButton
-            className={classes.iconButtonLarge}
-            onClick={() => history.push('/people')}
-            aria-label="People"
-          >
-            <AccountCircleIcon />
+          <IconButton onClick={() => setSearchInputVisible(true)}>
+            <SearchIcon />
           </IconButton>
         </Grid>
       </Grid>
+      <NavBarLayer />
     </header>
   );
 };

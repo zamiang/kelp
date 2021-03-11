@@ -1,23 +1,16 @@
 import Grid from '@material-ui/core/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import isTouchEnabled from '../shared/is-touch-enabled';
 
-const useStyles = makeStyles((theme) => ({
-  inputContainer: {
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: -10,
-    marginBottom: -12,
-  },
+const useStyles = makeStyles(() => ({
+  inputContainer: {},
   input: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
+    width: 200,
   },
 }));
 
@@ -44,32 +37,30 @@ const SearchBar = () => {
   };
 
   return (
-    <React.Fragment>
-      <form onSubmit={onSubmit} className={classes.inputContainer}>
-        <Grid container alignItems="center">
-          <Grid item>
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          </Grid>
-          <Grid item>
-            <TextField
-              id="search-input-for-nav"
-              type="text"
-              placeholder="Search…"
-              fullWidth
-              autoComplete="off"
-              autoFocus={isTouchEnabled()}
-              onChange={handleChange}
-              name="query"
-              margin="dense"
-              className={classes.input}
-              inputRef={register}
-            />
-          </Grid>
+    <form onSubmit={onSubmit} className={classes.inputContainer}>
+      <Grid container alignItems="center">
+        <Grid item>
+          <IconButton disabled>
+            <SearchIcon />
+          </IconButton>
         </Grid>
-      </form>
-    </React.Fragment>
+        <Grid item>
+          <TextField
+            id="search-input-for-nav"
+            type="text"
+            placeholder="Search…"
+            fullWidth
+            autoComplete="off"
+            autoFocus={true}
+            onChange={handleChange}
+            name="query"
+            margin="dense"
+            className={classes.input}
+            inputRef={register}
+          />
+        </Grid>
+      </Grid>
+    </form>
   );
 };
 

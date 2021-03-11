@@ -141,30 +141,21 @@ const DesktopDashboard = (props: { store: IStore }) => {
       <main className={classes.content}>
         <Switch>
           <Grid container alignItems="flex-start">
-            <Route path="/search">
-              <Grid item className={classes.left}>
-                <NavBar />
+            <Grid item className={classes.left}>
+              <NavBar />
+              <Route path="/search">
                 <Search store={store} />
-              </Grid>
-            </Route>
-            <Route path="/meetings">
-              <Grid item className={classes.left}>
-                <NavBar />
+              </Route>
+              <Route path="/meetings">
                 <Meetings store={store} />
-              </Grid>
-            </Route>
-            <Route path="/docs">
-              <Grid item className={classes.left}>
-                <NavBar />
+              </Route>
+              <Route path="/docs">
                 <Docs store={store} />
-              </Grid>
-            </Route>
-            <Route path="/people">
-              <Grid item className={classes.left}>
-                <NavBar />
+              </Route>
+              <Route path="/people">
                 <People store={store} />
-              </Grid>
-            </Route>
+              </Route>
+            </Grid>
             <Grid item xs className={classes.right}>
               <NavRight handleRefreshClick={handleRefreshClick} store={store} />
               <div className={classes.center}>

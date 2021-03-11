@@ -25,14 +25,17 @@ const useStyles = makeStyles((theme) => ({
   },
   dayNumber: {
     display: 'block',
+    fontSize: 16,
   },
   daySelected: {
     color: theme.palette.primary.main,
   },
   dayDot: {
-    width: 3,
-    height: 3,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
     margin: '0px auto',
+    marginTop: 2,
     transition: 'background 0.3s',
   },
 
@@ -60,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   topPadding: {
+    paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
@@ -69,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontFamily: mediumFontFamily,
     display: 'inline-block',
+    marginTop: 2,
   },
   bottomPadding: {
     paddingRight: theme.spacing(1),
@@ -103,7 +108,7 @@ const MeetingTopBar = (props: {
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <Typography className={classes.topHeading}>{format(new Date(), 'MMM yyyy')}</Typography>
-            <IconButton size="small">
+            <IconButton size="small" style={{ marginTop: -4 }}>
               <KeyboardArrowDownIcon />
             </IconButton>
           </Grid>
@@ -112,7 +117,7 @@ const MeetingTopBar = (props: {
               variant="outlined"
               className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               onClick={props.onNowClick}
-              style={{ fontSize: 14 }}
+              style={{ fontSize: 14, paddingTop: 5, paddingBottom: 5 }}
             >
               Today
             </Button>
