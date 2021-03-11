@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 interface IProps {
   lastUpdated: Date;
