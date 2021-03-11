@@ -181,9 +181,11 @@ const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => vo
   const currentTime = new Date();
   // Assumes meetings are already sorted
   flatten(Object.values(meetingsByDay)).forEach((meeting) => {
-    if (!featuredMeeting && currentTime < meeting.end && props.setMeetingId) {
+    if (!featuredMeeting && currentTime < meeting.end) {
       featuredMeeting = meeting;
-      props.setMeetingId(meeting.id);
+      if (props.setMeetingId) {
+        props.setMeetingId(meeting.id);
+      }
     }
   });
 
