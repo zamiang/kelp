@@ -82,16 +82,19 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
   /**
    * Delete the database if it is old
    * This helps solve contact dupe issues and old calendar events that were removed
+   * TODO: handle chrome storage
    */
-  const lastUpdated = localStorage.getItem('kelpLastUpdated');
-  const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
-  if (!lastUpdatedDate || lastUpdatedDate < subHours(new Date(), 12)) {
-    console.log('deleting the database and starting from scratch');
-    indexedDB.deleteDatabase(dbNameHash[environment]);
-  } else if (environment === 'test') {
-    indexedDB.deleteDatabase(dbNameHash[environment]);
+  if (typeof localStorage === 'object') {
+    const lastUpdated = localStorage.getItem('kelpLastUpdated');
+    const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
+    if (!lastUpdatedDate || lastUpdatedDate < subHours(new Date(), 12)) {
+      console.log('deleting the database and starting from scratch');
+      indexedDB.deleteDatabase(dbNameHash[environment]);
+    } else if (environment === 'test') {
+      indexedDB.deleteDatabase(dbNameHash[environment]);
+    }
+    localStorage.setItem('kelpLastUpdated', new Date().toISOString());
   }
-  localStorage.setItem('kelpLastUpdated', new Date().toISOString());
 
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db) {

@@ -37,16 +37,10 @@ const useStyles = makeStyles((theme) => ({
 
 const RefreshButton = (props: IProps) => {
   const classes = useStyles();
-  const [seconds, setSeconds] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [seconds]);
-  if (!props.isLoading) {
-    return null;
-  }
+
+  //if (!props.isLoading) {
+  //    return null;
+  //}
   return (
     <Grid container alignItems="center" wrap="nowrap">
       <Grid item>

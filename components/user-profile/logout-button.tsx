@@ -3,8 +3,10 @@ import React from 'react';
 import useButtonStyles from '../shared/button-styles';
 
 export const logout = () => {
-  localStorage.removeItem('oauth2');
-  localStorage.removeItem('scope');
+  if (typeof localStorage === 'object') {
+    localStorage.removeItem('oauth2');
+    localStorage.removeItem('scope');
+  }
   window.location.pathname = '';
 };
 

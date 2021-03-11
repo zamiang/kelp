@@ -27,6 +27,35 @@ export interface IStore {
   readonly error?: Error;
 }
 
+/*
+export const setupStoreNoFetch = (db: dbType, googleOauthToken: string, scope: string): IStore => {
+  const personDataStore = new PersonDataStore(db);
+  const timeDataStore = new TimeDataStore(db);
+  const documentDataStore = new DocumentDataStore(db);
+  const driveActivityDataStore = new DriveActivityDataStore(db);
+  const attendeeDataStore = new AttendeeModel(db);
+  const tfidfStore = new TfidfDataStore(db);
+  const segmentDocumentStore = new SegmentDocumentModel(db);
+
+  return {
+    driveActivityStore: driveActivityDataStore,
+    timeDataStore,
+    personDataStore,
+    documentDataStore,
+    attendeeDataStore,
+    segmentDocumentStore,
+    tfidfStore,
+    lastUpdated: new Date(),
+    isLoading: false,
+    loadingMessage: undefined,
+    refetch: () => false,
+    scope,
+    googleOauthToken,
+    error: undefined,
+  };
+};
+*/
+
 const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken);

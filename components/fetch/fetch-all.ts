@@ -172,6 +172,9 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     currentUser: currentUser.result,
     emailAddresses: emailList,
     refetch: async () => {
+      // Current user will reloadd if it fails
+      await currentUser.execute();
+
       await calendarResponse.execute();
       await driveResponse.execute();
       await peopleResponse.execute();

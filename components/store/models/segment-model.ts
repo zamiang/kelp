@@ -55,7 +55,11 @@ const getVideoLinkFromCalendarEvent = (event: ICalendarEvent) => {
     return event.hangoutLink;
   }
   const meetingDescriptionLinks = event.description ? event.description.match(urlRegex()) : [];
-  return first(meetingDescriptionLinks?.filter((link) => link.includes('zoom.us')));
+  return first(
+    meetingDescriptionLinks?.filter(
+      (link) => link.includes('zoom.us') || link.includes('webex.com'),
+    ),
+  );
 };
 
 const formatSegments = (calendarEvents: ICalendarEvent[]) =>
