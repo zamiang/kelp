@@ -1,16 +1,13 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import { format, formatDistanceToNow } from 'date-fns';
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
 import useButtonStyles from '../shared/button-styles';
-import isTouchEnabled from '../shared/is-touch-enabled';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import MeetingRowBelow from './meeting-row-below';
@@ -101,7 +98,6 @@ const MeetingRow = (props: {
   const buttonClasses = useButtonStyles();
   const router = useHistory();
   const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
-  const [isVideoVisible, setVideoVisible] = useState(isTouchEnabled());
 
   const isPast = new Date() > props.meeting.end;
   const isFuture = new Date() < props.meeting.start;
@@ -159,18 +155,6 @@ const MeetingRow = (props: {
             {props.meeting.summary || '(no title)'}{' '}
           </Typography>
         </Grid>
-        {isVideoVisible && props.meeting.videoLink && (
-          <Grid item style={{ marginLeft: 'auto' }}>
-            <IconButton
-              aria-label="Join meeting"
-              target="_blank"
-              href={props.meeting.videoLink}
-              className={buttonClasses.circleButton}
-            >
-              <VideocamIcon />
-            </IconButton>
-          </Grid>
-        )}
       </Grid>
       {isSelected && (
         <MeetingRowBelow
