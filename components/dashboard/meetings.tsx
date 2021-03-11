@@ -159,10 +159,10 @@ const scrollCurrentTimeIntoView = () => {
 
 const DAYS_BACK = 1;
 
-const MeetingsByDay = (props: { store: IStore }) => {
+const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => void }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
-  let selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
+  const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,14 +181,11 @@ const MeetingsByDay = (props: { store: IStore }) => {
   const currentTime = new Date();
   // Assumes meetings are already sorted
   flatten(Object.values(meetingsByDay)).forEach((meeting) => {
-    if (!featuredMeeting && currentTime < meeting.end) {
+    if (!featuredMeeting && currentTime < meeting.end && props.setMeetingId) {
       featuredMeeting = meeting;
+      props.setMeetingId(meeting.id);
     }
   });
-
-  if (window.innerWidth > 800 && !selectedMeetingId && featuredMeeting) {
-    selectedMeetingId = featuredMeeting.id;
-  }
 
   return (
     <div className={classes.panel}>

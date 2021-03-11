@@ -69,26 +69,33 @@ const getFeaturedDocuments = async (props: IStore) => {
   return sortBy(d, 'nextMeetingStartAt').slice(0, maxResult);
 };
 
-const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => {
+const AllDocuments = (props: {
+  store: IStore;
+  selectedDocumentId: string | null;
+  setDocumentId?: (id: string) => void;
+}) => {
   const classes = rowStyles();
   const [docs, setDocs] = useState<IDocument[]>([]);
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.documentDataStore.getAll();
+      const result = await props.store.documentDataStore.getAll();
       setDocs(result.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
-  }, [props.lastUpdated, props.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const featuredDocuments = await getFeaturedDocuments(props);
+      const featuredDocuments = await getFeaturedDocuments(props.store);
       setTopDocuments(featuredDocuments);
+      if (featuredDocuments[0] && featuredDocuments[0].document && props.setDocumentId) {
+        props.setDocumentId(featuredDocuments[0].document.id);
+      }
     };
     void fetchData();
-  }, [props.lastUpdated, props.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   return (
     <React.Fragment>
@@ -101,7 +108,7 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
             <DocumentRow
               key={doc.document.id}
               doc={doc.document}
-              store={props}
+              store={props.store}
               selectedDocumentId={props.selectedDocumentId}
               text={doc.text}
             />
@@ -113,7 +120,7 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
           <DocumentRow
             key={doc.id}
             doc={doc}
-            store={props}
+            store={props.store}
             selectedDocumentId={props.selectedDocumentId}
           />
         ))}
@@ -122,26 +129,30 @@ const AllDocuments = (props: IStore & { selectedDocumentId: string | null }) => 
   );
 };
 
-export const DocumentsForToday = (
-  props: IStore & { selectedDocumentId: string | null; isSmall?: boolean },
-) => {
+export const DocumentsForToday = (props: {
+  store: IStore;
+  selectedDocumentId: string | null;
+  isSmall?: boolean;
+}) => {
   const classes = panelStyles();
   const [docs, setDocs] = useState<IDocument[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.segmentDocumentStore.getAllForDay(getDayOfYear(new Date()));
-      const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
+      const result = await props.store.segmentDocumentStore.getAllForDay(getDayOfYear(new Date()));
+      const documents = await props.store.documentDataStore.getBulk(
+        result.map((r) => r.documentId),
+      );
       setDocs(documents.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
-  }, [props.lastUpdated, props.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
   return (
     <div className={classes.section}>
       {docs.map((doc: IDocument) => (
         <DocumentRow
           key={doc.id}
           doc={doc}
-          store={props}
+          store={props.store}
           selectedDocumentId={props.selectedDocumentId}
         />
       ))}
@@ -149,16 +160,17 @@ export const DocumentsForToday = (
   );
 };
 
-const Documents = (props: { store: IStore; hideHeading?: boolean }) => {
+const Documents = (props: { store: IStore; setDocumentId?: (id: string) => void }) => {
   const classes = panelStyles();
   const selectedDocumentId = useLocation().pathname.replace('/docs/', '').replace('/', '');
 
-  if (props.hideHeading) {
-    return <AllDocuments selectedDocumentId={selectedDocumentId} {...props.store} />;
-  }
   return (
     <div className={classes.panel}>
-      <AllDocuments selectedDocumentId={selectedDocumentId} {...props.store} />
+      <AllDocuments
+        selectedDocumentId={selectedDocumentId}
+        setDocumentId={props.setDocumentId}
+        store={props.store}
+      />
     </div>
   );
 };

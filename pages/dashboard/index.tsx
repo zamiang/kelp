@@ -121,6 +121,12 @@ const DesktopDashboard = (props: { store: IStore }) => {
   const history = useHistory();
   const classes = useStyles();
   const store = props.store;
+
+  // Used to render default panels for index pages
+  const [meetingId, setMeetingId] = useState<string | undefined>(undefined);
+  const [personId, setPersonId] = useState<string | undefined>(undefined);
+  const [documentId, setDocumentId] = useState<string | undefined>(undefined);
+
   const handleRefreshClick = () => store.refetch();
 
   // Unsure why the <Redirect component doesn't work anymore
@@ -147,18 +153,36 @@ const DesktopDashboard = (props: { store: IStore }) => {
                 <Search store={store} />
               </Route>
               <Route path="/meetings">
-                <Meetings store={store} />
+                <Meetings store={store} setMeetingId={setMeetingId} />
               </Route>
               <Route path="/docs">
-                <Docs store={store} />
+                <Docs store={store} setDocumentId={setDocumentId} />
               </Route>
               <Route path="/people">
-                <People store={store} />
+                <People store={store} setPersonId={setPersonId} />
               </Route>
             </Grid>
             <Grid item xs className={classes.right}>
               <NavRight handleRefreshClick={handleRefreshClick} store={store} />
               <div className={classes.center}>
+                <Route exact path="/meetings">
+                  <ExpandedMeeting store={store} meetingId={meetingId} />
+                </Route>
+                <Route exact path="/docs">
+                  <ExpandedDocument store={store} documentId={documentId} />
+                </Route>
+                <Route exact path="/people">
+                  <ExpandPerson store={store} personId={personId} />
+                </Route>
+                <Route path="/meetings/:slug">
+                  <ExpandedMeeting store={store} />
+                </Route>
+                <Route path="/docs/:slug">
+                  <ExpandedDocument store={store} />
+                </Route>
+                <Route path="/people/:slug">
+                  <ExpandPerson store={store} />
+                </Route>
                 <Route path="/dashboard">
                   <Home {...store} />
                 </Route>
@@ -179,15 +203,6 @@ const DesktopDashboard = (props: { store: IStore }) => {
                 </Route>
                 <Route path="/settings">
                   <Settings />
-                </Route>
-                <Route path="/meetings/:slug">
-                  <ExpandedMeeting store={store} />
-                </Route>
-                <Route path="/docs/:slug">
-                  <ExpandedDocument store={store} />
-                </Route>
-                <Route path="/people/:slug">
-                  <ExpandPerson store={store} />
                 </Route>
               </div>
             </Grid>

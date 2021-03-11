@@ -97,10 +97,10 @@ const MobileDashboard = (props: { store: IStore }) => {
             <Meetings store={store} />
           </Route>
           <Route path="/people">
-            <People hideHeading store={store} />
+            <People store={store} />
           </Route>
           <Route path="/documents">
-            <Documents hideHeading store={store} />
+            <Documents store={store} />
           </Route>
           <Route path="/settings">
             <Settings />

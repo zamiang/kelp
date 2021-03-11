@@ -67,14 +67,18 @@ const getFeaturedPeople = async (props: IStore) => {
   return sortBy(p, 'nextMeetingStartAt').slice(0, maxResult);
 };
 
-const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
+const AllPeople = (props: {
+  store: IStore;
+  selectedPersonId: string | null;
+  setPersonId?: (id: string) => void;
+}) => {
   const classes = useRowStyles();
   const [people, setPeople] = useState<Dictionary<IPerson[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.personDataStore.getAll(false);
+      const result = await props.store.personDataStore.getAll(false);
       const sortedPeople = result
         .filter((p) => !p.name.includes('people/'))
         .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1));
@@ -82,15 +86,18 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
       setPeople(groupedPeople);
     };
     void fetchData();
-  }, [props.isLoading, props.lastUpdated]);
+  }, [props.store.isLoading, props.store.lastUpdated]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const fp = await getFeaturedPeople(props);
+      const fp = await getFeaturedPeople(props.store);
       setFeaturedPeople(fp);
+      if (fp[0] && fp[0].person && props.setPersonId) {
+        props.setPersonId(fp[0].person.id);
+      }
     };
     void fetchData();
-  }, [props.isLoading, props.lastUpdated]);
+  }, [props.store.isLoading, props.store.lastUpdated]);
 
   return (
     <React.Fragment>
@@ -129,19 +136,21 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   );
 };
 
-export const PeopleToday = (
-  props: IStore & { selectedPersonId: string | null; isSmall?: boolean },
-) => {
+export const PeopleToday = (props: {
+  store: IStore;
+  selectedPersonId: string | null;
+  isSmall?: boolean;
+}) => {
   const classes = panelStyles();
   const [people, setPeople] = useState<IPerson[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.attendeeDataStore.getForDay(getDayOfYear(new Date()));
-      const p = await props.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
+      const result = await props.store.attendeeDataStore.getForDay(getDayOfYear(new Date()));
+      const p = await props.store.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
       setPeople(p.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
-  }, [props.isLoading, props.lastUpdated]);
+  }, [props.store.isLoading, props.store.lastUpdated]);
   return (
     <div className={classes.section}>
       {people.map(
@@ -159,18 +168,19 @@ export const PeopleToday = (
   );
 };
 
-const People = (props: { store: IStore; hideHeading?: boolean }) => {
+const People = (props: { store: IStore; setPersonId?: (id: string) => void }) => {
   const classes = panelStyles();
   const selectedPersonId = decodeURIComponent(
     useLocation().pathname.replace('/people/', '').replace('/', ''),
   );
 
-  if (props.hideHeading) {
-    return <AllPeople selectedPersonId={selectedPersonId} {...props.store} />;
-  }
   return (
     <div className={classes.panel}>
-      <AllPeople selectedPersonId={selectedPersonId} {...props.store} />
+      <AllPeople
+        selectedPersonId={selectedPersonId}
+        store={props.store}
+        setPersonId={props.setPersonId}
+      />
     </div>
   );
 };

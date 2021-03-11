@@ -55,12 +55,12 @@ const Home = (props: IStore) => {
           <Grid item xs={12} sm={4}>
             <Typography variant="h6">People you are meeting with today</Typography>
             <Divider />
-            <PeopleToday {...props} selectedPersonId={null} isSmall />
+            <PeopleToday store={props} selectedPersonId={null} isSmall />
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6">Documents you may need today</Typography>
             <Divider />
-            <DocumentsForToday {...props} selectedDocumentId={null} isSmall={true} />
+            <DocumentsForToday store={props} selectedDocumentId={null} isSmall={true} />
           </Grid>
         </Grid>
       </div>
