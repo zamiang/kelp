@@ -30,7 +30,7 @@ const useBelowStyles = makeStyles((theme) => ({
   buttonContainer: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    marginLeft: theme.spacing(4),
+    marginLeft: theme.spacing(3),
   },
   containerNoLeftMargin: {
     marginLeft: 0,
@@ -102,7 +102,6 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
               store={props.store}
               isSmall
             />
-            <br />
           </React.Fragment>
         )}
         {shouldShowAttendees && hasAttendees && (
@@ -123,8 +122,8 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
           !props.shouldPadLeft && classes.containerNoLeftMargin,
         )}
       >
-        <Grid container spacing={1} alignItems="center">
-          <Grid item xs={6}>
+        <Grid container spacing={1} alignItems="center" justify="space-between">
+          <Grid item>
             <Button
               onClick={() =>
                 createSmartMeetingNotes(
@@ -144,7 +143,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
               Smart Notes
             </Button>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item>
             <IconButton
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
               className={buttonClasses.circleButton}

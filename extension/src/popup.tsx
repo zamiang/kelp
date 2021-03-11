@@ -16,6 +16,7 @@ import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
@@ -73,6 +74,7 @@ const App = () => {
   const shouldShowLoading = !hasAuthError && (!token || !database);
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       {hasAuthError && (
         <Alert severity="error">
           <AlertTitle>Authentication Error</AlertTitle>

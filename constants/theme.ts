@@ -156,7 +156,7 @@ const theme = createMuiTheme({
     MuiIconButton: {
       root: {
         color: '#000000',
-        padding: 10,
+        padding: 8,
       },
     },
     MuiListItem: {
@@ -170,7 +170,7 @@ const theme = createMuiTheme({
         textTransform: 'none',
         fontWeight: 500,
         fontFamily: mediumFontFamily,
-        fontSize: 16,
+        fontSize: 14,
         paddingTop: 4,
         paddingBottom: 4,
       },

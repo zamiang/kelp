@@ -137,7 +137,7 @@ const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
     <div className={clsx(rowStyles.rowHighlight, rowStyles.rowHighlightPadding)}>
       <br />
       <MeetingRow
-        shouldRenderCurrentTime={false}
+        shouldRenderCurrentTime={true}
         meeting={props.meeting}
         selectedMeetingId={props.meeting.id}
         store={props.store}

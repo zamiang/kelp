@@ -249,7 +249,9 @@ const ExpandedMeeting = (props: {
       <div className={classes.container}>
         {hasDocuments && (
           <React.Fragment>
-            <Typography variant="h6">Documents you may need</Typography>
+            <Typography variant="h6" style={{ marginBottom: 0 }}>
+              Documents you may need
+            </Typography>
             <SegmentDocumentList
               segmentDocumentsForAttendees={segmentDocumentsForAttendees}
               segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}

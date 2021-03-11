@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -2,
   },
   meetingTimeInWords: {
-    color: theme.palette.secondary.dark,
+    color: 'rgba(0,0,0,0.4)',
     fontWeight: 500,
     fontFamily: mediumFontFamily,
     display: 'inline-block',
@@ -152,7 +152,6 @@ const MeetingRow = (props: {
             variant="h4"
             className={clsx(
               classes.text,
-              props.shouldRenderCurrentTime && classes.textPresent,
               !props.shouldRenderCurrentTime && isFuture && classes.textFuture,
               !props.shouldRenderCurrentTime && isPast && classes.textPast,
             )}
