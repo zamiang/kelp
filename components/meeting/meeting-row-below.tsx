@@ -17,6 +17,8 @@ import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createSmartMeetingNotes } from './expand-meeting';
 
+const shouldShowAttendees = false;
+
 const useBelowStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(2),
@@ -103,7 +105,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
             <br />
           </React.Fragment>
         )}
-        {hasAttendees && (
+        {shouldShowAttendees && hasAttendees && (
           <React.Fragment>
             <Typography variant="h6">Attendees</Typography>
             <AttendeeList

@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgba(0,0,0,0.5)',
   },
   dayNumber: {
-    fontSize: 16,
     display: 'block',
   },
   daySelected: {

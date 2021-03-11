@@ -21,7 +21,6 @@ const dayStyles = makeStyles((theme) => ({
   dayNumber: {
     fontWeight: 500,
     fontFamily: mediumFontFamily,
-    fontSize: 16,
     textTransform: 'uppercase',
     color: 'rgba(0,0,0,0.87)',
   },
