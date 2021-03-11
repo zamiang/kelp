@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import clsx from 'clsx';
@@ -108,9 +107,6 @@ const MeetingTopBar = (props: {
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <Typography className={classes.topHeading}>{format(new Date(), 'MMM yyyy')}</Typography>
-            <IconButton size="small" style={{ marginTop: -4 }}>
-              <KeyboardArrowDownIcon />
-            </IconButton>
           </Grid>
           <Grid item>
             <Button

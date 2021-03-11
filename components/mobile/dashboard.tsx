@@ -103,7 +103,7 @@ const MobileDashboard = (props: { store: IStore }) => {
             <Documents hideHeading store={store} />
           </Route>
           <Route path="/settings">
-            <Settings shouldRenderHeader={false} />
+            <Settings />
           </Route>
           <Route exact path="/">
             <Redirect to="/meetings" />

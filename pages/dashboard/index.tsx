@@ -178,7 +178,7 @@ const DesktopDashboard = (props: { store: IStore }) => {
                   <ExpandPerson store={store} />
                 </Route>
                 <Route path="/settings">
-                  <Settings shouldRenderHeader={true} />
+                  <Settings />
                 </Route>
                 <Route path="/meetings/:slug">
                   <ExpandedMeeting store={store} />

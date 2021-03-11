@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
@@ -20,20 +21,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   textField: {
-    width: '100%',
+    width: 'auto',
   },
   maxWidth: {
     maxWidth: 500,
+    padding: theme.spacing(2),
   },
 }));
 
-const Settings = (props: { shouldRenderHeader: boolean }) => {
+const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
   return (
-    <div className={props.shouldRenderHeader ? classes.panel : undefined}>
-      {props.shouldRenderHeader && <TopBar title="Settings"></TopBar>}
+    <div className={classes.panel}>
+      <TopBar title="Settings"></TopBar>
       <div className={classes.section}>
         {shouldRenderSettings && (
           <React.Fragment>
@@ -68,7 +70,9 @@ const Settings = (props: { shouldRenderHeader: boolean }) => {
         )}
         <div className={clsx(classes.section, formClasses.maxWidth)}>
           <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-            <InputLabel htmlFor="notifications">Notifications</InputLabel>
+            <InputLabel htmlFor="notifications">
+              <Typography variant="h3">Notifications</Typography>
+            </InputLabel>
             <br />
             <br />
             <br />
@@ -79,6 +83,8 @@ const Settings = (props: { shouldRenderHeader: boolean }) => {
               onClick={() => {
                 if (window['Notification']) {
                   return Notification.requestPermission();
+                } else {
+                  alert('Notifications are not supported on this device');
                 }
               }}
             >

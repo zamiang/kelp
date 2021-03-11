@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import React from 'react';
+import useButtonStyles from '../shared/button-styles';
 
 export const logout = () => {
   localStorage.removeItem('oauth2');
@@ -7,10 +8,19 @@ export const logout = () => {
   window.location.pathname = '';
 };
 
-const LogoutButton = () => (
-  <Button size="small" onClick={logout}>
-    Log Out
-  </Button>
-);
+const LogoutButton = () => {
+  const buttonClasses = useButtonStyles();
+  return (
+    <Button
+      className={buttonClasses.button}
+      variant="contained"
+      disableElevation
+      color="primary"
+      onClick={logout}
+    >
+      Log Out
+    </Button>
+  );
+};
 
 export default LogoutButton;
