@@ -137,7 +137,6 @@ const DesktopDashboard = (props: { store: IStore }) => {
   if (pathname === '/') {
     history.push(`/meetings`);
   }
-  console.log(pathname, '<<<<<<');
   const shouldBeFullWidth =
     pathname.includes('/dashboard') ||
     pathname.includes('/week') ||

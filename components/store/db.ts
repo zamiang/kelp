@@ -75,6 +75,9 @@ const databaseVerson = 1;
 
 export type dbType = IDBPDatabase<Db>;
 
+export const deleteDatabase = async (environment: 'production' | 'test' | 'extension') =>
+  indexedDB.deleteDatabase(dbNameHash[environment]);
+
 const setupDatabase = async (environment: 'production' | 'test' | 'extension') => {
   /**
    * Delete the database if it is old
@@ -85,8 +88,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
   if (!lastUpdatedDate || lastUpdatedDate < subHours(new Date(), 12)) {
     console.log('deleting the database and starting from scratch');
     indexedDB.deleteDatabase(dbNameHash[environment]);
-  }
-  if (environment === 'test') {
+  } else if (environment === 'test') {
     indexedDB.deleteDatabase(dbNameHash[environment]);
   }
   localStorage.setItem('kelpLastUpdated', new Date().toISOString());
