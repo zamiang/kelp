@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     width: 32,
     '&:hover': {
-      background: theme.palette.primary.light,
+      background: theme.palette.secondary.light,
     },
   },
   topPadding: {

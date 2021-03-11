@@ -120,7 +120,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
       <Divider />
       <div className={classes.container}>
         {upcomingSegments.length > 0 && (
-          <div className={rowStyles.rowHighlight}>
+          <div className={rowStyles.rowHighlight} style={{ margin: 0 }}>
             <Typography variant="h6" className={rowStyles.rowText}>
               Upcoming Meetings
             </Typography>
