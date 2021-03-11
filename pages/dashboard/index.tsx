@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
   center: {
     margin: '0px auto',
     marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     borderRadius: theme.shape.borderRadius,
     background: theme.palette.background.paper,
     maxWidth: 530,
