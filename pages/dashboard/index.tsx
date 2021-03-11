@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import clsx from 'clsx';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
@@ -63,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 'calc(100vh - 33px)',
     overflow: 'auto',
     width: '100%',
+  },
+  fullWidth: {
+    maxWidth: '90%',
   },
 }));
 
@@ -127,11 +131,18 @@ const DesktopDashboard = (props: { store: IStore }) => {
   const [documentId, setDocumentId] = useState<string | undefined>(undefined);
 
   const handleRefreshClick = () => store.refetch();
+  const pathname = useLocation().pathname;
 
   // Unsure why the <Redirect component doesn't work anymore
-  if (useLocation().pathname === '/') {
+  if (pathname === '/') {
     history.push(`/meetings`);
   }
+  console.log(pathname, '<<<<<<');
+  const shouldBeFullWidth =
+    pathname.includes('/dashboard') ||
+    pathname.includes('/week') ||
+    pathname.includes('/summary') ||
+    pathname.includes('/settings');
 
   return (
     <ErrorBoundaryComponent>
@@ -161,9 +172,9 @@ const DesktopDashboard = (props: { store: IStore }) => {
                 <People store={store} setPersonId={setPersonId} />
               </Route>
             </Grid>
-            <Grid item xs className={classes.right}>
+            <Grid item xs className={clsx(classes.right)}>
               <NavRight handleRefreshClick={handleRefreshClick} store={store} />
-              <div className={classes.center}>
+              <div className={clsx(classes.center, shouldBeFullWidth && classes.fullWidth)}>
                 <Route exact path="/meetings">
                   <ExpandedMeeting store={store} meetingId={meetingId} />
                 </Route>
@@ -190,15 +201,6 @@ const DesktopDashboard = (props: { store: IStore }) => {
                 </Route>
                 <Route path="/summary">
                   <Summary {...store} />
-                </Route>
-                <Route path="/search/docs/:slug">
-                  <ExpandedDocument store={store} />
-                </Route>
-                <Route path="/search/meetings/:slug">
-                  <ExpandedMeeting store={store} />
-                </Route>
-                <Route path="/search/people/:slug">
-                  <ExpandPerson store={store} />
                 </Route>
                 <Route path="/settings">
                   <Settings />
