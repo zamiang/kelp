@@ -27,7 +27,11 @@ export const fetchSelf = async (authToken: string) => {
   if (!lastUpdatedUserId && person.resourceName) {
     localStorage.setItem('kelpLastUpdatedUserId', person.resourceName);
   } else if (person.resourceName && lastUpdatedUserId !== person.resourceName) {
-    await deleteDatabase('production');
+    try {
+      await deleteDatabase('production');
+    } catch (e) {
+      alert(JSON.stringify(e));
+    }
     localStorage.setItem('kelpLastUpdatedUserId', person.resourceName);
     window.location.reload();
   }
