@@ -75,9 +75,9 @@ const AllPeople = (props: IStore & { selectedPersonId: string | null }) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.personDataStore.getAll(false);
-      const sortedPeople = result.sort((a, b) =>
-        a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
-      );
+      const sortedPeople = result
+        .filter((p) => !p.name.includes('people/'))
+        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1));
       const groupedPeople = groupBy(sortedPeople, (p) => p.name.toLocaleLowerCase()[0]);
       setPeople(groupedPeople);
     };

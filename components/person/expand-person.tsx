@@ -160,7 +160,9 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         )}
         {segmentDocuments.length > 0 && (
           <div className={classes.section}>
-            <Typography variant="h6">Documents they have edited</Typography>
+            <Typography variant="h6" style={{ marginBottom: 0 }}>
+              Documents they have edited
+            </Typography>
             <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
           </div>
         )}

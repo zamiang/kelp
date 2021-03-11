@@ -51,6 +51,11 @@ const PersonRow = (props: {
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
+  let name = props.person.name || props.person.id;
+  if (name.includes('people/')) {
+    name = 'Unknown - Not in your contacts';
+  }
+
   useEffect(() => {
     if (isSelected && referenceElement) {
       referenceElement.scrollIntoView({ behavior: 'auto', block: 'center' });
@@ -100,7 +105,7 @@ const PersonRow = (props: {
         <Grid item xs zeroMinWidth>
           <Grid container>
             <Grid item xs={12} zeroMinWidth>
-              <Typography noWrap>{props.person.name || props.person.id}</Typography>
+              <Typography noWrap>{name}</Typography>
             </Grid>
             {!props.isSmall && (
               <Grid item xs={12}>

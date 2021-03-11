@@ -7,7 +7,6 @@ import { format, formatDistanceToNow } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
-import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import MeetingRowBelow from './meeting-row-below';
@@ -95,7 +94,6 @@ const MeetingRow = (props: {
   hideDot?: boolean;
 }) => {
   const classes = useStyles();
-  const buttonClasses = useButtonStyles();
   const router = useHistory();
   const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
 
@@ -108,8 +106,6 @@ const MeetingRow = (props: {
         void router.push(`/meetings/${props.meeting.id}`);
         return false;
       }}
-      onMouseEnter={() => !isSelected && setVideoVisible(true)}
-      onMouseLeave={() => setVideoVisible(false)}
       className={classes.container}
     >
       <Grid container spacing={1} alignItems="center">

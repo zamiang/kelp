@@ -149,7 +149,9 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       <div className={classes.container}>
         {people.length > 0 && (
           <div className={classes.section}>
-            <Typography variant="h6">Key Contributors</Typography>
+            <Typography variant="h6" style={{ marginBottom: 0 }}>
+              Key Contributors
+            </Typography>
             <div>
               {people.map(
                 (person: IPerson) =>
