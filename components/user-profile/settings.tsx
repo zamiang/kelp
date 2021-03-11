@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const Settings = (props: { shouldRenderHeader: boolean }) => {
   const classes = panelStyles();
   const formClasses = useStyles();
+  const notificationPermission = window['Notification'] ? Notification.permission : undefined;
   return (
     <div className={props.shouldRenderHeader ? classes.panel : undefined}>
       {props.shouldRenderHeader && <TopBar title="Settings"></TopBar>}
@@ -75,11 +76,15 @@ const Settings = (props: { shouldRenderHeader: boolean }) => {
               variant="contained"
               color="primary"
               disableElevation
-              onClick={() => Notification.requestPermission()}
+              onClick={() => {
+                if (window['Notification']) {
+                  return Notification.requestPermission();
+                }
+              }}
             >
               Enable meeting prep notifications
             </Button>
-            Current status: {Notification.permission}
+            Current status: {notificationPermission || 'not enabled'}
           </FormControl>
         </div>
         <div className={clsx(classes.section, formClasses.maxWidth)}>
