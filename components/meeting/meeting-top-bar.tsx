@@ -6,7 +6,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import clsx from 'clsx';
-import { addDays, format, getDate, isPast, isSameDay, isToday, subDays } from 'date-fns';
+import {
+  addDays,
+  format,
+  getDate,
+  getDayOfYear,
+  isPast,
+  isSameDay,
+  isToday,
+  subDays,
+} from 'date-fns';
 import React from 'react';
 import { mediumFontFamily } from '../../constants/theme';
 import useButtonStyles from '../shared/button-styles';
@@ -100,6 +109,9 @@ const MeetingTopBar = (props: {
     addDays(props.currentDay, 5),
     addDays(props.currentDay, 6),
   ];
+  const isLeftDisabled = getDayOfYear(props.selectedDay) <= getDayOfYear(days[0]);
+  const isRightDisabled =
+    getDayOfYear(props.selectedDay) >= getDayOfYear(addDays(props.currentDay, 6));
 
   return (
     <div className={classes.container}>
@@ -123,7 +135,11 @@ const MeetingTopBar = (props: {
       <div className={classes.bottomPadding}>
         <Grid container spacing={1} alignItems="center" justify="space-between">
           <Grid item>
-            <IconButton size="small">
+            <IconButton
+              size="small"
+              disabled={isLeftDisabled}
+              onClick={() => props.onDayClick(subDays(props.selectedDay, 1))}
+            >
               <KeyboardArrowLeftIcon />
             </IconButton>
           </Grid>
@@ -156,7 +172,11 @@ const MeetingTopBar = (props: {
             </Grid>
           ))}
           <Grid item>
-            <IconButton size="small">
+            <IconButton
+              size="small"
+              disabled={isRightDisabled}
+              onClick={() => props.onDayClick(addDays(props.selectedDay, 1))}
+            >
               <KeyboardArrowRightIcon />
             </IconButton>
           </Grid>
