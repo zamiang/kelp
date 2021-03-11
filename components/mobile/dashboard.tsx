@@ -31,10 +31,10 @@ const useInfoStyles = makeStyles((theme) => ({
   },
   container: {
     position: 'relative',
-    maxHeight: 'calc(100vh - 119px)',
     overflowY: 'auto',
     background: theme.palette.background.paper,
     overflowX: 'hidden',
+    paddingBottom: 110,
   },
   footer: {
     borderTop: `1px solid ${theme.palette.divider}`,
