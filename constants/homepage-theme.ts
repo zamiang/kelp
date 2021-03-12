@@ -1,4 +1,4 @@
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
@@ -89,8 +89,12 @@ const theme = createMuiTheme({
       fontWeight: 400,
       fontStyle: 'normal',
     },
+    h4: {
+      fontSize: '28px',
+      marginBottom: 12,
+    },
     h5: {
-      fontSize: '1.875rem',
+      fontSize: '18px',
       fontWeight: 500,
       fontFamily: mediumFontFamily,
       fontStyle: 'normal',
@@ -110,6 +114,7 @@ const theme = createMuiTheme({
     },
     body1: {
       fontFamily: bodyFontFamily,
+      fontSize: '16px',
     },
     body2: {
       fontFamily: bodyFontFamily,
@@ -170,4 +175,4 @@ const theme = createMuiTheme({
   },
 } as any);
 
-export default responsiveFontSizes(theme);
+export default theme;

@@ -72,8 +72,10 @@ export const useStyles = makeStyles((theme) => ({
   },
   body: {
     marginTop: theme.spacing(3),
-    fontSize: '0.9285714285714286rem',
-    color: theme.palette.text.secondary,
+  },
+  section: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
   hint: {
     marginTop: theme.spacing(2),
