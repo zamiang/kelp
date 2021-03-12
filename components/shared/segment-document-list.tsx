@@ -43,7 +43,8 @@ const SegmentDocumentItem = (props: {
     return <MissingDocumentRow segmentDocument={props.segmentDocument} isSmall={props.isSmall} />;
   }
 
-  const personText = person ? ` by ${person?.name || person?.emailAddresses}` : '';
+  const name = person?.name || person?.emailAddresses;
+  const personText = person ? ` by ${name}` : '';
   const tooltipText = `${capitalize(props.segmentDocument.reason)}d${personText} on ${format(
     new Date(props.segmentDocument.date),
     "MMM do 'at' hh:mm a",

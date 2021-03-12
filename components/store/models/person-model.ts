@@ -15,9 +15,17 @@ export interface IPerson {
   isInContacts: boolean;
 }
 
+const formatName = (person: GooglePerson) => {
+  const name = person.name || person.id;
+  if (name.includes('people/')) {
+    return 'Unknown contributor';
+  }
+  return name;
+};
+
 export const formatPerson = (person: GooglePerson) => ({
   id: person.id,
-  name: person.name,
+  name: formatName(person),
   googleId: person.id,
   emailAddresses: person.emailAddresses,
   imageUrl: person.imageUrl || undefined,

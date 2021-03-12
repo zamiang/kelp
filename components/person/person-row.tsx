@@ -51,10 +51,7 @@ const PersonRow = (props: {
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
-  let name = props.person.name || props.person.id;
-  if (name.includes('people/')) {
-    name = 'Unknown - Not in your contacts';
-  }
+  const name = props.person.name || props.person.id;
 
   useEffect(() => {
     if (isSelected && referenceElement) {
