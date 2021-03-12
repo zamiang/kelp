@@ -145,7 +145,7 @@ const App = () => {
             </Typography>
           </Container>
           <Container className={classes.buttonContainer}>
-            <Grid container alignItems="center" spacing={3} justify="center">
+            <Grid container alignItems="center" spacing={4} justify="center">
               <Grid item>
                 <Button
                   variant="contained"
