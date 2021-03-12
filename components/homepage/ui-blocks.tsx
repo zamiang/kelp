@@ -8,9 +8,10 @@ import React from 'react';
 const useStyles = makeStyles((theme) => ({
   container: {},
   sectionImageLeft: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
+    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    textAlign: 'right',
   },
   greyContainer: {
     width: '100%',
@@ -24,31 +25,20 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sectionImageRightTop: {
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
   },
   sectionImageRightBottom: {
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
+    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
   },
-  section: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  documentContainer: {
-    marginRight: 'auto',
-    marginLeft: 80,
-    marginTop: 65,
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 'auto',
-      marginBottom: 65,
-    },
-  },
+  section: {},
   notificationContainer: {
     marginRight: 28,
-    marginTop: 65,
     [theme.breakpoints.down('sm')]: {
       marginRight: 'auto',
-      marginBottom: 65,
     },
   },
   prepareTextRight: {
@@ -79,7 +69,7 @@ const UiBlocks = () => {
           <Container maxWidth="xs" className={classes.manageWorkTextLeft}>
             <Typography variant="h4">Organization for humans</Typography>
             <br />
-            <Typography variant="h6">
+            <Typography>
               Kelp meets you where you are. It doesn’t ask you to change how you organize your work
               or how you collaborate.
             </Typography>
@@ -91,18 +81,12 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
         >
-          <Container maxWidth="xs" className={classes.documentContainer}>
-            <b>todo</b>
-          </Container>
+          <img src="images/notice.png" />
         </Grid>
       </Grid>
       <Grid container className={clsx(classes.section, classes.sectionMobileReverse)}>
         <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
-          <Grid container alignItems="center">
-            <Container maxWidth="xs" className={classes.notificationContainer}>
-              <b>todo</b>
-            </Container>
-          </Grid>
+          <img src="images/notice.png" />
         </Grid>
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Container maxWidth="xs" className={classes.prepareTextRight}>
@@ -132,7 +116,7 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
         >
-          <b>todo</b>
+          <img src="images/notice.png" />
         </Grid>
       </Grid>
     </div>

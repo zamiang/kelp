@@ -181,14 +181,14 @@ const App = () => {
             gather the information you need to be effective.
           </Typography>
         </Container>
-        <Divider />
-        <Container maxWidth="md">
-          <Paper className={classes.meetingContainer} elevation={2}>
-            <div style={{ fontWeight: 500 }}>todo</div>
-          </Paper>
-        </Container>
+        <div style={{ background: '#faf8f5', textAlign: 'center' }}>
+          <br />
+          <br />
+          <img src="images/meeting.png" />
+        </div>
         <Divider />
         <UiBlocks />
+        <Divider />
         <Container maxWidth="md" className={classes.bodyCopySection}>
           <Typography variant="h4">Your data is your data.</Typography>
           <br />
