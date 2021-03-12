@@ -20,7 +20,7 @@ export const fetchSelf = async (authToken: string) => {
 
     if (personResponse.status === 401) {
       // Reload if the current user fetch fails
-      window.location.reload();
+      window.location.pathname = '/dashboard';
     }
   }
 

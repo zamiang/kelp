@@ -38,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     overscrollBehavior: 'contain',
+    overscrollBehaviorY: 'none',
+    overscrollBehaviorX: 'none',
     flexGrow: 1,
     background: theme.palette.secondary.light,
     minHeight: '100vh',
