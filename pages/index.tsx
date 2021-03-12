@@ -7,7 +7,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -111,6 +110,10 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
       margin: '0px auto',
     },
+  },
+  emojiIcon: {
+    fontSize: 26,
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -242,33 +245,23 @@ const App = () => {
             <Grid sm={12} md={6} item>
               <List disablePadding>
                 <ListItem disableGutters>
-                  <ListItemIcon>
-                    <SentimentVerySatisfiedIcon />
-                  </ListItemIcon>
+                  <div className={classes.emojiIcon}>🎨</div>
                   <ListItemText>Designed for people with too many meetings</ListItemText>
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemIcon>
-                    <SentimentVerySatisfiedIcon />
-                  </ListItemIcon>
+                  <div className={classes.emojiIcon}>🗝</div>
                   <ListItemText>Secure - Kelp does not store your data</ListItemText>
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemIcon>
-                    <SentimentVerySatisfiedIcon />
-                  </ListItemIcon>
+                  <div className={classes.emojiIcon}>🪞</div>
                   <ListItemText>Active & transparent development</ListItemText>
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemIcon>
-                    <SentimentVerySatisfiedIcon />
-                  </ListItemIcon>
+                  <div className={classes.emojiIcon}>🦄</div>
                   <ListItemText>Independently bootstrapped</ListItemText>
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemIcon>
-                    <SentimentVerySatisfiedIcon />
-                  </ListItemIcon>
+                  <div className={classes.emojiIcon}>🏎</div>
                   <ListItemText>Fast and easy to use</ListItemText>
                 </ListItem>
               </List>
