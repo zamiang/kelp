@@ -135,7 +135,7 @@ const App = () => {
       `}</style>
       <div className={classes.colorContainer}>
         <Header />
-        <div className={classes.hero} alignItems="center">
+        <div className={classes.hero}>
           <Container maxWidth="xs">
             <Typography variant="h3" className={classes.heading}>
               Your information filtration system
