@@ -61,7 +61,8 @@ const About = () => {
                 <Typography variant="h4">Your privacy is first</Typography>
                 <Typography className={classes.body}>
                   Everything you do in Kelp is anonymous and your data stays on your computer. The
-                  application is deployed "on-prem" and is fully hosted on your computer.
+                  application is deployed &ldquo;on-prem&rdquo; and is fully hosted on your
+                  computer.
                 </Typography>
                 <Typography className={classes.body}>
                   Kelp does not operate intermediary servers to process or store your data. None of
