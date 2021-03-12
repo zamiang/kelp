@@ -40,88 +40,44 @@ const About = () => {
                 About Kelp
               </Typography>
               <Typography className={classes.body}>
-                Kelp organizes your documents, events and contacts to make work make sense.
+                Today, we are trapped by tools that impose physical limitations on digital tools.
+                Nested into folders, our information is hidden from view.
               </Typography>
               <Typography className={classes.body}>
-                We are trying to help working professionals to quickly gather the information they
-                need to be effective across an increasingly vast set of information sources.
+                Kelp gets you the documents you need when you need them by passively organizing
+                information. It uses data signals, like if a document is edited during a meeting, to
+                make that document easier to find. Kelp then serves that document to you
+                automatically.
               </Typography>
               <Typography className={classes.body}>
-                We meet you where you are instead of asking you to adopt yet another organizational
-                scheme. Our strategy is to find novel approaches to passive information organization
-                in order to reduce the time working professionals (like you!) spend searching for
-                information and help them see the bigger picture.
+                Kelp meets you where you are. You don&rsquo;t need to adopt some new tagging system
+                or spend hours moving files around.
               </Typography>
+              <Typography className={classes.body}>Install Kelp. Done.</Typography>
+              <Typography className={classes.body}>🪦 the 📁</Typography>
               <br />
               <Divider />
               <div className={classes.section}>
-                <Typography variant="h4">We make your data work for you</Typography>
-                <Typography>
-                  Our data can be used for so much more than selling us stuff we don&rsquo;t need.
+                <Typography variant="h4">Your privacy is first</Typography>
+                <Typography className={classes.body}>
+                  Everything you do in Kelp is anonymous and your data stays on your computer. The
+                  application is deployed "on-prem" and is fully hosted on your computer.
                 </Typography>
                 <Typography className={classes.body}>
-                  Much like a fixer-upper house, our data is not renovated for our use. Our data has
-                  mostly been used to sell us products. Our communication tools are separate from
-                  our collaboration tools which are separate from our scheduling tools. Each of
-                  these individual tools could benefit from information in the other but there is
-                  also data in each that we just don&rsquo;t yet use.
+                  Kelp does not operate intermediary servers to process or store your data. None of
+                  the data fetched from third party services leaves your computer. Data is fetched
+                  when you have Kelp open and cached on your computer for 12 hours to ensure the
+                  application is fast.
                 </Typography>
                 <Typography className={classes.body}>
-                  For example, a Slack message contains the text and serves as a signal about the
-                  relationship between two people, a piece of information and a point in time.
-                  Events organize information as they have a topic, and involve a group of people
-                  working to produce some artifact. The meeting name and attendees are signals in
-                  addition to the artifacts created. A collaborative document, piece of code or
-                  design have people, information and time attached to them.
+                  Kelp does not track any sensitive data. We record completely anonymous usage
+                  statistics and error logs. We interpret the usage data in order to improve Kelp.
+                  None of the data is sold and we don’t use it for advertisements.
                 </Typography>
                 <Typography className={classes.body}>
-                  The mission of Kelp is to figure out how to link that information together in a
-                  way that provides meaningful value to working professionals.
-                </Typography>
-              </div>
-              <Divider />
-              <div className={classes.section}>
-                <Typography variant="h4">We put your privacy first</Typography>
-                <Typography className={classes.body}>
-                  Everything you do in Kelp is anonymous and your data stays on your computer.
-                </Typography>
-                <Typography className={classes.body}>
-                  The credentials for third party services are stored securely. All extensions
-                  communicate directly via{' '}
-                  <MuiLink
-                    href="https://en.wikipedia.org/wiki/HTTPS"
-                    target="_blank"
-                    className={classes.link}
-                  >
-                    HTTPS
-                  </MuiLink>{' '}
-                  over{' '}
-                  <MuiLink
-                    href="https://en.wikipedia.org/wiki/Transport_Layer_Security"
-                    className={classes.link}
-                    target="_blank"
-                  >
-                    TLS{' '}
-                  </MuiLink>{' '}
-                  to third party APIs. Kelp does not operate intermediary servers to process or
-                  store your data. We use{' '}
-                  <MuiLink href="https://oauth.net/" target="_blank" className={classes.link}>
-                    OAuth
-                  </MuiLink>{' '}
-                  for authentication and authorization where possible and access as little
-                  information as necessary. None of the data fetched from third party services
-                  leaves your computer. Data is fetched when you have Kelp open and gone when you
-                  close Kelp.
-                </Typography>
-                <Typography className={classes.body}>
-                  Kelp does not don’t track any sensitive data. Only completely anonymous usage
-                  statistics and error logging are sent to us. We interpret the usage data in order
-                  to improve Kelp. None of the data is sold and we don’t use it for advertisements.
-                </Typography>
-                <Typography className={classes.body}>
-                  We deeply believe that limiting Kelp’s access to your data is both our best
-                  interest and your best interest and hope to be an example of privacy forward
-                  companies.
+                  Kelp puts your privacy and security first. We deeply believe that limiting Kelp’s
+                  access to your data is both our best interest and your best interest and hope to
+                  be an example of privacy forward companies.
                 </Typography>
               </div>
               <Divider />
@@ -171,7 +127,7 @@ const About = () => {
               </div>
               <Divider />
               <div className={classes.section}>
-                <Typography variant="h4">We are building a business for the long term</Typography>
+                <Typography variant="h4">We are building for the long term</Typography>
                 <Typography className={classes.body}>
                   We are self funded with the goal of building a sustainable product. Our vision is
                   to create a useful tool with an active community paired with a clear business
