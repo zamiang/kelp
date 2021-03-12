@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   greyContainer: {
     width: '100%',
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: theme.palette.secondary.light,
   },
   sectionText: {
     padding: theme.spacing(6),
@@ -108,7 +108,7 @@ const UiBlocks = () => {
           <Container maxWidth="xs" className={classes.prepareTextRight}>
             <Typography variant="h4">Quickly Prepare For Meetings</Typography>
             <br />
-            <Typography variant="h6">
+            <Typography>
               Kelp scans your calendar and documents to automatically collect the documents you
               need. It then magically annotates your calendar. Easy.
             </Typography>
@@ -120,7 +120,7 @@ const UiBlocks = () => {
           <Container maxWidth="xs" className={classes.manageWorkTextLeft}>
             <Typography variant="h4">Manage Work Relationships</Typography>
             <br />
-            <Typography variant="h6">
+            <Typography>
               Kelp infers associations between information, such as between a person, a meeting with
               the person and document edits by the person.
             </Typography>

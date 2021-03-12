@@ -5,7 +5,7 @@ import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
 export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
-const italicFontFamily = "'basis-grotesque-italic', sans-serif";
+export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 
 const basisRegular = {
   fontFamily: 'basis-grotesque',

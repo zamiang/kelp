@@ -25,7 +25,8 @@ const LoginButton = () => {
     <Button
       onClick={() => (window.location.pathname = '/dashboard')}
       className={classes.button}
-      variant="outlined"
+      variant="contained"
+      color="secondary"
       disableElevation={true}
     >
       Log In

@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import Link from 'next/link';
 import React from 'react';
+import { mediumFontFamily } from '../../constants/theme';
 import LoginButton from './login-button';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,9 +63,17 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  logoImage: {
+    width: 46,
+    height: 51,
+    paddingRight: 0,
+    marginRight: 0,
+  },
   logo: {
     cursor: 'pointer',
+    fontFamily: mediumFontFamily,
     fontWeight: theme.typography.fontWeightMedium,
+    margin: 0,
   },
 }));
 
@@ -82,11 +91,20 @@ const Header = (props: { isFullWidth?: boolean }) => {
         alignItems="center"
       >
         <Grid item xs={3} style={{ textAlign: 'left' }}>
-          <Link href="/">
-            <Typography variant="h4" className={classes.logo}>
-              Kelp
-            </Typography>
-          </Link>
+          <Grid container alignItems="center">
+            <Grid item>
+              <Link href="/">
+                <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="/">
+                <Typography variant="h4" className={classes.logo}>
+                  Kelp
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item>
           <Grid container spacing={4} alignItems="center" className={classes.links}>

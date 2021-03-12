@@ -9,7 +9,6 @@ import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
-import config from '../constants/config';
 import { useStyles } from './index';
 
 const About = () => {
@@ -25,7 +24,7 @@ const About = () => {
       </Head>
       <style jsx global>{`
         html body {
-          background-color: ${config.BLUE_BACKGROUND};
+          background-color: #faf8f5;
         }
       `}</style>
       <div className={classes.containerWidth}>
@@ -54,7 +53,6 @@ const About = () => {
                 or spend hours moving files around.
               </Typography>
               <Typography className={classes.body}>Install Kelp. Done.</Typography>
-              <Typography className={classes.body}>🪦 the 📁</Typography>
               <br />
               <Divider />
               <div className={classes.section}>

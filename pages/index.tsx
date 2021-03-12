@@ -10,6 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import clsx from 'clsx';
 import Head from 'next/head';
@@ -17,7 +18,7 @@ import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
 import UiBlocks from '../components/homepage/ui-blocks';
-import config from '../constants/config';
+import { italicFontFamily } from '../constants/theme';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,9 +28,9 @@ export const useStyles = makeStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
   },
-  blueContainer: {
+  colorContainer: {
     width: '100%',
-    backgroundColor: config.BLUE_BACKGROUND,
+    backgroundColor: theme.palette.secondary.light,
   },
   whiteContainer: {
     width: '100%',
@@ -62,12 +63,11 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   buttonContainer: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(3),
   },
   login: {
     margin: 0,
     padding: theme.spacing(2, 6),
-    backgroundColor: theme.palette.primary.dark,
     color: 'white',
   },
   body: {
@@ -102,8 +102,9 @@ export const useStyles = makeStyles((theme) => ({
       maxWidth: 'none',
     },
   },
-  bodyLargeCopy: {
-    fontSize: theme.typography.h5.fontSize,
+  italics: {
+    fontFamily: italicFontFamily,
+    fontStyle: 'italics',
   },
   loginButtonContainer: {
     [theme.breakpoints.down('sm')]: {
@@ -128,40 +129,56 @@ const App = () => {
       </Head>
       <style jsx global>{`
         html body {
-          background-color: ${config.BLUE_BACKGROUND};
+          background-color: #faf8f5;
         }
       `}</style>
-      <div className={classes.blueContainer}>
+      <div className={classes.colorContainer}>
         <Header />
         <Grid container className={classes.hero} alignItems="center">
           <Container maxWidth="xs">
             <Typography variant="h3" className={classes.heading}>
               Your information filtration system
             </Typography>
-            <Typography variant="h6" className={classes.body}>
+            <Typography variant="h5" className={classes.body}>
               Kelp automatically organizes your documents, events and contacts to make work make
               sense.
             </Typography>
-            <div className={classes.buttonContainer}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.login}
-                onClick={() => (window.location.pathname = '/dashboard')}
-                disableElevation={true}
-              >
-                Log In with Google
-              </Button>
-            </div>
+          </Container>
+          <Container className={classes.buttonContainer}>
+            <Grid container alignItems="center" spacing={3} justify="center">
+              <Grid item>
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  className={classes.login}
+                  onClick={() => (window.location.pathname = '/dashboard')}
+                  disableElevation={true}
+                >
+                  Sign In with Google
+                </Button>
+              </Grid>
+              <Grid>
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={classes.login}
+                  href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
+                  disableElevation={true}
+                  startIcon={<AddIcon />}
+                >
+                  Add to Chrome
+                </Button>
+              </Grid>
+            </Grid>
           </Container>
         </Grid>
       </div>
       <div className={classes.whiteContainer}>
         <Container maxWidth="md" className={classes.bodyCopySection}>
-          <Typography className={classes.bodyLargeCopy}>
-            Kelp started out of a need for better way to prepare for meetings. It aims to help you
-            quickly gather the information you need to be effective.
+          <Typography variant="h4">
+            Kelp started out of a need for better way to prepare for meetings. It helps you quickly
+            gather the information you need to be effective.
           </Typography>
         </Container>
         <Divider />
@@ -175,7 +192,7 @@ const App = () => {
         <Container maxWidth="md" className={classes.bodyCopySection}>
           <Typography variant="h4">Your data is your data.</Typography>
           <br />
-          <Typography variant="h6">
+          <Typography>
             When visiting the Kelp website, your computer is storing and processing your data. Kelp
             is a static website that does not have any kind of data processing or data storage
             capability.{' '}
@@ -185,16 +202,18 @@ const App = () => {
             .
           </Typography>
           <div className={classes.hint}>
-            Kelp currently works with Google and will expand to other integrations.
-            <br />
-            <MuiLink
-              target="_blank"
-              color="primary"
-              rel="noopener noreferrer"
-              href="https://twitter.com/kelpnyc"
-            >
-              Let us know what you would like us to add!
-            </MuiLink>
+            <Typography className={classes.italics}>
+              Kelp currently works with Google and will expand to other integrations.
+              <br />
+              <MuiLink
+                target="_blank"
+                color="primary"
+                rel="noopener noreferrer"
+                href="https://twitter.com/kelpnyc"
+              >
+                Let us know what you would like us to add!
+              </MuiLink>
+            </Typography>
           </div>
         </Container>
         <Divider />

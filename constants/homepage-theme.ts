@@ -46,15 +46,15 @@ const theme = createMuiTheme({
       default: '#fff',
     },
     primary: {
-      light: 'rgba(29, 215, 212, 1)',
-      main: 'rgba(10, 126, 194, 1)',
-      dark: '#303f9f',
+      light: '#DEEBFF',
+      main: '#FF4600',
+      dark: '#FF4600',
       contrastText: '#fff',
     },
     secondary: {
-      light: 'rgba(196, 211, 217, 1)',
-      main: 'rgba(116, 124, 129, 1)',
-      dark: 'rgba(20, 21, 21, 1)',
+      light: '#FAF8F5',
+      main: '#47B7B8',
+      dark: '#47B7B8',
       contrastText: '#fff',
     },
     error: {
