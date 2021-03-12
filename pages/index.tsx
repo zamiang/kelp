@@ -135,7 +135,7 @@ const App = () => {
       `}</style>
       <div className={classes.colorContainer}>
         <Header />
-        <Grid container className={classes.hero} alignItems="center">
+        <div className={classes.hero} alignItems="center">
           <Container maxWidth="xs">
             <Typography variant="h3" className={classes.heading}>
               Your information filtration system
@@ -159,7 +159,7 @@ const App = () => {
                   Sign In with Google
                 </Button>
               </Grid>
-              <Grid>
+              <Grid item>
                 <Button
                   variant="contained"
                   size="large"
@@ -173,7 +173,7 @@ const App = () => {
               </Grid>
             </Grid>
           </Container>
-        </Grid>
+        </div>
       </div>
       <div className={classes.whiteContainer}>
         <Container maxWidth="md" className={classes.bodyCopySection}>
@@ -185,7 +185,7 @@ const App = () => {
         <div style={{ background: '#faf8f5', textAlign: 'center' }}>
           <br />
           <br />
-          <img src="images/meeting.png" />
+          <img src="images/meeting.png" style={{ maxWidth: '100%' }} />
         </div>
         <Divider />
         <UiBlocks />

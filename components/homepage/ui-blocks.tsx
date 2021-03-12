@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   container: {},
   sectionImageLeft: {
     paddingBottom: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingRight: theme.spacing(4),
     textAlign: 'right',
@@ -28,11 +29,13 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
   },
   sectionImageRightBottom: {
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
   },
   section: {},
   notificationContainer: {
@@ -81,12 +84,12 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
         >
-          <img src="images/notice.png" />
+          <img src="images/notice.png" style={{ maxWidth: '100%' }} />
         </Grid>
       </Grid>
       <Grid container className={clsx(classes.section, classes.sectionMobileReverse)}>
         <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
-          <img src="images/notice.png" />
+          <img src="images/notice.png" style={{ maxWidth: '100%' }} />
         </Grid>
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Container maxWidth="xs" className={classes.prepareTextRight}>
@@ -116,7 +119,7 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
         >
-          <img src="images/notice.png" />
+          <img src="images/notice.png" style={{ maxWidth: '100%' }} />
         </Grid>
       </Grid>
     </div>
