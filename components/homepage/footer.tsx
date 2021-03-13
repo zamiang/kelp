@@ -53,7 +53,9 @@ const Footer = (props: { shouldAlignLeft?: boolean }) => {
       <Grid container spacing={1} justify={props.shouldAlignLeft ? 'flex-start' : 'center'}>
         <Grid item className={classes.footerItem}>
           <Link href="/about">
-            <span className={classes.footerLink}>About</span>
+            <Typography variant="body2" className={classes.footerLink}>
+              About
+            </Typography>
           </Link>
         </Grid>
         <Grid item className={classes.footerItem}>
@@ -63,17 +65,23 @@ const Footer = (props: { shouldAlignLeft?: boolean }) => {
             className={classes.footerLink}
             target="_blank"
           >
-            Updates
+            <Typography variant="body2" className={classes.footerLink}>
+              Updates
+            </Typography>
           </a>
         </Grid>
         <Grid item className={classes.footerItem}>
           <Link href="/privacy">
-            <span className={classes.footerLink}>Privacy</span>
+            <Typography variant="body2" className={classes.footerLink}>
+              Privacy
+            </Typography>
           </Link>
         </Grid>
         <Grid item className={classes.footerItem}>
           <Link href="/terms">
-            <span className={classes.footerLink}>Terms</span>
+            <Typography variant="body2" className={classes.footerLink}>
+              Terms
+            </Typography>
           </Link>
         </Grid>
       </Grid>
