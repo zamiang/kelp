@@ -113,6 +113,12 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: 26,
     marginRight: theme.spacing(2),
   },
+  meetingImage: {
+    maxWidth: '100%',
+    paddingTop: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+  },
 }));
 
 // <meta name="slack-app-id" content="A01E5A9263B" />
@@ -183,9 +189,7 @@ const App = () => {
           </Typography>
         </Container>
         <div style={{ background: '#faf8f5', textAlign: 'center' }}>
-          <br />
-          <br />
-          <img src="images/meeting.png" style={{ maxWidth: '100%' }} />
+          <img src="images/meeting.png" className={classes.meetingImage} />
         </div>
         <Divider />
         <UiBlocks />
