@@ -1,7 +1,6 @@
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
 import Footer from '../components/homepage/footer';
@@ -11,7 +10,7 @@ import { useStyles } from './index';
 const Terms = () => {
   const classes = useStyles();
   return (
-    <div className={clsx(classes.root, classes.container)}>
+    <div className={classes.container}>
       <Head>
         <title>Terms And Conditions - Kelp</title>
         <meta
@@ -24,9 +23,9 @@ const Terms = () => {
           background-color: #faf5eb;
         }
       `}</style>
-      <div className={classes.containerWidth}>
+      <div>
         <Header />
-        <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
+        <Grid container className={classes.subpage} alignItems="center" justify="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">
               <Typography variant="h3">Terms And Conditions</Typography>

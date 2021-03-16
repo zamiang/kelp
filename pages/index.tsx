@@ -17,9 +17,6 @@ import UiBlocks from '../components/homepage/ui-blocks';
 import { italicFontFamily } from '../constants/theme';
 
 export const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
   container: {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -33,8 +30,12 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: 42,
     },
   },
-  containerWidth: {
-    width: '100%',
+  subheading: {
+    marginTop: 48,
+    fontSize: 32,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 26,
+    },
   },
   loginMargin: {
     margin: theme.spacing(1),
@@ -62,7 +63,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   body: {
-    marginTop: 48,
+    marginTop: theme.spacing(2),
   },
   section: {
     marginTop: theme.spacing(4),
@@ -152,7 +153,7 @@ const App = () => {
           <Typography variant="h1" className={classes.heading}>
             Your information filtration system
           </Typography>
-          <Typography variant="h2" className={classes.body}>
+          <Typography className={classes.subheading}>
             Kelp automatically organizes your documents, events and contacts to make work make
             sense.
           </Typography>

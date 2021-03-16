@@ -52,7 +52,7 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
     secondary: {
-      light: '#faf5eb',
+      light: '#FAF8F5',
       main: '#47B7B8',
       dark: '#47B7B8',
       contrastText: '#fff',
@@ -84,11 +84,11 @@ const theme = createMuiTheme({
       color: 'rgba(0,0,0,0.87)',
     },
     h2: {
-      fontWeight: 400,
-      fontStyle: 'normal',
-      fontSize: '32px',
-      letterSpacing: 0.25,
-      color: 'rgba(0,0,0,0.87)',
+      fontSize: 60,
+      marginBottom: 12,
+      width: '100%',
+      textAlign: 'center',
+      color: 'rgba(0,0,0,0.15)',
     },
     h3: {
       fontWeight: 400,
@@ -98,14 +98,16 @@ const theme = createMuiTheme({
       color: 'rgba(0,0,0,0.87)',
     },
     h4: {
-      fontSize: '28px',
+      fontSize: 28,
       marginBottom: 12,
     },
     h5: {
-      fontSize: '18px',
+      fontSize: 18,
       fontWeight: 500,
       fontFamily: mediumFontFamily,
       fontStyle: 'normal',
+      marginTop: 24,
+      marginBottom: 12,
     },
     h6: {
       fontSize: '0.875rem',

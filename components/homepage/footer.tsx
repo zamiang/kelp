@@ -66,7 +66,7 @@ const Footer = () => {
   return (
     <Container maxWidth="lg" className={classes.footer}>
       <Grid container justify="space-between">
-        <Grid item xx={1}>
+        <Grid item xs={1}>
           <Link href="/">
             <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
           </Link>

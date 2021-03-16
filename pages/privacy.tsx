@@ -14,7 +14,7 @@ import { useStyles } from './index';
 const Terms = () => {
   const classes = useStyles();
   return (
-    <div className={clsx(classes.root, classes.container)}>
+    <div className={classes.container}>
       <Head>
         <title>Privacy Policy - Kelp</title>
         <meta
@@ -27,7 +27,7 @@ const Terms = () => {
           background-color: #faf5eb;
         }
       `}</style>
-      <div className={classes.containerWidth}>
+      <div>
         <Header />
         <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
           <Grid item sm={7}>
