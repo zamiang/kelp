@@ -6,7 +6,6 @@ import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import Head from 'next/head';
-import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
@@ -25,7 +24,7 @@ const Terms = () => {
       </Head>
       <style jsx global>{`
         html body {
-          background-color: #faf8f5;
+          background-color: #faf5eb;
         }
       `}</style>
       <div className={classes.containerWidth}>
@@ -33,12 +32,7 @@ const Terms = () => {
         <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">
-              <Link href="/">
-                <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
-              </Link>
-              <Typography variant="h3" className={classes.heading}>
-                Privacy Policy
-              </Typography>
+              <Typography variant="h3">Privacy Policy</Typography>
               <Typography className={classes.body}>
                 Kelp does not own your data, nor do we sell it to others or use it for advertising.
                 It’s your data, period.
@@ -443,10 +437,10 @@ const Terms = () => {
                   support@kelp.nyc.
                 </MuiLink>
               </Typography>
-              <Footer shouldAlignLeft={true} />
             </Container>
           </Grid>
         </Grid>
+        <Footer />
       </div>
     </div>
   );

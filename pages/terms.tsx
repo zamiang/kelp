@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import Head from 'next/head';
-import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
@@ -22,7 +21,7 @@ const Terms = () => {
       </Head>
       <style jsx global>{`
         html body {
-          background-color: #faf8f5;
+          background-color: #faf5eb;
         }
       `}</style>
       <div className={classes.containerWidth}>
@@ -30,12 +29,7 @@ const Terms = () => {
         <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">
-              <Link href="/">
-                <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="kelp.svg" />
-              </Link>
-              <Typography variant="h3" className={classes.heading}>
-                Terms And Conditions
-              </Typography>
+              <Typography variant="h3">Terms And Conditions</Typography>
               <Typography className={classes.body}>Last updated: October 02, 2020</Typography>
               <Typography className={classes.body}>
                 Please read these terms and conditions carefully before using Our Service.
@@ -446,10 +440,10 @@ const Terms = () => {
               <ul>
                 <li>By email: support@kelp.nyc</li>
               </ul>
-              <Footer shouldAlignLeft={true} />
             </Container>
           </Grid>
         </Grid>
+        <Footer />
       </div>
     </div>
   );

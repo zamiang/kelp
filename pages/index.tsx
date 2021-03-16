@@ -1,3 +1,4 @@
+import { Divider } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -7,7 +8,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
 import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
@@ -30,8 +30,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   heading: {
     [theme.breakpoints.down('sm')]: {
-      fontSize: theme.typography.h2.fontSize,
-      marginBottom: theme.spacing(2),
+      fontSize: 42,
     },
   },
   containerWidth: {
@@ -55,15 +54,15 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   buttonContainer: {
-    marginTop: theme.spacing(3),
+    marginTop: 48,
   },
   login: {
     margin: 0,
-    padding: theme.spacing(2, 6),
-    color: 'white',
+    width: 260,
+    padding: theme.spacing(2),
   },
   body: {
-    marginTop: theme.spacing(3),
+    marginTop: 48,
   },
   section: {
     marginTop: theme.spacing(4),
@@ -79,19 +78,30 @@ export const useStyles = makeStyles((theme) => ({
   meetingContainer: {
     width: '100%',
     textAlign: 'center',
-    borderRadius: 250,
+    borderRadius: 300,
     marginTop: theme.spacing(4),
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: '#009191',
+    [theme.breakpoints.down('sm')]: {
+      borderRadius: 25,
+      marginTop: theme.spacing(2),
+    },
   },
   meetingImage: {
     display: 'block',
-    paddingTop: theme.spacing(4),
+    paddingTop: 56,
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
     margin: '0px auto',
     maxWidth: 680,
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+      paddingLeft: theme.spacing(2),
+      maxWidth: 'none',
+    },
   },
   bodyCopySection: {
     paddingTop: theme.spacing(10),
@@ -163,12 +173,12 @@ const App = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="contained"
+                variant="outlined"
+                color="primary"
                 size="large"
                 className={classes.login}
                 href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
                 disableElevation={true}
-                startIcon={<AddIcon />}
               >
                 Add to Chrome
               </Button>
@@ -189,32 +199,46 @@ const App = () => {
       </Container>
       <UiBlocks />
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h4">Your data is your data.</Typography>
-        <br />
+        <Typography variant="h4">Currently works with.</Typography>
+        <Typography variant="h3">Google</Typography>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          className={classes.login}
+          onClick={() => (window.location.pathname = '/dashboard')}
+          disableElevation={true}
+        >
+          Sign In with Google
+        </Button>
+        <Typography>
+          Kelp currently works with Google and will expand to other integrations.
+        </Typography>
+        <Typography>
+          <MuiLink
+            target="_blank"
+            color="primary"
+            rel="noopener noreferrer"
+            href="https://twitter.com/kelpnyc"
+          >
+            Let us know
+          </MuiLink>{' '}
+          what you would like us to add!
+        </Typography>
+      </Container>
+      <Container maxWidth="md" className={classes.bodyCopySection}>
+        <Typography variant="h4">Your data is your data</Typography>
         <Typography>
           When visiting the Kelp website, your computer is storing and processing your data. Kelp is
           a static website that does not have any kind of data processing or data storage
-          capability.{' '}
+          capability.
+          <br />
           <MuiLink color="primary" href="/about">
             Read more
           </MuiLink>
-          .
         </Typography>
-        <div className={classes.hint}>
-          <Typography className={classes.italics}>
-            Kelp currently works with Google and will expand to other integrations.
-            <br />
-            <MuiLink
-              target="_blank"
-              color="primary"
-              rel="noopener noreferrer"
-              href="https://twitter.com/kelpnyc"
-            >
-              Let us know what you would like us to add!
-            </MuiLink>
-          </Typography>
-        </div>
       </Container>
+      <Divider />
       <Container maxWidth="md">
         <Grid container alignItems="center">
           <Grid
@@ -232,8 +256,20 @@ const App = () => {
                 className={classes.login}
                 onClick={() => (window.location.pathname = '/dashboard')}
                 disableElevation={true}
+                style={{ width: 280 }}
               >
-                Log In with Google
+                Sign In with Google
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                className={classes.login}
+                href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
+                disableElevation={true}
+                style={{ width: 280, marginTop: 24 }}
+              >
+                Add to Chrome
               </Button>
             </div>
           </Grid>
@@ -263,7 +299,7 @@ const App = () => {
           </Grid>
         </Grid>
       </Container>
-      <Footer shouldAlignLeft={false} />
+      <Footer />
     </div>
   );
 };

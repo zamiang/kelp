@@ -52,7 +52,7 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
     secondary: {
-      light: '#FAF8F5',
+      light: '#faf5eb',
       main: '#47B7B8',
       dark: '#47B7B8',
       contrastText: '#fff',
@@ -88,14 +88,14 @@ const theme = createMuiTheme({
       fontStyle: 'normal',
       fontFamily: mediumFontFamily,
       fontWeight: 500,
-      color: '#000',
+      color: 'rgba(0,0,0,0.87)',
     },
     h4: {
       fontSize: 16,
       fontStyle: 'normal',
       fontFamily: bodyFontFamily,
       fontWeight: 400,
-      color: '#000',
+      color: 'rgba(0,0,0,0.87)',
     },
     h5: {
       fontSize: 16,

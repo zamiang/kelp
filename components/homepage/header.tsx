@@ -64,6 +64,12 @@ const useStyles = makeStyles((theme) => ({
     height: 80,
     paddingRight: 0,
     marginRight: theme.spacing(4),
+    opacity: 1,
+    cursor: 'pointer',
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      opacity: 0.5,
+    },
   },
   logo: {
     cursor: 'pointer',
@@ -121,6 +127,7 @@ const Header = () => {
                   className={classes.menuButton}
                   variant="outlined"
                   color="primary"
+                  size="large"
                   {...bindTrigger(popupState)}
                 >
                   Menu

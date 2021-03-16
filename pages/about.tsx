@@ -5,7 +5,6 @@ import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import Head from 'next/head';
-import Link from 'next/link';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import Header from '../components/homepage/header';
@@ -24,7 +23,7 @@ const About = () => {
       </Head>
       <style jsx global>{`
         html body {
-          background-color: #faf8f5;
+          background-color: #faf5eb;
         }
       `}</style>
       <div className={classes.containerWidth}>
@@ -32,12 +31,7 @@ const About = () => {
         <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">
-              <Link href="/">
-                <img alt="Kelp logo" style={{ maxWidth: 120, marginLeft: -32 }} src="/kelp.svg" />
-              </Link>
-              <Typography variant="h3" className={classes.heading}>
-                About Kelp
-              </Typography>
+              <Typography variant="h3">About Kelp</Typography>
               <Typography className={classes.body}>
                 Today, we are trapped by tools that impose physical limitations on digital tools.
                 Nested into folders, our information is hidden from view.
@@ -201,10 +195,10 @@ const About = () => {
                   and attention to focus on what is most important rather than what appears urgent.
                 </Typography>
               </div>
-              <Footer shouldAlignLeft={true} />
             </Container>
           </Grid>
         </Grid>
+        <Footer />
       </div>
     </div>
   );

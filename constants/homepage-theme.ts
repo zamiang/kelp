@@ -52,7 +52,7 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
     secondary: {
-      light: '#FAF8F5',
+      light: '#faf5eb',
       main: '#47B7B8',
       dark: '#47B7B8',
       contrastText: '#fff',
@@ -93,6 +93,9 @@ const theme = createMuiTheme({
     h3: {
       fontWeight: 400,
       fontStyle: 'normal',
+      fontSize: 32,
+      letterSpacing: 0.25,
+      color: 'rgba(0,0,0,0.87)',
     },
     h4: {
       fontSize: '28px',
@@ -157,9 +160,15 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        textTransform: 'none',
+        textTransform: 'uppercase',
         fontWeight: 500,
         fontFamily: mediumFontFamily,
+        paddingTop: 15,
+        paddingBottom: 14,
+        paddingLeft: 40,
+        paddingRight: 40,
+        borderRadius: 40,
+        letterSpacing: '1.25px',
       },
     },
     MuiAvatar: {
