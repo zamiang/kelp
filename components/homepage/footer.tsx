@@ -27,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
   },
   logoImage: {
     height: 80,
-    position: 'absolute',
-    top: 21,
-    left: 0,
     cursor: 'pointer',
     opacity: 1,
     transition: 'opacity 0.3s',
@@ -68,56 +65,63 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="lg" className={classes.footer}>
-      <Link href="/">
-        <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
-      </Link>
-      <Grid container alignItems="center" justify="center">
-        <Grid item className={classes.footerItem}>
-          <Link href="/about">
-            <Typography variant="body2" className={classes.footerLink}>
-              About
-            </Typography>
+      <Grid container justify="space-between">
+        <Grid item xx={1}>
+          <Link href="/">
+            <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
           </Link>
         </Grid>
-        <Grid item className={classes.footerItem}>
-          <a
-            rel="noreferrer"
-            href="https://updates.kelp.nyc"
-            className={classes.footerLink}
-            target="_blank"
-          >
-            <Typography variant="body2" className={classes.footerLink}>
-              Updates
-            </Typography>
-          </a>
+        <Grid item>
+          <Grid container alignItems="center" justify="center">
+            <Grid item className={classes.footerItem}>
+              <Link href="/about">
+                <Typography variant="body2" className={classes.footerLink}>
+                  About
+                </Typography>
+              </Link>
+            </Grid>
+            <Grid item className={classes.footerItem}>
+              <a
+                rel="noreferrer"
+                href="https://updates.kelp.nyc"
+                className={classes.footerLink}
+                target="_blank"
+              >
+                <Typography variant="body2" className={classes.footerLink}>
+                  Updates
+                </Typography>
+              </a>
+            </Grid>
+            <Grid item className={classes.footerItem}>
+              <Link href="/privacy">
+                <Typography variant="body2" className={classes.footerLink}>
+                  Privacy
+                </Typography>
+              </Link>
+            </Grid>
+            <Grid item className={classes.footerItem}>
+              <Link href="/terms">
+                <Typography variant="body2" className={classes.footerLink}>
+                  Terms
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
+          <Typography className={classes.copyright}>
+            {'Copyright © '}
+            <MuiLink
+              color="textSecondary"
+              href="https://www.zamiang.com"
+              style={{ textDecoration: 'none' }}
+            >
+              Kelp Information Filtration, LLC
+            </MuiLink>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+          </Typography>
         </Grid>
-        <Grid item className={classes.footerItem}>
-          <Link href="/privacy">
-            <Typography variant="body2" className={classes.footerLink}>
-              Privacy
-            </Typography>
-          </Link>
-        </Grid>
-        <Grid item className={classes.footerItem}>
-          <Link href="/terms">
-            <Typography variant="body2" className={classes.footerLink}>
-              Terms
-            </Typography>
-          </Link>
-        </Grid>
+        <Grid item xs={1}></Grid>
       </Grid>
-      <Typography className={classes.copyright}>
-        {'Copyright © '}
-        <MuiLink
-          color="textSecondary"
-          href="https://www.zamiang.com"
-          style={{ textDecoration: 'none' }}
-        >
-          Kelp Information Filtration, LLC
-        </MuiLink>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
     </Container>
   );
 };
