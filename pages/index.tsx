@@ -201,43 +201,50 @@ const App = () => {
       <UiBlocks />
       <Container maxWidth="md" className={classes.bodyCopySection}>
         <Typography variant="h2">Currently works with</Typography>
-        <Typography variant="h3">Google</Typography>
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          className={classes.login}
-          onClick={() => (window.location.pathname = '/dashboard')}
-          disableElevation={true}
-        >
-          Sign In with Google
-        </Button>
-        <Typography>
-          Kelp currently works with Google and will expand to other integrations.
-        </Typography>
-        <Typography>
-          <MuiLink
-            target="_blank"
+        <Container maxWidth="sm" style={{ textAlign: 'center' }}>
+          <Typography variant="h3" style={{ marginBottom: 24 }}>
+            Google
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
             color="primary"
-            rel="noopener noreferrer"
-            href="https://twitter.com/kelpnyc"
+            className={classes.login}
+            onClick={() => (window.location.pathname = '/dashboard')}
+            disableElevation={true}
+            style={{ marginBottom: 48 }}
           >
-            Let us know
-          </MuiLink>{' '}
-          what you would like us to add!
-        </Typography>
+            Sign In with Google
+          </Button>
+          <Typography>
+            Kelp currently works with Google and will expand to other integrations.
+          </Typography>
+          <Typography>
+            <MuiLink
+              target="_blank"
+              color="primary"
+              rel="noopener noreferrer"
+              href="https://twitter.com/kelpnyc"
+            >
+              Let us know
+            </MuiLink>{' '}
+            what you would like us to add!
+          </Typography>
+        </Container>
       </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
         <Typography variant="h2">Your data is your data</Typography>
-        <Typography>
-          When visiting the Kelp website, your computer is storing and processing your data. Kelp is
-          a static website that does not have any kind of data processing or data storage
-          capability.
-          <br />
-          <MuiLink color="primary" href="/about">
-            Read more
-          </MuiLink>
-        </Typography>
+        <Container maxWidth="sm">
+          <Typography style={{ textAlign: 'center' }}>
+            When visiting the Kelp website, your computer is storing and processing your data. Kelp
+            is a static website that does not have any kind of data processing or data storage
+            capability.
+            <br />
+            <MuiLink color="primary" href="/about">
+              Read more
+            </MuiLink>
+          </Typography>
+        </Container>
       </Container>
       <Divider />
       <Container maxWidth="md">
