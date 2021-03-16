@@ -98,7 +98,7 @@ const theme = createMuiTheme({
       color: 'rgba(0,0,0,0.87)',
     },
     h4: {
-      fontSize: 28,
+      fontSize: 24,
       marginBottom: 12,
     },
     h5: {

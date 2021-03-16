@@ -12,11 +12,19 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingRight: theme.spacing(4),
-    textAlign: 'right',
   },
   greyContainer: {
     width: '100%',
-    backgroundColor: theme.palette.secondary.light,
+  },
+  dot: {
+    height: 12,
+    width: 12,
+    borderRadius: 10,
+    marginRight: 22,
+    background: theme.palette.primary.main,
+    display: 'inline-block',
+    verticalAlign: 'top',
+    marginTop: 8,
   },
   sectionText: {
     padding: theme.spacing(6),
@@ -66,17 +74,17 @@ const useStyles = makeStyles((theme) => ({
 const UiBlocks = () => {
   const classes = useStyles();
   return (
-    <div className={classes.container}>
-      <Grid container className={classes.section}>
+    <Container maxWidth="md">
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Container maxWidth="xs" className={classes.manageWorkTextLeft}>
-            <Typography variant="h4">Organization for humans</Typography>
-            <br />
-            <Typography>
-              Kelp meets you where you are. It doesn’t ask you to change how you organize your work
-              or how you collaborate.
-            </Typography>
-          </Container>
+          <Typography variant="h4">
+            <div className={classes.dot}></div>Organization for humans
+          </Typography>
+          <br />
+          <Typography>
+            Kelp meets you where you are. It doesn’t ask you to change how you organize your work or
+            how you collaborate.
+          </Typography>
         </Grid>
         <Grid
           item
@@ -84,34 +92,38 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
         >
-          <img src="images/notice.png" style={{ maxWidth: '100%' }} />
+          <img src="images/meeting.png" style={{ maxHeight: 212 }} />
         </Grid>
       </Grid>
-      <Grid container className={clsx(classes.section, classes.sectionMobileReverse)}>
+      <Grid
+        container
+        className={clsx(classes.section, classes.sectionMobileReverse)}
+        alignItems="center"
+      >
         <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
-          <img src="images/notice.png" style={{ maxWidth: '100%' }} />
+          <img src="images/notice.png" style={{ maxHeight: 231 }} />
         </Grid>
         <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Container maxWidth="xs" className={classes.prepareTextRight}>
-            <Typography variant="h4">Quickly Prepare For Meetings</Typography>
-            <br />
-            <Typography>
-              Kelp scans your calendar and documents to automatically collect the documents you
-              need. It then magically annotates your calendar. Easy.
-            </Typography>
-          </Container>
+          <Typography variant="h4">
+            <div className={classes.dot}></div>Quickly prepare for meetings
+          </Typography>
+          <br />
+          <Typography>
+            Kelp scans your calendar and documents to automatically collect the documents you need.
+            It then magically annotates your calendar. Easy.
+          </Typography>
         </Grid>
       </Grid>
-      <Grid container className={classes.section}>
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Container maxWidth="xs" className={classes.manageWorkTextLeft}>
-            <Typography variant="h4">Manage Work Relationships</Typography>
-            <br />
-            <Typography>
-              Kelp infers associations between information, such as between a person, a meeting with
-              the person and document edits by the person.
-            </Typography>
-          </Container>
+          <Typography variant="h4">
+            <div className={classes.dot}></div>Manage work relationships
+          </Typography>
+          <br />
+          <Typography>
+            Kelp infers associations between information, such as between a person, a meeting with
+            the person and document edits by the person.
+          </Typography>
         </Grid>
         <Grid
           item
@@ -119,10 +131,10 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
         >
-          <img src="images/notice.png" style={{ maxWidth: '100%' }} />
+          <img src="images/person.png" style={{ maxHeight: 210 }} />
         </Grid>
       </Grid>
-    </div>
+    </Container>
   );
 };
 

@@ -189,18 +189,18 @@ const App = () => {
       </div>
       <Container maxWidth="lg">
         <div className={classes.meetingContainer}>
-          <img src="images/meeting.png" className={classes.meetingImage} />
+          <img src="images/extension.png" className={classes.meetingImage} />
         </div>
       </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h4">
+        <Typography variant="h3" style={{ textAlign: 'center' }}>
           Kelp started out of a need for better way to prepare for meetings. It helps you quickly
           gather the information you need.
         </Typography>
       </Container>
       <UiBlocks />
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h4">Currently works with.</Typography>
+        <Typography variant="h2">Currently works with</Typography>
         <Typography variant="h3">Google</Typography>
         <Button
           variant="contained"
@@ -228,7 +228,7 @@ const App = () => {
         </Typography>
       </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h4">Your data is your data</Typography>
+        <Typography variant="h2">Your data is your data</Typography>
         <Typography>
           When visiting the Kelp website, your computer is storing and processing your data. Kelp is
           a static website that does not have any kind of data processing or data storage
