@@ -6,11 +6,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import clsx from 'clsx';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import Link from 'next/link';
 import React from 'react';
-import { mediumFontFamily } from '../../constants/theme';
 import LoginButton from './login-button';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,17 +26,16 @@ const useStyles = makeStyles((theme) => ({
   header: {
     marginLeft: 'auto',
     marginRight: 'auto',
-  },
-  headerContained: {
-    maxWidth: theme.breakpoints.width('md'),
+    paddingTop: theme.spacing(2),
   },
   alignLeft: {
     textAlign: 'left',
   },
-  footerLink: {
+  headerLink: {
     color: theme.palette.text.primary,
     cursor: 'pointer',
     textDecoration: 'none',
+    fontSize: 24,
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -64,32 +61,23 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logoImage: {
-    width: 46,
-    height: 51,
+    height: 80,
     paddingRight: 0,
-    marginRight: 0,
+    marginRight: theme.spacing(4),
   },
   logo: {
     cursor: 'pointer',
-    fontFamily: mediumFontFamily,
-    fontWeight: theme.typography.fontWeightMedium,
+    fontSize: 48,
     margin: 0,
+    color: theme.palette.text.primary,
   },
 }));
 
-const Header = (props: { isFullWidth?: boolean }) => {
+const Header = () => {
   const classes = useStyles();
   return (
-    <Container
-      maxWidth={props.isFullWidth ? undefined : 'md'}
-      className={clsx(classes.headerContainer)}
-    >
-      <Grid
-        container
-        justify="space-between"
-        className={clsx(classes.header, props.isFullWidth ? undefined : classes.headerContained)}
-        alignItems="center"
-      >
+    <Container maxWidth="lg">
+      <Grid container justify="space-between" className={classes.header} alignItems="center">
         <Grid item xs={3} style={{ textAlign: 'left' }}>
           <Grid container alignItems="center">
             <Grid item>
@@ -110,17 +98,17 @@ const Header = (props: { isFullWidth?: boolean }) => {
           <Grid container spacing={4} alignItems="center" className={classes.links}>
             <Grid item>
               <Link href="/about">
-                <Typography className={classes.footerLink}>About</Typography>
+                <Typography className={classes.headerLink}>About</Typography>
               </Link>
             </Grid>
             <Grid item>
               <a
                 rel="noreferrer"
                 href="https://updates.kelp.nyc"
-                className={classes.footerLink}
                 target="_blank"
+                className={classes.headerLink}
               >
-                <Typography>Updates</Typography>
+                <Typography className={classes.headerLink}>Updates</Typography>
               </a>
             </Grid>
           </Grid>
@@ -131,7 +119,7 @@ const Header = (props: { isFullWidth?: boolean }) => {
               <React.Fragment>
                 <Button
                   className={classes.menuButton}
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
                   {...bindTrigger(popupState)}
                 >

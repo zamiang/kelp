@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
@@ -29,10 +28,6 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: theme.palette.secondary.light,
   },
-  whiteContainer: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
   heading: {
     [theme.breakpoints.down('sm')]: {
       fontSize: theme.typography.h2.fontSize,
@@ -49,7 +44,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   hero: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(15),
     marginBottom: theme.spacing(12),
     width: '100%',
     textAlign: 'center',
@@ -82,13 +77,21 @@ export const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.dark,
   },
   meetingContainer: {
-    position: 'relative',
-    maxWidth: 530,
-    padding: theme.spacing(2),
+    width: '100%',
+    textAlign: 'center',
+    borderRadius: 250,
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
     marginLeft: 'auto',
     marginRight: 'auto',
+    backgroundColor: '#009191',
+  },
+  meetingImage: {
+    display: 'block',
+    paddingTop: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    margin: '0px auto',
+    maxWidth: 680,
   },
   bodyCopySection: {
     paddingTop: theme.spacing(10),
@@ -113,12 +116,6 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: 26,
     marginRight: theme.spacing(2),
   },
-  meetingImage: {
-    maxWidth: '100%',
-    paddingTop: theme.spacing(4),
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-  },
 }));
 
 // <meta name="slack-app-id" content="A01E5A9263B" />
@@ -136,142 +133,137 @@ const App = () => {
       </Head>
       <style jsx global>{`
         html body {
-          background-color: #faf8f5;
+          background-color: #faf5eb;
         }
       `}</style>
-      <div className={classes.colorContainer}>
-        <Header />
-        <div className={classes.hero}>
-          <Container maxWidth="xs">
-            <Typography variant="h3" className={classes.heading}>
-              Your information filtration system
-            </Typography>
-            <Typography variant="h5" className={classes.body}>
-              Kelp automatically organizes your documents, events and contacts to make work make
-              sense.
-            </Typography>
-          </Container>
-          <Container className={classes.buttonContainer}>
-            <Grid container alignItems="center" spacing={4} justify="center">
-              <Grid item>
-                <Button
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  className={classes.login}
-                  onClick={() => (window.location.pathname = '/dashboard')}
-                  disableElevation={true}
-                >
-                  Sign In with Google
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  size="large"
-                  className={classes.login}
-                  href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
-                  disableElevation={true}
-                  startIcon={<AddIcon />}
-                >
-                  Add to Chrome
-                </Button>
-              </Grid>
-            </Grid>
-          </Container>
-        </div>
-      </div>
-      <div className={classes.whiteContainer}>
-        <Container maxWidth="md" className={classes.bodyCopySection}>
-          <Typography variant="h4">
-            Kelp started out of a need for better way to prepare for meetings. It helps you quickly
-            gather the information you need to be effective.
-          </Typography>
-        </Container>
-        <div style={{ background: '#faf8f5', textAlign: 'center' }}>
-          <img src="images/meeting.png" className={classes.meetingImage} />
-        </div>
-        <Divider />
-        <UiBlocks />
-        <Divider />
-        <Container maxWidth="md" className={classes.bodyCopySection}>
-          <Typography variant="h4">Your data is your data.</Typography>
-          <br />
-          <Typography>
-            When visiting the Kelp website, your computer is storing and processing your data. Kelp
-            is a static website that does not have any kind of data processing or data storage
-            capability.{' '}
-            <MuiLink color="primary" href="/about">
-              Read more
-            </MuiLink>
-            .
-          </Typography>
-          <div className={classes.hint}>
-            <Typography className={classes.italics}>
-              Kelp currently works with Google and will expand to other integrations.
-              <br />
-              <MuiLink
-                target="_blank"
-                color="primary"
-                rel="noopener noreferrer"
-                href="https://twitter.com/kelpnyc"
-              >
-                Let us know what you would like us to add!
-              </MuiLink>
-            </Typography>
-          </div>
-        </Container>
-        <Divider />
+      <Header />
+      <div className={classes.hero}>
         <Container maxWidth="md">
-          <Grid container alignItems="center">
-            <Grid
-              sm={12}
-              md={6}
-              item
-              className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
-            >
-              <Typography variant="h4">Ready to get started?</Typography>
-              <div className={classes.buttonContainer}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  className={classes.login}
-                  onClick={() => (window.location.pathname = '/dashboard')}
-                  disableElevation={true}
-                >
-                  Log In with Google
-                </Button>
-              </div>
+          <Typography variant="h1" className={classes.heading}>
+            Your information filtration system
+          </Typography>
+          <Typography variant="h2" className={classes.body}>
+            Kelp automatically organizes your documents, events and contacts to make work make
+            sense.
+          </Typography>
+        </Container>
+        <Container className={classes.buttonContainer}>
+          <Grid container alignItems="center" spacing={4} justify="center">
+            <Grid item>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                className={classes.login}
+                onClick={() => (window.location.pathname = '/dashboard')}
+                disableElevation={true}
+              >
+                Sign In with Google
+              </Button>
             </Grid>
-            <Grid sm={12} md={6} item>
-              <List disablePadding>
-                <ListItem disableGutters>
-                  <div className={classes.emojiIcon}>🎨</div>
-                  <ListItemText>Designed for people with too many meetings</ListItemText>
-                </ListItem>
-                <ListItem disableGutters>
-                  <div className={classes.emojiIcon}>🗝</div>
-                  <ListItemText>Secure - Kelp does not store your data</ListItemText>
-                </ListItem>
-                <ListItem disableGutters>
-                  <div className={classes.emojiIcon}>🪞</div>
-                  <ListItemText>Active & transparent development</ListItemText>
-                </ListItem>
-                <ListItem disableGutters>
-                  <div className={classes.emojiIcon}>🦄</div>
-                  <ListItemText>Independently bootstrapped</ListItemText>
-                </ListItem>
-                <ListItem disableGutters>
-                  <div className={classes.emojiIcon}>🏎</div>
-                  <ListItemText>Fast and easy to use</ListItemText>
-                </ListItem>
-              </List>
+            <Grid item>
+              <Button
+                variant="contained"
+                size="large"
+                className={classes.login}
+                href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
+                disableElevation={true}
+                startIcon={<AddIcon />}
+              >
+                Add to Chrome
+              </Button>
             </Grid>
           </Grid>
         </Container>
-        <Footer shouldAlignLeft={false} />
       </div>
+      <Container maxWidth="lg">
+        <div className={classes.meetingContainer}>
+          <img src="images/meeting.png" className={classes.meetingImage} />
+        </div>
+      </Container>
+      <Container maxWidth="md" className={classes.bodyCopySection}>
+        <Typography variant="h4">
+          Kelp started out of a need for better way to prepare for meetings. It helps you quickly
+          gather the information you need.
+        </Typography>
+      </Container>
+      <UiBlocks />
+      <Container maxWidth="md" className={classes.bodyCopySection}>
+        <Typography variant="h4">Your data is your data.</Typography>
+        <br />
+        <Typography>
+          When visiting the Kelp website, your computer is storing and processing your data. Kelp is
+          a static website that does not have any kind of data processing or data storage
+          capability.{' '}
+          <MuiLink color="primary" href="/about">
+            Read more
+          </MuiLink>
+          .
+        </Typography>
+        <div className={classes.hint}>
+          <Typography className={classes.italics}>
+            Kelp currently works with Google and will expand to other integrations.
+            <br />
+            <MuiLink
+              target="_blank"
+              color="primary"
+              rel="noopener noreferrer"
+              href="https://twitter.com/kelpnyc"
+            >
+              Let us know what you would like us to add!
+            </MuiLink>
+          </Typography>
+        </div>
+      </Container>
+      <Container maxWidth="md">
+        <Grid container alignItems="center">
+          <Grid
+            sm={12}
+            md={6}
+            item
+            className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
+          >
+            <Typography variant="h4">Ready to get started?</Typography>
+            <div className={classes.buttonContainer}>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                className={classes.login}
+                onClick={() => (window.location.pathname = '/dashboard')}
+                disableElevation={true}
+              >
+                Log In with Google
+              </Button>
+            </div>
+          </Grid>
+          <Grid sm={12} md={6} item>
+            <List disablePadding>
+              <ListItem disableGutters>
+                <div className={classes.emojiIcon}>🎨</div>
+                <ListItemText>Designed for people with too many meetings</ListItemText>
+              </ListItem>
+              <ListItem disableGutters>
+                <div className={classes.emojiIcon}>🗝</div>
+                <ListItemText>Secure - Kelp does not store your data</ListItemText>
+              </ListItem>
+              <ListItem disableGutters>
+                <div className={classes.emojiIcon}>🪞</div>
+                <ListItemText>Active & transparent development</ListItemText>
+              </ListItem>
+              <ListItem disableGutters>
+                <div className={classes.emojiIcon}>🦄</div>
+                <ListItemText>Independently bootstrapped</ListItemText>
+              </ListItem>
+              <ListItem disableGutters>
+                <div className={classes.emojiIcon}>🏎</div>
+                <ListItemText>Fast and easy to use</ListItemText>
+              </ListItem>
+            </List>
+          </Grid>
+        </Grid>
+      </Container>
+      <Footer shouldAlignLeft={false} />
     </div>
   );
 };

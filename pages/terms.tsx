@@ -26,7 +26,7 @@ const Terms = () => {
         }
       `}</style>
       <div className={classes.containerWidth}>
-        <Header isFullWidth={true} />
+        <Header />
         <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">

@@ -6,6 +6,14 @@ const useStyles = makeStyles((theme) => ({
   button: {
     minWidth: 100,
     marginLeft: 'auto',
+    paddingTop: 15,
+    paddingBottom: 14,
+    paddingLeft: theme.spacing(7),
+    paddingRight: theme.spacing(7),
+    borderRadius: 40,
+    textTransform: 'uppercase',
+    letterSpacing: '1.25px',
+    fontSize: 14,
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
@@ -25,8 +33,8 @@ const LoginButton = () => {
     <Button
       onClick={() => (window.location.pathname = '/dashboard')}
       className={classes.button}
-      variant="contained"
-      color="secondary"
+      variant="outlined"
+      color="primary"
       disableElevation={true}
     >
       Log In

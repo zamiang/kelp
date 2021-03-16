@@ -80,10 +80,15 @@ const theme = createMuiTheme({
     h1: {
       fontWeight: 400,
       fontStyle: 'normal',
+      fontSize: '60px',
+      color: 'rgba(0,0,0,0.87)',
     },
     h2: {
       fontWeight: 400,
       fontStyle: 'normal',
+      fontSize: '32px',
+      letterSpacing: 0.25,
+      color: 'rgba(0,0,0,0.87)',
     },
     h3: {
       fontWeight: 400,
