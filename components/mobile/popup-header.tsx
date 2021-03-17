@@ -3,10 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
-import BackIcon from '@material-ui/icons/ArrowBack';
-import CloseIcon from '@material-ui/icons/Close';
-import EditIcon from '@material-ui/icons/Edit';
-import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
@@ -89,7 +85,7 @@ const GoToSourceButton = (props: { store: IStore; type: string; id: string }) =>
 
   return (
     <IconButton href={link || ''} target="_blank">
-      <EditIcon />
+      <img width="24" src="/icons/edit.svg" />
     </IconButton>
   );
 };
@@ -113,7 +109,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                 history.goBack();
               }}
             >
-              <BackIcon />
+              <img width="24" src="/icons/back.svg" />
             </IconButton>
           </Grid>
           <Grid item>
@@ -138,7 +134,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                 setSearchInputVisible(false);
               }}
             >
-              <CloseIcon />
+              <img height="24" src="/icons/back.svg" />
             </IconButton>
           </Grid>
         </Grid>
@@ -158,7 +154,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             </Grid>
             <Grid item>
               <IconButton onClick={() => setSearchInputVisible(true)}>
-                <SearchIcon />
+                <img width="24" src="/icons/search.svg" />
               </IconButton>
             </Grid>
           </Grid>

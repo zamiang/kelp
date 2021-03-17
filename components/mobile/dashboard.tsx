@@ -1,9 +1,6 @@
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { makeStyles } from '@material-ui/core/styles';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DescriptionIcon from '@material-ui/icons/Description';
-import EventIcon from '@material-ui/icons/Event';
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import Documents from '../dashboard/documents';
@@ -122,19 +119,19 @@ const MobileDashboard = (props: { store: IStore }) => {
           showLabel={false}
           label="Meetings"
           value="meetings"
-          icon={<EventIcon />}
+          icon={<img width="24" src="/icons/calendar.svg" />}
         />
         <BottomNavigationAction
           showLabel={false}
           label="Documents"
           value="documents"
-          icon={<DescriptionIcon />}
+          icon={<img width="24" src="/icons/file.svg" />}
         />
         <BottomNavigationAction
           showLabel={false}
           label="People"
           value="people"
-          icon={<AccountCircleIcon />}
+          icon={<img width="24" src="/icons/user.svg" />}
         />
       </BottomNavigation>
     </div>

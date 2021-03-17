@@ -3,11 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import PeopleIcon from '@material-ui/icons/People';
 import clsx from 'clsx';
 import { addDays, addWeeks, format, isSameDay, startOfWeek, subDays, subWeeks } from 'date-fns';
 import { times } from 'lodash';
@@ -101,7 +96,7 @@ const TitleRow = (props: {
                 <Button
                   className={isCalendarSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={toggleCalendarSelected}
-                  startIcon={<CalendarViewDayIcon />}
+                  startIcon={<img width="24" src="/icons/meetings.svg" />}
                 >
                   <span className={classes.toggleText}>Meetings</span>
                 </Button>
@@ -110,7 +105,7 @@ const TitleRow = (props: {
                 <Button
                   className={isDocsSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={toggleDocsSelected}
-                  startIcon={<InsertDriveFileIcon />}
+                  startIcon={<img width="24" src="/icons/file.svg" />}
                 >
                   <span className={classes.toggleText}>Documents</span>
                 </Button>
@@ -119,7 +114,7 @@ const TitleRow = (props: {
                 <Button
                   className={isPeopleSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={togglePeopleSelected}
-                  startIcon={<PeopleIcon />}
+                  startIcon={<img width="24" src="/icons/user.svg" />}
                 >
                   <span className={classes.toggleText}>People</span>
                 </Button>
@@ -128,11 +123,11 @@ const TitleRow = (props: {
           </Grid>
           <Grid item>
             <Button onClick={props.onBackClick}>
-              <ChevronLeftIcon />
+              <img width="24" src="/icons/chevron-left.svg" />
             </Button>
             <Button onClick={props.onTodayClick}>Today</Button>
             <Button onClick={props.onForwardClick}>
-              <ChevronRightIcon />
+              <img width="24" src="/icons/chevron-right.svg" />
             </Button>
           </Grid>
         </Grid>

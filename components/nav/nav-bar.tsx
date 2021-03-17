@@ -1,11 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import CloseIcon from '@material-ui/icons/Close';
-import DescriptionIcon from '@material-ui/icons/Description';
-import EventIcon from '@material-ui/icons/Event';
-import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -48,12 +43,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 0,
     width: '100%',
     paddingBottom: 10,
-    paddingRight: 0,
   },
   iconButtonLarge: {
     borderRadius: 0,
     width: '100%',
-    padding: 20,
+    padding: 10,
   },
 }));
 
@@ -75,7 +69,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/meetings')}
           aria-label="Meetings"
         >
-          <EventIcon />
+          <img width="44" src="/icons/calendar.svg" />
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
@@ -84,7 +78,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/docs')}
           aria-label="Documents"
         >
-          <DescriptionIcon />
+          <img width="44" src="/icons/file.svg" />
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
@@ -93,7 +87,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/people')}
           aria-label="People"
         >
-          <AccountCircleIcon />
+          <img width="44" src="/icons/user.svg" />
         </IconButton>
       </Grid>
     </Grid>
@@ -120,7 +114,7 @@ const NavBar = () => {
                   className={classes.iconButton}
                   onClick={() => (window.location.pathname = '/about')}
                 >
-                  <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
+                  <img width="24" className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
                 </IconButton>
               </Grid>
               <Grid item>
@@ -135,7 +129,7 @@ const NavBar = () => {
                 setSearchInputVisible(false);
               }}
             >
-              <CloseIcon />
+              <img width="24" src="/icons/back.svg" />
             </IconButton>
           </Grid>
         </Grid>
@@ -157,7 +151,7 @@ const NavBar = () => {
         </Grid>
         <Grid item>
           <IconButton onClick={() => setSearchInputVisible(true)}>
-            <SearchIcon />
+            <img width="24" src="/icons/search.svg" />
           </IconButton>
         </Grid>
       </Grid>

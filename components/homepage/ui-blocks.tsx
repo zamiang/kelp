@@ -131,7 +131,7 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
         >
-          <img src="images/person.svg" style={{ maxHeight: 210, maxWidth: '100%' }} />
+          <img src="images/user.svg" style={{ maxHeight: 210, maxWidth: '100%' }} />
         </Grid>
       </Grid>
     </Container>

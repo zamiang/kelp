@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -33,10 +32,10 @@ export const MissingDocumentRow = (props: {
     >
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
-          {!props.isSmall && <HelpOutlineIcon className={classes.image} />}
-          {props.isSmall && (
-            <HelpOutlineIcon className={clsx(classes.image, classes.imageSpacing)} />
-          )}
+          <img
+            src="/icons/help.svg"
+            className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
+          />
         </Grid>
         <Grid item xs={8}>
           <Grid container>

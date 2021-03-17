@@ -3,9 +3,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { uniq } from 'lodash';
@@ -198,7 +195,13 @@ const ExpandedMeeting = (props: {
                     setMeetingNotesLoading,
                   )
                 }
-                startIcon={isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon />}
+                startIcon={
+                  isMeetingNotesLoading ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <img width="24" src="/icons/add.svg" />
+                  )
+                }
                 disabled={isMeetingNotesLoading}
                 disableElevation
                 variant="outlined"
@@ -213,7 +216,7 @@ const ExpandedMeeting = (props: {
               <Button
                 variant="outlined"
                 onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
-                startIcon={<InsertDriveFileIcon />}
+                startIcon={<img width="24" src="/icons/save.svg" />}
                 className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               >
                 View Notes
@@ -236,7 +239,7 @@ const ExpandedMeeting = (props: {
                 variant="contained"
                 disableElevation
                 color="primary"
-                startIcon={<VideocamIcon color={'paper' as any} />}
+                startIcon={<img width="24" src="/icons/video.svg" />}
                 className={buttonClasses.button}
               >
                 Join {videoLinkDomain}

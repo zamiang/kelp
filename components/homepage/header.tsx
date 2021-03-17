@@ -5,7 +5,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import Link from 'next/link';
 import React from 'react';
@@ -142,7 +141,7 @@ const Header = () => {
                   {...bindMenu(popupState)}
                 >
                   <MenuItem onClick={popupState.close} className={classes.closeIcon}>
-                    <CloseIcon />
+                    <img width="24" src="/icons/minimize.svg" />
                   </MenuItem>
                   <MenuItem component="a" href="/about">
                     About

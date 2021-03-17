@@ -6,9 +6,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import LoopIcon from '@material-ui/icons/Loop';
-import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -21,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     border: '0px',
     position: 'fixed',
-    top: 0,
-    right: 0,
-    paddingRight: theme.spacing(1),
+    top: theme.spacing(1),
+    right: theme.spacing(1),
     zIndex: 6,
   },
   selected: {
@@ -106,7 +102,7 @@ const NavRight = (props: IProps) => {
           <Grid item>
             <Tooltip title="Loading">
               <IconButton aria-label="loading">
-                <LoopIcon className={classes.icon} />
+                <img width="24" src="/icons/rotate.svg" className={classes.icon} />
               </IconButton>
             </Tooltip>
           </Grid>
@@ -115,7 +111,7 @@ const NavRight = (props: IProps) => {
           <Grid item>
             <Tooltip title="Not authenticated">
               <IconButton>
-                <LockOpenIcon className={classes.icon} />
+                <img width="24" src="/icons/lock.svg" className={classes.icon} />
               </IconButton>
             </Tooltip>
           </Grid>
@@ -137,7 +133,7 @@ const NavRight = (props: IProps) => {
               aria-label="menu"
               onClick={handleClick}
             >
-              <SettingsIcon />
+              <img width="24" src="/icons/settings.svg" />
             </IconButton>
           </Grid>
         )}

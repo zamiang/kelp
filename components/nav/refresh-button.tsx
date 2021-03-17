@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import RefreshIcon from '@material-ui/icons/Refresh';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -37,10 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
 const RefreshButton = (props: IProps) => {
   const classes = useStyles();
-
-  //if (!props.isLoading) {
-  //    return null;
-  //}
   return (
     <Grid container alignItems="center" wrap="nowrap">
       <Grid item>
@@ -54,7 +49,7 @@ const RefreshButton = (props: IProps) => {
           aria-label="refresh data"
           className={clsx(classes.button, props.isLoading && classes.loading)}
         >
-          <RefreshIcon />
+          <img width="24" src="/icons/rotate.svg" />
         </IconButton>
       </Grid>
     </Grid>

@@ -4,8 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
@@ -94,6 +92,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
   const hasAttendees = attendees.length > 0;
+
   return (
     <div>
       <div
@@ -145,7 +144,11 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
               variant="outlined"
               className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               startIcon={
-                isMeetingNotesLoading ? <CircularProgress size={20} /> : <AddIcon color="primary" />
+                isMeetingNotesLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <img width="24" src="/icons/add.svg" />
+                )
               }
               disabled={isMeetingNotesLoading}
             >
@@ -158,7 +161,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
               className={buttonClasses.circleButton}
               style={{ marginRight: 8 }}
             >
-              <VideocamIcon color={'paper' as any} />
+              <img width="24" src="/icons/video.svg" />
             </IconButton>
           </Grid>
         </Grid>

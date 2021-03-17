@@ -3,8 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import clsx from 'clsx';
 import {
   addDays,
@@ -140,7 +138,7 @@ const MeetingTopBar = (props: {
               disabled={isLeftDisabled}
               onClick={() => props.onDayClick(subDays(props.selectedDay, 1))}
             >
-              <KeyboardArrowLeftIcon />
+              <img width="24" src="/icons/chevron-left.svg" />
             </IconButton>
           </Grid>
           {days.map((d) => (
@@ -177,7 +175,7 @@ const MeetingTopBar = (props: {
               disabled={isRightDisabled}
               onClick={() => props.onDayClick(addDays(props.selectedDay, 1))}
             >
-              <KeyboardArrowRightIcon />
+              <img width="24" src="/icons/chevron-right.svg" />
             </IconButton>
           </Grid>
         </Grid>

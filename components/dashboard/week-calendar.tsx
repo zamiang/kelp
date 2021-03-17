@@ -3,8 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
 import {
   addDays,
@@ -134,11 +132,11 @@ const TitleRow = (props: {
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
         <Grid container justify="flex-end">
           <Button onClick={props.onBackClick}>
-            <ChevronLeftIcon />
+            <img width="24" src="/icons/chevron-left.svg" />
           </Button>
           <Button onClick={props.onTodayClick}>Today</Button>
           <Button onClick={props.onForwardClick}>
-            <ChevronRightIcon />
+            <img width="24" src="/icons/chevron-right.svg" />
           </Button>
         </Grid>
       </TopBar>

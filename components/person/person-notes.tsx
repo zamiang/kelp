@@ -5,8 +5,6 @@ import IconButton from '@material-ui/core/IconButton';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
-import EditIcon from '@material-ui/icons/Edit';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IPerson } from '../store/models/person-model';
@@ -111,7 +109,7 @@ const PersonNotes = (props: {
         )}
         {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
           <IconButton className={classes.edit} onClick={onEdit} size="small">
-            <EditIcon />
+            <img width="24" src="/icons/edit.svg" />
           </IconButton>
         )}
       </Typography>
@@ -127,7 +125,7 @@ const PersonNotes = (props: {
       )}
       {isEditing && (
         <IconButton onClick={onCloseEdit} size="small">
-          <CloseIcon />
+          <img width="24" src="/icons/back.svg" />
         </IconButton>
       )}
     </div>
