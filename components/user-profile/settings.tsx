@@ -1,7 +1,6 @@
+import { Divider } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -32,55 +31,65 @@ const Settings = () => {
   const formClasses = useStyles();
   const buttonClasses = useButtonStyles();
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
+
+  const isNotificationsDisabled = localStorage.getItem(config.kelpNotificationsKey) === 'true';
+
   return (
-    <div className={classes.panel}>
-      <div className={clsx(classes.section, formClasses.maxWidth)}>
-        <Typography variant="h3" color="textPrimary">
+    <div className={clsx(classes.panel, formClasses.maxWidth)}>
+      <div className={classes.section}>
+        <Typography variant="h3" color="textPrimary" style={{ marginBottom: 24 }}>
           Settings
         </Typography>
       </div>
-      <div className={clsx(classes.section, formClasses.maxWidth)}>
-        <FormControl className={formClasses.textField}>
-          <InputLabel htmlFor="days-back">Number of days to look back</InputLabel>
-          <Input id="days-back" type={'text'} value={config.NUMBER_OF_DAYS_BACK} />
-        </FormControl>
+      <Divider />
+      <div className={classes.section}>
+        <div className={formClasses.textField}>
+          <Typography variant="h4" style={{ marginBottom: 24 }}>
+            Notifications
+          </Typography>
+          {!isNotificationsDisabled && (
+            <Button
+              className={buttonClasses.button}
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={() => {
+                localStorage.setItem(config.kelpNotificationsKey, 'true');
+                if (window['Notification']) {
+                  return Notification.requestPermission();
+                } else {
+                  alert('Notifications are not supported on this device');
+                }
+              }}
+            >
+              Disable meeting prep notifications
+            </Button>
+          )}
+          {isNotificationsDisabled && (
+            <Button
+              className={buttonClasses.button}
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={() => {
+                localStorage.setItem(config.kelpNotificationsKey, 'false');
+                if (window['Notification']) {
+                  return Notification.requestPermission();
+                } else {
+                  alert('Notifications are not supported on this device');
+                }
+              }}
+            >
+              Enable meeting prep notifications
+            </Button>
+          )}
+          <Typography style={{ marginBottom: 22 }} variant="body2">
+            Current browser permission status: {notificationPermission || 'not enabled'}
+          </Typography>
+        </div>
       </div>
-      <div className={clsx(classes.section, formClasses.maxWidth)}>
-        <FormControl className={formClasses.textField}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={buttonClasses.button}
-            disableElevation
-          >
-            Save
-          </Button>
-        </FormControl>
-      </div>
-      <div className={clsx(classes.section, formClasses.maxWidth)}>
-        <FormControl className={formClasses.textField}>
-          <InputLabel htmlFor="notifications">
-            <Typography variant="h3">Notifications</Typography>
-          </InputLabel>
-          <Button
-            className={buttonClasses.button}
-            variant="contained"
-            color="primary"
-            disableElevation
-            onClick={() => {
-              if (window['Notification']) {
-                return Notification.requestPermission();
-              } else {
-                alert('Notifications are not supported on this device');
-              }
-            }}
-          >
-            Enable meeting prep notifications
-          </Button>
-          Current status: {notificationPermission || 'not enabled'}
-        </FormControl>
-      </div>
-      <div className={clsx(classes.section, formClasses.maxWidth)}>
+      <Divider />
+      <div className={classes.section}>
         <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
           <LogoutButton />
         </FormControl>
