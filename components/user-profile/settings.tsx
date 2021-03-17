@@ -57,7 +57,7 @@ const Settings = () => {
               onClick={() => {
                 setNotificationsDisabled(true);
                 localStorage.setItem(config.kelpNotificationsKey, 'true');
-                if (window['Notification']) {
+                if ('Notification' in window) {
                   return Notification.requestPermission();
                 } else {
                   alert('Notifications are not supported on this device');
@@ -76,7 +76,7 @@ const Settings = () => {
               onClick={() => {
                 setNotificationsDisabled(false);
                 localStorage.setItem(config.kelpNotificationsKey, 'false');
-                if (window['Notification']) {
+                if ('Notification' in window) {
                   return Notification.requestPermission();
                 } else {
                   alert('Notifications are not supported on this device');

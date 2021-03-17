@@ -30,7 +30,7 @@ const MeetingPrepNotifications = (props: IStore) => {
   const router = useHistory();
   const [currentMeeting, setCurrentMeeting] = useState<ISegment | undefined>(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(
-    currentMeeting ? Notification.permission === 'denied' : false,
+    currentMeeting && 'Notification' in window ? Notification.permission === 'denied' : false,
   );
   const [seconds, setSeconds] = useState(0);
 
