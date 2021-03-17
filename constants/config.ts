@@ -29,6 +29,7 @@ export default {
   MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,
   startDate: subDays(new Date(), NUMBER_OF_DAYS_BACK),
   endDate: addDays(new Date(), NUMBER_OF_DAYS_FORWARD),
+  kelpNotificationsKey: 'kelpNotificationsDisabled',
   YELLOW_BACKGROUND: '#deff2a', //'#deff2a', // TODO: Add to theme somehow?
   ORANGE_BACKGROUND: '#fff9e1', // '#ffd12a',
   PURPLE_BACKGROUND: '#722aff',

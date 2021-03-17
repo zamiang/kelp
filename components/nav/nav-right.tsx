@@ -1,12 +1,8 @@
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import LockIcon from '../../public/icons/lock.svg';
@@ -14,7 +10,6 @@ import RotateIcon from '../../public/icons/rotate.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import { person } from '../fetch/fetch-people';
 import { IStore } from '../store/use-store';
-import { logout } from '../user-profile/logout-button';
 import RefreshButton from './refresh-button';
 
 const useStyles = makeStyles((theme) => ({
@@ -72,16 +67,6 @@ const NavRight = (props: IProps) => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [currentUser, setCurrentUser] = useState<person | undefined>();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.store.personDataStore.getSelf();
@@ -130,83 +115,14 @@ const NavRight = (props: IProps) => {
         {!isLoading && currentUser && (
           <Grid item>
             <IconButton
-              className={clsx('ignore-react-onclickoutside')}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              aria-label="menu"
-              onClick={handleClick}
+              onClick={() => {
+                history.push('/settings');
+              }}
             >
               <SettingsIcon width="24" height="24" />
             </IconButton>
           </Grid>
         )}
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          style={{ marginTop: 0 }}
-        >
-          <MenuItem
-            onClick={() => {
-              history.push('/meetings');
-              handleClose();
-            }}
-          >
-            Meetings
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              history.push('/documents');
-              handleClose();
-            }}
-          >
-            Documents
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              history.push('/people');
-              handleClose();
-            }}
-          >
-            People
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              history.push('/week');
-              handleClose();
-            }}
-          >
-            Calendar
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              history.push('/dashboard');
-              handleClose();
-            }}
-          >
-            Dashboard
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              history.push('/summary');
-              handleClose();
-            }}
-          >
-            Summary
-          </MenuItem>
-          <Divider />
-          <MenuItem
-            onClick={() => {
-              history.push('/settings');
-              handleClose();
-            }}
-          >
-            Settings
-          </MenuItem>
-          <MenuItem onClick={logout}>Logout</MenuItem>
-        </Menu>
       </Grid>
     </div>
   );

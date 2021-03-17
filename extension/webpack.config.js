@@ -61,7 +61,22 @@ const getConfig = () => ({
         include: /\.module\.css$/,
       },
       {
-        test: /\.(svg|woff2)$/,
+        test: /\.svg$/,
+        use: [
+          'babel-loader',
+          {
+            loader: 'react-svg-loader',
+            options: {
+              svgo: {
+                plugins: [{ removeTitle: false }],
+                floatPrecision: 2,
+              },
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(woff2)$/,
         use: 'file-loader',
       },
       {

@@ -1,14 +1,13 @@
-import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import BackIcon from '../../public/icons/back.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import SearchIcon from '../../public/icons/search.svg';
+import SettingsIcon from '../../public/icons/settings.svg';
 import RefreshButton from '../nav/refresh-button';
 import SearchBar from '../nav/search-bar';
 import { IPerson } from '../store/models/person-model';
@@ -38,8 +37,7 @@ const useHeaderStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     background: 'transparent',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+    padding: theme.spacing(1),
     zIndex: 6,
     justifyContent: 'space-between',
   },
@@ -172,24 +170,16 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                 loadingMessage={props.store.loadingMessage}
               />
             </Grid>
-            {props.user && (
-              <Grid item>
-                <IconButton
-                  className={'ignore-react-onclickoutside'}
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={() => history.push('/settings')}
-                >
-                  <Avatar
-                    className={clsx(classes.unSelected, classes.icon)}
-                    src={props.user.imageUrl || undefined}
-                    alt={`Profile photo for ${
-                      props.user.name || props.user.emailAddresses[0] || undefined
-                    }`}
-                  />
-                </IconButton>
-              </Grid>
-            )}
+            <Grid item>
+              <IconButton
+                className={'ignore-react-onclickoutside'}
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={() => history.push('/settings')}
+              >
+                <SettingsIcon width="24" height="24" />
+              </IconButton>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
