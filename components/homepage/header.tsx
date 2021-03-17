@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   links: {
     minWidth: 185,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '80vw',
   },
   menuButton: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
@@ -140,9 +140,6 @@ const Header = () => {
                   }}
                   {...bindMenu(popupState)}
                 >
-                  <MenuItem onClick={popupState.close} className={classes.closeIcon}>
-                    <img width="24" height="24" src="/icons/minimize.svg" />
-                  </MenuItem>
                   <MenuItem component="a" href="/about">
                     About
                   </MenuItem>

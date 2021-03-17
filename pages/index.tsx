@@ -56,6 +56,11 @@ export const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     marginTop: 48,
+    maxWidth: 280,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
   },
   login: {
     margin: 0,
@@ -132,6 +137,13 @@ export const useStyles = makeStyles((theme) => ({
   emojiIcon: {
     fontSize: 26,
     marginRight: theme.spacing(2),
+  },
+  list: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+      margin: '0px auto',
+      maxWidth: 367,
+    },
   },
 }));
 
@@ -254,7 +266,7 @@ const App = () => {
       </Container>
       <Divider />
       <Container maxWidth="md">
-        <Grid container alignItems="center">
+        <Grid container alignItems="center" justify="center">
           <Grid
             sm={12}
             md={6}
@@ -263,32 +275,38 @@ const App = () => {
           >
             <Typography variant="h4">Ready to get started?</Typography>
             <div className={classes.buttonContainer}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.login}
-                onClick={() => (window.location.pathname = '/dashboard')}
-                disableElevation={true}
-                style={{ width: 280 }}
-              >
-                Sign In with Google
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                className={classes.login}
-                href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
-                disableElevation={true}
-                style={{ width: 280, marginTop: 24 }}
-              >
-                Add to Chrome
-              </Button>
+              <Grid container spacing={3} alignItems="center" justify="center">
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    className={classes.login}
+                    onClick={() => (window.location.pathname = '/dashboard')}
+                    disableElevation={true}
+                    style={{ width: 280 }}
+                  >
+                    Sign In with Google
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    className={classes.login}
+                    href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
+                    disableElevation={true}
+                    style={{ width: 280 }}
+                  >
+                    Add to Chrome
+                  </Button>
+                </Grid>
+              </Grid>
             </div>
           </Grid>
           <Grid sm={12} md={6} item>
-            <List disablePadding>
+            <List disablePadding className={classes.list}>
               <ListItem disableGutters>
                 <div className={classes.emojiIcon}>🎨</div>
                 <ListItemText>Designed for people with too many meetings</ListItemText>
