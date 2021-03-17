@@ -37,7 +37,7 @@ const MeetingPrepNotifications = (props: IStore) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const updateCurrentMeeting = async () => {
-        const newMeeting = await props.timeDataStore.getCurrentSegment();
+        const newMeeting = await props.timeDataStore.getUpNextSegment();
         if (newMeeting && newMeeting.id !== currentMeeting?.id) {
           createNotification(
             newMeeting,

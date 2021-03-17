@@ -126,6 +126,19 @@ export default class SegmentModel {
     });
   }
 
+  async getUpNextSegment() {
+    const segments = await this.getAll();
+    const start = subMinutes(new Date(), config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
+    return first(
+      segments.filter((segment) => {
+        const isUpNext =
+          start < segment.start &&
+          new Date() > subMinutes(segment.start, config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
+        return segment.selfResponseStatus === 'accepted' && isUpNext;
+      }),
+    );
+  }
+
   async getCurrentSegment() {
     const segments = await this.getAll();
     const start = subMinutes(new Date(), config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
