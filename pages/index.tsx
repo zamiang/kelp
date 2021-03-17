@@ -169,7 +169,7 @@ const App = () => {
                 onClick={() => (window.location.pathname = '/dashboard')}
                 disableElevation={true}
               >
-                Log in with Google
+                Sign In with Google
               </Button>
             </Grid>
             <Grid item>
@@ -214,7 +214,7 @@ const App = () => {
             disableElevation={true}
             style={{ marginBottom: 48 }}
           >
-            Log in with Google
+            Sign In with Google
           </Button>
           <Typography>
             Kelp currently works with Google and will expand to other integrations.
@@ -266,7 +266,7 @@ const App = () => {
                 disableElevation={true}
                 style={{ width: 280 }}
               >
-                Log in with Google
+                Sign In with Google
               </Button>
               <Button
                 variant="outlined"
