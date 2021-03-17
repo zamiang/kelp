@@ -97,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rowHighlightPadding: {
     paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
   rowDefault: {},
   rowText: {
