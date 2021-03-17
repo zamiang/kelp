@@ -4,7 +4,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import config from '../../constants/config';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
@@ -30,9 +30,10 @@ const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
   const buttonClasses = useButtonStyles();
+  const [isNotificationsDisabled, setNotificationsDisabled] = useState(
+    localStorage.getItem(config.kelpNotificationsKey) === 'true',
+  );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
-
-  const isNotificationsDisabled = localStorage.getItem(config.kelpNotificationsKey) === 'true';
 
   return (
     <div className={clsx(classes.panel, formClasses.maxWidth)}>
@@ -54,6 +55,7 @@ const Settings = () => {
               color="primary"
               disableElevation
               onClick={() => {
+                setNotificationsDisabled(true);
                 localStorage.setItem(config.kelpNotificationsKey, 'true');
                 if (window['Notification']) {
                   return Notification.requestPermission();
@@ -72,6 +74,7 @@ const Settings = () => {
               color="primary"
               disableElevation
               onClick={() => {
+                setNotificationsDisabled(false);
                 localStorage.setItem(config.kelpNotificationsKey, 'false');
                 if (window['Notification']) {
                   return Notification.requestPermission();

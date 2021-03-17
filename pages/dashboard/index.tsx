@@ -137,10 +137,7 @@ const DesktopDashboard = (props: { store: IStore }) => {
     history.push(`/meetings`);
   }
   const shouldBeFullWidth =
-    pathname.includes('/dashboard') ||
-    pathname.includes('/week') ||
-    pathname.includes('/summary') ||
-    pathname.includes('/settings');
+    pathname.includes('/dashboard') || pathname.includes('/week') || pathname.includes('/summary');
 
   return (
     <ErrorBoundaryComponent>
