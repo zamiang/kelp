@@ -79,6 +79,7 @@
     "react-onclickoutside": "6.10.0",
     "react-popper": "2.2.4",
     "react-router-dom": "5.2.0",
+    "react-svg-loader": "3.0.3",
     "rimraf": "3.0.2",
     "rollbar": "2.21.0",
     "sitemap": "6.4.0",

@@ -117,7 +117,9 @@ const NavBar = () => {
               <Grid item>
                 <IconButton
                   className={classes.iconButton}
-                  onClick={() => (window.location.pathname = '/about')}
+                  onClick={() => {
+                    history.push('/meetings');
+                  }}
                 >
                   <img
                     width="24"
@@ -155,7 +157,9 @@ const NavBar = () => {
         <Grid item>
           <IconButton
             className={classes.iconButton}
-            onClick={() => (window.location.pathname = '/about')}
+            onClick={() => {
+              history.push('/meetings');
+            }}
           >
             <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
           </IconButton>

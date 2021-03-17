@@ -7,11 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
 import config from '../../constants/config';
+import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
-import TopBar from '../shared/top-bar';
 import LogoutButton from '../user-profile/logout-button';
-
-const shouldRenderSettings = false;
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -32,72 +30,60 @@ const useStyles = makeStyles((theme) => ({
 const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
+  const buttonClasses = useButtonStyles();
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
   return (
     <div className={classes.panel}>
-      <TopBar title="Settings"></TopBar>
-      <div className={classes.section}>
-        {shouldRenderSettings && (
-          <React.Fragment>
-            <div className={clsx(classes.section, formClasses.maxWidth)}>
-              <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-                <InputLabel htmlFor="days-back">Number of days to look back</InputLabel>
-                <Input id="days-back" type={'text'} value={config.NUMBER_OF_DAYS_BACK} />
-              </FormControl>
-              <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-                <InputLabel htmlFor="week-starts-on">Week starts on</InputLabel>
-                <Input id="week-starts-on" type={'text'} value={config.WEEK_STARTS_ON} />
-              </FormControl>
-              <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-                <InputLabel htmlFor="week-starts-on">
-                  Max meeting attendees to count as interactions in Contact Associates
-                </InputLabel>
-                <Input
-                  id="max-meeting-attendees"
-                  type={'text'}
-                  value={config.MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION}
-                />
-              </FormControl>
-            </div>
-            <div className={clsx(classes.section, formClasses.maxWidth)}>
-              <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-                <Button variant="contained" color="primary" disableElevation>
-                  Save
-                </Button>
-              </FormControl>
-            </div>
-          </React.Fragment>
-        )}
-        <div className={clsx(classes.section, formClasses.maxWidth)}>
-          <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-            <InputLabel htmlFor="notifications">
-              <Typography variant="h3">Notifications</Typography>
-            </InputLabel>
-            <br />
-            <br />
-            <br />
-            <Button
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={() => {
-                if (window['Notification']) {
-                  return Notification.requestPermission();
-                } else {
-                  alert('Notifications are not supported on this device');
-                }
-              }}
-            >
-              Enable meeting prep notifications
-            </Button>
-            Current status: {notificationPermission || 'not enabled'}
-          </FormControl>
-        </div>
-        <div className={clsx(classes.section, formClasses.maxWidth)}>
-          <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-            <LogoutButton />
-          </FormControl>
-        </div>
+      <div className={clsx(classes.section, formClasses.maxWidth)}>
+        <Typography variant="h3" color="textPrimary">
+          Settings
+        </Typography>
+      </div>
+      <div className={clsx(classes.section, formClasses.maxWidth)}>
+        <FormControl className={formClasses.textField}>
+          <InputLabel htmlFor="days-back">Number of days to look back</InputLabel>
+          <Input id="days-back" type={'text'} value={config.NUMBER_OF_DAYS_BACK} />
+        </FormControl>
+      </div>
+      <div className={clsx(classes.section, formClasses.maxWidth)}>
+        <FormControl className={formClasses.textField}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={buttonClasses.button}
+            disableElevation
+          >
+            Save
+          </Button>
+        </FormControl>
+      </div>
+      <div className={clsx(classes.section, formClasses.maxWidth)}>
+        <FormControl className={formClasses.textField}>
+          <InputLabel htmlFor="notifications">
+            <Typography variant="h3">Notifications</Typography>
+          </InputLabel>
+          <Button
+            className={buttonClasses.button}
+            variant="contained"
+            color="primary"
+            disableElevation
+            onClick={() => {
+              if (window['Notification']) {
+                return Notification.requestPermission();
+              } else {
+                alert('Notifications are not supported on this device');
+              }
+            }}
+          >
+            Enable meeting prep notifications
+          </Button>
+          Current status: {notificationPermission || 'not enabled'}
+        </FormControl>
+      </div>
+      <div className={clsx(classes.section, formClasses.maxWidth)}>
+        <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
+          <LogoutButton />
+        </FormControl>
       </div>
     </div>
   );
