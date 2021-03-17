@@ -141,7 +141,7 @@ const Header = () => {
                   {...bindMenu(popupState)}
                 >
                   <MenuItem onClick={popupState.close} className={classes.closeIcon}>
-                    <img width="24" src="/icons/minimize.svg" />
+                    <img width="24" height="24" src="/icons/minimize.svg" />
                   </MenuItem>
                   <MenuItem component="a" href="/about">
                     About

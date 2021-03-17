@@ -102,7 +102,7 @@ const NavRight = (props: IProps) => {
           <Grid item>
             <Tooltip title="Loading">
               <IconButton aria-label="loading">
-                <img width="24" src="/icons/rotate.svg" className={classes.icon} />
+                <img width="24" height="24" src="/icons/rotate.svg" className={classes.icon} />
               </IconButton>
             </Tooltip>
           </Grid>
@@ -111,7 +111,7 @@ const NavRight = (props: IProps) => {
           <Grid item>
             <Tooltip title="Not authenticated">
               <IconButton>
-                <img width="24" src="/icons/lock.svg" className={classes.icon} />
+                <img width="24" height="24" src="/icons/lock.svg" className={classes.icon} />
               </IconButton>
             </Tooltip>
           </Grid>
@@ -133,7 +133,7 @@ const NavRight = (props: IProps) => {
               aria-label="menu"
               onClick={handleClick}
             >
-              <img width="24" src="/icons/settings.svg" />
+              <img width="24" height="24" src="/icons/settings.svg" />
             </IconButton>
           </Grid>
         )}

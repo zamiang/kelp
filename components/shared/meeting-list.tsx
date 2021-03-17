@@ -32,7 +32,7 @@ export const Meeting = (props: {
     >
       <Grid container wrap="nowrap" spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
-          <img width="24" src="/icons/calendar.svg" style={{ display: 'block' }} />
+          <img width="24" height="24" src="/icons/calendar.svg" style={{ display: 'block' }} />
         </Grid>
         <Grid item xs={11}>
           <Grid container justify="space-between" alignItems="center">

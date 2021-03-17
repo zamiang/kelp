@@ -6,6 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
+import BackIcon from '../../public/icons/back.svg';
+import EditIcon from '../../public/icons/edit.svg';
+import SearchIcon from '../../public/icons/search.svg';
 import RefreshButton from '../nav/refresh-button';
 import SearchBar from '../nav/search-bar';
 import { IPerson } from '../store/models/person-model';
@@ -85,7 +88,7 @@ const GoToSourceButton = (props: { store: IStore; type: string; id: string }) =>
 
   return (
     <IconButton href={link || ''} target="_blank">
-      <img width="24" src="/icons/edit.svg" />
+      <EditIcon width="24" height="24" />
     </IconButton>
   );
 };
@@ -109,7 +112,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                 history.goBack();
               }}
             >
-              <img width="24" src="/icons/back.svg" />
+              <BackIcon width="24" height="24" />
             </IconButton>
           </Grid>
           <Grid item>
@@ -134,7 +137,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                 setSearchInputVisible(false);
               }}
             >
-              <img height="24" src="/icons/back.svg" />
+              <BackIcon height="24" />
             </IconButton>
           </Grid>
         </Grid>
@@ -154,7 +157,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             </Grid>
             <Grid item>
               <IconButton onClick={() => setSearchInputVisible(true)}>
-                <img width="24" src="/icons/search.svg" />
+                <SearchIcon width="24" height="24" />
               </IconButton>
             </Grid>
           </Grid>

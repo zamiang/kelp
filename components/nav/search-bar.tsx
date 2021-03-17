@@ -40,7 +40,7 @@ const SearchBar = () => {
       <Grid container alignItems="center">
         <Grid item>
           <IconButton disabled>
-            <img width="24" src="/icons/search.svg" />
+            <img width="24" height="24" src="/icons/search.svg" />
           </IconButton>
         </Grid>
         <Grid item>

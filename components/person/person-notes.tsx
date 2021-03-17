@@ -109,7 +109,7 @@ const PersonNotes = (props: {
         )}
         {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
           <IconButton className={classes.edit} onClick={onEdit} size="small">
-            <img width="24" src="/icons/edit.svg" />
+            <img width="24" height="24" src="/icons/edit.svg" />
           </IconButton>
         )}
       </Typography>
@@ -125,7 +125,7 @@ const PersonNotes = (props: {
       )}
       {isEditing && (
         <IconButton onClick={onCloseEdit} size="small">
-          <img width="24" src="/icons/back.svg" />
+          <img width="24" height="24" src="/icons/back.svg" />
         </IconButton>
       )}
     </div>

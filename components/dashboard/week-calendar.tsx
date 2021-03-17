@@ -16,6 +16,8 @@ import {
 import { times } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
+import ChevronLeft from '../../public/icons/chevron-left.svg';
+import ChevronRight from '../../public/icons/chevron-right.svg';
 import { responseStatus } from '../fetch/fetch-calendar-events';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import PopperContainer from '../shared/popper';
@@ -132,11 +134,11 @@ const TitleRow = (props: {
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
         <Grid container justify="flex-end">
           <Button onClick={props.onBackClick}>
-            <img width="24" src="/icons/chevron-left.svg" />
+            <ChevronLeft width="24" height="24" />
           </Button>
           <Button onClick={props.onTodayClick}>Today</Button>
           <Button onClick={props.onForwardClick}>
-            <img width="24" src="/icons/chevron-right.svg" />
+            <ChevronRight width="24" height="24" />
           </Button>
         </Grid>
       </TopBar>

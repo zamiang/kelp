@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
+import PlusIcon from '../../public/icons/plus.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
@@ -148,7 +149,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
                 isMeetingNotesLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  <img width="24" src="/icons/add.svg" />
+                  <PlusIcon width="24" height="24" />
                 )
               }
               disabled={isMeetingNotesLoading}

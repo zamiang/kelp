@@ -16,6 +16,8 @@ import {
 } from 'date-fns';
 import React from 'react';
 import { mediumFontFamily } from '../../constants/theme';
+import ChevronLeft from '../../public/icons/chevron-left.svg';
+import ChevronRight from '../../public/icons/chevron-right.svg';
 import useButtonStyles from '../shared/button-styles';
 import { IStore } from '../store/use-store';
 
@@ -138,7 +140,7 @@ const MeetingTopBar = (props: {
               disabled={isLeftDisabled}
               onClick={() => props.onDayClick(subDays(props.selectedDay, 1))}
             >
-              <img width="24" src="/icons/chevron-left.svg" />
+              <ChevronLeft width="24" height="24" />
             </IconButton>
           </Grid>
           {days.map((d) => (
@@ -175,7 +177,7 @@ const MeetingTopBar = (props: {
               disabled={isRightDisabled}
               onClick={() => props.onDayClick(addDays(props.selectedDay, 1))}
             >
-              <img width="24" src="/icons/chevron-right.svg" />
+              <ChevronRight width="24" height="24" />
             </IconButton>
           </Grid>
         </Grid>

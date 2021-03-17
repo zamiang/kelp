@@ -49,7 +49,7 @@ const RefreshButton = (props: IProps) => {
           aria-label="refresh data"
           className={clsx(classes.button, props.isLoading && classes.loading)}
         >
-          <img width="24" src="/icons/rotate.svg" />
+          <img width="24" height="24" src="/icons/rotate.svg" />
         </IconButton>
       </Grid>
     </Grid>

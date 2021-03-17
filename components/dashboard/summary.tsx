@@ -9,6 +9,11 @@ import { times } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import config from '../../constants/config';
+import MeetingsIcon from '../../public/icons/calendar.svg';
+import ChevronLeft from '../../public/icons/chevron-left.svg';
+import ChevronRight from '../../public/icons/chevron-right.svg';
+import FileIcon from '../../public/icons/file.svg';
+import UserIcon from '../../public/icons/user.svg';
 import useButtonStyles from '../shared/button-styles';
 import Tfidf from '../shared/tfidf';
 import TopBar from '../shared/top-bar';
@@ -96,7 +101,7 @@ const TitleRow = (props: {
                 <Button
                   className={isCalendarSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={toggleCalendarSelected}
-                  startIcon={<img width="24" src="/icons/meetings.svg" />}
+                  startIcon={<MeetingsIcon width="24" height="24" />}
                 >
                   <span className={classes.toggleText}>Meetings</span>
                 </Button>
@@ -105,7 +110,7 @@ const TitleRow = (props: {
                 <Button
                   className={isDocsSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={toggleDocsSelected}
-                  startIcon={<img width="24" src="/icons/file.svg" />}
+                  startIcon={<FileIcon width="24" height="24" />}
                 >
                   <span className={classes.toggleText}>Documents</span>
                 </Button>
@@ -114,7 +119,7 @@ const TitleRow = (props: {
                 <Button
                   className={isPeopleSelected ? buttonClasses.selected : buttonClasses.unSelected}
                   onClick={togglePeopleSelected}
-                  startIcon={<img width="24" src="/icons/user.svg" />}
+                  startIcon={<UserIcon width="24" height="24" />}
                 >
                   <span className={classes.toggleText}>People</span>
                 </Button>
@@ -123,11 +128,11 @@ const TitleRow = (props: {
           </Grid>
           <Grid item>
             <Button onClick={props.onBackClick}>
-              <img width="24" src="/icons/chevron-left.svg" />
+              <ChevronLeft width="24" height="24" />
             </Button>
             <Button onClick={props.onTodayClick}>Today</Button>
             <Button onClick={props.onForwardClick}>
-              <img width="24" src="/icons/chevron-right.svg" />
+              <ChevronRight width="24" height="24" />
             </Button>
           </Grid>
         </Grid>

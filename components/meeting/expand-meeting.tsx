@@ -9,6 +9,9 @@ import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
+import PlusIcon from '../../public/icons/plus.svg';
+import SaveIcon from '../../public/icons/save.svg';
+import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -199,7 +202,7 @@ const ExpandedMeeting = (props: {
                   isMeetingNotesLoading ? (
                     <CircularProgress size={20} />
                   ) : (
-                    <img width="24" src="/icons/add.svg" />
+                    <PlusIcon width="24" height="24" />
                   )
                 }
                 disabled={isMeetingNotesLoading}
@@ -216,7 +219,7 @@ const ExpandedMeeting = (props: {
               <Button
                 variant="outlined"
                 onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
-                startIcon={<img width="24" src="/icons/save.svg" />}
+                startIcon={<SaveIcon width="24" height="24" />}
                 className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               >
                 View Notes
@@ -239,7 +242,7 @@ const ExpandedMeeting = (props: {
                 variant="contained"
                 disableElevation
                 color="primary"
-                startIcon={<img width="24" src="/icons/video-white.svg" />}
+                startIcon={<VideoIcon width="24" height="24" />}
                 className={buttonClasses.button}
               >
                 Join {videoLinkDomain}

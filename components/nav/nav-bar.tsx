@@ -114,7 +114,13 @@ const NavBar = () => {
                   className={classes.iconButton}
                   onClick={() => (window.location.pathname = '/about')}
                 >
-                  <img width="24" className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
+                  <img
+                    width="24"
+                    height="24"
+                    className={classes.logo}
+                    src="/kelp.svg"
+                    alt="Kelp logo"
+                  />
                 </IconButton>
               </Grid>
               <Grid item>
@@ -129,7 +135,7 @@ const NavBar = () => {
                 setSearchInputVisible(false);
               }}
             >
-              <img width="24" src="/icons/back.svg" />
+              <img width="24" height="24" src="/icons/back.svg" />
             </IconButton>
           </Grid>
         </Grid>
@@ -151,7 +157,7 @@ const NavBar = () => {
         </Grid>
         <Grid item>
           <IconButton onClick={() => setSearchInputVisible(true)}>
-            <img width="24" src="/icons/search.svg" />
+            <img width="24" height="24" src="/icons/search.svg" />
           </IconButton>
         </Grid>
       </Grid>

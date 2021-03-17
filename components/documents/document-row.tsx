@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import HelpIcon from '../../public/icons/help.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IDocument } from '../store/models/document-model';
@@ -32,8 +33,9 @@ export const MissingDocumentRow = (props: {
     >
       <Grid container spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
-          <img
-            src="/icons/help.svg"
+          <HelpIcon
+            height="24"
+            width="24"
             className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
           />
         </Grid>
