@@ -61,6 +61,12 @@ export const useStyles = makeStyles((theme) => ({
     margin: 0,
     width: 260,
     padding: theme.spacing(2),
+    cursor: 'pointer',
+    opacity: 1,
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      opacity: 0.6,
+    },
   },
   body: {
     marginTop: theme.spacing(2),
