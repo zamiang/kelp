@@ -1,11 +1,11 @@
+const withPlugins = require('next-compose-plugins');
 const { createSecureHeaders } = require('next-secure-headers');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const withFonts = require('next-fonts');
+const withReactSvg = require('next-react-svg');
+const path = require('path');
 
-module.exports = withFonts({
-  reactStrictMode: true,
-  poweredByHeader: false,
-
+const nextConfig = {
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (process.env.ANALYZE) {
       config.plugins.push(
@@ -85,4 +85,23 @@ module.exports = withFonts({
       },
     ];
   },
-});
+};
+
+module.exports = withPlugins(
+  [
+    [
+      withFonts,
+      {
+        reactStrictMode: true,
+        poweredByHeader: false,
+      },
+    ],
+    [
+      withReactSvg,
+      {
+        include: path.resolve(__dirname, 'public/icons'),
+      },
+    ],
+  ],
+  nextConfig,
+);

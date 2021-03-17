@@ -239,7 +239,7 @@ const ExpandedMeeting = (props: {
                 variant="contained"
                 disableElevation
                 color="primary"
-                startIcon={<img width="24" src="/icons/video.svg" />}
+                startIcon={<img width="24" src="/icons/video-white.svg" />}
                 className={buttonClasses.button}
               >
                 Join {videoLinkDomain}

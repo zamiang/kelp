@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
+import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
@@ -161,7 +162,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
               className={buttonClasses.circleButton}
               style={{ marginRight: 8 }}
             >
-              <img width="24" src="/icons/video.svg" />
+              <VideoIcon width="24" height="24" />
             </IconButton>
           </Grid>
         </Grid>
