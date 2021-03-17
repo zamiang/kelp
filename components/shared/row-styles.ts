@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     opacity: 1,
     paddingTop: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     width: '100%',

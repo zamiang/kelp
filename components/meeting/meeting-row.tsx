@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -101,7 +100,7 @@ const MeetingRow = (props: {
   const isFuture = new Date() < props.meeting.start;
   const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
   return (
-    <Button
+    <div
       onClick={() => {
         void router.push(`/meetings/${props.meeting.id}`);
         return false;
@@ -159,7 +158,7 @@ const MeetingRow = (props: {
           shouldPadLeft={!props.hideDot}
         />
       )}
-    </Button>
+    </div>
   );
 };
 

@@ -161,7 +161,6 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
             <IconButton
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
               className={buttonClasses.circleButton}
-              style={{ marginRight: 8 }}
             >
               <VideoIcon width="24" height="24" />
             </IconButton>

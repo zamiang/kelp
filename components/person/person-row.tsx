@@ -61,7 +61,7 @@ const PersonRow = (props: {
   }, [!!referenceElement]);
 
   return (
-    <Button
+    <div
       onClick={(event) => {
         event.stopPropagation();
         router.push(`/people/${encodeURIComponent(props.person.id)}`);
@@ -144,7 +144,7 @@ const PersonRow = (props: {
           </Grid>
         )}
       </Grid>
-    </Button>
+    </div>
   );
 };
 

@@ -21,7 +21,7 @@ export const MissingDocumentRow = (props: {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   return (
-    <Button
+    <div
       className={clsx(!props.isSmall && rowStyles.row, props.isSmall && rowStyles.rowSmall)}
       onClick={() => {
         // TODO handle slides?
@@ -54,7 +54,7 @@ export const MissingDocumentRow = (props: {
           </Grid>
         </Grid>
       </Grid>
-    </Button>
+    </div>
   );
 };
 
@@ -117,7 +117,7 @@ const DocumentRow = (props: {
   }, [!!referenceElement]);
 
   return (
-    <Button
+    <div
       onMouseEnter={() => setDetailsVisible(true)}
       onMouseLeave={() => setDetailsVisible(false)}
       onClick={(event) => {
@@ -180,7 +180,7 @@ const DocumentRow = (props: {
           )}
         </Grid>
       </ConditionalWrapper>
-    </Button>
+    </div>
   );
 };
 

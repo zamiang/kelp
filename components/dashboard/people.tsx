@@ -80,7 +80,7 @@ const AllPeople = (props: {
     const fetchData = async () => {
       const result = await props.store.personDataStore.getAll(false);
       const sortedPeople = result
-        .filter((p) => !p.name.includes('Unknown person'))
+        .filter((p) => !p.name.includes('Unknown'))
         .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1));
       const groupedPeople = groupBy(sortedPeople, (p) => p.name.toLocaleLowerCase()[0]);
       setPeople(groupedPeople);
