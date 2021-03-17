@@ -137,7 +137,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                 setSearchInputVisible(false);
               }}
             >
-              <BackIcon height="24" />
+              <BackIcon height="24" width="24" />
             </IconButton>
           </Grid>
         </Grid>
