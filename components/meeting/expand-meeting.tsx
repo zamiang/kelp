@@ -83,8 +83,8 @@ export const createSmartMeetingNotes = (
     store.documentDataStore,
     store.attendeeDataStore,
     store.refetch,
-    store.scope,
-    store.googleOauthToken,
+    store.scope!,
+    store.googleOauthToken!,
   );
 };
 

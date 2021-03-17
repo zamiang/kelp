@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
+import config from '../../constants/config';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 
@@ -21,6 +22,7 @@ const askNotificationPermission = async () => {
   const handlePermission = (permission: NotificationPermission) => {
     // Whatever the user answers, we make sure Chrome stores the information
     if (!('permission' in Notification)) {
+      localStorage.setItem(config.kelpNotificationsKey, 'true');
       (Notification as any).permission = permission;
     }
   };

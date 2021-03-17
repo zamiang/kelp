@@ -134,8 +134,8 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
               person={person}
               setPerson={(p: any) => setPerson(p)}
               personStore={props.store.personDataStore}
-              scope={props.store.scope}
-              accessToken={props.store.googleOauthToken}
+              scope={props.store.scope || ''}
+              accessToken={props.store.googleOauthToken || ''}
             />
           </div>
         )}

@@ -21,14 +21,13 @@ export interface IStore {
   readonly segmentDocumentStore: SegmentDocumentModel;
   readonly refetch: () => void;
   readonly isLoading: boolean;
-  readonly scope: string;
+  readonly scope?: string;
   readonly loadingMessage?: string;
-  readonly googleOauthToken: string;
+  readonly googleOauthToken?: string;
   readonly error?: Error;
 }
 
-/*
-export const setupStoreNoFetch = (db: dbType, googleOauthToken: string, scope: string): IStore => {
+export const setupStoreNoFetch = (db: dbType): IStore => {
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
@@ -49,12 +48,9 @@ export const setupStoreNoFetch = (db: dbType, googleOauthToken: string, scope: s
     isLoading: false,
     loadingMessage: undefined,
     refetch: () => false,
-    scope,
-    googleOauthToken,
     error: undefined,
   };
 };
-*/
 
 const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');

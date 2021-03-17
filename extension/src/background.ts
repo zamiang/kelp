@@ -1,3 +1,44 @@
+import db from '../../components/store/db';
+import { IStore, setupStoreNoFetch } from '../../components/store/use-store';
+
+let store: IStore;
+
+const setup = async () => {
+  const d = await db('production');
+  store = setupStoreNoFetch(d);
+};
+
+const queryAndSendNotification = async () => {
+  if (!store) {
+    await setup();
+  }
+  const upNext = await store.timeDataStore.getUpNextSegment();
+  console.log(upNext, '<<<<<<<<<<<<<<<<<<<');
+  if (upNext) {
+    chrome.runtime.sendMessage('', {
+      type: 'notification',
+      options: {
+        title: `Prepare for: ${upNext.summary || 'Meeting notification'}`,
+        message: 'test!',
+        iconUrl: '/icon128.png',
+        type: 'basic',
+      },
+    });
+  }
+};
+
+setInterval(() => void queryAndSendNotification(), 1000 * 30);
+
+chrome.runtime.onMessage.addListener((data) => {
+  if (data.type === 'notification') {
+    chrome.notifications.create('', data.options);
+  }
+});
+
+chrome.runtime.onInstalled.addListener(() =>
+  chrome.tabs.create({ url: 'https://www.kelp.nyc/about' }),
+);
+
 /*
 import db from '../../components/store/db';
 import { IStore, setupStoreNoFetch } from '../../components/store/use-store';
@@ -22,11 +63,6 @@ const setupStore = () => {
     }
   });
 };
-
-// chrome.runtime.onInstalled.addListener(() => {
-//  const url = chrome.runtime.getURL('https://www.kelp.nyc');
-//  return chrome.tabs.create({ url });
-//});
 
 chrome.omnibox.onInputStarted.addListener(() => {
   console.log('setup: ');
