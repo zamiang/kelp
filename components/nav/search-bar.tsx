@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
+import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles(() => ({
   inputContainer: {},
@@ -40,7 +41,7 @@ const SearchBar = () => {
       <Grid container alignItems="center">
         <Grid item>
           <IconButton disabled>
-            <img width="24" height="24" src="/icons/search.svg" />
+            <SearchIcon width="24" height="24" />
           </IconButton>
         </Grid>
         <Grid item>

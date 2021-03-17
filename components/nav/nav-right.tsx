@@ -9,6 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import LockIcon from '../../public/icons/lock.svg';
+import RotateIcon from '../../public/icons/rotate.svg';
+import SettingsIcon from '../../public/icons/settings.svg';
 import { person } from '../fetch/fetch-people';
 import { IStore } from '../store/use-store';
 import { logout } from '../user-profile/logout-button';
@@ -102,7 +105,7 @@ const NavRight = (props: IProps) => {
           <Grid item>
             <Tooltip title="Loading">
               <IconButton aria-label="loading">
-                <img width="24" height="24" src="/icons/rotate.svg" className={classes.icon} />
+                <RotateIcon width="24" height="24" className={classes.icon} />
               </IconButton>
             </Tooltip>
           </Grid>
@@ -111,7 +114,7 @@ const NavRight = (props: IProps) => {
           <Grid item>
             <Tooltip title="Not authenticated">
               <IconButton>
-                <img width="24" height="24" src="/icons/lock.svg" className={classes.icon} />
+                <LockIcon width="24" height="24" className={classes.icon} />
               </IconButton>
             </Tooltip>
           </Grid>
@@ -133,7 +136,7 @@ const NavRight = (props: IProps) => {
               aria-label="menu"
               onClick={handleClick}
             >
-              <img width="24" height="24" src="/icons/settings.svg" />
+              <SettingsIcon width="24" height="24" />
             </IconButton>
           </Grid>
         )}

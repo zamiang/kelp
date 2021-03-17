@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import CalendarIcon from '../../public/icons/calendar.svg';
 import useRowStyles from '../shared/row-styles';
 import PersonDataStore from '../store/models/person-model';
 import { ISegment } from '../store/models/segment-model';
@@ -32,7 +33,7 @@ export const Meeting = (props: {
     >
       <Grid container wrap="nowrap" spacing={1} alignItems="center">
         <Grid item className={classes.imageContainer}>
-          <img width="24" height="24" src="/icons/calendar.svg" style={{ display: 'block' }} />
+          <CalendarIcon width="24" height="24" style={{ display: 'block' }} />
         </Grid>
         <Grid item xs={11}>
           <Grid container justify="space-between" alignItems="center">

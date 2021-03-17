@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
+import RotateIcon from '../../public/icons/rotate.svg';
 
 interface IProps {
   lastUpdated: Date;
@@ -49,7 +50,7 @@ const RefreshButton = (props: IProps) => {
           aria-label="refresh data"
           className={clsx(classes.button, props.isLoading && classes.loading)}
         >
-          <img width="24" height="24" src="/icons/rotate.svg" />
+          <RotateIcon width="24" height="24" />
         </IconButton>
       </Grid>
     </Grid>

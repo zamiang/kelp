@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import BackIcon from '../../public/icons/back.svg';
+import EditIcon from '../../public/icons/edit.svg';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 import { updateContactNotes } from './update-contact';
@@ -109,7 +111,7 @@ const PersonNotes = (props: {
         )}
         {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
           <IconButton className={classes.edit} onClick={onEdit} size="small">
-            <img width="24" height="24" src="/icons/edit.svg" />
+            <EditIcon width="24" height="24" />
           </IconButton>
         )}
       </Typography>
@@ -125,7 +127,7 @@ const PersonNotes = (props: {
       )}
       {isEditing && (
         <IconButton onClick={onCloseEdit} size="small">
-          <img width="24" height="24" src="/icons/back.svg" />
+          <BackIcon width="24" height="24" />
         </IconButton>
       )}
     </div>

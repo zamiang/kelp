@@ -4,6 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import BackIcon from '../../public/icons/back.svg';
+import CalendarIcon from '../../public/icons/calendar.svg';
+import FileIcon from '../../public/icons/file.svg';
+import SearchIcon from '../../public/icons/search.svg';
+import UserIcon from '../../public/icons/user.svg';
 import SearchBar from './search-bar';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +74,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/meetings')}
           aria-label="Meetings"
         >
-          <img width="44" src="/icons/calendar.svg" />
+          <CalendarIcon width="44" />
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
@@ -78,7 +83,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/docs')}
           aria-label="Documents"
         >
-          <img width="44" src="/icons/file.svg" />
+          <FileIcon width="44" />
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
@@ -87,7 +92,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/people')}
           aria-label="People"
         >
-          <img width="44" src="/icons/user.svg" />
+          <UserIcon width="44" />
         </IconButton>
       </Grid>
     </Grid>
@@ -135,7 +140,7 @@ const NavBar = () => {
                 setSearchInputVisible(false);
               }}
             >
-              <img width="24" height="24" src="/icons/back.svg" />
+              <BackIcon width="24" height="24" />
             </IconButton>
           </Grid>
         </Grid>
@@ -157,7 +162,7 @@ const NavBar = () => {
         </Grid>
         <Grid item>
           <IconButton onClick={() => setSearchInputVisible(true)}>
-            <img width="24" height="24" src="/icons/search.svg" />
+            <SearchIcon width="24" height="24" />
           </IconButton>
         </Grid>
       </Grid>
