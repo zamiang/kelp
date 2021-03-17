@@ -13,62 +13,23 @@ const queryAndSendNotification = async () => {
     await setup();
   }
   const upNext = await store.timeDataStore.getUpNextSegment();
-  console.log(upNext, '<<<<<<<<<<<<<<<<<<<');
   if (upNext) {
-    chrome.runtime.sendMessage('', {
-      type: 'notification',
-      options: {
-        title: `Prepare for: ${upNext.summary || 'Meeting notification'}`,
-        message: 'test!',
-        iconUrl: '/icon128.png',
-        type: 'basic',
-      },
+    chrome.notifications.create(upNext.id, {
+      title: `Prepare for: ${upNext.summary || 'Meeting notification'}`,
+      message: 'test!',
+      iconUrl: '/icon128.png',
+      type: 'basic',
     });
   }
 };
 
 setInterval(() => void queryAndSendNotification(), 1000 * 30);
 
-chrome.runtime.onMessage.addListener((data) => {
-  if (data.type === 'notification') {
-    chrome.notifications.create('', data.options);
-  }
-});
-
 chrome.runtime.onInstalled.addListener(() =>
   chrome.tabs.create({ url: 'https://www.kelp.nyc/about' }),
 );
 
 /*
-import db from '../../components/store/db';
-import { IStore, setupStoreNoFetch } from '../../components/store/use-store';
-import config from '../../constants/config';
-let store: IStore | undefined;
-
-const createStore = async (token: string) => {
-  const database = await db('production');
-  store = setupStoreNoFetch(database, token, config.GOOGLE_SCOPES.join(' '));
-  return store;
-};
-
-const setupStore = () => {
-  if (store) {
-    return store;
-  }
-  chrome.identity.getAuthToken({ interactive: true }, (token) => {
-    if (chrome.runtime.lastError) {
-      return null;
-    } else {
-      void createStore(token);
-    }
-  });
-};
-
-chrome.omnibox.onInputStarted.addListener(() => {
-  console.log('setup: ');
-  void setupStore();
-});
-
 // chrome.omnibox.setDefaultSuggestion({
 //  description: 'Search for a person or document',
 // });
