@@ -168,6 +168,11 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: 24,
     },
   },
+  largeText: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 32,
+    },
+  },
 }));
 
 // <meta name="slack-app-id" content="A01E5A9263B" />
@@ -242,7 +247,9 @@ const App = () => {
       </Container>
       <UiBlocks />
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h2">Currently works with</Typography>
+        <Typography variant="h2" className={classes.largeText}>
+          Currently works with
+        </Typography>
         <Container maxWidth="sm" style={{ textAlign: 'center' }}>
           <Typography variant="h3" style={{ marginBottom: 24 }}>
             Google
@@ -259,7 +266,7 @@ const App = () => {
             Sign In with Google
           </Button>
           <Typography>
-            Kelp currently works with Google and will expand to other integrations.
+            We&lsquo;re also working on other integrations (like Microsoft Teams)! Meanwhile,
           </Typography>
           <Typography>
             <MuiLink
@@ -275,7 +282,9 @@ const App = () => {
         </Container>
       </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h2">Your data is your data</Typography>
+        <Typography variant="h2" className={classes.largeText}>
+          Your data is your data
+        </Typography>
         <Container maxWidth="sm">
           <Typography style={{ textAlign: 'center' }}>
             When visiting the Kelp website, your computer is storing and processing your data. Kelp
@@ -299,7 +308,9 @@ const App = () => {
             item
             className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
           >
-            <Typography variant="h4">Ready to get started?</Typography>
+            <Typography variant="h4" className={classes.quote}>
+              Ready to get started?
+            </Typography>
             <div className={classes.buttonContainer}>
               <Grid container spacing={3} alignItems="center" justify="center">
                 <Grid item xs={12}>
