@@ -60,9 +60,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logoImage: {
-    height: 80,
+    height: 72,
     paddingRight: 0,
-    marginRight: theme.spacing(4),
+    marginRight: theme.spacing(3),
     opacity: 1,
     cursor: 'pointer',
     transition: 'opacity 0.3s',
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     cursor: 'pointer',
-    fontSize: 48,
+    fontSize: 42,
     margin: 0,
     color: theme.palette.text.primary,
     [theme.breakpoints.down('md')]: {

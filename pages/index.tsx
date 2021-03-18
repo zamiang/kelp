@@ -102,7 +102,7 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: '#009191',
+    backgroundColor: '#47B7B8',
     [theme.breakpoints.down('sm')]: {
       borderRadius: 25,
       marginTop: theme.spacing(2),
