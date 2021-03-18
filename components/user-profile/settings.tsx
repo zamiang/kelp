@@ -1,12 +1,12 @@
-import { Divider } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import config from '../../constants/config';
-import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import LogoutButton from '../user-profile/logout-button';
 
@@ -29,9 +29,8 @@ const useStyles = makeStyles((theme) => ({
 const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
-  const buttonClasses = useButtonStyles();
-  const [isNotificationsDisabled, setNotificationsDisabled] = useState(
-    localStorage.getItem(config.kelpNotificationsKey) === 'true',
+  const [isNotificationsDisabled, setNotificationsDisabled] = useState<'on' | 'off'>(
+    localStorage.getItem(config.kelpNotificationsKey) === 'true' ? 'on' : 'off',
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
 
@@ -46,46 +45,30 @@ const Settings = () => {
       <div className={classes.section}>
         <div className={formClasses.textField}>
           <Typography variant="h4" style={{ marginBottom: 24 }}>
-            Notifications
+            Upcoming Meeting Notifications
           </Typography>
-          {!isNotificationsDisabled && (
-            <Button
-              className={buttonClasses.button}
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={() => {
-                setNotificationsDisabled(true);
+          <ToggleButtonGroup
+            size="small"
+            value={isNotificationsDisabled}
+            exclusive
+            onChange={(_event, value: string) => {
+              if (value === 'on') {
+                setNotificationsDisabled('on');
                 localStorage.setItem(config.kelpNotificationsKey, 'true');
-                if ('Notification' in window) {
-                  return Notification.requestPermission();
-                } else {
-                  alert('Notifications are not supported on this device');
-                }
-              }}
-            >
-              Disable meeting prep notifications
-            </Button>
-          )}
-          {isNotificationsDisabled && (
-            <Button
-              className={buttonClasses.button}
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={() => {
-                setNotificationsDisabled(false);
+              } else {
+                setNotificationsDisabled('off');
                 localStorage.setItem(config.kelpNotificationsKey, 'false');
-                if ('Notification' in window) {
-                  return Notification.requestPermission();
-                } else {
-                  alert('Notifications are not supported on this device');
-                }
-              }}
-            >
-              Enable meeting prep notifications
-            </Button>
-          )}
+              }
+              if ('Notification' in window) {
+                return Notification.requestPermission();
+              } else {
+                alert('Notifications are not supported on this device');
+              }
+            }}
+          >
+            <ToggleButton value="on">On</ToggleButton>
+            <ToggleButton value="off">Off</ToggleButton>
+          </ToggleButtonGroup>
           <Typography style={{ marginBottom: 22 }} variant="body2">
             Current browser permission status: {notificationPermission || 'not enabled'}
           </Typography>
