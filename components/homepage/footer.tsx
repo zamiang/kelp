@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(10),
     },
   },
   alignLeft: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.5,
     },
     [theme.breakpoints.down('sm')]: {
-      display: 'none',
+      margin: '0 auto',
     },
   },
   footerLink: {
@@ -66,7 +66,7 @@ const Footer = () => {
   return (
     <Container maxWidth="lg" className={classes.footer}>
       <Grid container justify="space-between">
-        <Grid item xs={1}>
+        <Grid item xs={12} sm={1}>
           <Link href="/">
             <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
           </Link>
