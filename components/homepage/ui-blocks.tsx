@@ -101,7 +101,7 @@ const UiBlocks = () => {
         alignItems="center"
       >
         <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
-          <img src="images/notice.svg" style={{ maxHeight: 231, maxWidth: '100%' }} />
+          <img src="images/documents.svg" style={{ maxHeight: 231, maxWidth: '100%' }} />
         </Grid>
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4">
@@ -131,7 +131,7 @@ const UiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
         >
-          <img src="images/user.svg" style={{ maxHeight: 210, maxWidth: '100%' }} />
+          <img src="images/person.svg" style={{ maxHeight: 210, maxWidth: '100%' }} />
         </Grid>
       </Grid>
     </Container>

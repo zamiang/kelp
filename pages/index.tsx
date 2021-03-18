@@ -207,7 +207,7 @@ const App = () => {
       </div>
       <Container maxWidth="lg">
         <div className={classes.meetingContainer}>
-          <img src="images/extension.png" className={classes.meetingImage} />
+          <img src="images/meetings-large.svg" className={classes.meetingImage} />
         </div>
       </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
