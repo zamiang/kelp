@@ -288,7 +288,9 @@ const App = () => {
           </Typography>
         </Container>
       </Container>
+      <br />
       <Divider />
+      <br />
       <Container maxWidth="md">
         <Grid container alignItems="center" justify="center">
           <Grid
@@ -300,7 +302,7 @@ const App = () => {
             <Typography variant="h4">Ready to get started?</Typography>
             <div className={classes.buttonContainer}>
               <Grid container spacing={3} alignItems="center" justify="center">
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <Button
                     variant="contained"
                     size="large"
@@ -308,12 +310,11 @@ const App = () => {
                     className={classes.login}
                     onClick={() => (window.location.pathname = '/dashboard')}
                     disableElevation={true}
-                    style={{ width: 280 }}
                   >
                     Sign In with Google
                   </Button>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <Button
                     variant="outlined"
                     color="primary"
@@ -321,7 +322,6 @@ const App = () => {
                     className={classes.login}
                     href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
                     disableElevation={true}
-                    style={{ width: 280 }}
                   >
                     Add to Chrome
                   </Button>

@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   greyContainer: {
     width: '100%',
   },
+  heading: {
+    fontSize: 24,
+    marginBottom: theme.spacing(3),
+  },
   dot: {
     height: 12,
     width: 12,
@@ -34,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       paddingLeft: 0,
       paddingRight: 0,
+      paddingTop: theme.spacing(3),
     },
   },
   sectionImageRightTop: {
@@ -84,12 +89,15 @@ const UiBlocks = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="md">
-      <Grid container className={classes.section} alignItems="center">
+      <Grid
+        container
+        className={clsx(classes.section, classes.sectionMobileReverse)}
+        alignItems="center"
+      >
         <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Typography variant="h4">
+          <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Organization for humans
           </Typography>
-          <br />
           <Typography>
             Kelp meets you where you are. It doesn’t ask you to change how you organize your work or
             how you collaborate.
@@ -104,31 +112,29 @@ const UiBlocks = () => {
           <img src="images/meeting.svg" style={{ maxHeight: 212, maxWidth: '100%' }} />
         </Grid>
       </Grid>
-      <Grid
-        container
-        className={clsx(classes.section, classes.sectionMobileReverse)}
-        alignItems="center"
-      >
+      <Grid container className={clsx(classes.section)} alignItems="center">
         <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
           <img src="images/documents.svg" style={{ maxHeight: 231, maxWidth: '100%' }} />
         </Grid>
         <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Typography variant="h4">
+          <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Quickly prepare for meetings
           </Typography>
-          <br />
           <Typography>
             Kelp scans your calendar and documents to automatically collect the documents you need.
             It then magically annotates your calendar. Easy.
           </Typography>
         </Grid>
       </Grid>
-      <Grid container className={classes.section} alignItems="center">
+      <Grid
+        container
+        className={clsx(classes.section, classes.sectionMobileReverse)}
+        alignItems="center"
+      >
         <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Typography variant="h4">
+          <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Manage work relationships
           </Typography>
-          <br />
           <Typography>
             Kelp infers associations between information, such as between a person, a meeting with
             the person and document edits by the person.
