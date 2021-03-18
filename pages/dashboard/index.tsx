@@ -219,6 +219,11 @@ export const DashboardContainer = ({ store }: IProps) => {
       <Head>
         <title>Dashboard - Kelp</title>
       </Head>
+      <style jsx global>{`
+        html body {
+          background-color: #faf5eb;
+        }
+      `}</style>
       {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
     </div>
   );

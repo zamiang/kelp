@@ -25,6 +25,7 @@ const useBelowStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(3),
+    paddingBottom: 1,
     paddingLeft: theme.spacing(2),
     borderLeft: `1px solid ${theme.palette.divider}`,
   },

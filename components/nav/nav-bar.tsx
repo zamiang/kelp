@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   iconButtonLarge: {
     borderRadius: 0,
     width: '100%',
-    padding: 10,
+    padding: 20,
   },
 }));
 
@@ -74,7 +74,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/meetings')}
           aria-label="Meetings"
         >
-          <CalendarIcon width="44" height="44" />
+          <CalendarIcon width="24" height="24" />
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
@@ -83,7 +83,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/docs')}
           aria-label="Documents"
         >
-          <FileIcon width="44" height="44" />
+          <FileIcon width="24" height="24" />
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
@@ -92,7 +92,7 @@ const NavBarLayer = () => {
           onClick={() => history.push('/people')}
           aria-label="People"
         >
-          <UserIcon width="44" height="44" />
+          <UserIcon width="24" height="24" />
         </IconButton>
       </Grid>
     </Grid>

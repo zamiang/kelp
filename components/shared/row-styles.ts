@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: `1px solid transparent`,
     },
     '&:hover': {
-      backgroundColor: theme.palette.secondary.light,
+      backgroundColor: 'rgba(0,0,0,0.04)',
     },
     '& > *': {
       borderBottom: 'unset',
@@ -92,8 +92,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(3),
     borderRadius: theme.shape.borderRadius,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   rowHighlightPadding: {
     paddingLeft: theme.spacing(2),
@@ -121,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rowPrimaryMain: {
-    background: theme.palette.secondary.light,
+    background: 'rgba(0,0,0,0.04)',
     '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: theme.palette.secondary.light,
       background: theme.palette.secondary.light,

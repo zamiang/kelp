@@ -23,6 +23,8 @@ const dayStyles = makeStyles((theme) => ({
     fontFamily: mediumFontFamily,
     textTransform: 'uppercase',
     color: 'rgba(0,0,0,0.87)',
+    marginTop: theme.spacing(1),
+    marginBottom: 8,
   },
   dayNumberToday: {
     color: theme.palette.primary.main,
@@ -135,7 +137,6 @@ const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
   const rowStyles = useRowStyles();
   return (
     <div className={clsx(rowStyles.rowHighlight, rowStyles.rowHighlightPadding)}>
-      <br />
       <MeetingRow
         shouldRenderCurrentTime={true}
         meeting={props.meeting}

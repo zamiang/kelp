@@ -5,6 +5,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     borderRadius: 30,
     textTransform: 'uppercase',
+    paddingTop: 6,
+    paddingBottom: 6,
+    transition: 'opacity 0.3s',
+    opacity: 1,
+    '&:hover': {
+      opacity: 0.6,
+    },
   },
   circleButton: {
     marginLeft: 'auto',
@@ -21,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonPrimary: {
     color: theme.palette.primary.main,
-    paddingTop: 3,
-    paddingBottom: 3,
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderColor: 'rgba(0,0,0,0.12)',
   },
   selected: {
     borderBottom: `2px solid ${theme.palette.primary.main}`,
