@@ -101,7 +101,7 @@ const AllDocuments = (props: {
     <React.Fragment>
       {topDocuments.length > 0 && (
         <div className={classes.rowHighlight}>
-          <Typography className={classes.rowText} variant="body2">
+          <Typography className={classes.rowText} variant="h6">
             Recent documents
           </Typography>
           {topDocuments.map((doc) => (

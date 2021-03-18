@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import BackIcon from '../../public/icons/back.svg';
+import BackIcon from '../../public/icons/close.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';

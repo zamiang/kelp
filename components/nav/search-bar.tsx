@@ -7,10 +7,13 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import SearchIcon from '../../public/icons/search.svg';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   inputContainer: {},
   input: {
-    width: 200,
+    width: 282,
+    [theme.breakpoints.down('sm')]: {
+      width: 200,
+    },
   },
 }));
 

@@ -119,21 +119,18 @@ const MobileDashboard = (props: { store: IStore }) => {
         value={currentTab}
       >
         <BottomNavigationAction
-          showLabel={false}
-          label="Meetings"
           value="meetings"
+          showLabel={false}
           icon={<CalendarIcon width="24" height="24" />}
         />
         <BottomNavigationAction
-          showLabel={false}
-          label="Documents"
           value="documents"
+          showLabel={false}
           icon={<FileIcon width="24" height="24" />}
         />
         <BottomNavigationAction
-          showLabel={false}
-          label="People"
           value="people"
+          showLabel={false}
           icon={<UserIcon width="24" height="24" />}
         />
       </BottomNavigation>
