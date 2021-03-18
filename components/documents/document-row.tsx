@@ -31,11 +31,12 @@ export const MissingDocumentRow = (props: {
         );
       }}
     >
-      <Grid container spacing={1} alignItems="center">
-        <Grid item className={classes.imageContainer}>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item className={rowStyles.rowLeft}>
           <HelpIcon
             height="24"
             width="24"
+            style={{ margin: '0 auto' }}
             className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
           />
         </Grid>
@@ -59,13 +60,10 @@ export const MissingDocumentRow = (props: {
 };
 
 const useStyles = makeStyles((theme) => ({
-  imageContainer: {
-    height: 32,
-    width: 32,
-  },
   image: {
     display: 'block',
     maxWidth: 18,
+    margin: '0 auto',
   },
   imageSpacing: {
     maxHeight: 18,
@@ -138,8 +136,8 @@ const DocumentRow = (props: {
         shouldWrap={!!props.tooltipText}
         wrapper={(children: any) => <Tooltip title={props.tooltipText!}>{children}</Tooltip>}
       >
-        <Grid container spacing={1} alignItems="center">
-          <Grid item className={classes.imageContainer}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item className={rowStyles.rowLeft}>
             {!props.isSmall && (
               <img alt="Document Icon" src={props.doc.iconLink} className={classes.image} />
             )}

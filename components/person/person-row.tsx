@@ -82,7 +82,7 @@ const PersonRow = (props: {
       )}
     >
       <Grid container spacing={2} alignItems="center" wrap="nowrap">
-        <Grid item>
+        <Grid item className={rowStyles.rowLeft}>
           {props.person.imageUrl ? (
             <Avatar
               alt={`Profile photo for ${

@@ -121,6 +121,10 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'line-through',
     },
   },
+  rowLeft: {
+    width: 48,
+    textAlign: 'center',
+  },
   rowPrimaryMain: {
     background: 'rgba(0,0,0,0.04)',
     '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {

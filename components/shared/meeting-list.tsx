@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
@@ -11,31 +10,28 @@ import useRowStyles from '../shared/row-styles';
 import PersonDataStore from '../store/models/person-model';
 import { ISegment } from '../store/models/segment-model';
 
-const useStyles = makeStyles(() => ({
-  imageContainer: {
-    height: 32,
-    width: 32,
-  },
-}));
-
 export const Meeting = (props: {
   meeting: ISegment;
   personStore: PersonDataStore;
   info?: string;
 }) => {
   const rowStyles = useRowStyles();
-  const classes = useStyles();
   const router = useHistory();
+  const opacity = props.meeting.start > new Date() ? 0.5 : 0.3;
   return (
     <Button
       onClick={() => router.push(`/meetings/${props.meeting.id}`)}
       className={clsx(rowStyles.row)}
     >
-      <Grid container wrap="nowrap" spacing={1} alignItems="center">
-        <Grid item className={classes.imageContainer}>
-          <CalendarIcon width="24" height="24" style={{ display: 'block' }} />
+      <Grid container wrap="nowrap" spacing={2} alignItems="center">
+        <Grid item className={rowStyles.rowLeft}>
+          <CalendarIcon
+            width="24"
+            height="24"
+            style={{ display: 'block', margin: '0 auto', opacity }}
+          />
         </Grid>
-        <Grid item xs={11}>
+        <Grid item zeroMinWidth xs>
           <Grid container justify="space-between" alignItems="center">
             <Grid item xs={12}>
               <Typography noWrap>{props.meeting.summary || '(No title)'}</Typography>
