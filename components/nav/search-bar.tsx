@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   input: {
     width: 282,
     [theme.breakpoints.down('sm')]: {
-      width: 200,
+      width: 240,
     },
   },
 }));

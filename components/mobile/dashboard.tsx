@@ -75,6 +75,7 @@ const useInfoStyles = makeStyles((theme) => ({
   },
   bottom: {
     position: 'fixed',
+    borderTop: `1px solid ${theme.palette.divider}`,
     bottom: 0,
     left: 0,
     width: '100vw',
