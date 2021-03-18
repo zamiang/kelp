@@ -1,10 +1,14 @@
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import CalendarOrangeIcon from '../../public/icons/calendar-orange.svg';
 import CalendarIcon from '../../public/icons/calendar.svg';
+import FileOrangeIcon from '../../public/icons/file-orange.svg';
 import FileIcon from '../../public/icons/file.svg';
+import UserOrangeIcon from '../../public/icons/user-orange.svg';
 import UserIcon from '../../public/icons/user.svg';
 import Documents from '../dashboard/documents';
 import Meetings from '../dashboard/meetings';
@@ -46,6 +50,36 @@ const useInfoStyles = makeStyles((theme) => ({
     textAlign: 'center',
     zIndex: 15,
   },
+  icon: {
+    color: theme.palette.secondary.light,
+    transition: 'border-color 0.6s',
+    textAlign: 'center',
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    borderBottom: 0,
+  },
+  iconButton: {
+    borderRadius: 0,
+    width: '100%',
+    paddingBottom: 10,
+  },
+  iconButtonLarge: {
+    borderRadius: 0,
+    width: '100%',
+    padding: 20,
+  },
+  selected: {
+    color: `${theme.palette.secondary.dark} !important`,
+  },
+  bottom: {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100vw',
+    background: theme.palette.background.paper,
+  },
 }));
 
 const MobileDashboard = (props: { store: IStore }) => {
@@ -54,6 +88,11 @@ const MobileDashboard = (props: { store: IStore }) => {
   const history = useHistory();
   const location = useLocation();
   const [user, setUser] = useState<IPerson | undefined>(undefined);
+
+  const tab = location.pathname;
+  const isMeetingsSelected = tab.includes('meetings');
+  const isDocsSelected = tab.includes('docs');
+  const isPeopleSelected = tab.includes('people');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,8 +103,6 @@ const MobileDashboard = (props: { store: IStore }) => {
     };
     void fetchData();
   }, [store.isLoading]);
-
-  const currentTab = location.pathname.split('/')[1];
 
   return (
     <div>
@@ -99,7 +136,7 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Route path="/people">
             <People store={store} />
           </Route>
-          <Route path="/documents">
+          <Route path="/docs">
             <Documents store={store} />
           </Route>
           <Route path="/settings">
@@ -113,27 +150,49 @@ const MobileDashboard = (props: { store: IStore }) => {
           </Route>
         </Switch>
       </div>
-      <BottomNavigation
-        onChange={(_event, value) => history.push(`/${value}`)}
-        className={classes.footer}
-        value={currentTab}
-      >
-        <BottomNavigationAction
-          value="meetings"
-          showLabel={false}
-          icon={<CalendarIcon width="24" height="24" />}
-        />
-        <BottomNavigationAction
-          value="documents"
-          showLabel={false}
-          icon={<FileIcon width="24" height="24" />}
-        />
-        <BottomNavigationAction
-          value="people"
-          showLabel={false}
-          icon={<UserIcon width="24" height="24" />}
-        />
-      </BottomNavigation>
+      <div className={classes.bottom}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item xs className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
+            <IconButton
+              className={classes.iconButtonLarge}
+              onClick={() => history.push('/meetings')}
+              aria-label="Meetings"
+            >
+              {isMeetingsSelected ? (
+                <CalendarOrangeIcon width="24" height="24" />
+              ) : (
+                <CalendarIcon width="24" height="24" />
+              )}
+            </IconButton>
+          </Grid>
+          <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
+            <IconButton
+              className={classes.iconButtonLarge}
+              onClick={() => history.push('/docs')}
+              aria-label="Documents"
+            >
+              {isDocsSelected ? (
+                <FileOrangeIcon width="24" height="24" />
+              ) : (
+                <FileIcon width="24" height="24" />
+              )}
+            </IconButton>
+          </Grid>
+          <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
+            <IconButton
+              className={classes.iconButtonLarge}
+              onClick={() => history.push('/people')}
+              aria-label="People"
+            >
+              {isPeopleSelected ? (
+                <UserOrangeIcon width="24" height="24" />
+              ) : (
+                <UserIcon width="24" height="24" />
+              )}
+            </IconButton>
+          </Grid>
+        </Grid>
+      </div>
     </div>
   );
 };

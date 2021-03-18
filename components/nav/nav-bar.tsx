@@ -4,10 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import CalendarOrangeIcon from '../../public/icons/calendar-orange.svg';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import BackIcon from '../../public/icons/close.svg';
+import FileOrangeIcon from '../../public/icons/file-orange.svg';
 import FileIcon from '../../public/icons/file.svg';
 import SearchIcon from '../../public/icons/search.svg';
+import UserOrangeIcon from '../../public/icons/user-orange.svg';
 import UserIcon from '../../public/icons/user.svg';
 import SearchBar from './search-bar';
 
@@ -74,7 +77,11 @@ const NavBarLayer = () => {
           onClick={() => history.push('/meetings')}
           aria-label="Meetings"
         >
-          <CalendarIcon width="24" height="24" />
+          {isMeetingsSelected ? (
+            <CalendarOrangeIcon width="24" height="24" />
+          ) : (
+            <CalendarIcon width="24" height="24" />
+          )}
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
@@ -83,7 +90,11 @@ const NavBarLayer = () => {
           onClick={() => history.push('/docs')}
           aria-label="Documents"
         >
-          <FileIcon width="24" height="24" />
+          {isDocsSelected ? (
+            <FileOrangeIcon width="24" height="24" />
+          ) : (
+            <FileIcon width="24" height="24" />
+          )}
         </IconButton>
       </Grid>
       <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
@@ -92,7 +103,11 @@ const NavBarLayer = () => {
           onClick={() => history.push('/people')}
           aria-label="People"
         >
-          <UserIcon width="24" height="24" />
+          {isPeopleSelected ? (
+            <UserOrangeIcon width="24" height="24" />
+          ) : (
+            <UserIcon width="24" height="24" />
+          )}
         </IconButton>
       </Grid>
     </Grid>
