@@ -69,12 +69,19 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       opacity: 0.5,
     },
+    [theme.breakpoints.down('md')]: {
+      height: 56,
+      marginRight: theme.spacing(2),
+    },
   },
   logo: {
     cursor: 'pointer',
     fontSize: 48,
     margin: 0,
     color: theme.palette.text.primary,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 24,
+    },
   },
 }));
 
@@ -83,7 +90,7 @@ const Header = () => {
   return (
     <Container maxWidth="lg">
       <Grid container justify="space-between" className={classes.header} alignItems="center">
-        <Grid item xs={3} style={{ textAlign: 'left' }}>
+        <Grid item xs={6} sm={3} style={{ textAlign: 'left' }}>
           <Grid container alignItems="center">
             <Grid item>
               <Link href="/">
@@ -124,7 +131,7 @@ const Header = () => {
               <React.Fragment>
                 <Button
                   className={classes.menuButton}
-                  variant="outlined"
+                  variant="text"
                   color="primary"
                   size="large"
                   {...bindTrigger(popupState)}

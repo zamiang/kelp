@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingRight: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      padding: 0,
+    },
   },
   greyContainer: {
     width: '100%',
@@ -38,12 +41,18 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      padding: 0,
+    },
   },
   sectionImageRightBottom: {
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      padding: 0,
+    },
   },
   section: {},
   notificationContainer: {

@@ -27,14 +27,15 @@ export const useStyles = makeStyles((theme) => ({
   },
   heading: {
     [theme.breakpoints.down('sm')]: {
-      fontSize: 42,
+      fontSize: 32,
     },
   },
   subheading: {
     marginTop: 48,
     fontSize: 32,
     [theme.breakpoints.down('sm')]: {
-      fontSize: 26,
+      fontSize: 16,
+      marginTop: theme.spacing(4),
     },
   },
   loginMargin: {
@@ -48,6 +49,10 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(12),
     width: '100%',
     textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(10),
+    },
   },
   subpage: {
     marginTop: theme.spacing(8),
@@ -56,10 +61,10 @@ export const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     marginTop: 48,
-    maxWidth: 280,
     [theme.breakpoints.down('sm')]: {
       marginLeft: 'auto',
       marginRight: 'auto',
+      maxWidth: 'none',
     },
   },
   login: {
@@ -71,6 +76,9 @@ export const useStyles = makeStyles((theme) => ({
     transition: 'opacity 0.3s',
     '&:hover': {
       opacity: 0.6,
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
     },
   },
   body: {
@@ -98,6 +106,7 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       borderRadius: 25,
       marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(8),
     },
   },
   meetingImage: {
@@ -109,10 +118,18 @@ export const useStyles = makeStyles((theme) => ({
     maxWidth: 680,
     width: '100%',
     [theme.breakpoints.down('sm')]: {
-      paddingTop: theme.spacing(2),
-      paddingRight: theme.spacing(2),
-      paddingLeft: theme.spacing(2),
-      maxWidth: 'none',
+      display: 'none',
+    },
+  },
+  meetingImageMobile: {
+    display: 'block',
+    paddingTop: theme.spacing(5),
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(5),
+    margin: '0px auto',
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
     },
   },
   bodyCopySection: {
@@ -143,6 +160,12 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
       margin: '0px auto',
       maxWidth: 367,
+    },
+  },
+  quote: {
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 24,
     },
   },
 }));
@@ -178,7 +201,7 @@ const App = () => {
         </Container>
         <Container className={classes.buttonContainer}>
           <Grid container alignItems="center" spacing={4} justify="center">
-            <Grid item>
+            <Grid item xs={12} sm={3}>
               <Button
                 variant="contained"
                 size="large"
@@ -190,7 +213,7 @@ const App = () => {
                 Sign In with Google
               </Button>
             </Grid>
-            <Grid item>
+            <Grid item xs={12} sm={3}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -208,10 +231,11 @@ const App = () => {
       <Container maxWidth="lg">
         <div className={classes.meetingContainer}>
           <img src="images/meetings-large.svg" className={classes.meetingImage} />
+          <img src="images/meetings-mobile.svg" className={classes.meetingImageMobile} />
         </div>
       </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h3" style={{ textAlign: 'center' }}>
+        <Typography variant="h3" className={classes.quote}>
           Kelp started out of a need for better way to prepare for meetings. It helps you quickly
           gather the information you need.
         </Typography>
@@ -276,7 +300,7 @@ const App = () => {
             <Typography variant="h4">Ready to get started?</Typography>
             <div className={classes.buttonContainer}>
               <Grid container spacing={3} alignItems="center" justify="center">
-                <Grid item>
+                <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
                     size="large"
@@ -289,7 +313,7 @@ const App = () => {
                     Sign In with Google
                   </Button>
                 </Grid>
-                <Grid item>
+                <Grid item xs={12} sm={6}>
                   <Button
                     variant="outlined"
                     color="primary"
