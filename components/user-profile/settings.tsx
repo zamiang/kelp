@@ -1,9 +1,10 @@
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import config from '../../constants/config';
@@ -29,10 +30,25 @@ const useStyles = makeStyles((theme) => ({
 const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
-  const [isNotificationsDisabled, setNotificationsDisabled] = useState<'on' | 'off'>(
-    localStorage.getItem(config.kelpNotificationsKey) === 'true' ? 'on' : 'off',
+  const [isNotificationsDisabled, setNotificationsDisabled] = useState<boolean>(
+    localStorage.getItem(config.kelpNotificationsKey) === 'true' ? true : false,
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
+
+  const toggleChecked = (enabled: boolean) => {
+    if (enabled) {
+      setNotificationsDisabled(true);
+      localStorage.setItem(config.kelpNotificationsKey, 'true');
+    } else {
+      setNotificationsDisabled(false);
+      localStorage.setItem(config.kelpNotificationsKey, 'false');
+    }
+    if ('Notification' in window) {
+      return Notification.requestPermission();
+    } else {
+      alert('Notifications are not supported on this device');
+    }
+  };
 
   return (
     <div className={clsx(classes.panel, formClasses.maxWidth)}>
@@ -47,28 +63,18 @@ const Settings = () => {
           <Typography variant="h4" style={{ marginBottom: 24 }}>
             Upcoming Meeting Notifications
           </Typography>
-          <ToggleButtonGroup
-            size="small"
-            value={isNotificationsDisabled}
-            exclusive
-            onChange={(_event, value: string) => {
-              if (value === 'on') {
-                setNotificationsDisabled('on');
-                localStorage.setItem(config.kelpNotificationsKey, 'true');
-              } else {
-                setNotificationsDisabled('off');
-                localStorage.setItem(config.kelpNotificationsKey, 'false');
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  color="primary"
+                  checked={!isNotificationsDisabled}
+                  onChange={() => toggleChecked(!isNotificationsDisabled)}
+                />
               }
-              if ('Notification' in window) {
-                return Notification.requestPermission();
-              } else {
-                alert('Notifications are not supported on this device');
-              }
-            }}
-          >
-            <ToggleButton value="on">On</ToggleButton>
-            <ToggleButton value="off">Off</ToggleButton>
-          </ToggleButtonGroup>
+              label="Meeting prep notifications"
+            />
+          </FormGroup>
           <Typography style={{ marginBottom: 22 }} variant="body2">
             Current browser permission status: {notificationPermission || 'not enabled'}
           </Typography>
