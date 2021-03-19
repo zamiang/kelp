@@ -170,6 +170,10 @@ const ExpandedMeeting = (props: {
 
   const hasMeetingNotes = !!meeting.meetingNotesLink;
 
+  console.log(segmentDocumentsForAttendees);
+  console.log(segmentDocumentsForNonAttendees);
+  console.log(segmentDocumentsFromPastMeetings);
+
   const hasDocuments =
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||

@@ -77,10 +77,13 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
         );
         setPeople(people.sortedPeople.slice(0, 5));
         setPeopleStats(people.peopleStats);
+      } else {
+        setPeople([]);
+        setPeopleStats({});
       }
     };
     void fetchData();
-  }, [driveActivity.length]);
+  }, [props.store.isLoading, documentId, driveActivity.length]);
 
   if (!document) {
     return null;

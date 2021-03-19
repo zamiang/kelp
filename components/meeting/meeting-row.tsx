@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     paddingTop: 0,
     paddingBottom: 0,
+    cursor: 'pointer',
     '&:hover': {
       background: 'transparent',
     },

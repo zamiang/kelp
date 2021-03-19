@@ -136,14 +136,16 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
         <Grid container spacing={1} alignItems="center" justify="space-between">
           <Grid item>
             <Button
-              onClick={() =>
-                createSmartMeetingNotes(
+              onClick={(event) => {
+                event.stopPropagation();
+                void createSmartMeetingNotes(
                   props.meeting,
                   props.store,
                   segmentDocumentsForAttendees,
                   setMeetingNotesLoading,
-                )
-              }
+                );
+                return false;
+              }}
               variant="outlined"
               className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               startIcon={

@@ -86,10 +86,15 @@ export default class SegmentDocumentModel {
           (s) => s.start < driveActivityItem.time && s.end > driveActivityItem.time,
         );
         if (segment) {
-          const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-          isActorAttendee = !!attendees.find(
-            (a) => a.personGoogleId === driveActivityItem.actorPersonId,
-          );
+          const summary = segment.summary?.toLocaleLowerCase();
+          if (summary?.includes('ooo') || summary?.includes('out of office')) {
+            // do nothing
+          } else {
+            const attendees = await attendeeStore.getAllForSegmentId(segment.id);
+            isActorAttendee = !!attendees.find(
+              (a) => a.personGoogleId === driveActivityItem.actorPersonId,
+            );
+          }
         }
         const formattedDocument = formatSegmentDocument(
           driveActivityItem,
