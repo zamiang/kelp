@@ -106,8 +106,14 @@ const Header = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
-          <Grid container spacing={4} alignItems="center" className={classes.links}>
+        <Grid item xs>
+          <Grid
+            container
+            spacing={4}
+            alignItems="center"
+            className={classes.links}
+            justify="center"
+          >
             <Grid item>
               <Link href="/about">
                 <Typography className={classes.headerLink}>About</Typography>
