@@ -40,20 +40,6 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.info.main,
     },
   },
-  hoverButton: {
-    textTransform: 'uppercase',
-    transition: 'opacity 0.3s',
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.background.paper,
-    '&:active': {
-      opacity: 0.7,
-      backgroundColor: theme.palette.primary.dark,
-    },
-    '&:hover': {
-      opacity: 0.7,
-      backgroundColor: theme.palette.primary.dark,
-    },
-  },
   row: {
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',

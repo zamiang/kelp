@@ -19,6 +19,7 @@ const useHeaderStyles = makeStyles((theme) => ({
     height: 35,
     paddingRight: 0,
     marginRight: 0,
+    marginBottom: -3,
   },
   drawerPaper: {
     border: '0px',

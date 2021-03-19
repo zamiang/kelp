@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
@@ -48,6 +49,7 @@ const PersonRow = (props: {
   const classes = useStyles();
   const isSelected = props.selectedPersonId === props.person.id;
   const rowStyles = useRowStyles();
+  const buttonStyles = useButtonStyles();
   const router = useHistory();
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -131,8 +133,8 @@ const PersonRow = (props: {
         {!props.isSmall && isDetailsVisible && props.person.emailAddresses[0] && (
           <Grid item style={{ marginLeft: 'auto' }}>
             <Button
-              className={rowStyles.hoverButton}
-              size="small"
+              className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
+              variant="outlined"
               onClick={(event) => {
                 event.stopPropagation();
                 void navigator.clipboard.writeText(props.person.emailAddresses[0]);

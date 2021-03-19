@@ -12,7 +12,7 @@ const scopes = [
 ];
 
 const NUMBER_OF_DAYS_BACK = 30;
-const NUMBER_OF_DAYS_FORWARD = 7;
+const NUMBER_OF_DAYS_FORWARD = 14;
 
 export default {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,

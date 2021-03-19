@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import HelpIcon from '../../public/icons/help.svg';
+import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IDocument } from '../store/models/document-model';
@@ -103,6 +104,7 @@ const DocumentRow = (props: {
 }) => {
   const isSelected = props.selectedDocumentId === props.doc.id;
   const router = useHistory();
+  const buttonStyles = useButtonStyles();
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -164,8 +166,8 @@ const DocumentRow = (props: {
           {!props.isSmall && isDetailsVisible && (
             <Grid item style={{ marginLeft: 'auto' }}>
               <Button
-                className={rowStyles.hoverButton}
-                size="small"
+                className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
+                variant="outlined"
                 onClick={(event) => {
                   event.stopPropagation();
                   void router.push(`/docs/${props.doc.id}`);

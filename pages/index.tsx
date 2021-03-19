@@ -163,8 +163,8 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   quote: {
-    textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
       fontSize: 24,
     },
   },
