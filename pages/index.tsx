@@ -206,7 +206,7 @@ const App = () => {
         </Container>
         <Container className={classes.buttonContainer}>
           <Grid container alignItems="center" spacing={4} justify="center">
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={true}>
               <Button
                 variant="contained"
                 size="large"
@@ -214,16 +214,18 @@ const App = () => {
                 className={classes.login}
                 onClick={() => (window.location.pathname = '/dashboard')}
                 disableElevation={true}
+                style={{ marginLeft: 'auto', display: 'block' }}
               >
                 Sign In with Google
               </Button>
             </Grid>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={true}>
               <Button
                 variant="outlined"
                 color="primary"
                 size="large"
                 className={classes.login}
+                style={{ marginRight: 'auto', display: 'block' }}
                 href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
                 disableElevation={true}
               >

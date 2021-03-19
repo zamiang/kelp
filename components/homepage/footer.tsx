@@ -59,6 +59,11 @@ const useStyles = makeStyles((theme) => ({
       padding: '0px',
     },
   },
+  hideOnMobile: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
 }));
 
 const Footer = () => {
@@ -71,7 +76,7 @@ const Footer = () => {
             <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
           </Link>
         </Grid>
-        <Grid item>
+        <Grid item xs>
           <Grid container alignItems="center" justify="center">
             <Grid item className={classes.footerItem}>
               <Link href="/about">
@@ -120,7 +125,7 @@ const Footer = () => {
             {'.'}
           </Typography>
         </Grid>
-        <Grid item xs={1}></Grid>
+        <Grid item xs={1} className={classes.hideOnMobile}></Grid>
       </Grid>
     </Container>
   );
