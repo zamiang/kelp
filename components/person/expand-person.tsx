@@ -22,6 +22,7 @@ import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import PersonNotes from './person-notes';
 
+const shouldShowPersonNotes = false;
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
 
@@ -127,7 +128,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <MeetingList segments={upcomingSegments} personStore={props.store.personDataStore} />
           </div>
         )}
-        {person.isInContacts && person.googleId && (
+        {shouldShowPersonNotes && person.isInContacts && person.googleId && (
           <div className={classes.section}>
             <Typography variant="h6">Notes</Typography>
             <PersonNotes
