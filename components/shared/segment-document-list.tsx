@@ -8,6 +8,7 @@ import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
 import useExpandStyles from './expand-styles';
+import { getPastTense } from './past-tense';
 
 const SegmentDocumentItem = (props: {
   store: IStore;
@@ -45,10 +46,9 @@ const SegmentDocumentItem = (props: {
 
   const name = person?.name || person?.emailAddresses;
   const personText = person ? ` by ${name}` : '';
-  const tooltipText = `${capitalize(props.segmentDocument.reason)}d${personText} on ${format(
-    new Date(props.segmentDocument.date),
-    "MMM do 'at' hh:mm a",
-  )}`;
+  const tooltipText = `${capitalize(
+    getPastTense(props.segmentDocument.reason),
+  )}${personText} on ${format(new Date(props.segmentDocument.date), "MMM do 'at' hh:mm a")}`;
 
   return (
     <DocumentRow
