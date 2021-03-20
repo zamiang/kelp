@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
@@ -17,6 +18,7 @@ import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
+import { DesktopDashboard } from '../../pages/dashboard/index';
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
@@ -27,12 +29,13 @@ const LoadingMobileDashboardContainer = (props: {
   scope: string;
 }) => {
   const store = getStore(props.database, props.accessToken, props.scope);
+  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
 
   return (
     <div>
       <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
         <ScrollToTop />
-        <MobileDashboard store={store} />
+        {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
       </Router>
     </div>
   );

@@ -20,9 +20,8 @@ import ExpandedMeeting from '../../components/meeting/expand-meeting';
 import MobileDashboard from '../../components/mobile/dashboard';
 import NavBar from '../../components/nav/nav-bar';
 import NavRight from '../../components/nav/nav-right';
-import MeetingPrepNotifications from '../../components/notifications/meeting-prep-notifications';
-import NotificationsPopup from '../../components/notifications/notifications-popup';
 import ExpandPerson from '../../components/person/expand-person';
+import ChromeExtensionPopup from '../../components/shared/chrome-extension-popup';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore, { IStore } from '../../components/store/use-store';
@@ -119,7 +118,7 @@ const LoadingStoreDashboardContainer = (props: {
   );
 };
 
-const DesktopDashboard = (props: { store: IStore }) => {
+export const DesktopDashboard = (props: { store: IStore }) => {
   const history = useHistory();
   const classes = useStyles();
   const store = props.store;
@@ -147,8 +146,7 @@ const DesktopDashboard = (props: { store: IStore }) => {
           <Typography>{store.error}</Typography>
         </Alert>
       </Dialog>
-      <NotificationsPopup />
-      <MeetingPrepNotifications {...store} />
+      <ChromeExtensionPopup />
       <main className={classes.content}>
         <Switch>
           <Grid container alignItems="flex-start">

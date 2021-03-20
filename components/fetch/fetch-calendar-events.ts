@@ -34,6 +34,10 @@ export interface ICalendarEvent {
     readonly id?: string;
     readonly self?: boolean;
   };
+  readonly reminders?: {
+    overrides?: gapi.client.calendar.EventReminder[] | undefined;
+    useDefault?: boolean | undefined;
+  };
   readonly organizer?: {
     readonly email?: string;
     readonly displayName?: string;
@@ -137,6 +141,7 @@ const fetchCalendarEvents = async (
         end: new Date(event.end!.dateTime!),
         hangoutLink: event.hangoutLink,
         location: event.location,
+        reminders: event.reminders,
         selfResponseStatus: getSelfResponseStatus(event.attendees || []),
         creator: event.creator,
         organizer: event.organizer,
