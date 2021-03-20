@@ -164,7 +164,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   quote: {
     [theme.breakpoints.down('sm')]: {
-      textAlign: 'center',
       fontSize: 24,
     },
   },
@@ -242,7 +241,7 @@ const App = () => {
         </div>
       </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h3" className={classes.quote}>
+        <Typography variant="h3" className={classes.quote} style={{ textAlign: 'center' }}>
           Kelp started out of a need for better way to prepare for meetings. It helps you quickly
           gather the information you need.
         </Typography>
