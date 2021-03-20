@@ -6,6 +6,7 @@ import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
+import { getTooltipText } from './tooltip-text';
 
 const SegmentDocumentItem = (props: {
   personStore: IStore['personDataStore'];
@@ -39,10 +40,7 @@ const SegmentDocumentItem = (props: {
     return null;
   }
 
-  const personText = person ? ` by ${person?.name || person?.emailAddresses}` : '';
-  const belowText = `${props.segmentDocument.reason}${personText}`;
-  //const tooltipText = `${capitalize(props.segmentDocument.reason)}${personText} on ${format(new Date(props.segmentDocument.date),"MMM do 'at' hh:mm a",)}`;
-
+  const belowText = getTooltipText(props.segmentDocument, person);
   return (
     <Meeting
       key={props.segmentDocument.id}

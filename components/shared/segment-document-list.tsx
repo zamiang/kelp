@@ -1,6 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import { format } from 'date-fns';
-import { capitalize, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import DocumentRow, { MissingDocumentRow } from '../documents/document-row';
 import { IDocument } from '../store/models/document-model';
@@ -8,7 +7,7 @@ import { IPerson } from '../store/models/person-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
 import useExpandStyles from './expand-styles';
-import { getPastTense } from './past-tense';
+import { getTooltipText } from './tooltip-text';
 
 const SegmentDocumentItem = (props: {
   store: IStore;
@@ -44,12 +43,7 @@ const SegmentDocumentItem = (props: {
     return <MissingDocumentRow segmentDocument={props.segmentDocument} isSmall={props.isSmall} />;
   }
 
-  const name = person?.name || person?.emailAddresses;
-  const personText = person ? ` by ${name}` : '';
-  const tooltipText = `${capitalize(
-    getPastTense(props.segmentDocument.reason),
-  )}${personText} on ${format(new Date(props.segmentDocument.date), "MMM do 'at' hh:mm a")}`;
-
+  const tooltipText = getTooltipText(props.segmentDocument, person);
   return (
     <DocumentRow
       key={props.segmentDocument.id}
