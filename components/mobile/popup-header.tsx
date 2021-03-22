@@ -4,7 +4,7 @@ import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
-import BackIcon from '../../public/icons/back.svg';
+import BackIcon from '../../public/icons/close.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
