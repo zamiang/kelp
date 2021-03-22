@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
   inputContainer: {},
   input: {
     width: 282,
+    fontSize: 16,
     [theme.breakpoints.down('sm')]: {
       width: 240,
     },

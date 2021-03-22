@@ -95,6 +95,7 @@ const theme = createMuiTheme({
       fontStyle: 'normal',
       fontFamily: bodyFontFamily,
       fontWeight: 400,
+      lineHeight: 1.35,
       color: 'rgba(0,0,0,0.87)',
     },
     h5: {

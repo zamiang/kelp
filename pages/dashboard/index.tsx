@@ -216,10 +216,6 @@ export const DashboardContainer = ({ store }: IProps) => {
     <div>
       <Head>
         <title>Dashboard - Kelp</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
-        />
       </Head>
       {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
     </div>
