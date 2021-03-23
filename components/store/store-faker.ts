@@ -1,6 +1,6 @@
 import { addDays, addMinutes, setDay, setHours } from 'date-fns';
 import Faker from 'faker';
-import { random, sample, sampleSize, times } from 'lodash';
+import { sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import { IDocument } from './models/document-model';
@@ -8,11 +8,11 @@ import { IPerson } from './models/person-model';
 import { ISegment, getStateForMeeting } from './models/segment-model';
 
 const PEOPLE_COUNT = 10;
-const DOCUMENT_COUNT = 50;
+const DOCUMENT_COUNT = 20;
 const CURRENT_USER_EMAIL = 'support@kelp.nyc';
 const NUMBER_OF_MEETINGS = 12;
-const NUMBER_OF_DRIVE_ACTIVITY = 200;
-const NUMBER_OF_ATTENDEES = 6;
+const NUMBER_OF_DRIVE_ACTIVITY_PER_MEETING = 5;
+const NUMBER_OF_ATTENDEES = 4;
 /**
  * create name/email pairs to be used across the fake data
  */
@@ -44,7 +44,7 @@ const currentUser = {
 people.push(currentUser);
 
 /**
- * create 10 documents
+ * create documents
  */
 const documents: IDocument[] = times(DOCUMENT_COUNT, () => ({
   id: Faker.random.uuid(),
@@ -60,16 +60,7 @@ const documents: IDocument[] = times(DOCUMENT_COUNT, () => ({
 }));
 
 const getRandomResponseStatus = () =>
-  sample<string>([
-    'accepted',
-    'accepted',
-    'accepted',
-    'accepted',
-    'accepted',
-    'needsAction',
-    'declined',
-    'tentative',
-  ]);
+  sample<string>(['accepted', 'accepted', 'accepted', 'accepted', 'accepted']);
 
 /**
  * thirty minute meetings back to back
@@ -85,22 +76,7 @@ const startDate = setDay(
   -(DAYS_IN_WEEK * WEEKS_TO_CREATE),
 );
 
-/**
- * create drive activity per document
- */
 const driveActivity: IFormattedDriveActivity[] = [];
-documents.map((document) => {
-  times(Math.round(Math.random() * NUMBER_OF_DRIVE_ACTIVITY), () => {
-    driveActivity.push({
-      id: Faker.random.uuid(),
-      time: Faker.date.past(7),
-      action: 'comment', // TODO
-      actorPersonId: people[random(0, PEOPLE_COUNT)].id,
-      title: Faker.lorem.lines(1),
-      link: document.id,
-    });
-  });
-});
 
 times(WEEKS_TO_CREATE, (week: number) => {
   let date = setDay(startDate, DAYS_IN_WEEK * (week + 1));
@@ -109,20 +85,41 @@ times(WEEKS_TO_CREATE, (week: number) => {
     times(Math.round(Math.random() * NUMBER_OF_MEETINGS), () => {
       date = addMinutes(date, 30);
       const endDate = addMinutes(date, 30);
-      const attendees = sampleSize(people, Math.round(Math.random() * NUMBER_OF_ATTENDEES))
-        .filter((person) => person.emailAddresses[0] !== CURRENT_USER_EMAIL)
-        .map((person) => ({
-          email: person.emailAddresses[0],
-          self: false,
-          // Adds accepted many times to weight it higher in the sample
-          responseStatus: getRandomResponseStatus(),
-        }));
+      const peopleForAttendees = sampleSize(
+        people,
+        Math.round(Math.random() * NUMBER_OF_ATTENDEES),
+      ).filter((person) => person.emailAddresses[0] !== CURRENT_USER_EMAIL);
+
+      const attendees = peopleForAttendees.map((person) => ({
+        email: person.emailAddresses[0],
+        self: false,
+        // Adds accepted many times to weight it higher in the sample
+        responseStatus: getRandomResponseStatus(),
+      }));
 
       attendees.push({
         email: CURRENT_USER_EMAIL,
         self: true,
         // Adds accepted many times to weight it higher in the sample
         responseStatus: getRandomResponseStatus(),
+      });
+
+      /**
+       * create drive activity per document
+       */
+      const document = sample(documents);
+      times(Math.round(Math.random() * NUMBER_OF_DRIVE_ACTIVITY_PER_MEETING), () => {
+        const actor = sample(peopleForAttendees);
+        if (actor) {
+          driveActivity.push({
+            id: Faker.random.uuid(),
+            time: addMinutes(date, 1),
+            action: 'comment', // TODO
+            actorPersonId: actor.id,
+            title: Faker.lorem.lines(1),
+            link: document!.id,
+          });
+        }
       });
 
       segments.push({
