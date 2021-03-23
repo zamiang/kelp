@@ -110,6 +110,7 @@ const DayContainer = (props: {
           id={meeting.id}
           className={clsx(
             rowStyles.row,
+            rowStyles.rowExtraPadding,
             meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
             meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
             meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,

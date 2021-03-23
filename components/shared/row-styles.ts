@@ -46,10 +46,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     textAlign: 'left',
     opacity: 1,
-    paddingTop: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
+    padding: theme.spacing(2),
     width: '100%',
     borderBottom: `1px solid ${theme.palette.divider}`,
     '&:last-child': {
@@ -65,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
       borderColor: theme.palette.primary.main,
     },
+  },
+  rowExtraPadding: {
+    paddingRight: theme.spacing(3),
+    paddingLeft: theme.spacing(3),
   },
   rowSmall: {
     width: '100%',
