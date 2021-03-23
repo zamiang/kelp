@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
-import { format, getDayOfYear } from 'date-fns';
-import { sortBy } from 'lodash';
+import { format, getDayOfYear, subDays } from 'date-fns';
+import { sortBy, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import DocumentRow from '../documents/document-row';
@@ -12,6 +12,7 @@ import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
 interface IFeaturedDocument {
+  documentId: string;
   document: IDocument;
   meetings: ISegment[];
   nextMeetingStartAt?: Date;
@@ -24,11 +25,31 @@ interface IFeaturedDocument {
  * It sorts in decending order so upcoming meetings are next
  */
 const maxResult = 5;
+const daysToLookBack = 7;
 const getFeaturedDocuments = async (props: IStore) => {
   const currentDate = new Date();
   const week = getWeek(currentDate);
   const result = await props.segmentDocumentStore.getAllForWeek(week);
   const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
+
+  // For documents edited by the current users that may not be associated with a meeting
+  const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
+  const filterTime = subDays(currentDate, daysToLookBack);
+  const currentUserDocuments = await Promise.all(
+    uniqBy(
+      driveActivity.filter((item) => item.time > filterTime),
+      'documentId',
+    ).map(async (item) => {
+      const document = await props.documentDataStore.getById(item.documentId!);
+      return {
+        documentId: document!.id,
+        document: document!,
+        meetings: [] as any,
+        nextMeetingStartsAt: undefined,
+        text: `You edited this document on ${format(item.time, 'EEEE, MMMM d')}`,
+      } as IFeaturedDocument;
+    }),
+  );
 
   // Hash of personId to meeting array
   const meetingsForDocument: { [id: string]: ISegment[] } = {};
@@ -58,15 +79,19 @@ const getFeaturedDocuments = async (props: IStore) => {
           ? `${meetings[0].summary} on ${format(nextMeetingStartAt, 'EEEE, MMMM d')}`
           : undefined;
       return {
+        documentId: document.id,
         document,
         meetings,
         nextMeetingStartAt,
         text,
-      };
+      } as IFeaturedDocument;
     })
     .filter((m) => m.nextMeetingStartAt);
 
-  return sortBy(d, 'nextMeetingStartAt').slice(0, maxResult);
+  return uniqBy(sortBy(d, 'nextMeetingStartAt').concat(currentUserDocuments), 'documentId').slice(
+    0,
+    maxResult,
+  );
 };
 
 const AllDocuments = (props: {

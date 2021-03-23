@@ -19,6 +19,7 @@ interface Db extends DBSchema {
     key: string;
     indexes: {
       'by-document-id': string;
+      'is-self': string;
     };
   };
   person: {
@@ -71,7 +72,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 1;
+const databaseVerson = 2;
 
 export type dbType = IDBPDatabase<Db>;
 
@@ -97,7 +98,16 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
   }
 
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
-    upgrade(db) {
+    upgrade(db, oldVersion) {
+      if (oldVersion < 2) {
+        db.deleteObjectStore('person');
+        db.deleteObjectStore('document');
+        db.deleteObjectStore('driveActivity');
+        db.deleteObjectStore('meeting');
+        db.deleteObjectStore('attendee');
+        db.deleteObjectStore('tfidf');
+        db.deleteObjectStore('segmentDocument');
+      }
       const personStore = db.createObjectStore('person', {
         keyPath: 'id',
       });
@@ -113,6 +123,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         keyPath: 'id',
       });
       driveActivity.createIndex('by-document-id', 'documentId', { unique: false });
+      driveActivity.createIndex('is-self', 'isCurrentUser', { unique: false });
 
       const meetingStore = db.createObjectStore('meeting', {
         keyPath: 'id',

@@ -83,13 +83,16 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   // Save drive activity
   useEffect(() => {
     const addData = async () => {
-      if (!data.driveActivityLoading) {
+      if (!data.driveActivityLoading && data.currentUser?.id) {
         setLoadingMessage('Saving Drive Activity');
-        await driveActivityDataStore.addDriveActivityToStore(data.driveActivity);
+        await driveActivityDataStore.addDriveActivityToStore(
+          data.driveActivity,
+          data.currentUser.id,
+        );
       }
     };
     void addData();
-  }, [data.driveActivity.length.toString()]);
+  }, [data.driveActivity.length.toString(), data.currentUser?.id]);
 
   // Save documents
   const documentsToAdd = docs.concat(missingDocs);

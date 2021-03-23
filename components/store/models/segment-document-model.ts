@@ -122,7 +122,7 @@ export default class SegmentDocumentModel {
     const flatDescriptions = flatten(flatten(descriptionsToAdd)) as any;
 
     const tx = this.db.transaction('segmentDocument', 'readwrite');
-    // console.log(driveActivityToAdd, 'about to save segment documents');
+
     const results = await Promise.allSettled(
       driveActivityToAdd.concat(flatDescriptions).map((item) => item?.id && tx.store.put(item)),
     );

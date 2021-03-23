@@ -1,11 +1,13 @@
+import { orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { dbType } from '../db';
 import { getGoogleDocsIdFromLink } from './document-model';
 
-const formatDriveActivity = (driveActivity: IFormattedDriveActivity) => {
+const formatDriveActivity = (driveActivity: IFormattedDriveActivity, currentUserId: string) => {
   const documentId = getGoogleDocsIdFromLink(driveActivity.link);
-  return { ...driveActivity, documentId };
+  const isCurrentUser: number = driveActivity.actorPersonId === currentUserId ? 1 : 0;
+  return { ...driveActivity, documentId, isCurrentUser };
 };
 
 export default class DriveActivityModel {
@@ -15,9 +17,9 @@ export default class DriveActivityModel {
     this.db = db;
   }
 
-  async addDriveActivityToStore(driveActivity: IFormattedDriveActivity[]) {
+  async addDriveActivityToStore(driveActivity: IFormattedDriveActivity[], currentUserId: string) {
     const formattedActivity = driveActivity.map((driveActivityItem) => {
-      const formattedItem = formatDriveActivity(driveActivityItem);
+      const formattedItem = formatDriveActivity(driveActivityItem, currentUserId);
       if (formattedItem.id) {
         return formattedItem;
       }
@@ -39,6 +41,11 @@ export default class DriveActivityModel {
 
   async getDriveActivityForDocument(documentId: string) {
     return this.db.getAllFromIndex('driveActivity', 'by-document-id', documentId);
+  }
+
+  async getCurrentUserDriveActivity() {
+    const activity = await this.db.getAllFromIndex('driveActivity', 'is-self', 1 as any);
+    return orderBy(activity, 'date', 'desc');
   }
 
   async getById(id: string): Promise<IFormattedDriveActivity | undefined> {
