@@ -4,7 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import HelpIcon from '../../public/icons/help.svg';
@@ -157,7 +157,7 @@ const DocumentRow = (props: {
                   <Typography variant="body2" noWrap>
                     {props.text
                       ? props.text
-                      : format(new Date(props.doc.updatedAt!), "MMM do, yyyy 'at' hh:mm a")}
+                      : `Last updated ${formatDistanceToNow(new Date(props.doc.updatedAt!))}ago`}
                   </Typography>
                 </Grid>
               )}

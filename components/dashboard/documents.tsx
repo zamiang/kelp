@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import { format, getDayOfYear, subDays } from 'date-fns';
+import { format, formatDistanceToNow, getDayOfYear, subDays } from 'date-fns';
 import { sortBy, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -46,7 +46,7 @@ const getFeaturedDocuments = async (props: IStore) => {
         document: document!,
         meetings: [] as any,
         nextMeetingStartsAt: undefined,
-        text: `You edited this document on ${format(item.time, 'EEEE, MMMM d')}`,
+        text: `You edited this document ${formatDistanceToNow(item.time)} ago`,
       } as IFeaturedDocument;
     }),
   );
@@ -76,7 +76,7 @@ const getFeaturedDocuments = async (props: IStore) => {
       const nextMeetingStartAt = meetings[0] ? meetings[0].start : undefined;
       const text =
         meetings[0] && nextMeetingStartAt
-          ? `${meetings[0].summary} on ${format(nextMeetingStartAt, 'EEEE, MMMM d')}`
+          ? `${meetings[0].summary} ${formatDistanceToNow(nextMeetingStartAt)} ago`
           : undefined;
       return {
         documentId: document.id,
