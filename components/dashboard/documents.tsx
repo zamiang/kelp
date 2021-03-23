@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import { format, formatDistanceToNow, getDayOfYear, subDays } from 'date-fns';
+import { formatDistanceToNow, getDayOfYear, subDays } from 'date-fns';
 import { sortBy, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
