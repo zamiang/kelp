@@ -30,8 +30,9 @@ export const getPastTense = (verb: string) => {
   if (/[aeio][aeiou][dlmnprst]$/.test(verb)) {
     return verb + 'ed';
   }
-  if (/[aeiou][bdglmnprst]$/i.test(verb)) {
-    return verb.replace(/(.+[aeiou])([bdglmnprst])/, '$1$2$2ed');
-  }
+  // Messes up edited -> editted
+  //if (/[aeiou][bdglmnprst]$/i.test(verb)) {
+  //    return verb.replace(/(.+[aeiou])([bdglmnprst])/, '$1$2$2ed');
+  //}
   return verb + 'ed';
 };

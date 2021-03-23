@@ -1,5 +1,5 @@
 import { getDayOfYear } from 'date-fns';
-import { flatten } from 'lodash';
+import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
@@ -137,34 +137,49 @@ export default class SegmentDocumentModel {
   }
 
   async getAllForWeek(week: number) {
-    return this.db.getAllFromIndex('segmentDocument', 'by-week', week);
+    const activity = this.db.getAllFromIndex('segmentDocument', 'by-week', week);
+    return orderBy(activity, 'date', 'desc');
   }
 
   async getAllForDay(day: number) {
-    return this.db.getAllFromIndex('segmentDocument', 'by-day', day);
+    const activity = this.db.getAllFromIndex('segmentDocument', 'by-day', day);
+    return orderBy(activity, 'date', 'desc');
   }
 
   async getAllForSegmentId(segmentId: string) {
-    return this.db.getAllFromIndex('segmentDocument', 'by-segment-id', segmentId);
+    const activity = await this.db.getAllFromIndex('segmentDocument', 'by-segment-id', segmentId);
+    return orderBy(activity, 'date', 'desc');
   }
 
   async getAllForMeetingName(title: string) {
     const formattedTitle = formatSegmentTitle(title);
     if (formattedTitle) {
-      return this.db.getAllFromIndex('segmentDocument', 'by-segment-title', formattedTitle);
+      const activity = this.db.getAllFromIndex(
+        'segmentDocument',
+        'by-segment-title',
+        formattedTitle,
+      );
+      return orderBy(activity, 'date', 'desc');
     }
   }
 
   async getAllForDocumentId(documentId: string) {
-    return this.db.getAllFromIndex('segmentDocument', 'by-document-id', documentId);
+    const activity = await this.db.getAllFromIndex('segmentDocument', 'by-document-id', documentId);
+    return orderBy(activity, 'date', 'desc');
   }
 
   async getAllForPersonId(personId: string) {
-    return this.db.getAllFromIndex('segmentDocument', 'by-person-id', personId);
+    const activity = await this.db.getAllFromIndex('segmentDocument', 'by-person-id', personId);
+    return orderBy(activity, 'date', 'desc');
   }
 
   async getAllForDriveActivity(activityId: string) {
-    return this.db.getAllFromIndex('segmentDocument', 'by-drive-activity-id', activityId);
+    const activity = await this.db.getAllFromIndex(
+      'segmentDocument',
+      'by-drive-activity-id',
+      activityId,
+    );
+    return orderBy(activity, 'date', 'desc');
   }
 
   async getById(id: string): Promise<ISegmentDocument | undefined> {
@@ -175,6 +190,7 @@ export default class SegmentDocumentModel {
   }
 
   async getAll() {
-    return this.db.getAll('segmentDocument');
+    const activity = this.db.getAll('segmentDocument');
+    return orderBy(activity, 'date', 'desc');
   }
 }
