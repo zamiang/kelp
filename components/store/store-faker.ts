@@ -11,7 +11,7 @@ const PEOPLE_COUNT = 10;
 const DOCUMENT_COUNT = 50;
 const CURRENT_USER_EMAIL = 'support@kelp.nyc';
 const NUMBER_OF_MEETINGS = 12;
-const NUMBER_OF_DRIVE_ACTIVITY = 20;
+const NUMBER_OF_DRIVE_ACTIVITY = 200;
 const NUMBER_OF_ATTENDEES = 6;
 /**
  * create name/email pairs to be used across the fake data
@@ -93,7 +93,7 @@ documents.map((document) => {
   times(Math.round(Math.random() * NUMBER_OF_DRIVE_ACTIVITY), () => {
     driveActivity.push({
       id: Faker.random.uuid(),
-      time: Faker.date.recent(DAYS_IN_WEEK * WEEKS_TO_CREATE),
+      time: Faker.date.past(7),
       action: 'comment', // TODO
       actorPersonId: people[random(0, PEOPLE_COUNT)].id,
       title: Faker.lorem.lines(1),

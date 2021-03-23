@@ -3,7 +3,6 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Loading from '../../components/shared/loading';
-import { ScrollToTop } from '../../components/shared/scroll-to-top';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-fake-store';
 import { DashboardContainer } from '../dashboard/index';
@@ -15,7 +14,6 @@ const LoadingStoreDashboardContainer = (props: { database: any }) => {
   return (
     <div suppressHydrationWarning={true}>
       <Router basename="/test-dashboard">
-        <ScrollToTop />
         <DashboardContainer store={store} />
       </Router>
     </div>
