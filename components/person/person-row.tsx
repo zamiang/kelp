@@ -69,8 +69,8 @@ const PersonRow = (props: {
         router.push(`/people/${encodeURIComponent(props.person.id)}`);
         return false;
       }}
-      onMouseEnter={() => setDetailsVisible(true)}
-      onMouseLeave={() => setDetailsVisible(false)}
+      onMouseEnter={() => !isTouchEnabled() && setDetailsVisible(true)}
+      onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       ref={setReferenceElement as any}
       className={clsx(
         !props.isSmall && rowStyles.row,

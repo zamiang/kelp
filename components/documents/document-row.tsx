@@ -118,8 +118,8 @@ const DocumentRow = (props: {
 
   return (
     <div
-      onMouseEnter={() => setDetailsVisible(true)}
-      onMouseLeave={() => setDetailsVisible(false)}
+      onMouseEnter={() => !isTouchEnabled() && setDetailsVisible(true)}
+      onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       onClick={(event) => {
         event.stopPropagation();
         if (props.doc.link) {
