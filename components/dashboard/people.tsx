@@ -4,7 +4,6 @@ import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
-import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/models/person-model';
@@ -26,8 +25,7 @@ interface IFeaturedPerson {
 const maxResult = 5;
 const getFeaturedPeople = async (props: IStore) => {
   const currentDate = new Date();
-  const week = getWeek(currentDate);
-  const result = await props.attendeeDataStore.getForWeek(week);
+  const result = await props.attendeeDataStore.getForNextDays(currentDate);
   const peopleForAttendees = await props.personDataStore.getBulk(result.map((r) => r.personId!));
 
   // Hash of personId to meeting array

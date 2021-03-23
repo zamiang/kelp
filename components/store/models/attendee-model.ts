@@ -90,6 +90,14 @@ export default class AttendeeModel {
     return this.db.getAllFromIndex('attendee', 'by-week', week);
   }
 
+  async getForNextDays(date: Date) {
+    const day = getDayOfYear(date);
+    return (await this.getForDay(day))
+      .concat(await this.getForDay(day + 1))
+      .concat(await this.getForDay(day + 2))
+      .concat(await this.getForDay(day + 3));
+  }
+
   async getForDay(day: number) {
     return this.db.getAllFromIndex('attendee', 'by-day', day);
   }
