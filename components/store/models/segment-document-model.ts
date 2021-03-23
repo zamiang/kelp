@@ -137,12 +137,12 @@ export default class SegmentDocumentModel {
   }
 
   async getAllForWeek(week: number) {
-    const activity = this.db.getAllFromIndex('segmentDocument', 'by-week', week);
+    const activity = await this.db.getAllFromIndex('segmentDocument', 'by-week', week);
     return orderBy(activity, 'date', 'desc');
   }
 
   async getAllForDay(day: number) {
-    const activity = this.db.getAllFromIndex('segmentDocument', 'by-day', day);
+    const activity = await this.db.getAllFromIndex('segmentDocument', 'by-day', day);
     return orderBy(activity, 'date', 'desc');
   }
 
@@ -154,7 +154,7 @@ export default class SegmentDocumentModel {
   async getAllForMeetingName(title: string) {
     const formattedTitle = formatSegmentTitle(title);
     if (formattedTitle) {
-      const activity = this.db.getAllFromIndex(
+      const activity = await this.db.getAllFromIndex(
         'segmentDocument',
         'by-segment-title',
         formattedTitle,
@@ -190,7 +190,7 @@ export default class SegmentDocumentModel {
   }
 
   async getAll() {
-    const activity = this.db.getAll('segmentDocument');
+    const activity = await this.db.getAll('segmentDocument');
     return orderBy(activity, 'date', 'desc');
   }
 }
