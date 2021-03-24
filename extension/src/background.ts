@@ -1,9 +1,10 @@
 import db from '../../components/store/db';
-import { IStore, setupStoreNoFetch } from '../../components/store/use-store';
+import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
 
 let store: IStore;
-const alarmName = 'autostart';
+const notificationAlarmName = 'notification';
+const refreshAlarmName = 'refresh';
 
 const getOrCreateStore = async () => {
   if (store) {
@@ -11,6 +12,12 @@ const getOrCreateStore = async () => {
   }
   const d = await db('production');
   store = setupStoreNoFetch(d);
+  return store;
+};
+
+const fetchDataAndCreateStore = async () => {
+  const d = await db('production');
+  store = setupStore(d, 'oauth-token', 'scope');
   return store;
 };
 
@@ -50,38 +57,38 @@ const queryAndSendNotification = async () => {
 
 chrome.notifications.onClicked.addListener(() => chrome.tabs.create({ url: `/dashboard.html` }));
 
+const alarmListener = (alarm: chrome.alarms.Alarm) => void onAlarm(alarm);
+
 const setupTimers = async () => {
-  chrome.alarms.onAlarm.addListener((alarm) => void onAlarm(alarm));
+  chrome.alarms.onAlarm.removeListener(alarmListener);
+  chrome.alarms.onAlarm.addListener(alarmListener);
   return setAlarm();
 };
 
 const setAlarm = () => {
   chrome.alarms.clearAll();
-  return chrome.alarms.create(alarmName, { periodInMinutes: 1 });
+  chrome.alarms.create(notificationAlarmName, { periodInMinutes: 1 });
+  chrome.alarms.create(refreshAlarmName, { periodInMinutes: 60 });
 };
 
 const onAlarm = (alarm: chrome.alarms.Alarm) => {
-  if (alarm.name !== alarmName) {
-    return;
+  if (alarm.name === notificationAlarmName) {
+    return queryAndSendNotification();
+  } else if (alarm.name === refreshAlarmName) {
+    return fetchDataAndCreateStore();
   }
-
-  return queryAndSendNotification();
 };
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.tabs.create({ url: 'https://www.kelp.nyc/about' });
   void setupTimers();
   void getOrCreateStore();
-  console.log('suspend canceled');
 });
 
 chrome.runtime.onSuspendCanceled.addListener(() => {
-  console.log('suspend canceled');
   void setupTimers();
   void getOrCreateStore();
 });
-
-void setupTimers();
 
 /*
 const suggestResults = async (
