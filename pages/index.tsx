@@ -1,6 +1,6 @@
-import { Divider } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
@@ -29,6 +29,11 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 32,
     },
+  },
+  footerContainer: {
+    marginTop: theme.spacing(6),
+    marginBottom: theme.spacing(10),
+    textAlign: 'center',
   },
   subheading: {
     marginTop: 48,
@@ -204,34 +209,16 @@ const App = () => {
           </Typography>
         </Container>
         <Container className={classes.buttonContainer}>
-          <Grid container alignItems="center" spacing={4} justify="center">
-            <Grid item xs={12} sm={true}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.login}
-                onClick={() => (window.location.pathname = '/dashboard')}
-                disableElevation={true}
-                style={{ marginLeft: 'auto', display: 'block' }}
-              >
-                Sign In with Google
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={true}>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                className={classes.login}
-                style={{ marginRight: 'auto', display: 'block' }}
-                href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
-                disableElevation={true}
-              >
-                Add to Chrome
-              </Button>
-            </Grid>
-          </Grid>
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            className={classes.login}
+            onClick={() => (window.location.pathname = '/install')}
+            disableElevation={true}
+          >
+            Install Kelp
+          </Button>
         </Container>
       </div>
       <Container maxWidth="lg">
@@ -313,32 +300,16 @@ const App = () => {
               Ready to get started?
             </Typography>
             <div className={classes.buttonContainer}>
-              <Grid container spacing={3} alignItems="center" justify="center">
-                <Grid item xs={12}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    color="primary"
-                    className={classes.login}
-                    onClick={() => (window.location.pathname = '/dashboard')}
-                    disableElevation={true}
-                  >
-                    Sign In with Google
-                  </Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size="large"
-                    className={classes.login}
-                    href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
-                    disableElevation={true}
-                  >
-                    Add to Chrome
-                  </Button>
-                </Grid>
-              </Grid>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                className={classes.login}
+                onClick={() => (window.location.pathname = '/install')}
+                disableElevation={true}
+              >
+                Install Kelp
+              </Button>
             </div>
           </Grid>
           <Grid sm={12} md={6} item>

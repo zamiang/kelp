@@ -18,6 +18,9 @@ export default async (_req: Request, res: Response) => {
   smStream.write({
     url: '/terms',
   });
+  smStream.write({
+    url: '/install',
+  });
 
   // tell sitemap that there is nothing more to add to the sitemap
   smStream.end();
