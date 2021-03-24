@@ -159,7 +159,7 @@ const scrollCurrentTimeIntoView = () => {
   document.getElementById('current-time')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
-const DAYS_BACK = 1;
+const DAYS_BACK = 0;
 
 const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => void }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
