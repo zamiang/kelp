@@ -21,7 +21,6 @@ import MobileDashboard from '../components/mobile/dashboard';
 import NavBar from '../components/nav/nav-bar';
 import NavRight from '../components/nav/nav-right';
 import ExpandPerson from '../components/person/expand-person';
-import ChromeExtensionPopup from '../components/shared/chrome-extension-popup';
 import Loading from '../components/shared/loading';
 import db from '../components/store/db';
 import getStore, { IStore } from '../components/store/use-store';

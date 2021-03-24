@@ -15,11 +15,11 @@ const getOrCreateStore = async () => {
 };
 
 const queryAndSendNotification = async () => {
-  if (!localStorage.getItem(config.kelpNotificationsKey)) {
-    localStorage.setItem(config.kelpNotificationsKey, 'true');
+  if (!localStorage.getItem(config.NOTIFICATIONS_KEY)) {
+    localStorage.setItem(config.NOTIFICATIONS_KEY, 'true');
   }
 
-  const isEnabled = localStorage.getItem(config.kelpNotificationsKey) === 'true';
+  const isEnabled = localStorage.getItem(config.NOTIFICATIONS_KEY) === 'true';
   if (!isEnabled) {
     return;
   }
@@ -28,9 +28,10 @@ const queryAndSendNotification = async () => {
     await getOrCreateStore();
   }
 
+  const lastSentNotificationId = localStorage.getItem(config.LAST_NOTIFICATION_KEY);
   const upNext = await store.timeDataStore.getUpNextSegment();
 
-  if (upNext) {
+  if (upNext && upNext.id !== lastSentNotificationId) {
     chrome.notifications.create(upNext.id, {
       title: `${upNext.summary || 'Meeting notification'}`,
       message: 'Click to see documents for this meeting and suggestions',
@@ -39,6 +40,7 @@ const queryAndSendNotification = async () => {
       requireInteraction: false,
       eventTime: upNext.start.valueOf(),
     });
+    localStorage.setItem(config.LAST_NOTIFICATION_KEY, upNext.id);
   } else {
     chrome.notifications.getAll((items) => {
       if (items) for (const key in items) chrome.notifications.clear(key);
@@ -69,10 +71,14 @@ const onAlarm = (alarm: chrome.alarms.Alarm) => {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.tabs.create({ url: 'https://www.kelp.nyc/about' });
   void setupTimers();
+  void getOrCreateStore();
+  console.log('suspend canceled');
 });
 
 chrome.runtime.onSuspendCanceled.addListener(() => {
+  console.log('suspend canceled');
   void setupTimers();
+  void getOrCreateStore();
 });
 
 void setupTimers();

@@ -31,17 +31,17 @@ const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
   const [isNotificationsDisabled, setNotificationsDisabled] = useState<boolean>(
-    localStorage.getItem(config.kelpNotificationsKey) === 'true' ? true : false,
+    localStorage.getItem(config.NOTIFICATIONS_KEY) === 'true' ? true : false,
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
 
   const toggleChecked = (enabled: boolean) => {
     if (enabled) {
       setNotificationsDisabled(true);
-      localStorage.setItem(config.kelpNotificationsKey, 'true');
+      localStorage.setItem(config.NOTIFICATIONS_KEY, 'true');
     } else {
       setNotificationsDisabled(false);
-      localStorage.setItem(config.kelpNotificationsKey, 'false');
+      localStorage.setItem(config.NOTIFICATIONS_KEY, 'false');
     }
     if ('Notification' in window) {
       return Notification.requestPermission();
