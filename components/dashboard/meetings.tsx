@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format, getDate, getMonth, subDays } from 'date-fns';
+import { format, getDate, getMonth, setHours, setMinutes, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -169,7 +169,7 @@ const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => vo
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.store.timeDataStore.getSegmentsByDay(
-        subDays(new Date(), DAYS_BACK),
+        subDays(setMinutes(setHours(new Date(), 0), 0), DAYS_BACK),
       );
       setMeetingsByDay(result);
     };
