@@ -26,8 +26,7 @@ const InstallUiBlocks = () => {
             <div className={classes.dot}></div>Read Contacts
           </Typography>
           <Typography>
-            This allows your Kelp application to unify activity from meeting invites and document
-            invites by your contact&rsquo;s email address.
+            This allows your Kelp application to associate document activity with meetings.
           </Typography>
         </Grid>
         <Grid
@@ -46,9 +45,8 @@ const InstallUiBlocks = () => {
             <div className={classes.dot}></div>Read Document Metadata
           </Typography>
           <Typography>
-            This allows Kelp to know the title of your documents and easily link you to that
-            document. Kelp cannot access the content of documents in you or your companies drive
-            folder.
+            This allows Kelp to know the title of your documents and easily link you to documents.
+            Kelp cannot access the content of documents in you or your companies drive folder.
           </Typography>
         </Grid>
         <Grid
