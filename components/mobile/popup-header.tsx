@@ -4,7 +4,7 @@ import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
-import BackIcon from '../../public/icons/close.svg';
+import BackIcon from '../../public/icons/back.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
@@ -32,12 +32,12 @@ const useHeaderStyles = makeStyles((theme) => ({
     zIndex: 6,
     justifyContent: 'space-between',
   },
-  transparentHeader: {
+  whiteHeader: {
     border: '0px',
     position: 'sticky',
     top: 0,
     left: 0,
-    background: 'transparent',
+    background: 'white',
     padding: theme.spacing(1),
     zIndex: 6,
     justifyContent: 'space-between',
@@ -103,7 +103,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
     const type = location.pathname.split('/')[1];
     const id = decodeURIComponent(location.pathname.split('/')[2]);
     return (
-      <header className={classes.transparentHeader}>
+      <header className={classes.whiteHeader}>
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <IconButton
