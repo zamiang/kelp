@@ -10,7 +10,11 @@ const InstallUiBlocks = () => {
   return (
     <Container maxWidth="md">
       <div className={classes.textSection}>
-        <Typography variant="h4">Your Kelp application fetches this data</Typography>
+        <br />
+        <br />
+        <Typography variant="h4" style={{ fontSize: 24 }}>
+          Your Kelp application uses these data sources
+        </Typography>
       </div>
       <Grid
         container
@@ -32,7 +36,6 @@ const InstallUiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
           justify="center"
-          style={{ textAlign: 'center' }}
         >
           <img src="google-permissions/contacts.png" style={{ maxWidth: '100%' }} />
         </Grid>
@@ -119,7 +122,6 @@ const InstallUiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
           justify="center"
-          style={{ textAlign: 'center' }}
         >
           <img src="google-permissions/activity.png" style={{ maxWidth: '100%' }} />
         </Grid>
