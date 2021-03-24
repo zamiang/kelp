@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-fake-store';
-import { DashboardContainer } from '../dashboard/index';
+import { DashboardContainer } from '../dashboard';
 
 export const drawerWidth = 240;
 
