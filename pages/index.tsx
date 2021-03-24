@@ -30,6 +30,11 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: 32,
     },
   },
+  footerContainer: {
+    marginTop: theme.spacing(6),
+    marginBottom: theme.spacing(10),
+    textAlign: 'center',
+  },
   subheading: {
     marginTop: 48,
     fontSize: 32,
@@ -211,7 +216,6 @@ const App = () => {
             className={classes.login}
             onClick={() => (window.location.pathname = '/install')}
             disableElevation={true}
-            style={{ marginLeft: 'auto', display: 'block' }}
           >
             Install Kelp
           </Button>

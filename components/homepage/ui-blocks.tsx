@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   container: {},
   sectionImageLeft: {
     paddingBottom: theme.spacing(4),
@@ -22,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontSize: 24,
     marginBottom: theme.spacing(3),
+  },
+  textSection: {
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(4),
+    textAlign: 'center',
   },
   dot: {
     height: 12,

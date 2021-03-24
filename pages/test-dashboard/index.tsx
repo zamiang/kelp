@@ -35,6 +35,10 @@ const TestDashboard = () => {
       <Head>
         <title>Test Dashboard - Kelp</title>
       </Head>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+      />
       <Loading isOpen={!database} message="Loading" />
       {(process as any).browser && database && (
         <LoadingStoreDashboardContainer database={database} />

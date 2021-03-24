@@ -1,0 +1,131 @@
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
+import React from 'react';
+import { useStyles } from './ui-blocks';
+
+const InstallUiBlocks = () => {
+  const classes = useStyles();
+  return (
+    <Container maxWidth="md">
+      <div className={classes.textSection}>
+        <Typography variant="h4">Your Kelp application fetches this data</Typography>
+      </div>
+      <Grid
+        container
+        className={clsx(classes.section, classes.sectionMobileReverse)}
+        alignItems="center"
+      >
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Typography variant="h4" className={classes.heading}>
+            <div className={classes.dot}></div>Read Contacts
+          </Typography>
+          <Typography>
+            This allows your Kelp application to unify activity from meeting invites and document
+            invites by your contact&rsquo;s email address.
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          md={6}
+          sm={12}
+          className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
+          justify="center"
+          style={{ textAlign: 'center' }}
+        >
+          <img src="google-permissions/contacts.png" style={{ maxWidth: '100%' }} />
+        </Grid>
+      </Grid>
+      <Grid container className={clsx(classes.section)} alignItems="center">
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Typography variant="h4" className={classes.heading}>
+            <div className={classes.dot}></div>Read Document Metadata
+          </Typography>
+          <Typography>
+            This allows Kelp to know the title of your documents and easily link you to that
+            document. Kelp cannot access the content of documents in you or your companies drive
+            folder.
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          md={6}
+          sm={12}
+          className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
+        >
+          <img src="google-permissions/drive.png" style={{ maxWidth: '100%' }} />
+        </Grid>
+      </Grid>
+      <Grid container className={clsx(classes.section)} alignItems="center">
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Typography variant="h4" className={classes.heading}>
+            <div className={classes.dot}></div>Create Smart Meeting Notes
+          </Typography>
+          <Typography>
+            Kelp can create smart notes for your upcoming meetings that automatically include
+            relevant documents and attendees.
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          md={6}
+          sm={12}
+          className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
+        >
+          <img src="google-permissions/drive-kelp.png" style={{ maxWidth: '100%' }} />
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        className={clsx(classes.section, classes.sectionMobileReverse)}
+        alignItems="center"
+      >
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Typography variant="h4" className={classes.heading}>
+            <div className={classes.dot}></div>Read Calendar Events
+          </Typography>
+          <Typography>
+            This allows your Kelp application to see your upcoming meetings and then match them with
+            documents, document events and attendees.
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          md={6}
+          sm={12}
+          className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
+        >
+          <img src="google-permissions/calendar.png" style={{ maxWidth: '100%' }} />
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        className={clsx(classes.section, classes.sectionMobileReverse)}
+        alignItems="center"
+      >
+        <Grid item md={6} sm={12} className={classes.sectionText}>
+          <Typography variant="h4" className={classes.heading}>
+            <div className={classes.dot}></div>Read Document Events
+          </Typography>
+          <Typography>
+            This allows Kelp minimal access to event metadata like if someone edits or comments on a
+            document.
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          md={6}
+          sm={12}
+          className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
+          justify="center"
+          style={{ textAlign: 'center' }}
+        >
+          <img src="google-permissions/activity.png" style={{ maxWidth: '100%' }} />
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
+
+export default InstallUiBlocks;
