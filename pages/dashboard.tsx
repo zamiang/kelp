@@ -146,7 +146,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           <Typography>{store.error}</Typography>
         </Alert>
       </Dialog>
-      <ChromeExtensionPopup />
       <main className={classes.content}>
         <Switch>
           <Grid container alignItems="flex-start">
