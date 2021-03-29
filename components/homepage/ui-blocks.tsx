@@ -155,7 +155,6 @@ const UiBlocks = () => {
           md={6}
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-          justify="center"
           style={{ textAlign: 'center' }}
         >
           <img

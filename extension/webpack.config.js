@@ -93,6 +93,10 @@ const getConfig = () => ({
     ],
   },
   resolve: {
+    fallback: {
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+    },
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
       'react-dom': '@hot-loader/react-dom',

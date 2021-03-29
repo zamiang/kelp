@@ -6,6 +6,9 @@ const withReactSvg = require('next-react-svg');
 const path = require('path');
 
 const nextConfig = {
+  future: {
+    webpack5: true,
+  },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (process.env.ANALYZE) {
       config.plugins.push(

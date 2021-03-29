@@ -30,7 +30,6 @@ const InstallUiBlocks = () => {
           md={6}
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
-          justify="center"
         >
           <img src="google-permissions/contacts.png" className={classes.image} />
         </Grid>
@@ -107,7 +106,6 @@ const InstallUiBlocks = () => {
           md={6}
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-          justify="center"
         >
           <img src="google-permissions/activity.png" className={classes.image} />
         </Grid>

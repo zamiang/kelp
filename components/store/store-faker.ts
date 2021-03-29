@@ -47,7 +47,7 @@ people.push(currentUser);
  * create documents
  */
 const documents: IDocument[] = times(DOCUMENT_COUNT, () => ({
-  id: Faker.random.uuid(),
+  id: faker.datatype.uuid(),
   name: Faker.system.fileName(),
   viewedByMe: true,
   viewedByMeAt: new Date(Faker.date.recent(1).toISOString()),
@@ -112,7 +112,7 @@ times(WEEKS_TO_CREATE, (week: number) => {
         const actor = sample(peopleForAttendees);
         if (actor) {
           driveActivity.push({
-            id: Faker.random.uuid(),
+            id: faker.datatype.uuid(),
             time: addMinutes(date, 1),
             action: 'comment', // TODO
             actorPersonId: actor.id,
@@ -123,7 +123,7 @@ times(WEEKS_TO_CREATE, (week: number) => {
       });
 
       segments.push({
-        id: Faker.random.uuid(),
+        id: faker.datatype.uuid(),
         link: Faker.internet.url(),
         summary: `${Faker.commerce.productName()} meeting`,
         description: Faker.lorem.paragraphs(3),
