@@ -110,7 +110,7 @@ const InstallUiBlocks = () => {
             <div className={classes.dot}></div>Read Document Events
           </Typography>
           <Typography>
-            This allows Kelp minimal access to event metadata like if someone edits or comments on a
+            This allows Kelp minimal access to event data like if someone edits or comments on a
             document.
           </Typography>
         </Grid>

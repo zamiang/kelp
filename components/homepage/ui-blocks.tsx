@@ -127,7 +127,7 @@ const UiBlocks = () => {
           </Typography>
           <Typography>
             Kelp scans your calendar and documents to automatically collect the documents you need.
-            It then magically annotates your calendar. Easy.
+            It then annotates your calendar. Easy.
           </Typography>
         </Grid>
       </Grid>

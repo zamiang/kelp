@@ -18,7 +18,7 @@ const App = () => {
   return (
     <div className={classes.container}>
       <Head>
-        <title>Kelp - Install</title>
+        <title>Kelp - How does Kelp Work?</title>
         <meta name="description" content="Guide for installing Kelp." />
       </Head>
       <style jsx global>{`
@@ -30,7 +30,7 @@ const App = () => {
         <Container maxWidth="md">
           <img style={{ width: 100 }} src="/kelp.svg" alt="Kelp logo" />
           <Typography variant="h1" className={classes.heading}>
-            Welcome to Kelp!
+            How does kelp work?
           </Typography>
           <Typography className={classes.subheading}>
             Kelp is an application that you run on your computer.
@@ -97,7 +97,7 @@ const App = () => {
               </ListItem>
               <ListItem disableGutters>
                 <div className={classes.emojiIcon}>🛤</div>
-                <ListItemText>Kelp does not bundle analytics or tracking tools</ListItemText>
+                <ListItemText>Kelp does not include analytics or tracking tools</ListItemText>
               </ListItem>
             </List>
           </Grid>
