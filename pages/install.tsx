@@ -58,7 +58,7 @@ const App = () => {
       <Divider />
       <InstallUiBlocks />
       <Divider />
-      <Container maxWidth="md">
+      <Container maxWidth="md" className={classes.installButtonContainer}>
         <Grid container alignItems="center" justify="center">
           <Grid sm={12} md={6} item>
             <Typography variant="h4" className={classes.quote}>

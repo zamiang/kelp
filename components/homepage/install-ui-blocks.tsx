@@ -16,11 +16,7 @@ const InstallUiBlocks = () => {
           Your Kelp application uses these data sources
         </Typography>
       </div>
-      <Grid
-        container
-        className={clsx(classes.section, classes.sectionMobileReverse)}
-        alignItems="center"
-      >
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Read Contacts
@@ -36,10 +32,10 @@ const InstallUiBlocks = () => {
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
           justify="center"
         >
-          <img src="google-permissions/contacts.png" style={{ maxWidth: '100%' }} />
+          <img src="google-permissions/contacts.png" className={classes.image} />
         </Grid>
       </Grid>
-      <Grid container className={clsx(classes.section)} alignItems="center">
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Read Document Metadata
@@ -55,10 +51,10 @@ const InstallUiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
         >
-          <img src="google-permissions/drive.png" style={{ maxWidth: '100%' }} />
+          <img src="google-permissions/drive.png" className={classes.image} />
         </Grid>
       </Grid>
-      <Grid container className={clsx(classes.section)} alignItems="center">
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Create Smart Meeting Notes
@@ -74,14 +70,10 @@ const InstallUiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
         >
-          <img src="google-permissions/drive-kelp.png" style={{ maxWidth: '100%' }} />
+          <img src="google-permissions/drive-kelp.png" className={classes.image} />
         </Grid>
       </Grid>
-      <Grid
-        container
-        className={clsx(classes.section, classes.sectionMobileReverse)}
-        alignItems="center"
-      >
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Read Calendar Events
@@ -97,14 +89,10 @@ const InstallUiBlocks = () => {
           sm={12}
           className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
         >
-          <img src="google-permissions/calendar.png" style={{ maxWidth: '100%' }} />
+          <img src="google-permissions/calendar.png" className={classes.image} />
         </Grid>
       </Grid>
-      <Grid
-        container
-        className={clsx(classes.section, classes.sectionMobileReverse)}
-        alignItems="center"
-      >
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Read Document Events
@@ -121,7 +109,7 @@ const InstallUiBlocks = () => {
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
           justify="center"
         >
-          <img src="google-permissions/activity.png" style={{ maxWidth: '100%' }} />
+          <img src="google-permissions/activity.png" className={classes.image} />
         </Grid>
       </Grid>
     </Container>

@@ -21,6 +21,12 @@ export const useStyles = makeStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
   },
+  installButtonContainer: {
+    paddingBottom: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(4),
+    },
+  },
   colorContainer: {
     width: '100%',
     backgroundColor: theme.palette.secondary.light,

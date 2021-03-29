@@ -16,6 +16,11 @@ export const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   },
+  image: {
+    maxWidth: 290,
+    margin: '0px auto',
+    display: 'block',
+  },
   greyContainer: {
     width: '100%',
   },
