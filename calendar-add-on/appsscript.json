@@ -1,0 +1,11 @@
+{
+  "timeZone": "GMT",
+  "oauthScopes": [
+  ],
+  "calendar": {
+    "currentEventAccess": "READ",
+    "eventOpenTrigger": {
+      "runFunction": "onCalendarEventOpen"
+    }
+  }
+}

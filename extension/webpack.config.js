@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 
 // COPIED FROM constancs/config unsure why import doesn't work
@@ -22,7 +23,7 @@ const modifyManifest = (buffer) => {
 };
 
 const getConfig = () => ({
-  mode: 'production',
+  mode: process.env.NODE_ENV,
   devtool: false,
   entry: {
     popup: path.join(__dirname, 'src/popup.tsx'),
@@ -106,6 +107,15 @@ const getConfig = () => ({
     contentBase: './dist',
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID': undefined,
+      'process.env.NEXT_PUBLIC_REDIRECT_URI': undefined,
+      'process.env.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN': undefined,
+    }),
     new CopyPlugin({
       patterns: [
         { from: 'extension/public', to: '.' },

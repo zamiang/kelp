@@ -15,7 +15,6 @@ const NUMBER_OF_DAYS_BACK = 30;
 const NUMBER_OF_DAYS_FORWARD = 14;
 
 export default {
-  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   REDIRECT_URI: process.env.NEXT_PUBLIC_REDIRECT_URI || 'http://localhost:3000/dashboard',
   GOOGLE_SCOPES: scopes,
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,

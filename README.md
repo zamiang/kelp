@@ -46,7 +46,6 @@ Add these keys and your your google oauth app tokens to [.env.local]
 
     NEXT_PUBLIC_GOOGLE_CLIENT_ID=foo-bar-baz.apps.googleusercontent.com
     GOOGLE_CLIENT_SECRET=foo
-    NEXTAUTH_URL=http://localhost:3000
     JWT_SECRET=foo-bar-change-me
     JWT_SIGNING_KEY=signingKeyHere
     JWT_ENCRYPTION_KEY=encryptionKeyHere
