@@ -1,11 +1,29 @@
 {
-  "timeZone": "GMT",
-  "oauthScopes": [
-  ],
+  "timeZone": "America/New_York",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "oauthScopes": [],
+  "common": {
+    "name": "Universal Actions Only Addon",
+    "logoUrl": "https://www.example.com/hosted/images/2x/my-icon.png",
+    "openLinkUrlPrefixes": [
+      "https://www.google.com",
+      "https://www.kelp.nyc/dashboard"
+    ],
+    "universalActions": [{
+        "label": "Open Kelp",
+        "openLink": "https://www.kelp.nyc/dashboard"
+      }, {
+        "label": "Run background sync",
+        "runFunction": "runBackgroundSync"
+    }]
+  },
   "calendar": {
     "currentEventAccess": "READ",
     "eventOpenTrigger": {
       "runFunction": "onCalendarEventOpen"
-    }
+    },
+    "name": "Kelp",
+    "logoUrl": "https://lh3.googleusercontent.com/-UJsbqSXrUik/YGJUpMWvfsI/AAAAAAAAAA8/kdSNUeznbzItZGvDN3Xbp4ITWvL90WBKACLcBGAsYHQ/s72-c/favicon-32x32.png"
   }
 }

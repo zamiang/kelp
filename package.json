@@ -47,6 +47,7 @@
     "@types/gapi.client.driveactivity": "2.0.0",
     "@types/gapi.client.gmail": "1.0.3",
     "@types/gapi.client.people": "1.0.3",
+    "@types/google-apps-script": "1.0.30",
     "@types/lodash": "4.14.168",
     "@types/pluralize": "0.0.29",
     "@types/react-linkify": "1.0.0",
