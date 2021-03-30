@@ -186,6 +186,7 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 // <meta name="slack-app-id" content="A01E5A9263B" />
+const description = 'Kelp automatically find the documents you need for your next meeting.';
 
 const App = () => {
   const classes = useStyles();
@@ -193,10 +194,25 @@ const App = () => {
     <div className={classes.container}>
       <Head>
         <title>Kelp - Your information filtration system</title>
+        <meta name="description" content={description} />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary" key="twcard" />
+        <meta name="twitter:creator" content="kelpnyc" key="twhandle" />
+
+        {/* Open Graph */}
+        <meta property="og:url" content="https://www.kelp.nyc" key="ogurl" />
         <meta
-          name="description"
-          content="Kelp automatically organizes your documents, events and contacts to make work make sense."
+          property="og:image"
+          content="https://www.kelp.nyc/images/overview.jpg"
+          key="ogimage"
         />
+        <meta property="og:site_name" content="Kelp" key="ogsitename" />
+        <meta
+          property="og:title"
+          content="Kelp - Your information filtration system"
+          key="ogtitle"
+        />
+        <meta property="og:description" content={description} key="ogdesc" />
       </Head>
       <style jsx global>{`
         html body {
