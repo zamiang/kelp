@@ -9,6 +9,7 @@ import fetchDriveFiles from './fetch-drive-files';
 import FetchMissingGoogleDocs from './fetch-missing-google-docs';
 import { batchFetchPeople, person } from './fetch-people';
 import { fetchSelf } from './fetch-self';
+import { fetchTasks } from './fetch-tasks';
 
 interface IReturnType {
   readonly personList: person[];
@@ -17,6 +18,7 @@ interface IReturnType {
   readonly currentUser?: person;
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
+  readonly tasks: gapi.client.tasks.Task[];
   readonly missingDriveFiles: (gapi.client.drive.File | null)[];
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
@@ -90,6 +92,13 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   ] as any);
 
   /**
+   * TASKS
+   */
+  const tasksResponse = useAsyncAbortable(() => fetchTasks(googleOauthToken), [
+    googleOauthToken,
+  ] as any);
+
+  /**
    * CALENDAR
    */
   const calendarResponse = useAsyncAbortable(
@@ -150,6 +159,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
 
   const debouncedIsLoading = useDebounce(
     peopleResponse.loading ||
+      tasksResponse.loading ||
       currentUser.loading ||
       driveResponse.loading ||
       calendarResponse.loading ||
@@ -170,6 +180,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveFiles: driveResponse.result ? driveResponse.result.filter(Boolean) : [],
     contacts: contactsResponse.result ? contactsResponse.result.filter(Boolean) : [],
     currentUser: currentUser.result,
+    tasks: tasksResponse.result || [],
     emailAddresses: emailList,
     refetch: async () => {
       // Current user will reloadd if it fails

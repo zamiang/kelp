@@ -7,6 +7,7 @@ import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
 import { ISegmentDocument } from './models/segment-document-model';
 import { ISegment } from './models/segment-model';
+import { ITask } from './models/task-model';
 import { ITfidfRow } from './models/tfidf-model';
 
 interface Db extends DBSchema {
@@ -35,6 +36,10 @@ interface Db extends DBSchema {
     value: ITfidfRow;
     key: string;
     indexes: { 'by-type': string };
+  };
+  task: {
+    value: ITask;
+    key: string;
   };
   meeting: {
     value: ISegment;
@@ -72,7 +77,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 2;
+const databaseVerson = 3;
 
 export type dbType = IDBPDatabase<Db>;
 

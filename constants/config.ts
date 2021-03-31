@@ -9,6 +9,7 @@ const scopes = [
   'https://www.googleapis.com/auth/drive.metadata.readonly',
   'https://www.googleapis.com/auth/drive.activity.readonly',
   'https://www.googleapis.com/auth/drive.file',
+  'https://www.googleapis.com/auth/tasks',
 ];
 
 const NUMBER_OF_DAYS_BACK = 30;
