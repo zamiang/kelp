@@ -1,11 +1,15 @@
 {
-  "timeZone": "GMT",
-  "oauthScopes": [
-  ],
+  "timeZone": "America/New_York",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "oauthScopes": [],
+
   "calendar": {
     "currentEventAccess": "READ",
     "eventOpenTrigger": {
       "runFunction": "onCalendarEventOpen"
-    }
+    },
+    "name": "Kelp",
+    "logoUrl": "https://lh3.googleusercontent.com/-UJsbqSXrUik/YGJUpMWvfsI/AAAAAAAAAA8/kdSNUeznbzItZGvDN3Xbp4ITWvL90WBKACLcBGAsYHQ/s72-c/favicon-32x32.png"
   }
 }
