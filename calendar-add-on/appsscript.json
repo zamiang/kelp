@@ -3,21 +3,7 @@
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8",
   "oauthScopes": [],
-  "common": {
-    "name": "Universal Actions Only Addon",
-    "logoUrl": "https://www.example.com/hosted/images/2x/my-icon.png",
-    "openLinkUrlPrefixes": [
-      "https://www.google.com",
-      "https://www.kelp.nyc/dashboard"
-    ],
-    "universalActions": [{
-        "label": "Open Kelp",
-        "openLink": "https://www.kelp.nyc/dashboard"
-      }, {
-        "label": "Run background sync",
-        "runFunction": "runBackgroundSync"
-    }]
-  },
+
   "calendar": {
     "currentEventAccess": "READ",
     "eventOpenTrigger": {
