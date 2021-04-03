@@ -25,7 +25,7 @@ const fetchTaskLists = async (authToken: string) => {
   return formattedTaskLists;
 };
 
-export const fetchTasks = async (authToken: string) => {
+export const fetchTasks = async (authToken: string, limit: any) => {
   const taskLists = await fetchTaskLists(authToken);
   const searchParams = new URLSearchParams({
     maxResults: '100',
@@ -35,15 +35,17 @@ export const fetchTasks = async (authToken: string) => {
   });
   const tasksFromLists = await Promise.all(
     taskLists.map(async (list) => {
-      const tasksResponse = await fetch(
-        `https://people.googleapis.com/v1/tasks/v1/lists/${
-          list.id
-        }/tasks?${searchParams.toString()}`,
-        {
-          headers: {
-            authorization: `Bearer ${authToken}`,
+      const tasksResponse = await limit(async () =>
+        fetch(
+          `https://people.googleapis.com/v1/tasks/v1/lists/${
+            list.id
+          }/tasks?${searchParams.toString()}`,
+          {
+            headers: {
+              authorization: `Bearer ${authToken}`,
+            },
           },
-        },
+        ),
       );
       const response = (await tasksResponse.json()) as gapi.client.tasks.Tasks;
       return response.items;

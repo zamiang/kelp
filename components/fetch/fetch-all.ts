@@ -1,4 +1,5 @@
 import { flatten, uniq } from 'lodash';
+import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import { getDocumentsFromCalendarEvents } from '../store/models/segment-model';
@@ -62,6 +63,14 @@ const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
+// create a rate limiter that allows up to x API calls per second, with max concurrency of y
+const limit = pRateLimit({
+  interval: 1000, // 1000 ms == 1 second
+  rate: 6,
+  concurrency: 4,
+  maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
+});
+
 const initialEmailList: string[] = [];
 
 const FetchAll = (googleOauthToken: string): IReturnType => {
@@ -94,7 +103,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   /**
    * TASKS
    */
-  const tasksResponse = useAsyncAbortable(() => fetchTasks(googleOauthToken), [
+  const tasksResponse = useAsyncAbortable(() => fetchTasks(googleOauthToken, limit), [
     googleOauthToken,
   ] as any);
 
@@ -122,6 +131,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const missingGoogleDocs = FetchMissingGoogleDocs({
     missingGoogleDocIds,
     googleOauthToken,
+    limit,
   });
 
   /**
@@ -153,7 +163,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       .filter((id) => id && !contactsByPeopleId[id]),
   );
   const peopleResponse = useAsyncAbortable(
-    () => batchFetchPeople(peopleIds as any, googleOauthToken),
+    () => batchFetchPeople(peopleIds as any, googleOauthToken, limit),
     [peopleIds.length.toString()] as any,
   );
 

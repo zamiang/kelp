@@ -1,5 +1,4 @@
 import { chunk, flatten, uniq } from 'lodash';
-import { pRateLimit } from 'p-ratelimit';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
@@ -68,15 +67,7 @@ export const fetchPerson = async (personId: string, authToken: string) => {
   return result as gapi.client.people.Person;
 };
 
-// create a rate limiter that allows up to x API calls per second, with max concurrency of y
-const limit = pRateLimit({
-  interval: 1000 * 60, // 1000 ms == 1 second
-  rate: 100,
-  concurrency: 4,
-  maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
-});
-
-export const batchFetchPeople = async (peopleIds: string[], authToken: string) => {
+export const batchFetchPeople = async (peopleIds: string[], authToken: string, limit: any) => {
   if (peopleIds.length < 1) {
     return [];
   }

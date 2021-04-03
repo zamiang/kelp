@@ -1,5 +1,4 @@
 import { flatten, uniq } from 'lodash';
-import { pRateLimit } from 'p-ratelimit';
 import config from '../../constants/config';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 
@@ -42,18 +41,11 @@ export interface IFormattedDriveActivity {
 
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
-// create a rate limiter that allows up to x API calls per second, with max concurrency of y
-const limit = pRateLimit({
-  interval: 1000, // 1000 ms == 1 second
-  rate: 5,
-  concurrency: 4,
-  maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
-});
-
 const fetchDriveActivityForDocument = async (
   documentId: string,
   googleOauthToken: string,
   idsToRefetch: string[],
+  limit: any,
 ) => {
   const params = {
     pageSize: '50', // NOTE: does nothing
