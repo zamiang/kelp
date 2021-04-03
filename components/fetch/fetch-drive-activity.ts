@@ -119,10 +119,14 @@ const fetchDriveActivityForDocument = async (
   return { peopleIds, activity: formattedDriveActivity };
 };
 
-const fetchDriveActivityForDocumentIds = async (ids: string[], googleOauthToken: string) => {
+const fetchDriveActivityForDocumentIds = async (
+  ids: string[],
+  googleOauthToken: string,
+  limit: any,
+) => {
   const idsToRefetch: string[] = [];
   const results = await Promise.all(
-    ids.map(async (id) => fetchDriveActivityForDocument(id, googleOauthToken, idsToRefetch)),
+    ids.map(async (id) => fetchDriveActivityForDocument(id, googleOauthToken, idsToRefetch, limit)),
   );
   const peopleIds = uniq(flatten(results.map((result) => result.peopleIds)));
   const activity = flatten(results.map((result) => result.activity));

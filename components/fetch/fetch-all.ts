@@ -146,7 +146,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       : (idsForDriveActivity as any);
 
   const driveActivityResponse = useAsyncAbortable(
-    () => fetchDriveActivityForDocumentIds(googleDocIdsToFetchActivity, googleOauthToken),
+    () => fetchDriveActivityForDocumentIds(googleDocIdsToFetchActivity, googleOauthToken, limit),
     [googleDocIdsToFetchActivity.length.toString()] as any, // unsure why this type is a failure
   );
   const driveActivity = driveActivityResponse.result ? driveActivityResponse.result.activity : [];

@@ -55,6 +55,7 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
 const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken);
+  console.log(data, '<<<<<<<<<<<<');
   const [isLoading, setLoading] = useState<boolean>(true);
   const people = (data.personList || []).map((person) => formatPerson(person));
   const personDataStore = new PersonDataStore(db);

@@ -10,7 +10,7 @@ const fetchTaskLists = async (authToken: string) => {
   const searchParams = new URLSearchParams({ maxResults: '100' });
 
   const tasksResponse = await fetch(
-    `https://people.googleapis.com/v1/tasks/v1/users/@me/lists?${searchParams.toString()}`,
+    `https://tasks.googleapis.com/tasks/v1/users/@me/lists?${searchParams.toString()}`,
     {
       headers: {
         authorization: `Bearer ${authToken}`,
@@ -31,15 +31,13 @@ export const fetchTasks = async (authToken: string, limit: any) => {
     maxResults: '100',
     showHidden: 'false',
     showDeleted: 'false',
-    updatedMin: config.startDate.toString(),
+    updatedMin: config.startDate.toISOString(),
   });
   const tasksFromLists = await Promise.all(
     taskLists.map(async (list) => {
       const tasksResponse = await limit(async () =>
         fetch(
-          `https://people.googleapis.com/v1/tasks/v1/lists/${
-            list.id
-          }/tasks?${searchParams.toString()}`,
+          `https://tasks.googleapis.com/tasks/v1/lists/${list.id}/tasks?${searchParams.toString()}`,
           {
             headers: {
               authorization: `Bearer ${authToken}`,
