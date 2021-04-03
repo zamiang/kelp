@@ -29,6 +29,7 @@ interface IReturnType {
   readonly driveResponseLoading: boolean;
   readonly calendarResponseLoading: boolean;
   readonly contactsResponseLoading: boolean;
+  readonly tasksResponseLoading: boolean;
   readonly driveActivityLoading: boolean;
   readonly currentUserLoading: boolean;
   readonly peopleLoading: boolean;
@@ -206,6 +207,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading,
+    tasksResponseLoading: tasksResponse.loading,
     peopleLoading: peopleResponse.loading,
     isLoading: debouncedIsLoading,
     error:

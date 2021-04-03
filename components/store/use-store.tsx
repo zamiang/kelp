@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 import FetchAll from '../fetch/fetch-all';
 import { dbType } from './db';
-import AttendeeModel from './models/attendee-model';
+import AttendeeStore from './models/attendee-model';
 import DocumentDataStore, { formatGoogleDoc } from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore, { formatPerson } from './models/person-model';
-import SegmentDocumentModel from './models/segment-document-model';
+import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
+import TaskDocumentDataStore from './models/task-document-model';
+import TaskDataStore from './models/task-model';
 import TfidfDataStore from './models/tfidf-model';
 
 export interface IStore {
@@ -16,9 +18,11 @@ export interface IStore {
   readonly documentDataStore: DocumentDataStore;
   readonly driveActivityStore: DriveActivityDataStore;
   readonly tfidfStore: TfidfDataStore;
-  readonly attendeeDataStore: AttendeeModel;
+  readonly taskStore: TaskDataStore;
+  readonly taskDocumentStore: TaskDocumentDataStore;
+  readonly attendeeDataStore: AttendeeStore;
   readonly lastUpdated: Date;
-  readonly segmentDocumentStore: SegmentDocumentModel;
+  readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
   readonly isLoading: boolean;
   readonly scope?: string;
@@ -32,9 +36,11 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
   const driveActivityDataStore = new DriveActivityDataStore(db);
-  const attendeeDataStore = new AttendeeModel(db);
+  const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
-  const segmentDocumentStore = new SegmentDocumentModel(db);
+  const segmentDocumentStore = new SegmentDocumentDataStore(db);
+  const taskDocumentStore = new TaskDocumentDataStore(db);
+  const taskStore = new TaskDataStore(db);
 
   return {
     driveActivityStore: driveActivityDataStore,
@@ -43,6 +49,8 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
+    taskStore,
+    taskDocumentStore,
     tfidfStore,
     lastUpdated: new Date(),
     isLoading: false,
@@ -55,20 +63,21 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
 const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken);
-  console.log(data, '<<<<<<<<<<<<');
   const [isLoading, setLoading] = useState<boolean>(true);
   const people = (data.personList || []).map((person) => formatPerson(person));
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
+  const taskDataStore = new TaskDataStore(db);
+  const taskDocumentDataStore = new TaskDocumentDataStore(db);
   const docs = (data.driveFiles || []).map((doc) => doc && formatGoogleDoc(doc)).filter(Boolean);
   const missingDocs = (data.missingDriveFiles || [])
     .filter(Boolean)
     .map((doc) => formatGoogleDoc(doc!));
   const driveActivityDataStore = new DriveActivityDataStore(db);
-  const attendeeDataStore = new AttendeeModel(db);
+  const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
-  const segmentDocumentStore = new SegmentDocumentModel(db);
+  const segmentDocumentStore = new SegmentDocumentDataStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -107,6 +116,17 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     void addData();
   }, [documentsToAdd.length.toString()]);
 
+  // Save takss
+  useEffect(() => {
+    const addData = async () => {
+      if (!data.tasksResponseLoading) {
+        setLoadingMessage('Saving Tasks');
+        await taskDataStore.addTasksToStore(data.tasks);
+      }
+    };
+    void addData();
+  }, [data.tasks.length.toString()]);
+
   // Relationships
   useEffect(() => {
     const addData = async () => {
@@ -131,6 +151,14 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
         timeDataStore,
         attendeeDataStore,
       );
+
+      setLoadingMessage('Matching Tasks, Documents and Meetings');
+      await taskDocumentDataStore.addTaskDocumentsToStore(
+        driveActivityDataStore,
+        timeDataStore,
+        taskDataStore,
+      );
+
       if (!data.isLoading) {
         setLoadingMessage(undefined);
         setLoading(false);
@@ -175,6 +203,8 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     attendeeDataStore,
     segmentDocumentStore,
     tfidfStore,
+    taskStore: taskDataStore,
+    taskDocumentStore: taskDocumentDataStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,
     loadingMessage,

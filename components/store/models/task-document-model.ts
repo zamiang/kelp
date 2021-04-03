@@ -5,29 +5,31 @@ import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
 import DriveActivityModel from './drive-activity-model';
+import SegmentModel from './segment-model';
 import TaskModel, { ITask } from './task-model';
 
 export interface ITaskDocument {
   id: string;
   driveActivityId?: string;
   documentId: string;
-  taskId?: string;
+  taskId: string;
   taskTitle?: string;
   date: Date;
   reason: string;
   personId: string;
+  segmentId?: string;
   day: number;
   week: number;
 }
 
 const formatTaskDocument = (
   driveActivity: IFormattedDriveActivity,
-  task?: ITask,
+  task: ITask,
 ): ITaskDocument => ({
   id: driveActivity.id,
   driveActivityId: driveActivity.id,
   documentId: driveActivity.documentId!,
-  taskId: task?.id,
+  taskId: task.id!,
   taskTitle: task?.title,
   date: driveActivity.time,
   reason: driveActivity.action,
@@ -43,10 +45,17 @@ export default class TaskDocumentModel {
     this.db = db;
   }
 
-  async addTaskDocumentsToStore(driveActivityStore: DriveActivityModel, taskStore: TaskModel) {
+  async addTaskDocumentsToStore(
+    driveActivityStore: DriveActivityModel,
+    timeStore: SegmentModel,
+    taskStore: TaskModel,
+  ) {
     const driveActivity = await driveActivityStore.getAll();
     const tasks = await taskStore.getAll();
+    const segments = await timeStore.getAll();
 
+    // TODO: iterate through segments and match with tasks
+    console.log(segments);
     // Add drive activity for tasks
     const driveActivityToAdd = await Promise.all(
       driveActivity.map(async (driveActivityItem) => {
@@ -55,8 +64,10 @@ export default class TaskDocumentModel {
             new Date(t.updated!) < addMinutes(driveActivityItem.time, 10) &&
             new Date(t.updated!) > subMinutes(driveActivityItem.time, 10),
         );
-        const formattedDocument = formatTaskDocument(driveActivityItem, task);
-        return formattedDocument;
+        if (task) {
+          const formattedDocument = formatTaskDocument(driveActivityItem, task);
+          return formattedDocument;
+        }
       }),
     );
 

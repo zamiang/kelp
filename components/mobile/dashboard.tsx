@@ -8,6 +8,8 @@ import CalendarOrangeIcon from '../../public/icons/calendar-orange.svg';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import FileOrangeIcon from '../../public/icons/file-orange.svg';
 import FileIcon from '../../public/icons/file.svg';
+import TasksOrangeIcon from '../../public/icons/tasks-orange.svg';
+import TasksIcon from '../../public/icons/tasks.svg';
 import UserOrangeIcon from '../../public/icons/user-orange.svg';
 import UserIcon from '../../public/icons/user.svg';
 import Documents from '../dashboard/documents';
@@ -94,6 +96,7 @@ const MobileDashboard = (props: { store: IStore }) => {
   const isMeetingsSelected = tab.includes('meetings');
   const isDocsSelected = tab.includes('docs');
   const isPeopleSelected = tab.includes('people');
+  const isTasksSelected = tab.includes('tasks');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,15 +113,6 @@ const MobileDashboard = (props: { store: IStore }) => {
       <PopupHeader user={user} store={store} />
       <div className={classes.container}>
         <Switch>
-          <Route path="/search/docs/:slug">
-            <ExpandedDocument store={store} />
-          </Route>
-          <Route path="/search/meetings/:slug">
-            <ExpandedMeeting store={store} />
-          </Route>
-          <Route path="/search/people/:slug">
-            <ExpandPerson store={store} />
-          </Route>
           <Route path="/search">
             <Search store={store} />
           </Route>
@@ -131,11 +125,17 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Route path="/meetings/:slug">
             <ExpandedMeeting store={store} />
           </Route>
+          <Route path="/tasks/:slug">
+            <ExpandedTask store={store} />
+          </Route>
           <Route path="/meetings">
             <Meetings store={store} />
           </Route>
           <Route path="/people">
             <People store={store} />
+          </Route>
+          <Route path="/tasks">
+            <Tasks store={store} />
           </Route>
           <Route path="/docs">
             <Documents store={store} />
@@ -189,6 +189,19 @@ const MobileDashboard = (props: { store: IStore }) => {
                 <UserOrangeIcon width="24" height="24" />
               ) : (
                 <UserIcon width="24" height="24" />
+              )}
+            </IconButton>
+          </Grid>
+          <Grid item xs className={clsx(classes.icon, isTasksSelected && classes.selected)}>
+            <IconButton
+              className={classes.iconButtonLarge}
+              onClick={() => history.push('/tasks')}
+              aria-label="Tasks"
+            >
+              {isTasksSelected ? (
+                <TasksOrangeIcon width="24" height="24" />
+              ) : (
+                <TasksIcon width="24" height="24" />
               )}
             </IconButton>
           </Grid>

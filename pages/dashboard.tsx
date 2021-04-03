@@ -13,6 +13,7 @@ import Docs from '../components/dashboard/documents';
 import Meetings from '../components/dashboard/meetings';
 import People from '../components/dashboard/people';
 import Search from '../components/dashboard/search';
+import Tasks from '../components/dashboard/tasks';
 import ExpandedDocument from '../components/documents/expand-document';
 import ErrorBoundaryComponent from '../components/error-tracking/error-boundary';
 import { fetchToken } from '../components/fetch/fetch-token';
@@ -24,6 +25,7 @@ import ExpandPerson from '../components/person/expand-person';
 import Loading from '../components/shared/loading';
 import db from '../components/store/db';
 import getStore, { IStore } from '../components/store/use-store';
+import ExpandTask from '../components/tasks/expand-task';
 import Settings from '../components/user-profile/settings';
 
 export const drawerWidth = 240;
@@ -126,6 +128,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const [meetingId, setMeetingId] = useState<string | undefined>(undefined);
   const [personId, setPersonId] = useState<string | undefined>(undefined);
   const [documentId, setDocumentId] = useState<string | undefined>(undefined);
+  const [taskId, setTaskId] = useState<string | undefined>(undefined);
 
   const handleRefreshClick = () => store.refetch();
   const pathname = useLocation().pathname;
@@ -159,6 +162,9 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Route path="/docs">
                 <Docs store={store} setDocumentId={setDocumentId} />
               </Route>
+              <Route path="/tasks">
+                <Tasks store={store} setTaskId={setTaskId} />
+              </Route>
               <Route path="/people">
                 <People store={store} setPersonId={setPersonId} />
               </Route>
@@ -183,6 +189,9 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 </Route>
                 <Route path="/people/:slug">
                   <ExpandPerson store={store} />
+                </Route>
+                <Route path="/task/:slug">
+                  <ExpandTask store={store} taskId={taskId} />
                 </Route>
                 <Route path="/settings">
                   <Settings />

@@ -1,10 +1,7 @@
 import { flatten } from 'lodash';
 import config from '../../constants/config';
 
-const formatTask = (task: gapi.client.tasks.Task) => {
-  console.log(task);
-  return task;
-};
+const formatTask = (task: gapi.client.tasks.Task) => task;
 
 const fetchTaskLists = async (authToken: string) => {
   const searchParams = new URLSearchParams({ maxResults: '100' });
@@ -49,7 +46,6 @@ export const fetchTasks = async (authToken: string, limit: any) => {
       return response.items;
     }),
   );
-  console.log(tasksFromLists);
 
   const formattedTasks = (flatten(tasksFromLists) || [])
     .filter(Boolean)

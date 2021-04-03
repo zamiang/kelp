@@ -51,7 +51,7 @@ const getFeaturedDocuments = async (props: IStore) => {
     }),
   );
 
-  // Hash of personId to meeting array
+  // Hash of documentId to meeting array
   const meetingsForDocument: { [id: string]: ISegment[] } = {};
 
   await Promise.all(
