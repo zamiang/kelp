@@ -7,6 +7,7 @@ import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
 import { ISegmentDocument } from './models/segment-document-model';
 import { ISegment } from './models/segment-model';
+import { ITaskDocument } from './models/task-document-model';
 import { ITask } from './models/task-model';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -40,6 +41,19 @@ interface Db extends DBSchema {
   task: {
     value: ITask;
     key: string;
+  };
+  taskDocument: {
+    value: ITaskDocument;
+    key: string;
+    indexes: {
+      'by-task-id': string;
+      'by-document-id': string;
+      'by-drive-activity-id': string;
+      'by-task-title': string;
+      'by-person-id': string;
+      'by-day': number;
+      'by-week': number;
+    };
   };
   meeting: {
     value: ISegment;
@@ -160,6 +174,23 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
       segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
       segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
+
+      db.createObjectStore('task', {
+        keyPath: 'id',
+      });
+
+      const taskDocumentStore = db.createObjectStore('taskDocument', {
+        keyPath: 'id',
+      });
+      taskDocumentStore.createIndex('by-task-id', 'taskId', { unique: false });
+      taskDocumentStore.createIndex('by-document-id', 'documentId', { unique: false });
+      taskDocumentStore.createIndex('by-drive-activity-id', 'driveActivityId', {
+        unique: false,
+      });
+      taskDocumentStore.createIndex('by-day', 'day', { unique: false });
+      taskDocumentStore.createIndex('by-week', 'week', { unique: false });
+      taskDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
+      taskDocumentStore.createIndex('by-task-title', 'taskTitle', { unique: false });
     },
     blocked() {
       console.log('blocked');

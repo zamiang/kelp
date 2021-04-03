@@ -1,10 +1,9 @@
-import { getDayOfYear } from 'date-fns';
-import { flatten, orderBy } from 'lodash';
+import { addMinutes, getDayOfYear, subMinutes } from 'date-fns';
+import { orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
-import AttendeeModel from './attendee-model';
 import DriveActivityModel from './drive-activity-model';
 import TaskModel, { ITask } from './task-model';
 
@@ -13,10 +12,9 @@ export interface ITaskDocument {
   driveActivityId?: string;
   documentId: string;
   taskId?: string;
-  taskText?: string;
+  taskTitle?: string;
   date: Date;
   reason: string;
-  isPersonAttendee?: Boolean;
   personId: string;
   day: number;
   week: number;
@@ -25,17 +23,15 @@ export interface ITaskDocument {
 const formatTaskDocument = (
   driveActivity: IFormattedDriveActivity,
   task?: ITask,
-  isPersonAttendee?: boolean,
 ): ITaskDocument => ({
   id: driveActivity.id,
   driveActivityId: driveActivity.id,
   documentId: driveActivity.documentId!,
   taskId: task?.id,
-  taskText: task?.title,
+  taskTitle: task?.title,
   date: driveActivity.time,
   reason: driveActivity.action,
   personId: driveActivity.actorPersonId!,
-  isPersonAttendee,
   day: getDayOfYear(driveActivity.time),
   week: getWeek(driveActivity.time),
 });
@@ -47,57 +43,27 @@ export default class TaskDocumentModel {
     this.db = db;
   }
 
-  async addTaskDocumentsToStore(
-    driveActivityStore: DriveActivityModel,
-    taskStore: TaskModel,
-    attendeeStore: AttendeeModel,
-  ) {
+  async addTaskDocumentsToStore(driveActivityStore: DriveActivityModel, taskStore: TaskModel) {
     const driveActivity = await driveActivityStore.getAll();
     const tasks = await taskStore.getAll();
 
-    // Add drive activity for meetings
+    // Add drive activity for tasks
     const driveActivityToAdd = await Promise.all(
       driveActivity.map(async (driveActivityItem) => {
-        let isActorAttendee = false;
-        const segment = segments.find(
-          (s) => s.start < driveActivityItem.time && s.end > driveActivityItem.time,
+        const task = tasks.find(
+          (t) =>
+            new Date(t.updated!) < addMinutes(driveActivityItem.time, 10) &&
+            new Date(t.updated!) > subMinutes(driveActivityItem.time, 10),
         );
-        if (segment) {
-          const summary = segment.summary?.toLocaleLowerCase();
-          if (summary?.includes('ooo') || summary?.includes('out of office')) {
-            // do nothing
-          } else {
-            const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-            isActorAttendee = !!attendees.find(
-              (a) => a.personGoogleId === driveActivityItem.actorPersonId,
-            );
-          }
-        }
-        const formattedDocument = formatTaskDocument(driveActivityItem, segment, isActorAttendee);
+        const formattedDocument = formatTaskDocument(driveActivityItem, task);
         return formattedDocument;
       }),
     );
 
-    // Add drive activity in meeting descriptions
-    const descriptionsToAdd = await Promise.all(
-      segments.map(async (segment) => {
-        const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-        return segment.documentIdsFromDescription.map((documentId) =>
-          attendees.map(
-            (attendee) =>
-              attendee.personId &&
-              formatTaskDocumentFromDescription(segment, documentId, attendee.personId),
-          ),
-        );
-      }),
-    );
-
-    const flatDescriptions = flatten(flatten(descriptionsToAdd)) as any;
-
     const tx = this.db.transaction('segmentDocument', 'readwrite');
 
     const results = await Promise.allSettled(
-      driveActivityToAdd.concat(flatDescriptions).map((item) => item?.id && tx.store.put(item)),
+      driveActivityToAdd.map((item) => item?.id && tx.store.put(item)),
     );
     await tx.done;
 
@@ -119,21 +85,9 @@ export default class TaskDocumentModel {
     return orderBy(activity, 'date', 'desc');
   }
 
-  async getAllForSegmentId(segmentId: string) {
-    const activity = await this.db.getAllFromIndex('taskDocument', 'by-segment-id', segmentId);
+  async getAllForTaskId(taskId: string) {
+    const activity = await this.db.getAllFromIndex('taskDocument', 'by-task-id', taskId);
     return orderBy(activity, 'date', 'desc');
-  }
-
-  async getAllForMeetingName(title: string) {
-    const formattedTitle = formatSegmentTitle(title);
-    if (formattedTitle) {
-      const activity = await this.db.getAllFromIndex(
-        'taskDocument',
-        'by-segment-title',
-        formattedTitle,
-      );
-      return orderBy(activity, 'date', 'desc');
-    }
   }
 
   async getAllForDocumentId(documentId: string) {
