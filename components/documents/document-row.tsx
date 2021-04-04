@@ -170,7 +170,7 @@ const DocumentRow = (props: {
                 variant="outlined"
                 onClick={(event) => {
                   event.stopPropagation();
-                  void router.push(`/docs/${props.doc.id}`);
+                  void router.push(`/documents/${props.doc.id}`);
                   return false;
                 }}
               >

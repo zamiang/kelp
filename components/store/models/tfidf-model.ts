@@ -14,7 +14,7 @@ export const getDayKey = (day: Date) => differenceInCalendarDays(new Date(), day
 export interface IFilters {
   meetings: boolean;
   people: boolean;
-  docs: boolean;
+  documents: boolean;
 }
 
 export interface ITfidfRow {
@@ -33,7 +33,7 @@ export default class TfidfStore {
 
   async getTfidf(filters?: IFilters) {
     const data = await this.getDocumentsByDay(
-      filters || { meetings: true, people: true, docs: true },
+      filters || { meetings: true, people: true, documents: true },
     );
     const tfidf = new Tfidf(data);
     return tfidf;
@@ -151,7 +151,7 @@ export default class TfidfStore {
 
   async getDocumentsByDay(filters: IFilters) {
     let results: ITfidfRow[] = [];
-    if (filters.docs) {
+    if (filters.documents) {
       results = results.concat(await this.db.getAllFromIndex('tfidf', 'by-type', 'documents'));
     }
     if (filters.meetings) {

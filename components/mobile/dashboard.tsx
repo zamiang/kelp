@@ -96,7 +96,7 @@ const MobileDashboard = (props: { store: IStore }) => {
 
   const tab = location.pathname;
   const isMeetingsSelected = tab.includes('meetings');
-  const isDocsSelected = tab.includes('docs');
+  const isDocsSelected = tab.includes('documents');
   const isPeopleSelected = tab.includes('people');
   const isTasksSelected = tab.includes('tasks');
 
@@ -121,7 +121,7 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Route path="/people/:slug">
             <ExpandPerson store={store} />
           </Route>
-          <Route path="/docs/:slug">
+          <Route path="/documents/:slug">
             <ExpandedDocument store={store} />
           </Route>
           <Route path="/meetings/:slug">
@@ -139,7 +139,7 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Route path="/tasks">
             <Tasks store={store} />
           </Route>
-          <Route path="/docs">
+          <Route path="/documents">
             <Documents store={store} />
           </Route>
           <Route path="/settings">
@@ -171,7 +171,7 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
             <IconButton
               className={classes.iconButtonLarge}
-              onClick={() => history.push('/docs')}
+              onClick={() => history.push('/documents')}
               aria-label="Documents"
             >
               {isDocsSelected ? (

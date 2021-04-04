@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
-import Docs from '../components/dashboard/documents';
+import Documents from '../components/dashboard/documents';
 import Meetings from '../components/dashboard/meetings';
 import People from '../components/dashboard/people';
 import Search from '../components/dashboard/search';
@@ -159,8 +159,8 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Route path="/meetings">
                 <Meetings store={store} setMeetingId={setMeetingId} />
               </Route>
-              <Route path="/docs">
-                <Docs store={store} setDocumentId={setDocumentId} />
+              <Route path="/documents">
+                <Documents store={store} setDocumentId={setDocumentId} />
               </Route>
               <Route path="/tasks">
                 <Tasks store={store} setTaskId={setTaskId} />
@@ -175,7 +175,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Route exact path="/meetings">
                   <ExpandedMeeting store={store} meetingId={meetingId} />
                 </Route>
-                <Route exact path="/docs">
+                <Route exact path="/documents">
                   <ExpandedDocument store={store} documentId={documentId} />
                 </Route>
                 <Route exact path="/people">
@@ -184,13 +184,13 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Route path="/meetings/:slug">
                   <ExpandedMeeting store={store} />
                 </Route>
-                <Route path="/docs/:slug">
+                <Route path="/documents/:slug">
                   <ExpandedDocument store={store} />
                 </Route>
                 <Route path="/people/:slug">
                   <ExpandPerson store={store} />
                 </Route>
-                <Route path="/task/:slug">
+                <Route path="/tasks/:slug">
                   <ExpandTask store={store} taskId={taskId} />
                 </Route>
                 <Route path="/settings">

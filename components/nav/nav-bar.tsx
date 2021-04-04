@@ -68,7 +68,7 @@ const NavBarLayer = () => {
 
   const tab = router.pathname;
   const isMeetingsSelected = tab.includes('meetings');
-  const isDocsSelected = tab.includes('docs');
+  const isDocsSelected = tab.includes('documents');
   const isPeopleSelected = tab.includes('people');
   const isTasksSelected = tab.includes('tasks');
 
@@ -90,7 +90,7 @@ const NavBarLayer = () => {
       <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
         <IconButton
           className={classes.iconButtonLarge}
-          onClick={() => history.push('/docs')}
+          onClick={() => history.push('/documents')}
           aria-label="Documents"
         >
           {isDocsSelected ? (
