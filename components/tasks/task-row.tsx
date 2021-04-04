@@ -1,80 +1,24 @@
 import Grid from '@material-ui/core/Grid';
-import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import HelpIcon from '../../public/icons/help.svg';
-import TasksIcon from '../../public/icons/tasks.svg';
+import CheckIcon from '../../public/icons/check.svg';
 import useRowStyles from '../shared/row-styles';
-import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ITask } from '../store/models/task-model';
 import { IStore } from '../store/use-store';
-
-export const MissingDocumentRow = (props: {
-  segmentDocument: ISegmentDocument;
-  isSmall?: boolean;
-}) => {
-  const rowStyles = useRowStyles();
-  const classes = useStyles();
-  return (
-    <div
-      className={clsx(!props.isSmall && rowStyles.row, props.isSmall && rowStyles.rowSmall)}
-      onClick={() => {
-        // TODO handle slides?
-        window.open(
-          `https://docs.google.com/document/d/${props.segmentDocument.documentId}`,
-          '_blank',
-        );
-      }}
-    >
-      <Grid container spacing={2} alignItems="center">
-        <Grid item className={rowStyles.rowLeft}>
-          <HelpIcon
-            height="24"
-            width="24"
-            style={{ margin: '0 auto' }}
-            className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
-          />
-        </Grid>
-        <Grid item xs={8}>
-          <Grid container>
-            <Grid item xs={12} zeroMinWidth>
-              <Typography noWrap>{props.segmentDocument.documentId}</Typography>
-            </Grid>
-            {!props.isSmall && (
-              <Grid item xs={12} zeroMinWidth>
-                <Typography variant="body2">
-                  {format(new Date(props.segmentDocument.date), "MMM do, yyyy 'at' hh:mm a")}
-                </Typography>
-              </Grid>
-            )}
-          </Grid>
-        </Grid>
-      </Grid>
-    </div>
-  );
-};
 
 const useStyles = makeStyles((theme) => ({
   image: {
     display: 'block',
-    maxWidth: 18,
-    margin: '0 auto',
+    height: 18,
+    width: 18,
   },
-  imageSpacing: {
-    maxHeight: 18,
-    maxWidth: 18,
+  text: {
+    whiteSpace: 'pre-wrap',
     marginTop: 5,
-  },
-  time: {
-    minWidth: 160,
-    maxWidth: 180,
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
   row: {
     minHeight: 48,
@@ -89,16 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ConditionalWrapper = ({ shouldWrap, wrapper, children }: any) =>
-  shouldWrap ? wrapper(children) : children;
-
 const TaskRow = (props: {
   task: ITask;
   selectedTaskId: string | null;
   store: IStore;
   isSmall?: boolean;
-  tooltipText?: string;
-  text?: string;
 }) => {
   const isSelected = props.selectedTaskId === props.task.id;
   const router = useHistory();
@@ -125,23 +64,23 @@ const TaskRow = (props: {
         isSelected && rowStyles.rowPrimaryMain,
       )}
     >
-      <ConditionalWrapper
-        shouldWrap={!!props.tooltipText}
-        wrapper={(children: any) => <Tooltip title={props.tooltipText!}>{children}</Tooltip>}
-      >
-        <Grid container spacing={2} alignItems="center">
-          <Grid item className={rowStyles.rowLeft}>
-            {!props.isSmall && <TasksIcon className={classes.image} />}
-          </Grid>
-          <Grid item zeroMinWidth xs>
-            <Grid container>
-              <Grid item xs={12} zeroMinWidth>
-                <Typography noWrap>{props.task.title}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+      <Grid container spacing={2} alignItems="flex-start">
+        <Grid item className={rowStyles.rowLeft}>
+          {!props.isSmall && (
+            <IconButton
+              onClick={(event) => {
+                event.stopPropagation();
+                alert('todo: complete task');
+              }}
+            >
+              <CheckIcon className={classes.image} />
+            </IconButton>
+          )}
         </Grid>
-      </ConditionalWrapper>
+        <Grid item zeroMinWidth xs>
+          <Typography className={classes.text}>{props.task.title}</Typography>
+        </Grid>
+      </Grid>
     </div>
   );
 };

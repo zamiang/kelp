@@ -157,7 +157,7 @@ const DocumentRow = (props: {
                   <Typography variant="body2" noWrap>
                     {props.text
                       ? props.text
-                      : `Last updated ${formatDistanceToNow(new Date(props.doc.updatedAt!))}ago`}
+                      : `Last updated ${formatDistanceToNow(new Date(props.doc.updatedAt!))} ago`}
                   </Typography>
                 </Grid>
               )}

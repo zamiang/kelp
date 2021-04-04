@@ -134,7 +134,6 @@ const AllTasks = (props: {
               task={task.task}
               store={props.store}
               selectedTaskId={props.selectedTaskId}
-              text={task.task.title}
             />
           ))}
         </div>
