@@ -126,12 +126,12 @@ const AllTasks = (props: {
       {topTasks.length > 0 && (
         <div className={classes.rowHighlight}>
           <Typography className={classes.rowText} variant="h6">
-            Recent documents
+            Recent tasks
           </Typography>
           {topTasks.map((task) => (
             <TaskRow
               key={task.task.id}
-              doc={task.task}
+              task={task.task}
               store={props.store}
               selectedTaskId={props.selectedTaskId}
               text={task.task.title}

@@ -10,6 +10,8 @@ import BackIcon from '../../public/icons/close.svg';
 import FileOrangeIcon from '../../public/icons/file-orange.svg';
 import FileIcon from '../../public/icons/file.svg';
 import SearchIcon from '../../public/icons/search.svg';
+import TasksOrangeIcon from '../../public/icons/tasks-orange.svg';
+import TasksIcon from '../../public/icons/tasks.svg';
 import UserOrangeIcon from '../../public/icons/user-orange.svg';
 import UserIcon from '../../public/icons/user.svg';
 import SearchBar from './search-bar';
@@ -68,6 +70,7 @@ const NavBarLayer = () => {
   const isMeetingsSelected = tab.includes('meetings');
   const isDocsSelected = tab.includes('docs');
   const isPeopleSelected = tab.includes('people');
+  const isTasksSelected = tab.includes('tasks');
 
   return (
     <Grid container alignItems="center" justify="space-between">
@@ -107,6 +110,19 @@ const NavBarLayer = () => {
             <UserOrangeIcon width="24" height="24" />
           ) : (
             <UserIcon width="24" height="24" />
+          )}
+        </IconButton>
+      </Grid>
+      <Grid item xs className={clsx(classes.icon, isTasksSelected && classes.selected)}>
+        <IconButton
+          className={classes.iconButtonLarge}
+          onClick={() => history.push('/tasks')}
+          aria-label="Tasks"
+        >
+          {isTasksSelected ? (
+            <TasksOrangeIcon width="24" height="24" />
+          ) : (
+            <TasksIcon width="24" height="24" />
           )}
         </IconButton>
       </Grid>

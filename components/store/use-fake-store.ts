@@ -6,6 +6,8 @@ import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
 import SegmentDocumentModel from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
+import TaskDocumentDataStore from './models/task-document-model';
+import TaskDataStore from './models/task-model';
 import TfidfDataStore from './models/tfidf-model';
 import data from './store-faker';
 import { IStore } from './use-store';
@@ -20,6 +22,8 @@ const useFakeStore = (db: dbType): IStore => {
   const attendeeDataStore = new AttendeeModel(db);
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentModel(db);
+  const taskDataStore = new TaskDataStore(db);
+  const taskDocumentDataStore = new TaskDocumentDataStore(db);
 
   useEffect(() => {
     const addData = async () => {
@@ -52,6 +56,8 @@ const useFakeStore = (db: dbType): IStore => {
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
+    taskStore: taskDataStore,
+    taskDocumentStore: taskDocumentDataStore,
     tfidfStore,
     isLoading,
     lastUpdated: new Date(),
