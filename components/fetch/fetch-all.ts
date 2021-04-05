@@ -70,7 +70,7 @@ const limit = pRateLimit({
   interval: 1000, // 1000 ms == 1 second
   rate: 6,
   concurrency: 4,
-  maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
+  maxDelay: 1000 * 120, // an API call delayed > 120 sec is rejected
 });
 
 const initialEmailList: string[] = [];
