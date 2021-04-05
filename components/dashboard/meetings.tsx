@@ -13,6 +13,8 @@ import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
+const shoudlRenderMeetingsBar = false;
+
 const dayStyles = makeStyles((theme) => ({
   day: {
     marginTop: theme.spacing(2),
@@ -193,19 +195,21 @@ const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => vo
 
   return (
     <div className={classes.panel}>
-      <MeetingBar
-        store={props.store}
-        selectedDay={selectedDay}
-        onDayClick={(d: Date) => {
-          setSelectedDay(d);
-          scrollDayIntoView(d);
-        }}
-        currentDay={new Date()}
-        onNowClick={() => {
-          setSelectedDay(new Date());
-          scrollCurrentTimeIntoView();
-        }}
-      />
+      {shoudlRenderMeetingsBar && (
+        <MeetingBar
+          store={props.store}
+          selectedDay={selectedDay}
+          onDayClick={(d: Date) => {
+            setSelectedDay(d);
+            scrollDayIntoView(d);
+          }}
+          currentDay={new Date()}
+          onNowClick={() => {
+            setSelectedDay(new Date());
+            scrollCurrentTimeIntoView();
+          }}
+        />
+      )}
       {featuredMeeting && <FeaturedMeeting meeting={featuredMeeting} store={props.store} />}
       {days.map((day) => (
         <DayContainer
