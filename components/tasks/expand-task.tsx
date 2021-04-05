@@ -3,6 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
+import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CheckIcon from '../../public/icons/check-orange.svg';
@@ -106,8 +107,8 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
         const meetings = result.filter((r) => !!r.segmentId);
         const documents = result.filter((r) => !!r.documentId);
         console.log(meetings, documents);
-        setTaskDocuments(document);
-        setTaskMeetings(meetings);
+        setTaskDocuments(uniqBy(documents, 'documentId'));
+        setTaskMeetings(uniqBy(meetings, 'segmentId'));
       }
     };
     void fetchData();
