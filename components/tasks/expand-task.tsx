@@ -121,6 +121,11 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
     <React.Fragment>
       <div className={classes.topContainer}>
         <div className={classes.headingContainer}>
+          {task.listTitle && (
+            <Typography variant="h5" style={{ marginBottom: 5 }}>
+              {task.listTitle}
+            </Typography>
+          )}
           <Typography variant="h3" color="textPrimary" gutterBottom>
             {task.title || '(no title)'}
           </Typography>
