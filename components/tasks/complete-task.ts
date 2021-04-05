@@ -1,12 +1,23 @@
-export const completeTask = async (taskId: string, taskList: string, authToken: string) => {
+import { IStore } from '../store/use-store';
+
+const fields = 'id,title,completed,updated,deleted,status,due,links,notes,parent,position,selfLink';
+
+export const completeTask = async (
+  taskId: string,
+  taskListId: string,
+  authToken: string,
+  store: IStore,
+) => {
   const body = {
-    completed: new Date().toISOString,
+    status: 'completed',
+    id: taskId,
+    fields,
   };
 
   const taskResponse = await fetch(
-    `https://tasks.googleapis.com/tasks/v1/lists/${taskList}/tasks/${taskId}`,
+    `https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks/${taskId}`,
     {
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         authorization: `Bearer ${authToken}`,
@@ -14,5 +25,6 @@ export const completeTask = async (taskId: string, taskList: string, authToken: 
       body: JSON.stringify(body),
     },
   );
+  await store.taskStore.completeTask(taskId);
   return taskResponse;
 };

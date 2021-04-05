@@ -11,7 +11,10 @@ import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import { ITask } from '../store/models/task-model';
 import { IStore } from '../store/use-store';
+import { completeTask } from './complete-task';
 import TaskRow from './task-row';
+
+const tasksLink = 'https://calendar.google.com/calendar/u/0/r?opentasks=1';
 
 const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => void }) => {
   const classes = useExpandStyles();
@@ -67,7 +70,15 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
                 disableElevation
                 color="primary"
                 startIcon={<CheckIcon width="24" height="24" />}
-                onClick={() => alert('complete task')}
+                onClick={() => {
+                  void completeTask(
+                    task.id,
+                    task.listId,
+                    props.store.googleOauthToken!,
+                    props.store,
+                  );
+                  alert('complete task');
+                }}
               >
                 Complete Task
               </Button>
@@ -79,7 +90,7 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
                 disableElevation
                 color="primary"
                 startIcon={<EditIcon width="24" height="24" />}
-                href={task.selfLink!}
+                href={tasksLink}
                 target="_blank"
               >
                 Edit Task

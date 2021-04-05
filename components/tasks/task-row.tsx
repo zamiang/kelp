@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import CheckIconOrange from '../../public/icons/check-orange.svg';
 import CheckIcon from '../../public/icons/check.svg';
 import useRowStyles from '../shared/row-styles';
 import { ITask } from '../store/models/task-model';
@@ -45,6 +46,7 @@ const TaskRow = (props: {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+  const [isCompleted, setIsCompleted] = useState<boolean>(props.task.completedAt ? true : false);
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -69,13 +71,23 @@ const TaskRow = (props: {
         <Grid item className={rowStyles.rowLeft}>
           {!props.isSmall && (
             <IconButton
+              color={isCompleted ? 'primary' : 'secondary'}
               onClick={(event) => {
                 event.stopPropagation();
-                void completeTask(props.task.id, props.task.listId, props.store.googleOauthToken!);
-                alert('todo: complete task');
+                void completeTask(
+                  props.task.id,
+                  props.task.listId,
+                  props.store.googleOauthToken!,
+                  props.store,
+                );
+                setIsCompleted(true);
               }}
             >
-              <CheckIcon className={classes.image} />
+              {isCompleted ? (
+                <CheckIconOrange className={classes.image} />
+              ) : (
+                <CheckIcon className={classes.image} />
+              )}
             </IconButton>
           )}
         </Grid>

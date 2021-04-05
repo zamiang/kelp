@@ -40,6 +40,7 @@ export const fetchTasks = async (authToken: string, limit: any) => {
     maxResults: '100',
     showHidden: 'false',
     showDeleted: 'false',
+    showCompleted: 'true',
     updatedMin: config.startDate.toISOString(),
   });
   const tasksFromLists = await Promise.all(
