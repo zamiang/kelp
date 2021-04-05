@@ -106,7 +106,6 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
         const result = await props.store.taskDocumentStore.getAllForTaskId(taskId);
         const meetings = result.filter((r) => !!r.segmentId);
         const documents = result.filter((r) => !!r.documentId);
-        console.log(meetings, documents);
         setTaskDocuments(uniqBy(documents, 'documentId'));
         setTaskMeetings(uniqBy(meetings, 'segmentId'));
       }
