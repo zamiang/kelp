@@ -51,7 +51,7 @@ const getFeaturedDocuments = async (props: IStore) => {
     }),
   );
 
-  // Hash of personId to meeting array
+  // Hash of documentId to meeting array
   const meetingsForDocument: { [id: string]: ISegment[] } = {};
 
   await Promise.all(
@@ -100,13 +100,13 @@ const AllDocuments = (props: {
   setDocumentId?: (id: string) => void;
 }) => {
   const classes = rowStyles();
-  const [docs, setDocs] = useState<IDocument[]>([]);
+  const [documents, setDocuments] = useState<IDocument[]>([]);
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.store.documentDataStore.getAll();
-      setDocs(result.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
+      setDocuments(result.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
@@ -132,7 +132,7 @@ const AllDocuments = (props: {
           {topDocuments.map((doc) => (
             <DocumentRow
               key={doc.document.id}
-              doc={doc.document}
+              document={doc.document}
               store={props.store}
               selectedDocumentId={props.selectedDocumentId}
               text={doc.text}
@@ -141,10 +141,10 @@ const AllDocuments = (props: {
         </div>
       )}
       <div>
-        {docs.map((doc) => (
+        {documents.map((document) => (
           <DocumentRow
-            key={doc.id}
-            doc={doc}
+            key={document.id}
+            document={document}
             store={props.store}
             selectedDocumentId={props.selectedDocumentId}
           />
@@ -160,23 +160,25 @@ export const DocumentsForToday = (props: {
   isSmall?: boolean;
 }) => {
   const classes = panelStyles();
-  const [docs, setDocs] = useState<IDocument[]>([]);
+  const [documents, setDocuments] = useState<IDocument[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.store.segmentDocumentStore.getAllForDay(getDayOfYear(new Date()));
       const documents = await props.store.documentDataStore.getBulk(
         result.map((r) => r.documentId),
       );
-      setDocs(documents.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)));
+      setDocuments(
+        documents.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)),
+      );
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
   return (
     <div className={classes.section}>
-      {docs.map((doc: IDocument) => (
+      {documents.map((document: IDocument) => (
         <DocumentRow
-          key={doc.id}
-          doc={doc}
+          key={document.id}
+          document={document}
           store={props.store}
           selectedDocumentId={props.selectedDocumentId}
         />
@@ -187,7 +189,7 @@ export const DocumentsForToday = (props: {
 
 const Documents = (props: { store: IStore; setDocumentId?: (id: string) => void }) => {
   const classes = panelStyles();
-  const selectedDocumentId = useLocation().pathname.replace('/docs/', '').replace('/', '');
+  const selectedDocumentId = useLocation().pathname.replace('/documents/', '').replace('/', '');
 
   return (
     <div className={classes.panel}>

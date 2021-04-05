@@ -9,6 +9,7 @@ import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
+import EmailIcon from '../../public/icons/email-orange.svg';
 import PlusIcon from '../../public/icons/plus.svg';
 import SaveIcon from '../../public/icons/save.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
@@ -36,10 +37,10 @@ const EmailGuestsButton = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const docs = await Promise.all(
+      const documents = await Promise.all(
         documentIds.map(async (id) => props.documentDataStore.getById(id)),
       );
-      setDocuments(docs);
+      setDocuments(documents);
     };
     void fetchData();
   }, [documentIds.join('')]);
@@ -56,6 +57,7 @@ const EmailGuestsButton = (props: {
       href={link}
       target="_blank"
       variant="outlined"
+      startIcon={<EmailIcon width="24" height="24" />}
       className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
     >
       Email guests

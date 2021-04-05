@@ -95,14 +95,14 @@ const ConditionalWrapper = ({ shouldWrap, wrapper, children }: any) =>
   shouldWrap ? wrapper(children) : children;
 
 const DocumentRow = (props: {
-  doc: IDocument;
+  document: IDocument;
   selectedDocumentId: string | null;
   store: IStore;
   isSmall?: boolean;
   tooltipText?: string;
   text?: string;
 }) => {
-  const isSelected = props.selectedDocumentId === props.doc.id;
+  const isSelected = props.selectedDocumentId === props.document.id;
   const router = useHistory();
   const buttonStyles = useButtonStyles();
   const rowStyles = useRowStyles();
@@ -122,8 +122,8 @@ const DocumentRow = (props: {
       onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       onClick={(event) => {
         event.stopPropagation();
-        if (props.doc.link) {
-          window.open(props.doc.link);
+        if (props.document.link) {
+          window.open(props.document.link);
         }
         return false;
       }}
@@ -141,23 +141,28 @@ const DocumentRow = (props: {
         <Grid container spacing={2} alignItems="center">
           <Grid item className={rowStyles.rowLeft}>
             {!props.isSmall && (
-              <img alt="Document Icon" src={props.doc.iconLink} className={classes.image} />
+              <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
             )}
             {props.isSmall && (
-              <img src={props.doc.iconLink} className={clsx(classes.image, classes.imageSpacing)} />
+              <img
+                src={props.document.iconLink}
+                className={clsx(classes.image, classes.imageSpacing)}
+              />
             )}
           </Grid>
           <Grid item zeroMinWidth xs>
             <Grid container>
               <Grid item xs={12} zeroMinWidth>
-                <Typography noWrap>{props.doc.name}</Typography>
+                <Typography noWrap>{props.document.name}</Typography>
               </Grid>
               {!props.isSmall && (
                 <Grid item xs={12} zeroMinWidth>
                   <Typography variant="body2" noWrap>
                     {props.text
                       ? props.text
-                      : `Last updated ${formatDistanceToNow(new Date(props.doc.updatedAt!))}ago`}
+                      : `Last updated ${formatDistanceToNow(
+                          new Date(props.document.updatedAt!),
+                        )} ago`}
                   </Typography>
                 </Grid>
               )}
@@ -170,7 +175,7 @@ const DocumentRow = (props: {
                 variant="outlined"
                 onClick={(event) => {
                   event.stopPropagation();
-                  void router.push(`/docs/${props.doc.id}`);
+                  void router.push(`/documents/${props.document.id}`);
                   return false;
                 }}
               >

@@ -55,12 +55,22 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: 'rgba(0,0,0,0.04)',
     },
-    '& > *': {
-      borderBottom: 'unset',
-    },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
       borderColor: theme.palette.primary.main,
+    },
+  },
+  rowNoHover: {
+    background: 'transparent',
+    transition: 'background 0.3s, opacity 0.3s',
+    cursor: 'pointer',
+    textAlign: 'left',
+    opacity: 1,
+    padding: theme.spacing(2),
+    width: '100%',
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    '&:last-child': {
+      borderBottom: `1px solid transparent`,
     },
   },
   rowExtraPadding: {

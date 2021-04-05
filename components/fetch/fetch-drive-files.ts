@@ -1,6 +1,5 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
-import { pRateLimit } from 'p-ratelimit';
 import config from '../../constants/config';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 
@@ -84,15 +83,7 @@ const fetchDriveFiles = async (googleOauthToken: string) => {
   return results.filter((file: gapi.client.drive.File) => isFileWithinTimeWindow(file));
 };
 
-// create a rate limiter that allows up to x API calls per second, with max concurrency of y
-const limit = pRateLimit({
-  interval: 1000, // 1000 ms == 1 second
-  rate: 6,
-  concurrency: 4,
-  maxDelay: 1000 * 60, // an API call delayed > 60 sec is rejected
-});
-
-export const fetchDriveFilesById = async (ids: string[], authToken: string) => {
+export const fetchDriveFilesById = async (ids: string[], authToken: string, limit: any) => {
   const params = {
     fields: driveFileFields,
   };

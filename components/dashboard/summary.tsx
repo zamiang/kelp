@@ -83,14 +83,14 @@ const TitleRow = (props: {
   const classes = useTitleRowStyles();
   const buttonClasses = useButtonStyles();
   const isCalendarSelected = props.filters.meetings;
-  const isDocsSelected = props.filters.docs;
+  const isDocsSelected = props.filters.documents;
   const isPeopleSelected = props.filters.people;
   const togglePeopleSelected = async () =>
     props.setFilter({ ...props.filters, people: !props.filters.people });
   const toggleCalendarSelected = async () =>
     props.setFilter({ ...props.filters, meetings: !props.filters.meetings });
   const toggleDocsSelected = async () =>
-    props.setFilter({ ...props.filters, docs: !props.filters.docs });
+    props.setFilter({ ...props.filters, documents: !props.filters.documents });
   return (
     <div className={classes.container}>
       <TopBar title={format(props.start, 'LLLL') + ' ' + format(props.start, 'uuuu')}>
@@ -305,7 +305,7 @@ const Summary = (props: IStore) => {
   const [filters, setFilters] = useState<IFilters>({
     meetings: true,
     people: true,
-    docs: true,
+    documents: true,
   });
   const [tfidf, setTfidf] = useState<Tfidf | undefined>(undefined);
   useEffect(() => {
@@ -314,7 +314,7 @@ const Summary = (props: IStore) => {
       setTfidf(instance);
     };
     void compute();
-  }, [filters.docs, filters.meetings, filters.people]);
+  }, [filters.documents, filters.meetings, filters.people]);
 
   const onTodayClick = () => setStart(getStart());
   const onForwardClick = () => {

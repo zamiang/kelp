@@ -9,10 +9,11 @@ import clsx from 'clsx';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
-import Docs from '../components/dashboard/documents';
+import Documents from '../components/dashboard/documents';
 import Meetings from '../components/dashboard/meetings';
 import People from '../components/dashboard/people';
 import Search from '../components/dashboard/search';
+import Tasks from '../components/dashboard/tasks';
 import ExpandedDocument from '../components/documents/expand-document';
 import ErrorBoundaryComponent from '../components/error-tracking/error-boundary';
 import { fetchToken } from '../components/fetch/fetch-token';
@@ -24,6 +25,7 @@ import ExpandPerson from '../components/person/expand-person';
 import Loading from '../components/shared/loading';
 import db from '../components/store/db';
 import getStore, { IStore } from '../components/store/use-store';
+import ExpandTask from '../components/tasks/expand-task';
 import Settings from '../components/user-profile/settings';
 
 export const drawerWidth = 240;
@@ -126,6 +128,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const [meetingId, setMeetingId] = useState<string | undefined>(undefined);
   const [personId, setPersonId] = useState<string | undefined>(undefined);
   const [documentId, setDocumentId] = useState<string | undefined>(undefined);
+  const [taskId, setTaskId] = useState<string | undefined>(undefined);
 
   const handleRefreshClick = () => store.refetch();
   const pathname = useLocation().pathname;
@@ -156,8 +159,11 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Route path="/meetings">
                 <Meetings store={store} setMeetingId={setMeetingId} />
               </Route>
-              <Route path="/docs">
-                <Docs store={store} setDocumentId={setDocumentId} />
+              <Route path="/documents">
+                <Documents store={store} setDocumentId={setDocumentId} />
+              </Route>
+              <Route path="/tasks">
+                <Tasks store={store} setTaskId={setTaskId} />
               </Route>
               <Route path="/people">
                 <People store={store} setPersonId={setPersonId} />
@@ -169,20 +175,26 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Route exact path="/meetings">
                   <ExpandedMeeting store={store} meetingId={meetingId} />
                 </Route>
-                <Route exact path="/docs">
+                <Route exact path="/documents">
                   <ExpandedDocument store={store} documentId={documentId} />
                 </Route>
                 <Route exact path="/people">
                   <ExpandPerson store={store} personId={personId} />
                 </Route>
+                <Route exact path="/tasks">
+                  <ExpandTask store={store} taskId={taskId} />
+                </Route>
                 <Route path="/meetings/:slug">
                   <ExpandedMeeting store={store} />
                 </Route>
-                <Route path="/docs/:slug">
+                <Route path="/documents/:slug">
                   <ExpandedDocument store={store} />
                 </Route>
                 <Route path="/people/:slug">
                   <ExpandPerson store={store} />
+                </Route>
+                <Route path="/tasks/:slug">
+                  <ExpandTask store={store} />
                 </Route>
                 <Route path="/settings">
                   <Settings />

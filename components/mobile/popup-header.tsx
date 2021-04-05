@@ -70,7 +70,7 @@ const GoToSourceButton = (props: { store: IStore; type: string; id: string }) =>
           );
           setLink(editLink);
         }
-      } else if (props.type === 'docs') {
+      } else if (props.type === 'documents') {
         const p = await props.store.documentDataStore.getById(props.id);
         if (p && p.link) {
           setLink(p.link);

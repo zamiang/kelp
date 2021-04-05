@@ -17,6 +17,7 @@
   "stylelint.enable": true,
   "workbench.editor.enablePreview": false,
   "typescript.tsdk": "./node_modules/typescript/lib",
+  "emmet.showExpandedAbbreviation": "never",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }

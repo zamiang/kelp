@@ -1,7 +1,9 @@
 import { flatten, uniq } from 'lodash';
+import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import { getDocumentsFromCalendarEvents } from '../store/models/segment-model';
+import { ITask } from '../store/models/task-model';
 import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
 import fetchContacts from './fetch-contacts';
 import fetchDriveActivityForDocumentIds, { IFormattedDriveActivity } from './fetch-drive-activity';
@@ -9,6 +11,7 @@ import fetchDriveFiles from './fetch-drive-files';
 import FetchMissingGoogleDocs from './fetch-missing-google-docs';
 import { batchFetchPeople, person } from './fetch-people';
 import { fetchSelf } from './fetch-self';
+import { fetchTasks } from './fetch-tasks';
 
 interface IReturnType {
   readonly personList: person[];
@@ -17,6 +20,8 @@ interface IReturnType {
   readonly currentUser?: person;
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
+  readonly tasks: ITask[];
+  readonly defaultTaskList?: gapi.client.tasks.TaskList;
   readonly missingDriveFiles: (gapi.client.drive.File | null)[];
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
@@ -26,6 +31,7 @@ interface IReturnType {
   readonly driveResponseLoading: boolean;
   readonly calendarResponseLoading: boolean;
   readonly contactsResponseLoading: boolean;
+  readonly tasksResponseLoading: boolean;
   readonly driveActivityLoading: boolean;
   readonly currentUserLoading: boolean;
   readonly peopleLoading: boolean;
@@ -60,6 +66,14 @@ const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
+// create a rate limiter that allows up to x API calls per second, with max concurrency of y
+const limit = pRateLimit({
+  interval: 1000, // 1000 ms == 1 second
+  rate: 6,
+  concurrency: 4,
+  maxDelay: 1000 * 120, // an API call delayed > 120 sec is rejected
+});
+
 const initialEmailList: string[] = [];
 
 const FetchAll = (googleOauthToken: string): IReturnType => {
@@ -90,6 +104,13 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   ] as any);
 
   /**
+   * TASKS
+   */
+  const tasksResponse = useAsyncAbortable(() => fetchTasks(googleOauthToken, limit), [
+    googleOauthToken,
+  ] as any);
+
+  /**
    * CALENDAR
    */
   const calendarResponse = useAsyncAbortable(
@@ -113,6 +134,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   const missingGoogleDocs = FetchMissingGoogleDocs({
     missingGoogleDocIds,
     googleOauthToken,
+    limit,
   });
 
   /**
@@ -127,7 +149,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       : (idsForDriveActivity as any);
 
   const driveActivityResponse = useAsyncAbortable(
-    () => fetchDriveActivityForDocumentIds(googleDocIdsToFetchActivity, googleOauthToken),
+    () => fetchDriveActivityForDocumentIds(googleDocIdsToFetchActivity, googleOauthToken, limit),
     [googleDocIdsToFetchActivity.length.toString()] as any, // unsure why this type is a failure
   );
   const driveActivity = driveActivityResponse.result ? driveActivityResponse.result.activity : [];
@@ -144,12 +166,13 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
       .filter((id) => id && !contactsByPeopleId[id]),
   );
   const peopleResponse = useAsyncAbortable(
-    () => batchFetchPeople(peopleIds as any, googleOauthToken),
+    () => batchFetchPeople(peopleIds as any, googleOauthToken, limit),
     [peopleIds.length.toString()] as any,
   );
 
   const debouncedIsLoading = useDebounce(
     peopleResponse.loading ||
+      tasksResponse.loading ||
       currentUser.loading ||
       driveResponse.loading ||
       calendarResponse.loading ||
@@ -170,6 +193,8 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveFiles: driveResponse.result ? driveResponse.result.filter(Boolean) : [],
     contacts: contactsResponse.result ? contactsResponse.result.filter(Boolean) : [],
     currentUser: currentUser.result,
+    tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
+    defaultTaskList: tasksResponse.result ? tasksResponse.result.defaultTaskList : undefined,
     emailAddresses: emailList,
     refetch: async () => {
       // Current user will reloadd if it fails
@@ -185,6 +210,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading,
+    tasksResponseLoading: tasksResponse.loading,
     peopleLoading: peopleResponse.loading,
     isLoading: debouncedIsLoading,
     error:

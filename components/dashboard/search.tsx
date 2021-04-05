@@ -70,7 +70,7 @@ const Search = (props: { store: IStore }) => {
             <DocumentRow
               selectedDocumentId={null}
               key={result.item.id}
-              doc={result.item as IDocument}
+              document={result.item as IDocument}
               store={props.store}
             />
           ))}

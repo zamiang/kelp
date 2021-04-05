@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import CalendarOrangeIcon from '../../public/icons/calendar-orange.svg';
 import CalendarIcon from '../../public/icons/calendar.svg';
+import TasksOrangeIcon from '../../public/icons/check-orange.svg';
+import TasksIcon from '../../public/icons/check.svg';
 import BackIcon from '../../public/icons/close.svg';
 import FileOrangeIcon from '../../public/icons/file-orange.svg';
 import FileIcon from '../../public/icons/file.svg';
@@ -66,8 +68,9 @@ const NavBarLayer = () => {
 
   const tab = router.pathname;
   const isMeetingsSelected = tab.includes('meetings');
-  const isDocsSelected = tab.includes('docs');
+  const isDocsSelected = tab.includes('documents');
   const isPeopleSelected = tab.includes('people');
+  const isTasksSelected = tab.includes('tasks');
 
   return (
     <Grid container alignItems="center" justify="space-between">
@@ -87,7 +90,7 @@ const NavBarLayer = () => {
       <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
         <IconButton
           className={classes.iconButtonLarge}
-          onClick={() => history.push('/docs')}
+          onClick={() => history.push('/documents')}
           aria-label="Documents"
         >
           {isDocsSelected ? (
@@ -107,6 +110,19 @@ const NavBarLayer = () => {
             <UserOrangeIcon width="24" height="24" />
           ) : (
             <UserIcon width="24" height="24" />
+          )}
+        </IconButton>
+      </Grid>
+      <Grid item xs className={clsx(classes.icon, isTasksSelected && classes.selected)}>
+        <IconButton
+          className={classes.iconButtonLarge}
+          onClick={() => history.push('/tasks')}
+          aria-label="Tasks"
+        >
+          {isTasksSelected ? (
+            <TasksOrangeIcon width="24" height="24" />
+          ) : (
+            <TasksIcon width="24" height="24" />
           )}
         </IconButton>
       </Grid>

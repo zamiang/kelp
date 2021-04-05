@@ -5,8 +5,10 @@ import Divider from '@material-ui/core/Divider';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import { flatten, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import EmailIcon from '../../public/icons/email-orange.svg';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -50,17 +52,9 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
 
   useEffect(() => {
     const fetchData = async () => {
-      const p = await props.store.segmentDocumentStore.getAllForPersonId(personId);
-      setSegmentDocuments(p);
-    };
-    void fetchData();
-  }, [props.store.isLoading, personId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
       const s = await props.store.timeDataStore.getSegmentsForPersonId(personId);
       if (s) {
-        const filteredSegments = s.filter(Boolean) as any;
+        const filteredSegments = s.filter(Boolean) as ISegment[];
         setSegments(filteredSegments);
 
         const currentDay = new Date();
@@ -70,6 +64,23 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         const a = await getAssociates(personId, filteredSegments, props.store.attendeeDataStore);
         setAssociates(a.attendees.slice(0, 5));
         setAssociatesStats(a.attendeeStats);
+
+        // segment documents
+        // potentially should be in the database
+        const segmentDocumentsFromPersonEdits = await props.store.segmentDocumentStore.getAllForPersonId(
+          personId,
+        );
+        const segmentDocumentsFromSegments = await Promise.all(
+          filteredSegments.map(async (s: ISegment) =>
+            props.store.segmentDocumentStore.getAllForSegmentId(s.id),
+          ),
+        );
+        const segmentDocumentsCombined = uniqBy(
+          segmentDocumentsFromPersonEdits.concat(flatten(segmentDocumentsFromSegments)),
+          'segmentId',
+        );
+
+        setSegmentDocuments(segmentDocumentsCombined);
       }
     };
     void fetchData();
@@ -111,6 +122,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
                 variant="outlined"
                 href={`mailto:${emailAddress}`}
                 target="_blank"
+                startIcon={<EmailIcon width="24" height="24" />}
               >
                 Email Contact
               </Button>
@@ -162,7 +174,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         {segmentDocuments.length > 0 && (
           <div className={classes.section}>
             <Typography variant="h6" style={{ marginBottom: 0 }}>
-              Documents they have edited
+              Related documents
             </Typography>
             <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
           </div>

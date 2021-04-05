@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import CalendarOrangeIcon from '../../public/icons/calendar-orange.svg';
 import CalendarIcon from '../../public/icons/calendar.svg';
+import TasksOrangeIcon from '../../public/icons/check-orange.svg';
+import TasksIcon from '../../public/icons/check.svg';
 import FileOrangeIcon from '../../public/icons/file-orange.svg';
 import FileIcon from '../../public/icons/file.svg';
 import UserOrangeIcon from '../../public/icons/user-orange.svg';
@@ -14,11 +16,13 @@ import Documents from '../dashboard/documents';
 import Meetings from '../dashboard/meetings';
 import People from '../dashboard/people';
 import Search from '../dashboard/search';
+import Tasks from '../dashboard/tasks';
 import ExpandedDocument from '../documents/expand-document';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import ExpandPerson from '../person/expand-person';
 import { IPerson } from '../store/models/person-model';
 import { IStore } from '../store/use-store';
+import ExpandedTask from '../tasks/expand-task';
 import Settings from '../user-profile/settings';
 import Handle404 from './handle-404';
 import PopupHeader from './popup-header';
@@ -92,8 +96,9 @@ const MobileDashboard = (props: { store: IStore }) => {
 
   const tab = location.pathname;
   const isMeetingsSelected = tab.includes('meetings');
-  const isDocsSelected = tab.includes('docs');
+  const isDocsSelected = tab.includes('documents');
   const isPeopleSelected = tab.includes('people');
+  const isTasksSelected = tab.includes('tasks');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,26 +115,20 @@ const MobileDashboard = (props: { store: IStore }) => {
       <PopupHeader user={user} store={store} />
       <div className={classes.container}>
         <Switch>
-          <Route path="/search/docs/:slug">
-            <ExpandedDocument store={store} />
-          </Route>
-          <Route path="/search/meetings/:slug">
-            <ExpandedMeeting store={store} />
-          </Route>
-          <Route path="/search/people/:slug">
-            <ExpandPerson store={store} />
-          </Route>
           <Route path="/search">
             <Search store={store} />
           </Route>
           <Route path="/people/:slug">
             <ExpandPerson store={store} />
           </Route>
-          <Route path="/docs/:slug">
+          <Route path="/documents/:slug">
             <ExpandedDocument store={store} />
           </Route>
           <Route path="/meetings/:slug">
             <ExpandedMeeting store={store} />
+          </Route>
+          <Route path="/tasks/:slug">
+            <ExpandedTask store={store} />
           </Route>
           <Route path="/meetings">
             <Meetings store={store} />
@@ -137,7 +136,10 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Route path="/people">
             <People store={store} />
           </Route>
-          <Route path="/docs">
+          <Route path="/tasks">
+            <Tasks store={store} />
+          </Route>
+          <Route path="/documents">
             <Documents store={store} />
           </Route>
           <Route path="/settings">
@@ -169,7 +171,7 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
             <IconButton
               className={classes.iconButtonLarge}
-              onClick={() => history.push('/docs')}
+              onClick={() => history.push('/documents')}
               aria-label="Documents"
             >
               {isDocsSelected ? (
@@ -189,6 +191,19 @@ const MobileDashboard = (props: { store: IStore }) => {
                 <UserOrangeIcon width="24" height="24" />
               ) : (
                 <UserIcon width="24" height="24" />
+              )}
+            </IconButton>
+          </Grid>
+          <Grid item xs className={clsx(classes.icon, isTasksSelected && classes.selected)}>
+            <IconButton
+              className={classes.iconButtonLarge}
+              onClick={() => history.push('/tasks')}
+              aria-label="Tasks"
+            >
+              {isTasksSelected ? (
+                <TasksOrangeIcon width="24" height="24" />
+              ) : (
+                <TasksIcon width="24" height="24" />
               )}
             </IconButton>
           </Grid>
