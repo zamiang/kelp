@@ -9,16 +9,12 @@ import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
 import PlusIcon from '../../public/icons/plus.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
-import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { IFormattedAttendee } from '../store/models/attendee-model';
 import { ISegmentDocument } from '../store/models/segment-document-model';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 import { createSmartMeetingNotes } from './expand-meeting';
-
-const shouldShowAttendees = false;
 
 const useBelowStyles = makeStyles((theme) => ({
   container: {
@@ -49,7 +45,6 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
   const classes = useBelowStyles();
   const buttonClasses = useButtonStyles();
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
-  const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
   >([]);
@@ -59,14 +54,6 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
   const [segmentDocumentsFromPastMeetings, setSegmentDocumentsFromPastMeetings] = useState<
     ISegmentDocument[]
   >([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await props.store.attendeeDataStore.getAllForSegmentId(props.meeting.id);
-      setAttendees(result);
-    };
-    void fetchData();
-  }, [props.store.isLoading, props.meeting.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,14 +81,13 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
-  const hasAttendees = attendees.length > 0;
 
   return (
     <div>
-      <div
-        className={clsx(classes.container, !props.shouldPadLeft && classes.containerNoLeftMargin)}
-      >
-        {hasDocuments && (
+      {hasDocuments && (
+        <div
+          className={clsx(classes.container, !props.shouldPadLeft && classes.containerNoLeftMargin)}
+        >
           <React.Fragment>
             <Typography variant="h6" className={classes.heading}>
               Documents you may need
@@ -114,19 +100,8 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
               isSmall
             />
           </React.Fragment>
-        )}
-        {shouldShowAttendees && hasAttendees && (
-          <React.Fragment>
-            <Typography variant="h6">Attendees</Typography>
-            <AttendeeList
-              personStore={props.store.personDataStore}
-              attendees={attendees}
-              showAll={false}
-              isSmall={true}
-            />
-          </React.Fragment>
-        )}
-      </div>
+        </div>
+      )}
       <div
         className={clsx(
           classes.buttonContainer,

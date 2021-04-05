@@ -8,6 +8,8 @@ import { times } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
+import EditIcon from '../../public/icons/edit-white.svg';
+import ShareIcon from '../../public/icons/person-add-orange.svg';
 import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
@@ -131,6 +133,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
           variant="outlined"
           href={`${document.link}?${shareParams.toString()}`}
+          startIcon={<ShareIcon width="24" height="24" />}
           target="_blank"
         >
           Share Document
@@ -141,6 +144,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
             variant="contained"
             disableElevation
             color="primary"
+            startIcon={<EditIcon width="24" height="24" />}
             href={document.link!}
             target="_blank"
           >

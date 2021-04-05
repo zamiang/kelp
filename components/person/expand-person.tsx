@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import EmailIcon from '../../public/icons/email-orange.svg';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -111,6 +112,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
                 variant="outlined"
                 href={`mailto:${emailAddress}`}
                 target="_blank"
+                startIcon={<EmailIcon width="24" height="24" />}
               >
                 Email Contact
               </Button>
