@@ -67,6 +67,7 @@ const AllTasks = (props: {
                       props.store.defaultTaskList!.id!,
                       props.store.defaultTaskList!.title!,
                       props.store.googleOauthToken!,
+                      tasks[0] && tasks[0].position ? tasks[0].position : '000000000000',
                       props.store,
                     );
                     // trigger refetching

@@ -1,3 +1,4 @@
+import { toNumber } from 'lodash';
 import { formatTask } from '../fetch/fetch-tasks';
 import { IStore } from '../store/use-store';
 
@@ -8,6 +9,7 @@ export const addTask = async (
   taskListId: string,
   taskListTitle: string,
   authToken: string,
+  taskPosition: string | number,
   store: IStore,
 ) => {
   const body = {
@@ -30,7 +32,7 @@ export const addTask = async (
     id: taskListId,
     title: taskListTitle,
   });
-  formattedTask.position = 0 as any; // add another zero??
+  formattedTask.position = (toNumber(taskPosition) - 1) as any; // add another zero??
   await store.taskStore.addTasksToStore([formattedTask]);
   return formattedTask;
 };
