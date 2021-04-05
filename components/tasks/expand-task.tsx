@@ -13,8 +13,6 @@ import { ITask } from '../store/models/task-model';
 import { IStore } from '../store/use-store';
 import TaskRow from './task-row';
 
-const tasksLink = 'https://calendar.google.com/calendar/u/0/r?opentasks=1';
-
 const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => void }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
@@ -81,7 +79,7 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
                 disableElevation
                 color="primary"
                 startIcon={<EditIcon width="24" height="24" />}
-                href={tasksLink}
+                href={task.selfLink!}
                 target="_blank"
               >
                 Edit Task

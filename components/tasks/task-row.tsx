@@ -9,6 +9,7 @@ import CheckIcon from '../../public/icons/check.svg';
 import useRowStyles from '../shared/row-styles';
 import { ITask } from '../store/models/task-model';
 import { IStore } from '../store/use-store';
+import { completeTask } from './complete-task';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -70,6 +71,11 @@ const TaskRow = (props: {
             <IconButton
               onClick={(event) => {
                 event.stopPropagation();
+                void completeTask(
+                  props.task.id!,
+                  props.task.taskList,
+                  props.store.googleOauthToken,
+                );
                 alert('todo: complete task');
               }}
             >
