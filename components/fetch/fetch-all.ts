@@ -3,6 +3,7 @@ import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import { getDocumentsFromCalendarEvents } from '../store/models/segment-model';
+import { ITask } from '../store/models/task-model';
 import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
 import fetchContacts from './fetch-contacts';
 import fetchDriveActivityForDocumentIds, { IFormattedDriveActivity } from './fetch-drive-activity';
@@ -19,7 +20,7 @@ interface IReturnType {
   readonly currentUser?: person;
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
-  readonly tasks: gapi.client.tasks.Task[];
+  readonly tasks: ITask[];
   readonly missingDriveFiles: (gapi.client.drive.File | null)[];
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;

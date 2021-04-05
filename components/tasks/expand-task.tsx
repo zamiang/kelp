@@ -52,9 +52,9 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
           <Typography variant="h3" color="textPrimary" gutterBottom>
             {task.title || '(no title)'}
           </Typography>
-          {task.updated && (
+          {task.updatedAt && (
             <Typography variant="h5">
-              Modified: {format(new Date(task.updated), "EEEE, MMMM d yyyy 'at' p")}
+              Modified: {format(task.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
             </Typography>
           )}
         </div>

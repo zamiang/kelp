@@ -5,6 +5,8 @@ import { dbType } from '../db';
 export type ITask = {
   id: string;
   title: string;
+  listId: string;
+  listTitle?: string;
   completedAt?: Date;
   updatedAt: Date;
   hidden?: boolean;

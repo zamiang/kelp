@@ -71,11 +71,7 @@ const TaskRow = (props: {
             <IconButton
               onClick={(event) => {
                 event.stopPropagation();
-                void completeTask(
-                  props.task.id!,
-                  props.task.taskList,
-                  props.store.googleOauthToken,
-                );
+                void completeTask(props.task.id, props.task.listId, props.store.googleOauthToken!);
                 alert('todo: complete task');
               }}
             >

@@ -29,7 +29,7 @@ const formatTaskDocument = (
   id: driveActivity.id,
   driveActivityId: driveActivity.id,
   documentId: driveActivity.documentId!,
-  taskId: task.id!,
+  taskId: task.id,
   taskTitle: task?.title,
   date: driveActivity.time,
   reason: driveActivity.action,
@@ -62,8 +62,8 @@ export default class TaskDocumentModel {
       driveActivity.map(async (driveActivityItem) => {
         const task = tasks.find(
           (t) =>
-            new Date(t.updated!) < addMinutes(driveActivityItem.time, 10) &&
-            new Date(t.updated!) > subMinutes(driveActivityItem.time, 10),
+            t.updatedAt < addMinutes(driveActivityItem.time, 10) &&
+            t.updatedAt > subMinutes(driveActivityItem.time, 10),
         );
         if (task) {
           const formattedDocument = formatTaskDocument(driveActivityItem, task);

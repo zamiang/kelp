@@ -13,7 +13,7 @@ import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 
-const shoudlRenderMeetingsBar = false;
+const shouldRenderMeetingsBar = false;
 
 const dayStyles = makeStyles((theme) => ({
   day: {
@@ -195,7 +195,7 @@ const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => vo
 
   return (
     <div className={classes.panel}>
-      {shoudlRenderMeetingsBar && (
+      {shouldRenderMeetingsBar && (
         <MeetingBar
           store={props.store}
           selectedDay={selectedDay}

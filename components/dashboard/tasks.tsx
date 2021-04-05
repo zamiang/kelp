@@ -36,7 +36,7 @@ const getFeaturedTasks = async (props: IStore) => {
   const filterTime = subDays(currentDate, daysToLookBack);
   const currentUserDocuments = await Promise.all(
     tasks
-      .filter((item) => item.updated && new Date(item.updated) > filterTime && !item.parent)
+      .filter((item) => item.updatedAt > filterTime && !item.parent)
       .map(
         async (task) =>
           ({
@@ -44,7 +44,7 @@ const getFeaturedTasks = async (props: IStore) => {
             task,
             meetings: [] as any,
             nextMeetingStartsAt: undefined,
-            text: `You edited this task ${formatDistanceToNow(new Date(task.updated!))} ago`,
+            text: `You edited this task ${formatDistanceToNow(task.updatedAt)} ago`,
           } as IFeaturedTask),
       ),
   );
@@ -70,7 +70,7 @@ const getFeaturedTasks = async (props: IStore) => {
   );
   const d = tasks
     .map((task) => {
-      const meetings = sortBy(meetingsForTask[task.id!], 'start');
+      const meetings = sortBy(meetingsForTask[task.id], 'start');
       const nextMeetingStartAt = meetings[0] ? meetings[0].start : undefined;
       const text =
         meetings[0] && nextMeetingStartAt
@@ -105,7 +105,7 @@ const AllTasks = (props: {
     const fetchData = async () => {
       const result = (await props.store.taskStore.getAll()).filter((task) => !task.parent);
       // probably not correct
-      setTasks(result.sort((a, b) => (new Date(a.updated!) < new Date(b.updated!) ? -1 : 1)));
+      setTasks(result.sort((a, b) => (a.updatedAt < b.updatedAt ? -1 : 1)));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
