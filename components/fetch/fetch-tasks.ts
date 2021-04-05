@@ -2,10 +2,16 @@ import { flatten } from 'lodash';
 import config from '../../constants/config';
 import { ITask } from '../store/models/task-model';
 
-const formatTask = (task: gapi.client.tasks.Task, list: gapi.client.tasks.TaskList): ITask => ({
+export const formatTask = (
+  task: gapi.client.tasks.Task,
+  list: {
+    id: string;
+    title: string;
+  },
+): ITask => ({
   id: task.id!,
   title: task.title!,
-  listId: list.id!,
+  listId: list.id,
   listTitle: list.title,
   completedAt: task.completed ? new Date(task.completed) : undefined,
   updatedAt: new Date(task.updated!),

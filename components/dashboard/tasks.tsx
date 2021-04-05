@@ -1,4 +1,6 @@
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import CheckIcon from '../../public/icons/check-orange.svg';
@@ -17,6 +19,7 @@ const AllTasks = (props: {
   const classes = rowStyles();
   const buttonClasses = useButtonStyles();
   const [tasks, setTasks] = useState<ITask[]>([]);
+  const [text, setText] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,17 +33,36 @@ const AllTasks = (props: {
   return (
     <React.Fragment>
       <div className={classes.rowNoHover}>
-        <Button
-          className={buttonClasses.button}
-          variant="outlined"
-          disableElevation
-          color="primary"
-          startIcon={<CheckIcon width="24" height="24" />}
-          onClick={() => alert('wtf')}
-          style={{ width: 'auto', margin: '0 auto' }}
-        >
-          Add a task
-        </Button>
+        <Grid container>
+          <Grid xs={12}>
+            <TextField
+              multiline
+              rows={4}
+              variant="outlined"
+              fullWidth
+              onChange={(event) => {
+                setText(event.target.value);
+              }}
+              value={text}
+            />
+          </Grid>
+          <Grid>
+            <Button
+              className={buttonClasses.button}
+              variant="outlined"
+              disableElevation
+              color="primary"
+              startIcon={<CheckIcon width="24" height="24" />}
+              onClick={() => {
+                alert('wtf');
+                setText('');
+              }}
+              style={{ width: 'auto', margin: '12px auto 0' }}
+            >
+              Add a task
+            </Button>
+          </Grid>
+        </Grid>
       </div>
 
       <div>
