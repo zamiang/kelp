@@ -40,6 +40,10 @@ export default class TaskModel {
     return this.db.getAll('task');
   }
 
+  async getAllByParentId(parentId: string) {
+    return this.db.getAllFromIndex('task', 'by-parent', parentId);
+  }
+
   async getBulk(ids: string[]): Promise<ITask[]> {
     const uniqIds = uniq(ids);
     const docs = await Promise.all(uniqIds.map((id) => this.db.get('document', id)));

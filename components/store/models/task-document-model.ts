@@ -56,6 +56,7 @@ export default class TaskDocumentModel {
 
     // TODO: iterate through segments and match with tasks
     console.log(segments);
+
     // Add drive activity for tasks
     const driveActivityToAdd = await Promise.all(
       driveActivity.map(async (driveActivityItem) => {

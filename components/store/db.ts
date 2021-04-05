@@ -41,6 +41,7 @@ interface Db extends DBSchema {
   task: {
     value: ITask;
     key: string;
+    indexes: { 'by-parent': string };
   };
   taskDocument: {
     value: ITaskDocument;
@@ -175,9 +176,10 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
       segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
 
-      db.createObjectStore('task', {
+      const taskStore = db.createObjectStore('task', {
         keyPath: 'id',
       });
+      taskStore.createIndex('by-parent', 'parent', { unique: false });
 
       const taskDocumentStore = db.createObjectStore('taskDocument', {
         keyPath: 'id',

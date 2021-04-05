@@ -103,9 +103,9 @@ const AllTasks = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await props.store.taskStore.getAll();
+      const result = (await props.store.taskStore.getAll()).filter((task) => !task.parent);
       // probably not correct
-      setTasks(result.sort((a, b) => (a.title!.toLowerCase() < b.title!.toLowerCase() ? -1 : 1)));
+      setTasks(result.sort((a, b) => (new Date(a.updated!) < new Date(b.updated!) ? -1 : 1)));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
@@ -115,7 +115,6 @@ const AllTasks = (props: {
       const featuredTasks = await getFeaturedTasks(props.store);
       setTopTasks(featuredTasks);
       if (featuredTasks[0] && featuredTasks[0].taskId && props.setTaskId) {
-        console.log('setting featured task', featuredTasks[0].taskId);
         props.setTaskId(featuredTasks[0].taskId);
       }
     };
