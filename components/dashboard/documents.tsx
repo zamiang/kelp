@@ -132,7 +132,7 @@ const AllDocuments = (props: {
           {topDocuments.map((doc) => (
             <DocumentRow
               key={doc.document.id}
-              doc={doc.document}
+              document={doc.document}
               store={props.store}
               selectedDocumentId={props.selectedDocumentId}
               text={doc.text}
@@ -144,7 +144,7 @@ const AllDocuments = (props: {
         {documents.map((document) => (
           <DocumentRow
             key={document.id}
-            doc={document}
+            document={document}
             store={props.store}
             selectedDocumentId={props.selectedDocumentId}
           />
@@ -178,7 +178,7 @@ export const DocumentsForToday = (props: {
       {documents.map((document: IDocument) => (
         <DocumentRow
           key={document.id}
-          doc={document}
+          document={document}
           store={props.store}
           selectedDocumentId={props.selectedDocumentId}
         />

@@ -1,22 +1,21 @@
 import { addMinutes, getDayOfYear, subMinutes } from 'date-fns';
-import { orderBy } from 'lodash';
+import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
 import DriveActivityModel from './drive-activity-model';
-import SegmentModel from './segment-model';
+import SegmentModel, { ISegment } from './segment-model';
 import TaskModel, { ITask } from './task-model';
 
 export interface ITaskDocument {
   id: string;
   driveActivityId?: string;
-  documentId: string;
+  documentId?: string;
   taskId: string;
   taskTitle?: string;
   date: Date;
   reason: string;
-  personId: string;
   segmentId?: string;
   day: number;
   week: number;
@@ -33,9 +32,19 @@ const formatTaskDocument = (
   taskTitle: task?.title,
   date: driveActivity.time,
   reason: driveActivity.action,
-  personId: driveActivity.actorPersonId!,
   day: getDayOfYear(driveActivity.time),
   week: getWeek(driveActivity.time),
+});
+
+const formatTaskMeeting = (segment: ISegment, task: ITask): ITaskDocument => ({
+  id: `${task.id}-${segment.id}`,
+  taskId: task.id,
+  taskTitle: task.title,
+  date: task.updatedAt,
+  segmentId: segment.id,
+  reason: `Edited during ${segment.summary}`,
+  day: getDayOfYear(segment.start),
+  week: getWeek(segment.start),
 });
 
 export default class TaskDocumentModel {
@@ -49,37 +58,54 @@ export default class TaskDocumentModel {
     driveActivityStore: DriveActivityModel,
     timeStore: SegmentModel,
     taskStore: TaskModel,
+    currentUserId: string | null,
   ) {
     const driveActivity = await driveActivityStore.getAll();
     const tasks = await taskStore.getAll();
     const segments = await timeStore.getAll();
 
-    // TODO: iterate through segments and match with tasks
-    console.log(segments);
+    const taskMeetingsToAdd = segments.map((meeting) => {
+      const tasksForMeeting = tasks.filter((t) => {
+        if (t.updatedAt > meeting.start && t.updatedAt < meeting.end) {
+          return true;
+        }
+        return false;
+      });
+      return tasksForMeeting.map((task) => formatTaskMeeting(meeting, task));
+    });
 
     // Add drive activity for tasks
     const driveActivityToAdd = await Promise.all(
       driveActivity.map(async (driveActivityItem) => {
-        const task = tasks.find(
-          (t) =>
-            t.updatedAt < addMinutes(driveActivityItem.time, 10) &&
-            t.updatedAt > subMinutes(driveActivityItem.time, 10),
-        );
-        if (task) {
-          const formattedDocument = formatTaskDocument(driveActivityItem, task);
-          return formattedDocument;
+        if (driveActivityItem.actorPersonId === currentUserId) {
+          const tasksForDriveActivity = tasks.filter(
+            (t) =>
+              t.updatedAt < addMinutes(driveActivityItem.time, 10) &&
+              t.updatedAt > subMinutes(driveActivityItem.time, 10),
+          );
+          if (tasksForDriveActivity) {
+            return tasksForDriveActivity.map((task) => formatTaskDocument(driveActivityItem, task));
+          }
         }
       }),
     );
 
-    const tx = this.db.transaction('segmentDocument', 'readwrite');
-
+    const tx = this.db.transaction('taskDocument', 'readwrite');
     const results = await Promise.allSettled(
-      driveActivityToAdd.map((item) => item?.id && tx.store.put(item)),
+      flatten(driveActivityToAdd).map((item) => item?.id && tx.store.put(item)),
+    );
+    const meetingResults = await Promise.allSettled(
+      flatten(taskMeetingsToAdd).map((item) => item?.id && tx.store.put(item)),
     );
     await tx.done;
 
     results.forEach((result) => {
+      if (result.status === 'rejected') {
+        RollbarErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+
+    meetingResults.forEach((result) => {
       if (result.status === 'rejected') {
         RollbarErrorTracking.logErrorInRollbar(result.reason);
       }

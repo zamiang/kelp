@@ -157,6 +157,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
         driveActivityDataStore,
         timeDataStore,
         taskDataStore,
+        data.currentUser ? data.currentUser.id : null,
       );
 
       if (!data.isLoading) {

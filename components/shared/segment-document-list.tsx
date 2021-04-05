@@ -48,7 +48,7 @@ const SegmentDocumentItem = (props: {
     <DocumentRow
       key={props.segmentDocument.id}
       store={props.store}
-      doc={document}
+      document={document}
       selectedDocumentId={null}
       isSmall={props.isSmall}
       tooltipText={tooltipText}
