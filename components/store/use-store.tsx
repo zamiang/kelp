@@ -24,6 +24,7 @@ export interface IStore {
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
+  readonly defaultTaskList?: gapi.client.tasks.TaskList;
   readonly isLoading: boolean;
   readonly scope?: string;
   readonly loadingMessage?: string;
@@ -53,6 +54,7 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
     taskDocumentStore,
     tfidfStore,
     lastUpdated: new Date(),
+    defaultTaskList: undefined,
     isLoading: false,
     loadingMessage: undefined,
     refetch: () => false,
@@ -195,7 +197,6 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     void addData();
   }, [data.isLoading]);
   */
-
   return {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
@@ -208,6 +209,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     taskDocumentStore: taskDocumentDataStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,
+    defaultTaskList: data.defaultTaskList,
     loadingMessage,
     refetch: () => data.refetch(),
     scope,

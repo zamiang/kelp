@@ -21,6 +21,7 @@ interface IReturnType {
   readonly calendarEvents: ICalendarEvent[];
   readonly driveFiles: gapi.client.drive.File[];
   readonly tasks: ITask[];
+  readonly defaultTaskList?: gapi.client.tasks.TaskList;
   readonly missingDriveFiles: (gapi.client.drive.File | null)[];
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
@@ -192,7 +193,8 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveFiles: driveResponse.result ? driveResponse.result.filter(Boolean) : [],
     contacts: contactsResponse.result ? contactsResponse.result.filter(Boolean) : [],
     currentUser: currentUser.result,
-    tasks: tasksResponse.result || [],
+    tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
+    defaultTaskList: tasksResponse.result ? tasksResponse.result.defaultTaskList : undefined,
     emailAddresses: emailList,
     refetch: async () => {
       // Current user will reloadd if it fails

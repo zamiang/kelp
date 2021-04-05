@@ -9,6 +9,7 @@ import panelStyles from '../shared/panel-styles';
 import rowStyles from '../shared/row-styles';
 import { ITask } from '../store/models/task-model';
 import { IStore } from '../store/use-store';
+import { addTask } from '../tasks/add-task';
 import TaskRow from '../tasks/task-row';
 
 const AllTasks = (props: {
@@ -20,51 +21,68 @@ const AllTasks = (props: {
   const buttonClasses = useButtonStyles();
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [text, setText] = useState<string>('');
+  const [taskIncrement, setIncrememnt] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = (await props.store.taskStore.getAll()).filter((task) => !task.parent);
-      // probably not correct
-      setTasks(result.sort((a, b) => (a.updatedAt < b.updatedAt ? -1 : 1)));
+      const sortedResult = result.sort((a, b) => (a.position! < b.position! ? -1 : 1));
+      setTasks(sortedResult);
+
+      if (sortedResult[0] && props.setTaskId) {
+        props.setTaskId(sortedResult[0].id);
+      }
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading, taskIncrement.toString()]);
 
   return (
     <React.Fragment>
-      <div className={classes.rowNoHover}>
-        <Grid container>
-          <Grid xs={12}>
-            <TextField
-              multiline
-              rows={4}
-              variant="outlined"
-              fullWidth
-              onChange={(event) => {
-                setText(event.target.value);
-              }}
-              value={text}
-            />
+      {props.store.defaultTaskList && (
+        <div className={classes.rowNoHover}>
+          <Grid container>
+            <Grid xs={12}>
+              <TextField
+                multiline
+                rows={4}
+                variant="outlined"
+                fullWidth
+                onChange={(event) => {
+                  setText(event.target.value);
+                }}
+                value={text}
+              />
+            </Grid>
+            <Grid>
+              <Button
+                className={buttonClasses.button}
+                variant="outlined"
+                disableElevation
+                color="primary"
+                startIcon={<CheckIcon width="24" height="24" />}
+                onClick={() => {
+                  const updateTasks = async () => {
+                    await addTask(
+                      text,
+                      props.store.defaultTaskList!.id!,
+                      props.store.defaultTaskList!.title!,
+                      props.store.googleOauthToken!,
+                      props.store,
+                    );
+                    // trigger refetching
+                    setIncrememnt(taskIncrement + 1);
+                  };
+                  void updateTasks();
+                  setText('');
+                }}
+                style={{ width: 'auto', margin: '12px auto 0' }}
+              >
+                Add a task
+              </Button>
+            </Grid>
           </Grid>
-          <Grid>
-            <Button
-              className={buttonClasses.button}
-              variant="outlined"
-              disableElevation
-              color="primary"
-              startIcon={<CheckIcon width="24" height="24" />}
-              onClick={() => {
-                alert('wtf');
-                setText('');
-              }}
-              style={{ width: 'auto', margin: '12px auto 0' }}
-            >
-              Add a task
-            </Button>
-          </Grid>
-        </Grid>
-      </div>
-
+        </div>
+      )}
       <div>
         {tasks.map((task) => (
           <TaskRow

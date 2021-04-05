@@ -62,11 +62,14 @@ export const fetchTasks = async (authToken: string, limit: any) => {
         ),
       );
       const response = (await tasksResponse.json()) as gapi.client.tasks.Tasks;
-      return (response.items || []).map((t) => formatTask(t, list));
+      return (response.items || []).map((t) => formatTask(t, list as any));
     }),
   );
 
   const formattedTasks = (flatten(tasksFromLists) || []).filter(Boolean);
 
-  return formattedTasks;
+  return {
+    tasks: formattedTasks,
+    defaultTaskList: taskLists[0],
+  };
 };

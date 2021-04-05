@@ -5,8 +5,8 @@ const fields = 'id,title,completed,updated,deleted,status,due,links,notes,parent
 
 export const addTask = async (
   title: string,
-  taskListTitle: string,
   taskListId: string,
+  taskListTitle: string,
   authToken: string,
   store: IStore,
 ) => {
@@ -30,6 +30,7 @@ export const addTask = async (
     id: taskListId,
     title: taskListTitle,
   });
+  formattedTask.position = 0 as any; // add another zero??
   await store.taskStore.addTasksToStore([formattedTask]);
   return formattedTask;
 };
