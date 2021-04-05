@@ -36,7 +36,7 @@ const getFeaturedTasks = async (props: IStore) => {
   const filterTime = subDays(currentDate, daysToLookBack);
   const currentUserDocuments = await Promise.all(
     tasks
-      .filter((item) => item.updated && new Date(item.updated) > filterTime)
+      .filter((item) => item.updated && new Date(item.updated) > filterTime && !item.parent)
       .map(
         async (task) =>
           ({
@@ -114,8 +114,9 @@ const AllTasks = (props: {
     const fetchData = async () => {
       const featuredTasks = await getFeaturedTasks(props.store);
       setTopTasks(featuredTasks);
-      if (featuredTasks[0] && featuredTasks[0].task && props.setTaskId) {
-        props.setTaskId(featuredTasks[0].task.id!);
+      if (featuredTasks[0] && featuredTasks[0].taskId && props.setTaskId) {
+        console.log('setting featured task', featuredTasks[0].taskId);
+        props.setTaskId(featuredTasks[0].taskId);
       }
     };
     void fetchData();

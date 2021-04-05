@@ -181,6 +181,9 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Route exact path="/people">
                   <ExpandPerson store={store} personId={personId} />
                 </Route>
+                <Route exact path="/tasks">
+                  <ExpandTask store={store} taskId={taskId} />
+                </Route>
                 <Route path="/meetings/:slug">
                   <ExpandedMeeting store={store} />
                 </Route>
@@ -191,7 +194,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                   <ExpandPerson store={store} />
                 </Route>
                 <Route path="/tasks/:slug">
-                  <ExpandTask store={store} taskId={taskId} />
+                  <ExpandTask store={store} />
                 </Route>
                 <Route path="/settings">
                   <Settings />
