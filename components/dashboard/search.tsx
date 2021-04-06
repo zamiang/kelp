@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography';
+import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
@@ -12,11 +13,15 @@ import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
 
-const filterSearchResults = (searchResults: ISearchItem[]) => {
+const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
   const meetings: ISearchItem[] = [];
   const documents: ISearchItem[] = [];
-  searchResults.forEach((result) => {
+  searchResults.forEach((searchResult) => {
+    const result = searchResult.item;
+    if (searchResult.score! > 0.7) {
+      return;
+    }
     switch (result.type) {
       case 'document':
         return documents.push(result);
@@ -36,17 +41,24 @@ const filterSearchResults = (searchResults: ISearchItem[]) => {
 const Search = (props: { store: IStore }) => {
   const classes = panelStyles();
   const router = useLocation();
-  const [searchIndex, setSearchIndex] = useState<SearchIndex | undefined>(undefined);
+  const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
       const searchIndex = new SearchIndex();
       await searchIndex.addData(props.store);
-      setSearchIndex(searchIndex);
+
+      const fuse = new Fuse(searchIndex.results, {
+        includeScore: true,
+        minMatchCharLength: 2,
+        keys: ['text'],
+      });
+      setFuse(fuse);
     };
     void fetchData();
-  });
-  if (!searchIndex) {
+  }, [props.store.lastUpdated, props.store.isLoading]);
+
+  if (!fuse) {
     return null;
   }
 
@@ -54,9 +66,9 @@ const Search = (props: { store: IStore }) => {
     .replace('?query=', '')
     .toLowerCase()
     .replace(uncommonPunctuation, ' ');
-  const results = searchQuery
-    ? searchIndex.results.filter((item) => item.text.includes(searchQuery))
-    : [];
+
+  const results = searchQuery ? fuse.search(searchQuery) : [];
+  console.log(results, '<<<<<<<<<<');
 
   const filteredResults = filterSearchResults(results);
   return (
