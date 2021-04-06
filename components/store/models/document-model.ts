@@ -54,7 +54,11 @@ export default class DocumentModel {
     this.db = db;
   }
 
-  async addDocsToStore(documents: IDocument[]) {
+  async addDocuments(documents: IDocument[], shouldClearStore?: boolean) {
+    if (shouldClearStore) {
+      await this.db.clear('document');
+    }
+
     const tx = this.db.transaction('document', 'readwrite');
     // console.log(documents, 'about to save documents');
     const promises = documents.map((document) => {

@@ -66,10 +66,7 @@ const Search = (props: { store: IStore }) => {
     .replace('?query=', '')
     .toLowerCase()
     .replace(uncommonPunctuation, ' ');
-
   const results = searchQuery ? fuse.search(searchQuery) : [];
-  console.log(results, '<<<<<<<<<<');
-
   const filteredResults = filterSearchResults(results);
   return (
     <div className={classes.panel}>

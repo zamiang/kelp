@@ -50,7 +50,11 @@ export default class TaskModel {
     this.db = db;
   }
 
-  async addTasksToStore(tasks: ITask[]) {
+  async addTasksToStore(tasks: ITask[], shouldClearStore?: boolean) {
+    if (shouldClearStore) {
+      await this.db.clear('task');
+    }
+
     const tx = this.db.transaction('task', 'readwrite');
     // console.log(documents, 'about to save documents');
     const promises = tasks.map((task) => {

@@ -88,7 +88,11 @@ export default class SegmentModel {
     this.db = db;
   }
 
-  async addSegments(calendarEvents: ICalendarEvent[]) {
+  async addSegments(calendarEvents: ICalendarEvent[], shouldClearStore?: boolean) {
+    if (shouldClearStore) {
+      await this.db.clear('meeting');
+    }
+
     const formattedSegments = formatSegments(calendarEvents);
     // console.log(formattedSegments, 'about to save segments');
     const tx = this.db.transaction('meeting', 'readwrite');
