@@ -5,11 +5,11 @@ import RollbarErrorTracking from '../error-tracking/rollbar';
 
 const isRefetchEnabled = false;
 const driveFileFields =
-  'id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime';
+  'id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, modifiedTime, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime';
 
 export const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
   last(
-    [file?.sharedWithMeTime, file?.createdTime, file?.viewedByMeTime]
+    [file?.modifiedTime, file?.sharedWithMeTime, file?.createdTime, file?.viewedByMeTime]
       .filter(Boolean)
       .map((d) => new Date(d!))
       .sort(),
