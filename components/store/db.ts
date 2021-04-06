@@ -119,7 +119,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
 
   const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
     upgrade(db, oldVersion) {
-      if (oldVersion === 1) {
+      if (oldVersion === 1 || oldVersion === 2) {
         db.deleteObjectStore('person');
         db.deleteObjectStore('document');
         db.deleteObjectStore('driveActivity');
