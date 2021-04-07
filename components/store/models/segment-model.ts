@@ -90,7 +90,8 @@ export default class SegmentModel {
 
   async addSegments(calendarEvents: ICalendarEvent[], shouldClearStore?: boolean) {
     if (shouldClearStore) {
-      await this.db.clear('meeting');
+      // TODO: figure out a better way to do this.
+      // await this.db.clear('meeting');
     }
 
     const formattedSegments = formatSegments(calendarEvents);
