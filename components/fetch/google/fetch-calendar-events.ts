@@ -52,8 +52,8 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
 const formatSegment = (event: gapi.client.calendar.Event): ISegment => {
   const documents = getDocumentsFromCalendarEvents(event);
   const videoLink = getVideoLinkFromCalendarEvent(event);
-  const start = new Date(event.start!.dateTime!) as any;
-  const end = new Date(event.end!.dateTime!) as any;
+  const start = new Date(event.start!.dateTime!);
+  const end = new Date(event.end!.dateTime!);
   return {
     id: event.id!,
     link: event.htmlLink,
@@ -68,7 +68,6 @@ const formatSegment = (event: gapi.client.calendar.Event): ISegment => {
     organizer: event.organizer,
     attachments: event.attachments || [],
     description: event.description,
-    ...event,
     attendees: (event.attendees || [])
       .filter(
         (attendee) => attendee.email && !attendee.resource, // filter out conference rooms
