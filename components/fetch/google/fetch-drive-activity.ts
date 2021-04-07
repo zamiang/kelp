@@ -1,6 +1,7 @@
 import { flatten, uniq } from 'lodash';
-import config from '../../constants/config';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import config from '../../../constants/config';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
+import { IFormattedDriveActivity } from '../../store/data-types';
 
 const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
   if (target.drive) {
@@ -28,16 +29,6 @@ const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
     return null;
   }
 };
-
-export interface IFormattedDriveActivity {
-  id: string;
-  time: Date;
-  action: string;
-  actorPersonId?: string | null;
-  title?: string | null;
-  documentId?: string;
-  link: string;
-}
 
 type ExcludesFalse = <T>(x: T | false) => x is T;
 
@@ -107,7 +98,7 @@ const fetchDriveActivityForDocument = async (
         actorPersonId,
         title: targetInfo && targetInfo.title,
         link: targetInfo && targetInfo.link,
-      };
+      } as IFormattedDriveActivity;
     })
     .filter((Boolean as any) as ExcludesFalse);
 

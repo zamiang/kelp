@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import BackIcon from '../../public/icons/close.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import useButtonStyles from '../shared/button-styles';
-import { IPerson } from '../store/models/person-model';
+import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { updateContactNotes } from './update-contact';
 
@@ -73,7 +73,7 @@ const NotesEditForm = (props: {
     );
     if (response) {
       const formattedPerson = await props.personStore.updatePersonFromGoogleContacts(response);
-      props.setPerson(formattedPerson);
+      props.setPerson(formattedPerson!);
     }
     props.onCloseEdit();
   });

@@ -1,7 +1,8 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
-import config from '../../constants/config';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import config from '../../../constants/config';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
+import { IDocument } from '../../store/data-types';
 
 const isRefetchEnabled = false;
 const driveFileFields =
@@ -24,6 +25,23 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
     modifiedTimeProxy &&
     differenceInCalendarDays(currentDate, modifiedTimeProxy) < config.NUMBER_OF_DAYS_BACK
   );
+};
+
+// TODO: handle one person w/ multiple email addresses
+const formatGoogleDoc = (googleDoc: gapi.client.drive.File): IDocument => {
+  const modifiedTimeProxy = getModifiedTimeProxy(googleDoc);
+  return {
+    id: googleDoc.id!,
+    name: googleDoc.name,
+    viewedByMe: googleDoc.viewedByMe,
+    viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
+    link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
+    iconLink: googleDoc.iconLink,
+    mimeType: googleDoc.mimeType as any,
+    isStarred: !!googleDoc.starred,
+    isShared: !!googleDoc.shared,
+    updatedAt: modifiedTimeProxy ? new Date(modifiedTimeProxy) : undefined,
+  };
 };
 
 const fetchDriveFilePage = async (googleOauthToken: string, pageToken?: string) => {
@@ -80,7 +98,9 @@ const fetchAllDriveFiles = async (
 
 const fetchDriveFiles = async (googleOauthToken: string) => {
   const results = await fetchAllDriveFiles(googleOauthToken, []);
-  return results.filter((file: gapi.client.drive.File) => isFileWithinTimeWindow(file));
+  return results
+    .filter((file: gapi.client.drive.File) => isFileWithinTimeWindow(file))
+    .map((document) => formatGoogleDoc(document));
 };
 
 export const fetchDriveFilesById = async (ids: string[], authToken: string, limit: any) => {
@@ -112,7 +132,7 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string, limi
     }),
   );
   console.log('ids to refetch drive files', idsToRefetch);
-  return results;
+  return results.map((document) => formatGoogleDoc(document));
 };
 
 export default fetchDriveFiles;

@@ -1,25 +1,12 @@
 import { addMinutes, getDayOfYear, subMinutes } from 'date-fns';
 import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
+import { IFormattedDriveActivity, ISegment, ITask, ITaskDocument } from '../data-types';
 import { dbType } from '../db';
 import DriveActivityModel from './drive-activity-model';
-import SegmentModel, { ISegment } from './segment-model';
-import TaskModel, { ITask } from './task-model';
-
-export interface ITaskDocument {
-  id: string;
-  driveActivityId?: string;
-  documentId?: string;
-  taskId: string;
-  taskTitle?: string;
-  date: Date;
-  reason: string;
-  segmentId?: string;
-  day: number;
-  week: number;
-}
+import SegmentModel from './segment-model';
+import TaskModel from './task-model';
 
 const formatTaskDocument = (
   driveActivity: IFormattedDriveActivity,

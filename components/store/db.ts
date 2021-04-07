@@ -1,14 +1,16 @@
 import { subHours } from 'date-fns';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import RollbarErrorTracking from '../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
-import { IFormattedAttendee } from './models/attendee-model';
-import { IDocument } from './models/document-model';
-import { IPerson } from './models/person-model';
-import { ISegmentDocument } from './models/segment-document-model';
-import { ISegment } from './models/segment-model';
-import { ITaskDocument } from './models/task-document-model';
-import { ITask } from './models/task-model';
+import {
+  IDocument,
+  IFormattedAttendee,
+  IFormattedDriveActivity,
+  IPerson,
+  ISegment,
+  ISegmentDocument,
+  ITask,
+  ITaskDocument,
+} from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
 interface Db extends DBSchema {

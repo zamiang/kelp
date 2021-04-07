@@ -1,6 +1,6 @@
 import { flatten } from 'lodash';
-import config from '../../constants/config';
-import { ITask } from '../store/models/task-model';
+import config from '../../../constants/config';
+import { ITask } from '../../store/data-types';
 
 export const formatTask = (
   task: gapi.client.tasks.Task,

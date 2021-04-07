@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
-import { IPerson } from '../store/models/person-model';
+import { IPerson } from '../store/data-types';
 
 const useStyles = makeStyles(() => ({
   personAccepted: {},

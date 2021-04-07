@@ -20,7 +20,7 @@ import Tasks from '../dashboard/tasks';
 import ExpandedDocument from '../documents/expand-document';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import ExpandPerson from '../person/expand-person';
-import { IPerson } from '../store/models/person-model';
+import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import ExpandedTask from '../tasks/expand-task';
 import Settings from '../user-profile/settings';

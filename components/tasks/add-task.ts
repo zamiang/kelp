@@ -1,5 +1,5 @@
 import { toNumber } from 'lodash';
-import { formatTask } from '../fetch/fetch-tasks';
+import { formatTask } from '../fetch/google/fetch-tasks';
 import { IStore } from '../store/use-store';
 
 const fields = 'id,title,completed,updated,deleted,status,due,links,notes,parent,position,selfLink';
@@ -32,7 +32,7 @@ export const addTask = async (
     id: taskListId,
     title: taskListTitle,
   });
-  formattedTask.position = (toNumber(taskPosition) - 1) as any; // add another zero??
+  (formattedTask as any).position = (toNumber(taskPosition) - 1) as any; // add another zero??
   await store.taskStore.addTasksToStore([formattedTask]);
   return formattedTask;
 };

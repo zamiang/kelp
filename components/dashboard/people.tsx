@@ -6,8 +6,7 @@ import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
-import { IPerson } from '../store/models/person-model';
-import { ISegment } from '../store/models/segment-model';
+import { IPerson, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 interface IFeaturedPerson {

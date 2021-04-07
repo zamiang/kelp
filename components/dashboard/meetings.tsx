@@ -10,7 +10,7 @@ import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
-import { ISegment } from '../store/models/segment-model';
+import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const shouldRenderMeetingsBar = false;

@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import LockIcon from '../../public/icons/lock.svg';
 import RotateIcon from '../../public/icons/rotate.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import { person } from '../fetch/fetch-people';
+import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import RefreshButton from './refresh-button';
 
@@ -65,7 +65,7 @@ const NavRight = (props: IProps) => {
   const history = useHistory();
 
   const [isLoading, setIsLoading] = useState<Boolean>(true);
-  const [currentUser, setCurrentUser] = useState<person | undefined>();
+  const [currentUser, setCurrentUser] = useState<IPerson | undefined>();
 
   useEffect(() => {
     const fetchData = async () => {

@@ -10,17 +10,19 @@ import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
 import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
+import {
+  IDocument,
+  IFormattedDriveActivity,
+  IPerson,
+  ISegmentDocument,
+  ITask,
+  ITaskDocument,
+} from '../store/data-types';
 import { getPeopleSortedByCount } from '../store/helpers';
-import { IDocument } from '../store/models/document-model';
-import { IPerson } from '../store/models/person-model';
-import { ISegmentDocument } from '../store/models/segment-document-model';
-import { ITaskDocument } from '../store/models/task-document-model';
-import { ITask } from '../store/models/task-model';
 import { IStore } from '../store/use-store';
 import TaskRow from '../tasks/task-row';
 import { D3Component } from '../timeline/bar-chart';

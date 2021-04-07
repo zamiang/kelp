@@ -16,7 +16,7 @@ import Search from '../components/dashboard/search';
 import Tasks from '../components/dashboard/tasks';
 import ExpandedDocument from '../components/documents/expand-document';
 import ErrorBoundaryComponent from '../components/error-tracking/error-boundary';
-import { fetchToken } from '../components/fetch/fetch-token';
+import { fetchToken } from '../components/fetch/google/fetch-token';
 import ExpandedMeeting from '../components/meeting/expand-meeting';
 import MobileDashboard from '../components/mobile/dashboard';
 import NavBar from '../components/nav/nav-bar';

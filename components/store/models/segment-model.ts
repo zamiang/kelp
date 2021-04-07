@@ -1,85 +1,9 @@
 import { addMinutes, format, getDate, getWeek, isSameDay, subMinutes } from 'date-fns';
-import { first, flatten, groupBy, uniq } from 'lodash';
-import urlRegex from 'url-regex';
+import { first, flatten, groupBy } from 'lodash';
 import config from '../../../constants/config';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
-import { formatGmailAddress } from '../../fetch/fetch-people';
+import { ISegment } from '../data-types';
 import { dbType } from '../db';
-import { getGoogleDocsIdFromLink } from './document-model';
-
-type SegmentState = 'current' | 'upcoming' | 'past';
-
-interface IEvent {
-  start: Date;
-  end: Date;
-}
-
-export const getStateForMeeting = (event: IEvent): SegmentState => {
-  const currentTime = new Date();
-  if (event.end > currentTime && event.start < currentTime) {
-    return 'current';
-  } else if (event.end > currentTime) {
-    return 'upcoming';
-  } else return 'past';
-};
-
-export interface ISegment extends ICalendarEvent {
-  readonly state: SegmentState;
-  readonly documentIdsFromDescription: string[];
-  readonly videoLink?: string;
-  readonly meetingNotesLink?: string;
-}
-
-export const getDocumentsFromCalendarEvents = (event: ICalendarEvent) => {
-  const documentIds: string[] = [];
-  const documentUrls: string[] = [];
-  const urls = event.description ? uniq(event.description.match(urlRegex())) : [];
-  (urls || []).forEach((url) => {
-    if (url.includes('https://docs.google.com')) {
-      const link = getGoogleDocsIdFromLink(url);
-      documentIds.push(link);
-      documentUrls.push(url);
-    }
-  });
-  (event.attachments || []).map((attachment) => {
-    if (attachment.fileId) {
-      documentIds.push(attachment.fileId);
-    }
-  });
-  return { documentIds, documentUrls };
-};
-
-const getVideoLinkFromCalendarEvent = (event: ICalendarEvent) => {
-  if (event.hangoutLink) {
-    return event.hangoutLink;
-  }
-  const meetingDescriptionLinks = event.description ? event.description.match(urlRegex()) : [];
-  return first(
-    meetingDescriptionLinks?.filter(
-      (link) => link.includes('zoom.us') || link.includes('webex.com'),
-    ),
-  );
-};
-
-const formatSegments = (calendarEvents: ICalendarEvent[]) =>
-  calendarEvents
-    .filter((event) => event.start && event.end)
-    .map((event) => {
-      const documents = getDocumentsFromCalendarEvents(event);
-      const videoLink = getVideoLinkFromCalendarEvent(event);
-      return {
-        ...event,
-        attendees: event.attendees.map((a) => ({
-          ...a,
-          email: a.email ? formatGmailAddress(a.email) : undefined,
-        })),
-        documentIdsFromDescription: documents.documentIds,
-        meetingNotesLink: first(documents.documentUrls),
-        videoLink,
-        state: getStateForMeeting(event),
-      };
-    });
 
 export default class SegmentModel {
   private db: dbType;
@@ -88,16 +12,15 @@ export default class SegmentModel {
     this.db = db;
   }
 
-  async addSegments(calendarEvents: ICalendarEvent[], shouldClearStore?: boolean) {
+  async addSegments(segments: ISegment[], shouldClearStore?: boolean) {
     if (shouldClearStore) {
       // TODO: figure out a better way to do this.
       // await this.db.clear('meeting');
     }
 
-    const formattedSegments = formatSegments(calendarEvents);
     // console.log(formattedSegments, 'about to save segments');
     const tx = this.db.transaction('meeting', 'readwrite');
-    const results = await Promise.allSettled(formattedSegments.map((event) => tx.store.put(event)));
+    const results = await Promise.allSettled(segments.map((event) => tx.store.put(event)));
     await tx.done;
 
     results.forEach((result) => {

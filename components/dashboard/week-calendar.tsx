@@ -18,11 +18,10 @@ import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import ChevronLeft from '../../public/icons/chevron-left.svg';
 import ChevronRight from '../../public/icons/chevron-right.svg';
-import { responseStatus } from '../fetch/fetch-calendar-events';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import PopperContainer from '../shared/popper';
 import TopBar from '../shared/top-bar';
-import { ISegment } from '../store/models/segment-model';
+import { ISegment, responseStatus } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const leftSpacer = 40;

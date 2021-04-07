@@ -1,6 +1,4 @@
-import { IDocument } from './models/document-model';
-import { IPerson } from './models/person-model';
-import { ISegment } from './models/segment-model';
+import { IDocument, IPerson, ISegment } from './data-types';
 import { IStore } from './use-store';
 
 export interface ISearchItem {

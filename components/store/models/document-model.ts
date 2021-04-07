@@ -1,50 +1,14 @@
 import { uniq } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { getModifiedTimeProxy } from '../../fetch/fetch-drive-files';
+import { IDocument } from '../data-types';
 import { dbType } from '../db';
 
-type DocumentType =
-  | 'UNKNOWN'
-  | 'application/vnd.google-apps.presentation'
-  | 'application/vnd.google-apps.spreadsheet'
-  | 'application/vnd.google-apps.document';
-
-export interface IDocument {
-  id: string;
-  name?: string;
-  viewedByMe?: boolean;
-  link?: string;
-  updatedAt?: Date;
-  viewedByMeAt?: Date;
-  mimeType: DocumentType;
-  isShared: boolean;
-  isStarred: boolean;
-  iconLink?: string;
-}
-
-export const getGoogleDocsIdFromLink = (link: string) =>
+export const getIdFromLink = (link: string) =>
   link
     .replace('https://docs.google.com/document/d/', '')
     .replace('https://docs.google.com/presentation/d/', '')
     .replace('https://docs.google.com/spreadsheets/d/', '')
     .split('/')[0];
-
-// handle one person w/ multiple email addresses
-export const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => {
-  const modifiedTimeProxy = getModifiedTimeProxy(googleDoc);
-  return {
-    id: googleDoc.id!,
-    name: googleDoc.name,
-    viewedByMe: googleDoc.viewedByMe,
-    viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
-    link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
-    iconLink: googleDoc.iconLink,
-    mimeType: googleDoc.mimeType as any,
-    isStarred: !!googleDoc.starred,
-    isShared: !!googleDoc.shared,
-    updatedAt: modifiedTimeProxy ? new Date(modifiedTimeProxy) : undefined,
-  };
-};
 
 export default class DocumentModel {
   private db: dbType;
@@ -84,7 +48,7 @@ export default class DocumentModel {
    * @param link link: "https://docs.google.com/document/d/1xgblKX2-5BAbmGwaERTREP6OhXPv9BOjnPXF1Ohgvrw"
    */
   async getByLink(link: string): Promise<IDocument | undefined> {
-    return this.db.get('document', getGoogleDocsIdFromLink(link));
+    return this.db.get('document', getIdFromLink(link));
   }
 
   async getById(id: string): Promise<IDocument | undefined> {

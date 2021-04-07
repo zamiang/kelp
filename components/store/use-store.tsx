@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 import FetchAll from '../fetch/fetch-all';
+import { TaskList } from './data-types';
 import { dbType } from './db';
 import AttendeeStore from './models/attendee-model';
-import DocumentDataStore, { formatGoogleDoc } from './models/document-model';
+import DocumentDataStore from './models/document-model';
 import DriveActivityDataStore from './models/drive-activity-model';
-import PersonDataStore, { formatPerson } from './models/person-model';
+import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
 import TaskDocumentDataStore from './models/task-document-model';
@@ -24,7 +25,7 @@ export interface IStore {
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
-  readonly defaultTaskList?: gapi.client.tasks.TaskList;
+  readonly defaultTaskList?: TaskList;
   readonly isLoading: boolean;
   readonly scope?: string;
   readonly loadingMessage?: string;
@@ -66,16 +67,13 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken);
   const [isLoading, setLoading] = useState<boolean>(true);
-  const people = (data.personList || []).map((person) => formatPerson(person));
+  const people = data.personList || [];
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
   const taskDataStore = new TaskDataStore(db);
   const taskDocumentDataStore = new TaskDocumentDataStore(db);
-  const docs = (data.driveFiles || []).map((doc) => doc && formatGoogleDoc(doc)).filter(Boolean);
-  const missingDocs = (data.missingDriveFiles || [])
-    .filter(Boolean)
-    .map((doc) => formatGoogleDoc(doc!));
+  const documents = data.driveFiles || [];
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
@@ -107,16 +105,15 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   }, [data.driveActivity.length.toString(), data.currentUser?.id]);
 
   // Save documents
-  const documentsToAdd = docs.concat(missingDocs);
   useEffect(() => {
     const addData = async () => {
       if (!data.driveResponseLoading) {
         setLoadingMessage('Saving Documents');
-        await documentDataStore.addDocuments(documentsToAdd, true);
+        await documentDataStore.addDocuments(documents, true);
       }
     };
     void addData();
-  }, [documentsToAdd.length.toString()]);
+  }, [documents.length.toString()]);
 
   // Save takss
   useEffect(() => {
@@ -165,11 +162,6 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
       if (!data.isLoading) {
         setLoadingMessage(undefined);
         setLoading(false);
-        if (data.missingDriveFiles) {
-          RollbarErrorTracking.logErrorInRollbar(
-            `Missing drive files ${data.missingDriveFiles.length}`,
-          );
-        }
         if (data.error) {
           RollbarErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
         }

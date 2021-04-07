@@ -7,8 +7,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import useRowStyles from '../shared/row-styles';
+import { ISegment } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
-import { ISegment } from '../store/models/segment-model';
 
 export const Meeting = (props: {
   meeting: ISegment;

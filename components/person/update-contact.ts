@@ -1,5 +1,5 @@
-import { fetchPerson } from '../fetch/fetch-people';
-import { addScope } from '../fetch/fetch-token';
+import { fetchPerson } from '../fetch/google/fetch-people';
+import { addScope } from '../fetch/google/fetch-token';
 
 const contactEditScope = 'https://www.googleapis.com/auth/contacts';
 
@@ -15,6 +15,9 @@ export const updateContactNotes = async (
   }
 
   const person = await fetchPerson(googleId, accessToken);
+  if (!person) {
+    return null;
+  }
   const etag = person.etag;
   if (!etag) {
     return alert('no etag');
@@ -33,7 +36,7 @@ export const updateContactNotes = async (
 
   try {
     const response = await fetch(
-      `https://people.googleapis.com/v1/${person.resourceName}:updateContact?${new URLSearchParams(
+      `https://people.googleapis.com/v1/${person.googleId}:updateContact?${new URLSearchParams(
         params,
       ).toString()}`,
       {
