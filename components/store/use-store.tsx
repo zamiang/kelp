@@ -73,7 +73,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   const documentDataStore = new DocumentDataStore(db);
   const taskDataStore = new TaskDataStore(db);
   const taskDocumentDataStore = new TaskDocumentDataStore(db);
-  const docs = data.driveFiles || [];
+  const documents = data.driveFiles || [];
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
@@ -109,11 +109,11 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     const addData = async () => {
       if (!data.driveResponseLoading) {
         setLoadingMessage('Saving Documents');
-        await documentDataStore.addDocuments(docs, true);
+        await documentDataStore.addDocuments(documents, true);
       }
     };
     void addData();
-  }, [docs.length.toString()]);
+  }, [documents.length.toString()]);
 
   // Save takss
   useEffect(() => {

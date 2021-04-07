@@ -2,26 +2,34 @@ import { flatten, uniq } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
-import { IFormattedDriveActivity, ISegment, ITask } from '../store/data-types';
-import { getDocumentsFromCalendarEvents } from '../store/models/segment-model';
-import fetchCalendarEvents from './google/fetch-calendar-events';
+import {
+  IDocument,
+  IFormattedDriveActivity,
+  IPerson,
+  ISegment,
+  ITask,
+  TaskList,
+} from '../store/data-types';
+import fetchCalendarEvents, {
+  getDocumentsFromCalendarEvents,
+} from './google/fetch-calendar-events';
 import fetchContacts from './google/fetch-contacts';
 import fetchDriveActivityForDocumentIds from './google/fetch-drive-activity';
 import fetchDriveFiles from './google/fetch-drive-files';
 import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
-import { batchFetchPeople, person } from './google/fetch-people';
+import { batchFetchPeople } from './google/fetch-people';
 import { fetchSelf } from './google/fetch-self';
 import { fetchTasks } from './google/fetch-tasks';
 
 interface IReturnType {
-  readonly personList: person[];
+  readonly personList: IPerson[];
   readonly emailAddresses: string[];
-  readonly contacts: person[];
-  readonly currentUser?: person;
+  readonly contacts: IPerson[];
+  readonly currentUser?: IPerson;
   readonly calendarEvents: ISegment[];
-  readonly driveFiles: gapi.client.drive.File[];
+  readonly driveFiles: IDocument[];
   readonly tasks: ITask[];
-  readonly defaultTaskList?: gapi.client.tasks.TaskList;
+  readonly defaultTaskList?: TaskList;
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
   readonly refetch: () => void;
@@ -182,19 +190,17 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     200,
   );
 
-  const driveFiles = driveResponse.result ? driveResponse.result.filter(Boolean) : [];
+  const driveFiles = driveResponse.result || [];
   if (missingGoogleDocs.missingDriveFiles) {
-    driveFiles.concat(missingGoogleDocs.missingDriveFiles.filter(Boolean));
+    driveFiles.concat(missingGoogleDocs.missingDriveFiles);
   }
 
   return {
     personList: peopleResponse.result ? peopleResponse.result : [],
     driveActivity,
-    calendarEvents: calendarResponse.result
-      ? calendarResponse.result.calendarEvents.filter(Boolean) || []
-      : [],
+    calendarEvents: calendarResponse.result || [],
     driveFiles,
-    contacts: contactsResponse.result ? contactsResponse.result.filter(Boolean) : [],
+    contacts: contactsResponse.result || [],
     currentUser: currentUser.result,
     tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
     defaultTaskList: tasksResponse.result ? tasksResponse.result.defaultTaskList : undefined,

@@ -73,7 +73,7 @@ const NotesEditForm = (props: {
     );
     if (response) {
       const formattedPerson = await props.personStore.updatePersonFromGoogleContacts(response);
-      props.setPerson(formattedPerson);
+      props.setPerson(formattedPerson!);
     }
     props.onCloseEdit();
   });

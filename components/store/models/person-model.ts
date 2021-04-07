@@ -1,28 +1,9 @@
 import { first, uniq } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { formatContact } from '../../fetch/google/fetch-contacts';
-import { person as GooglePerson, formatGmailAddress } from '../../fetch/google/fetch-people';
+import { formatGmailAddress, formatPerson } from '../../fetch/google/fetch-people';
 import { IPerson } from '../data-types';
 import { dbType } from '../db';
-
-const formatName = (person: GooglePerson) => {
-  const name = person.name || person.id;
-  if (name.includes('people/')) {
-    return 'Unknown contributor';
-  }
-  return name;
-};
-
-export const formatPerson = (person: GooglePerson) => ({
-  id: person.id,
-  name: formatName(person),
-  googleId: person.id,
-  emailAddresses: person.emailAddresses,
-  imageUrl: person.imageUrl || undefined,
-  isCurrentUser: 0,
-  isInContacts: person.isInContacts,
-  notes: person.notes,
-});
 
 const createNewPersonFromEmail = (email: string): IPerson => ({
   id: email,
@@ -46,16 +27,16 @@ export default class PersonModel {
 
   async addPeopleToStore(
     people: IPerson[],
-    currentUser?: GooglePerson,
-    contacts: GooglePerson[] = [],
+    currentUser?: IPerson,
+    contacts: IPerson[] = [],
     emailAddresses: string[] = [],
   ) {
     // TODO: Better handlie missing current user in chrome plugin
     if (!currentUser?.id) {
       return;
     }
-    const formattedCurrentUser = formatPerson(currentUser);
-    formattedCurrentUser.isCurrentUser = 1;
+    const formattedCurrentUser = currentUser;
+    (formattedCurrentUser as any).isCurrentUser = 1;
     const emailAddressToPersonIdHash: any = {}; // used for mapping between docs and calendar events
     const contactLookup: any = {};
     const peopleToAdd: IPerson[] = [formattedCurrentUser];
@@ -90,7 +71,7 @@ export default class PersonModel {
 
     // Add people first from google drive activity
     people.forEach((person) => {
-      let contact: GooglePerson | null = null;
+      let contact: IPerson | null = null;
       person.emailAddresses.forEach((emailAddress) => {
         const formattedEmailAddress = formatGmailAddress(emailAddress);
         const lookedUpContact = contactLookup[formattedEmailAddress];

@@ -15,7 +15,10 @@ export const getStateForMeeting = (event: gapi.client.calendar.Event): segmentSt
   } else return 'past';
 };
 
-export const getDocumentsFromCalendarEvents = (event: gapi.client.calendar.Event) => {
+export const getDocumentsFromCalendarEvents = (event: {
+  description?: string;
+  attachments?: gapi.client.calendar.EventAttachment[];
+}) => {
   const documentIds: string[] = [];
   const documentUrls: string[] = [];
   const urls = event.description ? uniq(event.description.match(urlRegex())) : [];
@@ -26,7 +29,7 @@ export const getDocumentsFromCalendarEvents = (event: gapi.client.calendar.Event
       documentUrls.push(url);
     }
   });
-  (event.attachments || []).map((attachment) => {
+  (event.attachments || []).map((attachment: gapi.client.calendar.EventAttachment) => {
     if (attachment.fileId) {
       documentIds.push(attachment.fileId);
     }

@@ -1,8 +1,9 @@
 import RollbarErrorTracking from '../../error-tracking/rollbar';
+import { IPerson } from '../../store/data-types';
 import { deleteDatabase } from '../../store/db';
-import { formatGooglePeopleResponse, usedPersonFields } from './fetch-people';
+import { formatPerson, usedPersonFields } from './fetch-people';
 
-export const fetchSelf = async (authToken: string) => {
+export const fetchSelf = async (authToken: string): Promise<IPerson> => {
   const params = {
     personFields: usedPersonFields,
   };
@@ -45,5 +46,5 @@ export const fetchSelf = async (authToken: string) => {
     }
   }
 
-  return formatGooglePeopleResponse(person, person.resourceName);
+  return formatPerson(person, person.resourceName) as IPerson;
 };

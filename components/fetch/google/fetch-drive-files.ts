@@ -26,23 +26,6 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
   );
 };
 
-// handle one person w/ multiple email addresses
-const formatGoogleDoc = (googleDoc: gapi.client.drive.File) => {
-  const modifiedTimeProxy = getModifiedTimeProxy(googleDoc);
-  return {
-    id: googleDoc.id!,
-    name: googleDoc.name,
-    viewedByMe: googleDoc.viewedByMe,
-    viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
-    link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
-    iconLink: googleDoc.iconLink,
-    mimeType: googleDoc.mimeType as any,
-    isStarred: !!googleDoc.starred,
-    isShared: !!googleDoc.shared,
-    updatedAt: modifiedTimeProxy ? new Date(modifiedTimeProxy) : undefined,
-  };
-};
-
 const fetchDriveFilePage = async (googleOauthToken: string, pageToken?: string) => {
   const params = {
     includeItemsFromAllDrives: true,

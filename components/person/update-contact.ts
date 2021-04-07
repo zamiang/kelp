@@ -15,6 +15,9 @@ export const updateContactNotes = async (
   }
 
   const person = await fetchPerson(googleId, accessToken);
+  if (!person) {
+    return null;
+  }
   const etag = person.etag;
   if (!etag) {
     return alert('no etag');
