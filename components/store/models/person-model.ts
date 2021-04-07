@@ -1,6 +1,5 @@
 import { first, uniq } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { formatContact } from '../../fetch/google/fetch-contacts';
 import { formatGmailAddress, formatPerson } from '../../fetch/google/fetch-people';
 import { IPerson } from '../data-types';
 import { dbType } from '../db';
@@ -121,7 +120,7 @@ export default class PersonModel {
   }
 
   async updatePersonFromGoogleContacts(person: gapi.client.people.Person) {
-    const formattedPerson = formatPerson(formatContact(person)!);
+    const formattedPerson = formatPerson(person, person.resourceName);
     if (formattedPerson) {
       try {
         await this.db.put('person', formattedPerson);

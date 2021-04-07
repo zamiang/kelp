@@ -198,7 +198,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   return {
     personList: peopleResponse.result ? peopleResponse.result : [],
     driveActivity,
-    calendarEvents: calendarResponse.result || [],
+    calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
     driveFiles,
     contacts: contactsResponse.result || [],
     currentUser: currentUser.result,

@@ -3,6 +3,11 @@ import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IPerson } from '../../store/data-types';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
+const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
+  biographies
+    .filter((bio) => bio.metadata?.primary)
+    .map((bio) => bio.value)
+    .join('<br />');
 
 const formatName = (personName?: string, id?: string) => {
   const name = personName || id;
@@ -31,7 +36,7 @@ export const formatPerson = (
     googleId: requestedResourceName || undefined,
     isInContacts: person && person.names ? true : false,
     isCurrentUser: 0,
-    notes: person?.biographies?.map((b) => b.value).join('<br />'),
+    notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
     emailAddresses,
     etag: person.etag,
     imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : undefined,

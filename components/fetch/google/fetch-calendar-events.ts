@@ -3,7 +3,7 @@ import urlRegex from 'url-regex';
 import config from '../../../constants/config';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
-import { attendee, responseStatus, segmentState } from '../../store/data-types';
+import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
 
 export const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
@@ -49,15 +49,17 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
   );
 };
 
-const formatSegment = (event: gapi.client.calendar.Event) => {
+const formatSegment = (event: gapi.client.calendar.Event): ISegment => {
   const documents = getDocumentsFromCalendarEvents(event);
   const videoLink = getVideoLinkFromCalendarEvent(event);
+  const start = new Date(event.start!.dateTime!) as any;
+  const end = new Date(event.end!.dateTime!) as any;
   return {
     id: event.id!,
     link: event.htmlLink,
     summary: event.summary,
-    start: new Date(event.start!.dateTime!),
-    end: new Date(event.end!.dateTime!),
+    start,
+    end,
     hangoutLink: event.hangoutLink,
     location: event.location,
     reminders: event.reminders,
