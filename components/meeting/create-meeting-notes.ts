@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { addScope } from '../fetch/fetch-token';
+import { addScope } from '../fetch/google/fetch-token';
 import { ISegment } from '../store/models/segment-model';
 import { IStore } from '../store/use-store';
 

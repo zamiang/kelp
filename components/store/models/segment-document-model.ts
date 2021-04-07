@@ -1,7 +1,7 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
+import { IFormattedDriveActivity } from '../../fetch/google/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
 import { dbType } from '../db';

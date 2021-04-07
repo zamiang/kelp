@@ -1,4 +1,4 @@
-import config from '../../constants/config';
+import config from '../../../constants/config';
 import { fetchSelf } from './fetch-self';
 
 // https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow#oauth-2.0-endpoints_4

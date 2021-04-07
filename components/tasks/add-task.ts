@@ -1,5 +1,5 @@
 import { toNumber } from 'lodash';
-import { formatTask } from '../fetch/fetch-tasks';
+import { formatTask } from '../fetch/google/fetch-tasks';
 import { IStore } from '../store/use-store';
 
 const fields = 'id,title,completed,updated,deleted,status,due,links,notes,parent,position,selfLink';

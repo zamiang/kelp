@@ -1,11 +1,11 @@
 import { orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
+import { IFormattedDriveActivity } from '../data-types';
 import { dbType } from '../db';
-import { getGoogleDocsIdFromLink } from './document-model';
+import { getIdFromLink } from './document-model';
 
 const formatDriveActivity = (driveActivity: IFormattedDriveActivity, currentUserId: string) => {
-  const documentId = getGoogleDocsIdFromLink(driveActivity.link);
+  const documentId = getIdFromLink(driveActivity.link);
   const isCurrentUser: number = driveActivity.actorPersonId === currentUserId ? 1 : 0;
   return { ...driveActivity, documentId, isCurrentUser };
 };

@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import ChevronLeft from '../../public/icons/chevron-left.svg';
 import ChevronRight from '../../public/icons/chevron-right.svg';
-import { responseStatus } from '../fetch/fetch-calendar-events';
+import { responseStatus } from '../fetch/google/fetch-calendar-events';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import PopperContainer from '../shared/popper';
 import TopBar from '../shared/top-bar';

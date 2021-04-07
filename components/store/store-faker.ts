@@ -1,8 +1,8 @@
 import { addDays, addMinutes, setDay, setHours } from 'date-fns';
 import Faker from 'faker';
 import { sample, sampleSize, times } from 'lodash';
-import { getSelfResponseStatus } from '../fetch/fetch-calendar-events';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { getSelfResponseStatus } from '../fetch/google/fetch-calendar-events';
+import { IFormattedDriveActivity } from '../fetch/google/fetch-drive-activity';
 import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';
 import { ISegment, getStateForMeeting } from './models/segment-model';

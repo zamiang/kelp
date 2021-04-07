@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import LockIcon from '../../public/icons/lock.svg';
 import RotateIcon from '../../public/icons/rotate.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import { person } from '../fetch/fetch-people';
+import { person } from '../fetch/google/fetch-people';
 import { IStore } from '../store/use-store';
 import RefreshButton from './refresh-button';
 

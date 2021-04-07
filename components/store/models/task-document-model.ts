@@ -1,7 +1,7 @@
 import { addMinutes, getDayOfYear, subMinutes } from 'date-fns';
 import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../../fetch/fetch-drive-activity';
+import { IFormattedDriveActivity } from '../../fetch/google/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { dbType } from '../db';
 import DriveActivityModel from './drive-activity-model';

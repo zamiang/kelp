@@ -3,12 +3,11 @@ import { first, flatten, groupBy, uniq } from 'lodash';
 import urlRegex from 'url-regex';
 import config from '../../../constants/config';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { ICalendarEvent } from '../../fetch/fetch-calendar-events';
-import { formatGmailAddress } from '../../fetch/fetch-people';
+import { ICalendarEvent } from '../../fetch/google/fetch-calendar-events';
+import { formatGmailAddress } from '../../fetch/google/fetch-people';
+import { ISegment, SegmentState } from '../data-types';
 import { dbType } from '../db';
-import { getGoogleDocsIdFromLink } from './document-model';
-
-type SegmentState = 'current' | 'upcoming' | 'past';
+import { getIdFromLink } from './document-model';
 
 interface IEvent {
   start: Date;
@@ -24,20 +23,13 @@ export const getStateForMeeting = (event: IEvent): SegmentState => {
   } else return 'past';
 };
 
-export interface ISegment extends ICalendarEvent {
-  readonly state: SegmentState;
-  readonly documentIdsFromDescription: string[];
-  readonly videoLink?: string;
-  readonly meetingNotesLink?: string;
-}
-
 export const getDocumentsFromCalendarEvents = (event: ICalendarEvent) => {
   const documentIds: string[] = [];
   const documentUrls: string[] = [];
   const urls = event.description ? uniq(event.description.match(urlRegex())) : [];
   (urls || []).forEach((url) => {
     if (url.includes('https://docs.google.com')) {
-      const link = getGoogleDocsIdFromLink(url);
+      const link = getIdFromLink(url);
       documentIds.push(link);
       documentUrls.push(url);
     }

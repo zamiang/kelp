@@ -4,14 +4,16 @@ import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import { getDocumentsFromCalendarEvents } from '../store/models/segment-model';
 import { ITask } from '../store/models/task-model';
-import fetchCalendarEvents, { ICalendarEvent } from './fetch-calendar-events';
-import fetchContacts from './fetch-contacts';
-import fetchDriveActivityForDocumentIds, { IFormattedDriveActivity } from './fetch-drive-activity';
-import fetchDriveFiles from './fetch-drive-files';
-import FetchMissingGoogleDocs from './fetch-missing-google-docs';
-import { batchFetchPeople, person } from './fetch-people';
-import { fetchSelf } from './fetch-self';
-import { fetchTasks } from './fetch-tasks';
+import fetchCalendarEvents, { ICalendarEvent } from './google/fetch-calendar-events';
+import fetchContacts from './google/fetch-contacts';
+import fetchDriveActivityForDocumentIds, {
+  IFormattedDriveActivity,
+} from './google/fetch-drive-activity';
+import fetchDriveFiles from './google/fetch-drive-files';
+import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
+import { batchFetchPeople, person } from './google/fetch-people';
+import { fetchSelf } from './google/fetch-self';
+import { fetchTasks } from './google/fetch-tasks';
 
 interface IReturnType {
   readonly personList: person[];
@@ -22,7 +24,6 @@ interface IReturnType {
   readonly driveFiles: gapi.client.drive.File[];
   readonly tasks: ITask[];
   readonly defaultTaskList?: gapi.client.tasks.TaskList;
-  readonly missingDriveFiles: (gapi.client.drive.File | null)[];
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
   readonly refetch: () => void;
@@ -183,14 +184,18 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     200,
   );
 
+  const driveFiles = driveResponse.result ? driveResponse.result.filter(Boolean) : [];
+  if (missingGoogleDocs.missingDriveFiles) {
+    driveFiles.concat(missingGoogleDocs.missingDriveFiles.filter(Boolean));
+  }
+
   return {
-    ...missingGoogleDocs,
     personList: peopleResponse.result ? peopleResponse.result : [],
     driveActivity,
     calendarEvents: calendarResponse.result
       ? calendarResponse.result.calendarEvents.filter(Boolean) || []
       : [],
-    driveFiles: driveResponse.result ? driveResponse.result.filter(Boolean) : [],
+    driveFiles,
     contacts: contactsResponse.result ? contactsResponse.result.filter(Boolean) : [],
     currentUser: currentUser.result,
     tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
@@ -199,7 +204,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     refetch: async () => {
       // Current user will reloadd if it fails
       await currentUser.execute();
-
       await calendarResponse.execute();
       await driveResponse.execute();
       await peopleResponse.execute();

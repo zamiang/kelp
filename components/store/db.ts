@@ -1,7 +1,7 @@
 import { subHours } from 'date-fns';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import RollbarErrorTracking from '../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { IFormattedDriveActivity } from '../fetch/google/fetch-drive-activity';
 import { IFormattedAttendee } from './models/attendee-model';
 import { IDocument } from './models/document-model';
 import { IPerson } from './models/person-model';

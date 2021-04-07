@@ -1,6 +1,6 @@
 import { uniq } from 'lodash';
-import config from '../../constants/config';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import config from '../../../constants/config';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 
 /**
  * The attendee's response status. Possible values are:

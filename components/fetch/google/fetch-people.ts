@@ -1,5 +1,5 @@
 import { chunk, flatten, uniq } from 'lodash';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
 

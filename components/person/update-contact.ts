@@ -1,5 +1,5 @@
-import { fetchPerson } from '../fetch/fetch-people';
-import { addScope } from '../fetch/fetch-token';
+import { fetchPerson } from '../fetch/google/fetch-people';
+import { addScope } from '../fetch/google/fetch-token';
 
 const contactEditScope = 'https://www.googleapis.com/auth/contacts';
 

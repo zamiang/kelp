@@ -1,5 +1,5 @@
-import RollbarErrorTracking from '../error-tracking/rollbar';
-import { deleteDatabase } from '../store/db';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
+import { deleteDatabase } from '../../store/db';
 import { formatGooglePeopleResponse, usedPersonFields } from './fetch-people';
 
 export const fetchSelf = async (authToken: string) => {

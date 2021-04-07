@@ -1,19 +1,9 @@
 import { first, uniq } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { formatContact } from '../../fetch/fetch-contacts';
-import { person as GooglePerson, formatGmailAddress } from '../../fetch/fetch-people';
+import { formatContact } from '../../fetch/google/fetch-contacts';
+import { person as GooglePerson, formatGmailAddress } from '../../fetch/google/fetch-people';
+import { IPerson } from '../data-types';
 import { dbType } from '../db';
-
-export interface IPerson {
-  id: string;
-  name: string;
-  emailAddresses: string[];
-  imageUrl?: string;
-  notes?: string;
-  googleId?: string;
-  isCurrentUser: number; // needs to be a number to be a valid index
-  isInContacts: boolean;
-}
 
 const formatName = (person: GooglePerson) => {
   const name = person.name || person.id;

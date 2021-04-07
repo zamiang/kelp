@@ -1,24 +1,12 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { formatGmailAddress } from '../../fetch/fetch-people';
+import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
+import { IFormattedAttendee } from '../data-types';
 import { dbType } from '../db';
 import { IPerson } from './person-model';
 import { ISegment } from './segment-model';
-
-export interface IFormattedAttendee {
-  readonly id: string;
-  readonly personId?: string;
-  readonly personGoogleId?: string;
-  readonly emailAddress?: string;
-  readonly responseStatus?: string;
-  readonly self?: boolean;
-  readonly segmentId: string;
-  readonly week: number;
-  readonly day: number;
-  readonly date: Date;
-}
 
 interface IAttendee {
   readonly email?: string;

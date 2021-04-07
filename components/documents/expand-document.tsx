@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
 import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
-import { IFormattedDriveActivity } from '../fetch/fetch-drive-activity';
+import { IFormattedDriveActivity } from '../fetch/google/fetch-drive-activity';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';

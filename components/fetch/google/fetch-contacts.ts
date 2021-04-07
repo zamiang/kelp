@@ -1,4 +1,4 @@
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { formatGmailAddress, person, usedPersonFields } from './fetch-people';
 
 const getNotesForBiographies = (biographies: gapi.client.people.Biography[]) =>
