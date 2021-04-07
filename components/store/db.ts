@@ -7,10 +7,10 @@ import {
   IFormattedDriveActivity,
   IPerson,
   ISegment,
+  ISegmentDocument,
+  ITask,
+  ITaskDocument,
 } from './data-types';
-import { ISegmentDocument } from './models/segment-document-model';
-import { ITaskDocument } from './models/task-document-model';
-import { ITask } from './models/task-model';
 import { ITfidfRow } from './models/tfidf-model';
 
 interface Db extends DBSchema {

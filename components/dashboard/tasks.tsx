@@ -7,7 +7,7 @@ import CheckIcon from '../../public/icons/check-orange.svg';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import rowStyles from '../shared/row-styles';
-import { ITask } from '../store/models/task-model';
+import { ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { addTask } from '../tasks/add-task';
 import TaskRow from '../tasks/task-row';

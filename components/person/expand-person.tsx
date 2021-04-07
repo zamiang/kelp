@@ -16,9 +16,8 @@ import MeetingList from '../shared/meeting-list';
 import usePanelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { IFormattedAttendee, IPerson, ISegment } from '../store/data-types';
+import { IFormattedAttendee, IPerson, ISegment, ISegmentDocument } from '../store/data-types';
 import { getAssociates } from '../store/helpers';
-import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
 import PersonNotes from './person-notes';
 

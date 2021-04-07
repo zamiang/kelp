@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import CheckIconOrange from '../../public/icons/check-orange.svg';
 import CheckIcon from '../../public/icons/check.svg';
 import useRowStyles from '../shared/row-styles';
-import { ITask } from '../store/models/task-model';
+import { ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { completeTask } from './complete-task';
 

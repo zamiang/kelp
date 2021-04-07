@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
 import MeetingRow from '../meeting/meeting-row';
 import panelStyles from '../shared/panel-styles';
-import { ISegment } from '../store/models/segment-model';
+import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import BarChart from '../timeline/bar-chart';
 import { DocumentsForToday } from './documents';

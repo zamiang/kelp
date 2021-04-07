@@ -12,7 +12,6 @@ import VideoIcon from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { ISegment, ISegmentDocument } from '../store/data-types';
-
 import { IStore } from '../store/use-store';
 import { createSmartMeetingNotes } from './expand-meeting';
 

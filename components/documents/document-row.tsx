@@ -11,8 +11,7 @@ import HelpIcon from '../../public/icons/help.svg';
 import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
-import { IDocument } from '../store/models/document-model';
-import { ISegmentDocument } from '../store/models/segment-document-model';
+import { IDocument, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 export const MissingDocumentRow = (props: {

@@ -7,8 +7,7 @@ import DocumentRow from '../documents/document-row';
 import { getWeek } from '../shared/date-helpers';
 import panelStyles from '../shared/panel-styles';
 import rowStyles from '../shared/row-styles';
-import { IDocument } from '../store/models/document-model';
-import { ISegment } from '../store/models/segment-model';
+import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 interface IFeaturedDocument {

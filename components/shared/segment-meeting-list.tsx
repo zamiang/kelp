@@ -2,8 +2,7 @@ import Typography from '@material-ui/core/Typography';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Meeting } from '../../components/shared/meeting-list';
-import { IPerson, ISegment } from '../store/data-types';
-import { ISegmentDocument } from '../store/models/segment-document-model';
+import { IPerson, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { getTooltipText } from './tooltip-text';
 

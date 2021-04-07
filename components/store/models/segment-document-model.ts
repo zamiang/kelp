@@ -3,25 +3,11 @@ import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
-import { IFormattedDriveActivity, ISegment } from '../data-types';
+import { IFormattedDriveActivity, ISegment, ISegmentDocument } from '../data-types';
 import { dbType } from '../db';
 import AttendeeModel from './attendee-model';
 import DriveActivityModel from './drive-activity-model';
 import SegmentModel from './segment-model';
-
-export interface ISegmentDocument {
-  id: string;
-  driveActivityId?: string;
-  documentId: string;
-  segmentId?: string;
-  segmentTitle?: string;
-  date: Date;
-  reason: string;
-  isPersonAttendee?: Boolean;
-  personId: string;
-  day: number;
-  week: number;
-}
 
 const formatSegmentTitle = (text?: string) =>
   text

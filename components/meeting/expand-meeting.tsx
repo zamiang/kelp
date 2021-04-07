@@ -17,9 +17,8 @@ import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { IDocument, IFormattedAttendee, ISegment } from '../store/data-types';
+import { IDocument, IFormattedAttendee, ISegment, ISegmentDocument } from '../store/data-types';
 import { getFormattedGuestStats } from '../store/helpers';
-import { ISegmentDocument } from '../store/models/segment-document-model';
 import { IStore } from '../store/use-store';
 import { createMeetingNotes } from './create-meeting-notes';
 

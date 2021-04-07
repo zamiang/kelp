@@ -1,8 +1,7 @@
 import { formatDistanceToNow, subDays } from 'date-fns';
 import { sortBy, uniqBy } from 'lodash';
 import { getWeek } from '../shared/date-helpers';
-import { ISegment } from '../store/data-types';
-import { ITask } from '../store/models/task-model';
+import { ISegment, ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 interface IFeaturedTask {

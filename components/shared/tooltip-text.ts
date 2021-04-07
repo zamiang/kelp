@@ -1,7 +1,6 @@
 import { format } from 'date-fns';
 import { capitalize } from 'lodash';
-import { IPerson } from '../store/models/person-model';
-import { ISegmentDocument } from '../store/models/segment-document-model';
+import { IPerson, ISegmentDocument } from '../store/data-types';
 import { getPastTense } from './past-tense';
 
 export const getTooltipText = (segmentDocument: ISegmentDocument, person?: IPerson) => {
