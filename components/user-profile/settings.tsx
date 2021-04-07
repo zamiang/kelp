@@ -31,7 +31,7 @@ const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
   const [isNotificationsDisabled, setNotificationsDisabled] = useState<boolean>(
-    localStorage.getItem(config.NOTIFICATIONS_KEY) === 'true' ? true : false,
+    localStorage.getItem(config.NOTIFICATIONS_KEY) === 'false' ? false : true,
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
 

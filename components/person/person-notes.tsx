@@ -61,7 +61,7 @@ const NotesEditForm = (props: {
   scope: string;
   accessToken: string;
 }) => {
-  const { handleSubmit, register, setValue } = useForm<FormValues>();
+  const { handleSubmit, setValue } = useForm<FormValues>();
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
   const onSubmit = handleSubmit(async (data) => {
@@ -90,7 +90,6 @@ const NotesEditForm = (props: {
         defaultValue={props.person.notes || ''}
         onChange={handleChange}
         name="note"
-        ref={register({ required: 'Required' })}
       />
       <Button
         className={clsx(buttonClasses.button, classes.button)}
