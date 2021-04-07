@@ -53,10 +53,54 @@ export interface IPerson {
   readonly isInContacts: boolean;
 }
 
-export type SegmentState = 'current' | 'upcoming' | 'past';
+/**
 
-export interface ISegment extends ICalendarEvent {
-  readonly state: SegmentState;
+* The attendee's response status. Possible values are:
+ * - "needsAction" - The attendee has not responded to the invitation.
+ * - "declined" - The attendee has declined the invitation.
+ * - "tentative" - The attendee has tentatively accepted the invitation.
+ * - "accepted" - The attendee has accepted the invitation.
+ */
+export type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted' | 'notAttending';
+
+export type segmentState = 'current' | 'upcoming' | 'past';
+
+export type attendee = {
+  readonly email?: string;
+  readonly responseStatus?: string;
+  readonly self?: boolean;
+};
+
+export interface ISegment {
+  readonly id: string;
+  readonly link?: string;
+  readonly summary?: string;
+  readonly start: Date;
+  readonly end: Date;
+  readonly location?: string;
+  readonly description?: string;
+  readonly hangoutLink?: string;
+  readonly selfResponseStatus: responseStatus;
+  readonly creator?: {
+    readonly email?: string;
+    // NOTE: these are null ~100% of the time
+    readonly displayName?: string;
+    readonly id?: string;
+    readonly self?: boolean;
+  };
+  readonly reminders?: {
+    overrides?: gapi.client.calendar.EventReminder[] | undefined;
+    useDefault?: boolean | undefined;
+  };
+  readonly organizer?: {
+    readonly email?: string;
+    readonly displayName?: string;
+    readonly id?: string;
+    readonly self?: boolean;
+  };
+  readonly attendees: attendee[];
+  readonly attachments: gapi.client.calendar.EventAttachment[];
+  readonly state: segmentState;
   readonly documentIdsFromDescription: string[];
   readonly videoLink?: string;
   readonly meetingNotesLink?: string;

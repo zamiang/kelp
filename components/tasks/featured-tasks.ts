@@ -1,7 +1,7 @@
 import { formatDistanceToNow, subDays } from 'date-fns';
 import { sortBy, uniqBy } from 'lodash';
 import { getWeek } from '../shared/date-helpers';
-import { ISegment } from '../store/models/segment-model';
+import { ISegment } from '../store/data-types';
 import { ITask } from '../store/models/task-model';
 import { IStore } from '../store/use-store';
 

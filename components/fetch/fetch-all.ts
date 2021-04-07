@@ -2,13 +2,12 @@ import { flatten, uniq } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
+import { IFormattedDriveActivity, ISegment } from '../store/data-types';
 import { getDocumentsFromCalendarEvents } from '../store/models/segment-model';
 import { ITask } from '../store/models/task-model';
-import fetchCalendarEvents, { ICalendarEvent } from './google/fetch-calendar-events';
+import fetchCalendarEvents from './google/fetch-calendar-events';
 import fetchContacts from './google/fetch-contacts';
-import fetchDriveActivityForDocumentIds, {
-  IFormattedDriveActivity,
-} from './google/fetch-drive-activity';
+import fetchDriveActivityForDocumentIds from './google/fetch-drive-activity';
 import fetchDriveFiles from './google/fetch-drive-files';
 import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
 import { batchFetchPeople, person } from './google/fetch-people';
@@ -20,7 +19,7 @@ interface IReturnType {
   readonly emailAddresses: string[];
   readonly contacts: person[];
   readonly currentUser?: person;
-  readonly calendarEvents: ICalendarEvent[];
+  readonly calendarEvents: ISegment[];
   readonly driveFiles: gapi.client.drive.File[];
   readonly tasks: ITask[];
   readonly defaultTaskList?: gapi.client.tasks.TaskList;

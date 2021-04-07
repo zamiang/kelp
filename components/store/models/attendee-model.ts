@@ -3,10 +3,8 @@ import { flatten } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
-import { IFormattedAttendee } from '../data-types';
+import { IFormattedAttendee, IPerson, ISegment } from '../data-types';
 import { dbType } from '../db';
-import { IPerson } from './person-model';
-import { ISegment } from './segment-model';
 
 interface IAttendee {
   readonly email?: string;

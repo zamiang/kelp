@@ -1,11 +1,11 @@
 import { addMinutes, getDayOfYear, subMinutes } from 'date-fns';
 import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../../fetch/google/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
+import { IFormattedDriveActivity, ISegment } from '../data-types';
 import { dbType } from '../db';
 import DriveActivityModel from './drive-activity-model';
-import SegmentModel, { ISegment } from './segment-model';
+import SegmentModel from './segment-model';
 import TaskModel, { ITask } from './task-model';
 
 export interface ITaskDocument {

@@ -1,8 +1,7 @@
 import { intervalToDuration, subWeeks } from 'date-fns';
 import config from '../../constants/config';
 import { getWeek } from '../shared/date-helpers';
-import { IFormattedAttendee } from './models/attendee-model';
-import { ISegment } from './models/segment-model';
+import { IFormattedAttendee, ISegment } from './data-types';
 import { IStore } from './use-store';
 
 export const getMeetingTime = (segments: (ISegment | undefined)[]) => {

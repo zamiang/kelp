@@ -6,7 +6,7 @@ import { format, formatDistanceToNow } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
-import { ISegment } from '../store/models/segment-model';
+import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import MeetingRowBelow from './meeting-row-below';
 

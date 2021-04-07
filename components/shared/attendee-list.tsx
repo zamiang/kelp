@@ -5,8 +5,8 @@ import { orderBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import PersonRow from '../person/person-row';
-import { IFormattedAttendee } from '../store/models/attendee-model';
-import PersonDataStore, { IPerson } from '../store/models/person-model';
+import { IFormattedAttendee, IPerson } from '../store/data-types';
+import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 
 const Row = (props: {

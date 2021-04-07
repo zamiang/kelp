@@ -1,13 +1,13 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten, orderBy } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
-import { IFormattedDriveActivity } from '../../fetch/google/fetch-drive-activity';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
+import { IFormattedDriveActivity, ISegment } from '../data-types';
 import { dbType } from '../db';
 import AttendeeModel from './attendee-model';
 import DriveActivityModel from './drive-activity-model';
-import SegmentModel, { ISegment } from './segment-model';
+import SegmentModel from './segment-model';
 
 export interface ISegmentDocument {
   id: string;
@@ -109,7 +109,7 @@ export default class SegmentDocumentModel {
     const descriptionsToAdd = await Promise.all(
       segments.map(async (segment) => {
         const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-        return segment.documentIdsFromDescription.map((documentId) =>
+        return segment.documentIdsFromDescription.map((documentId: string) =>
           attendees.map(
             (attendee) =>
               attendee.personId &&

@@ -11,8 +11,8 @@ import PlusIcon from '../../public/icons/plus.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { ISegmentDocument } from '../store/models/segment-document-model';
-import { ISegment } from '../store/models/segment-model';
+import { ISegment, ISegmentDocument } from '../store/data-types';
+
 import { IStore } from '../store/use-store';
 import { createSmartMeetingNotes } from './expand-meeting';
 

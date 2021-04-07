@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { addScope } from '../fetch/google/fetch-token';
-import { ISegment } from '../store/models/segment-model';
+import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const documentCreateScope = 'https://www.googleapis.com/auth/drive.file';

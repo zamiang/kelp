@@ -1,57 +1,88 @@
-import { uniq } from 'lodash';
+import { first, uniq } from 'lodash';
+import urlRegex from 'url-regex';
 import config from '../../../constants/config';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
+import { formatGmailAddress } from '../../fetch/google/fetch-people';
+import { attendee, responseStatus, segmentState } from '../../store/data-types';
+import { getIdFromLink } from '../../store/models/document-model';
 
-/**
- * The attendee's response status. Possible values are:
- * - "needsAction" - The attendee has not responded to the invitation.
- * - "declined" - The attendee has declined the invitation.
- * - "tentative" - The attendee has tentatively accepted the invitation.
- * - "accepted" - The attendee has accepted the invitation.
- */
-export type responseStatus = 'needsAction' | 'declined' | 'tentative' | 'accepted' | 'notAttending';
-
-type attendee = {
-  readonly email?: string;
-  readonly responseStatus?: string;
-  readonly self?: boolean;
+export const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
+  const currentTime = new Date();
+  if (event.end! > currentTime && event.start! < currentTime) {
+    return 'current';
+  } else if (event.end! > currentTime) {
+    return 'upcoming';
+  } else return 'past';
 };
 
-export interface ICalendarEvent {
-  readonly id: string;
-  readonly link?: string;
-  readonly summary?: string;
-  readonly start: Date;
-  readonly end: Date;
-  readonly location?: string;
-  readonly description?: string;
-  readonly hangoutLink?: string;
-  readonly selfResponseStatus: responseStatus;
-  readonly creator?: {
-    readonly email?: string;
-    // NOTE: these are null ~100% of the time
-    readonly displayName?: string;
-    readonly id?: string;
-    readonly self?: boolean;
+export const getDocumentsFromCalendarEvents = (event: gapi.client.calendar.Event) => {
+  const documentIds: string[] = [];
+  const documentUrls: string[] = [];
+  const urls = event.description ? uniq(event.description.match(urlRegex())) : [];
+  (urls || []).forEach((url) => {
+    if (url.includes('https://docs.google.com')) {
+      const link = getIdFromLink(url);
+      documentIds.push(link);
+      documentUrls.push(url);
+    }
+  });
+  (event.attachments || []).map((attachment) => {
+    if (attachment.fileId) {
+      documentIds.push(attachment.fileId);
+    }
+  });
+  return { documentIds, documentUrls };
+};
+
+const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
+  if (event.hangoutLink) {
+    return event.hangoutLink;
+  }
+  const meetingDescriptionLinks = event.description ? event.description.match(urlRegex()) : [];
+  return first(
+    meetingDescriptionLinks?.filter(
+      (link) => link.includes('zoom.us') || link.includes('webex.com'),
+    ),
+  );
+};
+
+const formatSegment = (event: gapi.client.calendar.Event) => {
+  const documents = getDocumentsFromCalendarEvents(event);
+  const videoLink = getVideoLinkFromCalendarEvent(event);
+  return {
+    id: event.id!,
+    link: event.htmlLink,
+    summary: event.summary,
+    start: new Date(event.start!.dateTime!),
+    end: new Date(event.end!.dateTime!),
+    hangoutLink: event.hangoutLink,
+    location: event.location,
+    reminders: event.reminders,
+    selfResponseStatus: getSelfResponseStatus(event.attendees || []),
+    creator: event.creator,
+    organizer: event.organizer,
+    attachments: event.attachments || [],
+    description: event.description,
+    ...event,
+    attendees: (event.attendees || [])
+      .filter(
+        (attendee) => attendee.email && !attendee.resource, // filter out conference rooms
+      )
+      .map((a) => ({
+        ...a,
+        email: a.email ? formatGmailAddress(a.email) : undefined,
+      })),
+    documentIdsFromDescription: documents.documentIds,
+    meetingNotesLink: first(documents.documentUrls),
+    videoLink,
+    state: getStateForMeeting(event),
   };
-  readonly reminders?: {
-    overrides?: gapi.client.calendar.EventReminder[] | undefined;
-    useDefault?: boolean | undefined;
-  };
-  readonly organizer?: {
-    readonly email?: string;
-    readonly displayName?: string;
-    readonly id?: string;
-    readonly self?: boolean;
-  };
-  readonly attendees: attendee[];
-  readonly attachments: gapi.client.calendar.EventAttachment[];
-}
+};
 
 export const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
   for (const person of attendees) {
     if (person.self) {
-      return person.responseStatus as responseStatus;
+      return (person.responseStatus as any) || 'accepted';
     }
   }
   if (attendees.length < 1) {
@@ -133,24 +164,7 @@ const fetchCalendarEvents = async (
           (!config.SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS ||
             isSelfConfirmedAttending(event.attendees || [], event.creator)),
       )
-      .map((event) => ({
-        id: event.id!,
-        link: event.htmlLink,
-        summary: event.summary,
-        start: new Date(event.start!.dateTime!),
-        end: new Date(event.end!.dateTime!),
-        hangoutLink: event.hangoutLink,
-        location: event.location,
-        reminders: event.reminders,
-        selfResponseStatus: getSelfResponseStatus(event.attendees || []),
-        creator: event.creator,
-        organizer: event.organizer,
-        attendees: (event.attendees || []).filter(
-          (attendee) => attendee.email && !attendee.resource, // filter out conference rooms
-        ),
-        attachments: event.attachments || [],
-        description: event.description,
-      })),
+      .map((event) => formatSegment(event)),
     // calendar events return little attendee information beyond email addresses (contradicting docs)
     uniqueAttendeeEmails,
   };
