@@ -3,13 +3,13 @@ import config from '../../../constants/config';
 import { ITask } from '../../store/data-types';
 
 export const formatTask = (
-  task: gapi.client.tasks.Task,
-  list: {
+  task?: gapi.client.tasks.Task,
+  list?: {
     id: string;
     title: string;
   },
 ): ITask | null => {
-  if (!task.id) {
+  if (!task?.id || !list?.id) {
     return null;
   }
   return {

@@ -73,7 +73,7 @@ const fetchDriveActivityForDocument = async (
   const activity =
     response && response.activities
       ? response.activities.filter(
-          (activity) => activity.actors && activity.actors[0] && activity.actors[0].user,
+          (activity) => activity?.actors && activity.actors[0] && activity.actors[0].user,
         )
       : [];
 

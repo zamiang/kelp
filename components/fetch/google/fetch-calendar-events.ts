@@ -53,14 +53,15 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
   );
 };
 
-const formatSegment = (event: gapi.client.calendar.Event): ISegment | null => {
+const formatSegment = (event?: gapi.client.calendar.Event): ISegment | null => {
+  if (!event?.id) {
+    return null;
+  }
+
   const documents = getDocumentsFromCalendarEvents(event);
   const videoLink = getVideoLinkFromCalendarEvent(event);
   const start = new Date(event.start!.dateTime!);
   const end = new Date(event.end!.dateTime!);
-  if (!event.id) {
-    return null;
-  }
   return {
     id: event.id,
     link: event.htmlLink,
