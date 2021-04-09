@@ -46,7 +46,7 @@ export default class SearchIndex {
     // People
     const people = await store.personDataStore.getAll(false);
     people.map((person) => {
-      if (person && person.name.toLowerCase().indexOf('unknown contributor') < 0) {
+      if (person && person.name && person.name.toLowerCase().indexOf('unknown contributor') < 0) {
         searchIndex.push({
           text: person.name.toLowerCase(),
           type: 'person',
