@@ -40,7 +40,10 @@ const getFeaturedDocuments = async (props: IStore) => {
       'documentId',
     )
       .map(async (item) => {
-        const document = await props.documentDataStore.getById(item.documentId!);
+        if (!item.documentId) {
+          return null;
+        }
+        const document = await props.documentDataStore.getById(item.documentId);
         if (!document) {
           return null;
         }
