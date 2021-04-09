@@ -201,7 +201,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
     driveFiles,
     contacts: contactsResponse.result || [],
-    currentUser: currentUser.result,
+    currentUser: currentUser.result || undefined,
     tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
     defaultTaskList: tasksResponse.result ? tasksResponse.result.defaultTaskList : undefined,
     emailAddresses: emailList,
