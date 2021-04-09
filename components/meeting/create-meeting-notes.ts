@@ -124,22 +124,7 @@ export const createMeetingNotes = async (
   );
 
   setMeetingNotesLoading(false);
-  const emailsToInvite = meeting.attendees
-    .map((a) => {
-      const shouldInvite = !a.self && a.responseStatus === 'accepted';
-      if (shouldInvite) {
-        return a.email;
-      }
-    })
-    .filter(Boolean);
-
-  const params = new URLSearchParams({
-    actionButton: '1',
-    userstoinvite: emailsToInvite.join(','),
-  });
-  const documentShareUrl = document
-    ? `https://docs.google.com/document/d/${document.id}?${params.toString()}`
-    : null;
+  const documentShareUrl = document ? `https://docs.google.com/document/d/${document.id}` : null;
   if (documentShareUrl) {
     window.open(documentShareUrl, '_blank');
   }
