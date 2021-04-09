@@ -1,4 +1,3 @@
-import { uniq } from 'lodash';
 import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { ITask } from '../data-types';
 import { dbType } from '../db';
@@ -47,12 +46,6 @@ export default class TaskModel {
     return (await this.db.getAllFromIndex('task', 'by-parent', parentId)).filter(
       (t) => t.status === 'needsAction',
     );
-  }
-
-  async getBulk(ids: string[]): Promise<ITask[]> {
-    const uniqIds = uniq(ids);
-    const docs = await Promise.all(uniqIds.map((id) => this.db.get('document', id)));
-    return docs.filter(Boolean) as any;
   }
 
   async completeTask(id: string) {

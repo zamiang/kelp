@@ -192,9 +192,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
 
   const driveFiles = (driveResponse.result || []).filter(Boolean) as IDocument[];
   if (missingGoogleDocs.missingDriveFiles) {
-    driveFiles
-      .concat(missingGoogleDocs.missingDriveFiles.filter(Boolean) as IDocument[])
-      .filter(Boolean);
+    driveFiles.concat(missingGoogleDocs.missingDriveFiles.filter(Boolean) as IDocument[]);
   }
 
   return {
