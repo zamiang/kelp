@@ -68,55 +68,60 @@ const Search = (props: { store: IStore }) => {
     .replace('?query=', '')
     .toLowerCase()
     .replace(uncommonPunctuation, ' ');
-  const results = searchQuery ? fuse.search(searchQuery) : [];
-  const filteredResults = filterSearchResults(results);
-  return (
-    <div className={classes.panel}>
-      {filteredResults.documents.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={classes.headingPadding} variant="body2">
-            Documents
-          </Typography>
-          {filteredResults.documents.map((result) => (
-            <DocumentRow
-              selectedDocumentId={null}
-              key={result.item.id}
-              document={result.item as IDocument}
-              store={props.store}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.people.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={classes.headingPadding} variant="body2">
-            People
-          </Typography>
-          {filteredResults.people.map((result) => (
-            <PersonRow
-              selectedPersonId={null}
-              key={result.item.id}
-              person={result.item as IPerson}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.meetings.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={classes.headingPadding} variant="body2">
-            Meetings
-          </Typography>
-          {filteredResults.meetings.map((result) => (
-            <Meeting
-              key={result.item.id}
-              meeting={result.item as ISegment}
-              personStore={props.store['personDataStore']}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  try {
+    const results = searchQuery ? fuse.search(searchQuery) : [];
+    const filteredResults = filterSearchResults(results);
+    return (
+      <div className={classes.panel}>
+        {filteredResults.documents.length > 0 && (
+          <div className={classes.section}>
+            <Typography className={classes.headingPadding} variant="body2">
+              Documents
+            </Typography>
+            {filteredResults.documents.map((result) => (
+              <DocumentRow
+                selectedDocumentId={null}
+                key={result.item.id}
+                document={result.item as IDocument}
+                store={props.store}
+              />
+            ))}
+          </div>
+        )}
+        {filteredResults.people.length > 0 && (
+          <div className={classes.section}>
+            <Typography className={classes.headingPadding} variant="body2">
+              People
+            </Typography>
+            {filteredResults.people.map((result) => (
+              <PersonRow
+                selectedPersonId={null}
+                key={result.item.id}
+                person={result.item as IPerson}
+              />
+            ))}
+          </div>
+        )}
+        {filteredResults.meetings.length > 0 && (
+          <div className={classes.section}>
+            <Typography className={classes.headingPadding} variant="body2">
+              Meetings
+            </Typography>
+            {filteredResults.meetings.map((result) => (
+              <Meeting
+                key={result.item.id}
+                meeting={result.item as ISegment}
+                personStore={props.store['personDataStore']}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  } catch (e) {
+    console.log(e, '<<<<<<', results);
+    return null;
+  }
 };
 
 export default Search;
