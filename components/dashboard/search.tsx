@@ -83,7 +83,7 @@ const Search = (props: { store: IStore }) => {
           <Typography className={classes.headingPadding} variant="body2">
             Documents
           </Typography>
-          {filteredResults.documents.map((result) => (
+          {filteredResults.documents.map((result: any) => (
             <DocumentRow
               selectedDocumentId={null}
               key={result.item.id}
@@ -98,7 +98,7 @@ const Search = (props: { store: IStore }) => {
           <Typography className={classes.headingPadding} variant="body2">
             People
           </Typography>
-          {filteredResults.people.map((result) => (
+          {filteredResults.people.map((result: any) => (
             <PersonRow
               selectedPersonId={null}
               key={result.item.id}
@@ -112,7 +112,7 @@ const Search = (props: { store: IStore }) => {
           <Typography className={classes.headingPadding} variant="body2">
             Meetings
           </Typography>
-          {filteredResults.meetings.map((result) => (
+          {filteredResults.meetings.map((result: any) => (
             <Meeting
               key={result.item.id}
               meeting={result.item as ISegment}
