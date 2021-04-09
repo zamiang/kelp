@@ -190,9 +190,11 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     200,
   );
 
-  const driveFiles = driveResponse.result || [];
+  const driveFiles = (driveResponse.result || []).filter(Boolean) as IDocument[];
   if (missingGoogleDocs.missingDriveFiles) {
-    driveFiles.concat(missingGoogleDocs.missingDriveFiles);
+    driveFiles
+      .concat(missingGoogleDocs.missingDriveFiles.filter(Boolean) as IDocument[])
+      .filter(Boolean);
   }
 
   return {

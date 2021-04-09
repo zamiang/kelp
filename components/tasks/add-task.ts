@@ -32,7 +32,11 @@ export const addTask = async (
     id: taskListId,
     title: taskListTitle,
   });
-  (formattedTask as any).position = (toNumber(taskPosition) - 1) as any; // add another zero??
-  await store.taskStore.addTasksToStore([formattedTask]);
-  return formattedTask;
+  if (formattedTask) {
+    (formattedTask as any).position = (toNumber(taskPosition) - 1) as any; // add another zero??
+    await store.taskStore.addTasksToStore([formattedTask]);
+    return formattedTask;
+  } else {
+    alert('error');
+  }
 };

@@ -49,13 +49,16 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
   );
 };
 
-const formatSegment = (event: gapi.client.calendar.Event): ISegment => {
+const formatSegment = (event: gapi.client.calendar.Event): ISegment | null => {
   const documents = getDocumentsFromCalendarEvents(event);
   const videoLink = getVideoLinkFromCalendarEvent(event);
   const start = new Date(event.start!.dateTime!);
   const end = new Date(event.end!.dateTime!);
+  if (!event.id) {
+    return null;
+  }
   return {
-    id: event.id!,
+    id: event.id,
     link: event.htmlLink,
     summary: event.summary,
     start,
@@ -160,6 +163,7 @@ const fetchCalendarEvents = async (
     calendarEvents: filteredCalendarEvents
       .filter(
         (event) =>
+          event &&
           event.id &&
           event.start &&
           event.start.dateTime &&
@@ -168,7 +172,8 @@ const fetchCalendarEvents = async (
           (!config.SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS ||
             isSelfConfirmedAttending(event.attendees || [], event.creator)),
       )
-      .map((event) => formatSegment(event)),
+      .map((event) => formatSegment(event))
+      .filter(Boolean) as ISegment[],
     // calendar events return little attendee information beyond email addresses (contradicting docs)
     uniqueAttendeeEmails,
   };

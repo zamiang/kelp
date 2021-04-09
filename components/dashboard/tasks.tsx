@@ -62,14 +62,18 @@ const AllTasks = (props: {
                 startIcon={<CheckIcon width="24" height="24" />}
                 onClick={() => {
                   const updateTasks = async () => {
-                    await addTask(
-                      text,
-                      props.store.defaultTaskList!.id!,
-                      props.store.defaultTaskList!.title!,
-                      props.store.googleOauthToken!,
-                      tasks[0] && tasks[0].position ? tasks[0].position : '000000000000',
-                      props.store,
-                    );
+                    if (props.store.defaultTaskList?.id && props.store.googleOauthToken) {
+                      await addTask(
+                        text,
+                        props.store.defaultTaskList.id,
+                        props.store.defaultTaskList.title!,
+                        props.store.googleOauthToken,
+                        tasks[0] && tasks[0].position ? tasks[0].position : '000000000000',
+                        props.store,
+                      );
+                    } else {
+                      alert('No default task list - try going to google tasks first');
+                    }
                     // trigger refetching
                     setIncrememnt(taskIncrement + 1);
                   };

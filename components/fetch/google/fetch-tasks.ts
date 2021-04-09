@@ -8,22 +8,27 @@ export const formatTask = (
     id: string;
     title: string;
   },
-): ITask => ({
-  id: task.id!,
-  title: task.title!,
-  listId: list.id,
-  listTitle: list.title,
-  completedAt: task.completed ? new Date(task.completed) : undefined,
-  updatedAt: new Date(task.updated!),
-  deleted: task.deleted,
-  status: task.status as any,
-  due: task.due ? new Date(task.due) : undefined,
-  links: task.links,
-  notes: task.notes,
-  parent: task.parent,
-  position: task.position,
-  selfLink: task.selfLink,
-});
+): ITask | null => {
+  if (!task.id) {
+    return null;
+  }
+  return {
+    id: task.id,
+    title: task.title!,
+    listId: list.id,
+    listTitle: list.title,
+    completedAt: task.completed ? new Date(task.completed) : undefined,
+    updatedAt: new Date(task.updated!),
+    deleted: task.deleted,
+    status: task.status as any,
+    due: task.due ? new Date(task.due) : undefined,
+    links: task.links,
+    notes: task.notes,
+    parent: task.parent,
+    position: task.position,
+    selfLink: task.selfLink,
+  };
+};
 
 const fetchTaskLists = async (authToken: string) => {
   const searchParams = new URLSearchParams({ maxResults: '100' });
@@ -66,7 +71,7 @@ export const fetchTasks = async (authToken: string, limit: any) => {
     }),
   );
 
-  const formattedTasks = (flatten(tasksFromLists) || []).filter(Boolean);
+  const formattedTasks = (flatten(tasksFromLists) || []).filter(Boolean) as ITask[];
 
   return {
     tasks: formattedTasks,

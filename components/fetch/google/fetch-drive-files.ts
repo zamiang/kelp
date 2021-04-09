@@ -28,10 +28,13 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
 };
 
 // TODO: handle one person w/ multiple email addresses
-const formatGoogleDoc = (googleDoc: gapi.client.drive.File): IDocument => {
+const formatGoogleDoc = (googleDoc: gapi.client.drive.File): IDocument | null => {
   const modifiedTimeProxy = getModifiedTimeProxy(googleDoc);
+  if (!googleDoc.id) {
+    return null;
+  }
   return {
-    id: googleDoc.id!,
+    id: googleDoc.id,
     name: googleDoc.name,
     viewedByMe: googleDoc.viewedByMe,
     viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
