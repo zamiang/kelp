@@ -3,7 +3,6 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import SearchIcon from '../../public/icons/search.svg';
 
@@ -18,30 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type FormValues = {
-  query: string;
-};
-
 const SearchBar = () => {
   const classes = useStyles();
-  const { handleSubmit, setValue } = useForm<FormValues>({
-    defaultValues: {
-      query: '',
-    },
-  });
   const router = useHistory();
 
-  const onSubmit = handleSubmit(async (data) => {
-    void router.push(`/search?query=${data.query}`);
-    setValue('query', '');
-  });
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue('query', e.target.value);
     void router.push(`/search?query=${e.target.value}`);
   };
 
   return (
-    <form onSubmit={onSubmit} className={classes.inputContainer}>
+    <div className={classes.inputContainer}>
       <Grid container alignItems="center">
         <Grid item>
           <IconButton disabled>
@@ -63,7 +48,7 @@ const SearchBar = () => {
           />
         </Grid>
       </Grid>
-    </form>
+    </div>
   );
 };
 
