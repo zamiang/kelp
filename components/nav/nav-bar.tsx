@@ -139,33 +139,42 @@ const NavBar = () => {
 
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(hasSearchParams);
 
-  if (isSearchInputVisible) {
-    return (
-      <header className={classes.container}>
-        <Grid container alignItems="center" justify="space-between" className={classes.border}>
-          <Grid item>
-            <Grid container alignItems="center">
+  return (
+    <header className={classes.container}>
+      <Grid container alignItems="center" justify="space-between" className={classes.border}>
+        <Grid item>
+          <Grid container alignItems="center">
+            <Grid item>
+              <IconButton
+                className={classes.iconButton}
+                onClick={() => {
+                  history.push('/meetings');
+                }}
+              >
+                <img
+                  width="24"
+                  height="24"
+                  className={classes.logo}
+                  src="/kelp.svg"
+                  alt="Kelp logo"
+                />
+              </IconButton>
+            </Grid>
+            {!isSearchInputVisible && (
               <Grid item>
-                <IconButton
-                  className={classes.iconButton}
-                  onClick={() => {
-                    history.push('/meetings');
-                  }}
-                >
-                  <img
-                    width="24"
-                    height="24"
-                    className={classes.logo}
-                    src="/kelp.svg"
-                    alt="Kelp logo"
-                  />
+                <IconButton onClick={() => setSearchInputVisible(true)}>
+                  <SearchIcon width="24" height="24" />
                 </IconButton>
               </Grid>
+            )}
+            {isSearchInputVisible && (
               <Grid item>
                 <SearchBar />
               </Grid>
-            </Grid>
+            )}
           </Grid>
+        </Grid>
+        {isSearchInputVisible && (
           <Grid item>
             <IconButton
               onClick={() => {
@@ -176,30 +185,7 @@ const NavBar = () => {
               <BackIcon width="24" height="24" />
             </IconButton>
           </Grid>
-        </Grid>
-        <NavBarLayer />
-      </header>
-    );
-  }
-
-  return (
-    <header className={classes.container}>
-      <Grid container alignItems="center" className={classes.border}>
-        <Grid item>
-          <IconButton
-            className={classes.iconButton}
-            onClick={() => {
-              history.push('/meetings');
-            }}
-          >
-            <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
-          </IconButton>
-        </Grid>
-        <Grid item>
-          <IconButton onClick={() => setSearchInputVisible(true)}>
-            <SearchIcon width="24" height="24" />
-          </IconButton>
-        </Grid>
+        )}
       </Grid>
       <NavBarLayer />
     </header>
