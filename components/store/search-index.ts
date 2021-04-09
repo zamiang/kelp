@@ -23,43 +23,40 @@ export default class SearchIndex {
     const searchIndex = [] as ISearchItem[];
     // Docs
     const documents = await store.documentDataStore.getAll();
-    documents
-      ?.map((doc) => {
-        if (doc && doc.name) {
-          searchIndex.push({
-            text: doc.name.toLowerCase(),
-            type: 'document',
-            item: doc,
-          });
-        }
-      })
-      .filter(Boolean);
+    documents?.map((document) => {
+      if (document?.name) {
+        searchIndex.push({
+          text: document.name.toLowerCase(),
+          type: 'document',
+          item: document,
+        });
+      }
+    });
+
     // Meetings
     const segments = await store.timeDataStore.getAll();
-    segments
-      .map((segment) => {
-        if (segment?.summary) {
-          searchIndex.push({
-            text: segment.summary.toLowerCase(),
-            type: 'segment',
-            item: segment,
-          });
-        }
-      })
-      .filter(Boolean);
+    segments.map((segment) => {
+      if (segment?.summary) {
+        searchIndex.push({
+          text: segment.summary.toLowerCase(),
+          type: 'segment',
+          item: segment,
+        });
+      }
+    });
+
     // People
     const people = await store.personDataStore.getAll(false);
-    people
-      .map((person) => {
-        if (person?.name?.toLowerCase().indexOf('unknown contributor') < 0) {
-          searchIndex.push({
-            text: person.name.toLowerCase(),
-            type: 'person',
-            item: person,
-          });
-        }
-      })
-      .filter(Boolean);
+    people.map((person) => {
+      if (person?.name?.toLowerCase().indexOf('unknown contributor') < 0) {
+        searchIndex.push({
+          text: person.name.toLowerCase(),
+          type: 'person',
+          item: person,
+        });
+      }
+    });
+
     this.results = searchIndex;
   }
 }
