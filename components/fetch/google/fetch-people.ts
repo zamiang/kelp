@@ -18,9 +18,12 @@ const formatName = (personName?: string, id?: string) => {
 };
 
 export const formatPerson = (
-  person: gapi.client.people.Person,
+  person?: gapi.client.people.Person,
   requestedResourceName?: string | null,
 ): IPerson | null => {
+  if (!person) {
+    return null;
+  }
   const emailAddresses =
     (person?.emailAddresses
       ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
@@ -34,12 +37,12 @@ export const formatPerson = (
     id,
     name,
     googleId: requestedResourceName || undefined,
-    isInContacts: person && person.names ? true : false,
+    isInContacts: person.names ? true : false,
     isCurrentUser: 0,
-    notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
+    notes: person.biographies ? getNotesForBiographies(person.biographies) : undefined,
     emailAddresses,
     etag: person.etag,
-    imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : undefined,
+    imageUrl: person.photos && person.photos[0].url ? person.photos[0].url : undefined,
   };
 };
 
