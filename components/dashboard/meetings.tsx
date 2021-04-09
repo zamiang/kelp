@@ -6,6 +6,7 @@ import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
+import PlusIcon from '../../public/icons/plus.svg';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
@@ -91,35 +92,67 @@ const dayContainerStyles = makeStyles((theme) => ({
   },
 }));
 
+const getClassesForMeeting = (
+  meeting: ISegment,
+  rowStyles: any,
+  selectedMeetingId: string | null,
+) =>
+  clsx(
+    rowStyles.row,
+    rowStyles.rowExtraPadding,
+    meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
+    meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
+    meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
+    meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
+    meeting.end < new Date() && rowStyles.rowHint,
+    selectedMeetingId === meeting.id && rowStyles.rowPrimaryMain,
+  );
+
 const DayContainer = (props: {
   meetings: ISegment[];
   store: IStore;
   day: string;
   selectedMeetingId: string | null;
   currentTimeMeetingId?: string;
+  shouldHidePastMeetings: boolean;
 }) => {
   const currentTime = new Date();
   const classes = panelStyles();
   const dayContainerclasses = dayContainerStyles();
   const rowStyles = useRowStyles();
-
+  const [isHidden, setIsHidden] = useState<Boolean>(false);
+  const meetings = props.meetings.filter((meeting) => meeting.end > new Date());
+  const pastMeetings = props.meetings.filter((meeting) => meeting.end < new Date());
   return (
     <div className={classes.section}>
       <Day day={new Date(props.day)} currentDay={currentTime} />
-      {props.meetings.map((meeting) => (
+      <div style={{ display: isHidden ? 'block' : 'none' }}>
+        {pastMeetings.map((meeting) => (
+          <div
+            key={meeting.id}
+            id={meeting.id}
+            className={getClassesForMeeting(meeting, rowStyles, props.selectedMeetingId)}
+          >
+            <MeetingRow
+              shouldRenderCurrentTime={false}
+              meeting={meeting}
+              selectedMeetingId={props.selectedMeetingId}
+              store={props.store}
+            />
+          </div>
+        ))}
+      </div>
+      {pastMeetings.length > 0 && !isHidden && (
+        <Typography className={classes.panelTextButton} onClick={() => setIsHidden(true)}>
+          <PlusIcon width="18" height="18" style={{ verticalAlign: 'sub' }} />
+          Show {pastMeetings.length} earlier meetings
+        </Typography>
+      )}
+      {meetings.map((meeting) => (
         <div
           key={meeting.id}
           id={meeting.id}
-          className={clsx(
-            rowStyles.row,
-            rowStyles.rowExtraPadding,
-            meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
-            meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
-            meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
-            meeting.selfResponseStatus === 'needsAction' && rowStyles.rowHint,
-            meeting.end < new Date() && rowStyles.rowHint,
-            props.selectedMeetingId === meeting.id && rowStyles.rowPrimaryMain,
-          )}
+          className={getClassesForMeeting(meeting, rowStyles, props.selectedMeetingId)}
         >
           {meeting.id === props.currentTimeMeetingId && (
             <div className={dayContainerclasses.currentTime} id="current-time"></div>
@@ -219,6 +252,7 @@ const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => vo
           selectedMeetingId={selectedMeetingId}
           store={props.store}
           currentTimeMeetingId={featuredMeeting?.id}
+          shouldHidePastMeetings={true}
         />
       ))}
     </div>

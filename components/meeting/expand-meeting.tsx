@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
 import EmailIcon from '../../public/icons/email-orange.svg';
-import PlusIcon from '../../public/icons/plus.svg';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';

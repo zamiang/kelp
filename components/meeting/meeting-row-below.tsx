@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
-import PlusIcon from '../../public/icons/plus.svg';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
