@@ -43,19 +43,15 @@ const Search = (props: { store: IStore }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const searchIndex = new SearchIndex();
-        await searchIndex.addData(props.store);
+      const searchIndex = new SearchIndex();
+      await searchIndex.addData(props.store);
 
-        const fuse = new Fuse(searchIndex.results, {
-          includeScore: true,
-          minMatchCharLength: 2,
-          keys: ['text'],
-        });
-        setFuse(fuse);
-      } catch (e) {
-        console.log(e, '<<<<<<<<<<');
-      }
+      const fuse = new Fuse(searchIndex.results, {
+        includeScore: true,
+        minMatchCharLength: 2,
+        keys: ['text'],
+      });
+      setFuse(fuse);
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
@@ -68,14 +64,9 @@ const Search = (props: { store: IStore }) => {
     .replace('?query=', '')
     .toLowerCase()
     .replace(uncommonPunctuation, ' ');
-  let results: Fuse.FuseResult<ISearchItem>[] = [];
-  let filteredResults: any = [];
-  try {
-    results = searchQuery ? fuse.search(searchQuery) : [];
-    filteredResults = filterSearchResults(results);
-  } catch (e) {
-    console.log(e, 'result');
-  }
+
+  const results = searchQuery ? fuse.search(searchQuery) : [];
+  const filteredResults = filterSearchResults(results);
   return (
     <div className={classes.panel}>
       {filteredResults.documents.length > 0 && (

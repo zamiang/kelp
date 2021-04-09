@@ -24,7 +24,7 @@ type FormValues = {
 
 const SearchBar = () => {
   const classes = useStyles();
-  const { handleSubmit, register, setValue } = useForm<FormValues>({
+  const { handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
       query: '',
     },
@@ -60,7 +60,6 @@ const SearchBar = () => {
             name="query"
             margin="dense"
             className={classes.input}
-            inputRef={register}
           />
         </Grid>
       </Grid>
