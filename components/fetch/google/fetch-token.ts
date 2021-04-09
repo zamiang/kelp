@@ -65,7 +65,7 @@ export const fetchToken = async () => {
   if (currentAccessToken) {
     // Test the auth token with an endpoint
     const result = await fetchSelf(currentAccessToken);
-    if (result.id) {
+    if (result?.id) {
       return {
         accessToken: currentAccessToken,
         scope: currentScope || params.scope,
