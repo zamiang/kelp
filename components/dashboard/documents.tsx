@@ -38,16 +38,21 @@ const getFeaturedDocuments = async (props: IStore) => {
     uniqBy(
       driveActivity.filter((item) => item.time > filterTime),
       'documentId',
-    ).map(async (item) => {
-      const document = await props.documentDataStore.getById(item.documentId!);
-      return {
-        documentId: document!.id,
-        document: document!,
-        meetings: [] as any,
-        nextMeetingStartsAt: undefined,
-        text: `You edited this document ${formatDistanceToNow(item.time)} ago`,
-      } as IFeaturedDocument;
-    }),
+    )
+      .map(async (item) => {
+        const document = await props.documentDataStore.getById(item.documentId!);
+        if (!document) {
+          return null;
+        }
+        return {
+          documentId: document.id,
+          document,
+          meetings: [] as any,
+          nextMeetingStartsAt: undefined,
+          text: `You edited this document ${formatDistanceToNow(item.time)} ago`,
+        } as IFeaturedDocument;
+      })
+      .filter(Boolean),
   );
 
   // Hash of documentId to meeting array
@@ -87,10 +92,10 @@ const getFeaturedDocuments = async (props: IStore) => {
     })
     .filter((m) => m.nextMeetingStartAt);
 
-  return uniqBy(sortBy(d, 'nextMeetingStartAt').concat(currentUserDocuments), 'documentId').slice(
-    0,
-    maxResult,
-  );
+  return uniqBy(
+    sortBy(d, 'nextMeetingStartAt').concat(currentUserDocuments as IFeaturedDocument[]),
+    'documentId',
+  ).slice(0, maxResult);
 };
 
 const AllDocuments = (props: {
