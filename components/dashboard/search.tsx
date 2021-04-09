@@ -43,15 +43,19 @@ const Search = (props: { store: IStore }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const searchIndex = new SearchIndex();
-      await searchIndex.addData(props.store);
+      try {
+        const searchIndex = new SearchIndex();
+        await searchIndex.addData(props.store);
 
-      const fuse = new Fuse(searchIndex.results, {
-        includeScore: true,
-        minMatchCharLength: 2,
-        keys: ['text'],
-      });
-      setFuse(fuse);
+        const fuse = new Fuse(searchIndex.results, {
+          includeScore: true,
+          minMatchCharLength: 2,
+          keys: ['text'],
+        });
+        setFuse(fuse);
+      } catch (e) {
+        console.log(e, '<<<<<<<<<<');
+      }
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
