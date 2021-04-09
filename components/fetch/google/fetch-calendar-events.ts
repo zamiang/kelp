@@ -8,9 +8,13 @@ import { getIdFromLink } from '../../store/models/document-model';
 
 export const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
   const currentTime = new Date();
-  if (event.end! > currentTime && event.start! < currentTime) {
+  if (!event.end || !event.start) {
+    return 'past';
+  }
+
+  if (event.end > currentTime && event.start < currentTime) {
     return 'current';
-  } else if (event.end! > currentTime) {
+  } else if (event.end > currentTime) {
     return 'upcoming';
   } else return 'past';
 };

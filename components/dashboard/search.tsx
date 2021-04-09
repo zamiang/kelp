@@ -17,7 +17,7 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const documents: ISearchItem[] = [];
   searchResults.forEach((searchResult) => {
     const result = searchResult.item;
-    if (searchResult.score! > 0.7) {
+    if (!searchResult.score || searchResult.score > 0.7) {
       return;
     }
     switch (result.type) {
