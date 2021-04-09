@@ -3,7 +3,7 @@ import { IPerson } from '../../store/data-types';
 import { deleteDatabase } from '../../store/db';
 import { formatPerson, usedPersonFields } from './fetch-people';
 
-export const fetchSelf = async (authToken: string): Promise<IPerson> => {
+export const fetchSelf = async (authToken: string): Promise<IPerson | null> => {
   const params = {
     personFields: usedPersonFields,
   };
