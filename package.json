@@ -57,7 +57,7 @@
     "babel-plugin-styled-components": "1.12.0",
     "clsx": "1.1.1",
     "d3": "6.6.2",
-    "date-fns": "2.20.0",
+    "date-fns": "2.20.1",
     "express": "4.17.1",
     "faker": "5.5.3",
     "fuse.js": "6.4.6",
