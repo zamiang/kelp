@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
-  inputContainer: {},
   input: {
     width: 282,
     fontSize: 16,
@@ -26,29 +25,26 @@ const SearchBar = () => {
   };
 
   return (
-    <div className={classes.inputContainer}>
-      <Grid container alignItems="center">
-        <Grid item>
-          <IconButton disabled>
-            <SearchIcon width="24" height="24" />
-          </IconButton>
-        </Grid>
-        <Grid item>
-          <TextField
-            id="search-input-for-nav"
-            type="text"
-            placeholder="Search…"
-            fullWidth
-            autoComplete="off"
-            autoFocus={true}
-            onChange={handleChange}
-            name="query"
-            margin="dense"
-            className={classes.input}
-          />
-        </Grid>
+    <Grid container alignItems="center">
+      <Grid item>
+        <IconButton disabled>
+          <SearchIcon width="24" height="24" />
+        </IconButton>
       </Grid>
-    </div>
+      <Grid item>
+        <TextField
+          type="text"
+          placeholder="Search…"
+          fullWidth
+          autoComplete="off"
+          autoFocus={true}
+          onChange={handleChange}
+          name="query"
+          margin="dense"
+          className={classes.input}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
