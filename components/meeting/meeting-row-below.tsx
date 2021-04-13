@@ -1,19 +1,11 @@
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
-import PlusIcon from '../../public/icons/plus-orange.svg';
-import VideoIcon from '../../public/icons/video-white.svg';
-import useButtonStyles from '../shared/button-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { createSmartMeetingNotes } from './expand-meeting';
 
 const useBelowStyles = makeStyles((theme) => ({
   container: {
@@ -42,8 +34,6 @@ const useBelowStyles = makeStyles((theme) => ({
 
 const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLeft: boolean }) => {
   const classes = useBelowStyles();
-  const buttonClasses = useButtonStyles();
-  const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
   >([]);
@@ -101,49 +91,6 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
           </React.Fragment>
         </div>
       )}
-      <div
-        className={clsx(
-          classes.buttonContainer,
-          !props.shouldPadLeft && classes.containerNoLeftMargin,
-        )}
-      >
-        <Grid container spacing={1} alignItems="center" justify="space-between">
-          <Grid item>
-            <Button
-              onClick={(event) => {
-                event.stopPropagation();
-                void createSmartMeetingNotes(
-                  props.meeting,
-                  props.store,
-                  segmentDocumentsForAttendees,
-                  setMeetingNotesLoading,
-                );
-                return false;
-              }}
-              variant="outlined"
-              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-              startIcon={
-                isMeetingNotesLoading ? (
-                  <CircularProgress size={20} />
-                ) : (
-                  <PlusIcon width="24" height="24" />
-                )
-              }
-              disabled={isMeetingNotesLoading}
-            >
-              Smart Notes
-            </Button>
-          </Grid>
-          <Grid item>
-            <IconButton
-              onClick={() => window.open(props.meeting.videoLink, '_blank')}
-              className={buttonClasses.circleButton}
-            >
-              <VideoIcon width="24" height="24" />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </div>
     </div>
   );
 };
