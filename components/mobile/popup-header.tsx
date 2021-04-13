@@ -8,7 +8,6 @@ import BackIcon from '../../public/icons/back.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import RefreshButton from '../nav/refresh-button';
 import SearchBar from '../nav/search-bar';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
