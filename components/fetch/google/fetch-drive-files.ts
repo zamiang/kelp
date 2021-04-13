@@ -8,7 +8,7 @@ const isRefetchEnabled = false;
 const driveFileFields =
   'id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, modifiedTime, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime';
 
-export const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
+const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
   last(
     [file?.modifiedTime, file?.sharedWithMeTime, file?.createdTime, file?.viewedByMeTime]
       .filter(Boolean)

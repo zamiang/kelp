@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useButtonStyles from '../shared/button-styles';
@@ -110,13 +109,6 @@ const PersonRow = (props: {
             {!props.isSmall && (
               <Grid item xs={12}>
                 <Typography variant="body2" noWrap>
-                  {props.text || uniq(props.person.emailAddresses).join(', ')}
-                </Typography>
-              </Grid>
-            )}
-            {!props.isSmall && (
-              <Grid item xs={12}>
-                <Typography variant="body2" noWrap>
                   {props.person.notes}
                 </Typography>
               </Grid>
@@ -131,7 +123,7 @@ const PersonRow = (props: {
           </Grid>
         </Grid>
         {!props.isSmall && isDetailsVisible && props.person.emailAddresses[0] && (
-          <Grid item style={{ marginLeft: 'auto' }}>
+          <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
             <Button
               className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
               variant="outlined"

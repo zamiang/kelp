@@ -13,6 +13,7 @@ import FileIcon from '../../public/icons/file.svg';
 import UserOrangeIcon from '../../public/icons/user-orange.svg';
 import UserIcon from '../../public/icons/user.svg';
 import Documents from '../dashboard/documents';
+import Home from '../dashboard/home';
 import Meetings from '../dashboard/meetings';
 import People from '../dashboard/people';
 import Search from '../dashboard/search';
@@ -117,6 +118,9 @@ const MobileDashboard = (props: { store: IStore }) => {
         <Switch>
           <Route path="/search">
             <Search store={store} />
+          </Route>
+          <Route path="/home">
+            <Home store={store} />
           </Route>
           <Route path="/people/:slug">
             <ExpandPerson store={store} />

@@ -1,11 +1,15 @@
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format, formatDistanceToNow } from 'date-fns';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
+import VideoIcon from '../../public/icons/video-white.svg';
+import useButtonStyles from '../shared/button-styles';
+import isTouchEnabled from '../shared/is-touch-enabled';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import MeetingRowBelow from './meeting-row-below';
@@ -56,8 +60,9 @@ const useStyles = makeStyles((theme) => ({
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(0.5),
   },
+
   dotPast: {
     backgroundColor: theme.palette.grey[200],
   },
@@ -82,6 +87,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginLeft: theme.spacing(1),
   },
+  meetingTimeInWordsDark: {
+    fontWeight: 500,
+    fontFamily: mediumFontFamily,
+    display: 'inline-block',
+    marginRight: theme.spacing(1),
+  },
 }));
 
 const MeetingRow = (props: {
@@ -91,17 +102,22 @@ const MeetingRow = (props: {
   store: IStore;
   isSmall?: boolean;
   isOpen?: boolean;
+  isOneLine?: boolean;
   hideDot?: boolean;
 }) => {
   const classes = useStyles();
+  const buttonClasses = useButtonStyles();
   const router = useHistory();
   const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
+  const [isDetailsVisible, setDetailsVisible] = useState(!props.isOneLine || isTouchEnabled());
 
   const isPast = new Date() > props.meeting.end;
   const isFuture = new Date() < props.meeting.start;
   const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
   return (
     <div
+      onMouseEnter={() => !isTouchEnabled() && props.isOneLine && setDetailsVisible(true)}
+      onMouseLeave={() => !isTouchEnabled() && props.isOneLine && setDetailsVisible(false)}
       onClick={() => {
         void router.push(`/meetings/${props.meeting.id}`);
         return false;
@@ -127,7 +143,7 @@ const MeetingRow = (props: {
               Happening Now
             </Typography>
           )}
-          {!isHappeningNow && (
+          {!isHappeningNow && !props.isOneLine && (
             <React.Fragment>
               <Typography className={clsx(classes.textPast)} style={{ display: 'inline-block' }}>
                 {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
@@ -148,9 +164,28 @@ const MeetingRow = (props: {
               !props.shouldRenderCurrentTime && isPast && classes.textPast,
             )}
           >
-            {props.meeting.summary || '(no title)'}{' '}
+            {props.isOneLine && (
+              <span className={classes.meetingTimeInWordsDark}>
+                {format(props.meeting.start, 'p')}
+              </span>
+            )}
+            {props.meeting.summary || '(no title)'}
           </Typography>
         </Grid>
+        {isDetailsVisible && (
+          <Grid item style={{ paddingBottom: 0, paddingTop: 0 }}>
+            <IconButton
+              size={props.isOneLine ? 'small' : 'medium'}
+              onClick={() => window.open(props.meeting.videoLink, '_blank')}
+              className={buttonClasses.circleButton}
+            >
+              <VideoIcon
+                width={props.isOneLine ? '22' : '24'}
+                height={props.isOneLine ? '22' : '24'}
+              />
+            </IconButton>
+          </Grid>
+        )}
       </Grid>
       {isSelected && (
         <MeetingRowBelow

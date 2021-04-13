@@ -10,6 +10,7 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
 import Documents from '../components/dashboard/documents';
+import Home from '../components/dashboard/home';
 import Meetings from '../components/dashboard/meetings';
 import People from '../components/dashboard/people';
 import Search from '../components/dashboard/search';
@@ -135,7 +136,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
 
   // Unsure why the <Redirect component doesn't work anymore
   if (pathname === '/') {
-    history.push(`/meetings`);
+    history.push(`/home`);
   }
   const shouldBeFullWidth =
     pathname.includes('/dashboard') || pathname.includes('/week') || pathname.includes('/summary');
@@ -155,6 +156,9 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <NavBar />
               <Route path="/search">
                 <Search store={store} />
+              </Route>
+              <Route path="/home">
+                <Home store={store} />
               </Route>
               <Route path="/meetings">
                 <Meetings store={store} setMeetingId={setMeetingId} />

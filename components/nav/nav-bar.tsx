@@ -148,7 +148,7 @@ const NavBar = () => {
               <IconButton
                 className={classes.iconButton}
                 onClick={() => {
-                  history.push('/meetings');
+                  history.push('/home');
                 }}
               >
                 <img
