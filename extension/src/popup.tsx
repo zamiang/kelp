@@ -13,7 +13,6 @@ import './popup.css';
 import { MemoryRouter as Router } from 'react-router-dom';
 import MobileDashboard from '../../components/mobile/dashboard';
 import Loading from '../../components/shared/loading';
-import { ScrollToTop } from '../../components/shared/scroll-to-top';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
@@ -34,7 +33,6 @@ const LoadingMobileDashboardContainer = (props: {
   return (
     <div>
       <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
-        <ScrollToTop />
         {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
       </Router>
     </div>
