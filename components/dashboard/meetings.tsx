@@ -142,7 +142,7 @@ const DayContainer = (props: {
   );
 };
 
-const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
+export const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
   const rowStyles = useRowStyles();
   return (
     <div className={clsx(rowStyles.rowHighlight, rowStyles.rowHighlightPadding)}>

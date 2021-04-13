@@ -9,7 +9,7 @@ import useRowStyles from '../shared/row-styles';
 import { IPerson, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-interface IFeaturedPerson {
+export interface IFeaturedPerson {
   person: IPerson;
   meetings: ISegment[];
   nextMeetingStartAt?: Date;
@@ -22,7 +22,7 @@ interface IFeaturedPerson {
  * It sorts in decending order so upcoming people are next
  */
 const maxResult = 5;
-const getFeaturedPeople = async (props: IStore) => {
+export const getFeaturedPeople = async (props: IStore) => {
   const currentDate = new Date();
   const result = await props.attendeeDataStore.getForNextDays(currentDate);
   const peopleForAttendees = await props.personDataStore.getBulk(result.map((r) => r.personId!));
