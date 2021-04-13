@@ -104,7 +104,7 @@ module.exports = withPlugins(
     [
       withReactSvg,
       {
-        include: path.resolve(__dirname, 'public/icons'),
+        include: path.resolve(__dirname, 'public'),
       },
     ],
   ],

@@ -14,6 +14,7 @@ import FileIcon from '../../public/icons/file.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import UserOrangeIcon from '../../public/icons/user-orange.svg';
 import UserIcon from '../../public/icons/user.svg';
+import KelpLogo from '../../public/kelp.svg';
 import SearchBar from './search-bar';
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     width: 40,
     height: 40,
     borderBottom: 0,
+  },
+  logoSelected: {
+    background: theme.palette.secondary.light,
   },
   iconButton: {
     borderRadius: 0,
@@ -136,7 +140,7 @@ const NavBar = () => {
   const router = useLocation();
 
   const hasSearchParams = router.search.length > 0;
-
+  const isHomeSelected = router.pathname === '/home';
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(hasSearchParams);
 
   return (
@@ -146,18 +150,12 @@ const NavBar = () => {
           <Grid container alignItems="center">
             <Grid item>
               <IconButton
-                className={classes.iconButton}
+                className={clsx(classes.iconButton, isHomeSelected && classes.logoSelected)}
                 onClick={() => {
                   history.push('/home');
                 }}
               >
-                <img
-                  width="24"
-                  height="24"
-                  className={classes.logo}
-                  src="/kelp.svg"
-                  alt="Kelp logo"
-                />
+                <KelpLogo className={classes.logo} />
               </IconButton>
             </Grid>
             {!isSearchInputVisible && (
