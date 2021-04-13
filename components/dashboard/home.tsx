@@ -1,16 +1,16 @@
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { setHours, setMinutes, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { FeaturedMeeting } from '../dashboard/meetings';
-import { IFeaturedPerson, PeopleToday, getFeaturedPeople } from '../dashboard/people';
+import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { DocumentsForToday } from './documents';
+import { IFeaturedDocument, getFeaturedDocuments } from './documents';
+import { IFeaturedPerson, getFeaturedPeople } from './people';
 
 const Home = (props: { store: IStore }) => {
   const classes = panelStyles();
@@ -19,6 +19,7 @@ const Home = (props: { store: IStore }) => {
   const currentTime = new Date();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
+  const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,9 +47,33 @@ const Home = (props: { store: IStore }) => {
     void fetchData();
   }, [props.store.isLoading, props.store.lastUpdated]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const featuredDocuments = await getFeaturedDocuments(props.store);
+      setTopDocuments(featuredDocuments.filter(Boolean));
+    };
+    void fetchData();
+  }, [props.store.lastUpdated, props.store.isLoading]);
+
   return (
     <div className={classes.panel}>
       {featuredMeeting && <FeaturedMeeting meeting={featuredMeeting} store={props.store} />}
+      {topDocuments.length > 0 && (
+        <div className={rowClasses.rowHighlight}>
+          <Typography className={rowClasses.rowText} variant="h6">
+            Recent documents
+          </Typography>
+          {topDocuments.map((document) => (
+            <DocumentRow
+              key={document.document.id}
+              document={document.document}
+              store={props.store}
+              selectedDocumentId={props.selectedDocumentId}
+              text={document.text}
+            />
+          ))}
+        </div>
+      )}
       {featuredPeople.length > 0 && (
         <div className={rowClasses.rowHighlight}>
           <Typography variant="h6" className={rowClasses.rowText}>
@@ -64,11 +89,6 @@ const Home = (props: { store: IStore }) => {
           ))}
         </div>
       )}
-      <Typography variant="h6">People you are meeting with today</Typography>
-      <PeopleToday store={props.store} selectedPersonId={null} isSmall />
-      <Divider />
-      <Typography variant="h6">Documents you may need today</Typography>
-      <DocumentsForToday store={props.store} selectedDocumentId={null} isSmall={true} />
     </div>
   );
 };

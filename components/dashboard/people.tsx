@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import { format, getDayOfYear } from 'date-fns';
-import { Dictionary, groupBy, sortBy } from 'lodash';
+import { Dictionary, groupBy, sortBy, uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PersonRow from '../person/person-row';
@@ -25,7 +25,9 @@ const maxResult = 5;
 export const getFeaturedPeople = async (props: IStore) => {
   const currentDate = new Date();
   const result = await props.attendeeDataStore.getForNextDays(currentDate);
-  const peopleForAttendees = await props.personDataStore.getBulk(result.map((r) => r.personId!));
+  const peopleForAttendees = await props.personDataStore.getBulk(
+    uniq(result.map((r) => r.personId!)),
+  );
 
   // Hash of personId to meeting array
   const meetingsForAttendees: { [id: string]: ISegment[] } = {};
