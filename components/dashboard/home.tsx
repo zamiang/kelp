@@ -68,7 +68,7 @@ const Home = (props: { store: IStore }) => {
               key={document.document.id}
               document={document.document}
               store={props.store}
-              selectedDocumentId={props.selectedDocumentId}
+              selectedDocumentId={null}
               text={document.text}
             />
           ))}
