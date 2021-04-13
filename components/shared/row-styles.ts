@@ -40,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.info.main,
     },
   },
+  rightIcon: {
+    float: 'right',
+    marginTop: -theme.spacing(1),
+    marginRight: theme.spacing(2),
+  },
   row: {
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',

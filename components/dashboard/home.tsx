@@ -1,10 +1,18 @@
+import { IconButton } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import { setHours, setMinutes, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import ArrowIcon from '../../public/icons/chevron-right.svg';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import { FeaturedMeeting } from '../dashboard/meetings';
 import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
+import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
@@ -15,6 +23,8 @@ import { IFeaturedPerson, getFeaturedPeople } from './people';
 const Home = (props: { store: IStore }) => {
   const classes = panelStyles();
   const rowClasses = useRowStyles();
+  const buttonClasses = useButtonStyles();
+  const router = useHistory();
 
   const currentTime = new Date();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
@@ -57,11 +67,45 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
+      <div className={rowClasses.row} style={{ background: 'none', cursor: 'default' }}>
+        <Grid container spacing={2} justify="space-between">
+          <Grid item>
+            <Button
+              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+              variant="outlined"
+              startIcon={<PlusIcon width="24" height="24" />}
+            >
+              Meeting
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+              variant="outlined"
+              startIcon={<PlusIcon width="24" height="24" />}
+            >
+              Task
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+              variant="outlined"
+              startIcon={<PlusIcon width="24" height="24" />}
+            >
+              Smart Notes
+            </Button>
+          </Grid>
+        </Grid>
+      </div>
       {featuredMeeting && <FeaturedMeeting meeting={featuredMeeting} store={props.store} />}
       {topDocuments.length > 0 && (
         <div className={rowClasses.rowHighlight}>
           <Typography className={rowClasses.rowText} variant="h6">
             Recent documents
+            <IconButton onClick={() => router.push('/documents')} className={rowClasses.rightIcon}>
+              <ArrowIcon width="24" height="24" />
+            </IconButton>
           </Typography>
           {topDocuments.map((document) => (
             <DocumentRow
@@ -78,6 +122,9 @@ const Home = (props: { store: IStore }) => {
         <div className={rowClasses.rowHighlight}>
           <Typography variant="h6" className={rowClasses.rowText}>
             People you are meeting with next
+            <IconButton onClick={() => router.push('/people')} className={rowClasses.rightIcon}>
+              <ArrowIcon width="24" height="24" />
+            </IconButton>
           </Typography>
           {featuredPeople.map((featuredPerson) => (
             <PersonRow
