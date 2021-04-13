@@ -5,7 +5,6 @@ import { format, getDate, getMonth, setHours, setMinutes, subDays } from 'date-f
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { mediumFontFamily } from '../../constants/theme';
 import PlusIcon from '../../public/icons/plus.svg';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
@@ -19,38 +18,16 @@ const shouldRenderMeetingsBar = false;
 const dayStyles = makeStyles((theme) => ({
   day: {
     marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-  },
-  dayNumber: {
-    fontWeight: 500,
-    fontFamily: mediumFontFamily,
-    textTransform: 'uppercase',
-    color: 'rgba(0,0,0,0.87)',
-    marginTop: theme.spacing(1),
-    marginBottom: 8,
   },
   dayNumberToday: {
     color: theme.palette.primary.main,
   },
   dayNumberPast: {},
-  currentTime: {
-    marginTop: -6,
-    paddingLeft: 33,
-  },
-  currentTimeDot: {
-    borderRadius: '50%',
-    width: 12,
-    background: theme.palette.primary.dark,
-  },
-  currentTimeBorder: {
-    marginTop: 0,
-    width: '100%',
-    borderTop: `2px solid ${theme.palette.primary.dark}`,
-  },
 }));
 
 const Day = (props: { day: Date; currentDay: Date }) => {
   const classes = dayStyles();
+  const rowStyles = useRowStyles();
   const dayNumber = getDate(props.day);
   const monthNumber = getMonth(props.day);
   const dayInfo = format(props.day, 'EEE MMM d');
@@ -61,8 +38,9 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   return (
     <div className={classes.day} id={`${dayNumber}-day`}>
       <Typography
+        variant="h6"
         className={clsx(
-          classes.dayNumber,
+          rowStyles.heading,
           isToday && classes.dayNumberToday,
           !isToday && isPast && classes.dayNumberPast,
         )}
@@ -85,11 +63,6 @@ const dayContainerStyles = makeStyles((theme) => ({
     width: 12,
     background: theme.palette.primary.dark,
   },
-  currentTimeBorder: {
-    marginTop: -6,
-    width: '100%',
-    borderTop: `2px solid ${theme.palette.primary.dark}`,
-  },
 }));
 
 const getClassesForMeeting = (
@@ -99,7 +72,6 @@ const getClassesForMeeting = (
 ) =>
   clsx(
     rowStyles.row,
-    rowStyles.rowExtraPadding,
     meeting.selfResponseStatus === 'accepted' && rowStyles.rowDefault,
     meeting.selfResponseStatus === 'tentative' && rowStyles.rowHint,
     meeting.selfResponseStatus === 'declined' && rowStyles.rowLineThrough,
@@ -162,6 +134,7 @@ const DayContainer = (props: {
             meeting={meeting}
             selectedMeetingId={props.selectedMeetingId}
             store={props.store}
+            isOneLine
           />
         </div>
       ))}
@@ -178,6 +151,7 @@ const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
         meeting={props.meeting}
         selectedMeetingId={props.meeting.id}
         store={props.store}
+        isOneLine={false}
         hideDot
       />
     </div>

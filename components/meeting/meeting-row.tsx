@@ -56,8 +56,9 @@ const useStyles = makeStyles((theme) => ({
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(0.5),
   },
+
   dotPast: {
     backgroundColor: theme.palette.grey[200],
   },
@@ -82,6 +83,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginLeft: theme.spacing(1),
   },
+  meetingTimeInWordsDark: {
+    fontWeight: 500,
+    fontFamily: mediumFontFamily,
+    display: 'inline-block',
+    marginRight: theme.spacing(1),
+  },
 }));
 
 const MeetingRow = (props: {
@@ -91,6 +98,7 @@ const MeetingRow = (props: {
   store: IStore;
   isSmall?: boolean;
   isOpen?: boolean;
+  isOneLine?: boolean;
   hideDot?: boolean;
 }) => {
   const classes = useStyles();
@@ -127,7 +135,7 @@ const MeetingRow = (props: {
               Happening Now
             </Typography>
           )}
-          {!isHappeningNow && (
+          {!isHappeningNow && !props.isOneLine && (
             <React.Fragment>
               <Typography className={clsx(classes.textPast)} style={{ display: 'inline-block' }}>
                 {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
@@ -148,7 +156,12 @@ const MeetingRow = (props: {
               !props.shouldRenderCurrentTime && isPast && classes.textPast,
             )}
           >
-            {props.meeting.summary || '(no title)'}{' '}
+            {props.isOneLine && (
+              <span className={classes.meetingTimeInWordsDark}>
+                {format(props.meeting.start, 'p')}
+              </span>
+            )}
+            {props.meeting.summary || '(no title)'}
           </Typography>
         </Grid>
       </Grid>

@@ -110,13 +110,6 @@ const PersonRow = (props: {
             {!props.isSmall && (
               <Grid item xs={12}>
                 <Typography variant="body2" noWrap>
-                  {props.text || uniq(props.person.emailAddresses).join(', ')}
-                </Typography>
-              </Grid>
-            )}
-            {!props.isSmall && (
-              <Grid item xs={12}>
-                <Typography variant="body2" noWrap>
                   {props.person.notes}
                 </Typography>
               </Grid>
@@ -131,7 +124,7 @@ const PersonRow = (props: {
           </Grid>
         </Grid>
         {!props.isSmall && isDetailsVisible && props.person.emailAddresses[0] && (
-          <Grid item style={{ marginLeft: 'auto' }}>
+          <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
             <Button
               className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
               variant="outlined"

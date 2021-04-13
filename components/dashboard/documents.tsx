@@ -121,7 +121,7 @@ const AllDocuments = (props: {
   useEffect(() => {
     const fetchData = async () => {
       const featuredDocuments = await getFeaturedDocuments(props.store);
-      setTopDocuments(featuredDocuments);
+      setTopDocuments(featuredDocuments.filter(Boolean));
       if (featuredDocuments[0] && featuredDocuments[0].document && props.setDocumentId) {
         props.setDocumentId(featuredDocuments[0].document.id);
       }
@@ -136,13 +136,13 @@ const AllDocuments = (props: {
           <Typography className={classes.rowText} variant="h6">
             Recent documents
           </Typography>
-          {topDocuments.map((doc) => (
+          {topDocuments.map((document) => (
             <DocumentRow
-              key={doc.document.id}
-              document={doc.document}
+              key={document.document.id}
+              document={document.document}
               store={props.store}
               selectedDocumentId={props.selectedDocumentId}
-              text={doc.text}
+              text={document.text}
             />
           ))}
         </div>
@@ -175,7 +175,9 @@ export const DocumentsForToday = (props: {
         result.map((r) => r.documentId),
       );
       setDocuments(
-        documents.sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)),
+        documents
+          .filter(Boolean)
+          .sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)),
       );
     };
     void fetchData();

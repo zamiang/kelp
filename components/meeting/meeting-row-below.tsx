@@ -27,7 +27,7 @@ const useBelowStyles = makeStyles((theme) => ({
   buttonContainer: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(2),
   },
   containerNoLeftMargin: {
     marginLeft: 0,
