@@ -8,7 +8,7 @@ const Handle404 = () => {
     if (chrome && chrome.tabs) {
       chrome.tabs.create({ url: newURL });
     } else {
-      history.push(`/meetings`);
+      history.push(`/home`);
     }
   }, [newURL]);
 

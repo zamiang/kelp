@@ -86,10 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rowHighlight: {
     background: theme.palette.secondary.light,
-    marginTop: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(3),
+    margin: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(1),

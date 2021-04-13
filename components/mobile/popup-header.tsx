@@ -132,7 +132,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           <Grid item>
             <IconButton
               onClick={() => {
-                history.push('/meetings');
+                history.push('/home');
                 setSearchInputVisible(false);
               }}
             >
@@ -150,7 +150,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
         <Grid item>
           <Grid container alignItems="center">
             <Grid item>
-              <Link to="/meetings" component={RouterLink}>
+              <Link to="/home" component={RouterLink}>
                 <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
               </Link>
             </Grid>
@@ -162,26 +162,14 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           </Grid>
         </Grid>
         <Grid item>
-          <Grid container alignItems="center">
-            <Grid item>
-              <RefreshButton
-                isLoading={props.store.isLoading}
-                refresh={props.store.refetch}
-                lastUpdated={props.store.lastUpdated}
-                loadingMessage={props.store.loadingMessage}
-              />
-            </Grid>
-            <Grid item>
-              <IconButton
-                className={'ignore-react-onclickoutside'}
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={() => history.push('/settings')}
-              >
-                <SettingsIcon width="24" height="24" />
-              </IconButton>
-            </Grid>
-          </Grid>
+          <IconButton
+            className={'ignore-react-onclickoutside'}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={() => history.push('/settings')}
+          >
+            <SettingsIcon width="24" height="24" />
+          </IconButton>
         </Grid>
       </Grid>
     </header>

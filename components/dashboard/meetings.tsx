@@ -145,15 +145,20 @@ const DayContainer = (props: {
 export const FeaturedMeeting = (props: { meeting: ISegment; store: IStore }) => {
   const rowStyles = useRowStyles();
   return (
-    <div className={clsx(rowStyles.rowHighlight, rowStyles.rowHighlightPadding)}>
-      <MeetingRow
-        shouldRenderCurrentTime={true}
-        meeting={props.meeting}
-        selectedMeetingId={props.meeting.id}
-        store={props.store}
-        isOneLine={false}
-        hideDot
-      />
+    <div className={rowStyles.rowHighlight}>
+      <Typography className={rowStyles.rowText} variant="h6">
+        Up next
+      </Typography>
+      <div className={rowStyles.rowHighlightPadding}>
+        <MeetingRow
+          shouldRenderCurrentTime={true}
+          meeting={props.meeting}
+          selectedMeetingId={props.meeting.id}
+          store={props.store}
+          isOneLine={false}
+          hideDot
+        />
+      </div>
     </div>
   );
 };
