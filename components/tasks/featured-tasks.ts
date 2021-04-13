@@ -4,7 +4,7 @@ import { getWeek } from '../shared/date-helpers';
 import { ISegment, ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-interface IFeaturedTask {
+export interface IFeaturedTask {
   taskId: string;
   task: ITask;
   meetings: ISegment[];
