@@ -9,7 +9,6 @@ import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
 import VideoIcon from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
-import isTouchEnabled from '../shared/is-touch-enabled';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import MeetingRowBelow from './meeting-row-below';
@@ -39,12 +38,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   container: {
-    display: 'block',
-    width: '100%',
-    textAlign: 'left',
-    paddingLeft: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
     cursor: 'pointer',
     '&:hover': {
       background: 'transparent',
@@ -62,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
     marginRight: theme.spacing(0.5),
   },
-
   dotPast: {
     backgroundColor: theme.palette.grey[200],
   },
@@ -109,15 +101,13 @@ const MeetingRow = (props: {
   const buttonClasses = useButtonStyles();
   const router = useHistory();
   const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
-  const [isDetailsVisible, setDetailsVisible] = useState(!props.isOneLine || isTouchEnabled());
+  const [isDetailsVisible] = useState(!props.isOneLine);
 
   const isPast = new Date() > props.meeting.end;
   const isFuture = new Date() < props.meeting.start;
   const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
   return (
     <div
-      onMouseEnter={() => !isTouchEnabled() && props.isOneLine && setDetailsVisible(true)}
-      onMouseLeave={() => !isTouchEnabled() && props.isOneLine && setDetailsVisible(false)}
       onClick={() => {
         void router.push(`/meetings/${props.meeting.id}`);
         return false;
@@ -179,10 +169,7 @@ const MeetingRow = (props: {
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
               className={buttonClasses.circleButton}
             >
-              <VideoIcon
-                width={props.isOneLine ? '22' : '24'}
-                height={props.isOneLine ? '22' : '24'}
-              />
+              <VideoIcon width={'24'} height={'24'} />
             </IconButton>
           </Grid>
         )}

@@ -1,6 +1,6 @@
-import { IconButton } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { setHours, setMinutes, subDays } from 'date-fns';
@@ -82,23 +82,17 @@ const Home = (props: { store: IStore }) => {
             <Button
               className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
               variant="outlined"
+              onClick={() => router.push('/tasks')}
               startIcon={<PlusIcon width="24" height="24" />}
             >
               Task
             </Button>
           </Grid>
-          <Grid item>
-            <Button
-              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-              variant="outlined"
-              startIcon={<PlusIcon width="24" height="24" />}
-            >
-              Smart Notes
-            </Button>
-          </Grid>
         </Grid>
       </div>
-      {featuredMeeting && <FeaturedMeeting meeting={featuredMeeting} store={props.store} />}
+      {featuredMeeting && (
+        <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
+      )}
       {topDocuments.length > 0 && (
         <div className={rowClasses.rowHighlight}>
           <Typography className={rowClasses.rowText} variant="h6">

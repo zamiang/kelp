@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import CheckIcon from '../../public/icons/check-orange.svg';
+import PlusIcon from '../../public/icons/plus-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import rowStyles from '../shared/row-styles';
@@ -53,39 +53,37 @@ const AllTasks = (props: {
                 value={text}
               />
             </Grid>
-            <Grid>
-              <Button
-                className={buttonClasses.button}
-                variant="outlined"
-                disableElevation
-                color="primary"
-                startIcon={<CheckIcon width="24" height="24" />}
-                onClick={() => {
-                  const updateTasks = async () => {
-                    if (props.store.defaultTaskList?.id && props.store.googleOauthToken) {
-                      await addTask(
-                        text,
-                        props.store.defaultTaskList.id,
-                        props.store.defaultTaskList.title!,
-                        props.store.googleOauthToken,
-                        tasks[0] && tasks[0].position ? tasks[0].position : '000000000000',
-                        props.store,
-                      );
-                    } else {
-                      alert('No default task list - try going to google tasks first');
-                    }
-                    // trigger refetching
-                    setIncrememnt(taskIncrement + 1);
-                  };
-                  void updateTasks();
-                  setText('');
-                }}
-                style={{ width: 'auto', margin: '12px auto 0' }}
-              >
-                Add a task
-              </Button>
-            </Grid>
           </Grid>
+          <Button
+            className={buttonClasses.button}
+            variant="contained"
+            disableElevation
+            color="primary"
+            startIcon={<PlusIcon width="24" height="24" />}
+            onClick={() => {
+              const updateTasks = async () => {
+                if (props.store.defaultTaskList?.id && props.store.googleOauthToken) {
+                  await addTask(
+                    text,
+                    props.store.defaultTaskList.id,
+                    props.store.defaultTaskList.title!,
+                    props.store.googleOauthToken,
+                    tasks[0] && tasks[0].position ? tasks[0].position : '000000000000',
+                    props.store,
+                  );
+                } else {
+                  alert('No default task list - try going to google tasks first');
+                }
+                // trigger refetching
+                setIncrememnt(taskIncrement + 1);
+              };
+              void updateTasks();
+              setText('');
+            }}
+            style={{ width: 'auto', margin: '12px 0 0 auto' }}
+          >
+            Add a task
+          </Button>
         </div>
       )}
       <div>
