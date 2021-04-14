@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
 import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
+import { GoToSourceButton } from '../mobile/popup-header';
 import PersonRow from '../person/person-row';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -157,6 +158,9 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
+        <div className={classes.desktopSourceButton}>
+          <GoToSourceButton store={props.store} type="documents" id={document.id} />
+        </div>
         <div className={classes.headingContainer}>
           <Typography variant="h3" color="textPrimary" gutterBottom>
             {document.name || '(no title)'}

@@ -56,7 +56,11 @@ const useHeaderStyles = makeStyles((theme) => ({
   },
 }));
 
-const GoToSourceButton = (props: { store: IStore; type: string; id: string }) => {
+export const GoToSourceButton = (props: {
+  store: IStore;
+  type: 'meetings' | 'documents' | 'people';
+  id: string;
+}) => {
   const [link, setLink] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -115,7 +119,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             </IconButton>
           </Grid>
           <Grid item>
-            <GoToSourceButton store={props.store} type={type} id={id} />
+            <GoToSourceButton store={props.store} type={type as any} id={id} />
           </Grid>
         </Grid>
       </header>
