@@ -18,16 +18,18 @@ const formatSegmentDocument = (
   driveActivity: IFormattedDriveActivity,
   segment?: ISegment,
   isPersonAttendee?: boolean,
+  isPersonCurrentUser?: boolean,
 ): ISegmentDocument => ({
   id: driveActivity.id,
   driveActivityId: driveActivity.id,
   documentId: driveActivity.documentId!,
   segmentId: segment?.id,
   segmentTitle: formatSegmentTitle(segment?.summary),
+  category: isPersonCurrentUser ? 'self' : isPersonAttendee ? 'attendee' : 'non-attendee',
+  isPersonAttendee,
   date: driveActivity.time,
   reason: driveActivity.action,
   personId: driveActivity.actorPersonId!,
-  isPersonAttendee,
   day: getDayOfYear(driveActivity.time),
   week: getWeek(driveActivity.time),
 });
@@ -42,6 +44,7 @@ const formatSegmentDocumentFromDescription = (
   segmentId: segment.id,
   segmentTitle: formatSegmentTitle(segment.summary),
   date: segment.start,
+  category: 'meeting-description',
   reason: 'Listed in meeting description',
   personId,
   isPersonAttendee: true,
@@ -68,24 +71,25 @@ export default class SegmentDocumentModel {
     const driveActivityToAdd = await Promise.all(
       driveActivity.map(async (driveActivityItem) => {
         let isActorAttendee = false;
+        let isActorCurrentUser = false;
         const segment = segments.find(
           (s) => s.start < driveActivityItem.time && s.end > driveActivityItem.time,
         );
         if (segment) {
           const summary = segment.summary?.toLocaleLowerCase();
-          if (summary?.includes('ooo') || summary?.includes('out of office')) {
-            // do nothing
-          } else {
+          if (!summary?.includes('ooo') && !summary?.includes('out of office')) {
             const attendees = await attendeeStore.getAllForSegmentId(segment.id);
             isActorAttendee = !!attendees.find(
               (a) => a.personGoogleId === driveActivityItem.actorPersonId,
             );
+            isActorCurrentUser = !!attendees.find((a) => a.self);
           }
         }
         const formattedDocument = formatSegmentDocument(
           driveActivityItem,
           segment,
           isActorAttendee,
+          isActorCurrentUser,
         );
         return formattedDocument;
       }),

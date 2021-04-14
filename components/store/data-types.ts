@@ -119,6 +119,7 @@ export interface ISegmentDocument {
   readonly personId: string;
   readonly day: number;
   readonly week: number;
+  readonly category: 'self' | 'attendee' | 'non-attendee' | 'meeting-description';
 }
 
 export interface ITaskDocument {

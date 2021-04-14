@@ -31,14 +31,15 @@ export const getFeaturedDocuments = async (props: IStore) => {
   const result = await props.segmentDocumentStore.getAllForWeek(week);
   const documents = await props.documentDataStore.getBulk(result.map((r) => r.documentId));
 
-  // For documents edited by the current users that may not be associated with a meeting
+  // For documents edited by the current user that may not be associated with a meeting
   const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
   const filterTime = subDays(currentDate, daysToLookBack);
+  const sortedDriveActivity = driveActivity
+    .filter((item) => item.time > filterTime)
+    .sort((a, b) => (a.time > b.time ? -1 : 1));
+
   const currentUserDocuments = await Promise.all(
-    uniqBy(
-      driveActivity.filter((item) => item.time > filterTime),
-      'documentId',
-    )
+    uniqBy(sortedDriveActivity, 'documentId')
       .map(async (item) => {
         if (!item.documentId) {
           return null;
@@ -96,7 +97,7 @@ export const getFeaturedDocuments = async (props: IStore) => {
     .filter((m) => m.nextMeetingStartAt);
 
   return uniqBy(
-    sortBy(d, 'nextMeetingStartAt').concat(currentUserDocuments as IFeaturedDocument[]),
+    (currentUserDocuments as IFeaturedDocument[]).concat(sortBy(d, 'nextMeetingStartAt')),
     'documentId',
   ).slice(0, maxResult);
 };
