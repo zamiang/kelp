@@ -32,7 +32,6 @@ const useInfoStyles = makeStyles((theme) => ({
     overflowY: 'auto',
     background: theme.palette.background.paper,
     overflowX: 'hidden',
-    paddingBottom: 110,
   },
   footer: {
     borderTop: `1px solid ${theme.palette.divider}`,
