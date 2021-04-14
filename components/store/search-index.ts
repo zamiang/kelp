@@ -1,10 +1,10 @@
-import { IDocument, IPerson, ISegment } from './data-types';
+import { IDocument, IPerson, ISegment, ITask } from './data-types';
 import { IStore } from './use-store';
 
 export interface ISearchItem {
   text: string;
-  type: 'segment' | 'document' | 'person';
-  item: IPerson | ISegment | IDocument;
+  type: 'segment' | 'document' | 'person' | 'task';
+  item: IPerson | ISegment | IDocument | ITask;
 }
 
 export default class SearchIndex {
@@ -14,12 +14,7 @@ export default class SearchIndex {
     this.results = [];
   }
 
-  async addData(store: {
-    documentDataStore: IStore['documentDataStore'];
-    driveActivityStore: IStore['driveActivityStore'];
-    timeDataStore: IStore['timeDataStore'];
-    personDataStore: IStore['personDataStore'];
-  }) {
+  async addData(store: IStore) {
     const searchIndex = [] as ISearchItem[];
     // Docs
     const documents = await store.documentDataStore.getAll();
@@ -55,6 +50,15 @@ export default class SearchIndex {
           item: person,
         });
       }
+    });
+
+    const tasks = await store.taskStore.getAll();
+    tasks.map((task) => {
+      searchIndex.push({
+        text: task.title.toLowerCase(),
+        type: 'task',
+        item: task,
+      });
     });
 
     this.results = searchIndex;
