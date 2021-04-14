@@ -121,7 +121,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rowLeft: {
-    width: 48,
     textAlign: 'center',
   },
   rowPrimaryMain: {
