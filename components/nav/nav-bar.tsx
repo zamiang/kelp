@@ -4,16 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import CalendarOrangeIcon from '../../public/icons/calendar-orange.svg';
-import CalendarIcon from '../../public/icons/calendar.svg';
-import TasksOrangeIcon from '../../public/icons/check-orange.svg';
-import TasksIcon from '../../public/icons/check.svg';
 import BackIcon from '../../public/icons/close.svg';
-import FileOrangeIcon from '../../public/icons/file-orange.svg';
-import FileIcon from '../../public/icons/file.svg';
 import SearchIcon from '../../public/icons/search.svg';
-import UserOrangeIcon from '../../public/icons/user-orange.svg';
-import UserIcon from '../../public/icons/user.svg';
 import KelpLogo from '../../public/kelp.svg';
 import SearchBar from './search-bar';
 
@@ -28,22 +20,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     background: theme.palette.background.paper,
   },
-  border: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
+  innerContainer: {
     paddingRight: theme.spacing(2),
-  },
-  selected: {
-    color: `${theme.palette.secondary.dark} !important`,
-    borderBottom: `1px solid ${theme.palette.primary.main} !important`,
-  },
-  icon: {
-    color: theme.palette.secondary.light,
-    transition: 'border-color 0.6s',
-    textAlign: 'center',
-    borderBottom: `1px solid ${theme.palette.background.paper}`,
-    '&:hover': {
-      borderBottom: `1px solid ${theme.palette.divider}`,
-    },
   },
   logo: {
     width: 40,
@@ -58,81 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     paddingBottom: 10,
   },
-  iconButtonLarge: {
-    borderRadius: 0,
-    width: '100%',
-    padding: 20,
-  },
 }));
-
-const NavBarLayer = () => {
-  const classes = useStyles();
-  const router = useLocation();
-  const history = useHistory();
-
-  const tab = router.pathname;
-  const isMeetingsSelected = tab.includes('meetings');
-  const isDocsSelected = tab.includes('documents');
-  const isPeopleSelected = tab.includes('people');
-  const isTasksSelected = tab.includes('tasks');
-
-  return (
-    <Grid container alignItems="center" justify="space-between">
-      <Grid item xs className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
-        <IconButton
-          className={classes.iconButtonLarge}
-          onClick={() => history.push('/meetings')}
-          aria-label="Meetings"
-        >
-          {isMeetingsSelected ? (
-            <CalendarOrangeIcon width="24" height="24" />
-          ) : (
-            <CalendarIcon width="24" height="24" />
-          )}
-        </IconButton>
-      </Grid>
-      <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
-        <IconButton
-          className={classes.iconButtonLarge}
-          onClick={() => history.push('/documents')}
-          aria-label="Documents"
-        >
-          {isDocsSelected ? (
-            <FileOrangeIcon width="24" height="24" />
-          ) : (
-            <FileIcon width="24" height="24" />
-          )}
-        </IconButton>
-      </Grid>
-      <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
-        <IconButton
-          className={classes.iconButtonLarge}
-          onClick={() => history.push('/people')}
-          aria-label="People"
-        >
-          {isPeopleSelected ? (
-            <UserOrangeIcon width="24" height="24" />
-          ) : (
-            <UserIcon width="24" height="24" />
-          )}
-        </IconButton>
-      </Grid>
-      <Grid item xs className={clsx(classes.icon, isTasksSelected && classes.selected)}>
-        <IconButton
-          className={classes.iconButtonLarge}
-          onClick={() => history.push('/tasks')}
-          aria-label="Tasks"
-        >
-          {isTasksSelected ? (
-            <TasksOrangeIcon width="24" height="24" />
-          ) : (
-            <TasksIcon width="24" height="24" />
-          )}
-        </IconButton>
-      </Grid>
-    </Grid>
-  );
-};
 
 const NavBar = () => {
   const classes = useStyles();
@@ -145,7 +49,12 @@ const NavBar = () => {
 
   return (
     <header className={classes.container}>
-      <Grid container alignItems="center" justify="space-between" className={classes.border}>
+      <Grid
+        container
+        alignItems="center"
+        justify="space-between"
+        className={classes.innerContainer}
+      >
         <Grid item>
           <Grid container alignItems="center">
             <Grid item>
@@ -176,7 +85,7 @@ const NavBar = () => {
           <Grid item>
             <IconButton
               onClick={() => {
-                history.push('/meetings');
+                history.push('/home');
                 setSearchInputVisible(false);
               }}
             >
@@ -185,7 +94,6 @@ const NavBar = () => {
           </Grid>
         )}
       </Grid>
-      <NavBarLayer />
     </header>
   );
 };
