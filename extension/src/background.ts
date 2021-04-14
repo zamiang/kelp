@@ -23,10 +23,10 @@ const fetchDataAndCreateStore = async () => {
 
 const queryAndSendNotification = async () => {
   if (!localStorage.getItem(config.NOTIFICATIONS_KEY)) {
-    localStorage.setItem(config.NOTIFICATIONS_KEY, 'true');
+    localStorage.setItem(config.NOTIFICATIONS_KEY, 'enabled');
   }
 
-  const isEnabled = localStorage.getItem(config.NOTIFICATIONS_KEY) === 'true';
+  const isEnabled = localStorage.getItem(config.NOTIFICATIONS_KEY) !== 'disabled';
   if (!isEnabled) {
     return;
   }

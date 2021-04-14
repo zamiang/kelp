@@ -30,18 +30,20 @@ const useStyles = makeStyles((theme) => ({
 const Settings = () => {
   const classes = panelStyles();
   const formClasses = useStyles();
-  const [isNotificationsDisabled, setNotificationsDisabled] = useState<boolean>(
-    localStorage.getItem(config.NOTIFICATIONS_KEY) === 'false' ? false : true,
+  const [isNotificationsEnabled, setNotificationsEnabled] = useState<boolean>(
+    localStorage.getItem(config.NOTIFICATIONS_KEY) !== 'disabled' ? true : false,
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
 
+  console.log(localStorage.getItem(config.NOTIFICATIONS_KEY));
+
   const toggleChecked = (enabled: boolean) => {
     if (enabled) {
-      setNotificationsDisabled(true);
-      localStorage.setItem(config.NOTIFICATIONS_KEY, 'true');
+      setNotificationsEnabled(true);
+      localStorage.setItem(config.NOTIFICATIONS_KEY, 'enabled');
     } else {
-      setNotificationsDisabled(false);
-      localStorage.setItem(config.NOTIFICATIONS_KEY, 'false');
+      setNotificationsEnabled(false);
+      localStorage.setItem(config.NOTIFICATIONS_KEY, 'disabled');
     }
     if ('Notification' in window) {
       return Notification.requestPermission();
@@ -68,8 +70,8 @@ const Settings = () => {
               control={
                 <Switch
                   color="primary"
-                  checked={!isNotificationsDisabled}
-                  onChange={() => toggleChecked(!isNotificationsDisabled)}
+                  checked={isNotificationsEnabled}
+                  onChange={() => toggleChecked(!isNotificationsEnabled)}
                 />
               }
               label="Meeting prep notifications"
