@@ -155,7 +155,7 @@ export const FeaturedMeeting = (props: {
   return (
     <div className={rowStyles.rowHighlight}>
       <Typography className={rowStyles.rowText} variant="h6">
-        Up next
+        Next meeting
         {props.showButton && (
           <IconButton onClick={() => router.push('/meetings')} className={rowStyles.rightIcon}>
             <ArrowIcon width="24" height="24" />

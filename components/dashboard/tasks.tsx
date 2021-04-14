@@ -41,7 +41,7 @@ const AllTasks = (props: {
       {props.store.defaultTaskList && (
         <div className={classes.rowNoHover}>
           <Grid container>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <TextField
                 multiline
                 rows={4}

@@ -1,6 +1,8 @@
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
@@ -8,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CheckIcon from '../../public/icons/check-orange.svg';
 import EditIcon from '../../public/icons/edit-orange.svg';
+import PlusIcon from '../../public/icons/plus-white.svg';
 import DocumentRow from '../documents/document-row';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -15,9 +18,8 @@ import { Meeting } from '../shared/meeting-list';
 import { IDocument, ISegment, ITask, ITaskDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { completeTask } from './complete-task';
+import { editTask } from './edit-task';
 import TaskRow from './task-row';
-
-const tasksLink = 'https://calendar.google.com/calendar/u/0/r?opentasks=1';
 
 const TaskDocumentRow = (props: { store: IStore; taskDocument: ITaskDocument }) => {
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
@@ -67,12 +69,81 @@ const TaskMeetingRow = (props: { store: IStore; taskDocument: ITaskDocument }) =
   );
 };
 
+const TaskEdit = (props: {
+  store: IStore;
+  text: string;
+  taskId: string;
+  setIsEditMode: (isEditMode: boolean) => void;
+}) => {
+  const [text, setText] = useState<string>(props.text);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const buttonClasses = useButtonStyles();
+  return (
+    <div>
+      <Grid container>
+        <Grid xs={12}>
+          <TextField
+            multiline
+            rows={4}
+            variant="outlined"
+            fullWidth
+            onChange={(event) => {
+              setText(event.target.value);
+            }}
+            value={text}
+          />
+        </Grid>
+      </Grid>
+      <Button
+        className={buttonClasses.button}
+        variant="contained"
+        disableElevation
+        color="primary"
+        startIcon={
+          isLoading ? (
+            <CircularProgress color={'white' as any} size={24} />
+          ) : (
+            <PlusIcon width="24" height="24" />
+          )
+        }
+        onClick={() => {
+          if (isLoading) {
+            return;
+          }
+          const updateTasks = async () => {
+            if (props.store.defaultTaskList?.id && props.store.googleOauthToken) {
+              setIsLoading(true);
+              await editTask(
+                props.taskId,
+                text,
+                props.store.defaultTaskList.id,
+                props.store.defaultTaskList.title!,
+                props.store.googleOauthToken,
+                props.store,
+              );
+              setIsLoading(true);
+              props.setIsEditMode(false);
+            } else {
+              alert('No default task list - try going to google tasks first');
+            }
+          };
+          void updateTasks();
+        }}
+        style={{ width: 'auto', margin: '12px 0 0 auto' }}
+      >
+        Save
+      </Button>
+    </div>
+  );
+};
+
 const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => void }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
   const { slug }: any = useParams();
   const taskId = props.taskId || slug;
   const [task, setTask] = useState<ITask | undefined>(undefined);
+  const [isEditMode, setEditMode] = useState<boolean>(false);
   const [subTasks, setSubTasks] = useState<ITask[]>([]);
   const [taskDocuments, setTaskDocuments] = useState<ITaskDocument[]>([]);
   const [taskMeetings, setTaskMeetings] = useState<ITaskDocument[]>([]);
@@ -85,7 +156,7 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
       }
     };
     void fetchData();
-  }, [props.store.isLoading, taskId]);
+  }, [props.store.isLoading, taskId, isEditMode]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,9 +194,19 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
               {task.listTitle}
             </Typography>
           )}
-          <Typography variant="h3" color="textPrimary" gutterBottom>
-            {task.title || '(no title)'}
-          </Typography>
+          {!isEditMode && (
+            <Typography variant="h3" color="textPrimary" gutterBottom>
+              {task.title || '(no title)'}
+            </Typography>
+          )}
+          {isEditMode && (
+            <TaskEdit
+              taskId={task.id}
+              store={props.store}
+              text={task.title}
+              setIsEditMode={setEditMode}
+            />
+          )}
           {task.updatedAt && (
             <Typography variant="h5">
               Modified: {format(task.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
@@ -154,19 +235,20 @@ const ExpandedTask = (props: { store: IStore; taskId?: string; close?: () => voi
                 Complete Task
               </Button>
             </Grid>
-            <Grid item xs={6}>
-              <Button
-                className={buttonClasses.button}
-                variant="outlined"
-                disableElevation
-                color="primary"
-                startIcon={<EditIcon width="24" height="24" />}
-                href={tasksLink}
-                target="_blank"
-              >
-                Edit Task
-              </Button>
-            </Grid>
+            {!isEditMode && (
+              <Grid item xs={6}>
+                <Button
+                  className={buttonClasses.button}
+                  variant="outlined"
+                  disableElevation
+                  color="primary"
+                  startIcon={<EditIcon width="24" height="24" />}
+                  onClick={() => setEditMode(true)}
+                >
+                  Edit Task
+                </Button>
+              </Grid>
+            )}
           </Grid>
         </div>
       </div>
