@@ -4,7 +4,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import HelpIcon from '../../public/icons/help.svg';
@@ -41,12 +40,7 @@ export const MissingDocumentRow = (props: {
           />
         </Grid>
         <Grid item xs={8}>
-          <Typography noWrap>
-            {props.segmentDocument.documentId}
-            <Typography variant="body2">
-              {format(new Date(props.segmentDocument.date), "MMM do, yyyy 'at' hh:mm a")}
-            </Typography>
-          </Typography>
+          <Typography noWrap>{props.segmentDocument.documentId}</Typography>
         </Grid>
       </Grid>
     </div>

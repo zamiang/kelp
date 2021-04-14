@@ -11,7 +11,7 @@ import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
 import EmailIcon from '../../public/icons/email-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
-import SaveIcon from '../../public/icons/save.svg';
+import SaveIcon from '../../public/icons/save-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import { GoToSourceButton } from '../mobile/popup-header';
 import AttendeeList from '../shared/attendee-list';
