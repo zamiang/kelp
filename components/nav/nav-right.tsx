@@ -12,8 +12,6 @@ import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import RefreshButton from './refresh-button';
 
-const shouldShowLoading = false;
-
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     border: '0px',
@@ -106,16 +104,14 @@ const NavRight = (props: IProps) => {
             </Tooltip>
           </Grid>
         )}
-        {shouldShowLoading && (
-          <Grid item>
-            <RefreshButton
-              isLoading={props.store.isLoading}
-              refresh={props.handleRefreshClick}
-              lastUpdated={props.store.lastUpdated}
-              loadingMessage={props.store.loadingMessage}
-            />
-          </Grid>
-        )}
+        <Grid item>
+          <RefreshButton
+            isLoading={props.store.isLoading}
+            refresh={props.handleRefreshClick}
+            lastUpdated={props.store.lastUpdated}
+            loadingMessage={props.store.loadingMessage}
+          />
+        </Grid>
         {!isLoading && currentUser && (
           <Grid item>
             <IconButton
