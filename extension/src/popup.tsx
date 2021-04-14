@@ -32,7 +32,7 @@ const LoadingMobileDashboardContainer = (props: {
 
   return (
     <div>
-      <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
+      <Router initialEntries={['/home', '/meetings', '/settings']} initialIndex={0}>
         {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
       </Router>
     </div>
