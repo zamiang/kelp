@@ -1,17 +1,6 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import CalendarOrangeIcon from '../../public/icons/calendar-orange.svg';
-import CalendarIcon from '../../public/icons/calendar.svg';
-import TasksOrangeIcon from '../../public/icons/check-orange.svg';
-import TasksIcon from '../../public/icons/check.svg';
-import FileOrangeIcon from '../../public/icons/file-orange.svg';
-import FileIcon from '../../public/icons/file.svg';
-import UserOrangeIcon from '../../public/icons/user-orange.svg';
-import UserIcon from '../../public/icons/user.svg';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Documents from '../dashboard/documents';
 import Home from '../dashboard/home';
 import Meetings from '../dashboard/meetings';
@@ -43,7 +32,6 @@ const useInfoStyles = makeStyles((theme) => ({
     overflowY: 'auto',
     background: theme.palette.background.paper,
     overflowX: 'hidden',
-    paddingBottom: 110,
   },
   footer: {
     borderTop: `1px solid ${theme.palette.divider}`,
@@ -91,15 +79,7 @@ const useInfoStyles = makeStyles((theme) => ({
 const MobileDashboard = (props: { store: IStore }) => {
   const store = props.store;
   const classes = useInfoStyles();
-  const history = useHistory();
-  const location = useLocation();
   const [user, setUser] = useState<IPerson | undefined>(undefined);
-
-  const tab = location.pathname;
-  const isMeetingsSelected = tab.includes('meetings');
-  const isDocsSelected = tab.includes('documents');
-  const isPeopleSelected = tab.includes('people');
-  const isTasksSelected = tab.includes('tasks');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,62 +136,6 @@ const MobileDashboard = (props: { store: IStore }) => {
             <Handle404 />
           </Route>
         </Switch>
-      </div>
-      <div className={classes.bottom}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item xs className={clsx(classes.icon, isMeetingsSelected && classes.selected)}>
-            <IconButton
-              className={classes.iconButtonLarge}
-              onClick={() => history.push('/meetings')}
-              aria-label="Meetings"
-            >
-              {isMeetingsSelected ? (
-                <CalendarOrangeIcon width="24" height="24" />
-              ) : (
-                <CalendarIcon width="24" height="24" />
-              )}
-            </IconButton>
-          </Grid>
-          <Grid item xs className={clsx(classes.icon, isDocsSelected && classes.selected)}>
-            <IconButton
-              className={classes.iconButtonLarge}
-              onClick={() => history.push('/documents')}
-              aria-label="Documents"
-            >
-              {isDocsSelected ? (
-                <FileOrangeIcon width="24" height="24" />
-              ) : (
-                <FileIcon width="24" height="24" />
-              )}
-            </IconButton>
-          </Grid>
-          <Grid item xs className={clsx(classes.icon, isPeopleSelected && classes.selected)}>
-            <IconButton
-              className={classes.iconButtonLarge}
-              onClick={() => history.push('/people')}
-              aria-label="People"
-            >
-              {isPeopleSelected ? (
-                <UserOrangeIcon width="24" height="24" />
-              ) : (
-                <UserIcon width="24" height="24" />
-              )}
-            </IconButton>
-          </Grid>
-          <Grid item xs className={clsx(classes.icon, isTasksSelected && classes.selected)}>
-            <IconButton
-              className={classes.iconButtonLarge}
-              onClick={() => history.push('/tasks')}
-              aria-label="Tasks"
-            >
-              {isTasksSelected ? (
-                <TasksOrangeIcon width="24" height="24" />
-              ) : (
-                <TasksIcon width="24" height="24" />
-              )}
-            </IconButton>
-          </Grid>
-        </Grid>
       </div>
     </div>
   );

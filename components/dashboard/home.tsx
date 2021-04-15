@@ -78,17 +78,11 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
-      <div className={rowClasses.row} style={{ background: 'none', cursor: 'default' }}>
+      <div
+        className={rowClasses.row}
+        style={{ background: 'none', cursor: 'default', border: '0px solid' }}
+      >
         <Grid container spacing={2} justify="space-between">
-          <Grid item>
-            <Button
-              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-              variant="outlined"
-              startIcon={<PlusIcon width="24" height="24" />}
-            >
-              Meeting
-            </Button>
-          </Grid>
           <Grid item>
             <Button
               className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}

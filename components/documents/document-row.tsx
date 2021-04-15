@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -32,12 +33,14 @@ export const MissingDocumentRow = (props: {
     >
       <Grid container spacing={2} alignItems="center">
         <Grid item className={rowStyles.rowLeft}>
-          <HelpIcon
-            height="24"
-            width="24"
-            style={{ margin: '0 auto' }}
-            className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
-          />
+          <IconButton>
+            <HelpIcon
+              height="18"
+              width="18"
+              style={{ margin: '0 auto' }}
+              className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
+            />
+          </IconButton>
         </Grid>
         <Grid item xs={8}>
           <Typography noWrap>{props.segmentDocument.documentId}</Typography>
@@ -54,8 +57,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 auto',
   },
   imageSpacing: {
-    maxHeight: 18,
-    maxWidth: 18,
+    width: 18,
     marginTop: 5,
   },
   time: {
@@ -127,15 +129,17 @@ const DocumentRow = (props: {
       >
         <Grid container spacing={2} alignItems="center">
           <Grid item className={rowStyles.rowLeft}>
-            {!props.isSmall && (
-              <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
-            )}
-            {props.isSmall && (
-              <img
-                src={props.document.iconLink}
-                className={clsx(classes.image, classes.imageSpacing)}
-              />
-            )}
+            <IconButton>
+              {!props.isSmall && (
+                <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
+              )}
+              {props.isSmall && (
+                <img
+                  src={props.document.iconLink}
+                  className={clsx(classes.image, classes.imageSpacing)}
+                />
+              )}
+            </IconButton>
           </Grid>
           <Grid item zeroMinWidth xs>
             <Typography noWrap>{props.document.name}</Typography>

@@ -133,36 +133,54 @@ const MeetingRow = (props: {
               Happening Now
             </Typography>
           )}
-          {!isHappeningNow && !props.isOneLine && (
-            <React.Fragment>
-              <Typography className={clsx(classes.textPast)} style={{ display: 'inline-block' }}>
-                {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
-              </Typography>
-              {props.shouldRenderCurrentTime && isFuture && (
-                <Typography className={classes.meetingTimeInWords}>
-                  (In {formatDistanceToNow(props.meeting.start)})
-                </Typography>
+          <Grid container spacing={2} alignItems="center">
+            {!isHappeningNow && !props.isOneLine && (
+              <Grid item style={{ paddingBottom: 0, paddingTop: 0 }}>
+                <IconButton
+                  size={props.isOneLine ? 'small' : 'medium'}
+                  onClick={() => window.open(props.meeting.videoLink, '_blank')}
+                  className={buttonClasses.circleButton}
+                >
+                  <VideoIcon width="18" height="18" />
+                </IconButton>
+              </Grid>
+            )}
+            <Grid item>
+              {!isHappeningNow && !props.isOneLine && (
+                <React.Fragment>
+                  <Typography
+                    className={clsx(classes.textPast)}
+                    style={{ display: 'inline-block' }}
+                  >
+                    {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
+                  </Typography>
+                  {props.shouldRenderCurrentTime && isFuture && (
+                    <Typography className={classes.meetingTimeInWords}>
+                      (In {formatDistanceToNow(props.meeting.start)})
+                    </Typography>
+                  )}
+                </React.Fragment>
               )}
-            </React.Fragment>
-          )}
-          <Typography
-            noWrap
-            variant="h4"
-            className={clsx(
-              classes.text,
-              !props.shouldRenderCurrentTime && isFuture && classes.textFuture,
-              !props.shouldRenderCurrentTime && isPast && classes.textPast,
-            )}
-          >
-            {props.isOneLine && (
-              <span className={classes.meetingTimeInWordsDark}>
-                {format(props.meeting.start, 'p')}
-              </span>
-            )}
-            {props.meeting.summary || '(no title)'}
-          </Typography>
+              <Typography
+                noWrap
+                variant="h4"
+                className={clsx(
+                  classes.text,
+                  !props.shouldRenderCurrentTime && isFuture && classes.textFuture,
+                  !props.shouldRenderCurrentTime && isPast && classes.textPast,
+                )}
+              >
+                {props.isOneLine && (
+                  <span className={classes.meetingTimeInWordsDark}>
+                    {format(props.meeting.start, 'p')}
+                  </span>
+                )}
+                {props.meeting.summary || '(no title)'}
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
-        {isDetailsVisible && (
+        {isDetailsVisible && props.isOneLine && (
           <Grid item style={{ paddingBottom: 0, paddingTop: 0 }}>
             <IconButton
               size={props.isOneLine ? 'small' : 'medium'}
