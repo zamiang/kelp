@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import BackIcon from '../../public/icons/close.svg';
+import BackIcon from '../../public/icons/back.svg';
+import CloseIcon from '../../public/icons/close.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import KelpLogo from '../../public/kelp.svg';
 import SearchBar from './search-bar';
@@ -36,6 +37,16 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     paddingBottom: 10,
   },
+  whiteHeader: {
+    border: '0px',
+    position: 'sticky',
+    top: 0,
+    left: 0,
+    background: 'white',
+    padding: theme.spacing(1),
+    zIndex: 6,
+    justifyContent: 'space-between',
+  },
 }));
 
 const NavBar = () => {
@@ -46,6 +57,24 @@ const NavBar = () => {
   const hasSearchParams = router.search.length > 0;
   const isHomeSelected = router.pathname === '/home';
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(hasSearchParams);
+
+  if (!isHomeSelected) {
+    return (
+      <header className={classes.whiteHeader}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <IconButton
+              onClick={() => {
+                history.goBack();
+              }}
+            >
+              <BackIcon width="24" height="24" />
+            </IconButton>
+          </Grid>
+        </Grid>
+      </header>
+    );
+  }
 
   return (
     <header className={classes.container}>
@@ -89,7 +118,7 @@ const NavBar = () => {
                 setSearchInputVisible(false);
               }}
             >
-              <BackIcon width="24" height="24" />
+              <CloseIcon width="24" height="24" />
             </IconButton>
           </Grid>
         )}

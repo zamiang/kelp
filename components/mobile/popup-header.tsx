@@ -101,7 +101,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const classes = useHeaderStyles();
   const history = useHistory();
   const location = useLocation();
-  const isOnSubpage = location.pathname.split('/').length > 2;
+  const isOnSubpage = location.pathname !== '/home';
 
   if (isOnSubpage) {
     const type = location.pathname.split('/')[1];

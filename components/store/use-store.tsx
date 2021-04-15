@@ -84,7 +84,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     const addData = async () => {
       if (!data.calendarResponseLoading) {
         setLoadingMessage('Saving Calendar Events');
-        await timeDataStore.addSegments(data.calendarEvents, true);
+        await timeDataStore.addSegments(data.calendarEvents);
       }
     };
     void addData();
@@ -109,7 +109,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     const addData = async () => {
       if (!data.driveResponseLoading) {
         setLoadingMessage('Saving Documents');
-        await documentDataStore.addDocuments(documents, true);
+        await documentDataStore.addDocuments(documents);
       }
     };
     void addData();
@@ -120,7 +120,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     const addData = async () => {
       if (!data.tasksResponseLoading) {
         setLoadingMessage('Saving Tasks');
-        await taskDataStore.addTasksToStore(data.tasks, true);
+        await taskDataStore.addTasksToStore(data.tasks);
       }
     };
     void addData();
