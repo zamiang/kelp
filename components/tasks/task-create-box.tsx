@@ -61,7 +61,7 @@ export const TaskCreateBox = (props: {
       <TextField
         multiline
         variant="outlined"
-        placeholder="Add a task (saved to Google Tasks)"
+        placeholder="Add a Google Task..."
         fullWidth
         onChange={(event) => {
           setText(event.target.value);
