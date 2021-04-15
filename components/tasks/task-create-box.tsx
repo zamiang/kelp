@@ -52,10 +52,6 @@ export const TaskCreateBox = (props: {
     props.taskIncrement ? props.taskIncrement.toString() : '',
   ]);
 
-  if (!props.store.defaultTaskList) {
-    return null;
-  }
-
   return (
     <div className={clsx(classes.rowNoHover, taskStyles.container)}>
       <TextField
