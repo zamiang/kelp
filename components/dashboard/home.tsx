@@ -1,23 +1,19 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import { setHours, setMinutes, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../../public/icons/chevron-right.svg';
-import PlusIcon from '../../public/icons/plus-orange.svg';
 import { FeaturedMeeting } from '../dashboard/meetings';
 import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
-import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedTask, getFeaturedTasks } from '../tasks/featured-tasks';
+import { TaskCreateBox } from '../tasks/task-create-box';
 import TaskRow from '../tasks/task-row';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
@@ -25,7 +21,6 @@ import { IFeaturedPerson, getFeaturedPeople } from './people';
 const Home = (props: { store: IStore }) => {
   const classes = panelStyles();
   const rowClasses = useRowStyles();
-  const buttonClasses = useButtonStyles();
   const router = useHistory();
 
   const currentTime = new Date();
@@ -78,23 +73,7 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
-      <div
-        className={rowClasses.row}
-        style={{ background: 'none', cursor: 'default', border: '0px solid' }}
-      >
-        <Grid container spacing={2} justify="space-between">
-          <Grid item>
-            <Button
-              className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-              variant="outlined"
-              onClick={() => router.push('/tasks')}
-              startIcon={<PlusIcon width="24" height="24" />}
-            >
-              Task
-            </Button>
-          </Grid>
-        </Grid>
-      </div>
+      <TaskCreateBox store={props.store} />
       {featuredMeeting && (
         <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
       )}
