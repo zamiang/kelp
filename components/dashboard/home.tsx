@@ -10,9 +10,8 @@ import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
-import { ISegment } from '../store/data-types';
+import { ISegment, ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IFeaturedTask, getFeaturedTasks } from '../tasks/featured-tasks';
 import { TaskCreateBox } from '../tasks/task-create-box';
 import TaskRow from '../tasks/task-row';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
@@ -27,7 +26,8 @@ const Home = (props: { store: IStore }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
-  const [featuredTasks, setFeaturedTasks] = useState<IFeaturedTask[]>([]);
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [taskIncrement, setIncrememnt] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,11 +57,12 @@ const Home = (props: { store: IStore }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ft = await getFeaturedTasks(props.store);
-      setFeaturedTasks(ft);
+      const result = (await props.store.taskStore.getAll()).filter((task) => !task.parent);
+      const sortedResult = result.sort((a, b) => (a.position! < b.position! ? -1 : 1));
+      setTasks(sortedResult.slice(0, 3));
     };
     void fetchData();
-  }, [props.store.isLoading, props.store.lastUpdated]);
+  }, [props.store.lastUpdated, props.store.isLoading, taskIncrement.toString()]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,9 +74,32 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
-      <TaskCreateBox store={props.store} />
       {featuredMeeting && (
         <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
+      )}
+      {tasks.length > 0 && (
+        <div className={rowClasses.rowHighlight}>
+          <TaskCreateBox
+            store={props.store}
+            taskIncrement={taskIncrement}
+            setTaskIncrement={setIncrememnt}
+          />
+          <Typography variant="h6" className={rowClasses.rowText} style={{ marginTop: 16 }}>
+            Recent tasks
+            <IconButton onClick={() => router.push('/tasks')} className={rowClasses.rightIcon}>
+              <ArrowIcon width="24" height="24" />
+            </IconButton>
+          </Typography>
+          {tasks.map((task) => (
+            <TaskRow
+              key={task.id}
+              task={task}
+              selectedTaskId={null}
+              isSmall={false}
+              store={props.store}
+            />
+          ))}
+        </div>
       )}
       {topDocuments.length > 0 && (
         <div className={rowClasses.rowHighlight}>
@@ -96,26 +120,6 @@ const Home = (props: { store: IStore }) => {
           ))}
         </div>
       )}
-      {featuredTasks.length > 0 && (
-        <div className={rowClasses.rowHighlight}>
-          <Typography variant="h6" className={rowClasses.rowText}>
-            Recent tasks
-            <IconButton onClick={() => router.push('/tasks')} className={rowClasses.rightIcon}>
-              <ArrowIcon width="24" height="24" />
-            </IconButton>
-          </Typography>
-          {featuredTasks.map((featuredTask) => (
-            <TaskRow
-              key={featuredTask.task.id}
-              task={featuredTask.task}
-              selectedTaskId={null}
-              isSmall={false}
-              store={props.store}
-            />
-          ))}
-        </div>
-      )}
-
       {featuredPeople.length > 0 && (
         <div className={rowClasses.rowHighlight}>
           <Typography variant="h6" className={rowClasses.rowText}>

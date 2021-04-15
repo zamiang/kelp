@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import PlusIcon from '../../public/icons/plus-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import rowStyles from '../shared/row-styles';
@@ -28,8 +27,8 @@ const useStyle = makeStyles(() => ({
 
 export const TaskCreateBox = (props: {
   store: IStore;
-  taskIncrement?: number;
-  setTaskIncrement?: (increment: number) => void;
+  taskIncrement: number;
+  setTaskIncrement: (increment: number) => void;
 }) => {
   const taskStyles = useStyle();
   const classes = rowStyles();
@@ -37,7 +36,6 @@ export const TaskCreateBox = (props: {
   const [text, setText] = useState<string>('');
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useHistory();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,11 +44,7 @@ export const TaskCreateBox = (props: {
       setTasks(sortedResult);
     };
     void fetchData();
-  }, [
-    props.store.lastUpdated,
-    props.store.isLoading,
-    props.taskIncrement ? props.taskIncrement.toString() : '',
-  ]);
+  }, [props.store.lastUpdated, props.store.isLoading, props.taskIncrement.toString()]);
 
   return (
     <div className={clsx(classes.rowNoHover, taskStyles.container)}>
@@ -93,10 +87,7 @@ export const TaskCreateBox = (props: {
             }
             setIsLoading(false);
             // trigger refetching
-            if (props.setTaskIncrement && props.taskIncrement) {
-              props.setTaskIncrement(props.taskIncrement + 1);
-            }
-            router.push('/tasks');
+            props.setTaskIncrement(props.taskIncrement + 1);
           };
           void updateTasks();
           setText('');
