@@ -128,13 +128,8 @@ const MeetingRow = (props: {
           </Grid>
         )}
         <Grid item xs zeroMinWidth className={clsx(props.isSmall && classes.smallContainer)}>
-          {isHappeningNow && (
-            <Typography className={classes.meetingTimeInWords} style={{ marginLeft: 0 }}>
-              Happening Now
-            </Typography>
-          )}
           <Grid container spacing={2} alignItems="center">
-            {!isHappeningNow && !props.isOneLine && (
+            {isHappeningNow && !props.isOneLine && (
               <Grid item style={{ paddingBottom: 0, paddingTop: 0 }}>
                 <IconButton
                   size={props.isOneLine ? 'small' : 'medium'}
@@ -146,7 +141,7 @@ const MeetingRow = (props: {
               </Grid>
             )}
             <Grid item>
-              {!isHappeningNow && !props.isOneLine && (
+              {!props.isOneLine && (
                 <React.Fragment>
                   <Typography
                     className={clsx(classes.textPast)}
@@ -154,6 +149,9 @@ const MeetingRow = (props: {
                   >
                     {format(props.meeting.start, 'p')} – {format(props.meeting.end, 'p')}
                   </Typography>
+                  {props.shouldRenderCurrentTime && isHappeningNow && (
+                    <Typography className={classes.meetingTimeInWords}>Happening Now</Typography>
+                  )}
                   {props.shouldRenderCurrentTime && isFuture && (
                     <Typography className={classes.meetingTimeInWords}>
                       (In {formatDistanceToNow(props.meeting.start)})

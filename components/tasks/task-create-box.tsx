@@ -15,11 +15,13 @@ import { addTask } from '../tasks/add-task';
 const useStyle = makeStyles(() => ({
   container: {
     position: 'relative',
+    border: '0px solid',
+    paddingBottom: 0,
   },
   button: {
     position: 'absolute',
     right: 28,
-    bottom: 25,
+    bottom: 9,
     maxWidth: 88,
   },
 }));
@@ -59,7 +61,7 @@ export const TaskCreateBox = (props: {
       <TextField
         multiline
         variant="outlined"
-        placeholder="Add a task (this is saved to Google Tasks)"
+        placeholder="Add a task (saved to Google Tasks)"
         fullWidth
         onChange={(event) => {
           setText(event.target.value);
