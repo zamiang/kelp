@@ -22,7 +22,7 @@ const useBelowStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
   containerNoLeftMargin: {
-    marginLeft: 0,
+    marginLeft: theme.spacing(2),
   },
   heading: {
     color: theme.palette.secondary.main,

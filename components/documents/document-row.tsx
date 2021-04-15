@@ -128,19 +128,13 @@ const DocumentRow = (props: {
         wrapper={(children: any) => <Tooltip title={props.tooltipText!}>{children}</Tooltip>}
       >
         <Grid container spacing={2} alignItems="center">
-          <Grid item className={rowStyles.rowLeft}>
-            <IconButton>
-              {!props.isSmall && (
+          {!props.isSmall && (
+            <Grid item className={rowStyles.rowLeft}>
+              <IconButton>
                 <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
-              )}
-              {props.isSmall && (
-                <img
-                  src={props.document.iconLink}
-                  className={clsx(classes.image, classes.imageSpacing)}
-                />
-              )}
-            </IconButton>
-          </Grid>
+              </IconButton>
+            </Grid>
+          )}
           <Grid item zeroMinWidth xs>
             <Typography noWrap>{props.document.name}</Typography>
           </Grid>
