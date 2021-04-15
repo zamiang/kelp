@@ -63,7 +63,7 @@ const EmailGuestsButton = (props: {
   );
 };
 
-export const createSmartMeetingNotes = (
+const createSmartMeetingNotes = (
   meeting: ISegment,
   store: IStore,
   segmentDocumentsForAttendees: ISegmentDocument[],

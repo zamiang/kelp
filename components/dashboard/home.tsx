@@ -5,8 +5,8 @@ import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../../public/icons/chevron-right.svg';
-import { FeaturedMeeting } from '../dashboard/meetings';
 import DocumentRow from '../documents/document-row';
+import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
@@ -28,6 +28,8 @@ const Home = (props: { store: IStore }) => {
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [taskIncrement, setIncrememnt] = useState<number>(0);
+  const hours = new Date().getHours();
+  const greeting = hours < 12 ? 'Morning' : hours <= 18 && hours >= 12 ? 'Afternoon' : 'Night';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +76,9 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
+      <div className={classes.greeting}>
+        <Typography variant="h3">Good {greeting}</Typography>
+      </div>
       {featuredMeeting && (
         <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
       )}

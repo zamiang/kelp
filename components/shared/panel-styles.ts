@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(1),
     },
   },
+  greeting: {
+    textAlign: 'center',
+    margin: theme.spacing(2),
+  },
   panelTextButton: {
     textAlign: 'center',
     width: '100%',

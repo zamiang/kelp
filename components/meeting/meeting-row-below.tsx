@@ -1,20 +1,16 @@
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
+import AttendeeList from '../shared/attendee-list';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { ISegment, ISegmentDocument } from '../store/data-types';
+import { IFormattedAttendee, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const useBelowStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    marginLeft: theme.spacing(3),
-    paddingBottom: 1,
-    paddingLeft: theme.spacing(2),
-    borderLeft: `1px solid ${theme.palette.divider}`,
   },
   buttonContainer: {
     marginTop: theme.spacing(2),
@@ -34,6 +30,7 @@ const useBelowStyles = makeStyles((theme) => ({
 
 const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLeft: boolean }) => {
   const classes = useBelowStyles();
+  const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
   >([]);
@@ -66,29 +63,49 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
     };
     void fetchData();
   }, [props.store.isLoading, props.meeting?.summary]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.meeting.id) {
+        const result = await props.store.attendeeDataStore.getAllForSegmentId(props.meeting.id);
+        setAttendees(result);
+      }
+    };
+    void fetchData();
+  }, [props.store.isLoading, props.meeting.id]);
+
   const hasDocuments =
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
 
+  const hasAttendees = attendees.length > 0;
+
   return (
     <div>
       {hasDocuments && (
-        <div
-          className={clsx(classes.container, !props.shouldPadLeft && classes.containerNoLeftMargin)}
-        >
-          <React.Fragment>
-            <Typography variant="h6" className={classes.heading}>
-              Documents you may need
-            </Typography>
-            <SegmentDocumentList
-              segmentDocumentsForAttendees={segmentDocumentsForAttendees}
-              segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
-              segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
-              store={props.store}
-              isSmall
-            />
-          </React.Fragment>
+        <div className={classes.container}>
+          <Typography variant="h6" className={classes.heading}>
+            Documents you may need
+          </Typography>
+          <SegmentDocumentList
+            segmentDocumentsForAttendees={segmentDocumentsForAttendees}
+            segmentDocumentsFromPastMeetings={segmentDocumentsFromPastMeetings}
+            segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
+            store={props.store}
+          />
+        </div>
+      )}
+      {hasAttendees && (
+        <div className={classes.container}>
+          <Typography variant="h6" className={classes.heading}>
+            Attendees
+          </Typography>
+          <AttendeeList
+            personStore={props.store.personDataStore}
+            attendees={attendees}
+            showAll={false}
+          />
         </div>
       )}
     </div>

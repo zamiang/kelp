@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import { formatDistanceToNow, getDayOfYear, subDays } from 'date-fns';
+import { formatDistanceToNow, subDays } from 'date-fns';
 import { sortBy, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -159,41 +159,6 @@ const AllDocuments = (props: {
         ))}
       </div>
     </React.Fragment>
-  );
-};
-
-export const DocumentsForToday = (props: {
-  store: IStore;
-  selectedDocumentId: string | null;
-  isSmall?: boolean;
-}) => {
-  const classes = panelStyles();
-  const [documents, setDocuments] = useState<IDocument[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await props.store.segmentDocumentStore.getAllForDay(getDayOfYear(new Date()));
-      const documents = await props.store.documentDataStore.getBulk(
-        result.map((r) => r.documentId),
-      );
-      setDocuments(
-        documents
-          .filter(Boolean)
-          .sort((a, b) => (a.name!.toLowerCase() < b.name!.toLowerCase() ? -1 : 1)),
-      );
-    };
-    void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
-  return (
-    <div className={classes.section}>
-      {documents.map((document: IDocument) => (
-        <DocumentRow
-          key={document.id}
-          document={document}
-          store={props.store}
-          selectedDocumentId={props.selectedDocumentId}
-        />
-      ))}
-    </div>
   );
 };
 

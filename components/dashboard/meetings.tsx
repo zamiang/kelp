@@ -1,13 +1,12 @@
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { format, getDate, getMonth, setHours, setMinutes, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import ArrowIcon from '../../public/icons/chevron-right.svg';
+import { useLocation } from 'react-router-dom';
 import PlusIcon from '../../public/icons/plus.svg';
+import { FeaturedMeeting } from '../meeting/featured-meeting';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
 import panelStyles from '../shared/panel-styles';
@@ -136,42 +135,9 @@ const DayContainer = (props: {
             meeting={meeting}
             selectedMeetingId={props.selectedMeetingId}
             store={props.store}
-            isOneLine
           />
         </div>
       ))}
-    </div>
-  );
-};
-
-export const FeaturedMeeting = (props: {
-  meeting: ISegment;
-  store: IStore;
-  showButton?: boolean;
-}) => {
-  const rowStyles = useRowStyles();
-  const router = useHistory();
-
-  return (
-    <div className={rowStyles.rowHighlight}>
-      <Typography className={rowStyles.rowText} variant="h6">
-        Next meeting
-        {props.showButton && (
-          <IconButton onClick={() => router.push('/meetings')} className={rowStyles.rightIcon}>
-            <ArrowIcon width="24" height="24" />
-          </IconButton>
-        )}
-      </Typography>
-      <div className={rowStyles.rowHighlightPadding}>
-        <MeetingRow
-          shouldRenderCurrentTime={true}
-          meeting={props.meeting}
-          selectedMeetingId={props.meeting.id}
-          store={props.store}
-          isOneLine={false}
-          hideDot
-        />
-      </div>
     </div>
   );
 };

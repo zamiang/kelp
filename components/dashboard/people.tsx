@@ -1,5 +1,5 @@
 import Typography from '@material-ui/core/Typography';
-import { format, getDayOfYear } from 'date-fns';
+import { format } from 'date-fns';
 import { Dictionary, groupBy, sortBy, uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -132,38 +132,6 @@ const AllPeople = (props: {
         ))}
       </div>
     </React.Fragment>
-  );
-};
-
-export const PeopleToday = (props: {
-  store: IStore;
-  selectedPersonId: string | null;
-  isSmall?: boolean;
-}) => {
-  const classes = panelStyles();
-  const [people, setPeople] = useState<IPerson[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await props.store.attendeeDataStore.getForDay(getDayOfYear(new Date()));
-      const p = await props.store.personDataStore.getBulkByEmail(result.map((r) => r.personId!));
-      setPeople(p.sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)));
-    };
-    void fetchData();
-  }, [props.store.isLoading, props.store.lastUpdated]);
-  return (
-    <div className={classes.section}>
-      {people.map(
-        (person: IPerson) =>
-          person && (
-            <PersonRow
-              key={person.id}
-              person={person}
-              selectedPersonId={props.selectedPersonId}
-              isSmall={props.isSmall}
-            />
-          ),
-      )}
-    </div>
   );
 };
 
