@@ -178,8 +178,8 @@ const theme = createMuiTheme({
     },
     MuiAvatar: {
       root: {
-        height: 32,
-        width: 32,
+        height: 34,
+        width: 34,
         fontSize: '1rem',
         textTransform: 'uppercase',
         color: '#ffffff',
