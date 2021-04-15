@@ -17,7 +17,7 @@ export interface IFeaturedTask {
  * Finds meeetings documents associated with those meetings
  * It sorts in decending order so upcoming meetings are next
  */
-const maxResult = 5;
+const maxResult = 3;
 const daysToLookBack = 7;
 export const getFeaturedTasks = async (props: IStore) => {
   const currentDate = new Date();

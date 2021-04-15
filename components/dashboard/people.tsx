@@ -21,7 +21,7 @@ export interface IFeaturedPerson {
  * Finds attendees and then the upcoming meetings for those attendees
  * It sorts in decending order so upcoming people are next
  */
-const maxResult = 5;
+const maxResult = 3;
 export const getFeaturedPeople = async (props: IStore) => {
   const currentDate = new Date();
   const result = await props.attendeeDataStore.getForNextDays(currentDate);
