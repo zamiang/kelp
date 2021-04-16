@@ -134,14 +134,13 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const handleRefreshClick = () => store.refetch();
   const pathname = useLocation().pathname;
 
-  // Unsure why the <Redirect component doesn't work anymore
-  if (pathname === '/') {
-    return history.push(`/home`);
-  }
+  // Unsure why the <Redirect> component doesn't work anymore
   const hash = window.location.hash;
-  if (hash.includes('/meetings')) {
+  if (hash.includes('meetings')) {
     window.location.hash = '';
-    return history.push(hash);
+    history.push(hash.replace('#', ''));
+  } else if (pathname === '/') {
+    history.push(`/home`);
   }
 
   const shouldBeFullWidth =
