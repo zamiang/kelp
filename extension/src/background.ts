@@ -90,6 +90,14 @@ chrome.runtime.onSuspendCanceled.addListener(() => {
   void getOrCreateStore();
 });
 
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  console.log('hello');
+  if (request.meetingId) {
+    chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
+    sendResponse({ success: true });
+  }
+});
+
 /*
 const suggestResults = async (
   text: string,

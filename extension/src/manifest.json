@@ -14,6 +14,10 @@
     "scripts": ["background.js"],
     "persistent": true
   },
+  "content_scripts": [{
+    "js": ["calendar.js"],
+    "matches": ["https://calendar.google.com/*"]
+  }],
   "oauth2": {
     "client_id": "REPLACED IN WEBPACK CONFIG",
     "scopes": "REPLACED IN WEBPACK CONFIG"
@@ -21,7 +25,8 @@
   "permissions": [
     "identity",
     "alarms",
-    "notifications"
+    "notifications",
+    "https://calendar.google.com/*"
   ],
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "browser_action": {
