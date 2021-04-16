@@ -136,8 +136,14 @@ export const DesktopDashboard = (props: { store: IStore }) => {
 
   // Unsure why the <Redirect component doesn't work anymore
   if (pathname === '/') {
-    history.push(`/home`);
+    return history.push(`/home`);
   }
+  const hash = window.location.hash;
+  if (hash.includes('/meetings')) {
+    window.location.hash = '';
+    return history.push(hash);
+  }
+
   const shouldBeFullWidth =
     pathname.includes('/dashboard') || pathname.includes('/week') || pathname.includes('/summary');
 
