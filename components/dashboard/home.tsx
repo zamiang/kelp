@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../../public/icons/chevron-right.svg';
 import DocumentRow from '../documents/document-row';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
+import { LineCalendar } from '../meeting/line-calendar';
 import PersonRow from '../person/person-row';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
@@ -79,6 +80,7 @@ const Home = (props: { store: IStore }) => {
       <div className={classes.greeting}>
         <Typography variant="h3">Good {greeting}</Typography>
       </div>
+      <LineCalendar store={props.store} />
       {featuredMeeting && (
         <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
       )}

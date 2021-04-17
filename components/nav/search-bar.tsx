@@ -8,7 +8,7 @@ import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
   input: {
-    width: 282,
+    width: 258,
     fontSize: 16,
     [theme.breakpoints.down('sm')]: {
       width: 240,
