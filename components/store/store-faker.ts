@@ -80,13 +80,21 @@ const getRandomResponseStatus = () =>
  * Cover the entire day - 'Faker.date.recent(1)`
  */
 
+function getLastSunday() {
+  const date = new Date();
+  const today = date.getDate();
+  const dayOfTheWeek = date.getDay();
+  const newDate = date.setDate(today - (dayOfTheWeek || 7));
+  return new Date(newDate);
+}
+
 const segments: ISegment[] = [];
 const DAYS_IN_WEEK = 7;
 const WEEKS_TO_CREATE = 3;
 const START_HOUR = 9;
 const startDate = setDay(
-  new Date(new Date(new Date().setHours(9)).setMinutes(0)),
-  -(DAYS_IN_WEEK * WEEKS_TO_CREATE),
+  new Date(new Date(getLastSunday().setHours(9)).setMinutes(0)),
+  -(DAYS_IN_WEEK * (WEEKS_TO_CREATE - 1)),
 );
 
 const driveActivity: IFormattedDriveActivity[] = [];
