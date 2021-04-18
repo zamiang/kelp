@@ -1,7 +1,7 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { addDays, format, intervalToDuration } from 'date-fns';
+import { addDays, addHours, format, intervalToDuration } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ISegment } from '../store/data-types';
@@ -98,7 +98,7 @@ export const LineCalendar = (props: { store: IStore }) => {
       if (result.length < 1) {
         result = await props.store.timeDataStore.getSegmentsForDay(addDays(new Date(), 1));
       }
-      setMeetings(result);
+      setMeetings(result.filter((m) => m.start > new Date()));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
@@ -113,7 +113,7 @@ export const LineCalendar = (props: { store: IStore }) => {
           {format(new Date(), 'p')}
         </Typography>
         <Typography variant="caption" className={classes.endTime}>
-          {format(new Date(), 'p')}
+          {format(addHours(new Date(), 12), 'p')}
         </Typography>
       </div>
     </div>
