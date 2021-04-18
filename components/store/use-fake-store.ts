@@ -32,6 +32,7 @@ const useFakeStore = (db: dbType): IStore => {
       await documentDataStore.addDocuments(data.documents, true);
       await driveActivityDataStore.addDriveActivityToStore(data.driveActivity, data.currentUser.id);
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
+      await taskDataStore.addTasksToStore(data.tasks, true);
       await tfidfStore.saveDocuments({
         driveActivityStore: driveActivityDataStore,
         timeDataStore,
@@ -43,6 +44,12 @@ const useFakeStore = (db: dbType): IStore => {
         driveActivityDataStore,
         timeDataStore,
         attendeeDataStore,
+      );
+      await taskDocumentDataStore.addTaskDocumentsToStore(
+        driveActivityDataStore,
+        timeDataStore,
+        taskDataStore,
+        data.currentUser.id,
       );
       setLoading(false);
     };

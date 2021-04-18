@@ -2,7 +2,7 @@ import { addDays, addMinutes, setDay, setHours } from 'date-fns';
 import Faker from 'faker';
 import { sample, sampleSize, times } from 'lodash';
 import { getSelfResponseStatus, getStateForMeeting } from '../fetch/google/fetch-calendar-events';
-import { IDocument, IFormattedDriveActivity, IPerson, ISegment } from './data-types';
+import { IDocument, IFormattedDriveActivity, IPerson, ISegment, ITask } from './data-types';
 
 const PEOPLE_COUNT = 10;
 const DOCUMENT_COUNT = 20;
@@ -41,18 +41,34 @@ const currentUser = {
 people.push(currentUser);
 
 /**
+ * create tasks
+ */
+const defaultListId = Faker.datatype.uuid();
+const tasks: ITask[] = times(DOCUMENT_COUNT, () => ({
+  id: Faker.datatype.uuid(),
+  title: `hire a ${Faker.name.jobType().toLocaleLowerCase()}`,
+  listId: defaultListId,
+  listName: 'defaultList',
+  hidden: false,
+  deleted: false,
+  status: 'needsAction',
+  position: Faker.datatype.number().toString(),
+  updatedAt: new Date(Faker.date.recent(1).toISOString()),
+}));
+
+/**
  * create documents
  */
 const documents: IDocument[] = times(DOCUMENT_COUNT, () => ({
-  id: (Faker as any).datatype.uuid(),
+  id: Faker.datatype.uuid(),
   name: Faker.system.fileName(),
   viewedByMe: true,
   viewedByMeAt: new Date(Faker.date.recent(1).toISOString()),
   link: Faker.internet.url(),
   iconLink: Faker.image.imageUrl(32, 32, 'abstract', true, true),
   mimeType: 'UNKNOWN',
-  isShared: Faker.random.boolean(),
-  isStarred: Faker.random.boolean(),
+  isShared: Faker.datatype.boolean(),
+  isStarred: Faker.datatype.boolean(),
   updatedAt: new Date(Faker.date.recent(1).toISOString()),
 }));
 
@@ -109,7 +125,7 @@ times(WEEKS_TO_CREATE, (week: number) => {
         const actor = sample(peopleForAttendees);
         if (actor) {
           driveActivity.push({
-            id: (Faker as any).datatype.uuid(),
+            id: Faker.datatype.uuid(),
             time: addMinutes(date, 1),
             action: 'comment', // TODO
             actorPersonId: actor.id,
@@ -120,7 +136,7 @@ times(WEEKS_TO_CREATE, (week: number) => {
       });
 
       segments.push({
-        id: (Faker as any).datatype.uuid(),
+        id: Faker.datatype.uuid(),
         link: Faker.internet.url(),
         summary: `${Faker.commerce.productName()} meeting`,
         description: Faker.lorem.paragraphs(3),
@@ -142,4 +158,4 @@ times(WEEKS_TO_CREATE, (week: number) => {
   });
 });
 
-export default { people, documents, segments, driveActivity, currentUser };
+export default { people, documents, segments, driveActivity, currentUser, tasks };
