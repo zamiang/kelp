@@ -109,7 +109,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     const addData = async () => {
       if (!data.driveResponseLoading) {
         setLoadingMessage('Saving Documents');
-        await documentDataStore.addDocuments(documents);
+        await documentDataStore.addDocuments(documents, true);
       }
     };
     void addData();
@@ -120,7 +120,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     const addData = async () => {
       if (!data.tasksResponseLoading) {
         setLoadingMessage('Saving Tasks');
-        await taskDataStore.addTasksToStore(data.tasks);
+        await taskDataStore.addTasksToStore(data.tasks, true);
       }
     };
     void addData();

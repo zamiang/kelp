@@ -20,7 +20,14 @@ export default class DocumentModel {
 
   async addDocuments(documents: IDocument[], shouldClearStore?: boolean) {
     if (shouldClearStore) {
-      await this.db.clear('document');
+      const existingDocuments = await this.getAll();
+      const existingDocumentIds = existingDocuments.map((d) => d.id);
+      const newDocumentIds = documents.map((d) => d.id);
+      const idsToDelete = existingDocumentIds.filter(
+        (existingDocumentId) => !newDocumentIds.includes(existingDocumentId),
+      );
+
+      await Promise.allSettled(idsToDelete.map((id) => this.db.delete('document', id)));
     }
 
     const tx = this.db.transaction('document', 'readwrite');

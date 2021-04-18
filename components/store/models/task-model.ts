@@ -12,7 +12,13 @@ export default class TaskModel {
 
   async addTasksToStore(tasks: ITask[], shouldClearStore?: boolean) {
     if (shouldClearStore) {
-      await this.db.clear('task');
+      const existingTasks = await this.getAll();
+      const existingTaskIds = existingTasks.map((t) => t.id);
+      const newTaskIds = tasks.map((t) => t.id);
+      const idsToDelete = existingTaskIds.filter(
+        (existingTaskId) => !newTaskIds.includes(existingTaskId),
+      );
+      await Promise.allSettled(idsToDelete.map((id) => this.db.delete('task', id)));
     }
 
     const tx = this.db.transaction('task', 'readwrite');
