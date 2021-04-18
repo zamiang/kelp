@@ -14,8 +14,14 @@ export default class SegmentModel {
 
   async addSegments(segments: ISegment[], shouldClearStore?: boolean) {
     if (shouldClearStore) {
-      // TODO: figure out a better way to do this.
-      // await this.db.clear('meeting');
+      const existingSegments = await this.getAll();
+      const existingSegmentIds = existingSegments.map((s) => s.id);
+      const newSegmentIds = segments.map((s) => s.id);
+      const idsToDelete = existingSegmentIds.filter(
+        (existingSegmentId) => !newSegmentIds.includes(existingSegmentId),
+      );
+
+      await Promise.allSettled(idsToDelete.map((id) => this.db.delete('meeting', id)));
     }
 
     // console.log(formattedSegments, 'about to save segments');
