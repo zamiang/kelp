@@ -1,18 +1,20 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { addDays, addHours, format, intervalToDuration } from 'date-fns';
+import { addHours, format, intervalToDuration } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
+
+const numberHours = 12;
 
 const useMeetingLineStyles = makeStyles((theme) => ({
   line: {
     background: theme.palette.secondary.main,
     height: theme.spacing(2),
     position: 'absolute',
-    top: -theme.spacing(1),
+    top: 0,
     cursor: 'pointer',
     transition: 'background 0.3s',
     borderRadius: 4,
@@ -59,22 +61,32 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    borderTop: `2px solid ${theme.palette.divider}`,
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     position: 'relative',
-    height: 28,
+    height: 36,
+    overflowX: 'hidden',
   },
   overflowContainer: {},
+  border: {
+    height: 2,
+    background: theme.palette.divider,
+    width: '100%',
+    position: 'absolute',
+    top: theme.spacing(1),
+    left: 0,
+  },
   startTime: {
     position: 'absolute',
     left: 0,
-    top: theme.spacing(1),
+    top: theme.spacing(2),
+    zIndex: 2,
   },
   endTime: {
     position: 'absolute',
     right: 0,
-    top: theme.spacing(1),
+    top: theme.spacing(2),
+    zIndex: 2,
   },
 }));
 
@@ -91,14 +103,13 @@ export const LineCalendar = (props: { store: IStore }) => {
     }
   }, []); //empty dependency array so it only runs once at render
 
-  const pixelsPerMinute = elementWidth / (12 * 60);
+  const pixelsPerMinute = elementWidth / (numberHours * 60);
+  const startTime = new Date();
+  const endTime = addHours(new Date(), numberHours);
   useEffect(() => {
     const fetchData = async () => {
-      let result = await props.store.timeDataStore.getSegmentsForDay(new Date());
-      if (result.length < 1) {
-        result = await props.store.timeDataStore.getSegmentsForDay(addDays(new Date(), 1));
-      }
-      setMeetings(result.filter((m) => m.start > new Date()));
+      const result = await props.store.timeDataStore.getSegmentsForDay(new Date());
+      setMeetings(result.filter((m) => m.start > startTime && m.start < endTime));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
@@ -106,6 +117,7 @@ export const LineCalendar = (props: { store: IStore }) => {
   return (
     <div className={classes.overflowContainer} ref={elementRef}>
       <div className={classes.container} ref={elementRef}>
+        <div className={classes.border}></div>
         {meetings.map((meeting) => (
           <MeetingLine key={meeting.id} meeting={meeting} pixelsPerMinute={pixelsPerMinute} />
         ))}
@@ -113,7 +125,7 @@ export const LineCalendar = (props: { store: IStore }) => {
           {format(new Date(), 'p')}
         </Typography>
         <Typography variant="caption" className={classes.endTime}>
-          {format(addHours(new Date(), 12), 'p')}
+          {format(endTime, 'p')}
         </Typography>
       </div>
     </div>
