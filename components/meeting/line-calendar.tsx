@@ -1,6 +1,7 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import { addHours, format, intervalToDuration } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -11,8 +12,8 @@ const numberHours = 12;
 
 const useMeetingLineStyles = makeStyles((theme) => ({
   line: {
-    background: theme.palette.secondary.main,
-    height: theme.spacing(2),
+    background: '#FFA685',
+    height: 8,
     position: 'absolute',
     top: 0,
     cursor: 'pointer',
@@ -21,6 +22,12 @@ const useMeetingLineStyles = makeStyles((theme) => ({
     '&:hover': {
       background: theme.palette.primary.light,
     },
+  },
+  linePast: {
+    background: '#D3DBD5',
+  },
+  lineCurrent: {
+    background: theme.palette.secondary.main,
   },
 }));
 
@@ -42,7 +49,9 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
   const startTimeDifferenceInMinutes = (startTime.minutes || 0) + (startTime.hours || 0) * 60;
 
   const left = props.pixelsPerMinute * startTimeDifferenceInMinutes;
-
+  const currentTime = new Date();
+  const isCurrent = currentTime > props.meeting.start && currentTime < props.meeting.end;
+  const isPast = currentTime > props.meeting.end;
   return (
     <Tooltip
       title={`${props.meeting.summary || ''} from ${format(props.meeting.start, 'p')} – ${format(
@@ -51,7 +60,7 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
       )}`}
     >
       <div
-        className={classes.line}
+        className={clsx(classes.line, isCurrent && classes.lineCurrent, isPast && classes.linePast)}
         style={{ width, left }}
         onClick={() => router.push(`/meetings/${props.meeting.id}`)}
       ></div>
@@ -69,24 +78,30 @@ const useStyles = makeStyles((theme) => ({
   },
   overflowContainer: {},
   border: {
-    height: 2,
+    height: 4,
     background: theme.palette.divider,
     width: '100%',
     position: 'absolute',
-    top: theme.spacing(1),
+    top: 2,
     left: 0,
   },
   startTime: {
     position: 'absolute',
     left: 0,
-    top: theme.spacing(2),
+    top: theme.spacing(1),
     zIndex: 2,
+    color: theme.palette.text.secondary,
   },
   endTime: {
     position: 'absolute',
     right: 0,
-    top: theme.spacing(2),
+    top: theme.spacing(1),
     zIndex: 2,
+    color: theme.palette.text.secondary,
+  },
+  heading: {
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -116,17 +131,14 @@ export const LineCalendar = (props: { store: IStore }) => {
 
   return (
     <div className={classes.overflowContainer} ref={elementRef}>
+      <Typography className={classes.heading}>Today</Typography>
       <div className={classes.container} ref={elementRef}>
         <div className={classes.border}></div>
         {meetings.map((meeting) => (
           <MeetingLine key={meeting.id} meeting={meeting} pixelsPerMinute={pixelsPerMinute} />
         ))}
-        <Typography variant="caption" className={classes.startTime}>
-          {format(new Date(), 'p')}
-        </Typography>
-        <Typography variant="caption" className={classes.endTime}>
-          {format(endTime, 'p')}
-        </Typography>
+        <Typography className={classes.startTime}>{format(new Date(), 'p')}</Typography>
+        <Typography className={classes.endTime}>{format(endTime, 'p')}</Typography>
       </div>
     </div>
   );

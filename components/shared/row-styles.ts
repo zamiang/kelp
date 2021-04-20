@@ -90,11 +90,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
   },
   rowHighlight: {
-    background: theme.palette.secondary.light,
-    margin: theme.spacing(2),
-    borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(1),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    marginBottom: theme.spacing(2),
   },
   rowHighlightPadding: {
     paddingLeft: theme.spacing(2),

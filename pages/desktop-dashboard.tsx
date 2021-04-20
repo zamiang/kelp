@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     overscrollBehaviorX: 'none',
     background: 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)',
     minHeight: '100vh',
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.8,
   },
   lineContainer: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderBottom: `2px solid ${theme.palette.divider}`,
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
   },
@@ -81,7 +81,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const store = props.store;
   const router = useHistory();
 
-  // Unsure why the <Redirect> component doesn't work anymore
   const hash = window.location.hash;
   if (hash.includes('meetings')) {
     window.location.hash = '';
@@ -107,14 +106,11 @@ export const DesktopDashboard = (props: { store: IStore }) => {
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
                 Meetings
-                <IconButton onClick={() => router.push('/meetings')} className={classes.rightIcon}>
-                  <ArrowIcon width="24" height="24" />
-                </IconButton>
               </Typography>
               <Box
                 boxShadow={3}
                 borderRadius={8}
-                maxHeight={'calc(100vh - 175px)'}
+                maxHeight={'calc(100vh - 200px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
@@ -127,14 +123,11 @@ export const DesktopDashboard = (props: { store: IStore }) => {
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
                 Tasks
-                <IconButton onClick={() => router.push('/tasks')} className={classes.rightIcon}>
-                  <ArrowIcon width="24" height="24" />
-                </IconButton>
               </Typography>
               <Box
                 boxShadow={3}
                 borderRadius={8}
-                maxHeight={'calc(100vh - 175px)'}
+                maxHeight={'calc(100vh - 200px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
@@ -144,14 +137,11 @@ export const DesktopDashboard = (props: { store: IStore }) => {
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
                 Documents
-                <IconButton onClick={() => router.push('/documents')} className={classes.rightIcon}>
-                  <ArrowIcon width="24" height="24" />
-                </IconButton>
               </Typography>
               <Box
                 boxShadow={3}
                 borderRadius={8}
-                maxHeight={'calc(100vh - 175px)'}
+                maxHeight={'calc(100vh - 200px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
@@ -161,14 +151,11 @@ export const DesktopDashboard = (props: { store: IStore }) => {
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
                 People
-                <IconButton onClick={() => router.push('/people')} className={classes.rightIcon}>
-                  <ArrowIcon width="24" height="24" />
-                </IconButton>
               </Typography>
               <Box
                 boxShadow={3}
                 borderRadius={8}
-                maxHeight={'calc(100vh - 175px)'}
+                maxHeight={'calc(100vh - 200px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
               >

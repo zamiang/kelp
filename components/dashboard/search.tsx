@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
 import usePanelStyles from '../../components/shared/panel-styles';
 import DocumentRow from '../documents/document-row';
+import SearchBar from '../nav/search-bar';
 import PersonRow from '../person/person-row';
 import useRowStyles from '../shared/row-styles';
 import { IDocument, IPerson, ISegment, ITask } from '../store/data-types';
@@ -76,65 +77,70 @@ const Search = (props: { store: IStore }) => {
   const results = searchQuery ? fuse.search(searchQuery) : [];
   const filteredResults = filterSearchResults(results);
   return (
-    <div className={classes.panel}>
-      {filteredResults.documents.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            Documents
-          </Typography>
-          {filteredResults.documents.map((result: any) => (
-            <DocumentRow
-              selectedDocumentId={null}
-              key={result.item.id}
-              document={result.item as IDocument}
-              store={props.store}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.people.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            People
-          </Typography>
-          {filteredResults.people.map((result: any) => (
-            <PersonRow
-              selectedPersonId={null}
-              key={result.item.id}
-              person={result.item as IPerson}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.meetings.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            Meetings
-          </Typography>
-          {filteredResults.meetings.map((result: any) => (
-            <Meeting
-              key={result.item.id}
-              meeting={result.item as ISegment}
-              personStore={props.store['personDataStore']}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.tasks.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            Tasks
-          </Typography>
-          {filteredResults.tasks.map((result: any) => (
-            <TaskRow
-              key={result.item.id}
-              task={result.item as ITask}
-              store={props.store}
-              selectedTaskId={null}
-            />
-          ))}
-        </div>
-      )}
+    <div>
+      <div>
+        <SearchBar />
+      </div>
+      <div className={classes.panel}>
+        {filteredResults.documents.length > 0 && (
+          <div className={classes.section}>
+            <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
+              Documents
+            </Typography>
+            {filteredResults.documents.map((result: any) => (
+              <DocumentRow
+                selectedDocumentId={null}
+                key={result.item.id}
+                document={result.item as IDocument}
+                store={props.store}
+              />
+            ))}
+          </div>
+        )}
+        {filteredResults.people.length > 0 && (
+          <div className={classes.section}>
+            <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
+              People
+            </Typography>
+            {filteredResults.people.map((result: any) => (
+              <PersonRow
+                selectedPersonId={null}
+                key={result.item.id}
+                person={result.item as IPerson}
+              />
+            ))}
+          </div>
+        )}
+        {filteredResults.meetings.length > 0 && (
+          <div className={classes.section}>
+            <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
+              Meetings
+            </Typography>
+            {filteredResults.meetings.map((result: any) => (
+              <Meeting
+                key={result.item.id}
+                meeting={result.item as ISegment}
+                personStore={props.store['personDataStore']}
+              />
+            ))}
+          </div>
+        )}
+        {filteredResults.tasks.length > 0 && (
+          <div className={classes.section}>
+            <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
+              Tasks
+            </Typography>
+            {filteredResults.tasks.map((result: any) => (
+              <TaskRow
+                key={result.item.id}
+                task={result.item as ITask}
+                store={props.store}
+                selectedTaskId={null}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

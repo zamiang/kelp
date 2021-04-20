@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 2,
     transition: 'background 0.3s',
   },
-
   dayDotSelected: {
     background: theme.palette.primary.main,
   },
