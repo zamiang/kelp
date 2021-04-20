@@ -12,7 +12,7 @@ import { IStore } from '../store/use-store';
 import { completeTask, unCompleteTask } from './complete-task';
 import { TaskEditBox } from './task-edit-box';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   image: {
     display: 'block',
     height: 18,
@@ -21,16 +21,19 @@ const useStyles = makeStyles((theme) => ({
   text: {
     whiteSpace: 'pre-wrap',
   },
-  row: {
-    minHeight: 48,
-    margin: 0,
-    paddingTop: 9,
-    paddingBottom: 9,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderRadius: 0,
-    '&.MuiListItem-button:hover': {
-      borderColor: theme.palette.divider,
-    },
+  showRow: {
+    transition: 'all 1s ease-out',
+    overflow: 'hidden',
+    paddingTop: 4,
+    paddingBottom: 4,
+    height: 'auto',
+  },
+  hideRow: {
+    height: 0,
+    padding: 0,
+  },
+  completeText: {
+    textDecoration: 'line-through',
   },
 }));
 
@@ -45,6 +48,7 @@ const TaskRow = (props: {
   const classes = useStyles();
   const [task, setTask] = useState<ITask>(props.task);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isVisible, setVisible] = useState(true);
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [isCompleted, setIsCompleted] = useState<boolean>(props.task.completedAt ? true : false);
 
@@ -64,6 +68,8 @@ const TaskRow = (props: {
         !props.isSmall && rowStyles.row,
         props.isSmall && rowStyles.rowSmall,
         isSelected && rowStyles.rowPrimaryMain,
+        classes.showRow,
+        !isVisible && isCompleted && classes.hideRow,
       )}
     >
       <Grid container spacing={2} alignItems="flex-start">
@@ -91,6 +97,9 @@ const TaskRow = (props: {
                     props.store,
                   );
                   setIsCompleted(true);
+                  setTimeout(() => {
+                    setVisible(false);
+                  }, 1000 * 3);
                 }
               }}
             >
@@ -113,7 +122,11 @@ const TaskRow = (props: {
               }}
             />
           )}
-          {!isEditing && <Typography className={classes.text}>{task.title}</Typography>}
+          {!isEditing && (
+            <Typography className={clsx(classes.text, isCompleted && classes.completeText)}>
+              {task.title}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </div>
