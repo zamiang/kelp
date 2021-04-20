@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   rightIcon: {
     float: 'right',
     marginTop: -theme.spacing(1),
-    marginRight: theme.spacing(2),
+    marginRight: -theme.spacing(1),
   },
   row: {
     background: 'transparent',
@@ -51,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     textAlign: 'left',
     opacity: 1,
-    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     width: '100%',
-    borderBottom: `1px solid ${theme.palette.divider}`,
     '&:last-child': {
       borderBottom: `1px solid transparent`,
     },

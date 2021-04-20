@@ -14,11 +14,9 @@ import MeetingRowBelow from './meeting-row-below';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    border: `1px solid ${theme.palette.divider}`,
     textAlign: 'center',
-    margin: theme.spacing(2),
     borderRadius: 5,
-    paddingTop: theme.spacing(5),
+    paddingTop: theme.spacing(2),
   },
   meetingTimeInWords: {
     color: 'rgba(0,0,0,0.4)',
