@@ -5,16 +5,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import BackIcon from '../../public/icons/back.svg';
-import CloseIcon from '../../public/icons/close.svg';
+import { useHistory } from 'react-router-dom';
 import LockIcon from '../../public/icons/lock.svg';
 import RotateIcon from '../../public/icons/rotate.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import SearchBar from './search-bar';
 
 const useStyles = makeStyles((theme) => ({
   container: {

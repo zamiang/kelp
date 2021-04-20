@@ -2,7 +2,6 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
@@ -23,7 +22,6 @@ import ExpandPerson from '../components/person/expand-person';
 import { IStore } from '../components/store/use-store';
 import ExpandTask from '../components/tasks/expand-task';
 import Settings from '../components/user-profile/settings';
-import ArrowIcon from '../public/icons/chevron-right.svg';
 
 export const drawerWidth = 240;
 export const MOBILE_WIDTH = 700;
