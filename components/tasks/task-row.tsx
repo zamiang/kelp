@@ -5,11 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import CheckIconOrange from '../../public/icons/check-orange.svg';
-import CheckIcon from '../../public/icons/check.svg';
+import CircleIcon from '../../public/icons/circle.svg';
 import useRowStyles from '../shared/row-styles';
 import { ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { completeTask } from './complete-task';
+import { completeTask, unCompleteTask } from './complete-task';
 import { TaskEditBox } from './task-edit-box';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     whiteSpace: 'pre-wrap',
-    marginTop: 5,
   },
   row: {
     minHeight: 48,
@@ -67,23 +66,23 @@ const TaskRow = (props: {
         isSelected && rowStyles.rowPrimaryMain,
       )}
     >
-      {isEditing && (
-        <TaskEditBox
-          store={props.store}
-          task={task}
-          onSuccess={(t: ITask) => {
-            setIsEditing(false);
-            setTask(t);
-          }}
-        />
-      )}
-      {!isEditing && (
-        <Grid container spacing={2} alignItems="flex-start">
-          <Grid item className={rowStyles.rowLeft}>
-            {!props.isSmall && (
-              <IconButton
-                color={isCompleted ? 'primary' : 'secondary'}
-                onClick={(event) => {
+      <Grid container spacing={2} alignItems="flex-start">
+        <Grid item className={rowStyles.rowLeft}>
+          {!props.isSmall && (
+            <IconButton
+              color={isCompleted ? 'primary' : 'secondary'}
+              size="small"
+              onClick={(event) => {
+                if (isCompleted) {
+                  event.stopPropagation();
+                  void unCompleteTask(
+                    task.id,
+                    task.listId,
+                    props.store.googleOauthToken!,
+                    props.store,
+                  );
+                  setIsCompleted(false);
+                } else {
                   event.stopPropagation();
                   void completeTask(
                     task.id,
@@ -92,21 +91,31 @@ const TaskRow = (props: {
                     props.store,
                   );
                   setIsCompleted(true);
-                }}
-              >
-                {isCompleted ? (
-                  <CheckIconOrange className={classes.image} />
-                ) : (
-                  <CheckIcon className={classes.image} />
-                )}
-              </IconButton>
-            )}
-          </Grid>
-          <Grid item zeroMinWidth xs>
-            <Typography className={classes.text}>{task.title}</Typography>
-          </Grid>
+                }
+              }}
+            >
+              {isCompleted ? (
+                <CheckIconOrange className={classes.image} />
+              ) : (
+                <CircleIcon className={classes.image} />
+              )}
+            </IconButton>
+          )}
         </Grid>
-      )}
+        <Grid item zeroMinWidth xs>
+          {isEditing && (
+            <TaskEditBox
+              store={props.store}
+              task={task}
+              onSuccess={(t: ITask) => {
+                setIsEditing(false);
+                setTask(t);
+              }}
+            />
+          )}
+          {!isEditing && <Typography className={classes.text}>{task.title}</Typography>}
+        </Grid>
+      </Grid>
     </div>
   );
 };
