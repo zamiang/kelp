@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     borderRadius: 5,
     paddingTop: theme.spacing(2),
-    marginBottom: theme.spacing(4),
   },
   meetingTimeInWords: {
     color: 'rgba(0,0,0,0.4)',

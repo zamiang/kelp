@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { setHours, setMinutes, subDays } from 'date-fns';
@@ -29,8 +30,6 @@ const Home = (props: { store: IStore }) => {
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [taskIncrement, setIncrememnt] = useState<number>(0);
-  const hours = new Date().getHours();
-  const greeting = hours < 12 ? 'Morning' : hours <= 18 && hours >= 12 ? 'Afternoon' : 'Night';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,15 +76,18 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
-      <div className={classes.greeting}>
-        <Typography variant="h3">Good {greeting}</Typography>
-      </div>
-      <LineCalendar store={props.store} />
-      {featuredMeeting && (
-        <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
-      )}
+      <Box
+        boxShadow={3}
+        borderRadius={8}
+        style={{ background: '#fff', marginTop: 18, paddingTop: 12 }}
+      >
+        <LineCalendar store={props.store} />
+        {featuredMeeting && (
+          <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
+        )}
+      </Box>
       {tasks.length > 0 && (
-        <div className={rowClasses.rowHighlight}>
+        <Box boxShadow={3} borderRadius={8} style={{ background: '#fff', marginTop: 26 }}>
           <TaskCreateBox
             store={props.store}
             taskIncrement={taskIncrement}
@@ -100,10 +102,14 @@ const Home = (props: { store: IStore }) => {
           {tasks.map((task) => (
             <TaskRow key={task.id} task={task} selectedTaskId={null} store={props.store} />
           ))}
-        </div>
+        </Box>
       )}
       {topDocuments.length > 0 && (
-        <div className={rowClasses.rowHighlight}>
+        <Box
+          boxShadow={3}
+          borderRadius={8}
+          style={{ background: '#fff', marginTop: 18, paddingTop: 12 }}
+        >
           <Typography className={rowClasses.rowText} variant="h6">
             Recent documents
             <IconButton onClick={() => router.push('/documents')} className={rowClasses.rightIcon}>
@@ -119,10 +125,14 @@ const Home = (props: { store: IStore }) => {
               text={document.text}
             />
           ))}
-        </div>
+        </Box>
       )}
       {featuredPeople.length > 0 && (
-        <div className={rowClasses.rowHighlight}>
+        <Box
+          boxShadow={3}
+          borderRadius={8}
+          style={{ background: '#fff', marginTop: 18, paddingTop: 12 }}
+        >
           <Typography variant="h6" className={rowClasses.rowText}>
             People you are meeting with next
             <IconButton onClick={() => router.push('/people')} className={rowClasses.rightIcon}>
@@ -137,7 +147,7 @@ const Home = (props: { store: IStore }) => {
               text={featuredPerson.text}
             />
           ))}
-        </div>
+        </Box>
       )}
     </div>
   );

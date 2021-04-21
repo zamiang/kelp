@@ -27,11 +27,20 @@ const useInfoStyles = makeStyles((theme) => ({
       paddingRight: theme.spacing(1),
     },
   },
+  content: {
+    overscrollBehavior: 'contain',
+    overscrollBehaviorY: 'none',
+    overscrollBehaviorX: 'none',
+    background: 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)',
+    minHeight: '100vh',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    overflow: 'hidden',
+  },
   container: {
     position: 'relative',
-    overflowY: 'auto',
-    background: theme.palette.background.paper,
-    overflowX: 'hidden',
   },
   footer: {
     borderTop: `1px solid ${theme.palette.divider}`,
@@ -92,7 +101,7 @@ const MobileDashboard = (props: { store: IStore }) => {
   }, [store.isLoading]);
 
   return (
-    <div>
+    <div className={classes.content}>
       <PopupHeader user={user} store={store} />
       <div className={classes.container}>
         <Switch>
