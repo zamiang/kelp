@@ -193,6 +193,12 @@ const theme = createMuiTheme({
         color: 'rgba(0, 0, 0, 0.87)',
       },
     },
+    MuiDialog: {
+      paperWidthSm: {
+        minHeight: '90vh',
+        width: '100%',
+      },
+    },
     MuiFilledInput: {
       root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
       multiline: {
