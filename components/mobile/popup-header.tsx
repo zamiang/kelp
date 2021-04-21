@@ -94,32 +94,9 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const location = useLocation();
   const isOnSubpage = location.pathname !== '/home';
 
-  if (isOnSubpage) {
-    const type = location.pathname.split('/')[1];
-    const id = decodeURIComponent(location.pathname.split('/')[2]);
-    return (
-      <header className={classes.whiteHeader}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <IconButton
-              onClick={() => {
-                history.goBack();
-              }}
-            >
-              <BackIcon width="24" height="24" />
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <GoToSourceButton store={props.store} type={type as any} id={id} />
-          </Grid>
-        </Grid>
-      </header>
-    );
-  }
-
   if (isSearchInputVisible) {
     return (
-      <header className={classes.drawerPaper}>
+      <Box className={classes.drawerPaper} boxShadow={3}>
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <SearchBar />
@@ -135,7 +112,30 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             </IconButton>
           </Grid>
         </Grid>
-      </header>
+      </Box>
+    );
+  }
+
+  if (isOnSubpage) {
+    const type = location.pathname.split('/')[1];
+    const id = decodeURIComponent(location.pathname.split('/')[2]);
+    return (
+      <Box className={classes.drawerPaper} boxShadow={3}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <IconButton
+              onClick={() => {
+                history.goBack();
+              }}
+            >
+              <BackIcon width="24" height="24" />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <GoToSourceButton store={props.store} type={type as any} id={id} />
+          </Grid>
+        </Grid>
+      </Box>
     );
   }
 

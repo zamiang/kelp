@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -26,6 +27,12 @@ const useInfoStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
+  },
+  box: {
+    background: '#fff',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   content: {
     overscrollBehavior: 'contain',
@@ -112,31 +119,49 @@ const MobileDashboard = (props: { store: IStore }) => {
             <Home store={store} />
           </Route>
           <Route path="/people/:slug">
-            <ExpandPerson store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandPerson store={store} />
+            </Box>
           </Route>
           <Route path="/documents/:slug">
-            <ExpandedDocument store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandedDocument store={store} />
+            </Box>
           </Route>
           <Route path="/meetings/:slug">
-            <ExpandedMeeting store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandedMeeting store={store} />
+            </Box>
           </Route>
           <Route path="/tasks/:slug">
-            <ExpandedTask store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandedTask store={store} />
+            </Box>
           </Route>
           <Route path="/meetings">
-            <Meetings store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Meetings store={store} />
+            </Box>
           </Route>
           <Route path="/people">
-            <People store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <People store={store} />
+            </Box>
           </Route>
           <Route path="/tasks">
-            <Tasks store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Tasks store={store} />
+            </Box>
           </Route>
           <Route path="/documents">
-            <Documents store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Documents store={store} />
+            </Box>
           </Route>
           <Route path="/settings">
-            <Settings />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Settings />
+            </Box>
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />
