@@ -1,6 +1,7 @@
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { setHours, setMinutes, subDays } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -10,7 +11,6 @@ import DocumentRow from '../documents/document-row';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import { LineCalendar } from '../meeting/line-calendar';
 import PersonRow from '../person/person-row';
-import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import { ISegment, ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -19,8 +19,26 @@ import TaskRow from '../tasks/task-row';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
 
+const useStyles = makeStyles((theme) => ({
+  panel: {
+    marginTop: theme.spacing(3),
+  },
+  boxStyle: {
+    background: '#fff',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  heading: {
+    marginLeft: 0,
+    color: '#000',
+  },
+  lineCalendarContainer: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 const Home = (props: { store: IStore }) => {
-  const classes = panelStyles();
+  const classes = useStyles();
   const rowClasses = useRowStyles();
   const router = useHistory();
 
@@ -76,78 +94,85 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
-      <Box
-        boxShadow={3}
-        borderRadius={8}
-        style={{ background: '#fff', marginTop: 18, paddingTop: 12 }}
-      >
-        <LineCalendar store={props.store} />
+      <Typography variant="h6" className={classes.heading}>
+        Today&rsquo;s Meetings
+        <IconButton onClick={() => router.push('/meetings')} className={rowClasses.rightIcon}>
+          <ArrowIcon width="24" height="24" />
+        </IconButton>
+      </Typography>
+      <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+        <div className={classes.lineCalendarContainer}>
+          <LineCalendar store={props.store} />
+        </div>
         {featuredMeeting && (
           <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
         )}
       </Box>
       {tasks.length > 0 && (
-        <Box boxShadow={3} borderRadius={8} style={{ background: '#fff', marginTop: 26 }}>
-          <TaskCreateBox
-            store={props.store}
-            taskIncrement={taskIncrement}
-            setTaskIncrement={setIncrememnt}
-          />
-          <Typography variant="h6" className={rowClasses.rowText} style={{ marginTop: 16 }}>
+        <div className={classes.panel}>
+          <Typography variant="h6" className={classes.heading}>
             Recent tasks
             <IconButton onClick={() => router.push('/tasks')} className={rowClasses.rightIcon}>
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>
-          {tasks.map((task) => (
-            <TaskRow key={task.id} task={task} selectedTaskId={null} store={props.store} />
-          ))}
-        </Box>
+          <Box
+            boxShadow={3}
+            borderRadius={8}
+            className={classes.boxStyle}
+            style={{ paddingTop: 0 }}
+          >
+            <TaskCreateBox
+              store={props.store}
+              taskIncrement={taskIncrement}
+              setTaskIncrement={setIncrememnt}
+            />
+            {tasks.map((task) => (
+              <TaskRow key={task.id} task={task} selectedTaskId={null} store={props.store} />
+            ))}
+          </Box>
+        </div>
       )}
       {topDocuments.length > 0 && (
-        <Box
-          boxShadow={3}
-          borderRadius={8}
-          style={{ background: '#fff', marginTop: 18, paddingTop: 12 }}
-        >
-          <Typography className={rowClasses.rowText} variant="h6">
+        <div className={classes.panel}>
+          <Typography variant="h6" className={classes.heading}>
             Recent documents
             <IconButton onClick={() => router.push('/documents')} className={rowClasses.rightIcon}>
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>
-          {topDocuments.map((document) => (
-            <DocumentRow
-              key={document.document.id}
-              document={document.document}
-              store={props.store}
-              selectedDocumentId={null}
-              text={document.text}
-            />
-          ))}
-        </Box>
+          <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+            {topDocuments.map((document) => (
+              <DocumentRow
+                key={document.document.id}
+                document={document.document}
+                store={props.store}
+                selectedDocumentId={null}
+                text={document.text}
+              />
+            ))}
+          </Box>
+        </div>
       )}
       {featuredPeople.length > 0 && (
-        <Box
-          boxShadow={3}
-          borderRadius={8}
-          style={{ background: '#fff', marginTop: 18, paddingTop: 12 }}
-        >
-          <Typography variant="h6" className={rowClasses.rowText}>
+        <div className={classes.panel}>
+          <Typography variant="h6" className={classes.heading}>
             People you are meeting with next
             <IconButton onClick={() => router.push('/people')} className={rowClasses.rightIcon}>
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>
-          {featuredPeople.map((featuredPerson) => (
-            <PersonRow
-              key={featuredPerson.person.id}
-              person={featuredPerson.person}
-              selectedPersonId={null}
-              text={featuredPerson.text}
-            />
-          ))}
-        </Box>
+          <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+            {featuredPeople.map((featuredPerson) => (
+              <PersonRow
+                key={featuredPerson.person.id}
+                person={featuredPerson.person}
+                selectedPersonId={null}
+                text={featuredPerson.text}
+              />
+            ))}
+          </Box>
+        </div>
       )}
     </div>
   );

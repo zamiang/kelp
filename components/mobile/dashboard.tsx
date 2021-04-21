@@ -139,7 +139,7 @@ const MobileDashboard = (props: { store: IStore }) => {
             <Settings />
           </Route>
           <Route exact path="/">
-            <Redirect to="/meetings" />
+            <Redirect to="/home" />
           </Route>
           <Route>
             <Handle404 />
