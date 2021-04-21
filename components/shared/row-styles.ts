@@ -65,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.primary.main,
     },
   },
+  rowTopPadding: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
   rowNoHover: {
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',
@@ -121,6 +125,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rowLeft: {
     textAlign: 'center',
+    marginRight: theme.spacing(2),
   },
   rowPrimaryMain: {
     background: 'rgba(0,0,0,0.04)',

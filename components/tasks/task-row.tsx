@@ -24,8 +24,6 @@ const useStyles = makeStyles(() => ({
   showRow: {
     transition: 'all 1s ease-out',
     overflow: 'hidden',
-    paddingTop: 4,
-    paddingBottom: 4,
     height: 'auto',
   },
   hideRow: {
@@ -37,12 +35,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TaskRow = (props: {
-  task: ITask;
-  selectedTaskId: string | null;
-  store: IStore;
-  isSmall?: boolean;
-}) => {
+const TaskRow = (props: { task: ITask; selectedTaskId: string | null; store: IStore }) => {
   const isSelected = props.selectedTaskId === props.task.id;
   const rowStyles = useRowStyles();
   const classes = useStyles();
@@ -65,68 +58,63 @@ const TaskRow = (props: {
       }}
       ref={setReferenceElement as any}
       className={clsx(
-        !props.isSmall && rowStyles.row,
-        props.isSmall && rowStyles.rowSmall,
+        rowStyles.row,
         isSelected && rowStyles.rowPrimaryMain,
         classes.showRow,
         !isVisible && isCompleted && classes.hideRow,
       )}
     >
-      <Grid container spacing={1} alignItems="flex-start">
+      <Grid container alignItems="flex-start">
         <Grid item className={rowStyles.rowLeft}>
-          {!props.isSmall && (
-            <IconButton
-              color={isCompleted ? 'primary' : 'secondary'}
-              size="small"
-              onClick={(event) => {
-                if (isCompleted) {
-                  event.stopPropagation();
-                  void unCompleteTask(
-                    task.id,
-                    task.listId,
-                    props.store.googleOauthToken!,
-                    props.store,
-                  );
-                  setIsCompleted(false);
-                } else {
-                  event.stopPropagation();
-                  void completeTask(
-                    task.id,
-                    task.listId,
-                    props.store.googleOauthToken!,
-                    props.store,
-                  );
-                  setIsCompleted(true);
-                  setTimeout(() => {
-                    setVisible(false);
-                  }, 1000 * 3);
-                }
-              }}
-            >
-              {isCompleted ? (
-                <CheckIconOrange className={classes.image} />
-              ) : (
-                <CircleIcon className={classes.image} />
-              )}
-            </IconButton>
-          )}
+          <IconButton
+            color={isCompleted ? 'primary' : 'secondary'}
+            size="small"
+            style={{ marginTop: 8 }}
+            onClick={(event) => {
+              if (isCompleted) {
+                event.stopPropagation();
+                void unCompleteTask(
+                  task.id,
+                  task.listId,
+                  props.store.googleOauthToken!,
+                  props.store,
+                );
+                setIsCompleted(false);
+              } else {
+                event.stopPropagation();
+                void completeTask(task.id, task.listId, props.store.googleOauthToken!, props.store);
+                setIsCompleted(true);
+                setTimeout(() => {
+                  setVisible(false);
+                }, 1000 * 3);
+              }
+            }}
+          >
+            {isCompleted ? (
+              <CheckIconOrange className={classes.image} />
+            ) : (
+              <CircleIcon className={classes.image} />
+            )}
+          </IconButton>
         </Grid>
         <Grid item zeroMinWidth xs>
-          {isEditing && (
-            <TaskEditBox
-              store={props.store}
-              task={task}
-              onSuccess={(t: ITask) => {
-                setIsEditing(false);
-                setTask(t);
-              }}
-            />
-          )}
-          {!isEditing && (
-            <Typography className={clsx(classes.text, isCompleted && classes.completeText)}>
-              {task.title}
-            </Typography>
-          )}
+          <div className={rowStyles.rowTopPadding}>
+            {isEditing && (
+              <TaskEditBox
+                store={props.store}
+                task={task}
+                onSuccess={(t: ITask) => {
+                  setIsEditing(false);
+                  setTask(t);
+                }}
+              />
+            )}
+            {!isEditing && (
+              <Typography className={clsx(classes.text, isCompleted && classes.completeText)}>
+                {task.title}
+              </Typography>
+            )}
+          </div>
         </Grid>
       </Grid>
     </div>

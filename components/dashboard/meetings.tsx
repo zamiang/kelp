@@ -36,6 +36,7 @@ const Day = (props: { day: Date; currentDay: Date }) => {
   const currentMonthNumber = getMonth(props.currentDay);
   const isPast = props.day < props.currentDay;
   const isToday = currentDayNumber == dayNumber && currentMonthNumber == monthNumber;
+  const isTomorrow = currentDayNumber + 1 == dayNumber && currentMonthNumber == monthNumber;
   return (
     <div className={classes.day} id={`${dayNumber}-day`}>
       <Typography
@@ -46,8 +47,7 @@ const Day = (props: { day: Date; currentDay: Date }) => {
           !isToday && isPast && classes.dayNumberPast,
         )}
       >
-        {isToday ? 'Today ‧ ' : ''}
-        {dayInfo}
+        {isToday ? 'Today ' : isTomorrow ? 'Tomorrow' : dayInfo}
       </Typography>
     </div>
   );
