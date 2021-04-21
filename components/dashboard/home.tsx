@@ -98,13 +98,7 @@ const Home = (props: { store: IStore }) => {
             </IconButton>
           </Typography>
           {tasks.map((task) => (
-            <TaskRow
-              key={task.id}
-              task={task}
-              selectedTaskId={null}
-              isSmall={false}
-              store={props.store}
-            />
+            <TaskRow key={task.id} task={task} selectedTaskId={null} store={props.store} />
           ))}
         </div>
       )}

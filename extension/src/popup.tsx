@@ -17,7 +17,7 @@ import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
-import { DesktopDashboard } from '../../pages/dashboard';
+import { DesktopDashboard } from '../../pages/desktop-dashboard';
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
