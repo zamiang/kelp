@@ -4,7 +4,6 @@ const useStyles = makeStyles((theme) => ({
   button: {
     width: '100%',
     borderRadius: 30,
-    textTransform: 'uppercase',
     paddingTop: 6,
     paddingBottom: 6,
     transition: 'opacity 0.3s',

@@ -33,7 +33,7 @@ export const MissingDocumentRow = (props: {
     >
       <Grid container spacing={2} alignItems="center">
         <Grid item className={rowStyles.rowLeft}>
-          <IconButton>
+          <IconButton size="small">
             <HelpIcon
               height="18"
               width="18"
@@ -130,7 +130,7 @@ const DocumentRow = (props: {
         <Grid container spacing={2} alignItems="center">
           {!props.isSmall && (
             <Grid item className={rowStyles.rowLeft}>
-              <IconButton>
+              <IconButton size="small">
                 <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
               </IconButton>
             </Grid>

@@ -131,9 +131,9 @@ const AllDocuments = (props: {
   }, [props.store.lastUpdated, props.store.isLoading]);
 
   return (
-    <React.Fragment>
+    <div style={{ marginBottom: 14, marginTop: 14 }}>
       {topDocuments.length > 0 && (
-        <div className={classes.rowHighlight}>
+        <div className={classes.rowHighlight} style={{ paddingTop: 0 }}>
           <Typography className={classes.rowText} variant="h6">
             Recent documents
           </Typography>
@@ -158,7 +158,7 @@ const AllDocuments = (props: {
           />
         ))}
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
