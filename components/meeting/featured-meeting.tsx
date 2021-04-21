@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { formatDistanceToNow } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { mediumFontFamily } from '../../constants/theme';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -20,10 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   meetingTimeInWords: {
     color: 'rgba(0,0,0,0.4)',
-    fontWeight: 500,
-    fontFamily: mediumFontFamily,
     display: 'inline-block',
-    marginLeft: theme.spacing(1),
+    marginBottom: 0,
   },
 }));
 

@@ -24,9 +24,7 @@ const useStyle = makeStyles(() => ({
     maxWidth: 36,
     background: '#BCBCBC',
   },
-  input: {
-    background: '#EEEEEE',
-  },
+  input: {},
 }));
 
 export const TaskEditBox = (props: {

@@ -25,9 +25,7 @@ const useStyle = makeStyles((theme) => ({
     maxWidth: 36,
     background: '#BCBCBC',
   },
-  input: {
-    background: '#EEEEEE',
-  },
+  input: {},
 }));
 
 export const TaskCreateBox = (props: {

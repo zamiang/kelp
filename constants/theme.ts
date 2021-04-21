@@ -193,6 +193,21 @@ const theme = createMuiTheme({
         color: 'rgba(0, 0, 0, 0.87)',
       },
     },
+    MuiFilledInput: {
+      root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
+      multiline: {
+        padding: '18px 12px 18px 18px',
+        background: '#eee',
+      },
+      underline: {
+        '&:before': {
+          display: 'none',
+        },
+        '&:after': {
+          display: 'none',
+        },
+      },
+    },
   },
 } as any);
 
