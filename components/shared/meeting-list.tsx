@@ -21,9 +21,9 @@ export const Meeting = (props: {
   return (
     <Button
       onClick={() => router.push(`/meetings/${props.meeting.id}`)}
-      className={clsx(rowStyles.row)}
+      className={clsx(rowStyles.row, rowStyles.rowSmall)}
     >
-      <Grid container wrap="nowrap" spacing={2} alignItems="center">
+      <Grid container wrap="nowrap" alignItems="center">
         <Grid item className={rowStyles.rowLeft}>
           <CalendarIcon
             width="24"
@@ -32,7 +32,12 @@ export const Meeting = (props: {
           />
         </Grid>
         <Grid item zeroMinWidth xs>
-          <Grid container justify="space-between" alignItems="center">
+          <Grid
+            container
+            justify="space-between"
+            alignItems="center"
+            className={rowStyles.rowTopPadding}
+          >
             <Grid item xs={12}>
               <Typography noWrap>{props.meeting.summary || '(No title)'}</Typography>
             </Grid>

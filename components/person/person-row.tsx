@@ -43,6 +43,7 @@ const PersonRow = (props: {
   info?: string;
   responseStatus?: string;
   text?: string;
+  noMargin?: boolean;
 }) => {
   const classes = useStyles();
   const isSelected = props.selectedPersonId === props.person.id;
@@ -72,6 +73,7 @@ const PersonRow = (props: {
       ref={setReferenceElement as any}
       className={clsx(
         rowStyles.row,
+        props.noMargin && rowStyles.rowSmall,
         classes.person,
         props.responseStatus === 'accepted' && classes.personAccepted,
         props.responseStatus === 'tentative' && classes.personTentative,

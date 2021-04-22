@@ -210,6 +210,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
                       key={person.id}
                       selectedPersonId={null}
                       person={person}
+                      noMargin={true}
                       info={`${peopleStats[person.id][person.id]} events`}
                     />
                   ),

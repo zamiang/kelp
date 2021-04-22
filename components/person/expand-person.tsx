@@ -177,7 +177,11 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <Typography variant="h6" style={{ marginBottom: 0 }}>
               Related documents
             </Typography>
-            <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
+            <SegmentDocumentList
+              segmentDocuments={segmentDocuments}
+              store={props.store}
+              isSmall={true}
+            />
           </div>
         )}
         {associates.length > 0 && (
@@ -188,6 +192,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
               attendees={associates}
               attendeeMeetingCount={associatesStats}
               showAll={true}
+              isSmall={true}
             />
           </div>
         )}

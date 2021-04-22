@@ -89,6 +89,7 @@ const DocumentRow = (props: {
   store: IStore;
   tooltipText?: string;
   text?: string;
+  noMargins?: boolean;
 }) => {
   const isSelected = props.selectedDocumentId === props.document.id;
   const router = useHistory();
@@ -116,7 +117,11 @@ const DocumentRow = (props: {
         return false;
       }}
       ref={setReferenceElement as any}
-      className={clsx(rowStyles.row, isSelected && rowStyles.rowPrimaryMain)}
+      className={clsx(
+        rowStyles.row,
+        props.noMargins && rowStyles.rowSmall,
+        isSelected && rowStyles.rowPrimaryMain,
+      )}
     >
       <ConditionalWrapper
         shouldWrap={!!props.tooltipText}

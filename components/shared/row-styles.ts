@@ -87,11 +87,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(3),
   },
   rowSmall: {
-    width: '100%',
-    background: 'transparent',
-    transition: 'background 0.3s, opacity 0.3s',
-    cursor: 'pointer',
-    textAlign: 'left',
+    padding: 0,
   },
   rowHighlight: {
     paddingTop: theme.spacing(2),
@@ -105,7 +101,6 @@ const useStyles = makeStyles((theme) => ({
   },
   rowDefault: {},
   rowText: {
-    paddingLeft: theme.spacing(2),
     color: '#9D9D99',
     fontWeight: 500,
     fontFamily: mediumFontFamily,

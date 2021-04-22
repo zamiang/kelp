@@ -48,6 +48,7 @@ const SegmentDocumentItem = (props: {
       store={props.store}
       document={document}
       selectedDocumentId={null}
+      noMargins={props.isSmall}
       tooltipText={tooltipText}
     />
   );

@@ -34,6 +34,7 @@ const Row = (props: {
       responseStatus={props.attendee.responseStatus}
       selectedPersonId={null}
       person={person}
+      noMargin={props.isSmall}
     />
   );
 };
