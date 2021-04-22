@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   rightIcon: {
     float: 'right',
     marginTop: -theme.spacing(1),
-    marginRight: theme.spacing(2),
+    marginRight: -theme.spacing(1),
   },
   row: {
     background: 'transparent',
@@ -51,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     textAlign: 'left',
     opacity: 1,
-    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     width: '100%',
-    borderBottom: `1px solid ${theme.palette.divider}`,
     '&:last-child': {
       borderBottom: `1px solid transparent`,
     },
@@ -64,6 +64,10 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
       borderColor: theme.palette.primary.main,
     },
+  },
+  rowTopPadding: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
   rowNoHover: {
     background: 'transparent',
@@ -90,11 +94,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
   },
   rowHighlight: {
-    background: theme.palette.secondary.light,
-    margin: theme.spacing(2),
-    borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(1),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    marginBottom: theme.spacing(2),
   },
   rowHighlightPadding: {
     paddingLeft: theme.spacing(2),
@@ -122,6 +125,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rowLeft: {
     textAlign: 'center',
+    marginRight: theme.spacing(2),
   },
   rowPrimaryMain: {
     background: 'rgba(0,0,0,0.04)',

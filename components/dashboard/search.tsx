@@ -1,13 +1,12 @@
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
 import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
-import usePanelStyles from '../../components/shared/panel-styles';
 import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
-import useRowStyles from '../shared/row-styles';
 import { IDocument, IPerson, ISegment, ITask } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
@@ -43,9 +42,26 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   };
 };
 
+const useStyles = makeStyles((theme) => ({
+  panel: {
+    marginTop: theme.spacing(3),
+  },
+  boxStyle: {
+    background: '#fff',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  heading: {
+    marginLeft: 0,
+    color: '#000',
+  },
+  lineCalendarContainer: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 const Search = (props: { store: IStore }) => {
-  const classes = usePanelStyles();
-  const rowClasses = useRowStyles();
+  const classes = useStyles();
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
 
@@ -76,65 +92,75 @@ const Search = (props: { store: IStore }) => {
   const results = searchQuery ? fuse.search(searchQuery) : [];
   const filteredResults = filterSearchResults(results);
   return (
-    <div className={classes.panel}>
-      {filteredResults.documents.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            Documents
-          </Typography>
-          {filteredResults.documents.map((result: any) => (
-            <DocumentRow
-              selectedDocumentId={null}
-              key={result.item.id}
-              document={result.item as IDocument}
-              store={props.store}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.people.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            People
-          </Typography>
-          {filteredResults.people.map((result: any) => (
-            <PersonRow
-              selectedPersonId={null}
-              key={result.item.id}
-              person={result.item as IPerson}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.meetings.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            Meetings
-          </Typography>
-          {filteredResults.meetings.map((result: any) => (
-            <Meeting
-              key={result.item.id}
-              meeting={result.item as ISegment}
-              personStore={props.store['personDataStore']}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.tasks.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={clsx(classes.headingPadding, rowClasses.rowText)} variant="h6">
-            Tasks
-          </Typography>
-          {filteredResults.tasks.map((result: any) => (
-            <TaskRow
-              key={result.item.id}
-              task={result.item as ITask}
-              store={props.store}
-              selectedTaskId={null}
-            />
-          ))}
-        </div>
-      )}
+    <div>
+      <div className={classes.panel}>
+        {filteredResults.documents.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              Documents
+            </Typography>
+            <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+              {filteredResults.documents.map((result: any) => (
+                <DocumentRow
+                  selectedDocumentId={null}
+                  key={result.item.id}
+                  document={result.item as IDocument}
+                  store={props.store}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+        {filteredResults.people.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              People
+            </Typography>
+            <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+              {filteredResults.people.map((result: any) => (
+                <PersonRow
+                  selectedPersonId={null}
+                  key={result.item.id}
+                  person={result.item as IPerson}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+        {filteredResults.meetings.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              Meetings
+            </Typography>
+            <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+              {filteredResults.meetings.map((result: any) => (
+                <Meeting
+                  key={result.item.id}
+                  meeting={result.item as ISegment}
+                  personStore={props.store['personDataStore']}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+        {filteredResults.tasks.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              Tasks
+            </Typography>
+            <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+              {filteredResults.tasks.map((result: any) => (
+                <TaskRow
+                  key={result.item.id}
+                  task={result.item as ITask}
+                  store={props.store}
+                  selectedTaskId={null}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

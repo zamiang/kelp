@@ -1,9 +1,9 @@
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import BackIcon from '../../public/icons/back.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import SearchIcon from '../../public/icons/search.svg';
@@ -14,23 +14,14 @@ import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const useHeaderStyles = makeStyles((theme) => ({
-  logo: {
-    width: 32,
-    height: 35,
-    paddingRight: 0,
-    marginRight: 0,
-    marginBottom: -3,
-  },
   drawerPaper: {
     border: '0px',
-    position: 'sticky',
-    top: 0,
-    left: 0,
     background: theme.palette.background.paper,
     borderBottom: `1px solid ${theme.palette.divider}`,
     padding: theme.spacing(1),
     zIndex: 6,
     justifyContent: 'space-between',
+    borderRadius: theme.shape.borderRadius,
   },
   whiteHeader: {
     border: '0px',
@@ -101,13 +92,13 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const classes = useHeaderStyles();
   const history = useHistory();
   const location = useLocation();
-  const isOnSubpage = location.pathname !== '/home';
+  const isOnSubpage = location.pathname !== '/home' && location.pathname !== '/search';
 
   if (isOnSubpage) {
     const type = location.pathname.split('/')[1];
     const id = decodeURIComponent(location.pathname.split('/')[2]);
     return (
-      <header className={classes.whiteHeader}>
+      <Box className={classes.drawerPaper} boxShadow={3}>
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <IconButton
@@ -122,13 +113,13 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             <GoToSourceButton store={props.store} type={type as any} id={id} />
           </Grid>
         </Grid>
-      </header>
+      </Box>
     );
   }
 
   if (isSearchInputVisible) {
     return (
-      <header className={classes.drawerPaper}>
+      <Box className={classes.drawerPaper} boxShadow={3}>
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <SearchBar />
@@ -144,20 +135,15 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             </IconButton>
           </Grid>
         </Grid>
-      </header>
+      </Box>
     );
   }
 
   return (
-    <header className={classes.drawerPaper}>
+    <Box className={classes.drawerPaper} boxShadow={3}>
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
           <Grid container alignItems="center">
-            <Grid item>
-              <Link to="/home" component={RouterLink}>
-                <img className={classes.logo} src="/kelp.svg" alt="Kelp logo" />
-              </Link>
-            </Grid>
             <Grid item>
               <IconButton onClick={() => setSearchInputVisible(true)}>
                 <SearchIcon width="24" height="24" />
@@ -188,7 +174,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           </Grid>
         </Grid>
       </Grid>
-    </header>
+    </Box>
   );
 };
 

@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -27,11 +28,26 @@ const useInfoStyles = makeStyles((theme) => ({
       paddingRight: theme.spacing(1),
     },
   },
+  box: {
+    background: '#fff',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+  },
+  content: {
+    overscrollBehavior: 'contain',
+    overscrollBehaviorY: 'none',
+    overscrollBehaviorX: 'none',
+    background: 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)',
+    minHeight: '100vh',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    overflow: 'hidden',
+  },
   container: {
     position: 'relative',
-    overflowY: 'auto',
-    background: theme.palette.background.paper,
-    overflowX: 'hidden',
   },
   footer: {
     borderTop: `1px solid ${theme.palette.divider}`,
@@ -92,7 +108,7 @@ const MobileDashboard = (props: { store: IStore }) => {
   }, [store.isLoading]);
 
   return (
-    <div>
+    <div className={classes.content}>
       <PopupHeader user={user} store={store} />
       <div className={classes.container}>
         <Switch>
@@ -103,34 +119,52 @@ const MobileDashboard = (props: { store: IStore }) => {
             <Home store={store} />
           </Route>
           <Route path="/people/:slug">
-            <ExpandPerson store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandPerson store={store} />
+            </Box>
           </Route>
           <Route path="/documents/:slug">
-            <ExpandedDocument store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandedDocument store={store} />
+            </Box>
           </Route>
           <Route path="/meetings/:slug">
-            <ExpandedMeeting store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandedMeeting store={store} />
+            </Box>
           </Route>
           <Route path="/tasks/:slug">
-            <ExpandedTask store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <ExpandedTask store={store} />
+            </Box>
           </Route>
           <Route path="/meetings">
-            <Meetings store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Meetings store={store} />
+            </Box>
           </Route>
           <Route path="/people">
-            <People store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <People store={store} />
+            </Box>
           </Route>
           <Route path="/tasks">
-            <Tasks store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Tasks store={store} />
+            </Box>
           </Route>
           <Route path="/documents">
-            <Documents store={store} />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Documents store={store} />
+            </Box>
           </Route>
           <Route path="/settings">
-            <Settings />
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              <Settings />
+            </Box>
           </Route>
           <Route exact path="/">
-            <Redirect to="/meetings" />
+            <Redirect to="/home" />
           </Route>
           <Route>
             <Handle404 />

@@ -34,7 +34,7 @@ const AllTasks = (props: {
         taskIncrement={taskIncrement}
         setTaskIncrement={setIncrememnt}
       />
-      <div>
+      <div style={{ marginBottom: 8 }}>
         {tasks.map((task) => (
           <TaskRow
             key={task.id}

@@ -41,7 +41,6 @@ const PersonRow = (props: {
   selectedPersonId: string | null;
   person: IPerson;
   info?: string;
-  isSmall?: boolean;
   responseStatus?: string;
   text?: string;
 }) => {
@@ -72,8 +71,7 @@ const PersonRow = (props: {
       onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       ref={setReferenceElement as any}
       className={clsx(
-        !props.isSmall && rowStyles.row,
-        props.isSmall && rowStyles.rowSmall,
+        rowStyles.row,
         classes.person,
         props.responseStatus === 'accepted' && classes.personAccepted,
         props.responseStatus === 'tentative' && classes.personTentative,
@@ -82,7 +80,7 @@ const PersonRow = (props: {
         isSelected && rowStyles.rowPrimaryMain,
       )}
     >
-      <Grid container spacing={2} alignItems="center" wrap="nowrap">
+      <Grid container alignItems="center" wrap="nowrap">
         <Grid item className={rowStyles.rowLeft}>
           {props.person.imageUrl ? (
             <Avatar
@@ -102,27 +100,27 @@ const PersonRow = (props: {
           )}
         </Grid>
         <Grid item xs zeroMinWidth>
-          <Grid container>
-            <Grid item xs={12} zeroMinWidth>
-              <Typography noWrap>{name}</Typography>
-            </Grid>
-            {!props.isSmall && (
+          <div className={rowStyles.rowTopPadding}>
+            <Grid container>
+              <Grid item xs={12} zeroMinWidth>
+                <Typography noWrap>{name}</Typography>
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" noWrap>
                   {props.person.notes}
                 </Typography>
               </Grid>
-            )}
-            {props.info && (
-              <Grid item xs={12}>
-                <Typography variant="body2" noWrap>
-                  {props.info}
-                </Typography>
-              </Grid>
-            )}
-          </Grid>
+              {props.info && (
+                <Grid item xs={12}>
+                  <Typography variant="body2" noWrap>
+                    {props.info}
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+          </div>
         </Grid>
-        {!props.isSmall && isDetailsVisible && props.person.emailAddresses[0] && (
+        {isDetailsVisible && props.person.emailAddresses[0] && (
           <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
             <Button
               className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}

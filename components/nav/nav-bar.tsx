@@ -1,25 +1,33 @@
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import BackIcon from '../../public/icons/back.svg';
-import CloseIcon from '../../public/icons/close.svg';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import LockIcon from '../../public/icons/lock.svg';
+import RotateIcon from '../../public/icons/rotate.svg';
 import SearchIcon from '../../public/icons/search.svg';
-import KelpLogo from '../../public/kelp.svg';
-import SearchBar from './search-bar';
+import SettingsIcon from '../../public/icons/settings.svg';
+import { IPerson } from '../store/data-types';
+import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     border: '0px',
-    position: 'sticky',
-    top: 0,
-    left: 0,
-    borderBottom: `1px solid ${theme.palette.divider}`,
     zIndex: 6,
     justifyContent: 'space-between',
+    maxWidth: 800,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
     background: theme.palette.background.paper,
+    borderRadius: 10,
+    minHeight: 55,
   },
   innerContainer: {
     paddingRight: theme.spacing(2),
@@ -47,37 +55,46 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 6,
     justifyContent: 'space-between',
   },
+  icon: {
+    color: theme.palette.secondary.light,
+    transition: 'border-color 0.6s',
+    borderBottom: `3px solid ${theme.palette.background.paper}`,
+    '&:hover': {
+      borderBottom: `3px solid ${theme.palette.divider}`,
+    },
+  },
+  greeting: {
+    textAlign: 'center',
+    margin: theme.spacing(2),
+  },
 }));
 
-const NavBar = () => {
+interface IProps {
+  store: IStore;
+}
+
+const NavBar = (props: IProps) => {
   const classes = useStyles();
-  const history = useHistory();
-  const router = useLocation();
+  const router = useHistory();
 
-  const hasSearchParams = router.search.length > 0;
-  const isHomeSelected = router.pathname === '/home';
-  const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(hasSearchParams);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [currentUser, setCurrentUser] = useState<IPerson | undefined>();
+  const hours = new Date().getHours();
+  const greeting = hours < 12 ? 'Morning' : hours <= 18 && hours >= 12 ? 'Afternoon' : 'Night';
 
-  if (!isHomeSelected) {
-    return (
-      <header className={classes.whiteHeader}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <IconButton
-              onClick={() => {
-                history.goBack();
-              }}
-            >
-              <BackIcon width="24" height="24" />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </header>
-    );
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.store.personDataStore.getSelf();
+      if (result) {
+        setCurrentUser(result);
+      }
+      setIsLoading(false);
+    };
+    void fetchData();
+  }, [props.store.lastUpdated]);
 
   return (
-    <header className={classes.container}>
+    <Box boxShadow={4} className={classes.container}>
       <Grid
         container
         alignItems="center"
@@ -87,43 +104,53 @@ const NavBar = () => {
         <Grid item>
           <Grid container alignItems="center">
             <Grid item>
-              <IconButton
-                className={clsx(classes.iconButton, isHomeSelected && classes.logoSelected)}
-                onClick={() => {
-                  history.push('/home');
-                }}
-              >
-                <KelpLogo className={classes.logo} />
+              <IconButton onClick={() => router.push('/search')}>
+                <SearchIcon width="24" height="24" />
               </IconButton>
             </Grid>
-            {!isSearchInputVisible && (
-              <Grid item>
-                <IconButton onClick={() => setSearchInputVisible(true)}>
-                  <SearchIcon width="24" height="24" />
-                </IconButton>
-              </Grid>
-            )}
-            {isSearchInputVisible && (
-              <Grid item>
-                <SearchBar />
-              </Grid>
-            )}
           </Grid>
         </Grid>
-        {isSearchInputVisible && (
+        <Grid item>
+          <div className={classes.greeting}>
+            <Typography variant="h3">Good {greeting}</Typography>
+          </div>
+        </Grid>
+        {props.store.error && (
+          <Grid item>
+            <Typography variant="h6">{props.store.error.message}</Typography>
+          </Grid>
+        )}
+        {isLoading && (
+          <Grid item>
+            <Tooltip title="Loading">
+              <IconButton aria-label="loading">
+                <RotateIcon width="24" height="24" className={classes.icon} />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        )}
+        {!isLoading && !currentUser && (
+          <Grid item>
+            <Tooltip title="Not authenticated">
+              <IconButton>
+                <LockIcon width="24" height="24" className={classes.icon} />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        )}
+        {!isLoading && currentUser && (
           <Grid item>
             <IconButton
               onClick={() => {
-                history.push('/home');
-                setSearchInputVisible(false);
+                router.push('/settings');
               }}
             >
-              <CloseIcon width="24" height="24" />
+              <SettingsIcon width="24" height="24" />
             </IconButton>
           </Grid>
         )}
       </Grid>
-    </header>
+    </Box>
   );
 };
 

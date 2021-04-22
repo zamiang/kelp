@@ -31,9 +31,9 @@ export const MissingDocumentRow = (props: {
         );
       }}
     >
-      <Grid container spacing={2} alignItems="center">
+      <Grid container alignItems="center">
         <Grid item className={rowStyles.rowLeft}>
-          <IconButton>
+          <IconButton size="small">
             <HelpIcon
               height="18"
               width="18"
@@ -87,7 +87,6 @@ const DocumentRow = (props: {
   document: IDocument;
   selectedDocumentId: string | null;
   store: IStore;
-  isSmall?: boolean;
   tooltipText?: string;
   text?: string;
 }) => {
@@ -117,28 +116,24 @@ const DocumentRow = (props: {
         return false;
       }}
       ref={setReferenceElement as any}
-      className={clsx(
-        !props.isSmall && rowStyles.row,
-        props.isSmall && rowStyles.rowSmall,
-        isSelected && rowStyles.rowPrimaryMain,
-      )}
+      className={clsx(rowStyles.row, isSelected && rowStyles.rowPrimaryMain)}
     >
       <ConditionalWrapper
         shouldWrap={!!props.tooltipText}
         wrapper={(children: any) => <Tooltip title={props.tooltipText!}>{children}</Tooltip>}
       >
-        <Grid container spacing={2} alignItems="center">
-          {!props.isSmall && (
-            <Grid item className={rowStyles.rowLeft}>
-              <IconButton>
-                <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
-              </IconButton>
-            </Grid>
-          )}
-          <Grid item zeroMinWidth xs>
-            <Typography noWrap>{props.document.name}</Typography>
+        <Grid container alignItems="center">
+          <Grid item className={rowStyles.rowLeft}>
+            <IconButton size="small">
+              <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
+            </IconButton>
           </Grid>
-          {!props.isSmall && isDetailsVisible && (
+          <Grid item zeroMinWidth xs>
+            <Typography noWrap className={rowStyles.rowTopPadding}>
+              {props.document.name}
+            </Typography>
+          </Grid>
+          {isDetailsVisible && (
             <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
               <Button
                 className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}

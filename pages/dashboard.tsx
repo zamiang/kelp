@@ -1,74 +1,20 @@
-import Dialog from '@material-ui/core/Dialog';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
-import clsx from 'clsx';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Switch, useHistory, useLocation } from 'react-router-dom';
-import Documents from '../components/dashboard/documents';
-import Home from '../components/dashboard/home';
-import Meetings from '../components/dashboard/meetings';
-import People from '../components/dashboard/people';
-import Search from '../components/dashboard/search';
-import Tasks from '../components/dashboard/tasks';
-import ExpandedDocument from '../components/documents/expand-document';
-import ErrorBoundaryComponent from '../components/error-tracking/error-boundary';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { fetchToken } from '../components/fetch/google/fetch-token';
-import ExpandedMeeting from '../components/meeting/expand-meeting';
 import MobileDashboard from '../components/mobile/dashboard';
-import NavBar from '../components/nav/nav-bar';
-import NavRight from '../components/nav/nav-right';
-import ExpandPerson from '../components/person/expand-person';
 import Loading from '../components/shared/loading';
 import db from '../components/store/db';
 import getStore, { IStore } from '../components/store/use-store';
-import ExpandTask from '../components/tasks/expand-task';
-import Settings from '../components/user-profile/settings';
+import { DesktopDashboard } from './desktop-dashboard';
 
 export const drawerWidth = 240;
 export const MOBILE_WIDTH = 700;
 
-const useStyles = makeStyles((theme) => ({
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    overscrollBehavior: 'contain',
-    overscrollBehaviorY: 'none',
-    overscrollBehaviorX: 'none',
-    flexGrow: 1,
-    background: theme.palette.secondary.light,
-    minHeight: '100vh',
-  },
-  left: {
-    maxWidth: 440,
-    minHeight: '100vh',
-    background: theme.palette.background.paper,
-    width: '33vw',
-  },
-  right: {
-    position: 'sticky',
-    top: 0,
-    right: 0,
-  },
-  center: {
-    margin: '0px auto',
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-    borderRadius: theme.spacing(1),
-    background: theme.palette.background.paper,
-    maxWidth: 530,
-    position: 'relative',
-    maxHeight: 'calc(100vh - 66px)',
-    overflow: 'auto',
-    width: '100%',
-  },
-  fullWidth: {
-    maxWidth: '90%',
-  },
-}));
+interface IProps {
+  store: IStore;
+}
 
 const LoadingDashboardContainer = () => {
   const [database, setDatabase] = useState<any>(undefined);
@@ -119,109 +65,6 @@ const LoadingStoreDashboardContainer = (props: {
     </div>
   );
 };
-
-export const DesktopDashboard = (props: { store: IStore }) => {
-  const history = useHistory();
-  const classes = useStyles();
-  const store = props.store;
-
-  // Used to render default panels for index pages
-  const [meetingId, setMeetingId] = useState<string | undefined>(undefined);
-  const [personId, setPersonId] = useState<string | undefined>(undefined);
-  const [documentId, setDocumentId] = useState<string | undefined>(undefined);
-  const [taskId, setTaskId] = useState<string | undefined>(undefined);
-
-  const handleRefreshClick = () => store.refetch();
-  const pathname = useLocation().pathname;
-
-  // Unsure why the <Redirect> component doesn't work anymore
-  const hash = window.location.hash;
-  if (hash.includes('meetings')) {
-    window.location.hash = '';
-    history.push(hash.replace('#', ''));
-  } else if (pathname === '/') {
-    history.push(`/home`);
-  }
-
-  const shouldBeFullWidth =
-    pathname.includes('/dashboard') || pathname.includes('/week') || pathname.includes('/summary');
-
-  return (
-    <ErrorBoundaryComponent>
-      <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>Please reload the page
-          <Typography>{store.error}</Typography>
-        </Alert>
-      </Dialog>
-      <main className={classes.content}>
-        <Switch>
-          <Grid container alignItems="flex-start">
-            <Grid item className={classes.left}>
-              <NavBar />
-              <Route path="/search">
-                <Search store={store} />
-              </Route>
-              <Route path="/home">
-                <Home store={store} />
-              </Route>
-              <Route path="/meetings">
-                <Meetings store={store} setMeetingId={setMeetingId} />
-              </Route>
-              <Route path="/documents">
-                <Documents store={store} setDocumentId={setDocumentId} />
-              </Route>
-              <Route path="/tasks">
-                <Tasks store={store} setTaskId={setTaskId} />
-              </Route>
-              <Route path="/people">
-                <People store={store} setPersonId={setPersonId} />
-              </Route>
-            </Grid>
-            <Grid item xs className={clsx(classes.right)}>
-              <NavRight handleRefreshClick={handleRefreshClick} store={store} />
-              <div className={clsx(classes.center, shouldBeFullWidth && classes.fullWidth)}>
-                <Route exact path="/meetings">
-                  <ExpandedMeeting store={store} meetingId={meetingId} />
-                </Route>
-                <Route exact path="/documents">
-                  <ExpandedDocument store={store} documentId={documentId} />
-                </Route>
-                <Route exact path="/people">
-                  <ExpandPerson store={store} personId={personId} />
-                </Route>
-                <Route exact path="/tasks">
-                  <ExpandTask store={store} taskId={taskId} />
-                </Route>
-                <Route path="/meetings/:slug">
-                  <ExpandedMeeting store={store} />
-                </Route>
-                <Route path="/documents/:slug">
-                  <ExpandedDocument store={store} />
-                </Route>
-                <Route path="/people/:slug">
-                  <ExpandPerson store={store} />
-                </Route>
-                <Route path="/tasks/:slug">
-                  <ExpandTask store={store} />
-                </Route>
-                <Route path="/settings">
-                  <Settings />
-                </Route>
-              </div>
-            </Grid>
-          </Grid>
-        </Switch>
-      </main>
-    </ErrorBoundaryComponent>
-  );
-};
-
-interface IProps {
-  store: IStore;
-}
-
-const is500Error = (error: Error) => (error as any).status === 500;
 
 export const DashboardContainer = ({ store }: IProps) => {
   console.log('loading message', store.loadingMessage);

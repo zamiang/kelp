@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginRight: theme.spacing(0.5),
+    marginRight: theme.spacing(2),
   },
   dotPast: {
     backgroundColor: theme.palette.grey[200],
@@ -36,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
   dotPresent: {
     backgroundColor: theme.palette.primary.main,
   },
-  text: {},
+  text: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
   textPast: { color: 'rgba(0,0,0,0.3)' },
   textFuture: {},
   meetingTimeInWordsDark: {
@@ -68,7 +71,7 @@ const MeetingRow = (props: {
       }}
       className={classes.container}
     >
-      <Grid container spacing={1} alignItems="center">
+      <Grid container alignItems="center">
         <Grid item>
           <div
             className={clsx(
@@ -87,6 +90,7 @@ const MeetingRow = (props: {
                 variant="h4"
                 className={clsx(
                   classes.text,
+
                   !props.shouldRenderCurrentTime && isFuture && classes.textFuture,
                   !props.shouldRenderCurrentTime && isPast && classes.textPast,
                 )}
