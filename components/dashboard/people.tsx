@@ -102,7 +102,7 @@ const AllPeople = (props: {
     <React.Fragment>
       {featuredPeople.length > 0 && (
         <div className={classes.rowHighlight}>
-          <Typography variant="h6" className={classes.rowText}>
+          <Typography variant="h6" className={classes.rowHeading}>
             People you are meeting with next
           </Typography>
           {featuredPeople.map((featuredPerson) => (

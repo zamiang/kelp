@@ -134,7 +134,7 @@ const AllDocuments = (props: {
     <div style={{ marginBottom: 14, marginTop: 14 }}>
       {topDocuments.length > 0 && (
         <div className={classes.rowHighlight} style={{ paddingTop: 0 }}>
-          <Typography className={classes.rowText} variant="h6">
+          <Typography variant="h6" className={classes.rowHeading}>
             Recent documents
           </Typography>
           {topDocuments.map((document) => (

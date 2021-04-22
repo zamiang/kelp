@@ -105,6 +105,12 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontFamily: mediumFontFamily,
   },
+  rowHeading: {
+    color: '#9D9D99',
+    fontWeight: 500,
+    fontFamily: mediumFontFamily,
+    marginLeft: theme.spacing(2),
+  },
   rowHint: {
     color: theme.palette.text.hint,
   },
