@@ -44,7 +44,7 @@ export const FeaturedMeeting = (props: {
         return false;
       }}
     >
-      <Grid container spacing={2} alignItems="center">
+      <Grid container alignItems="center">
         <Grid item xs={12}>
           {isHappeningNow && (
             <Typography variant="h6" className={classes.meetingTimeInWords}>

@@ -12,8 +12,8 @@ import { IStore } from '../store/use-store';
 
 const useBelowStyles = makeStyles((theme) => ({
   container: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
   buttonContainer: {
     marginTop: theme.spacing(2),
