@@ -11,13 +11,13 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './popup.css';
 import { MemoryRouter as Router } from 'react-router-dom';
+import { DesktopDashboard } from '../../components/desktop/desktop-dashboard';
 import MobileDashboard from '../../components/mobile/dashboard';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
-import { DesktopDashboard } from '../../pages/desktop-dashboard';
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';

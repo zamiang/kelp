@@ -2,12 +2,12 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { DesktopDashboard } from '../components/desktop/desktop-dashboard';
 import { fetchToken } from '../components/fetch/google/fetch-token';
 import MobileDashboard from '../components/mobile/dashboard';
 import Loading from '../components/shared/loading';
 import db from '../components/store/db';
 import getStore, { IStore } from '../components/store/use-store';
-import { DesktopDashboard } from './desktop-dashboard';
 
 export const drawerWidth = 240;
 export const MOBILE_WIDTH = 700;
