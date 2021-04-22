@@ -92,29 +92,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const classes = useHeaderStyles();
   const history = useHistory();
   const location = useLocation();
-  const isOnSubpage = location.pathname !== '/home';
-
-  if (isSearchInputVisible) {
-    return (
-      <Box className={classes.drawerPaper} boxShadow={3}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <SearchBar />
-          </Grid>
-          <Grid item>
-            <IconButton
-              onClick={() => {
-                history.push('/home');
-                setSearchInputVisible(false);
-              }}
-            >
-              <BackIcon height="24" width="24" />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </Box>
-    );
-  }
+  const isOnSubpage = location.pathname !== '/home' && location.pathname !== '/search';
 
   if (isOnSubpage) {
     const type = location.pathname.split('/')[1];
@@ -133,6 +111,28 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           </Grid>
           <Grid item>
             <GoToSourceButton store={props.store} type={type as any} id={id} />
+          </Grid>
+        </Grid>
+      </Box>
+    );
+  }
+
+  if (isSearchInputVisible) {
+    return (
+      <Box className={classes.drawerPaper} boxShadow={3}>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <SearchBar />
+          </Grid>
+          <Grid item>
+            <IconButton
+              onClick={() => {
+                history.push('/home');
+                setSearchInputVisible(false);
+              }}
+            >
+              <BackIcon height="24" width="24" />
+            </IconButton>
           </Grid>
         </Grid>
       </Box>
