@@ -14,6 +14,7 @@ export const Meeting = (props: {
   meeting: ISegment;
   personStore: PersonDataStore;
   info?: string;
+  isSmall?: boolean;
 }) => {
   const rowStyles = useRowStyles();
   const router = useHistory();
@@ -21,7 +22,7 @@ export const Meeting = (props: {
   return (
     <Button
       onClick={() => router.push(`/meetings/${props.meeting.id}`)}
-      className={clsx(rowStyles.row, rowStyles.rowSmall)}
+      className={clsx(rowStyles.row, props.isSmall && rowStyles.rowSmall)}
     >
       <Grid container wrap="nowrap" alignItems="center">
         <Grid item className={rowStyles.rowLeft}>
@@ -79,7 +80,14 @@ const MeetingList = (props: {
     <div>
       {sortedSegments.map(
         (segment) =>
-          segment && <Meeting key={segment.id} meeting={segment} personStore={props.personStore} />,
+          segment && (
+            <Meeting
+              key={segment.id}
+              meeting={segment}
+              personStore={props.personStore}
+              isSmall={true}
+            />
+          ),
       )}
     </div>
   );

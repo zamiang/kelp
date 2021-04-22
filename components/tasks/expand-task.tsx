@@ -65,6 +65,7 @@ const TaskMeetingRow = (props: { store: IStore; taskDocument: ITaskDocument }) =
       meeting={meeting}
       personStore={props.store.personDataStore}
       info={props.taskDocument.reason}
+      isSmall={true}
     />
   );
 };

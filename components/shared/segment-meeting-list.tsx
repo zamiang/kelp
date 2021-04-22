@@ -45,6 +45,7 @@ const SegmentDocumentItem = (props: {
       personStore={props.personStore}
       meeting={meeting}
       info={belowText}
+      isSmall={true}
     />
   );
 };

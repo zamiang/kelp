@@ -138,6 +138,7 @@ const Search = (props: { store: IStore }) => {
                   key={result.item.id}
                   meeting={result.item as ISegment}
                   personStore={props.store['personDataStore']}
+                  isSmall={false}
                 />
               ))}
             </Box>
