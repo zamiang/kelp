@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {
     marginLeft: 0,
+    cursor: 'pointer',
     color: '#000',
   },
   lineCalendarContainer: {
@@ -94,9 +95,9 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
-      <Typography variant="h6" className={classes.heading}>
+      <Typography variant="h6" className={classes.heading} onClick={() => router.push('/meetings')}>
         Today&rsquo;s Meetings
-        <IconButton onClick={() => router.push('/meetings')} className={rowClasses.rightIcon}>
+        <IconButton className={rowClasses.rightIcon}>
           <ArrowIcon width="24" height="24" />
         </IconButton>
       </Typography>
@@ -110,9 +111,13 @@ const Home = (props: { store: IStore }) => {
       </Box>
       {tasks.length > 0 && (
         <div className={classes.panel}>
-          <Typography variant="h6" className={classes.heading}>
+          <Typography
+            variant="h6"
+            className={classes.heading}
+            onClick={() => router.push('/tasks')}
+          >
             Recent tasks
-            <IconButton onClick={() => router.push('/tasks')} className={rowClasses.rightIcon}>
+            <IconButton className={rowClasses.rightIcon}>
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>
@@ -135,9 +140,13 @@ const Home = (props: { store: IStore }) => {
       )}
       {topDocuments.length > 0 && (
         <div className={classes.panel}>
-          <Typography variant="h6" className={classes.heading}>
+          <Typography
+            variant="h6"
+            className={classes.heading}
+            onClick={() => router.push('/documents')}
+          >
             Recent documents
-            <IconButton onClick={() => router.push('/documents')} className={rowClasses.rightIcon}>
+            <IconButton className={rowClasses.rightIcon}>
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>
@@ -156,9 +165,13 @@ const Home = (props: { store: IStore }) => {
       )}
       {featuredPeople.length > 0 && (
         <div className={classes.panel}>
-          <Typography variant="h6" className={classes.heading}>
+          <Typography
+            variant="h6"
+            className={classes.heading}
+            onClick={() => router.push('/people')}
+          >
             People you are meeting with next
-            <IconButton onClick={() => router.push('/people')} className={rowClasses.rightIcon}>
+            <IconButton className={rowClasses.rightIcon}>
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>

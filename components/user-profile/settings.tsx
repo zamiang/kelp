@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
   },
   maxWidth: {
-    maxWidth: 500,
     padding: theme.spacing(2),
   },
 }));
@@ -34,8 +33,6 @@ const Settings = () => {
     localStorage.getItem(config.NOTIFICATIONS_KEY) !== 'disabled' ? true : false,
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
-
-  console.log(localStorage.getItem(config.NOTIFICATIONS_KEY));
 
   const toggleChecked = (enabled: boolean) => {
     if (enabled) {

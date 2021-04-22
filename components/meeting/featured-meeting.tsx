@@ -56,7 +56,9 @@ export const FeaturedMeeting = (props: {
               In {formatDistanceToNow(props.meeting.start)}
             </Typography>
           )}
-          <Typography variant="h3">{props.meeting.summary || '(no title)'}</Typography>
+          <Typography variant="h3" style={{ cursor: 'pointer' }}>
+            {props.meeting.summary || '(no title)'}
+          </Typography>
         </Grid>
         {domain && (
           <Grid item xs={12}>

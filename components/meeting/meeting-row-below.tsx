@@ -1,7 +1,10 @@
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
+import ArrowIcon from '../../public/icons/chevron-right.svg';
 import AttendeeList from '../shared/attendee-list';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee, ISegment, ISegmentDocument } from '../store/data-types';
@@ -21,16 +24,29 @@ const useBelowStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
   heading: {
-    color: theme.palette.secondary.main,
     fontWeight: 500,
     fontFamily: mediumFontFamily,
     marginBottom: theme.spacing(0.5),
+    textAlign: 'left',
+    marginLeft: theme.spacing(2),
+  },
+  rightIcon: {
+    float: 'right',
+    marginTop: -theme.spacing(1),
+    marginRight: theme.spacing(1),
+    transition: 'all 0.3s',
+    transform: 'rotate(90deg)',
+  },
+  rightIconUp: {
+    transform: 'rotate(-90deg)',
   },
 }));
 
 const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLeft: boolean }) => {
   const classes = useBelowStyles();
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
+  const [shouldDisplayAttendeeList, setAttendeeListDisplay] = useState<boolean>(false);
+
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
   >([]);
@@ -98,14 +114,29 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
       )}
       {hasAttendees && (
         <div className={classes.container}>
-          <Typography variant="h6" className={classes.heading}>
-            Attendees
+          <Typography
+            variant="h6"
+            className={classes.heading}
+            onClick={(event) => {
+              event.stopPropagation();
+              setAttendeeListDisplay(!shouldDisplayAttendeeList);
+              return false;
+            }}
+          >
+            {attendees.length} Guests
+            <IconButton
+              className={clsx(classes.rightIcon, shouldDisplayAttendeeList && classes.rightIconUp)}
+            >
+              <ArrowIcon width="24" height="24" />
+            </IconButton>
           </Typography>
-          <AttendeeList
-            personStore={props.store.personDataStore}
-            attendees={attendees}
-            showAll={false}
-          />
+          {shouldDisplayAttendeeList && (
+            <AttendeeList
+              personStore={props.store.personDataStore}
+              attendees={attendees}
+              showAll={false}
+            />
+          )}
         </div>
       )}
     </div>
