@@ -12,6 +12,7 @@ import TimeDataStore from './models/segment-model';
 import TaskDocumentDataStore from './models/task-document-model';
 import TaskDataStore from './models/task-model';
 import TfidfDataStore from './models/tfidf-model';
+import TopSitesStore from './models/top-website-model';
 
 export interface IStore {
   readonly personDataStore: PersonDataStore;
@@ -22,6 +23,7 @@ export interface IStore {
   readonly taskStore: TaskDataStore;
   readonly taskDocumentStore: TaskDocumentDataStore;
   readonly attendeeDataStore: AttendeeStore;
+  readonly topWebsitesStore: TopSitesStore;
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
@@ -43,10 +45,12 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const taskDocumentStore = new TaskDocumentDataStore(db);
   const taskStore = new TaskDataStore(db);
+  const topWebsitesStore = new TopSitesStore(db);
 
   return {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
+    topWebsitesStore,
     personDataStore,
     documentDataStore,
     attendeeDataStore,
@@ -78,6 +82,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
+  const topWebsitesStore = new TopSitesStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -121,6 +126,17 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
       if (!data.tasksResponseLoading) {
         setLoadingMessage('Saving Tasks');
         await taskDataStore.addTasksToStore(data.tasks, true);
+      }
+    };
+    void addData();
+  }, [data.tasks.length.toString()]);
+
+  // Save top sites
+  useEffect(() => {
+    const addData = async () => {
+      if (data.topWebsites) {
+        setLoadingMessage('Saving Top Websites');
+        await topWebsitesStore.addTopWebsitesToStore(data.topWebsites);
       }
     };
     void addData();
@@ -196,6 +212,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
+    topWebsitesStore,
     tfidfStore,
     taskStore: taskDataStore,
     taskDocumentStore: taskDocumentDataStore,

@@ -13,6 +13,7 @@ import Meetings from '../dashboard/meetings';
 import People from '../dashboard/people';
 import Search from '../dashboard/search';
 import Tasks from '../dashboard/tasks';
+import { TopWebsites } from '../dashboard/top-websites';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
@@ -89,6 +90,8 @@ export const DesktopDashboard = (props: { store: IStore }) => {
     router.push('/home');
   };
 
+  const shouldRenderTopSites = window['chrome'] && window['chrome']['topSites'];
+
   return (
     <ErrorBoundaryComponent>
       <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
@@ -146,20 +149,38 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Documents store={store} />
               </Box>
             </Grid>
-            <Grid item xs={3}>
-              <Typography variant="h4" className={classes.heading}>
-                People
-              </Typography>
-              <Box
-                boxShadow={3}
-                borderRadius={8}
-                maxHeight={'calc(100vh - 200px)'}
-                overflow="auto"
-                style={{ background: '#fff' }}
-              >
-                <People store={store} />
-              </Box>
-            </Grid>
+            {!shouldRenderTopSites && (
+              <Grid item xs={3}>
+                <Typography variant="h4" className={classes.heading}>
+                  People
+                </Typography>
+                <Box
+                  boxShadow={3}
+                  borderRadius={8}
+                  maxHeight={'calc(100vh - 200px)'}
+                  overflow="auto"
+                  style={{ background: '#fff' }}
+                >
+                  <People store={store} />
+                </Box>
+              </Grid>
+            )}
+            {shouldRenderTopSites && (
+              <Grid item xs={3}>
+                <Typography variant="h4" className={classes.heading}>
+                  Top Sites
+                </Typography>
+                <Box
+                  boxShadow={3}
+                  borderRadius={8}
+                  maxHeight={'calc(100vh - 200px)'}
+                  overflow="auto"
+                  style={{ background: '#fff' }}
+                >
+                  <TopWebsites store={store} />
+                </Box>
+              </Grid>
+            )}
           </Grid>
           <div>
             <Switch>

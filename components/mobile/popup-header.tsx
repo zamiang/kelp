@@ -93,6 +93,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const history = useHistory();
   const location = useLocation();
   const isOnSubpage = location.pathname !== '/home' && location.pathname !== '/search';
+  const shouldRenderSourceButton = location.pathname !== '/settings';
 
   if (isOnSubpage) {
     const type = location.pathname.split('/')[1];
@@ -109,9 +110,11 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
               <BackIcon width="24" height="24" />
             </IconButton>
           </Grid>
-          <Grid item>
-            <GoToSourceButton store={props.store} type={type as any} id={id} />
-          </Grid>
+          {shouldRenderSourceButton && (
+            <Grid item>
+              <GoToSourceButton store={props.store} type={type as any} id={id} />
+            </Grid>
+          )}
         </Grid>
       </Box>
     );

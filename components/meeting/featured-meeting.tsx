@@ -74,6 +74,7 @@ export const FeaturedMeeting = (props: {
                 width: 'auto',
                 paddingLeft: 40,
                 paddingRight: 40,
+                marginTop: 8,
               }}
             >
               Join {domain?.host}

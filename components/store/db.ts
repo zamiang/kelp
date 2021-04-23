@@ -10,6 +10,7 @@ import {
   ISegmentDocument,
   ITask,
   ITaskDocument,
+  ITopWebsite,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -86,6 +87,10 @@ interface Db extends DBSchema {
       'by-week': number;
     };
   };
+  topWebsite: {
+    value: ITopWebsite;
+    key: string;
+  };
 }
 
 const dbNameHash = {
@@ -94,7 +99,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 3;
+const databaseVerson = 4;
 
 export type dbType = IDBPDatabase<Db>;
 
@@ -130,6 +135,18 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('tfidf');
         db.deleteObjectStore('segmentDocument');
       }
+      if (oldVersion === 3) {
+        db.deleteObjectStore('person');
+        db.deleteObjectStore('document');
+        db.deleteObjectStore('driveActivity');
+        db.deleteObjectStore('meeting');
+        db.deleteObjectStore('attendee');
+        db.deleteObjectStore('tfidf');
+        db.deleteObjectStore('segmentDocument');
+        db.deleteObjectStore('task');
+        db.deleteObjectStore('taskDocument');
+      }
+
       const personStore = db.createObjectStore('person', {
         keyPath: 'id',
       });
@@ -195,6 +212,11 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       taskDocumentStore.createIndex('by-week', 'week', { unique: false });
       taskDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
       taskDocumentStore.createIndex('by-task-title', 'taskTitle', { unique: false });
+
+      // top website store - has no indexes
+      db.createObjectStore('topWebsite', {
+        keyPath: 'id',
+      });
     },
     blocked() {
       console.log('blocked');

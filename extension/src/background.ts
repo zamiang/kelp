@@ -80,7 +80,7 @@ const onAlarm = (alarm: chrome.alarms.Alarm) => {
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.create({ url: 'https://www.kelp.nyc/about' });
+  chrome.tabs.create({ url: '/dashboard.html' });
   void setupTimers();
   void getOrCreateStore();
 });
@@ -91,7 +91,6 @@ chrome.runtime.onSuspendCanceled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
-  console.log('hello');
   if (request.meetingId) {
     chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });

@@ -135,6 +135,15 @@ export interface ITaskDocument {
   readonly week: number;
 }
 
+export interface ITopWebsite {
+  readonly id: string;
+  readonly title: string; // The title of the page
+  readonly url: string;
+  readonly order: number;
+  readonly isCustom: boolean;
+  readonly isHidden: boolean;
+}
+
 export type ITask = {
   readonly id: string;
   readonly title: string;

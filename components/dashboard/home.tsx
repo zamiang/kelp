@@ -12,12 +12,13 @@ import { FeaturedMeeting } from '../meeting/featured-meeting';
 import { LineCalendar } from '../meeting/line-calendar';
 import PersonRow from '../person/person-row';
 import useRowStyles from '../shared/row-styles';
-import { ISegment, ITask } from '../store/data-types';
+import { ISegment, ITask, ITopWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { TaskCreateBox } from '../tasks/task-create-box';
 import TaskRow from '../tasks/task-row';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
+import { TopWebsites } from './top-websites';
 
 const useStyles = makeStyles((theme) => ({
   panel: {
@@ -47,6 +48,7 @@ const Home = (props: { store: IStore }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
+  const [topWebsites, setTopWebsites] = useState<ITopWebsite[]>([]);
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [taskIncrement, setIncrememnt] = useState<number>(0);
 
@@ -89,6 +91,14 @@ const Home = (props: { store: IStore }) => {
     const fetchData = async () => {
       const featuredDocuments = await getFeaturedDocuments(props.store);
       setTopDocuments(featuredDocuments.filter(Boolean));
+    };
+    void fetchData();
+  }, [props.store.lastUpdated, props.store.isLoading]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const topWebsites = await props.store.topWebsitesStore.getAll();
+      setTopWebsites(topWebsites.filter(Boolean));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
@@ -160,6 +170,16 @@ const Home = (props: { store: IStore }) => {
                 text={document.text}
               />
             ))}
+          </Box>
+        </div>
+      )}
+      {topWebsites.length > 0 && (
+        <div className={classes.panel}>
+          <Typography variant="h6" className={classes.heading}>
+            Top Websites
+          </Typography>
+          <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+            <TopWebsites store={props.store} />
           </Box>
         </div>
       )}
