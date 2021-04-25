@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import update from 'immutability-helper';
+import React, { useCallback, useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useLocation } from 'react-router-dom';
 import panelStyles from '../shared/panel-styles';
 import { ITask } from '../store/data-types';
@@ -27,6 +30,21 @@ const AllTasks = (props: {
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading, taskIncrement.toString()]);
 
+  const moveTask = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const dragTask = tasks[dragIndex];
+      const newTasks = update(tasks, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragTask],
+        ],
+      }).filter(Boolean);
+      console.log('new tasks', newTasks);
+      setTasks(newTasks);
+    },
+    [tasks],
+  );
+
   return (
     <React.Fragment>
       <TaskCreateBox
@@ -35,14 +53,20 @@ const AllTasks = (props: {
         setTaskIncrement={setIncrememnt}
       />
       <div style={{ marginBottom: 8 }}>
-        {tasks.map((task) => (
-          <TaskRow
-            key={task.id}
-            task={task}
-            store={props.store}
-            selectedTaskId={props.selectedTaskId}
-          />
-        ))}
+        <DndProvider backend={HTML5Backend}>
+          {tasks.map(
+            (task) =>
+              task && (
+                <TaskRow
+                  key={task.id}
+                  moveTask={moveTask}
+                  task={task}
+                  store={props.store}
+                  selectedTaskId={props.selectedTaskId}
+                />
+              ),
+          )}
+        </DndProvider>
       </div>
     </React.Fragment>
   );

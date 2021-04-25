@@ -36,7 +36,7 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
   const router = useHistory();
 
   const duration = intervalToDuration({
-    start: props.meeting.start,
+    start: props.meeting.start < new Date() ? new Date() : props.meeting.start,
     end: props.meeting.end,
   });
   const durationInMinutes = (duration.minutes || 0) + (duration.hours || 0) * 60;
@@ -92,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     zIndex: 2,
     color: theme.palette.text.secondary,
+    pointerEvents: 'none',
   },
   endTime: {
     position: 'absolute',
@@ -99,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     zIndex: 2,
     color: theme.palette.text.secondary,
+    pointerEvents: 'none',
   },
   heading: {
     marginLeft: theme.spacing(2),

@@ -15,9 +15,9 @@ import useRowStyles from '../shared/row-styles';
 import { ISegment, ITask, ITopWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { TaskCreateBox } from '../tasks/task-create-box';
-import TaskRow from '../tasks/task-row';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
+import Tasks from './tasks';
 import { TopWebsites } from './top-websites';
 
 const useStyles = makeStyles((theme) => ({
@@ -137,14 +137,7 @@ const Home = (props: { store: IStore }) => {
             className={classes.boxStyle}
             style={{ paddingTop: 0 }}
           >
-            <TaskCreateBox
-              store={props.store}
-              taskIncrement={taskIncrement}
-              setTaskIncrement={setIncrememnt}
-            />
-            {tasks.map((task) => (
-              <TaskRow key={task.id} task={task} selectedTaskId={null} store={props.store} />
-            ))}
+            <Tasks store={props.store} />
           </Box>
         </div>
       )}
