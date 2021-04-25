@@ -26,11 +26,7 @@ const TaskItem = (props: {
         {...provided.draggableProps}
         {...provided.dragHandleProps}
       >
-        <TaskRow
-          task={props.task}
-          store={props.store}
-          selectedTaskId={props.selectedTaskId}
-        />
+        <TaskRow task={props.task} store={props.store} selectedTaskId={props.selectedTaskId} />
       </div>
     )}
   </Draggable>

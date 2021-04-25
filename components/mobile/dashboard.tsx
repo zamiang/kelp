@@ -162,6 +162,11 @@ const MobileDashboard = (props: { store: IStore }) => {
               <Documents store={store} />
             </Box>
           </Route>
+          <Route path="/new-meeting">
+            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+              new meeting
+            </Box>
+          </Route>
           <Route path="/settings">
             <Box className={classes.box} boxShadow={3} borderRadius={8}>
               <Settings />

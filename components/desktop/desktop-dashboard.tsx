@@ -213,6 +213,11 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                   <ExpandTask store={store} />
                 </Dialog>
               </Route>
+              <Route path="/new-meeting">
+                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
+                  new meeting
+                </Dialog>
+              </Route>
               <Route path="/settings">
                 <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
                   <Settings />
