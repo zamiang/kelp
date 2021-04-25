@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import CheckIcon from '../../public/icons/check.svg';
+import CheckIconOrange from '../../public/icons/check-orange.svg';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
@@ -46,6 +46,7 @@ const AddWebsite = (props: {
           value={url}
         />
         <TextField
+          style={{ marginTop: 12 }}
           variant="filled"
           placeholder="Name of the site"
           fullWidth
@@ -56,8 +57,10 @@ const AddWebsite = (props: {
         />
         <br />
         <Button
-          className={clsx(buttonStyles.button)}
-          startIcon={<CheckIcon width="24" height="24" />}
+          className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
+          variant="outlined"
+          startIcon={<CheckIconOrange width="24" height="24" />}
+          style={{ marginTop: 12 }}
           onClick={() => {
             void props.store.topWebsitesStore.addWebsite(url, title);
             setIsEditing(false);
@@ -108,10 +111,10 @@ const TopWebsiteList = (props: { store: IStore }) => {
         <Typography variant="h6" className={classes.rowHeading}>
           Custom bookmarks
         </Typography>
-        <AddWebsite store={props.store} setIncrement={setIncrement} increment={increment} />
         {customWebsites.map((bookmark) => (
           <WebsiteRow key={bookmark.id} website={bookmark} store={props.store} />
         ))}
+        <AddWebsite store={props.store} setIncrement={setIncrement} increment={increment} />
       </div>
       <div style={{ marginTop: 12, marginBottom: 12 }}>
         {topWebsites.map((website) => (

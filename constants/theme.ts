@@ -201,6 +201,11 @@ const theme = createMuiTheme({
     },
     MuiFilledInput: {
       root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
+      input: {
+        padding: '10px',
+        paddingTop: '​12px',
+        paddingBottom: '​12px',
+      },
       multiline: {
         padding: '18px 12px 18px 18px',
         background: '#eee',
