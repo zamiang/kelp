@@ -11,6 +11,7 @@ import Tasks from '../dashboard/tasks';
 import ExpandedDocument from '../documents/expand-document';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import ExpandPerson from '../person/expand-person';
+import { HomepageButtons } from '../shared/homepage-buttons';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import ExpandedTask from '../tasks/expand-task';
@@ -110,6 +111,9 @@ const MobileDashboard = (props: { store: IStore }) => {
   return (
     <div className={classes.content}>
       <PopupHeader user={user} store={store} />
+      <div style={{ marginTop: 18 }}>
+        <HomepageButtons />
+      </div>
       <div className={classes.container}>
         <Switch>
           <Route path="/search">

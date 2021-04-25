@@ -20,6 +20,7 @@ import ExpandedMeeting from '../meeting/expand-meeting';
 import { LineCalendar } from '../meeting/line-calendar';
 import NavBar from '../nav/nav-bar';
 import ExpandPerson from '../person/expand-person';
+import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 import ExpandTask from '../tasks/expand-task';
 import Settings from '../user-profile/settings';
@@ -103,7 +104,10 @@ export const DesktopDashboard = (props: { store: IStore }) => {
       <div className={classes.content}>
         <Container maxWidth="xl">
           <NavBar store={store} />
-          <Grid container spacing={4} style={{ marginTop: 20 }}>
+          <Container maxWidth="sm">
+            <HomepageButtons />
+          </Container>
+          <Grid container spacing={4} style={{ marginTop: 5 }}>
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
                 Meetings
@@ -111,7 +115,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Box
                 boxShadow={3}
                 borderRadius={8}
-                maxHeight={'calc(100vh - 200px)'}
+                maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
@@ -128,7 +132,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Box
                 boxShadow={3}
                 borderRadius={8}
-                maxHeight={'calc(100vh - 200px)'}
+                maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
@@ -142,7 +146,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Box
                 boxShadow={3}
                 borderRadius={8}
-                maxHeight={'calc(100vh - 200px)'}
+                maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
@@ -157,7 +161,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Box
                   boxShadow={3}
                   borderRadius={8}
-                  maxHeight={'calc(100vh - 200px)'}
+                  maxHeight={'calc(100vh - 230px)'}
                   overflow="auto"
                   style={{ background: '#fff' }}
                 >
@@ -173,7 +177,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Box
                   boxShadow={3}
                   borderRadius={8}
-                  maxHeight={'calc(100vh - 200px)'}
+                  maxHeight={'calc(100vh - 230px)'}
                   overflow="auto"
                   style={{ background: '#fff' }}
                 >
