@@ -39,13 +39,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TaskRow = (props: {
-  task: ITask;
-  selectedTaskId: string | null;
-  store: IStore;
-  moveTask?: (dragIndex: number, hoverIndex: number) => void;
-  index?: number;
-}) => {
+const TaskRow = (props: { task: ITask; selectedTaskId: string | null; store: IStore }) => {
   const buttonStyles = useButtonStyles();
   const isSelected = props.selectedTaskId === props.task.id;
   const rowStyles = useRowStyles();

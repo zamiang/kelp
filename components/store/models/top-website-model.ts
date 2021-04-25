@@ -68,7 +68,9 @@ export default class TopWebsiteModel {
   }
 
   async getAll() {
-    return sortBy(await this.db.getAll('topWebsite'), 'order').filter((item) => !item.isHidden);
+    return sortBy(await this.db.getAll('topWebsite'), 'order')
+      .filter((item) => !item.isHidden)
+      .sort((a, b) => (a.order > b.order ? 1 : -1));
   }
 
   async getAllUnfiltered() {

@@ -27,7 +27,6 @@ const TaskItem = (props: {
         {...provided.dragHandleProps}
       >
         <TaskRow
-          index={props.index}
           task={props.task}
           store={props.store}
           selectedTaskId={props.selectedTaskId}
