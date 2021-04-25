@@ -46,7 +46,8 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
     start: new Date(),
     end: props.meeting.start,
   });
-  const startTimeDifferenceInMinutes = (startTime.minutes || 0) + (startTime.hours || 0) * 60;
+  const startTimeDifferenceInMinutes =
+    props.meeting.start < new Date() ? 0 : (startTime.minutes || 0) + (startTime.hours || 0) * 60;
 
   const left = props.pixelsPerMinute * startTimeDifferenceInMinutes;
   const currentTime = new Date();
@@ -124,7 +125,7 @@ export const LineCalendar = (props: { store: IStore }) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.store.timeDataStore.getSegmentsForDay(new Date());
-      setMeetings(result.filter((m) => m.start > startTime && m.start < endTime));
+      setMeetings(result.filter((m) => m.end > startTime && m.start < endTime));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
