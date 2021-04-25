@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import Linkify from 'react-linkify';
 import CheckIconOrange from '../../public/icons/check-orange.svg';
 import CircleIcon from '../../public/icons/circle.svg';
 import useRowStyles from '../shared/row-styles';
@@ -111,7 +112,20 @@ const TaskRow = (props: { task: ITask; selectedTaskId: string | null; store: ISt
             )}
             {!isEditing && (
               <Typography className={clsx(classes.text, isCompleted && classes.completeText)}>
-                {task.title}
+                <Linkify
+                  componentDecorator={(decoratedHref, decoratedText, key) => (
+                    <a
+                      target="blank"
+                      href={decoratedHref}
+                      key={key}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {decoratedText}
+                    </a>
+                  )}
+                >
+                  {task.title.trim()}
+                </Linkify>
               </Typography>
             )}
           </div>
