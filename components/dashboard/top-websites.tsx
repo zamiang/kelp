@@ -24,6 +24,18 @@ const useStyle = makeStyles(() => ({
   input: {},
 }));
 
+const isValidHttpUrl = (string: string) => {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === 'http:' || url.protocol === 'https:';
+};
+
 const AddWebsite = (props: {
   store: IStore;
   increment: number;
@@ -35,6 +47,9 @@ const AddWebsite = (props: {
   const [isEditing, setIsEditing] = useState(false);
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
+
+  const shouldShowUrlError = url.length > 0 && !isValidHttpUrl(url);
+  const isEnabled = url.length > 0 && isValidHttpUrl(url) && title.length > 0;
 
   if (isEditing) {
     return (
@@ -49,6 +64,9 @@ const AddWebsite = (props: {
             </IconButton>
           </Grid>
         </Grid>
+        {shouldShowUrlError && (
+          <Typography variant="caption">Enter a valid URL (like https://www.google.com)</Typography>
+        )}
         <TextField
           variant="filled"
           placeholder="https://..."
@@ -72,6 +90,7 @@ const AddWebsite = (props: {
         <Button
           className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
           variant="outlined"
+          disabled={!isEnabled}
           startIcon={<CheckIconOrange width="24" height="24" />}
           style={{ marginTop: 12 }}
           onClick={() => {
@@ -128,7 +147,7 @@ const moveTopWebsite = (websites: ITopWebsite[], startIndex: number, endIndex: n
   const result = Array.from(websites);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-  return result.map((t, index) => ({ ...t, index }));
+  return result.map((t, order) => ({ ...t, order }));
 };
 
 const TopWebsiteList = (props: { store: IStore }) => {
@@ -157,8 +176,8 @@ const TopWebsiteList = (props: { store: IStore }) => {
       result.destination.index,
     );
     setTopWebsites(newTopWebsites);
-
-    // TODO: Save in the store
+    // Save in the store
+    void props.store.topWebsitesStore.updateGroup(newTopWebsites);
   };
 
   return (

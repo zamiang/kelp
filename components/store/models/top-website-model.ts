@@ -67,6 +67,20 @@ export default class TopWebsiteModel {
     }
   }
 
+  async updateGroup(website: ITopWebsite[]) {
+    const tx = this.db.transaction('topWebsite', 'readwrite');
+    // console.log(documents, 'about to save documents');
+    const promises = website.map((topSite) => {
+      if (topSite?.id) {
+        return tx.store.put(topSite);
+      }
+    });
+
+    const results = await Promise.allSettled(promises);
+    await tx.done;
+    return results;
+  }
+
   async getAll() {
     return sortBy(await this.db.getAll('topWebsite'), 'order')
       .filter((item) => !item.isHidden)
