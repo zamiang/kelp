@@ -14,7 +14,6 @@ import PersonRow from '../person/person-row';
 import useRowStyles from '../shared/row-styles';
 import { ISegment, ITask, ITopWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { TaskCreateBox } from '../tasks/task-create-box';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
 import Tasks from './tasks';
@@ -50,7 +49,6 @@ const Home = (props: { store: IStore }) => {
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
   const [topWebsites, setTopWebsites] = useState<ITopWebsite[]>([]);
   const [tasks, setTasks] = useState<ITask[]>([]);
-  const [taskIncrement, setIncrememnt] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +83,7 @@ const Home = (props: { store: IStore }) => {
       setTasks(sortedResult.slice(0, 3));
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, taskIncrement.toString()]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   useEffect(() => {
     const fetchData = async () => {
