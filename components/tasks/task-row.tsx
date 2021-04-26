@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -8,8 +7,6 @@ import React, { useState } from 'react';
 import Linkify from 'react-linkify';
 import CheckIconOrange from '../../public/icons/check-orange.svg';
 import CircleIcon from '../../public/icons/circle.svg';
-import useButtonStyles from '../shared/button-styles';
-import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -40,7 +37,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const TaskRow = (props: { task: ITask; selectedTaskId: string | null; store: IStore }) => {
-  const buttonStyles = useButtonStyles();
   const isSelected = props.selectedTaskId === props.task.id;
   const rowStyles = useRowStyles();
   const classes = useStyles();
@@ -48,12 +44,14 @@ const TaskRow = (props: { task: ITask; selectedTaskId: string | null; store: ISt
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isVisible, setVisible] = useState(true);
   const [isCompleted, setIsCompleted] = useState<boolean>(props.task.completedAt ? true : false);
-  const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
 
   return (
     <div
-      onMouseEnter={() => !isTouchEnabled() && setDetailsVisible(true)}
-      onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
+      onClick={(event) => {
+        event.stopPropagation();
+        setIsEditing(true);
+        return false;
+      }}
       className={clsx(
         rowStyles.row,
         isSelected && rowStyles.rowPrimaryMain,
@@ -126,21 +124,6 @@ const TaskRow = (props: { task: ITask; selectedTaskId: string | null; store: ISt
             )}
           </div>
         </Grid>
-        {isDetailsVisible && !isEditing && (
-          <Grid item>
-            <Button
-              className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
-              variant="outlined"
-              onClick={(event) => {
-                event.stopPropagation();
-                setIsEditing(true);
-                return false;
-              }}
-            >
-              Edit
-            </Button>
-          </Grid>
-        )}
       </Grid>
     </div>
   );

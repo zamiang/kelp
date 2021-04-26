@@ -107,7 +107,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           <Container maxWidth="sm">
             <HomepageButtons />
           </Container>
-          <Grid container spacing={4} style={{ marginTop: 5 }}>
+          <Grid container spacing={4} style={{ marginTop: 5 }} justify="center">
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
                 Meetings
