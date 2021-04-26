@@ -2,6 +2,7 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { backgroundGradient } from '../../constants/theme';
 import Documents from '../dashboard/documents';
 import Home from '../dashboard/home';
 import Meetings from '../dashboard/meetings';
@@ -38,7 +39,7 @@ const useInfoStyles = makeStyles((theme) => ({
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',
-    background: 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)',
+    background: backgroundGradient,
     minHeight: '100vh',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),

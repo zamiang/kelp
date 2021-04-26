@@ -8,6 +8,7 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
+import { backgroundGradient } from '../../constants/theme';
 import Documents from '../dashboard/documents';
 import Meetings from '../dashboard/meetings';
 import Search from '../dashboard/search';
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',
-    background: 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)',
+    background: backgroundGradient,
     minHeight: '100vh',
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(2),
