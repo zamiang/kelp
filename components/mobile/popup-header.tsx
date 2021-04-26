@@ -23,6 +23,11 @@ const useHeaderStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     borderRadius: theme.shape.borderRadius,
   },
+  drawerPaperNoPadding: {
+    background: theme.palette.background.paper,
+    borderRadius: theme.shape.borderRadius,
+    minHeight: 57,
+  },
   whiteHeader: {
     border: '0px',
     position: 'sticky',
@@ -122,22 +127,8 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
 
   if (isSearchInputVisible) {
     return (
-      <Box className={classes.drawerPaper} boxShadow={3}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <SearchBar />
-          </Grid>
-          <Grid item>
-            <IconButton
-              onClick={() => {
-                history.push('/home');
-                setSearchInputVisible(false);
-              }}
-            >
-              <BackIcon height="24" width="24" />
-            </IconButton>
-          </Grid>
-        </Grid>
+      <Box className={classes.drawerPaperNoPadding} boxShadow={3}>
+        <SearchBar onClose={() => setSearchInputVisible(false)} />
       </Box>
     );
   }

@@ -11,6 +11,7 @@ import DocumentRow from '../documents/document-row';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import { LineCalendar } from '../meeting/line-calendar';
 import PersonRow from '../person/person-row';
+import { HomepageButtons } from '../shared/homepage-buttons';
 import useRowStyles from '../shared/row-styles';
 import { ISegment, ITask, ITopWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -103,6 +104,9 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
+      <div style={{ marginBottom: 20 }}>
+        <HomepageButtons />
+      </div>
       <Typography variant="h6" className={classes.heading} onClick={() => router.push('/meetings')}>
         Today&rsquo;s Meetings
         <IconButton className={rowClasses.rightIcon}>

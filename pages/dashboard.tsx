@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DesktopDashboard } from '../components/desktop/desktop-dashboard';
 import { fetchToken } from '../components/fetch/google/fetch-token';
-import MobileDashboard from '../components/mobile/dashboard';
+import MobileDashboard from '../components/mobile/mobile-dashboard';
 import Loading from '../components/shared/loading';
 import db from '../components/store/db';
 import getStore, { IStore } from '../components/store/use-store';

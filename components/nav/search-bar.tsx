@@ -10,9 +10,7 @@ import CloseIcon from '../../public/icons/close.svg';
 const useStyles = makeStyles((theme) => ({
   input: {
     fontSize: 16,
-    [theme.breakpoints.down('sm')]: {
-      width: 239,
-    },
+    [theme.breakpoints.down('sm')]: {},
   },
   container: {
     minHeight: 55,
@@ -21,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = () => {
+const SearchBar = (props: { onClose?: () => void }) => {
   const classes = useStyles();
   const router = useHistory();
 
@@ -57,6 +55,9 @@ const SearchBar = () => {
         <IconButton
           onClick={() => {
             router.push('/home');
+            if (props.onClose) {
+              props.onClose();
+            }
           }}
         >
           <CloseIcon width="24" height="24" />
