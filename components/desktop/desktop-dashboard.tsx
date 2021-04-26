@@ -206,7 +206,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                         overflow="auto"
                         style={{ background: '#fff' }}
                       >
-                        <SearchBar store={store} focusInput={true} />
+                        <SearchBar />
                       </Box>
                       <div style={{ margin: 12 }}>
                         <Search store={store} />
