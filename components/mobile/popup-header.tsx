@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import BackIcon from '../../public/icons/back.svg';
 import EditIcon from '../../public/icons/edit.svg';
+import ExternalIcon from '../../public/icons/external.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import SearchBar from '../nav/search-bar';
@@ -139,6 +140,8 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
     );
   }
 
+  const shouldRenderChromeIcon = window['chrome'] && window['chrome']['tabs'];
+
   return (
     <Box className={classes.drawerPaper} boxShadow={3}>
       <Grid
@@ -162,17 +165,33 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           </div>
         </Grid>
         <Grid item>
-          <IconButton
-            className={'ignore-react-onclickoutside'}
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={(event) => {
-              event.preventDefault();
-              return router.push('/settings');
-            }}
-          >
-            <SettingsIcon width="24" height="24" />
-          </IconButton>
+          {shouldRenderChromeIcon && (
+            <IconButton
+              className={'ignore-react-onclickoutside'}
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={() =>
+                window['chrome'] &&
+                window['chrome']['tabs'] &&
+                chrome.tabs.create({ url: '/dashboard.html' })
+              }
+            >
+              <ExternalIcon width="24" height="24" />
+            </IconButton>
+          )}
+          {!shouldRenderChromeIcon && (
+            <IconButton
+              className={'ignore-react-onclickoutside'}
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={(event) => {
+                event.preventDefault();
+                return router.push('/settings');
+              }}
+            >
+              <SettingsIcon width="24" height="24" />
+            </IconButton>
+          )}
         </Grid>
       </Grid>
     </Box>
