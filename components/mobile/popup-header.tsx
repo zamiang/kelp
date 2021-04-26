@@ -9,7 +9,6 @@ import BackIcon from '../../public/icons/back.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import RefreshButton from '../nav/refresh-button';
 import SearchBar from '../nav/search-bar';
 import { getGreeting } from '../shared/get-greeting';
 import { IPerson } from '../store/data-types';
@@ -163,29 +162,17 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           </div>
         </Grid>
         <Grid item>
-          <Grid container alignItems="center">
-            <Grid item>
-              <RefreshButton
-                isLoading={props.store.isLoading}
-                refresh={props.store.refetch}
-                lastUpdated={props.store.lastUpdated}
-                loadingMessage={props.store.loadingMessage}
-              />
-            </Grid>
-            <Grid item>
-              <IconButton
-                className={'ignore-react-onclickoutside'}
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={(event) => {
-                  event.preventDefault();
-                  return router.push('/settings');
-                }}
-              >
-                <SettingsIcon width="24" height="24" />
-              </IconButton>
-            </Grid>
-          </Grid>
+          <IconButton
+            className={'ignore-react-onclickoutside'}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={(event) => {
+              event.preventDefault();
+              return router.push('/settings');
+            }}
+          >
+            <SettingsIcon width="24" height="24" />
+          </IconButton>
         </Grid>
       </Grid>
     </Box>

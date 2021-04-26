@@ -9,7 +9,6 @@ import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../../public/icons/chevron-right.svg';
 import DocumentRow from '../documents/document-row';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
-import { LineCalendar } from '../meeting/line-calendar';
 import PersonRow from '../person/person-row';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import useRowStyles from '../shared/row-styles';
@@ -28,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     background: '#fff',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
+  },
+  boxStyleNoPadding: {
+    background: '#fff',
   },
   heading: {
     marginLeft: 0,
@@ -114,9 +116,6 @@ const Home = (props: { store: IStore }) => {
         </IconButton>
       </Typography>
       <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
-        <div className={classes.lineCalendarContainer}>
-          <LineCalendar store={props.store} />
-        </div>
         {featuredMeeting && (
           <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
         )}
@@ -173,7 +172,7 @@ const Home = (props: { store: IStore }) => {
           <Typography variant="h6" className={classes.heading}>
             Top Websites
           </Typography>
-          <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+          <Box boxShadow={3} borderRadius={8} className={classes.boxStyleNoPadding}>
             <TopWebsites store={props.store} />
           </Box>
         </div>

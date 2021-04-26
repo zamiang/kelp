@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     transition: 'opacity 0.3s',
     background: 'rgba(0,0,0,0.04)',
     padding: theme.spacing(1),
-    color: 'rgba(0,0,0,0.87)',
+    color: theme.palette.text.primary,
     '&:hover': {
       opacity: 0.6,
       textDecoration: 'underline',
