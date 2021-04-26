@@ -208,7 +208,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                       >
                         <SearchBar />
                       </Box>
-                      <div style={{ margin: 12 }}>
+                      <div style={{ marginBottom: 12 }}>
                         <Search store={store} />
                       </div>
                     </div>
