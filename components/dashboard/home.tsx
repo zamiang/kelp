@@ -108,7 +108,7 @@ const Home = (props: { store: IStore }) => {
         <HomepageButtons />
       </div>
       <Typography variant="h6" className={classes.heading} onClick={() => router.push('/meetings')}>
-        Today&rsquo;s Meetings
+        Next Meetings
         <IconButton className={rowClasses.rightIcon}>
           <ArrowIcon width="24" height="24" />
         </IconButton>
