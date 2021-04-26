@@ -10,7 +10,6 @@ import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import Documents from '../dashboard/documents';
 import Meetings from '../dashboard/meetings';
-import People from '../dashboard/people';
 import Search from '../dashboard/search';
 import Tasks from '../dashboard/tasks';
 import { TopWebsites } from '../dashboard/top-websites';
@@ -154,22 +153,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Documents store={store} />
               </Box>
             </Grid>
-            {!shouldRenderTopSites && (
-              <Grid item xs={3}>
-                <Typography variant="h4" className={classes.heading}>
-                  People
-                </Typography>
-                <Box
-                  boxShadow={3}
-                  borderRadius={8}
-                  maxHeight={'calc(100vh - 230px)'}
-                  overflow="auto"
-                  style={{ background: '#fff' }}
-                >
-                  <People store={store} />
-                </Box>
-              </Grid>
-            )}
             {shouldRenderTopSites && (
               <Grid item xs={3}>
                 <Typography variant="h4" className={classes.heading}>

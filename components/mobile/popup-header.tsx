@@ -1,6 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -10,6 +11,7 @@ import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import RefreshButton from '../nav/refresh-button';
 import SearchBar from '../nav/search-bar';
+import { getGreeting } from '../shared/get-greeting';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -49,6 +51,10 @@ const useHeaderStyles = makeStyles((theme) => ({
   icon: {
     width: 22,
     height: 22,
+  },
+  greeting: {
+    textAlign: 'center',
+    opacity: 0.4,
   },
 }));
 
@@ -95,10 +101,11 @@ export const GoToSourceButton = (props: {
 const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
   const classes = useHeaderStyles();
-  const history = useHistory();
+  const router = useHistory();
   const location = useLocation();
   const isOnSubpage = location.pathname !== '/home' && location.pathname !== '/search';
   const shouldRenderSourceButton = location.pathname !== '/settings';
+  const greeting = getGreeting();
 
   if (isOnSubpage) {
     const type = location.pathname.split('/')[1];
@@ -109,7 +116,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
           <Grid item>
             <IconButton
               onClick={() => {
-                history.goBack();
+                router.goBack();
               }}
             >
               <BackIcon width="24" height="24" />
@@ -135,7 +142,12 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
 
   return (
     <Box className={classes.drawerPaper} boxShadow={3}>
-      <Grid container alignItems="center" justify="space-between">
+      <Grid
+        container
+        alignItems="center"
+        justify="space-between"
+        onClick={() => setSearchInputVisible(true)}
+      >
         <Grid item>
           <Grid container alignItems="center">
             <Grid item>
@@ -144,6 +156,11 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
               </IconButton>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item>
+          <div className={classes.greeting}>
+            <Typography variant="h3">Good {greeting}</Typography>
+          </div>
         </Grid>
         <Grid item>
           <Grid container alignItems="center">
@@ -160,7 +177,10 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
                 className={'ignore-react-onclickoutside'}
                 aria-controls="simple-menu"
                 aria-haspopup="true"
-                onClick={() => history.push('/settings')}
+                onClick={(event) => {
+                  event.preventDefault();
+                  return router.push('/settings');
+                }}
               >
                 <SettingsIcon width="24" height="24" />
               </IconButton>

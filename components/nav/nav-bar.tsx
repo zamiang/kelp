@@ -10,6 +10,7 @@ import LockIcon from '../../public/icons/lock.svg';
 import RotateIcon from '../../public/icons/rotate.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
+import { getGreeting } from '../shared/get-greeting';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
   greeting: {
     textAlign: 'center',
     margin: theme.spacing(2),
+    opacity: 0.4,
   },
 }));
 
@@ -73,8 +75,7 @@ const NavBar = (props: { store: IStore }) => {
 
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [currentUser, setCurrentUser] = useState<IPerson | undefined>();
-  const hours = new Date().getHours();
-  const greeting = hours < 12 ? 'Morning' : hours <= 18 && hours >= 12 ? 'Afternoon' : 'Night';
+  const greeting = getGreeting();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +95,7 @@ const NavBar = (props: { store: IStore }) => {
         alignItems="center"
         justify="space-between"
         className={classes.innerContainer}
+        onClick={() => router.push('/search')}
       >
         <Grid item>
           <Grid container alignItems="center">
@@ -135,8 +137,9 @@ const NavBar = (props: { store: IStore }) => {
         {!isLoading && currentUser && (
           <Grid item>
             <IconButton
-              onClick={() => {
-                router.push('/settings');
+              onClick={(event) => {
+                event.preventDefault();
+                return router.push('/settings');
               }}
             >
               <SettingsIcon width="24" height="24" />
