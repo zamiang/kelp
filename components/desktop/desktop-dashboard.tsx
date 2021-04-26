@@ -19,6 +19,7 @@ import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { LineCalendar } from '../meeting/line-calendar';
 import NavBar from '../nav/nav-bar';
+import SearchBar from '../nav/search-bar';
 import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
@@ -189,8 +190,29 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           <div>
             <Switch>
               <Route path="/search">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
-                  <Search store={store} />
+                <Dialog maxWidth="md" open={true} onClose={onDialogClose} fullScreen>
+                  <Container maxWidth="xl">
+                    <div
+                      style={{
+                        maxWidth: 800,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: 48,
+                      }}
+                    >
+                      <Box
+                        boxShadow={3}
+                        borderRadius={8}
+                        overflow="auto"
+                        style={{ background: '#fff' }}
+                      >
+                        <SearchBar store={store} focusInput={true} />
+                      </Box>
+                      <div style={{ margin: 12 }}>
+                        <Search store={store} />
+                      </div>
+                    </div>
+                  </Container>
                 </Dialog>
               </Route>
               <Route path="/meetings/:slug">

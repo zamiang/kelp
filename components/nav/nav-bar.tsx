@@ -29,9 +29,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     minHeight: 55,
   },
-  innerContainer: {
-    paddingRight: theme.spacing(2),
-  },
+  innerContainer: {},
   logo: {
     width: 40,
     height: 40,
@@ -69,11 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface IProps {
-  store: IStore;
-}
-
-const NavBar = (props: IProps) => {
+const NavBar = (props: { store: IStore }) => {
   const classes = useStyles();
   const router = useHistory();
 
