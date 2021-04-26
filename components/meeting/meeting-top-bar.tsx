@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'uppercase',
     fontSize: 9,
     display: 'block',
-    color: 'rgba(0,0,0,0.5)',
+    color: theme.palette.text.hint,
   },
   dayNumber: {
     display: 'block',

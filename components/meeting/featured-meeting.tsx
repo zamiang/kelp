@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
   },
   meetingTimeInWords: {
-    color: 'rgba(0,0,0,0.4)',
+    color: theme.palette.text.hint,
     display: 'inline-block',
     marginBottom: 0,
   },

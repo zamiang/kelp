@@ -32,6 +32,10 @@ const basisMedium = {
   src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
 };
 
+const primaryTextColor = 'rgba(0,0,0,0.87)';
+const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
+const lightTextColor = 'rgba(0,0,0,0.5)';
+
 const theme = createMuiTheme({
   props: {
     MuiButtonBase: {
@@ -66,16 +70,17 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
     text: {
-      primary: 'rgba(0, 0, 0, 0.87)',
-      secondary: 'rgba(0, 0, 0, 0.70)',
+      primary: primaryTextColor,
+      secondary: secondaryTextColor,
       disabled: 'rgba(0, 0, 0, 0.38)',
-      hint: 'rgba(0, 0, 0, 0.38)',
+      hint: lightTextColor,
     },
   },
   typography: {
     fontSize: 14,
     fontFamily: bodyFontFamily,
     fontWeightRegular: 400,
+    color: primaryTextColor,
     h1: {
       fontWeight: 400,
       fontStyle: 'normal',
@@ -90,7 +95,7 @@ const theme = createMuiTheme({
       fontStyle: 'normal',
       fontFamily: mediumFontFamily,
       fontWeight: 500,
-      color: 'rgba(0,0,0,0.87)',
+      color: primaryTextColor,
     },
     h4: {
       fontSize: 16,
@@ -98,19 +103,19 @@ const theme = createMuiTheme({
       fontFamily: bodyFontFamily,
       fontWeight: 400,
       lineHeight: 1.35,
-      color: 'rgba(0,0,0,0.87)',
+      color: primaryTextColor,
     },
     h5: {
       fontSize: 16,
       fontStyle: 'normal',
       fontFamily: bodyFontFamily,
-      color: 'rgba(0,0,0,0.5)',
+      color: lightTextColor,
     },
     h6: {
       fontSize: 14,
       fontStyle: 'normal',
       fontFamily: bodyFontFamily,
-      color: 'rgba(0,0,0,0.5)',
+      color: lightTextColor,
       fontWeight: 400,
       textTransform: 'none',
       marginBottom: 12,
@@ -124,11 +129,11 @@ const theme = createMuiTheme({
     body1: {
       fontFamily: bodyFontFamily,
       fontSize: '14px',
-      color: '#000000',
+      color: primaryTextColor,
     },
     body2: {
       fontFamily: bodyFontFamily,
-      color: 'rgba(0,0,0,0.5)',
+      color: lightTextColor,
       fontSize: '14px',
     },
     caption: {
@@ -158,7 +163,7 @@ const theme = createMuiTheme({
     },
     MuiIconButton: {
       root: {
-        color: '#000000',
+        color: primaryTextColor,
         padding: 8,
       },
     },
@@ -192,7 +197,7 @@ const theme = createMuiTheme({
     MuiAvatarGroup: {
       avatar: {
         borderColor: '#fff',
-        color: 'rgba(0, 0, 0, 0.87)',
+        color: primaryTextColor,
       },
     },
     MuiDialog: {
