@@ -1,11 +1,7 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import CheckIcon from '../../public/icons/check.svg';
-import useButtonStyles from '../shared/button-styles';
 import rowStyles from '../shared/row-styles';
 import { ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -16,15 +12,20 @@ const useStyle = makeStyles(() => ({
     position: 'relative',
     border: '0px solid',
     padding: 0,
+    transition: 'opacity 0.3s',
   },
-  button: {
-    position: 'absolute',
-    right: 12,
-    bottom: 9,
-    maxWidth: 36,
-    background: '#BCBCBC',
+  input: {
+    padding: 0,
+    borderRadius: 0,
+    background: 'transparent !important',
+    lineHeight: '21px',
+    '&:hover': {
+      background: 'transparent',
+    },
   },
-  input: {},
+  loading: {
+    opacity: 0.5,
+  },
 }));
 
 export const TaskEditBox = (props: {
@@ -34,25 +35,34 @@ export const TaskEditBox = (props: {
 }) => {
   const taskStyles = useStyle();
   const classes = rowStyles();
-  const buttonClasses = useButtonStyles();
   const [text, setText] = useState<string>(props.task.title);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
-    <div className={clsx(classes.rowNoHover, taskStyles.container)}>
+    <div
+      className={clsx(classes.rowNoHover, taskStyles.container, isLoading && taskStyles.loading)}
+    >
       <TextField
         multiline
         variant="filled"
         placeholder="Add a Google Task..."
         fullWidth
+        autoFocus
+        InputProps={{
+          className: taskStyles.input,
+        }}
+        className={taskStyles.input}
         onChange={(event) => {
           setText(event.target.value);
         }}
         value={text}
-      />
-      <IconButton
-        className={clsx(buttonClasses.button, taskStyles.button)}
-        onClick={() => {
+        onKeyDown={(event) => {
+          console.log(event.key, event.shiftKey);
+          if (event.key !== 'Enter' || event.shiftKey) {
+            return;
+            // put the login here
+          }
+          event.preventDefault();
           setIsLoading(true);
           const updateTasks = async () => {
             if (props.store.defaultTaskList?.id && props.store.googleOauthToken) {
@@ -74,13 +84,7 @@ export const TaskEditBox = (props: {
           };
           void updateTasks();
         }}
-      >
-        {isLoading ? (
-          <CircularProgress color={'white' as any} size={24} />
-        ) : (
-          <CheckIcon width="24" height="24" />
-        )}
-      </IconButton>
+      />
     </div>
   );
 };
