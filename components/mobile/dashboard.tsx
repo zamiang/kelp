@@ -10,7 +10,6 @@ import Search from '../dashboard/search';
 import Tasks from '../dashboard/tasks';
 import ExpandedDocument from '../documents/expand-document';
 import ExpandedMeeting from '../meeting/expand-meeting';
-import { NewMeeting } from '../meeting/new-meeting';
 import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IPerson } from '../store/data-types';
@@ -161,11 +160,6 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Route path="/documents">
             <Box className={classes.box} boxShadow={3} borderRadius={8}>
               <Documents store={store} />
-            </Box>
-          </Route>
-          <Route path="/new-meeting">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
-              <NewMeeting />
             </Box>
           </Route>
           <Route path="/settings">

@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -18,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const HomepageButtons = () => {
   const classes = useStyles();
-  const router = useHistory();
 
   return (
     <Grid container alignItems="center" justify="space-between">
@@ -36,7 +34,8 @@ export const HomepageButtons = () => {
         <Button
           disableElevation={false}
           className={classes.button}
-          onClick={() => router.push('/new-meeting')}
+          target="_blank"
+          href="https://www.google.com/calendar/render?action=TEMPLATE"
         >
           +Mtg
         </Button>

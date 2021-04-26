@@ -18,7 +18,6 @@ import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { LineCalendar } from '../meeting/line-calendar';
-import { NewMeeting } from '../meeting/new-meeting';
 import NavBar from '../nav/nav-bar';
 import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
@@ -212,11 +211,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Route path="/tasks/:slug">
                 <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
                   <ExpandTask store={store} />
-                </Dialog>
-              </Route>
-              <Route path="/new-meeting">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
-                  <NewMeeting />
                 </Dialog>
               </Route>
               <Route path="/settings">
