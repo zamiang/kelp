@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, subHours } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import useButtonStyles from '../shared/button-styles';
@@ -33,6 +33,7 @@ export const FeaturedMeeting = (props: {
   const router = useHistory();
 
   const isFuture = new Date() < props.meeting.start;
+  const isInNextHour = new Date() > subHours(props.meeting.start, 1);
   const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
@@ -60,7 +61,7 @@ export const FeaturedMeeting = (props: {
             {props.meeting.summary || '(no title)'}
           </Typography>
         </Grid>
-        {domain && (
+        {domain && isInNextHour && (
           <Grid item xs={12}>
             <Button
               className={buttonClasses.button}
@@ -81,9 +82,11 @@ export const FeaturedMeeting = (props: {
             </Button>
           </Grid>
         )}
-        <Grid item xs={12}>
-          <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft={false} />
-        </Grid>
+        {isInNextHour && (
+          <Grid item xs={12}>
+            <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft={false} />
+          </Grid>
+        )}
       </Grid>
     </div>
   );

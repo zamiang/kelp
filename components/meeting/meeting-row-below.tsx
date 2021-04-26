@@ -12,16 +12,8 @@ import { IStore } from '../store/use-store';
 
 const useBelowStyles = makeStyles((theme) => ({
   container: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-  },
-  buttonContainer: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-  },
-  containerNoLeftMargin: {
-    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   heading: {
     fontWeight: 500,
@@ -95,10 +87,10 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
 
-  const hasAttendees = attendees.length > 0;
+  const hasAttendees = attendees.length > 1;
 
   return (
-    <div>
+    <React.Fragment>
       {hasDocuments && (
         <div className={classes.container}>
           <Typography variant="h6" className={classes.heading}>
@@ -113,7 +105,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
         </div>
       )}
       {hasAttendees && (
-        <div className={classes.container}>
+        <div className={classes.container} style={{ marginBottom: 0 }}>
           <Typography
             variant="h6"
             className={classes.heading}
@@ -139,7 +131,7 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
           )}
         </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 
