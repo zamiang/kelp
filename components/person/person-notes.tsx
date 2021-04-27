@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { lightGreyColor } from '../../constants/theme';
 import BackIcon from '../../public/icons/close.svg';
 import EditIcon from '../../public/icons/edit.svg';
 import useButtonStyles from '../shared/button-styles';
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   relativeContainer: {
     borderRadius: theme.shape.borderRadius,
-    background: 'rgba(0,0,0,0.04)',
+    background: lightGreyColor,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     padding: theme.spacing(1),

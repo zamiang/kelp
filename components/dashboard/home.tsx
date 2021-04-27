@@ -115,7 +115,7 @@ const Home = (props: { store: IStore }) => {
           <ArrowIcon width="24" height="24" />
         </IconButton>
       </Typography>
-      <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+      <Box boxShadow={1} borderRadius={8} className={classes.boxStyle}>
         {featuredMeeting && (
           <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
         )}
@@ -133,7 +133,7 @@ const Home = (props: { store: IStore }) => {
             </IconButton>
           </Typography>
           <Box
-            boxShadow={3}
+            boxShadow={1}
             borderRadius={8}
             className={classes.boxStyle}
             style={{ paddingTop: 0 }}
@@ -154,7 +154,12 @@ const Home = (props: { store: IStore }) => {
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>
-          <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+          <Box
+            boxShadow={1}
+            borderRadius={8}
+            className={classes.boxStyle}
+            style={{ marginBottom: 12 }}
+          >
             {topDocuments.map((document) => (
               <DocumentRow
                 key={document.document.id}
@@ -172,7 +177,7 @@ const Home = (props: { store: IStore }) => {
           <Typography variant="h6" className={classes.heading}>
             Top Websites
           </Typography>
-          <Box boxShadow={3} borderRadius={8} className={classes.boxStyleNoPadding}>
+          <Box boxShadow={1} borderRadius={8} className={classes.boxStyleNoPadding}>
             <TopWebsites store={props.store} />
           </Box>
         </div>
@@ -189,7 +194,7 @@ const Home = (props: { store: IStore }) => {
               <ArrowIcon width="24" height="24" />
             </IconButton>
           </Typography>
-          <Box boxShadow={3} borderRadius={8} className={classes.boxStyle}>
+          <Box boxShadow={1} borderRadius={8} className={classes.boxStyle}>
             {featuredPeople.map((featuredPerson) => (
               <PersonRow
                 key={featuredPerson.person.id}

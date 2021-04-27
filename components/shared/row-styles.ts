@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { mediumFontFamily } from '../../constants/theme';
+import { lightGreyColor, mediumFontFamily } from '../../constants/theme';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: `1px solid transparent`,
     },
     '&:hover': {
-      backgroundColor: 'rgba(0,0,0,0.04)',
+      backgroundColor: lightGreyColor,
     },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   rowPrimaryMain: {
-    background: 'rgba(0,0,0,0.04)',
+    background: lightGreyColor,
     '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: theme.palette.secondary.light,
       background: theme.palette.secondary.light,

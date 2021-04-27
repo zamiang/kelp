@@ -114,7 +114,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 Meetings
               </Typography>
               <Box
-                boxShadow={3}
+                boxShadow={1}
                 borderRadius={8}
                 maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
@@ -131,7 +131,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 Tasks
               </Typography>
               <Box
-                boxShadow={3}
+                boxShadow={1}
                 borderRadius={8}
                 maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
@@ -145,7 +145,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 Documents
               </Typography>
               <Box
-                boxShadow={3}
+                boxShadow={1}
                 borderRadius={8}
                 maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
@@ -160,7 +160,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                   Top Sites
                 </Typography>
                 <Box
-                  boxShadow={3}
+                  boxShadow={1}
                   borderRadius={8}
                   maxHeight={'calc(100vh - 230px)'}
                   overflow="auto"
@@ -185,7 +185,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                       }}
                     >
                       <Box
-                        boxShadow={3}
+                        boxShadow={1}
                         borderRadius={8}
                         overflow="auto"
                         style={{ background: '#fff' }}

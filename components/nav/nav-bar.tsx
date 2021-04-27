@@ -89,7 +89,7 @@ const NavBar = (props: { store: IStore }) => {
   }, [props.store.lastUpdated]);
 
   return (
-    <Box boxShadow={4} className={classes.container}>
+    <Box boxShadow={1} className={classes.container}>
       <Grid
         container
         alignItems="center"

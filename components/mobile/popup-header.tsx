@@ -111,7 +111,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
     const type = location.pathname.split('/')[1];
     const id = decodeURIComponent(location.pathname.split('/')[2]);
     return (
-      <Box className={classes.drawerPaper} boxShadow={3}>
+      <Box className={classes.drawerPaper} boxShadow={1}>
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <IconButton
@@ -134,7 +134,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
 
   if (isSearchInputVisible) {
     return (
-      <Box className={classes.drawerPaperNoPadding} boxShadow={3}>
+      <Box className={classes.drawerPaperNoPadding} boxShadow={1}>
         <SearchBar onClose={() => setSearchInputVisible(false)} />
       </Box>
     );
@@ -143,7 +143,7 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const shouldRenderChromeIcon = window['chrome'] && window['chrome']['tabs'];
 
   return (
-    <Box className={classes.drawerPaper} boxShadow={3}>
+    <Box className={classes.drawerPaper} boxShadow={1}>
       <Grid
         container
         alignItems="center"

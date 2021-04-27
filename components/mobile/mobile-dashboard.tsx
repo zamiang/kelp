@@ -120,47 +120,47 @@ const MobileDashboard = (props: { store: IStore }) => {
             <Home store={store} />
           </Route>
           <Route path="/people/:slug">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <ExpandPerson store={store} />
             </Box>
           </Route>
           <Route path="/documents/:slug">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <ExpandedDocument store={store} />
             </Box>
           </Route>
           <Route path="/meetings/:slug">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <ExpandedMeeting store={store} />
             </Box>
           </Route>
           <Route path="/tasks/:slug">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <ExpandedTask store={store} />
             </Box>
           </Route>
           <Route path="/meetings">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <Meetings store={store} />
             </Box>
           </Route>
           <Route path="/people">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <People store={store} />
             </Box>
           </Route>
           <Route path="/tasks">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <Tasks store={store} />
             </Box>
           </Route>
           <Route path="/documents">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <Documents store={store} />
             </Box>
           </Route>
           <Route path="/settings">
-            <Box className={classes.box} boxShadow={3} borderRadius={8}>
+            <Box className={classes.box} boxShadow={1} borderRadius={8}>
               <Settings />
             </Box>
           </Route>

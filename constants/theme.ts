@@ -8,6 +8,7 @@ export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 export const backgroundGradient =
   'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
+export const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
 const basisRegular = {
   fontFamily: 'basis-grotesque',
@@ -35,6 +36,7 @@ const basisMedium = {
 const primaryTextColor = 'rgba(0,0,0,0.87)';
 const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
 const lightTextColor = 'rgba(0,0,0,0.5)';
+export const lightGreyColor = 'rgba(0,0,0,0.08)';
 
 const theme = createMuiTheme({
   props: {
@@ -76,6 +78,7 @@ const theme = createMuiTheme({
       hint: lightTextColor,
     },
   },
+  shadows: [boxShadow, boxShadow],
   typography: {
     fontSize: 14,
     fontFamily: bodyFontFamily,
