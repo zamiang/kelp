@@ -33,6 +33,11 @@ export interface IStore {
   readonly loadingMessage?: string;
   readonly googleOauthToken?: string;
   readonly error?: Error;
+  readonly isPeopleLoading: boolean;
+  readonly isMeetingsLoading: boolean;
+  readonly isDocumentsLoading: boolean;
+  readonly isDriveActivityLoading: boolean;
+  readonly isTasksLoading: boolean;
 }
 
 export const setupStoreNoFetch = (db: dbType): IStore => {
@@ -64,6 +69,11 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
     loadingMessage: undefined,
     refetch: () => false,
     error: undefined,
+    isPeopleLoading: false,
+    isMeetingsLoading: false,
+    isDocumentsLoading: false,
+    isDriveActivityLoading: false,
+    isTasksLoading: false,
   };
 };
 
@@ -218,6 +228,11 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     taskDocumentStore: taskDocumentDataStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,
+    isPeopleLoading: data.peopleLoading,
+    isMeetingsLoading: data.calendarResponseLoading,
+    isDocumentsLoading: data.driveResponseLoading,
+    isDriveActivityLoading: data.driveActivityLoading,
+    isTasksLoading: data.tasksResponseLoading,
     defaultTaskList: data.defaultTaskList,
     loadingMessage,
     refetch: () => data.refetch(),

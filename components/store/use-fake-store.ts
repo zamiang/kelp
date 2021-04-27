@@ -74,6 +74,11 @@ const useFakeStore = (db: dbType): IStore => {
     scope: 'n/a',
     googleOauthToken: 'none',
     refetch: () => null,
+    isPeopleLoading: false,
+    isMeetingsLoading: false,
+    isDocumentsLoading: false,
+    isDriveActivityLoading: false,
+    isTasksLoading: false,
   };
 };
 

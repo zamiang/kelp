@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import { useLocation } from 'react-router-dom';
+import { LoadingSpinner } from '../shared/loading-spinner';
 import panelStyles from '../shared/panel-styles';
 import { ITask } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -96,6 +97,8 @@ const AllTasks = (props: {
     );
   };
 
+  const shouldRenderLoading = props.store.isTasksLoading && tasks.length < 1;
+
   return (
     <React.Fragment>
       <TaskCreateBox
@@ -103,24 +106,27 @@ const AllTasks = (props: {
         taskIncrement={taskIncrement}
         setTaskIncrement={setIncrememnt}
       />
-      <div style={{ marginBottom: 8 }}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="tasks-list">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                <TaskListMemo
-                  selectedTaskId={props.selectedTaskId}
-                  setTaskId={props.setTaskId}
-                  store={props.store}
-                  tasks={tasks}
-                  setTasks={setTasks}
-                />
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </div>
+      {shouldRenderLoading && <LoadingSpinner />}
+      {!shouldRenderLoading && (
+        <div style={{ marginBottom: 8 }}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="tasks-list">
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  <TaskListMemo
+                    selectedTaskId={props.selectedTaskId}
+                    setTaskId={props.setTaskId}
+                    store={props.store}
+                    tasks={tasks}
+                    setTasks={setTasks}
+                  />
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+      )}
     </React.Fragment>
   );
 };

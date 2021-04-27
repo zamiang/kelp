@@ -9,6 +9,7 @@ import PlusIcon from '../../public/icons/plus.svg';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import MeetingRow from '../meeting/meeting-row';
 import MeetingBar from '../meeting/meeting-top-bar';
+import { LoadingSpinner } from '../shared/loading-spinner';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
@@ -183,9 +184,11 @@ const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => vo
       }
     }
   });
+  const shouldRenderLoading = props.store.isMeetingsLoading && !featuredMeeting;
 
   return (
     <div className={classes.panel}>
+      {shouldRenderLoading && <LoadingSpinner />}
       {shouldRenderMeetingsBar && (
         <MeetingBar
           store={props.store}

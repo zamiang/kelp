@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import DocumentRow from '../documents/document-row';
 import { getWeek } from '../shared/date-helpers';
+import { LoadingSpinner } from '../shared/loading-spinner';
 import panelStyles from '../shared/panel-styles';
 import rowStyles from '../shared/row-styles';
 import { IDocument, ISegment } from '../store/data-types';
@@ -130,8 +131,11 @@ const AllDocuments = (props: {
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
 
+  const shouldRenderLoading = props.store.isDocumentsLoading && documents.length < 1;
+
   return (
     <div style={{ marginBottom: 14, marginTop: 14 }}>
+      {shouldRenderLoading && <LoadingSpinner />}
       {topDocuments.length > 0 && (
         <div className={classes.rowHighlight} style={{ paddingTop: 0 }}>
           <Typography variant="h6" className={classes.rowHeading}>
