@@ -2,6 +2,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import { lightGreyColor, mediumFontFamily } from '../../constants/theme';
 
 const useStyles = makeStyles((theme) => ({
+  '@keyframes fadeInAnimation': {
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 1,
+    },
+  },
   border: {
     borderRadius: 4,
     background: theme.palette.secondary.main,
@@ -50,10 +58,12 @@ const useStyles = makeStyles((theme) => ({
     transition: 'background 0.3s, opacity 0.3s',
     cursor: 'pointer',
     textAlign: 'left',
-    opacity: 1,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     width: '100%',
+    animation: '$fadeInAnimation ease 0.4s',
+    animationIterationCount: 1,
+    animationFillMode: 'forwards',
     '&:last-child': {
       borderBottom: `1px solid transparent`,
     },
