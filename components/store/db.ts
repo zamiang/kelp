@@ -31,6 +31,7 @@ interface Db extends DBSchema {
     value: IPerson;
     key: string;
     indexes: {
+      'by-person-id': string;
       'by-google-id': string;
       'by-email': string;
       'is-self': string;
@@ -81,7 +82,7 @@ interface Db extends DBSchema {
     value: IFormattedAttendee;
     key: string;
     indexes: {
-      'by-person-id': string;
+      'by-email': string;
       'by-segment-id': string;
       'by-day': number;
       'by-week': number;
@@ -99,7 +100,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 4;
+const databaseVerson = 5;
 
 export type dbType = IDBPDatabase<Db>;
 
@@ -146,12 +147,24 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('task');
         db.deleteObjectStore('taskDocument');
       }
+      if (oldVersion === 4) {
+        db.deleteObjectStore('person');
+        db.deleteObjectStore('document');
+        db.deleteObjectStore('driveActivity');
+        db.deleteObjectStore('meeting');
+        db.deleteObjectStore('attendee');
+        db.deleteObjectStore('tfidf');
+        db.deleteObjectStore('segmentDocument');
+        db.deleteObjectStore('task');
+        db.deleteObjectStore('taskDocument');
+        db.deleteObjectStore('topWebsite');
+      }
 
       const personStore = db.createObjectStore('person', {
         keyPath: 'id',
       });
-      personStore.createIndex('by-google-id', 'googleId', { unique: true });
       personStore.createIndex('by-email', 'emailAddresses', { unique: false, multiEntry: true });
+      personStore.createIndex('by-google-id', 'googleIds', { unique: false, multiEntry: true });
       personStore.createIndex('is-self', 'isCurrentUser', { unique: false });
 
       db.createObjectStore('document', {
@@ -173,9 +186,9 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         keyPath: 'id',
       });
       attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
-      attendeeStore.createIndex('by-person-id', 'personId', { unique: false });
       attendeeStore.createIndex('by-day', 'day', { unique: false });
       attendeeStore.createIndex('by-week', 'week', { unique: false });
+      attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
 
       const tfidfStore = db.createObjectStore('tfidf', {
         keyPath: 'id',

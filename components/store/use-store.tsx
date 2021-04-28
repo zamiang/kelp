@@ -175,6 +175,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
         driveActivityDataStore,
         timeDataStore,
         attendeeDataStore,
+        personDataStore,
       );
 
       setLoadingMessage('Matching Tasks, Documents and Meetings');

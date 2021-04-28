@@ -44,13 +44,14 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
     const fetchData = async () => {
       const p = await props.store.personDataStore.getById(personId);
       setPerson(p);
-    };
-    void fetchData();
-  }, [props.store.isLoading, personId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const s = await props.store.timeDataStore.getSegmentsForPersonId(personId);
+      const s =
+        p &&
+        flatten(
+          await Promise.all(
+            p.emailAddresses.map((e) => props.store.timeDataStore.getSegmentsForEmail(e)),
+          ),
+        );
       if (s) {
         const filteredSegments = s.filter(Boolean) as ISegment[];
         setSegments(filteredSegments);
@@ -141,7 +142,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <MeetingList segments={upcomingSegments} personStore={props.store.personDataStore} />
           </div>
         )}
-        {shouldShowPersonNotes && person.isInContacts && person.googleId && (
+        {shouldShowPersonNotes && person.isInContacts && (
           <div className={classes.section}>
             <Typography variant="h6">Notes</Typography>
             <PersonNotes
@@ -153,7 +154,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             />
           </div>
         )}
-        {(!person.isInContacts || !person.googleId) && (
+        {!person.isInContacts && (
           <div className={classes.section}>
             <Typography variant="body2">
               Add this person to your google contacts for more info{' '}

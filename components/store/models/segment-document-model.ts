@@ -7,6 +7,7 @@ import { IFormattedDriveActivity, ISegment, ISegmentDocument } from '../data-typ
 import { dbType } from '../db';
 import AttendeeModel from './attendee-model';
 import DriveActivityModel from './drive-activity-model';
+import PersonModel from './person-model';
 import SegmentModel from './segment-model';
 
 const formatSegmentTitle = (text?: string) =>
@@ -63,6 +64,7 @@ export default class SegmentDocumentModel {
     driveActivityStore: DriveActivityModel,
     timeStore: SegmentModel,
     attendeeStore: AttendeeModel,
+    personStore: PersonModel,
   ) {
     const driveActivity = await driveActivityStore.getAll();
     const segments = await timeStore.getAll();
@@ -79,8 +81,13 @@ export default class SegmentDocumentModel {
           const summary = segment.summary?.toLocaleLowerCase();
           if (!summary?.includes('ooo') && !summary?.includes('out of office')) {
             const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-            isActorAttendee = !!attendees.find(
-              (a) => a.personGoogleId === driveActivityItem.actorPersonId,
+            const people = await personStore.getBulkByEmail(
+              attendees.map((a) => a.emailAddress).filter(Boolean) as string[],
+            );
+            isActorAttendee = !!people.find(
+              (a) =>
+                driveActivityItem.actorPersonId &&
+                a.googleIds.includes(driveActivityItem.actorPersonId),
             );
             isActorCurrentUser = !!attendees.find((a) => a.self);
           }
