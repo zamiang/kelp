@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
-import CheckIconOrange from '../../public/icons/check-orange.svg';
+import CheckIcon from '../../public/icons/check.svg';
 import BackIcon from '../../public/icons/close.svg';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
@@ -16,12 +16,26 @@ import { ITopWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { WebsiteRow } from '../website/website-row';
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme) => ({
   container: {
     position: 'relative',
     border: '0px solid',
   },
-  input: {},
+  input: {
+    borderRadius: 4,
+    border: `1px solid ${theme.palette.divider}`,
+    background: theme.palette.background.paper,
+    transition: 'border-color 0.3s',
+    '&:focus': {
+      borderColor: theme.palette.primary.main,
+    },
+  },
+  button: {
+    marginLeft: theme.spacing(0.5),
+    marginTop: theme.spacing(1),
+    borderRadius: theme.spacing(1),
+    border: `1px solid ${theme.palette.divider}`,
+  },
 }));
 
 const isValidHttpUrl = (string: string) => {
@@ -54,32 +68,30 @@ const AddWebsite = (props: {
   if (isEditing) {
     return (
       <div className={clsx(classes.rowNoHover, formStyles.container)}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <Typography variant="h6">Add a custom site</Typography>
-          </Grid>
-          <Grid item>
-            <IconButton onClick={() => setIsEditing(false)} style={{ marginTop: -10 }}>
-              <BackIcon width="24" height="24" />
-            </IconButton>
-          </Grid>
-        </Grid>
-        {shouldShowUrlError && (
-          <Typography variant="caption">Enter a valid URL (like https://www.google.com)</Typography>
-        )}
         <TextField
           variant="filled"
           placeholder="https://..."
           fullWidth
+          inputProps={{
+            className: formStyles.input,
+          }}
           onChange={(event) => {
             setUrl(event.target.value);
           }}
           value={url}
         />
+        {shouldShowUrlError && (
+          <Typography variant="caption" color="primary" style={{ marginBottom: 3 }}>
+            Enter a valid URL (like https://www.google.com)
+          </Typography>
+        )}
         <TextField
           style={{ marginTop: 12 }}
           variant="filled"
           placeholder="Name of the site"
+          inputProps={{
+            className: formStyles.input,
+          }}
           fullWidth
           onChange={(event) => {
             setTitle(event.target.value);
@@ -87,20 +99,26 @@ const AddWebsite = (props: {
           value={title}
         />
         <br />
-        <Button
-          className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
-          variant="outlined"
-          disabled={!isEnabled}
-          startIcon={<CheckIconOrange width="24" height="24" />}
-          style={{ marginTop: 12 }}
-          onClick={() => {
-            void props.store.topWebsitesStore.addWebsite(url, title);
-            setIsEditing(false);
-            props.setIncrement(props.increment + 1);
-          }}
-        >
-          Save
-        </Button>
+        <Grid container justify="flex-end" alignItems="center">
+          <Grid item>
+            <IconButton onClick={() => setIsEditing(false)} className={formStyles.button}>
+              <BackIcon width="24" height="24" />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton
+              disabled={!isEnabled}
+              className={formStyles.button}
+              onClick={() => {
+                void props.store.topWebsitesStore.addWebsite(url, title);
+                setIsEditing(false);
+                props.setIncrement(props.increment + 1);
+              }}
+            >
+              <CheckIcon width="24" height="24" />
+            </IconButton>
+          </Grid>
+        </Grid>
       </div>
     );
   }

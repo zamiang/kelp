@@ -158,7 +158,7 @@ const Home = (props: { store: IStore }) => {
             boxShadow={1}
             borderRadius={8}
             className={classes.boxStyle}
-            style={{ marginBottom: 12 }}
+            style={{ paddingBottom: 12 }}
           >
             {topDocuments.map((document) => (
               <DocumentRow
