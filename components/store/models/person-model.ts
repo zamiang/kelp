@@ -96,7 +96,11 @@ export default class PersonModel {
         }
       });
       if (contact) {
+        // NOTE: this is where both are added
         peopleToAdd.push(contact);
+        if (person.id && person.id !== (contact as any).id) {
+          peopleToAdd.push(person);
+        }
       } else if (person.id) {
         peopleToAdd.push(formatPersonForStore(person));
       }
@@ -157,7 +161,8 @@ export default class PersonModel {
 
   async getById(id: string): Promise<IPerson | undefined> {
     if (id) {
-      return (await this.db.getAllFromIndex('person', 'by-person-id', id))[0];
+      const people = await this.db.getAllFromIndex('person', 'by-google-id', id);
+      return people[0];
     }
     return undefined;
   }
@@ -199,7 +204,10 @@ export default class PersonModel {
   async getBulkByPersonId(personIds: string[]): Promise<IPerson[]> {
     const uniqIds = uniq(personIds);
     const people = await Promise.all(
-      uniqIds.map((email) => this.db.getFromIndex('person', 'by-google-id', email)),
+      uniqIds.map(async (id) => {
+        const people = await this.db.getAllFromIndex('person', 'by-google-id', id);
+        return people[0];
+      }),
     );
     return people.filter(Boolean) as any;
   }

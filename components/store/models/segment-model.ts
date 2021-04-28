@@ -117,21 +117,19 @@ export default class SegmentModel {
     );
   }
 
-  async getSegmentsForPersonId(personId: string) {
-    const attendees = await this.db.getAllFromIndex('attendee', 'by-person-id', personId);
+  async getSegmentsForEmail(email: string) {
+    const attendees = await this.db.getAllFromIndex('attendee', 'by-email', email);
     return Promise.all(attendees.map((attendee) => this.db.get('meeting', attendee.segmentId)));
   }
 
   async getDriveActivityIdsForWeek(week: number) {
     const segments = await this.getAll();
-    // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
     flatten(segments.filter((segment) => getWeek(segment.start) === week).map(() => []));
     return segments;
   }
 
   async getDriveActivityIdsForDate(date: number) {
     const segments = await this.getAll();
-    // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
     flatten(segments.filter((segment) => getDate(segment.start) === date).map(() => []));
     return segments;
   }

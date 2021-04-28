@@ -44,13 +44,14 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
     const fetchData = async () => {
       const p = await props.store.personDataStore.getById(personId);
       setPerson(p);
-    };
-    void fetchData();
-  }, [props.store.isLoading, personId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const s = await props.store.timeDataStore.getSegmentsForPersonId(personId);
+      const s =
+        p &&
+        flatten(
+          await Promise.all(
+            p.emailAddresses.map((e) => props.store.timeDataStore.getSegmentsForEmail(e)),
+          ),
+        );
       if (s) {
         const filteredSegments = s.filter(Boolean) as ISegment[];
         setSegments(filteredSegments);

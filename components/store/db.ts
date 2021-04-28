@@ -82,7 +82,7 @@ interface Db extends DBSchema {
     value: IFormattedAttendee;
     key: string;
     indexes: {
-      'by-person-id': string;
+      'by-email': string;
       'by-segment-id': string;
       'by-day': number;
       'by-week': number;
@@ -163,9 +163,8 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       const personStore = db.createObjectStore('person', {
         keyPath: 'id',
       });
-      personStore.createIndex('by-google-id', 'googleId', { unique: true });
       personStore.createIndex('by-email', 'emailAddresses', { unique: false, multiEntry: true });
-      personStore.createIndex('by-person-id', 'personIds', { unique: false, multiEntry: true });
+      personStore.createIndex('by-google-id', 'googleIds', { unique: false, multiEntry: true });
       personStore.createIndex('is-self', 'isCurrentUser', { unique: false });
 
       db.createObjectStore('document', {
@@ -187,9 +186,9 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         keyPath: 'id',
       });
       attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
-      attendeeStore.createIndex('by-person-id', 'personId', { unique: false });
       attendeeStore.createIndex('by-day', 'day', { unique: false });
       attendeeStore.createIndex('by-week', 'week', { unique: false });
+      attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
 
       const tfidfStore = db.createObjectStore('tfidf', {
         keyPath: 'id',

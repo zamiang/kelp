@@ -18,8 +18,8 @@ const Row = (props: {
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   useEffect(() => {
     const fetchData = async () => {
-      if (props.attendee.personId) {
-        const result = await props.personStore.getById(props.attendee.personId);
+      if (props.attendee.emailAddress) {
+        const result = await props.personStore.getByEmail(props.attendee.emailAddress);
         setPerson(result);
       }
     };
