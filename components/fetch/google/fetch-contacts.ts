@@ -13,6 +13,7 @@ const fetchContacts = async (authToken: string) => {
     personFields: usedPersonFields,
     resourceName: 'people/me',
     sortOrder: 'LAST_MODIFIED_DESCENDING',
+    pageSize: '300',
   };
   // Ref: gapi.client.people.people.connections.list();
   const peopleResponse = await fetch(

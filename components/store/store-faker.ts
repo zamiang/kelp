@@ -25,6 +25,7 @@ times(PEOPLE_COUNT, () => {
     isInContacts: true,
     googleId: emailAddress,
     isCurrentUser: 0,
+    dateAdded: new Date(),
   });
 });
 
@@ -36,6 +37,7 @@ const currentUser = {
   imageUrl: Faker.image.imageUrl(32, 32, 'people', true, true),
   isInContacts: true,
   isCurrentUser: 1,
+  dateAdded: new Date(),
 };
 
 people.push(currentUser);

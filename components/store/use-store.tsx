@@ -168,7 +168,7 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
       );
 
       setLoadingMessage('Saving Meeting Attendee');
-      await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
+      await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
 
       setLoadingMessage('Matching Documents and Meetings');
       await segmentDocumentStore.addSegmentDocumentsToStore(

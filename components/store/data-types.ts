@@ -52,6 +52,7 @@ export interface IPerson {
   readonly isCurrentUser: number; // needs to be a number to be a valid index
   readonly isInContacts: boolean;
   readonly etag?: string;
+  readonly dateAdded: Date;
 }
 
 /**

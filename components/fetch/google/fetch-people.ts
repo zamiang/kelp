@@ -41,6 +41,7 @@ export const formatPerson = (
     isCurrentUser: 0,
     notes: person.biographies ? getNotesForBiographies(person.biographies) : undefined,
     emailAddresses,
+    dateAdded: new Date(),
     etag: person.etag,
     imageUrl: person.photos && person.photos[0].url ? person.photos[0].url : undefined,
   };

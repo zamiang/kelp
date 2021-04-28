@@ -5,6 +5,7 @@ import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
 import { IFormattedAttendee, IPerson, ISegment } from '../data-types';
 import { dbType } from '../db';
+import { IStore } from '../use-store';
 
 interface IAttendee {
   readonly email?: string;
@@ -37,7 +38,7 @@ export default class AttendeeModel {
   }
 
   // We need to make sure the current user is an attendee of all meetings
-  async addAttendeesToStore(segments: ISegment[]) {
+  async addAttendeesToStore(segments: ISegment[], personDataStore: IStore['personDataStore']) {
     const attendees = await Promise.all(
       segments.map(async (segment) => {
         const attendees = segment.attendees;
@@ -46,11 +47,13 @@ export default class AttendeeModel {
         }
         return await Promise.all(
           attendees.map(async (attendee) => {
-            const people = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
-            if (people[0] && people[0].id) {
-              return formatAttendee(attendee, people[0], segment);
-            } else {
-              console.error('missing', attendee, people);
+            if (attendee.email) {
+              const person = await personDataStore.getByEmail(attendee.email);
+              if (person) {
+                return formatAttendee(attendee, person, segment);
+              } else {
+                console.error('missing', attendee);
+              }
             }
           }),
         );

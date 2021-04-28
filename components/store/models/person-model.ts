@@ -10,6 +10,7 @@ const createNewPersonFromEmail = (email: string): IPerson => ({
   emailAddresses: [email],
   isCurrentUser: 0,
   isInContacts: false,
+  dateAdded: new Date(),
 });
 
 const formatPersonForStore = (person: IPerson) => ({
@@ -148,9 +149,30 @@ export default class PersonModel {
     return undefined;
   }
 
-  async getPersonIdForEmailAddress(emailAddress: string) {
-    const person = await this.db.getFromIndex('person', 'by-email', emailAddress);
-    return person?.id;
+  async getByEmail(email: string): Promise<IPerson> {
+    const people = await this.db.getAllFromIndex('person', 'by-email', email);
+    if (people.length > 1) {
+      const sortedPeople = people.sort((a, b) => {
+        const isBothInContacts = a.isInContacts && b.isInContacts;
+        const aDateAdded = a.dateAdded || new Date(new Date().setFullYear(1970));
+        const bDateAdded = b.dateAdded || new Date(new Date().setFullYear(1970));
+        if (isBothInContacts) {
+          return aDateAdded > bDateAdded ? -1 : 1;
+        } else {
+          return a.isInContacts ? -1 : 1;
+        }
+      });
+
+      await Promise.all(
+        sortedPeople.map(async (p, index) => {
+          if (index > 0) {
+            return await this.db.delete('person', p.id);
+          }
+        }),
+      );
+      return sortedPeople[0];
+    }
+    return people[0];
   }
 
   async getBulkByEmail(emails: string[]): Promise<IPerson[]> {
