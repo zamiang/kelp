@@ -64,15 +64,11 @@ const useStyles = makeStyles((theme) => ({
     animation: '$fadeInAnimation ease 0.4s',
     animationIterationCount: 1,
     animationFillMode: 'forwards',
-    '&:last-child': {
-      borderBottom: `1px solid transparent`,
-    },
     '&:hover': {
       backgroundColor: lightGreyColor,
     },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
-      borderColor: theme.palette.primary.main,
     },
   },
   rowTopPadding: {

@@ -33,7 +33,7 @@ const useFakeStore = (db: dbType): IStore => {
       await timeDataStore.addSegments(data.segments, true);
       await documentDataStore.addDocuments(data.documents, true);
       await driveActivityDataStore.addDriveActivityToStore(data.driveActivity, data.currentUser.id);
-      await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll());
+      await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
       await taskDataStore.addTasksToStore(data.tasks, true);
       await tfidfStore.saveDocuments({
         driveActivityStore: driveActivityDataStore,

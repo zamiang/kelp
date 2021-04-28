@@ -106,6 +106,7 @@ const DayContainer = (props: {
             key={meeting.id}
             id={meeting.id}
             className={getClassesForMeeting(meeting, rowStyles, props.selectedMeetingId)}
+            style={{ marginBottom: 6 }}
           >
             <MeetingRow
               shouldRenderCurrentTime={false}
@@ -117,10 +118,12 @@ const DayContainer = (props: {
         ))}
       </div>
       {pastMeetings.length > 0 && !isHidden && (
-        <Typography className={classes.panelTextButton} onClick={() => setIsHidden(true)}>
-          <PlusIcon width="18" height="18" style={{ verticalAlign: 'sub' }} />
-          Show {pastMeetings.length} earlier meetings
-        </Typography>
+        <div style={{ marginBottom: 6 }}>
+          <Typography className={classes.panelTextButton} onClick={() => setIsHidden(true)}>
+            <PlusIcon width="18" height="18" style={{ verticalAlign: 'sub' }} />
+            Show {pastMeetings.length} earlier meetings
+          </Typography>
+        </div>
       )}
       {meetings.map((meeting) => (
         <div
