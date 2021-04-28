@@ -57,7 +57,6 @@ export const TaskEditBox = (props: {
         }}
         value={text}
         onKeyDown={(event) => {
-          console.log(event.key, event.shiftKey);
           if (event.key !== 'Enter' || event.shiftKey) {
             return;
             // put the login here

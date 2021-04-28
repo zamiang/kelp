@@ -8,12 +8,13 @@ const createNewPersonFromEmail = (email: string): IPerson => ({
   id: email,
   name: email,
   emailAddresses: [email],
+  googleIds: [],
   isCurrentUser: 0,
   isInContacts: false,
   dateAdded: new Date(),
 });
 
-const formatPersonForStore = (person: IPerson) => ({
+const formatPersonForStore = (person: IPerson): IPerson => ({
   ...person,
   id: person.id,
 });
@@ -25,6 +26,18 @@ export default class PersonModel {
     this.db = db;
   }
 
+  /**
+   * IMPORTANT NOTE
+   * in google, a unique individual can have
+   * - multiple email addresses
+   * - multiple person ids for each email address
+   *
+   * @param people
+   * @param currentUser
+   * @param contacts
+   * @param emailAddresses
+   * @returns
+   */
   async addPeopleToStore(
     people: IPerson[],
     currentUser?: IPerson,
@@ -144,7 +157,7 @@ export default class PersonModel {
 
   async getById(id: string): Promise<IPerson | undefined> {
     if (id) {
-      return this.db.get('person', id);
+      return (await this.db.getAllFromIndex('person', 'by-person-id', id))[0];
     }
     return undefined;
   }

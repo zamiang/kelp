@@ -36,7 +36,7 @@ export const formatPerson = (
   return {
     id,
     name,
-    googleId: requestedResourceName || undefined,
+    googleIds: requestedResourceName ? [requestedResourceName] : [],
     isInContacts: person.names ? true : false,
     isCurrentUser: 0,
     notes: person.biographies ? getNotesForBiographies(person.biographies) : undefined,

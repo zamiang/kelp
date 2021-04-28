@@ -141,7 +141,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <MeetingList segments={upcomingSegments} personStore={props.store.personDataStore} />
           </div>
         )}
-        {shouldShowPersonNotes && person.isInContacts && person.googleId && (
+        {shouldShowPersonNotes && person.isInContacts && (
           <div className={classes.section}>
             <Typography variant="h6">Notes</Typography>
             <PersonNotes
@@ -153,7 +153,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             />
           </div>
         )}
-        {(!person.isInContacts || !person.googleId) && (
+        {!person.isInContacts && (
           <div className={classes.section}>
             <Typography variant="body2">
               Add this person to your google contacts for more info{' '}

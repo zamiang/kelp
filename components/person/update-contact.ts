@@ -36,7 +36,7 @@ export const updateContactNotes = async (
 
   try {
     const response = await fetch(
-      `https://people.googleapis.com/v1/${person.googleId}:updateContact?${new URLSearchParams(
+      `https://people.googleapis.com/v1/${person.id}:updateContact?${new URLSearchParams(
         params,
       ).toString()}`,
       {

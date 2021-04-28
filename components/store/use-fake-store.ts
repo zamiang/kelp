@@ -46,6 +46,7 @@ const useFakeStore = (db: dbType): IStore => {
         driveActivityDataStore,
         timeDataStore,
         attendeeDataStore,
+        personDataStore,
       );
       await taskDocumentDataStore.addTaskDocumentsToStore(
         driveActivityDataStore,

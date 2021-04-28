@@ -67,7 +67,7 @@ const NotesEditForm = (props: {
   const buttonClasses = useButtonStyles();
   const onSubmit = handleSubmit(async (data) => {
     const response = await updateContactNotes(
-      props.person.googleId!,
+      props.person.id,
       data.note,
       props.scope,
       props.accessToken,
@@ -132,7 +132,7 @@ const PersonNotes = (props: {
             )}
           </span>
         )}
-        {!isEditing && props.person.googleId && !props.person.isCurrentUser && (
+        {!isEditing && props.person.isInContacts && !props.person.isCurrentUser && (
           <IconButton className={classes.edit} onClick={onEdit} size="small">
             <EditIcon width="24" height="24" />
           </IconButton>

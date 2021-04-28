@@ -22,7 +22,6 @@ export interface IDocument {
 export interface IFormattedAttendee {
   readonly id: string;
   readonly personId?: string;
-  readonly personGoogleId?: string;
   readonly emailAddress?: string;
   readonly responseStatus?: string;
   readonly self?: boolean;
@@ -48,7 +47,7 @@ export interface IPerson {
   readonly emailAddresses: string[];
   readonly imageUrl?: string;
   readonly notes?: string;
-  readonly googleId?: string;
+  readonly googleIds: string[];
   readonly isCurrentUser: number; // needs to be a number to be a valid index
   readonly isInContacts: boolean;
   readonly etag?: string;

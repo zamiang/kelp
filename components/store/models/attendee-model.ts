@@ -21,7 +21,6 @@ const formatAttendee = (
   id: `${segment.id}-${person.id}`,
   segmentId: segment.id,
   personId: person.id,
-  personGoogleId: person.googleId || undefined,
   responseStatus: attendee.responseStatus,
   self: attendee.self,
   emailAddress: attendee.email ? formatGmailAddress(attendee.email) : undefined,

@@ -45,8 +45,6 @@ export const NewMeeting = () => {
     )}Z`,
   });
 
-  console.log(createParams.toString(), start, end);
-
   const googleCalendarLink = `https://www.google.com/calendar/render?${createParams.toString()}`;
 
   return (

@@ -36,7 +36,6 @@ export default class DriveActivityModel {
         RollbarErrorTracking.logErrorInRollbar(result.reason);
       }
     });
-    console.log(driveActivity, '<<<<<<<');
     return;
   }
 
