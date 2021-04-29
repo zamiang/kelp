@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import CheckIcon from '../../public/icons/check.svg';
 import useButtonStyles from '../shared/button-styles';
 import rowStyles from '../shared/row-styles';
 import { ITask } from '../store/data-types';
