@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import HelpIcon from '../../public/icons/help.svg';
 import SearchIcon from '../../public/icons/search.svg';
-import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IDocument, ISegmentDocument } from '../store/data-types';
@@ -93,7 +92,6 @@ const DocumentRow = (props: {
 }) => {
   const isSelected = props.selectedDocumentId === props.document.id;
   const router = useHistory();
-  const buttonStyles = useButtonStyles();
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);

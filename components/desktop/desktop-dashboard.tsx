@@ -31,11 +31,20 @@ export const MOBILE_WIDTH = 700;
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
+  '@keyframes backgroundAnimation': {
+    from: {
+      backgroundPosition: '0% 75%',
+    },
+    '50%': { backgroundPosition: '100% 26%' },
+    to: { backgroundPosition: '0% 75%' },
+  },
   content: {
+    background: backgroundGradient,
+    backgroundSize: '200% 200%',
+    animation: '$backgroundAnimation 10s ease infinite',
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',
-    background: backgroundGradient,
     minHeight: '100vh',
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(2),

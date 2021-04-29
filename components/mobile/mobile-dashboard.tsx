@@ -20,6 +20,13 @@ import Handle404 from './handle-404';
 import PopupHeader from './popup-header';
 
 const useInfoStyles = makeStyles((theme) => ({
+  '@keyframes backgroundAnimationMobile': {
+    from: {
+      backgroundPosition: '0% 75%',
+    },
+    '50%': { backgroundPosition: '100% 26%' },
+    to: { backgroundPosition: '0% 75%' },
+  },
   homeRow: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
@@ -36,10 +43,12 @@ const useInfoStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   content: {
+    background: backgroundGradient,
+    backgroundSize: '100% 100%',
+    animation: '$backgroundAnimationMobile 10s ease infinite',
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',
-    background: backgroundGradient,
     minHeight: '100vh',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
