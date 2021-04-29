@@ -115,7 +115,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               </Typography>
               <Box
                 boxShadow={1}
-                borderRadius={8}
+                borderRadius={16}
                 maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
@@ -132,7 +132,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               </Typography>
               <Box
                 boxShadow={1}
-                borderRadius={8}
+                borderRadius={16}
                 maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
@@ -146,7 +146,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               </Typography>
               <Box
                 boxShadow={1}
-                borderRadius={8}
+                borderRadius={16}
                 maxHeight={'calc(100vh - 230px)'}
                 overflow="auto"
                 style={{ background: '#fff' }}
@@ -161,7 +161,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 </Typography>
                 <Box
                   boxShadow={1}
-                  borderRadius={8}
+                  borderRadius={16}
                   maxHeight={'calc(100vh - 230px)'}
                   overflow="auto"
                   style={{ background: '#fff' }}
@@ -186,7 +186,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                     >
                       <Box
                         boxShadow={1}
-                        borderRadius={8}
+                        borderRadius={16}
                         overflow="auto"
                         style={{ background: '#fff' }}
                       >

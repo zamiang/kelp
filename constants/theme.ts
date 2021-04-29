@@ -177,6 +177,9 @@ const theme = createMuiTheme({
     em: {
       fontFamily: italicFontFamily,
     },
+    shape: {
+      borderRadius: 16,
+    },
   },
   overrides: {
     MuiCssBaseline: {
@@ -245,7 +248,7 @@ const theme = createMuiTheme({
         paddingBottom: '​12px',
       },
       multiline: {
-        padding: '18px 12px 18px 18px',
+        padding: '16px 12px 16px 18px',
         background: '#eee',
       },
       underline: {

@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
   greeting: {
     textAlign: 'center',
     margin: theme.spacing(2),
-    opacity: 0.4,
   },
 }));
 
@@ -108,7 +107,9 @@ const NavBar = (props: { store: IStore }) => {
         </Grid>
         <Grid item>
           <div className={classes.greeting}>
-            <Typography variant="h3">Good {greeting}</Typography>
+            <Typography variant="h3" style={{ fontSize: 22, color: 'rgba(0,0,0,0.2)' }}>
+              Good {greeting}
+            </Typography>
           </div>
         </Grid>
         {props.store.error && (

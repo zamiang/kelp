@@ -14,12 +14,18 @@ const useStyles = makeStyles((theme) => ({
   container: {
     textAlign: 'center',
     borderRadius: 5,
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    cursor: 'pointer',
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: 0,
+    },
   },
   meetingTimeInWords: {
-    color: theme.palette.text.hint,
     display: 'inline-block',
     marginBottom: 0,
+  },
+  heading: {
+    fontSize: 18,
   },
 }));
 
@@ -47,6 +53,9 @@ export const FeaturedMeeting = (props: {
     >
       <Grid container alignItems="center">
         <Grid item xs={12}>
+          <Typography className={classes.heading} style={{ cursor: 'pointer' }}>
+            {props.meeting.summary || '(no title)'}
+          </Typography>
           {isHappeningNow && (
             <Typography variant="h6" className={classes.meetingTimeInWords}>
               Happening Now
@@ -57,9 +66,6 @@ export const FeaturedMeeting = (props: {
               In {formatDistanceToNow(props.meeting.start)}
             </Typography>
           )}
-          <Typography variant="h3" style={{ cursor: 'pointer' }}>
-            {props.meeting.summary || '(no title)'}
-          </Typography>
         </Grid>
         {domain && isInNextHour && (
           <Grid item xs={12}>

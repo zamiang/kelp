@@ -20,15 +20,16 @@ const useHeaderStyles = makeStyles((theme) => ({
     border: '0px',
     background: theme.palette.background.paper,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    padding: theme.spacing(1),
+    padding: 9,
     zIndex: 6,
     justifyContent: 'space-between',
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: 28,
+    minHeight: 60,
   },
   drawerPaperNoPadding: {
     background: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-    minHeight: 57,
+    borderRadius: 28,
+    minHeight: 60,
   },
   whiteHeader: {
     border: '0px',
@@ -54,7 +55,6 @@ const useHeaderStyles = makeStyles((theme) => ({
   },
   greeting: {
     textAlign: 'center',
-    opacity: 0.4,
   },
 }));
 
@@ -111,9 +111,9 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
     const type = location.pathname.split('/')[1];
     const id = decodeURIComponent(location.pathname.split('/')[2]);
     return (
-      <Box className={classes.drawerPaper} boxShadow={1}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
+      <Grid container alignItems="center" justify="space-between">
+        <Grid item>
+          <Box boxShadow={1} bgcolor="white" style={{ padding: 9, borderRadius: 32 }}>
             <IconButton
               onClick={() => {
                 router.goBack();
@@ -121,14 +121,16 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
             >
               <BackIcon width="24" height="24" />
             </IconButton>
-          </Grid>
-          {shouldRenderSourceButton && (
-            <Grid item>
-              <GoToSourceButton store={props.store} type={type as any} id={id} />
-            </Grid>
-          )}
+          </Box>
         </Grid>
-      </Box>
+        {shouldRenderSourceButton && (
+          <Grid item>
+            <Box boxShadow={1} bgcolor="white" style={{ padding: 9, borderRadius: 32 }}>
+              <GoToSourceButton store={props.store} type={type as any} id={id} />
+            </Box>
+          </Grid>
+        )}
+      </Grid>
     );
   }
 
@@ -161,7 +163,9 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
         </Grid>
         <Grid item>
           <div className={classes.greeting}>
-            <Typography variant="h3">Good {greeting}</Typography>
+            <Typography variant="h3" style={{ fontSize: 22, color: 'rgba(0,0,0,0.2)' }}>
+              Good {greeting}
+            </Typography>
           </div>
         </Grid>
         <Grid item>

@@ -9,9 +9,11 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     cursor: 'pointer',
     boxShadow,
-    borderRadius: 16,
+    borderRadius: 20,
     background: theme.palette.background.paper,
     color: theme.palette.primary.main,
+    paddingRight: theme.spacing(3),
+    paddingLeft: theme.spacing(3),
   },
 }));
 

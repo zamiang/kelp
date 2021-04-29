@@ -61,10 +61,12 @@ export const TaskCreateBox = (props: {
           setText(event.target.value);
         }}
         value={text}
-      />
-      <IconButton
-        className={clsx(buttonClasses.button, taskStyles.button)}
-        onClick={() => {
+        onKeyDown={(event) => {
+          if (event.key !== 'Enter' || event.shiftKey) {
+            return;
+            // put the login here
+          }
+          event.preventDefault();
           setIsLoading(true);
           const updateTasks = async () => {
             if (props.store.defaultTaskList?.id && props.store.googleOauthToken) {
@@ -86,13 +88,15 @@ export const TaskCreateBox = (props: {
           void updateTasks();
           setText('');
         }}
-      >
-        {isLoading ? (
-          <CircularProgress color={'white' as any} size={24} />
-        ) : (
-          <CheckIcon width="24" height="24" />
-        )}
-      </IconButton>
+      />
+      {isLoading && (
+        <IconButton
+          className={clsx(buttonClasses.button, taskStyles.button)}
+          style={{ maxWidth: 30 }}
+        >
+          <CircularProgress color={'white' as any} size={18} />
+        </IconButton>
+      )}
     </div>
   );
 };

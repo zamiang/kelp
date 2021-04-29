@@ -1,13 +1,9 @@
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { mediumFontFamily } from '../../constants/theme';
-import ArrowIcon from '../../public/icons/chevron-right.svg';
-import AttendeeList from '../shared/attendee-list';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { IFormattedAttendee, ISegment, ISegmentDocument } from '../store/data-types';
+import { ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const useBelowStyles = makeStyles((theme) => ({
@@ -22,22 +18,10 @@ const useBelowStyles = makeStyles((theme) => ({
     textAlign: 'left',
     marginLeft: theme.spacing(2),
   },
-  rightIcon: {
-    float: 'right',
-    marginTop: -theme.spacing(1),
-    marginRight: theme.spacing(1),
-    transition: 'all 0.3s',
-    transform: 'rotate(90deg)',
-  },
-  rightIconUp: {
-    transform: 'rotate(-90deg)',
-  },
 }));
 
 const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLeft: boolean }) => {
   const classes = useBelowStyles();
-  const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
-  const [shouldDisplayAttendeeList, setAttendeeListDisplay] = useState<boolean>(false);
 
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
@@ -72,22 +56,10 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
     void fetchData();
   }, [props.store.isLoading, props.meeting?.summary]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (props.meeting.id) {
-        const result = await props.store.attendeeDataStore.getAllForSegmentId(props.meeting.id);
-        setAttendees(result);
-      }
-    };
-    void fetchData();
-  }, [props.store.isLoading, props.meeting.id]);
-
   const hasDocuments =
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
-
-  const hasAttendees = attendees.length > 1;
 
   return (
     <React.Fragment>
@@ -102,33 +74,6 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
             segmentDocumentsForNonAttendees={segmentDocumentsForNonAttendees}
             store={props.store}
           />
-        </div>
-      )}
-      {hasAttendees && (
-        <div className={classes.container} style={{ marginBottom: 0 }}>
-          <Typography
-            variant="h6"
-            className={classes.heading}
-            onClick={(event) => {
-              event.stopPropagation();
-              setAttendeeListDisplay(!shouldDisplayAttendeeList);
-              return false;
-            }}
-          >
-            {attendees.length} Guests
-            <IconButton
-              className={clsx(classes.rightIcon, shouldDisplayAttendeeList && classes.rightIconUp)}
-            >
-              <ArrowIcon width="24" height="24" />
-            </IconButton>
-          </Typography>
-          {shouldDisplayAttendeeList && (
-            <AttendeeList
-              personStore={props.store.personDataStore}
-              attendees={attendees}
-              showAll={false}
-            />
-          )}
         </div>
       )}
     </React.Fragment>

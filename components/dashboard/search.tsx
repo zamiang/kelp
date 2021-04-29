@@ -99,7 +99,7 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               Documents
             </Typography>
-            <Box boxShadow={1} borderRadius={8} className={classes.boxStyle}>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
               {filteredResults.documents.map((result: any) => (
                 <DocumentRow
                   selectedDocumentId={null}
@@ -116,7 +116,7 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               Tasks
             </Typography>
-            <Box boxShadow={1} borderRadius={8} className={classes.boxStyle}>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
               {filteredResults.tasks.map((result: any) => (
                 <TaskRow
                   key={result.item.id}
@@ -133,7 +133,7 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               People
             </Typography>
-            <Box boxShadow={1} borderRadius={8} className={classes.boxStyle}>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
               {filteredResults.people.map((result: any) => (
                 <PersonRow
                   selectedPersonId={null}
@@ -149,7 +149,7 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               Meetings
             </Typography>
-            <Box boxShadow={1} borderRadius={8} className={classes.boxStyle}>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
               {filteredResults.meetings.map((result: any) => (
                 <Meeting
                   key={result.item.id}

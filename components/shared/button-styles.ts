@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 6,
     paddingBottom: 6,
     transition: 'opacity 0.3s',
+    minHeight: 48,
     opacity: 1,
     '&:hover': {
       opacity: 0.6,
