@@ -28,6 +28,8 @@ const useStyles = makeStyles(() => ({
   person: {
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
+    paddingTop: 2,
+    paddingBottom: 2,
     '& > *': {
       borderBottom: 'unset',
     },
@@ -127,6 +129,7 @@ const PersonRow = (props: {
             <Button
               className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
               variant="outlined"
+              style={{ minHeight: 0 }}
               onClick={(event) => {
                 event.stopPropagation();
                 void navigator.clipboard.writeText(props.person.emailAddresses[0]);

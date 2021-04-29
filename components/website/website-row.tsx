@@ -1,11 +1,10 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import useButtonStyles from '../shared/button-styles';
+import BackIcon from '../../public/icons/close.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { ITopWebsite } from '../store/data-types';
@@ -25,7 +24,6 @@ const useStyles = makeStyles(() => ({
 
 export const WebsiteRow = (props: { website: ITopWebsite; noMargins?: boolean; store: IStore }) => {
   const rowStyles = useRowStyles();
-  const buttonStyles = useButtonStyles();
   const classes = useStyles();
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [isVisible, setVisible] = useState(!props.website.isHidden);
@@ -64,9 +62,7 @@ export const WebsiteRow = (props: { website: ITopWebsite; noMargins?: boolean; s
         </Grid>
         {isDetailsVisible && (
           <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
-            <Button
-              className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
-              variant="outlined"
+            <IconButton
               onClick={(event) => {
                 event.stopPropagation();
                 void props.store.topWebsitesStore.hideById(props.website.id);
@@ -77,8 +73,8 @@ export const WebsiteRow = (props: { website: ITopWebsite; noMargins?: boolean; s
                 return false;
               }}
             >
-              Hide
-            </Button>
+              <BackIcon width={18} height={18} />
+            </IconButton>
           </Grid>
         )}
       </Grid>

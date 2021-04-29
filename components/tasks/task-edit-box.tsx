@@ -48,7 +48,13 @@ export const TaskEditBox = (props: {
         placeholder="Add a Google Task..."
         fullWidth
         autoFocus
-        inputProps={{
+        InputProps={{
+          className: taskStyles.input,
+        }}
+        SelectProps={{
+          className: taskStyles.input,
+        }}
+        InputLabelProps={{
           className: taskStyles.input,
         }}
         className={taskStyles.input}

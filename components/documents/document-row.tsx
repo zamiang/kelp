@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -8,6 +7,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import HelpIcon from '../../public/icons/help.svg';
+import SearchIcon from '../../public/icons/search.svg';
 import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
@@ -140,17 +140,16 @@ const DocumentRow = (props: {
           </Grid>
           {isDetailsVisible && (
             <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
-              <Button
-                className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
-                variant="outlined"
+              <IconButton
+                size="small"
                 onClick={(event) => {
                   event.stopPropagation();
                   void router.push(`/documents/${props.document.id}`);
                   return false;
                 }}
               >
-                Details
-              </Button>
+                <SearchIcon width="24" height="24" />
+              </IconButton>
             </Grid>
           )}
         </Grid>
