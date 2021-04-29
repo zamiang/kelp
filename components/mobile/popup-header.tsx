@@ -104,7 +104,8 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
   const router = useHistory();
   const location = useLocation();
   const isOnSubpage = location.pathname !== '/home' && location.pathname !== '/search';
-  const shouldRenderSourceButton = location.pathname !== '/settings';
+  const shouldRenderSourceButton =
+    location.pathname !== '/settings' && location.pathname !== '/people';
   const greeting = getGreeting();
 
   if (isOnSubpage) {

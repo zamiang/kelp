@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     background: backgroundGradient,
-    backgroundSize: '200% 200%',
-    animation: '$backgroundAnimation 10s ease infinite',
+    backgroundSize: '400% 400%',
+    animation: '$backgroundAnimation 20s ease infinite',
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',

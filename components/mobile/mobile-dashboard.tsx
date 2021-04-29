@@ -44,8 +44,8 @@ const useInfoStyles = makeStyles((theme) => ({
   },
   content: {
     background: backgroundGradient,
-    backgroundSize: '100% 100%',
-    animation: '$backgroundAnimationMobile 10s ease infinite',
+    backgroundSize: '400% 400%',
+    animation: '$backgroundAnimationMobile 20s ease infinite',
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',
