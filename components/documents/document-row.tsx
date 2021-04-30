@@ -10,15 +10,28 @@ import HelpIcon from '../../public/icons/help.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
-import { IDocument, ISegmentDocument } from '../store/data-types';
+import { IDocument, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 export const MissingDocumentRow = (props: {
   segmentDocument: ISegmentDocument;
+  store: IStore;
   isSmall?: boolean;
 }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
+  const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.segmentDocument.segmentId) {
+        const result = await props.store.timeDataStore.getById(props.segmentDocument.segmentId);
+        setMeeting(result);
+      }
+    };
+    void fetchData();
+  }, [props.segmentDocument.segmentId, props.store.isLoading]);
+
   return (
     <div
       className={clsx(!props.isSmall && rowStyles.row, props.isSmall && rowStyles.rowSmall)}
@@ -42,7 +55,7 @@ export const MissingDocumentRow = (props: {
           </IconButton>
         </Grid>
         <Grid item xs={8}>
-          <Typography noWrap>{props.segmentDocument.documentId}</Typography>
+          <Typography noWrap>Document from {meeting ? meeting.summary : 'this meeting'}</Typography>
         </Grid>
       </Grid>
     </div>

@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
-import { lightGreyColor } from '../../constants/theme';
+import { lightGreyColor, mediumFontFamily } from '../../constants/theme';
 import CheckIcon from '../../public/icons/check-orange.svg';
 import BackIcon from '../../public/icons/close-orange.svg';
 import useButtonStyles from '../shared/button-styles';
@@ -38,6 +38,11 @@ const useStyle = makeStyles((theme) => ({
     marginLeft: theme.spacing(0.5),
     marginTop: theme.spacing(1),
     border: `1px solid ${theme.palette.divider}`,
+  },
+  error: {
+    marginBottom: 3,
+    fontFamily: mediumFontFamily,
+    fontWeight: 500,
   },
 }));
 
@@ -84,7 +89,7 @@ const AddWebsite = (props: {
           value={url}
         />
         {shouldShowUrlError && (
-          <Typography variant="caption" color="primary" style={{ marginBottom: 3 }}>
+          <Typography variant="caption" color="primary" className={formStyles.error}>
             Enter a valid URL (like https://www.google.com)
           </Typography>
         )}
