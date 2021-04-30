@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
   },
   text: {
     whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
   },
   showRow: {
     transition: 'all 1s ease-out',

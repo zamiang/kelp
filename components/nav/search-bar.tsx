@@ -4,16 +4,16 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import BackIcon from '../../public/icons/back.svg';
 import CloseIcon from '../../public/icons/close.svg';
+import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
   input: {
-    fontSize: 16,
+    fontSize: 22,
     [theme.breakpoints.down('sm')]: {},
   },
   container: {
-    minHeight: 55,
+    paddingTop: 5,
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
   },
@@ -30,12 +30,8 @@ const SearchBar = (props: { onClose?: () => void }) => {
   return (
     <Grid container alignItems="center" className={classes.container}>
       <Grid item>
-        <IconButton
-          onClick={() => {
-            router.goBack();
-          }}
-        >
-          <BackIcon width="24" height="24" />
+        <IconButton>
+          <SearchIcon width="24" height="24" style={{ marginLeft: 5 }} />
         </IconButton>
       </Grid>
       <Grid item xs>
@@ -48,7 +44,10 @@ const SearchBar = (props: { onClose?: () => void }) => {
           onChange={handleChange}
           name="query"
           margin="dense"
-          className={classes.input}
+          InputProps={{
+            className: classes.input,
+            disableUnderline: true,
+          }}
         />
       </Grid>
       <Grid item>
