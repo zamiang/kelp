@@ -7,7 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
-import CheckIcon from '../../public/icons/check.svg';
+import { lightGreyColor } from '../../constants/theme';
+import CheckIcon from '../../public/icons/check-orange.svg';
 import BackIcon from '../../public/icons/close.svg';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
@@ -22,18 +23,17 @@ const useStyle = makeStyles((theme) => ({
     border: '0px solid',
   },
   input: {
-    borderRadius: 4,
     border: `1px solid ${theme.palette.divider}`,
-    background: theme.palette.background.paper,
+    background: lightGreyColor,
     transition: 'border-color 0.3s',
-    '&:focus': {
+    '&.Mui-focused': {
       borderColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.background.paper,
     },
   },
   button: {
     marginLeft: theme.spacing(0.5),
     marginTop: theme.spacing(1),
-    borderRadius: theme.spacing(1),
     border: `1px solid ${theme.palette.divider}`,
   },
 }));
@@ -72,7 +72,7 @@ const AddWebsite = (props: {
           variant="filled"
           placeholder="https://..."
           fullWidth
-          inputProps={{
+          InputProps={{
             className: formStyles.input,
           }}
           onChange={(event) => {
@@ -89,7 +89,7 @@ const AddWebsite = (props: {
           style={{ marginTop: 12 }}
           variant="filled"
           placeholder="Name of the site"
-          inputProps={{
+          InputProps={{
             className: formStyles.input,
           }}
           fullWidth

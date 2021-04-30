@@ -51,13 +51,6 @@ export const TaskEditBox = (props: {
         InputProps={{
           className: taskStyles.input,
         }}
-        SelectProps={{
-          className: taskStyles.input,
-        }}
-        InputLabelProps={{
-          className: taskStyles.input,
-        }}
-        className={taskStyles.input}
         onChange={(event) => {
           setText(event.target.value);
         }}
