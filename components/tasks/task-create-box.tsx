@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import { lightGreyColor } from '../../constants/theme';
 import useButtonStyles from '../shared/button-styles';
 import rowStyles from '../shared/row-styles';
 import { ITask } from '../store/data-types';
@@ -20,11 +21,22 @@ const useStyle = makeStyles((theme) => ({
   button: {
     position: 'absolute',
     right: 28,
-    bottom: 9,
-    maxWidth: 36,
+    bottom: 10,
     background: '#BCBCBC',
+    maxWidth: 30,
+    width: 30,
+    height: 30,
+    padding: 0,
+    minHeight: 30,
   },
-  input: {},
+  input: {
+    border: `1px solid transparent`,
+    background: lightGreyColor,
+    '&.Mui-focused': {
+      borderColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.background.paper,
+    },
+  },
 }));
 
 export const TaskCreateBox = (props: {
@@ -55,7 +67,9 @@ export const TaskCreateBox = (props: {
         variant="filled"
         placeholder="Add a Google Task..."
         fullWidth
-        className={taskStyles.input}
+        InputProps={{
+          className: taskStyles.input,
+        }}
         onChange={(event) => {
           setText(event.target.value);
         }}
@@ -89,10 +103,7 @@ export const TaskCreateBox = (props: {
         }}
       />
       {isLoading && (
-        <IconButton
-          className={clsx(buttonClasses.button, taskStyles.button)}
-          style={{ maxWidth: 30 }}
-        >
+        <IconButton className={clsx(buttonClasses.button, taskStyles.button)}>
           <CircularProgress color={'white' as any} size={18} />
         </IconButton>
       )}
