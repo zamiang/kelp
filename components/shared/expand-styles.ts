@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   headingContainer: {
     marginBottom: theme.spacing(3),
+    textAlign: 'center',
   },
   relativeContainer: {
     position: 'relative',
