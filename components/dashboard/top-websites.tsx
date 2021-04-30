@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
 import { lightGreyColor } from '../../constants/theme';
 import CheckIcon from '../../public/icons/check-orange.svg';
-import BackIcon from '../../public/icons/close.svg';
+import BackIcon from '../../public/icons/close-orange.svg';
 import useButtonStyles from '../shared/button-styles';
 import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
@@ -23,9 +23,12 @@ const useStyle = makeStyles((theme) => ({
     border: '0px solid',
   },
   input: {
-    border: `1px solid ${theme.palette.divider}`,
+    border: `1px solid transparent`,
     background: lightGreyColor,
     transition: 'border-color 0.3s',
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 4,
     '&.Mui-focused': {
       borderColor: theme.palette.primary.main,
       backgroundColor: theme.palette.background.paper,
