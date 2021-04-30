@@ -1,10 +1,10 @@
-import { IDocument, IPerson, ISegment, ITask } from './data-types';
+import { IDocument, IPerson, ISegment, ITask, ITopWebsite } from './data-types';
 import { IStore } from './use-store';
 
 export interface ISearchItem {
   text: string;
-  type: 'segment' | 'document' | 'person' | 'task';
-  item: IPerson | ISegment | IDocument | ITask;
+  type: 'segment' | 'document' | 'person' | 'task' | 'website';
+  item: IPerson | ISegment | IDocument | ITask | ITopWebsite;
 }
 
 export default class SearchIndex {
@@ -52,12 +52,23 @@ export default class SearchIndex {
       }
     });
 
+    // Tassks
     const tasks = await store.taskStore.getAll();
     tasks.map((task) => {
       searchIndex.push({
         text: task.title.toLowerCase(),
         type: 'task',
         item: task,
+      });
+    });
+
+    // Tassks
+    const websites = await store.topWebsitesStore.getAll();
+    websites.map((website) => {
+      searchIndex.push({
+        text: website.title.toLowerCase(),
+        type: 'website',
+        item: website,
       });
     });
 

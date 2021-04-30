@@ -7,17 +7,19 @@ import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
 import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
-import { IDocument, IPerson, ISegment, ITask } from '../store/data-types';
+import { IDocument, IPerson, ISegment, ITask, ITopWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
 import TaskRow from '../tasks/task-row';
+import { WebsiteRow } from '../website/website-row';
 
 const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
   const meetings: ISearchItem[] = [];
   const documents: ISearchItem[] = [];
   const tasks: ISearchItem[] = [];
+  const websites: ISearchItem[] = [];
   searchResults.forEach((searchResult) => {
     const result = searchResult.item;
     if (!searchResult.score || searchResult.score > 0.7) {
@@ -32,6 +34,8 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
         return meetings.push(result);
       case 'task':
         return tasks.push(result);
+      case 'website':
+        return websites.push(result);
     }
   });
   return {
@@ -39,6 +43,7 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
     meetings,
     documents,
     tasks,
+    websites,
   };
 };
 
@@ -123,6 +128,22 @@ const Search = (props: { store: IStore }) => {
                   task={result.item as ITask}
                   store={props.store}
                   selectedTaskId={null}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+        {filteredResults.websites.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              Websites
+            </Typography>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
+              {filteredResults.websites.map((result: any) => (
+                <WebsiteRow
+                  store={props.store}
+                  key={result.item.id}
+                  website={result.item as ITopWebsite}
                 />
               ))}
             </Box>
