@@ -84,7 +84,7 @@
     "react-svg-loader": "3.0.3",
     "rimraf": "3.0.2",
     "rollbar": "2.21.1",
-    "sitemap": "6.4.0",
+    "sitemap": "7.0.0",
     "stream-browserify": "3.0.0",
     "styled-components": "5.2.3",
     "typescript": "4.2.4",
