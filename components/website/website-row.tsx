@@ -48,7 +48,7 @@ export const WebsiteRow = (props: { website: ITopWebsite; noMargins?: boolean; s
         <Grid item className={rowStyles.rowLeft}>
           <IconButton size="small">
             <img
-              src={`chrome://favicon/${props.website.url}`}
+              src={`chrome://favicon/size/48@1x/${props.website.url}`}
               height="18"
               width="18"
               style={{ margin: '0 auto' }}
