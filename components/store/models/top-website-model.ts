@@ -63,8 +63,15 @@ export default class TopWebsiteModel {
     const website = await this.db.get('topWebsite', id);
     if (website) {
       (website as any).isHidden = true;
-      return this.db.put('topWebsite', website);
+      const result = await this.db.put('topWebsite', website);
+      void this.saveToChromeStorage();
+      return result;
     }
+  }
+
+  async saveToChromeStorage() {
+    const all = await this.db.getAll('topWebsite');
+    return chrome.storage.sync.set({ kelpTopWebsites: JSON.stringify(all) });
   }
 
   async updateGroup(website: ITopWebsite[]) {
@@ -87,12 +94,30 @@ export default class TopWebsiteModel {
       .sort((a, b) => (a.order > b.order ? 1 : -1));
   }
 
-  async getAllUnfiltered() {
-    return await this.db.getAll('topWebsite');
+  async getAllUnfiltered(): Promise<ITopWebsite[]> {
+    return new Promise((resolve, reject) => {
+      // Asynchronously fetch all data from storage.sync.
+      if (chrome.storage) {
+        chrome.storage.sync.get('kelpTopWebsites', (items) => {
+          // Pass any observed errors down the promise chain.
+          if (chrome.runtime.lastError) {
+            return reject(chrome.runtime.lastError);
+          }
+          // Pass the data retrieved from storage down the promise chain.
+          if (items && items.kelpTopWebsites) {
+            resolve(JSON.parse(items.kelpTopWebsites));
+          } else {
+            resolve(this.db.getAll('topWebsite'));
+          }
+        });
+      } else {
+        resolve(this.db.getAll('topWebsite'));
+      }
+    });
   }
 
   async addWebsite(url: string, title: string) {
-    return this.db.put('topWebsite', {
+    const result = await this.db.put('topWebsite', {
       id: url,
       title,
       url,
@@ -101,5 +126,7 @@ export default class TopWebsiteModel {
       isHidden: false,
       // favicon: metadata.image,
     });
+    void this.saveToChromeStorage();
+    return result;
   }
 }

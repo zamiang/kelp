@@ -27,6 +27,7 @@
     "alarms",
     "notifications",
     "topSites",
+    "storage",
     "https://calendar.google.com/*",
     "chrome://favicon/"
   ],

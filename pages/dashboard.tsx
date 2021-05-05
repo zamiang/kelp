@@ -20,10 +20,21 @@ const LoadingDashboardContainer = () => {
   const [database, setDatabase] = useState<any>(undefined);
   const [token, setToken] = useState<string | undefined>(undefined);
   const [scope, setScope] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const fetchData = async () => {
-      setDatabase(await db('production'));
+      try {
+        setTimeout(() => {
+          if (!database) {
+            setError('A component of the web browser has crashed. Please restart your browser.');
+          }
+        }, 1000);
+        const database = await db('production');
+        setDatabase(database);
+      } catch (e) {
+        setError('A component of the web browser has crashed. Please restart your browser.');
+      }
     };
     void fetchData();
   }, []);
@@ -39,7 +50,7 @@ const LoadingDashboardContainer = () => {
 
   return (
     <React.Fragment>
-      <Loading isOpen={!token || !database} message="Loading" />
+      <Loading isOpen={!token || !database} message={error || 'Loading'} />
       {(process as any).browser && database && token && scope && (
         <LoadingStoreDashboardContainer
           database={database}
