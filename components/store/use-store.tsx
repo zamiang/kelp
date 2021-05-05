@@ -1,3 +1,4 @@
+import { subMinutes } from 'date-fns';
 import { useEffect, useState } from 'react';
 import RollbarErrorTracking from '../error-tracking/rollbar';
 import FetchAll from '../fetch/fetch-all';
@@ -77,7 +78,7 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
   };
 };
 
-const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
+const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: string): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -241,6 +242,17 @@ const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore =
     googleOauthToken,
     error: data.error,
   };
+};
+
+const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
+  const lastUpdated = localStorage.getItem('kelpLastUpdated');
+  const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
+  if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {
+    // eslint-disable-next-line
+    return useStoreWithFetching(db, googleOauthToken, scope);
+  } else {
+    return setupStoreNoFetch(db);
+  }
 };
 
 export default useStore;

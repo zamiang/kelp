@@ -7,7 +7,7 @@ import { fetchToken } from '../components/fetch/google/fetch-token';
 import MobileDashboard from '../components/mobile/mobile-dashboard';
 import Loading from '../components/shared/loading';
 import db from '../components/store/db';
-import getStore, { IStore } from '../components/store/use-store';
+import getStore, { IStore, setupStoreNoFetch } from '../components/store/use-store';
 
 export const drawerWidth = 240;
 export const MOBILE_WIDTH = 700;
