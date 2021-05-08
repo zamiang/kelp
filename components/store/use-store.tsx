@@ -245,9 +245,10 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
 };
 
 const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
-  const lastUpdated = localStorage.getItem('kelpLastUpdated');
+  const lastUpdated = localStorage.getItem('kelpStoreLastUpdated');
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
   if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {
+    localStorage.setItem('kelpStoreLastUpdated', new Date().toDateString());
     // eslint-disable-next-line
     return useStoreWithFetching(db, googleOauthToken, scope);
   } else {
