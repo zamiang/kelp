@@ -66,9 +66,8 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
 
         // segment documents
         // potentially should be in the database
-        const segmentDocumentsFromPersonEdits = await props.store.segmentDocumentStore.getAllForPersonId(
-          personId,
-        );
+        const segmentDocumentsFromPersonEdits =
+          await props.store.segmentDocumentStore.getAllForPersonId(personId);
         const segmentDocumentsFromSegments = await Promise.all(
           filteredSegments.map(async (s: ISegment) =>
             props.store.segmentDocumentStore.getAllForSegmentId(s.id),

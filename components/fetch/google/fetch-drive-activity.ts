@@ -100,7 +100,7 @@ const fetchDriveActivityForDocument = async (
         link: targetInfo && targetInfo.link,
       } as IFormattedDriveActivity;
     })
-    .filter((Boolean as any) as ExcludesFalse);
+    .filter(Boolean as any as ExcludesFalse);
 
   // these are returned as 'people ids'
   const peopleIds = formattedDriveActivity
