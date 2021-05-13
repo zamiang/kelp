@@ -48,7 +48,7 @@
     "@types/gapi.client.gmail": "1.0.3",
     "@types/gapi.client.people": "1.0.3",
     "@types/gapi.client.tasks": "1.0.3",
-    "@types/lodash": "4.14.168",
+    "@types/lodash": "4.14.169",
     "@types/pluralize": "0.0.29",
     "@types/react-beautiful-dnd": "13.0.0",
     "@types/react-linkify": "1.0.0",
