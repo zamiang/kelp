@@ -62,7 +62,7 @@
     "express": "4.17.1",
     "faker": "5.5.3",
     "fuse.js": "6.4.6",
-    "idb": "6.1.0",
+    "idb": "6.1.1",
     "lodash": "4.17.21",
     "material-ui-popup-state": "1.8.3",
     "next": "10.2.3",
