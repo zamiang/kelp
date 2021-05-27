@@ -1,6 +1,6 @@
 import { subHours } from 'date-fns';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import ErrorTracking from '../error-tracking/error-tracking';
 import {
   IDocument,
   IFormattedAttendee,
@@ -10,7 +10,7 @@ import {
   ISegmentDocument,
   ITask,
   ITaskDocument,
-  ITopWebsite,
+  IWebsite,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -88,9 +88,12 @@ interface Db extends DBSchema {
       'by-week': number;
     };
   };
-  topWebsite: {
-    value: ITopWebsite;
+  website: {
+    value: IWebsite;
     key: string;
+    indexes: {
+      'by-domain': string;
+    };
   };
 }
 
@@ -100,7 +103,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 5;
+const databaseVerson = 6;
 
 export type dbType = IDBPDatabase<Db>;
 
@@ -147,7 +150,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('task');
         db.deleteObjectStore('taskDocument');
       }
-      if (oldVersion === 4) {
+      if (oldVersion === 4 || oldVersion === 5) {
         db.deleteObjectStore('person');
         db.deleteObjectStore('document');
         db.deleteObjectStore('driveActivity');
@@ -157,7 +160,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('segmentDocument');
         db.deleteObjectStore('task');
         db.deleteObjectStore('taskDocument');
-        db.deleteObjectStore('topWebsite');
+        db.deleteObjectStore('topWebsite' as any);
       }
 
       const personStore = db.createObjectStore('person', {
@@ -227,9 +230,10 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       taskDocumentStore.createIndex('by-task-title', 'taskTitle', { unique: false });
 
       // top website store - has no indexes
-      db.createObjectStore('topWebsite', {
+      const websiteStore = db.createObjectStore('website', {
         keyPath: 'id',
       });
+      websiteStore.createIndex('by-domain', 'domain', { unique: false });
     },
     blocked() {
       console.log('blocked');
@@ -239,7 +243,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
     },
     terminated: () => {
       console.log('terminated');
-      RollbarErrorTracking.logErrorInRollbar('db terminated');
+      ErrorTracking.logErrorInRollbar('db terminated');
     },
   });
   return db;

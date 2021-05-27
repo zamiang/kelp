@@ -1,29 +1,29 @@
-import { ITopWebsite } from '../../store/data-types';
+import { flatten } from 'lodash';
+import constants from '../../../constants/config';
+import { IWebsite } from '../../store/data-types';
 
-interface VisitedSite {
-  title: string;
-  url: string;
-  duration: number;
-  visitedAt: Date;
-}
-
-const formatSite = (site: chrome.history.VisitItem, index: number): ITopWebsite => ({
+const formatSite = (site: chrome.history.HistoryItem): IWebsite => ({
   id: site.id,
-  url: site.,
-  title: site.title,
-  order: index,
-  isCustom: false,
+  url: site.url!,
+  title: site.title!,
+  visitedTime: site.lastVisitTime ? new Date(site.lastVisitTime) : new Date(),
+  domain: new URL(site.url!).host,
   isHidden: false,
 });
 
-export const fetchHistory = (): Promise<ITopWebsite[]> => {
+export const fetchHistory = (domain: string): Promise<IWebsite[]> => {
   if (!window['chrome'] || !window['chrome']['topSites']) {
     return [] as any;
   }
 
   return new Promise((resolve) => {
-    chrome.history.getVisits('https://www.google.com' as any, (sites) => {
-      resolve(sites.map((site, index) => formatSite(site, index)));
+    chrome.history.search(domain as any, (sites) => {
+      resolve(sites.filter((site) => site.url && site.title).map((site) => formatSite(site)));
     });
   });
+};
+
+export const fetchAllHistory = async (): Promise<IWebsite[]> => {
+  const websites = await Promise.all(constants.ALLOWED_DOMAINS.map((d) => fetchHistory(d)));
+  return flatten(websites);
 };

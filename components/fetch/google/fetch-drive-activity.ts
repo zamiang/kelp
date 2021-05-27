@@ -1,6 +1,6 @@
 import { flatten, uniq } from 'lodash';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IFormattedDriveActivity } from '../../store/data-types';
 
 const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
@@ -63,8 +63,8 @@ const fetchDriveActivityForDocument = async (
   }
 
   if (!activityResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(activityResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(activityResponse.statusText);
   }
 
   const response: {

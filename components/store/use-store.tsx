@@ -1,6 +1,6 @@
 import { subMinutes } from 'date-fns';
 import { useEffect, useState } from 'react';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import ErrorTracking from '../error-tracking/error-tracking';
 import FetchAll from '../fetch/fetch-all';
 import { TaskList } from './data-types';
 import { dbType } from './db';
@@ -13,7 +13,7 @@ import TimeDataStore from './models/segment-model';
 import TaskDocumentDataStore from './models/task-document-model';
 import TaskDataStore from './models/task-model';
 import TfidfDataStore from './models/tfidf-model';
-import TopSitesStore from './models/top-website-model';
+import WebsitesStore from './models/website-model';
 
 export interface IStore {
   readonly personDataStore: PersonDataStore;
@@ -24,7 +24,7 @@ export interface IStore {
   readonly taskStore: TaskDataStore;
   readonly taskDocumentStore: TaskDocumentDataStore;
   readonly attendeeDataStore: AttendeeStore;
-  readonly topWebsitesStore: TopSitesStore;
+  readonly websitesStore: WebsitesStore;
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
@@ -51,12 +51,12 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const taskDocumentStore = new TaskDocumentDataStore(db);
   const taskStore = new TaskDataStore(db);
-  const topWebsitesStore = new TopSitesStore(db);
+  const websitesStore = new WebsitesStore(db);
 
   return {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
-    topWebsitesStore,
+    websitesStore,
     personDataStore,
     documentDataStore,
     attendeeDataStore,
@@ -93,7 +93,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
-  const topWebsitesStore = new TopSitesStore(db);
+  const websitesStore = new WebsitesStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -145,9 +145,10 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   // Save top sites
   useEffect(() => {
     const addData = async () => {
-      if (data.topWebsites) {
+      if (data.websites) {
         setLoadingMessage('Saving Top Websites');
-        await topWebsitesStore.addTopWebsitesToStore(data.topWebsites);
+        // TODO:
+        await websitesStore.addHistoryToStore(data.websites);
       }
     };
     void addData();
@@ -191,7 +192,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
         setLoadingMessage(undefined);
         setLoading(false);
         if (data.error) {
-          RollbarErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
+          ErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
         }
       }
     };
@@ -224,7 +225,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
-    topWebsitesStore,
+    websitesStore,
     tfidfStore,
     taskStore: taskDataStore,
     taskDocumentStore: taskDocumentDataStore,

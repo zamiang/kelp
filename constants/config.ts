@@ -36,4 +36,17 @@ export default {
   PURPLE_BACKGROUND: '#722aff',
   PINK_BACKGROUND: '#ffe2f5', //#ff2ab4',
   BLUE_BACKGROUND: '#E5F7FF', // '#2aceff',
+  ALLOWED_DOMAINS: [
+    'docs.google.com',
+    'slides.google.com',
+    'sheets.google.com',
+    'figma.com',
+    'notion.so',
+    'miro.com',
+    'github.com',
+    'jira.com',
+    'loom.com',
+    'basecamp.com',
+    'microsoft.com', // not sure about them
+  ],
 };

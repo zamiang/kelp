@@ -1,6 +1,6 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten, orderBy } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
 import { IFormattedDriveActivity, ISegment, ISegmentDocument } from '../data-types';
@@ -127,7 +127,7 @@ export default class SegmentDocumentModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;

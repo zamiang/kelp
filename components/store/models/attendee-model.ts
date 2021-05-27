@@ -1,6 +1,6 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
 import { IFormattedAttendee, IPerson, ISegment } from '../data-types';
@@ -68,7 +68,7 @@ export default class AttendeeModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;

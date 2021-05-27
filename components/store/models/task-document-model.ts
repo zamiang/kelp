@@ -1,6 +1,6 @@
 import { addMinutes, getDayOfYear, subMinutes } from 'date-fns';
 import { flatten, orderBy } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { getWeek } from '../../shared/date-helpers';
 import { IFormattedDriveActivity, ISegment, ITask, ITaskDocument } from '../data-types';
 import { dbType } from '../db';
@@ -88,13 +88,13 @@ export default class TaskDocumentModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
 
     meetingResults.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;

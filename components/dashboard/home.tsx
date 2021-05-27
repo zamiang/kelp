@@ -12,7 +12,7 @@ import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import useRowStyles from '../shared/row-styles';
-import { ISegment, ITask, ITopWebsite } from '../store/data-types';
+import { ISegment, ITask, IWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
@@ -50,7 +50,7 @@ const Home = (props: { store: IStore }) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
-  const [topWebsites, setTopWebsites] = useState<ITopWebsite[]>([]);
+  const [websites, setWebsites] = useState<IWebsite[]>([]);
   const [tasks, setTasks] = useState<ITask[]>([]);
 
   useEffect(() => {
@@ -98,8 +98,8 @@ const Home = (props: { store: IStore }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const topWebsites = await props.store.topWebsitesStore.getAll();
-      setTopWebsites(topWebsites.filter(Boolean));
+      const w = await props.store.websitesStore.getAll();
+      setWebsites(w.filter(Boolean));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading]);
@@ -172,10 +172,10 @@ const Home = (props: { store: IStore }) => {
           </Box>
         </div>
       )}
-      {topWebsites.length > 0 && (
+      {websites.length > 0 && (
         <div className={classes.panel}>
           <Typography variant="h6" className={classes.heading}>
-            Top Websites
+            Websites
           </Typography>
           <Box boxShadow={1} borderRadius={16} className={classes.boxStyleNoPadding}>
             <TopWebsites store={props.store} />

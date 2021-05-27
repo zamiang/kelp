@@ -1,5 +1,5 @@
 import { orderBy } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IFormattedDriveActivity } from '../data-types';
 import { dbType } from '../db';
 import { getIdFromLink } from './document-model';
@@ -33,7 +33,7 @@ export default class DriveActivityModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;

@@ -1,11 +1,12 @@
 import db from '../../components/store/db';
 import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
-import { trackerStart, trackerStop } from './tracker';
+import { doTick } from './tracker';
 
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
+const trackCurrentSiteName = 'doTick';
 
 const getOrCreateStore = async () => {
   if (store) {
@@ -70,6 +71,7 @@ const setAlarm = () => {
   chrome.alarms.clearAll();
   chrome.alarms.create(notificationAlarmName, { periodInMinutes: 1 });
   chrome.alarms.create(refreshAlarmName, { periodInMinutes: 60 });
+  chrome.alarms.create(trackCurrentSiteName, { periodInMinutes: 1 });
 };
 
 const onAlarm = (alarm: chrome.alarms.Alarm) => {
@@ -77,6 +79,8 @@ const onAlarm = (alarm: chrome.alarms.Alarm) => {
     return queryAndSendNotification();
   } else if (alarm.name === refreshAlarmName) {
     return fetchDataAndCreateStore();
+  } else if (alarm.name === trackCurrentSiteName) {
+    return doTick(store);
   }
 };
 
@@ -95,15 +99,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.meetingId) {
     chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
-  }
-  if (request.shouldRun) {
-    trackerStart();
-    sendResponse({ result: 'started' });
-  }
-
-  if (request.shouldStop) {
-    trackerStop();
-    sendResponse({ result: 'stopped' });
   }
 });
 

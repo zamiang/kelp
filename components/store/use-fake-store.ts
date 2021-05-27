@@ -9,7 +9,7 @@ import TimeDataStore from './models/segment-model';
 import TaskDocumentDataStore from './models/task-document-model';
 import TaskDataStore from './models/task-model';
 import TfidfDataStore from './models/tfidf-model';
-import TopSitesStore from './models/top-website-model';
+import WebsitesStore from './models/website-model';
 import data from './store-faker';
 import { IStore } from './use-store';
 
@@ -25,7 +25,7 @@ const useFakeStore = (db: dbType): IStore => {
   const segmentDocumentStore = new SegmentDocumentModel(db);
   const taskDataStore = new TaskDataStore(db);
   const taskDocumentDataStore = new TaskDocumentDataStore(db);
-  const topWebsitesStore = new TopSitesStore(db);
+  const websitesStore = new WebsitesStore(db);
 
   useEffect(() => {
     const addData = async () => {
@@ -64,7 +64,7 @@ const useFakeStore = (db: dbType): IStore => {
     timeDataStore,
     personDataStore,
     documentDataStore,
-    topWebsitesStore,
+    websitesStore,
     attendeeDataStore,
     segmentDocumentStore,
     taskStore: taskDataStore,

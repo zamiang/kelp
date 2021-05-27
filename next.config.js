@@ -72,7 +72,6 @@ const nextConfig = {
                 "'self'",
                 'https://auth.kelp.nyc/oauth/token',
                 // 'https://slack.com/api/conversations.list',
-                'https://api.rollbar.com/api/1/item/',
                 'https://content.googleapis.com',
                 'https://accounts.google.com',
                 'https://content-people.googleapis.com',

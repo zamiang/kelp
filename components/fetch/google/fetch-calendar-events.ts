@@ -1,7 +1,7 @@
 import { first, uniq } from 'lodash';
 import urlRegex from 'url-regex';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
@@ -143,8 +143,8 @@ const fetchCalendarEvents = async (
   );
   const calendarBody = await calendarResponse.json();
   if (!calendarResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(calendarResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(calendarResponse.statusText);
   }
   const filteredCalendarEvents =
     calendarBody && calendarBody.items ? (calendarBody.items as gapi.client.calendar.Event[]) : [];

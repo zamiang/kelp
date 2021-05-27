@@ -135,12 +135,15 @@ export interface ITaskDocument {
   readonly week: number;
 }
 
-export interface ITopWebsite {
+export interface IWebsite {
   readonly id: string;
-  readonly title: string; // The title of the page
+  readonly title: string;
   readonly url: string;
-  readonly order: number;
-  readonly isCustom: boolean;
+  readonly domain: string;
+  readonly documentId?: string;
+  readonly meetingId?: string;
+  readonly taskId?: string;
+  readonly visitedTime: Date;
   readonly isHidden: boolean;
 }
 

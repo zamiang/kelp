@@ -8,10 +8,10 @@ import {
   IPerson,
   ISegment,
   ITask,
-  ITopWebsite,
+  IWebsite,
   TaskList,
 } from '../store/data-types';
-import { fetchTopSites } from './chrome/fetch-top-sites';
+import { fetchAllHistory } from './chrome/fetch-history';
 import fetchCalendarEvents, {
   getDocumentsFromCalendarEvents,
 } from './google/fetch-calendar-events';
@@ -30,7 +30,7 @@ interface IReturnType {
   readonly currentUser?: IPerson;
   readonly calendarEvents: ISegment[];
   readonly driveFiles: IDocument[];
-  readonly topWebsites: ITopWebsite[];
+  readonly websites: IWebsite[];
   readonly tasks: ITask[];
   readonly defaultTaskList?: TaskList;
   readonly driveActivity: IFormattedDriveActivity[];
@@ -123,7 +123,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   /**
    * TOP WEBSITES
    */
-  const topWebsites = useAsyncAbortable(fetchTopSites, []);
+  const websites = useAsyncAbortable(fetchAllHistory, []);
 
   /**
    * CALENDAR
@@ -213,7 +213,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
     defaultTaskList: tasksResponse.result ? tasksResponse.result.defaultTaskList : undefined,
     emailAddresses: emailList,
-    topWebsites: topWebsites.result || [],
+    websites: websites.result || [],
     refetch: async () => {
       // Current user will reloadd if it fails
       await currentUser.execute();

@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
 import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
-import { IDocument, IPerson, ISegment, ITask, ITopWebsite } from '../store/data-types';
+import { IDocument, IPerson, ISegment, ITask, IWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
@@ -143,7 +143,7 @@ const Search = (props: { store: IStore }) => {
                 <WebsiteRow
                   store={props.store}
                   key={result.item.id}
-                  website={result.item as ITopWebsite}
+                  website={result.item as IWebsite}
                 />
               ))}
             </Box>

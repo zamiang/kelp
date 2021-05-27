@@ -1,5 +1,5 @@
 import { first, uniq } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress, formatPerson } from '../../fetch/google/fetch-people';
 import { IPerson } from '../data-types';
 import { dbType } from '../db';
@@ -131,7 +131,7 @@ export default class PersonModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;
@@ -143,7 +143,7 @@ export default class PersonModel {
       try {
         await this.db.put('person', formattedPerson);
       } catch (e) {
-        RollbarErrorTracking.logErrorInRollbar(e);
+        ErrorTracking.logErrorInRollbar(e);
       }
     }
     return formattedPerson;
