@@ -26,8 +26,9 @@
     "identity",
     "alarms",
     "notifications",
-    "topSites",
+    "tabs",
     "storage",
+    "idle",
     "https://calendar.google.com/*",
     "chrome://favicon/"
   ],

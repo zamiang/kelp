@@ -1,6 +1,7 @@
 import db from '../../components/store/db';
 import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
+import { trackerStart, trackerStop } from './tracker';
 
 let store: IStore;
 const notificationAlarmName = 'notification';
@@ -94,6 +95,15 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.meetingId) {
     chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
+  }
+  if (request.shouldRun) {
+    trackerStart();
+    sendResponse({ result: 'started' });
+  }
+
+  if (request.shouldStop) {
+    trackerStop();
+    sendResponse({ result: 'stopped' });
   }
 });
 
