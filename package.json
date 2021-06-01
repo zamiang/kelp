@@ -108,7 +108,7 @@
     "copy-webpack-plugin": "9.0.0",
     "css-loader": "5.2.6",
     "eslint": "7.27.0",
-    "eslint-plugin-import": "2.23.3",
+    "eslint-plugin-import": "2.23.4",
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-security": "1.4.0",
