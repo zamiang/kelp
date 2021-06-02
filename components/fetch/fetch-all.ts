@@ -7,7 +7,6 @@ import {
   IFormattedDriveActivity,
   IPerson,
   ISegment,
-  ITask,
   IWebsite,
   TaskList,
 } from '../store/data-types';
@@ -21,7 +20,6 @@ import fetchDriveFiles from './google/fetch-drive-files';
 import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
 import { batchFetchPeople } from './google/fetch-people';
 import { fetchSelf } from './google/fetch-self';
-import { fetchTasks } from './google/fetch-tasks';
 
 interface IReturnType {
   readonly personList: IPerson[];
@@ -31,7 +29,6 @@ interface IReturnType {
   readonly calendarEvents: ISegment[];
   readonly driveFiles: IDocument[];
   readonly websites: IWebsite[];
-  readonly tasks: ITask[];
   readonly defaultTaskList?: TaskList;
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
@@ -41,7 +38,6 @@ interface IReturnType {
   readonly driveResponseLoading: boolean;
   readonly calendarResponseLoading: boolean;
   readonly contactsResponseLoading: boolean;
-  readonly tasksResponseLoading: boolean;
   readonly driveActivityLoading: boolean;
   readonly currentUserLoading: boolean;
   readonly peopleLoading: boolean;
@@ -114,13 +110,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   ] as any);
 
   /**
-   * TASKS
-   */
-  const tasksResponse = useAsyncAbortable(() => fetchTasks(googleOauthToken, limit), [
-    googleOauthToken,
-  ] as any);
-
-  /**
    * TOP WEBSITES
    */
   const websites = useAsyncAbortable(fetchAllHistory, []);
@@ -187,7 +176,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
 
   const debouncedIsLoading = useDebounce(
     peopleResponse.loading ||
-      tasksResponse.loading ||
       currentUser.loading ||
       driveResponse.loading ||
       calendarResponse.loading ||
@@ -210,8 +198,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveFiles,
     contacts: contactsResponse.result || [],
     currentUser: currentUser.result || undefined,
-    tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
-    defaultTaskList: tasksResponse.result ? tasksResponse.result.defaultTaskList : undefined,
     emailAddresses: emailList,
     websites: websites.result || [],
     refetch: async () => {
@@ -227,7 +213,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading,
-    tasksResponseLoading: tasksResponse.loading,
     peopleLoading: peopleResponse.loading,
     isLoading: debouncedIsLoading,
     error:

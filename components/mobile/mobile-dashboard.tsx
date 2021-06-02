@@ -8,13 +8,11 @@ import Home from '../dashboard/home';
 import Meetings from '../dashboard/meetings';
 import People from '../dashboard/people';
 import Search from '../dashboard/search';
-import Tasks from '../dashboard/tasks';
 import ExpandedDocument from '../documents/expand-document';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import ExpandPerson from '../person/expand-person';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import ExpandedTask from '../tasks/expand-task';
 import Settings from '../user-profile/settings';
 import Handle404 from './handle-404';
 import PopupHeader from './popup-header';
@@ -143,11 +141,6 @@ const MobileDashboard = (props: { store: IStore }) => {
               <ExpandedMeeting store={store} />
             </Box>
           </Route>
-          <Route path="/tasks/:slug">
-            <Box className={classes.box} boxShadow={1} borderRadius={16}>
-              <ExpandedTask store={store} />
-            </Box>
-          </Route>
           <Route path="/meetings">
             <Box className={classes.box} boxShadow={1} borderRadius={16}>
               <Meetings store={store} />
@@ -156,11 +149,6 @@ const MobileDashboard = (props: { store: IStore }) => {
           <Route path="/people">
             <Box className={classes.box} boxShadow={1} borderRadius={16}>
               <People store={store} />
-            </Box>
-          </Route>
-          <Route path="/tasks">
-            <Box className={classes.box} boxShadow={1} borderRadius={16}>
-              <Tasks store={store} />
             </Box>
           </Route>
           <Route path="/documents">

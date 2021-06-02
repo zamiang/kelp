@@ -6,8 +6,6 @@ import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
 import SegmentDocumentModel from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
-import TaskDocumentDataStore from './models/task-document-model';
-import TaskDataStore from './models/task-model';
 import TfidfDataStore from './models/tfidf-model';
 import WebsitesStore from './models/website-model';
 import data from './store-faker';
@@ -23,8 +21,6 @@ const useFakeStore = (db: dbType): IStore => {
   const attendeeDataStore = new AttendeeModel(db);
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentModel(db);
-  const taskDataStore = new TaskDataStore(db);
-  const taskDocumentDataStore = new TaskDocumentDataStore(db);
   const websitesStore = new WebsitesStore(db);
 
   useEffect(() => {
@@ -34,7 +30,6 @@ const useFakeStore = (db: dbType): IStore => {
       await documentDataStore.addDocuments(data.documents, true);
       await driveActivityDataStore.addDriveActivityToStore(data.driveActivity, data.currentUser.id);
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
-      await taskDataStore.addTasksToStore(data.tasks, true);
       await tfidfStore.saveDocuments({
         driveActivityStore: driveActivityDataStore,
         timeDataStore,
@@ -47,12 +42,6 @@ const useFakeStore = (db: dbType): IStore => {
         timeDataStore,
         attendeeDataStore,
         personDataStore,
-      );
-      await taskDocumentDataStore.addTaskDocumentsToStore(
-        driveActivityDataStore,
-        timeDataStore,
-        taskDataStore,
-        data.currentUser.id,
       );
       setLoading(false);
     };
@@ -67,8 +56,6 @@ const useFakeStore = (db: dbType): IStore => {
     websitesStore,
     attendeeDataStore,
     segmentDocumentStore,
-    taskStore: taskDataStore,
-    taskDocumentStore: taskDocumentDataStore,
     tfidfStore,
     isLoading,
     lastUpdated: new Date(),
@@ -79,7 +66,6 @@ const useFakeStore = (db: dbType): IStore => {
     isMeetingsLoading: false,
     isDocumentsLoading: false,
     isDriveActivityLoading: false,
-    isTasksLoading: false,
   };
 };
 

@@ -12,11 +12,10 @@ import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import useRowStyles from '../shared/row-styles';
-import { ISegment, ITask, IWebsite } from '../store/data-types';
+import { ISegment, IWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
-import Tasks from './tasks';
 import { TopWebsites } from './top-websites';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +50,6 @@ const Home = (props: { store: IStore }) => {
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
   const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
   const [websites, setWebsites] = useState<IWebsite[]>([]);
-  const [tasks, setTasks] = useState<ITask[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,15 +76,6 @@ const Home = (props: { store: IStore }) => {
     };
     void fetchData();
   }, [props.store.isLoading, props.store.lastUpdated]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = (await props.store.taskStore.getAll()).filter((task) => !task.parent);
-      const sortedResult = result.sort((a, b) => (a.position! < b.position! ? -1 : 1));
-      setTasks(sortedResult.slice(0, 3));
-    };
-    void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,28 +109,6 @@ const Home = (props: { store: IStore }) => {
           <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
         )}
       </Box>
-      {tasks.length > 0 && (
-        <div className={classes.panel}>
-          <Typography
-            variant="h6"
-            className={classes.heading}
-            onClick={() => router.push('/tasks')}
-          >
-            Recent tasks
-            <IconButton className={rowClasses.rightIcon}>
-              <ArrowIcon width="24" height="24" />
-            </IconButton>
-          </Typography>
-          <Box
-            boxShadow={1}
-            borderRadius={16}
-            className={classes.boxStyle}
-            style={{ paddingTop: 0 }}
-          >
-            <Tasks store={props.store} />
-          </Box>
-        </div>
-      )}
       {topDocuments.length > 0 && (
         <div className={classes.panel}>
           <Typography

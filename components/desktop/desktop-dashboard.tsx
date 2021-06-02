@@ -12,7 +12,6 @@ import { backgroundGradient } from '../../constants/theme';
 import Documents from '../dashboard/documents';
 import Meetings from '../dashboard/meetings';
 import Search from '../dashboard/search';
-import Tasks from '../dashboard/tasks';
 import { TopWebsites } from '../dashboard/top-websites';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
@@ -23,7 +22,6 @@ import SearchBar from '../nav/search-bar';
 import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
-import ExpandTask from '../tasks/expand-task';
 import Settings from '../user-profile/settings';
 
 export const drawerWidth = 240;
@@ -137,20 +135,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
             </Grid>
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
-                Tasks
-              </Typography>
-              <Box
-                boxShadow={1}
-                borderRadius={16}
-                maxHeight={'calc(100vh - 230px)'}
-                overflow="auto"
-                style={{ background: '#fff' }}
-              >
-                <Tasks store={store} />
-              </Box>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="h4" className={classes.heading}>
                 Documents
               </Typography>
               <Box
@@ -221,11 +205,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Route path="/people/:slug">
                 <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
                   <ExpandPerson store={store} />
-                </Dialog>
-              </Route>
-              <Route path="/tasks/:slug">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
-                  <ExpandTask store={store} />
                 </Dialog>
               </Route>
               <Route path="/settings">
