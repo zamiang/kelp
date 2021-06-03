@@ -7,6 +7,7 @@ import PersonDataStore from './models/person-model';
 import SegmentDocumentModel from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
 import TfidfDataStore from './models/tfidf-model';
+import WebsiteImageStore from './models/website-image-model';
 import WebsitesStore from './models/website-model';
 import data from './store-faker';
 import { IStore } from './use-store';
@@ -22,6 +23,7 @@ const useFakeStore = (db: dbType): IStore => {
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentModel(db);
   const websitesStore = new WebsitesStore(db);
+  const websiteImageStore = new WebsiteImageStore(db);
 
   useEffect(() => {
     const addData = async () => {
@@ -54,6 +56,7 @@ const useFakeStore = (db: dbType): IStore => {
     personDataStore,
     documentDataStore,
     websitesStore,
+    websiteImageStore,
     attendeeDataStore,
     segmentDocumentStore,
     tfidfStore,

@@ -8,9 +8,8 @@ import {
   IPerson,
   ISegment,
   ISegmentDocument,
-  ITask,
-  ITaskDocument,
   IWebsite,
+  IWebsiteImage,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -41,24 +40,6 @@ interface Db extends DBSchema {
     value: ITfidfRow;
     key: string;
     indexes: { 'by-type': string };
-  };
-  task: {
-    value: ITask;
-    key: string;
-    indexes: { 'by-parent': string };
-  };
-  taskDocument: {
-    value: ITaskDocument;
-    key: string;
-    indexes: {
-      'by-task-id': string;
-      'by-document-id': string;
-      'by-drive-activity-id': string;
-      'by-task-title': string;
-      'by-person-id': string;
-      'by-day': number;
-      'by-week': number;
-    };
   };
   meeting: {
     value: ISegment;
@@ -94,6 +75,10 @@ interface Db extends DBSchema {
     indexes: {
       'by-domain': string;
     };
+  };
+  websiteImage: {
+    value: IWebsiteImage;
+    key: string;
   };
 }
 
@@ -147,8 +132,6 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('attendee');
         db.deleteObjectStore('tfidf');
         db.deleteObjectStore('segmentDocument');
-        db.deleteObjectStore('task');
-        db.deleteObjectStore('taskDocument');
       }
       if (oldVersion === 4 || oldVersion === 5) {
         db.deleteObjectStore('person');
@@ -158,9 +141,9 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('attendee');
         db.deleteObjectStore('tfidf');
         db.deleteObjectStore('segmentDocument');
-        db.deleteObjectStore('task');
-        db.deleteObjectStore('taskDocument');
         db.deleteObjectStore('topWebsite' as any);
+        db.deleteObjectStore('task' as any);
+        db.deleteObjectStore('taskDocument' as any);
       }
 
       const personStore = db.createObjectStore('person', {
@@ -211,29 +194,16 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
       segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
 
-      const taskStore = db.createObjectStore('task', {
-        keyPath: 'id',
-      });
-      taskStore.createIndex('by-parent', 'parent', { unique: false });
-
-      const taskDocumentStore = db.createObjectStore('taskDocument', {
-        keyPath: 'id',
-      });
-      taskDocumentStore.createIndex('by-task-id', 'taskId', { unique: false });
-      taskDocumentStore.createIndex('by-document-id', 'documentId', { unique: false });
-      taskDocumentStore.createIndex('by-drive-activity-id', 'driveActivityId', {
-        unique: false,
-      });
-      taskDocumentStore.createIndex('by-day', 'day', { unique: false });
-      taskDocumentStore.createIndex('by-week', 'week', { unique: false });
-      taskDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
-      taskDocumentStore.createIndex('by-task-title', 'taskTitle', { unique: false });
-
       // top website store - has no indexes
       const websiteStore = db.createObjectStore('website', {
         keyPath: 'id',
       });
       websiteStore.createIndex('by-domain', 'domain', { unique: false });
+
+      // website image
+      db.createObjectStore('websiteImage', {
+        keyPath: 'id',
+      });
     },
     blocked() {
       console.log('blocked');

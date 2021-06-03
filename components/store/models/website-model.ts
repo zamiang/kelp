@@ -1,5 +1,6 @@
 import { IWebsite } from '../data-types';
 import { dbType } from '../db';
+import { IStore } from '../use-store';
 
 interface IWebsiteNotFormatted {
   startAt: Date;
@@ -34,7 +35,25 @@ export default class WebsiteModel {
     console.log(data, 'trying to add to the website store');
   }
 
-  async trackVisit(website: IWebsiteNotFormatted) {
+  async trackVisit(
+    website: IWebsiteNotFormatted,
+    timeStore: IStore['timeDataStore'],
+    websiteImageStore: IStore['websiteImageStore'],
+  ) {
+    const currentMeeting = await timeStore.getCurrentSegment();
+
+    chrome.tabs.captureVisibleTab(
+      null as any,
+      {
+        format: 'jpeg',
+        quality: 50,
+      },
+      (image) => {
+        void websiteImageStore.saveWebsiteImage(website.url, image, website.startAt);
+        console.log(image);
+      },
+    );
+
     const result = await this.db.put('website', {
       id: `${website.url}-${website.startAt.toDateString()}`,
       title: website.title || '',
@@ -42,6 +61,7 @@ export default class WebsiteModel {
       domain: website.domain,
       isHidden: false,
       visitedTime: website.startAt,
+      meetingId: currentMeeting ? currentMeeting.id : undefined,
     });
 
     void this.saveToChromeStorage();

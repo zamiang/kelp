@@ -49,4 +49,5 @@ export default {
     'basecamp.com',
     'microsoft.com', // not sure about them
   ],
+  BLOCKED_DOMAINS: ['mail.google.com', 'calendar.google.com'],
 };

@@ -10,6 +10,7 @@ import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
 import TfidfDataStore from './models/tfidf-model';
+import WebsiteImageStore from './models/website-image-model';
 import WebsitesStore from './models/website-model';
 
 export interface IStore {
@@ -20,6 +21,7 @@ export interface IStore {
   readonly tfidfStore: TfidfDataStore;
   readonly attendeeDataStore: AttendeeStore;
   readonly websitesStore: WebsitesStore;
+  readonly websiteImageStore: WebsiteImageStore;
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
@@ -43,6 +45,7 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websitesStore = new WebsitesStore(db);
+  const websiteImageStore = new WebsiteImageStore(db);
 
   return {
     driveActivityStore: driveActivityDataStore,
@@ -52,6 +55,7 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
+    websiteImageStore,
     tfidfStore,
     lastUpdated: new Date(),
     isLoading: false,
@@ -79,6 +83,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websitesStore = new WebsitesStore(db);
+  const websiteImageStore = new WebsiteImageStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -192,6 +197,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
     attendeeDataStore,
     segmentDocumentStore,
     websitesStore,
+    websiteImageStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,

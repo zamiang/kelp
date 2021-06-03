@@ -186,3 +186,9 @@ export type ITask = {
   /** URL pointing to this task. Used to retrieve, update, or delete this task. */
   readonly selfLink?: string;
 };
+
+export interface IWebsiteImage {
+  readonly id: string;
+  readonly image: string;
+  readonly date: Date;
+}
