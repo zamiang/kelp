@@ -57,7 +57,9 @@ const queryAndSendNotification = async () => {
   }
 };
 
-chrome.notifications.onClicked.addListener(() => chrome.tabs.create({ url: `/dashboard.html` }));
+chrome.notifications.onClicked.addListener(
+  () => void chrome.tabs.create({ url: `/dashboard.html` }),
+);
 
 const alarmListener = (alarm: chrome.alarms.Alarm) => void onAlarm(alarm);
 
@@ -68,7 +70,7 @@ const setupTimers = async () => {
 };
 
 const setAlarm = () => {
-  chrome.alarms.clearAll();
+  void chrome.alarms.clearAll();
   chrome.alarms.create(notificationAlarmName, { periodInMinutes: 1 });
   chrome.alarms.create(refreshAlarmName, { periodInMinutes: 60 });
   chrome.alarms.create(trackCurrentSiteName, { periodInMinutes: 1 });
@@ -85,7 +87,7 @@ const onAlarm = (alarm: chrome.alarms.Alarm) => {
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.create({ url: '/dashboard.html' });
+  void chrome.tabs.create({ url: '/dashboard.html' });
   void setupTimers();
   void getOrCreateStore();
 });
@@ -97,7 +99,7 @@ chrome.runtime.onSuspendCanceled.addListener(() => {
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.meetingId) {
-    chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
+    void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
   }
 });

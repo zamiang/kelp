@@ -6,7 +6,7 @@ const Handle404 = () => {
   const newURL = `https://www.kelp.nyc/dashboard${useLocation().pathname}`;
   useEffect(() => {
     if (chrome && chrome.tabs) {
-      chrome.tabs.create({ url: newURL });
+      void chrome.tabs.create({ url: newURL });
     } else {
       history.push(`/home`);
     }
