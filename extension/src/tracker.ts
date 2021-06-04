@@ -42,7 +42,8 @@ export const doTick = (store: IStore) => {
         const isDomainAllowed =
           constants.BLOCKED_DOMAINS.filter((d) => d.indexOf(domain) > -1).length < 1;
         if (lastVisitedUrl && isDomainAllowed) {
-          void tick(lastVisitedUrl, new Date(), store, tab.title);
+          // remove query params and hash
+          void tick(lastVisitedUrl.split('?')[0].split('#')[0], new Date(), store, tab.title);
         }
       }
     });
