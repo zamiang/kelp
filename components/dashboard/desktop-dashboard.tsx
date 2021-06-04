@@ -19,9 +19,9 @@ import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
-import Documents from './documents';
 import Meetings from './meetings';
 import Search from './search';
+import WebsitesHighlights from './website-highlights';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -111,9 +111,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           </Container>
           <Grid container spacing={4} style={{ marginTop: 5 }} justify="center">
             <Grid item xs={3}>
-              <Typography variant="h4" className={classes.heading}>
-                Meetings
-              </Typography>
               <Box
                 boxShadow={1}
                 borderRadius={16}
@@ -127,10 +124,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Meetings store={store} />
               </Box>
             </Grid>
-            <Grid item xs={3}>
-              <Typography variant="h4" className={classes.heading}>
-                Websites
-              </Typography>
+            <Grid item xs={9}>
               <Box
                 boxShadow={1}
                 borderRadius={16}
@@ -138,7 +132,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
-                <WebsitesAndDocuments store={store} />
+                <WebsitesHighlights store={store} />
               </Box>
             </Grid>
           </Grid>

@@ -11,7 +11,7 @@ import rowStyles from '../shared/row-styles';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-interface IFeaturedDocument {
+export interface IFeaturedDocument {
   documentId: string;
   document: IDocument;
   meetings: ISegment[];
@@ -26,7 +26,7 @@ interface IFeaturedDocument {
  */
 const maxResult = 5;
 const daysToLookBack = 7;
-const getFeaturedDocuments = async (props: IStore) => {
+export const getFeaturedDocuments = async (props: IStore) => {
   const currentDate = new Date();
   const week = getWeek(currentDate);
   const result = await props.segmentDocumentStore.getAllForWeek(week);
