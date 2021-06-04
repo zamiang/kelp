@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './popup.css';
 import { MemoryRouter as Router } from 'react-router-dom';
-import { DesktopDashboard } from '../../components/desktop/desktop-dashboard';
+import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import MobileDashboard from '../../components/mobile/mobile-dashboard';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';

@@ -9,10 +9,6 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { backgroundGradient } from '../../constants/theme';
-import Documents from '../dashboard/documents';
-import Meetings from '../dashboard/meetings';
-import Search from '../dashboard/search';
-import { TopWebsites } from '../dashboard/top-websites';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
@@ -23,6 +19,9 @@ import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
+import Documents from './documents';
+import Meetings from './meetings';
+import Search from './search';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -96,8 +95,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
     router.push('/home');
   };
 
-  const shouldRenderTopSites = window['chrome'] && window['chrome']['topSites'];
-
   return (
     <ErrorBoundaryComponent>
       <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
@@ -132,7 +129,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
             </Grid>
             <Grid item xs={3}>
               <Typography variant="h4" className={classes.heading}>
-                Documents
+                Websites
               </Typography>
               <Box
                 boxShadow={1}
@@ -141,25 +138,9 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 overflow="auto"
                 style={{ background: '#fff' }}
               >
-                <Documents store={store} />
+                <WebsitesAndDocuments store={store} />
               </Box>
             </Grid>
-            {shouldRenderTopSites && (
-              <Grid item xs={3}>
-                <Typography variant="h4" className={classes.heading}>
-                  Top Sites
-                </Typography>
-                <Box
-                  boxShadow={1}
-                  borderRadius={16}
-                  maxHeight={'calc(100vh - 230px)'}
-                  overflow="auto"
-                  style={{ background: '#fff' }}
-                >
-                  <TopWebsites store={store} />
-                </Box>
-              </Grid>
-            )}
           </Grid>
           <div>
             <Switch>
