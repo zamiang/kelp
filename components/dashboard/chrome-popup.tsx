@@ -7,16 +7,13 @@ import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../../public/icons/chevron-right.svg';
-import DocumentRow from '../documents/document-row';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import useRowStyles from '../shared/row-styles';
-import { ISegment, IWebsite } from '../store/data-types';
+import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IFeaturedDocument, getFeaturedDocuments } from './documents';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
-import { TopWebsites } from './top-websites';
 
 const useStyles = makeStyles((theme) => ({
   panel: {
@@ -48,8 +45,6 @@ const Home = (props: { store: IStore }) => {
   const currentTime = new Date();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
-  const [topDocuments, setTopDocuments] = useState<IFeaturedDocument[]>([]);
-  const [websites, setWebsites] = useState<IWebsite[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,22 +72,6 @@ const Home = (props: { store: IStore }) => {
     void fetchData();
   }, [props.store.isLoading, props.store.lastUpdated]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const featuredDocuments = await getFeaturedDocuments(props.store);
-      setTopDocuments(featuredDocuments.filter(Boolean));
-    };
-    void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const w = await props.store.websitesStore.getAll();
-      setWebsites(w.filter(Boolean));
-    };
-    void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
-
   return (
     <div className={classes.panel}>
       <div style={{ marginBottom: 20 }}>
@@ -109,46 +88,6 @@ const Home = (props: { store: IStore }) => {
           <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
         )}
       </Box>
-      {topDocuments.length > 0 && (
-        <div className={classes.panel}>
-          <Typography
-            variant="h6"
-            className={classes.heading}
-            onClick={() => router.push('/documents')}
-          >
-            Recent documents
-            <IconButton className={rowClasses.rightIcon}>
-              <ArrowIcon width="24" height="24" />
-            </IconButton>
-          </Typography>
-          <Box
-            boxShadow={1}
-            borderRadius={16}
-            className={classes.boxStyle}
-            style={{ paddingBottom: 12 }}
-          >
-            {topDocuments.map((document) => (
-              <DocumentRow
-                key={document.document.id}
-                document={document.document}
-                store={props.store}
-                selectedDocumentId={null}
-                text={document.text}
-              />
-            ))}
-          </Box>
-        </div>
-      )}
-      {websites.length > 0 && (
-        <div className={classes.panel}>
-          <Typography variant="h6" className={classes.heading}>
-            Websites
-          </Typography>
-          <Box boxShadow={1} borderRadius={16} className={classes.boxStyleNoPadding}>
-            <TopWebsites store={props.store} />
-          </Box>
-        </div>
-      )}
       {featuredPeople.length > 0 && (
         <div className={classes.panel}>
           <Typography
