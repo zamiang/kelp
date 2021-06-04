@@ -23,8 +23,9 @@ export default class WebsiteModel {
   }
 
   async saveToChromeStorage() {
-    const all = await this.db.getAll('website');
-    return chrome.storage.sync.set({ kelpWebsites: JSON.stringify(all) });
+    // TODO: hm
+    // const all = await this.db.getAll('website');
+    // return chrome.storage.sync.set({ kelpWebsites: JSON.stringify(all) });
   }
 
   async getAll() {

@@ -14,8 +14,9 @@ export default class WebsiteImageModel {
   }
 
   async saveToChromeStorage() {
-    const all = await this.db.getAll('websiteImage');
-    return chrome.storage.sync.set({ kelpWebsiteImages: JSON.stringify(all) });
+    // TODO reenable
+    // const all = await this.db.getAll('websiteImage');
+    // chrome.storage.sync.set({ kelpWebsiteImages: JSON.stringify(all) });
   }
 
   async getAll() {
