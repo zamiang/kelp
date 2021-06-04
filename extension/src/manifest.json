@@ -32,6 +32,7 @@
     "notifications",
     "tabs",
     "activeTab",
+    "<all_urls>",
     "storage",
     "idle",
     "https://calendar.google.com/*",

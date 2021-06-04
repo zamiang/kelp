@@ -1,3 +1,4 @@
+import { cleanupUrl } from '../../components/shared/cleanup-url';
 import db from '../../components/store/db';
 import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
@@ -8,7 +9,7 @@ const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
 const trackCurrentSiteName = 'doTick';
 
-export const getOrCreateStore = async () => {
+const getOrCreateStore = async () => {
   if (store) {
     return store;
   }
@@ -101,6 +102,23 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.meetingId) {
     void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
+    return true;
+  } else if (request.message === 'capture') {
+    chrome.tabs.captureVisibleTab(
+      null as any,
+      {
+        format: 'jpeg',
+        quality: 50,
+      },
+      (image) => {
+        const url = cleanupUrl(request.url);
+        if (url && image) {
+          void store.websiteImageStore.saveWebsiteImage(url, image, new Date());
+        }
+        sendResponse(url);
+      },
+    );
+    return true;
   }
 });
 
