@@ -122,19 +122,6 @@ export interface ISegmentDocument {
   readonly category: 'self' | 'attendee' | 'non-attendee' | 'meeting-description';
 }
 
-export interface ITaskDocument {
-  readonly id: string;
-  readonly driveActivityId?: string;
-  readonly documentId?: string;
-  readonly taskId: string;
-  readonly taskTitle?: string;
-  readonly date: Date;
-  readonly reason: string;
-  readonly segmentId?: string;
-  readonly day: number;
-  readonly week: number;
-}
-
 export interface IWebsite {
   readonly id: string;
   readonly title: string;

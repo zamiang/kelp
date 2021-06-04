@@ -24,9 +24,6 @@ import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
 
-export const drawerWidth = 240;
-export const MOBILE_WIDTH = 700;
-
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   '@keyframes backgroundAnimation': {
