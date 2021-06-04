@@ -1,17 +1,18 @@
 import { flatten } from 'lodash';
 import constants from '../../../constants/config';
+import { cleanupUrl } from '../../shared/cleanup-url';
 import { IWebsite } from '../../store/data-types';
 
 const formatSite = (site: chrome.history.HistoryItem): IWebsite => ({
   id: site.id,
-  url: site.url!,
+  url: cleanupUrl(site.url!),
   title: site.title!,
   visitedTime: site.lastVisitTime ? new Date(site.lastVisitTime) : new Date(),
   domain: new URL(site.url!).host,
   isHidden: false,
 });
 
-export const fetchHistory = (domain: string): Promise<IWebsite[]> => {
+const fetchHistory = (domain: string): Promise<IWebsite[]> => {
   if (!window['chrome'] || !window['chrome']['topSites']) {
     return [] as any;
   }

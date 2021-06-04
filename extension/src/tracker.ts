@@ -1,3 +1,4 @@
+import { cleanupUrl } from '../../components/shared/cleanup-url';
 import { IStore } from '../../components/store/use-store';
 import constants from '../../constants/config';
 
@@ -43,7 +44,7 @@ export const doTick = (store: IStore) => {
           constants.BLOCKED_DOMAINS.filter((d) => d.indexOf(domain) > -1).length < 1;
         if (lastVisitedUrl && isDomainAllowed) {
           // remove query params and hash
-          void tick(lastVisitedUrl.split('?')[0].split('#')[0], new Date(), store, tab.title);
+          void tick(cleanupUrl(lastVisitedUrl), new Date(), store, tab.title);
         }
       }
     });
