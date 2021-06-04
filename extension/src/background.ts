@@ -8,7 +8,7 @@ const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
 const trackCurrentSiteName = 'doTick';
 
-const getOrCreateStore = async () => {
+export const getOrCreateStore = async () => {
   if (store) {
     return store;
   }

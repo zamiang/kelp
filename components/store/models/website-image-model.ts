@@ -23,6 +23,9 @@ export default class WebsiteImageModel {
   }
 
   async saveWebsiteImage(url: string, image: string, date: Date) {
+    if (!image) {
+      return;
+    }
     const result = await this.db.put('websiteImage', {
       id: url,
       image,

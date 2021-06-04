@@ -17,6 +17,10 @@
   "content_scripts": [{
     "js": ["calendar.js"],
     "matches": ["https://calendar.google.com/*"]
+  }, {
+    "matches": ["<all_urls>"],
+    "js": ["capture.js"],
+    "run_at": "document_idle"
   }],
   "oauth2": {
     "client_id": "REPLACED IN WEBPACK CONFIG",
@@ -27,6 +31,7 @@
     "alarms",
     "notifications",
     "tabs",
+    "activeTab",
     "storage",
     "idle",
     "https://calendar.google.com/*",

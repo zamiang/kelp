@@ -18,7 +18,6 @@ const tick = (site: string, startAt: Date, store: IStore, title?: string) => {
       title,
     },
     store.timeDataStore,
-    store.websiteImageStore,
   );
 };
 

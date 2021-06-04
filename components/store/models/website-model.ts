@@ -35,24 +35,8 @@ export default class WebsiteModel {
     console.log(data, 'trying to add to the website store');
   }
 
-  async trackVisit(
-    website: IWebsiteNotFormatted,
-    timeStore: IStore['timeDataStore'],
-    websiteImageStore: IStore['websiteImageStore'],
-  ) {
+  async trackVisit(website: IWebsiteNotFormatted, timeStore: IStore['timeDataStore']) {
     const currentMeeting = await timeStore.getCurrentSegment();
-
-    chrome.tabs.captureVisibleTab(
-      null as any,
-      {
-        format: 'jpeg',
-        quality: 50,
-      },
-      (image) => {
-        void websiteImageStore.saveWebsiteImage(website.url, image, website.startAt);
-        console.log(image);
-      },
-    );
 
     const result = await this.db.put('website', {
       id: `${website.url}-${website.startAt.toDateString()}`,
