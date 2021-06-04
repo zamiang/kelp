@@ -1,5 +1,3 @@
-export type TaskList = gapi.client.tasks.TaskList;
-
 type DocumentType =
   | 'UNKNOWN'
   | 'application/vnd.google-apps.presentation'

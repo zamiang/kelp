@@ -12,13 +12,13 @@ import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
 import { GoToSourceButton } from '../mobile/popup-header';
 import PersonRow from '../person/person-row';
+import { D3Component } from '../shared/bar-chart/bar-chart';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
 import { IDocument, IFormattedDriveActivity, IPerson, ISegmentDocument } from '../store/data-types';
 import { getPeopleSortedByCount } from '../store/helpers';
 import { IStore } from '../store/use-store';
-import { D3Component } from '../timeline/bar-chart';
 
 const dateFormat = 'MM/dd/yyyy';
 

@@ -8,7 +8,6 @@ import {
   IPerson,
   ISegment,
   IWebsite,
-  TaskList,
 } from '../store/data-types';
 import { fetchAllHistory } from './chrome/fetch-history';
 import fetchCalendarEvents, {
@@ -29,7 +28,6 @@ interface IReturnType {
   readonly calendarEvents: ISegment[];
   readonly driveFiles: IDocument[];
   readonly websites: IWebsite[];
-  readonly defaultTaskList?: TaskList;
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
   readonly refetch: () => void;
