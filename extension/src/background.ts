@@ -108,7 +108,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       null as any,
       {
         format: 'jpeg',
-        quality: 50,
+        quality: 5,
       },
       (image) => {
         const url = cleanupUrl(request.url);

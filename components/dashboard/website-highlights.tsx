@@ -1,9 +1,10 @@
-import { Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 import { subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../shared/loading-spinner';
-import panelStyles from '../shared/panel-styles';
 import { IDocument, ISegment, IWebsiteImage } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -95,13 +96,53 @@ const LargeWebsite = (props: { store: IStore; item: IFeaturedWebsite }) => {
     void fetchData();
   }, []);
 
+  if (!image) {
+    return null;
+  }
+
   return (
-    <div>
-      <a href={props.item.websiteId}>
-        {image && <img src={image?.image} />}
-        {<Typography>{props.item.text}</Typography>}
+    <Grid item xs={3}>
+      <a
+        href={props.item.websiteId}
+        style={{
+          display: 'block',
+          paddingBottom: '66%',
+          overflow: 'hidden',
+          height: 0,
+          background: '/dots.png',
+          position: 'relative',
+          marginBottom: 8,
+        }}
+      >
+        {image && (
+          <img
+            src={image?.image}
+            style={{
+              maxWidth: '100%',
+            }}
+          />
+        )}
+        <div
+          style={{
+            backgroundImage:
+              'radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%), radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%)',
+            backgroundPosition: '0 0, 5px 5px',
+            backgroundSize: '3px 3px',
+            backgroundRepeat: 'repeat',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+          }}
+        ></div>
       </a>
-    </div>
+      <Link href={props.item.websiteId}>
+        <Typography variant="h4" noWrap>
+          {props.item.text}
+        </Typography>
+      </Link>
+    </Grid>
   );
 };
 
@@ -119,23 +160,21 @@ const AllWebsites = (props: { store: IStore }) => {
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
-    <div style={{ marginBottom: 14, marginTop: 14 }}>
+    <div>
       {shouldRenderLoading && <LoadingSpinner />}
-      {topWebsites.map((item) => (
-        <LargeWebsite key={item.websiteId} item={item} store={props.store} />
-      ))}
+      <Grid container spacing={4}>
+        {topWebsites.map((item) => (
+          <LargeWebsite key={item.websiteId} item={item} store={props.store} />
+        ))}
+      </Grid>
     </div>
   );
 };
 
-const WebsitesHighlights = (props: { store: IStore }) => {
-  const classes = panelStyles();
-
-  return (
-    <div className={classes.panel}>
-      <AllWebsites store={props.store} />
-    </div>
-  );
-};
+const WebsitesHighlights = (props: { store: IStore }) => (
+  <div>
+    <AllWebsites store={props.store} />
+  </div>
+);
 
 export default WebsitesHighlights;

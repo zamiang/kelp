@@ -125,15 +125,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               </Box>
             </Grid>
             <Grid item xs={9}>
-              <Box
-                boxShadow={1}
-                borderRadius={16}
-                maxHeight={'calc(100vh - 230px)'}
-                overflow="auto"
-                style={{ background: '#fff' }}
-              >
-                <WebsitesHighlights store={store} />
-              </Box>
+              <WebsitesHighlights store={store} />
             </Grid>
           </Grid>
           <div>
