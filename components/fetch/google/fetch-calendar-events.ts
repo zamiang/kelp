@@ -6,7 +6,7 @@ import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
 
-export const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
+const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
   const currentTime = new Date();
   if (!event.end || !event.start) {
     return 'past';
@@ -91,7 +91,7 @@ const formatSegment = (event?: gapi.client.calendar.Event): ISegment | null => {
   };
 };
 
-export const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
+const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
   for (const person of attendees) {
     if (person.self) {
       return (person.responseStatus as any) || 'accepted';
