@@ -6,20 +6,18 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { backgroundGradient } from '../../constants/theme';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
-import { LineCalendar } from '../meeting/line-calendar';
 import NavBar from '../nav/nav-bar';
 import SearchBar from '../nav/search-bar';
 import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
-import Meetings from './meetings';
 import Search from './search';
 import WebsitesHighlights from './website-highlights';
 
@@ -76,6 +74,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     marginBottom: theme.spacing(2),
   },
+  logo: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    display: 'block',
+    height: 80,
+  },
 }));
 
 const is500Error = (error: Error) => (error as any).status === 500;
@@ -84,6 +90,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const classes = useStyles();
   const store = props.store;
   const router = useHistory();
+  const [filter, setFilter] = useState<string | undefined>(undefined);
 
   const hash = window.location.hash;
   if (hash.includes('meetings')) {
@@ -93,6 +100,14 @@ export const DesktopDashboard = (props: { store: IStore }) => {
 
   const onDialogClose = () => {
     router.push('/home');
+  };
+
+  const toggleFilter = (f: string) => {
+    if (f === filter) {
+      setFilter(undefined);
+    } else {
+      setFilter(f);
+    }
   };
 
   return (
@@ -105,25 +120,12 @@ export const DesktopDashboard = (props: { store: IStore }) => {
       </Dialog>
       <div className={classes.content}>
         <Container maxWidth="xl">
+          <img src="/kelp.svg" className={classes.logo} />
           <NavBar store={store} />
-          <Container maxWidth="sm">
-            <HomepageButtons />
+          <Container maxWidth="md">
+            <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
           </Container>
           <Grid container spacing={4} style={{ marginTop: 5 }} justify="center">
-            <Grid item xs={3}>
-              <Box
-                boxShadow={1}
-                borderRadius={16}
-                maxHeight={'calc(100vh - 230px)'}
-                overflow="auto"
-                style={{ background: '#fff' }}
-              >
-                <div className={classes.lineContainer}>
-                  <LineCalendar store={store} />
-                </div>
-                <Meetings store={store} />
-              </Box>
-            </Grid>
             <Grid item xs={9}>
               <WebsitesHighlights store={store} />
             </Grid>

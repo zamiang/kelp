@@ -104,56 +104,40 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     sendResponse({ success: true });
     return true;
   } else if (request.message === 'capture') {
-    chrome.tabs.captureVisibleTab(
-      null as any,
-      {
-        format: 'jpeg',
-        quality: 5,
-      },
-      (image) => {
-        const url = cleanupUrl(request.url);
+    chrome.windows.getLastFocused({ populate: true }, (chromeWindow) => {
+      if (chrome.runtime.lastError) {
+        console.error(chrome.runtime.lastError.message);
+      }
 
-        if (url && image) {
-          const saveImage = async () => {
-            const s = await getOrCreateStore();
-            await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
-            sendResponse(url);
-          };
-          void saveImage();
-        } else {
-          sendResponse(url);
-        }
-      },
-    );
+      if (!chromeWindow) {
+        return;
+      }
+
+      const tab = chromeWindow.tabs?.filter((t) => t.highlighted)[0];
+      if (tab && chromeWindow.focused && tab.url == request.url) {
+        chrome.tabs.captureVisibleTab(
+          null as any,
+          {
+            format: 'jpeg',
+            quality: 5,
+          },
+          (image) => {
+            const url = cleanupUrl(request.url);
+
+            if (url && image) {
+              const saveImage = async () => {
+                const s = await getOrCreateStore();
+                await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
+                sendResponse(url);
+              };
+              void saveImage();
+            } else {
+              sendResponse(url);
+            }
+          },
+        );
+      }
+    });
     return true;
   }
 });
-
-/*
-const suggestResults = async (
-  text: string,
-  suggest: (items: chrome.omnibox.SuggestResult[]) => void,
-) => {
-  console.log('inputchanged', text);
-
-  const store = await getOrCreateStore();
-  if (store) {
-    suggest([
-      { content: ' one', description: 'the first one' },
-      { content: ' number two', description: 'the second entry' },
-    ]);
-  }
-};
-
-chrome.omnibox.setDefaultSuggestion({
-  description: 'Search for a person or document',
-});
-
-// This event is fired each time the user updates the text in the omnibox,
-// as long as the extension's keyword mode is still active.
-chrome.omnibox.onInputChanged.addListener((text, suggest) => void suggestResults(text, suggest));
-
-chrome.omnibox.onInputEntered.addListener((text) => {
-  console.log(text, '<<<<<<<<<<<<');
-});
-*/

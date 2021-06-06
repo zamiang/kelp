@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../../public/icons/chevron-right.svg';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
-import { HomepageButtons } from '../shared/homepage-buttons';
+import { QuickActionButtons } from '../shared/quick-action-buttons';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -75,7 +75,7 @@ const Home = (props: { store: IStore }) => {
   return (
     <div className={classes.panel}>
       <div style={{ marginBottom: 20 }}>
-        <HomepageButtons />
+        <QuickActionButtons />
       </div>
       <Typography variant="h6" className={classes.heading} onClick={() => router.push('/meetings')}>
         Next Meetings

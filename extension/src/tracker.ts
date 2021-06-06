@@ -27,17 +27,17 @@ export const doTick = (store: IStore) => {
     if (state !== 'active') {
       return;
     }
-    chrome.windows.getLastFocused({ populate: true }, (window) => {
+    chrome.windows.getLastFocused({ populate: true }, (chromeWindow) => {
       if (chrome.runtime.lastError) {
         console.error(chrome.runtime.lastError.message);
       }
 
-      if (!window) {
+      if (!chromeWindow) {
         return;
       }
 
-      const tab = window.tabs?.filter((t) => t.highlighted)[0];
-      if (tab && window.focused) {
+      const tab = chromeWindow.tabs?.filter((t) => t.highlighted)[0];
+      if (tab && chromeWindow.focused) {
         const currentUrl = cleanupUrl(tab.url || '');
         const domain = new URL(currentUrl || '').host;
         if (currentUrl !== lastVisitedUrl) {
