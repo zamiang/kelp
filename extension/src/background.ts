@@ -112,10 +112,17 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       },
       (image) => {
         const url = cleanupUrl(request.url);
+
         if (url && image) {
-          void store.websiteImageStore.saveWebsiteImage(url, image, new Date());
+          const saveImage = async () => {
+            const s = await getOrCreateStore();
+            await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
+            sendResponse(url);
+          };
+          void saveImage();
+        } else {
+          sendResponse(url);
         }
-        sendResponse(url);
       },
     );
     return true;
