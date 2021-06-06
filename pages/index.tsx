@@ -264,17 +264,6 @@ const App = () => {
           <Typography variant="h3" style={{ marginBottom: 24 }}>
             Google
           </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.login}
-            onClick={() => (window.location.pathname = '/dashboard')}
-            disableElevation={true}
-            style={{ marginBottom: 48 }}
-          >
-            Sign In with Google
-          </Button>
           <Typography>
             We&lsquo;re also working on other integrations (like Microsoft Teams)! Meanwhile,
           </Typography>

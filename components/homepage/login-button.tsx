@@ -31,13 +31,13 @@ const LoginButton = () => {
 
   return (
     <Button
-      onClick={() => (window.location.pathname = '/dashboard')}
+      onClick={() => (window.location.pathname = '/install')}
       className={classes.button}
       variant="outlined"
       color="primary"
       disableElevation={true}
     >
-      Log In
+      Install Kelp
     </Button>
   );
 };

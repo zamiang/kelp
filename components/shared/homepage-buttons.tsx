@@ -31,18 +31,6 @@ export const HomepageButtons = (props: {
         <Button
           disableElevation={false}
           className={classes.button}
-          onClick={() => props.toggleFilter('meeting')}
-          startIcon={
-            <img src={`chrome://favicon/size/48@1x/https://calendar.google.com`} height="12" />
-          }
-        >
-          Next meeting
-        </Button>
-      </Grid>
-      <Grid item>
-        <Button
-          disableElevation={false}
-          className={classes.button}
           onClick={() => props.toggleFilter('docs')}
           startIcon={
             <img src={`chrome://favicon/size/48@1x/https://docs.google.com`} height="12" />

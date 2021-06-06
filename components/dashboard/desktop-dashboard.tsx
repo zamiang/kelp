@@ -12,6 +12,7 @@ import { backgroundGradient } from '../../constants/theme';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
+import { MeetingHighlight } from '../meeting/meeting-highlight';
 import NavBar from '../nav/nav-bar';
 import SearchBar from '../nav/search-bar';
 import ExpandPerson from '../person/expand-person';
@@ -65,11 +66,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -theme.spacing(1),
     opacity: 0.8,
   },
-  lineContainer: {
-    borderBottom: `2px solid ${theme.palette.divider}`,
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-  },
   heading: {
     display: 'block',
     marginBottom: theme.spacing(2),
@@ -118,6 +114,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           <Typography>{store.error}</Typography>
         </Alert>
       </Dialog>
+      <MeetingHighlight store={props.store} />
       <div className={classes.content}>
         <Container maxWidth="xl">
           <img src="/kelp.svg" className={classes.logo} />
