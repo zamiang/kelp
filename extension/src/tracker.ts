@@ -2,9 +2,6 @@ import { cleanupUrl } from '../../components/shared/cleanup-url';
 import { IStore } from '../../components/store/use-store';
 import constants from '../../constants/config';
 
-const secIdleInterval = 60 * 1000;
-let lastVisitedUrl: string | undefined;
-
 const tick = (site: string, startAt: Date, store: IStore, title?: string) => {
   const url = new URL(site);
   const domain = url.host;
@@ -22,36 +19,16 @@ const tick = (site: string, startAt: Date, store: IStore, title?: string) => {
   );
 };
 
-export const doTick = (store: IStore) => {
-  chrome.idle.queryState(secIdleInterval, (state) => {
-    if (state !== 'active') {
-      return;
+export const doTick = (store: IStore, tab: chrome.tabs.Tab) => {
+  if (tab) {
+    const currentUrl = cleanupUrl(tab.url || '');
+    const domain = new URL(currentUrl || '').host;
+
+    const isDomainAllowed =
+      constants.BLOCKED_DOMAINS.filter((d) => d.indexOf(domain) > -1).length < 1;
+    if (currentUrl && isDomainAllowed) {
+      // remove query params and hash
+      void tick(currentUrl, new Date(), store, tab.title);
     }
-    chrome.windows.getLastFocused({ populate: true }, (chromeWindow) => {
-      if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError.message);
-      }
-
-      if (!chromeWindow) {
-        return;
-      }
-
-      const tab = chromeWindow.tabs?.filter((t) => t.highlighted)[0];
-      if (tab && chromeWindow.focused) {
-        const currentUrl = cleanupUrl(tab.url || '');
-        const domain = new URL(currentUrl || '').host;
-        if (currentUrl !== lastVisitedUrl) {
-          lastVisitedUrl = currentUrl;
-          return;
-        }
-
-        const isDomainAllowed =
-          constants.BLOCKED_DOMAINS.filter((d) => d.indexOf(domain) > -1).length < 1;
-        if (currentUrl && isDomainAllowed) {
-          // remove query params and hash
-          void tick(currentUrl, new Date(), store, tab.title);
-        }
-      }
-    });
-  });
+  }
 };

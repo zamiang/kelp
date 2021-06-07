@@ -7,7 +7,6 @@ import { doTick } from './tracker';
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
-const trackCurrentSiteName = 'doTick';
 
 const getOrCreateStore = async () => {
   if (store) {
@@ -39,6 +38,29 @@ const fetchDataAndCreateStore = async () => {
     return store;
   }
   return store;
+};
+
+const captureVisibleTab = (url: string) => {
+  chrome.tabs.captureVisibleTab(
+    null as any,
+    {
+      format: 'jpeg',
+      quality: 5,
+    },
+    (image) => {
+      const cleanedUrl = cleanupUrl(url);
+
+      if (cleanedUrl && image) {
+        const saveImage = async () => {
+          const s = await getOrCreateStore();
+          if (s) {
+            await s.websiteImageStore.saveWebsiteImage(cleanedUrl, image, new Date());
+          }
+        };
+        void saveImage();
+      }
+    },
+  );
 };
 
 const queryAndSendNotification = async () => {
@@ -91,16 +113,16 @@ const setAlarm = () => {
   void chrome.alarms.clearAll();
   chrome.alarms.create(notificationAlarmName, { periodInMinutes: 1 });
   chrome.alarms.create(refreshAlarmName, { periodInMinutes: 60 });
-  chrome.alarms.create(trackCurrentSiteName, { periodInMinutes: 1 });
 };
 
 const onAlarm = (alarm: chrome.alarms.Alarm) => {
-  if (alarm.name === notificationAlarmName) {
-    return queryAndSendNotification();
-  } else if (alarm.name === refreshAlarmName) {
-    return fetchDataAndCreateStore();
-  } else if (alarm.name === trackCurrentSiteName) {
-    return doTick(store);
+  switch (alarm.name) {
+    case notificationAlarmName: {
+      return queryAndSendNotification();
+    }
+    case refreshAlarmName: {
+      return fetchDataAndCreateStore();
+    }
   }
 };
 
@@ -115,48 +137,54 @@ chrome.runtime.onSuspendCanceled.addListener(() => {
   void getOrCreateStore();
 });
 
+chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightInfo) => {
+  setTimeout(() => {
+    const checkTab = async () => {
+      const queryOptions = { active: true, currentWindow: true };
+      chrome.tabs.query(queryOptions, (result: chrome.tabs.Tab[]) => {
+        const tab = result[0];
+        if (tab && tab.url && tab.id == highlightInfo.tabIds[0]) {
+          console.log('recording', tab);
+          try {
+            doTick(store, tab);
+            captureVisibleTab(tab.url);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
+    };
+    void checkTab();
+  }, 60000);
+});
+
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.meetingId) {
     void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
     return true;
   } else if (request.message === 'capture') {
-    chrome.windows.getLastFocused({ populate: true }, (chromeWindow) => {
-      if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError.message);
-      }
+    chrome.tabs.captureVisibleTab(
+      null as any,
+      {
+        format: 'jpeg',
+        quality: 5,
+      },
+      (image) => {
+        const url = cleanupUrl(request.url);
 
-      if (!chromeWindow) {
-        return;
-      }
-
-      const tab = chromeWindow.tabs?.filter((t) => t.highlighted)[0];
-      if (tab && chromeWindow.focused && tab.url == request.url) {
-        chrome.tabs.captureVisibleTab(
-          null as any,
-          {
-            format: 'jpeg',
-            quality: 5,
-          },
-          (image) => {
-            const url = cleanupUrl(request.url);
-
-            if (url && image) {
-              const saveImage = async () => {
-                const s = await getOrCreateStore();
-                if (s) {
-                  await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
-                }
-                sendResponse(url);
-              };
-              void saveImage();
-            } else {
-              sendResponse(url);
+        if (url && image) {
+          const saveImage = async () => {
+            const s = await getOrCreateStore();
+            if (s) {
+              await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
             }
-          },
-        );
-      }
-    });
+            sendResponse(url);
+          };
+          void saveImage();
+        }
+      },
+    );
     return true;
   }
 });
