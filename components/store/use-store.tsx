@@ -1,8 +1,7 @@
 import { subMinutes } from 'date-fns';
 import { useEffect, useState } from 'react';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import ErrorTracking from '../error-tracking/error-tracking';
 import FetchAll from '../fetch/fetch-all';
-import { TaskList } from './data-types';
 import { dbType } from './db';
 import AttendeeStore from './models/attendee-model';
 import DocumentDataStore from './models/document-model';
@@ -10,10 +9,9 @@ import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
-import TaskDocumentDataStore from './models/task-document-model';
-import TaskDataStore from './models/task-model';
 import TfidfDataStore from './models/tfidf-model';
-import TopSitesStore from './models/top-website-model';
+import WebsiteImageStore from './models/website-image-model';
+import WebsitesStore from './models/website-model';
 
 export interface IStore {
   readonly personDataStore: PersonDataStore;
@@ -21,14 +19,12 @@ export interface IStore {
   readonly documentDataStore: DocumentDataStore;
   readonly driveActivityStore: DriveActivityDataStore;
   readonly tfidfStore: TfidfDataStore;
-  readonly taskStore: TaskDataStore;
-  readonly taskDocumentStore: TaskDocumentDataStore;
   readonly attendeeDataStore: AttendeeStore;
-  readonly topWebsitesStore: TopSitesStore;
+  readonly websitesStore: WebsitesStore;
+  readonly websiteImageStore: WebsiteImageStore;
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
-  readonly defaultTaskList?: TaskList;
   readonly isLoading: boolean;
   readonly scope?: string;
   readonly loadingMessage?: string;
@@ -38,7 +34,6 @@ export interface IStore {
   readonly isMeetingsLoading: boolean;
   readonly isDocumentsLoading: boolean;
   readonly isDriveActivityLoading: boolean;
-  readonly isTasksLoading: boolean;
 }
 
 export const setupStoreNoFetch = (db: dbType): IStore => {
@@ -49,23 +44,20 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
-  const taskDocumentStore = new TaskDocumentDataStore(db);
-  const taskStore = new TaskDataStore(db);
-  const topWebsitesStore = new TopSitesStore(db);
+  const websitesStore = new WebsitesStore(db);
+  const websiteImageStore = new WebsiteImageStore(db);
 
   return {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
-    topWebsitesStore,
+    websitesStore,
     personDataStore,
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
-    taskStore,
-    taskDocumentStore,
+    websiteImageStore,
     tfidfStore,
     lastUpdated: new Date(),
-    defaultTaskList: undefined,
     isLoading: false,
     loadingMessage: undefined,
     refetch: () => false,
@@ -74,7 +66,6 @@ export const setupStoreNoFetch = (db: dbType): IStore => {
     isMeetingsLoading: false,
     isDocumentsLoading: false,
     isDriveActivityLoading: false,
-    isTasksLoading: false,
   };
 };
 
@@ -86,14 +77,13 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
-  const taskDataStore = new TaskDataStore(db);
-  const taskDocumentDataStore = new TaskDocumentDataStore(db);
   const documents = data.driveFiles || [];
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
-  const topWebsitesStore = new TopSitesStore(db);
+  const websitesStore = new WebsitesStore(db);
+  const websiteImageStore = new WebsiteImageStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -131,27 +121,17 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
     void addData();
   }, [documents.length.toString()]);
 
-  // Save takss
-  useEffect(() => {
-    const addData = async () => {
-      if (!data.tasksResponseLoading) {
-        setLoadingMessage('Saving Tasks');
-        await taskDataStore.addTasksToStore(data.tasks, true);
-      }
-    };
-    void addData();
-  }, [data.tasks.length.toString()]);
-
   // Save top sites
   useEffect(() => {
     const addData = async () => {
-      if (data.topWebsites) {
+      if (data.websites) {
         setLoadingMessage('Saving Top Websites');
-        await topWebsitesStore.addTopWebsitesToStore(data.topWebsites);
+        // TODO:
+        await websitesStore.addHistoryToStore(data.websites);
       }
     };
     void addData();
-  }, [data.tasks.length.toString()]);
+  }, [data.websites.length.toString()]);
 
   // Relationships
   useEffect(() => {
@@ -179,19 +159,11 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
         personDataStore,
       );
 
-      setLoadingMessage('Matching Tasks, Documents and Meetings');
-      await taskDocumentDataStore.addTaskDocumentsToStore(
-        driveActivityDataStore,
-        timeDataStore,
-        taskDataStore,
-        data.currentUser ? data.currentUser.id : null,
-      );
-
       if (!data.isLoading) {
         setLoadingMessage(undefined);
         setLoading(false);
         if (data.error) {
-          RollbarErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
+          ErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
         }
       }
     };
@@ -224,18 +196,15 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
-    topWebsitesStore,
+    websitesStore,
+    websiteImageStore,
     tfidfStore,
-    taskStore: taskDataStore,
-    taskDocumentStore: taskDocumentDataStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,
     isPeopleLoading: data.peopleLoading,
     isMeetingsLoading: data.calendarResponseLoading,
     isDocumentsLoading: data.driveResponseLoading,
     isDriveActivityLoading: data.driveActivityLoading,
-    isTasksLoading: data.tasksResponseLoading,
-    defaultTaskList: data.defaultTaskList,
     loadingMessage,
     refetch: () => data.refetch(),
     scope,

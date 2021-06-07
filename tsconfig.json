@@ -23,6 +23,7 @@
     "./components/**/*.tsx",
     "./constants/**/*.ts",
     "./constants/**/*.tsx",
+    "./extension/**/*.tsx",
     "./models/**/*.ts",
     "./pages/**/*.ts",
     "./pages/**/*.tsx",

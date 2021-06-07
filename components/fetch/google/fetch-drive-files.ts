@@ -1,7 +1,7 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IDocument } from '../../store/data-types';
 
 const isRefetchEnabled = false;
@@ -72,8 +72,8 @@ const fetchDriveFilePage = async (googleOauthToken: string, pageToken?: string) 
   );
   const body = await driveResponse.json();
   if (!driveResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(driveResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(driveResponse.statusText);
   }
 
   return body;
@@ -123,8 +123,8 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string, limi
         }),
       );
       if (!fileResponse.ok) {
-        RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-        RollbarErrorTracking.logErrorInRollbar(fileResponse.statusText);
+        ErrorTracking.logErrorInfo(JSON.stringify(params));
+        ErrorTracking.logErrorInRollbar(fileResponse.statusText);
       }
 
       if (fileResponse.status === 200) {

@@ -1,10 +1,13 @@
+import { cleanupUrl } from '../../components/shared/cleanup-url';
 import db from '../../components/store/db';
 import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
+import { doTick } from './tracker';
 
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
+const trackCurrentSiteName = 'doTick';
 
 const getOrCreateStore = async () => {
   if (store) {
@@ -55,7 +58,9 @@ const queryAndSendNotification = async () => {
   }
 };
 
-chrome.notifications.onClicked.addListener(() => chrome.tabs.create({ url: `/dashboard.html` }));
+chrome.notifications.onClicked.addListener(
+  () => void chrome.tabs.create({ url: `/dashboard.html` }),
+);
 
 const alarmListener = (alarm: chrome.alarms.Alarm) => void onAlarm(alarm);
 
@@ -66,9 +71,10 @@ const setupTimers = async () => {
 };
 
 const setAlarm = () => {
-  chrome.alarms.clearAll();
+  void chrome.alarms.clearAll();
   chrome.alarms.create(notificationAlarmName, { periodInMinutes: 1 });
   chrome.alarms.create(refreshAlarmName, { periodInMinutes: 60 });
+  chrome.alarms.create(trackCurrentSiteName, { periodInMinutes: 1 });
 };
 
 const onAlarm = (alarm: chrome.alarms.Alarm) => {
@@ -76,11 +82,13 @@ const onAlarm = (alarm: chrome.alarms.Alarm) => {
     return queryAndSendNotification();
   } else if (alarm.name === refreshAlarmName) {
     return fetchDataAndCreateStore();
+  } else if (alarm.name === trackCurrentSiteName) {
+    return doTick(store);
   }
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.create({ url: '/dashboard.html' });
+  void chrome.tabs.create({ url: '/dashboard.html' });
   void setupTimers();
   void getOrCreateStore();
 });
@@ -92,36 +100,44 @@ chrome.runtime.onSuspendCanceled.addListener(() => {
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.meetingId) {
-    chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
+    void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
+    return true;
+  } else if (request.message === 'capture') {
+    chrome.windows.getLastFocused({ populate: true }, (chromeWindow) => {
+      if (chrome.runtime.lastError) {
+        console.error(chrome.runtime.lastError.message);
+      }
+
+      if (!chromeWindow) {
+        return;
+      }
+
+      const tab = chromeWindow.tabs?.filter((t) => t.highlighted)[0];
+      if (tab && chromeWindow.focused && tab.url == request.url) {
+        chrome.tabs.captureVisibleTab(
+          null as any,
+          {
+            format: 'jpeg',
+            quality: 5,
+          },
+          (image) => {
+            const url = cleanupUrl(request.url);
+
+            if (url && image) {
+              const saveImage = async () => {
+                const s = await getOrCreateStore();
+                await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
+                sendResponse(url);
+              };
+              void saveImage();
+            } else {
+              sendResponse(url);
+            }
+          },
+        );
+      }
+    });
+    return true;
   }
 });
-
-/*
-const suggestResults = async (
-  text: string,
-  suggest: (items: chrome.omnibox.SuggestResult[]) => void,
-) => {
-  console.log('inputchanged', text);
-
-  const store = await getOrCreateStore();
-  if (store) {
-    suggest([
-      { content: ' one', description: 'the first one' },
-      { content: ' number two', description: 'the second entry' },
-    ]);
-  }
-};
-
-chrome.omnibox.setDefaultSuggestion({
-  description: 'Search for a person or document',
-});
-
-// This event is fired each time the user updates the text in the omnibox,
-// as long as the extension's keyword mode is still active.
-chrome.omnibox.onInputChanged.addListener((text, suggest) => void suggestResults(text, suggest));
-
-chrome.omnibox.onInputEntered.addListener((text) => {
-  console.log(text, '<<<<<<<<<<<<');
-});
-*/

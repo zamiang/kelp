@@ -1,6 +1,6 @@
 import { subHours } from 'date-fns';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
-import RollbarErrorTracking from '../error-tracking/rollbar';
+import ErrorTracking from '../error-tracking/error-tracking';
 import {
   IDocument,
   IFormattedAttendee,
@@ -8,9 +8,8 @@ import {
   IPerson,
   ISegment,
   ISegmentDocument,
-  ITask,
-  ITaskDocument,
-  ITopWebsite,
+  IWebsite,
+  IWebsiteImage,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -42,24 +41,6 @@ interface Db extends DBSchema {
     key: string;
     indexes: { 'by-type': string };
   };
-  task: {
-    value: ITask;
-    key: string;
-    indexes: { 'by-parent': string };
-  };
-  taskDocument: {
-    value: ITaskDocument;
-    key: string;
-    indexes: {
-      'by-task-id': string;
-      'by-document-id': string;
-      'by-drive-activity-id': string;
-      'by-task-title': string;
-      'by-person-id': string;
-      'by-day': number;
-      'by-week': number;
-    };
-  };
   meeting: {
     value: ISegment;
     key: string;
@@ -88,8 +69,15 @@ interface Db extends DBSchema {
       'by-week': number;
     };
   };
-  topWebsite: {
-    value: ITopWebsite;
+  website: {
+    value: IWebsite;
+    key: string;
+    indexes: {
+      'by-domain': string;
+    };
+  };
+  websiteImage: {
+    value: IWebsiteImage;
     key: string;
   };
 }
@@ -100,7 +88,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 5;
+const databaseVerson = 6;
 
 export type dbType = IDBPDatabase<Db>;
 
@@ -144,10 +132,8 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('attendee');
         db.deleteObjectStore('tfidf');
         db.deleteObjectStore('segmentDocument');
-        db.deleteObjectStore('task');
-        db.deleteObjectStore('taskDocument');
       }
-      if (oldVersion === 4) {
+      if (oldVersion === 4 || oldVersion === 5) {
         db.deleteObjectStore('person');
         db.deleteObjectStore('document');
         db.deleteObjectStore('driveActivity');
@@ -155,9 +141,9 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
         db.deleteObjectStore('attendee');
         db.deleteObjectStore('tfidf');
         db.deleteObjectStore('segmentDocument');
-        db.deleteObjectStore('task');
-        db.deleteObjectStore('taskDocument');
-        db.deleteObjectStore('topWebsite');
+        db.deleteObjectStore('topWebsite' as any);
+        db.deleteObjectStore('task' as any);
+        db.deleteObjectStore('taskDocument' as any);
       }
 
       const personStore = db.createObjectStore('person', {
@@ -208,26 +194,14 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
       segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
       segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
 
-      const taskStore = db.createObjectStore('task', {
-        keyPath: 'id',
-      });
-      taskStore.createIndex('by-parent', 'parent', { unique: false });
-
-      const taskDocumentStore = db.createObjectStore('taskDocument', {
-        keyPath: 'id',
-      });
-      taskDocumentStore.createIndex('by-task-id', 'taskId', { unique: false });
-      taskDocumentStore.createIndex('by-document-id', 'documentId', { unique: false });
-      taskDocumentStore.createIndex('by-drive-activity-id', 'driveActivityId', {
-        unique: false,
-      });
-      taskDocumentStore.createIndex('by-day', 'day', { unique: false });
-      taskDocumentStore.createIndex('by-week', 'week', { unique: false });
-      taskDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
-      taskDocumentStore.createIndex('by-task-title', 'taskTitle', { unique: false });
-
       // top website store - has no indexes
-      db.createObjectStore('topWebsite', {
+      const websiteStore = db.createObjectStore('website', {
+        keyPath: 'id',
+      });
+      websiteStore.createIndex('by-domain', 'domain', { unique: false });
+
+      // website image
+      db.createObjectStore('websiteImage', {
         keyPath: 'id',
       });
     },
@@ -239,7 +213,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
     },
     terminated: () => {
       console.log('terminated');
-      RollbarErrorTracking.logErrorInRollbar('db terminated');
+      ErrorTracking.logErrorInRollbar('db terminated');
     },
   });
   return db;

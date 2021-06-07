@@ -1,7 +1,7 @@
 import { addMinutes, format, getDate, getWeek, isSameDay, subMinutes } from 'date-fns';
 import { first, flatten, groupBy } from 'lodash';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { ISegment } from '../data-types';
 import { dbType } from '../db';
 
@@ -31,7 +31,7 @@ export default class SegmentModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;

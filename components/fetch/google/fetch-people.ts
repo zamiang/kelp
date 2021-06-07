@@ -1,5 +1,5 @@
 import { chunk, flatten, uniq } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IPerson } from '../../store/data-types';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
@@ -75,8 +75,8 @@ export const fetchPerson = async (personId: string, authToken: string) => {
   );
   const result = await personResponse.json();
   if (!personResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(personResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(personResponse.statusText);
   }
   return formatPerson(result as gapi.client.people.Person);
 };

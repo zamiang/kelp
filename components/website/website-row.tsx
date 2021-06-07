@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import BackIcon from '../../public/icons/close.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
-import { ITopWebsite } from '../store/data-types';
+import { IWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles(() => ({
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const WebsiteRow = (props: { website: ITopWebsite; noMargins?: boolean; store: IStore }) => {
+export const WebsiteRow = (props: { website: IWebsite; noMargins?: boolean; store: IStore }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
@@ -65,7 +65,7 @@ export const WebsiteRow = (props: { website: ITopWebsite; noMargins?: boolean; s
             <IconButton
               onClick={(event) => {
                 event.stopPropagation();
-                void props.store.topWebsitesStore.hideById(props.website.id);
+                alert('todo');
                 setTimeout(() => {
                   setVisible(false);
                 }, 100);

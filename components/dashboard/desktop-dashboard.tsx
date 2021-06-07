@@ -6,28 +6,21 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { backgroundGradient } from '../../constants/theme';
-import Documents from '../dashboard/documents';
-import Meetings from '../dashboard/meetings';
-import Search from '../dashboard/search';
-import Tasks from '../dashboard/tasks';
-import { TopWebsites } from '../dashboard/top-websites';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
-import { LineCalendar } from '../meeting/line-calendar';
+import { MeetingHighlight } from '../meeting/meeting-highlight';
 import NavBar from '../nav/nav-bar';
 import SearchBar from '../nav/search-bar';
 import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
-import ExpandTask from '../tasks/expand-task';
 import Settings from '../user-profile/settings';
-
-export const drawerWidth = 240;
-export const MOBILE_WIDTH = 700;
+import Search from './search';
+import WebsitesHighlights from './website-highlights';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -73,14 +66,17 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -theme.spacing(1),
     opacity: 0.8,
   },
-  lineContainer: {
-    borderBottom: `2px solid ${theme.palette.divider}`,
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-  },
   heading: {
     display: 'block',
     marginBottom: theme.spacing(2),
+  },
+  logo: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    display: 'block',
+    height: 80,
   },
 }));
 
@@ -90,6 +86,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const classes = useStyles();
   const store = props.store;
   const router = useHistory();
+  const [filter, setFilter] = useState<string | undefined>(undefined);
 
   const hash = window.location.hash;
   if (hash.includes('meetings')) {
@@ -101,7 +98,13 @@ export const DesktopDashboard = (props: { store: IStore }) => {
     router.push('/home');
   };
 
-  const shouldRenderTopSites = window['chrome'] && window['chrome']['topSites'];
+  const toggleFilter = (f: string) => {
+    if (f === filter) {
+      setFilter(undefined);
+    } else {
+      setFilter(f);
+    }
+  };
 
   return (
     <ErrorBoundaryComponent>
@@ -111,74 +114,18 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           <Typography>{store.error}</Typography>
         </Alert>
       </Dialog>
+      <MeetingHighlight store={props.store} />
       <div className={classes.content}>
         <Container maxWidth="xl">
+          <img src="/kelp.svg" className={classes.logo} />
           <NavBar store={store} />
-          <Container maxWidth="sm">
-            <HomepageButtons />
+          <Container maxWidth="md">
+            <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
           </Container>
           <Grid container spacing={4} style={{ marginTop: 5 }} justify="center">
-            <Grid item xs={3}>
-              <Typography variant="h4" className={classes.heading}>
-                Meetings
-              </Typography>
-              <Box
-                boxShadow={1}
-                borderRadius={16}
-                maxHeight={'calc(100vh - 230px)'}
-                overflow="auto"
-                style={{ background: '#fff' }}
-              >
-                <div className={classes.lineContainer}>
-                  <LineCalendar store={store} />
-                </div>
-                <Meetings store={store} />
-              </Box>
+            <Grid item xs={9}>
+              <WebsitesHighlights store={store} />
             </Grid>
-            <Grid item xs={3}>
-              <Typography variant="h4" className={classes.heading}>
-                Tasks
-              </Typography>
-              <Box
-                boxShadow={1}
-                borderRadius={16}
-                maxHeight={'calc(100vh - 230px)'}
-                overflow="auto"
-                style={{ background: '#fff' }}
-              >
-                <Tasks store={store} />
-              </Box>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="h4" className={classes.heading}>
-                Documents
-              </Typography>
-              <Box
-                boxShadow={1}
-                borderRadius={16}
-                maxHeight={'calc(100vh - 230px)'}
-                overflow="auto"
-                style={{ background: '#fff' }}
-              >
-                <Documents store={store} />
-              </Box>
-            </Grid>
-            {shouldRenderTopSites && (
-              <Grid item xs={3}>
-                <Typography variant="h4" className={classes.heading}>
-                  Top Sites
-                </Typography>
-                <Box
-                  boxShadow={1}
-                  borderRadius={16}
-                  maxHeight={'calc(100vh - 230px)'}
-                  overflow="auto"
-                  style={{ background: '#fff' }}
-                >
-                  <TopWebsites store={store} />
-                </Box>
-              </Grid>
-            )}
           </Grid>
           <div>
             <Switch>
@@ -221,11 +168,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
               <Route path="/people/:slug">
                 <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
                   <ExpandPerson store={store} />
-                </Dialog>
-              </Route>
-              <Route path="/tasks/:slug">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
-                  <ExpandTask store={store} />
                 </Dialog>
               </Route>
               <Route path="/settings">

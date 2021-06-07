@@ -1,12 +1,12 @@
 import { first, uniq } from 'lodash';
 import urlRegex from 'url-regex';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
 
-export const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
+const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
   const currentTime = new Date();
   if (!event.end || !event.start) {
     return 'past';
@@ -91,7 +91,7 @@ const formatSegment = (event?: gapi.client.calendar.Event): ISegment | null => {
   };
 };
 
-export const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
+const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
   for (const person of attendees) {
     if (person.self) {
       return (person.responseStatus as any) || 'accepted';
@@ -143,8 +143,8 @@ const fetchCalendarEvents = async (
   );
   const calendarBody = await calendarResponse.json();
   if (!calendarResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(calendarResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(calendarResponse.statusText);
   }
   const filteredCalendarEvents =
     calendarBody && calendarBody.items ? (calendarBody.items as gapi.client.calendar.Event[]) : [];

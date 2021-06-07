@@ -7,18 +7,16 @@ import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
 import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
-import { IDocument, IPerson, ISegment, ITask, ITopWebsite } from '../store/data-types';
+import { IDocument, IPerson, ISegment, IWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
-import TaskRow from '../tasks/task-row';
 import { WebsiteRow } from '../website/website-row';
 
 const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
   const meetings: ISearchItem[] = [];
   const documents: ISearchItem[] = [];
-  const tasks: ISearchItem[] = [];
   const websites: ISearchItem[] = [];
   searchResults.forEach((searchResult) => {
     const result = searchResult.item;
@@ -32,8 +30,6 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
         return people.push(result);
       case 'segment':
         return meetings.push(result);
-      case 'task':
-        return tasks.push(result);
       case 'website':
         return websites.push(result);
     }
@@ -42,7 +38,6 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
     people,
     meetings,
     documents,
-    tasks,
     websites,
   };
 };
@@ -116,23 +111,6 @@ const Search = (props: { store: IStore }) => {
             </Box>
           </div>
         )}
-        {filteredResults.tasks.length > 0 && (
-          <div className={classes.panel}>
-            <Typography className={classes.heading} variant="h6">
-              Tasks
-            </Typography>
-            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
-              {filteredResults.tasks.map((result: any) => (
-                <TaskRow
-                  key={result.item.id}
-                  task={result.item as ITask}
-                  store={props.store}
-                  selectedTaskId={null}
-                />
-              ))}
-            </Box>
-          </div>
-        )}
         {filteredResults.websites.length > 0 && (
           <div className={classes.panel}>
             <Typography className={classes.heading} variant="h6">
@@ -143,7 +121,7 @@ const Search = (props: { store: IStore }) => {
                 <WebsiteRow
                   store={props.store}
                   key={result.item.id}
-                  website={result.item as ITopWebsite}
+                  website={result.item as IWebsite}
                 />
               ))}
             </Box>

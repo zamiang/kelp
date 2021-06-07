@@ -1,4 +1,4 @@
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IPerson } from '../../store/data-types';
 import { deleteDatabase } from '../../store/db';
 import { formatPerson, usedPersonFields } from './fetch-people';
@@ -16,8 +16,8 @@ export const fetchSelf = async (authToken: string): Promise<IPerson | null> => {
     },
   );
   if (!personResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(personResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(personResponse.statusText);
 
     if (personResponse.status === 401) {
       // Reload if the current user fetch fails
