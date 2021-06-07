@@ -2,12 +2,40 @@ import { cleanupUrl } from '../../components/shared/cleanup-url';
 import db from '../../components/store/db';
 import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
-import { doTick } from './tracker';
 
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
 const timeToWaitBeforeTracking = 60 * 1000;
+
+const tick = (site: string, startAt: Date, store: IStore, title?: string) => {
+  const url = new URL(site);
+  const domain = url.host;
+  const pathname = url.pathname;
+
+  return store.websitesStore.trackVisit(
+    {
+      startAt,
+      domain,
+      pathname,
+      url: url.href,
+      title,
+    },
+    store.timeDataStore,
+  );
+};
+
+export const doTick = (store: IStore, tab: chrome.tabs.Tab) => {
+  if (tab) {
+    const currentUrl = cleanupUrl(tab.url || '');
+    const isDomainAllowed =
+      config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
+    if (currentUrl && isDomainAllowed) {
+      // remove query params and hash
+      void tick(currentUrl, new Date(), store, tab.title);
+    }
+  }
+};
 
 const getOrCreateStore = async () => {
   if (store) {

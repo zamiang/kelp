@@ -31,7 +31,6 @@
     "alarms",
     "notifications",
     "tabs",
-    "activeTab",
     "<all_urls>",
     "storage",
     "idle",
