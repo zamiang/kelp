@@ -14,13 +14,30 @@ const getOrCreateStore = async () => {
     return store;
   }
   const d = await db('production');
-  store = setupStoreNoFetch(d);
-  return store;
+  if (!d) {
+    throw new Error('Unable to connect to the database');
+  }
+  const s = setupStoreNoFetch(d);
+  if (s) {
+    store = s;
+    return store;
+  }
 };
 
 const fetchDataAndCreateStore = async () => {
+  if (store) {
+    return store;
+  }
+
   const d = await db('production');
-  store = setupStore(d, 'oauth-token', 'scope');
+  if (!d) {
+    throw new Error('unable to connect');
+  }
+  const s = setupStore(d, 'oauth-token', 'scope');
+  if (s) {
+    store = s;
+    return store;
+  }
   return store;
 };
 
@@ -127,7 +144,9 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             if (url && image) {
               const saveImage = async () => {
                 const s = await getOrCreateStore();
-                await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
+                if (s) {
+                  await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
+                }
                 sendResponse(url);
               };
               void saveImage();

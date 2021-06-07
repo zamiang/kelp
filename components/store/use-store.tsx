@@ -36,7 +36,10 @@ export interface IStore {
   readonly isDriveActivityLoading: boolean;
 }
 
-export const setupStoreNoFetch = (db: dbType): IStore => {
+export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
+  if (!db) {
+    return null;
+  }
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
@@ -73,6 +76,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken);
   const [isLoading, setLoading] = useState<boolean>(true);
+
   const people = data.personList || [];
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
@@ -213,7 +217,10 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   };
 };
 
-const useStore = (db: dbType, googleOauthToken: string, scope: string): IStore => {
+const useStore = (db: dbType | null, googleOauthToken: string, scope: string): IStore | null => {
+  if (!db) {
+    return null;
+  }
   const lastUpdated = localStorage.getItem('kelpStoreLastUpdated');
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
   if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {

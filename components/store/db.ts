@@ -1,4 +1,3 @@
-import { subHours } from 'date-fns';
 import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import ErrorTracking from '../error-tracking/error-tracking';
 import {
@@ -90,6 +89,112 @@ const dbNameHash = {
 
 const databaseVerson = 6;
 
+const options = {
+  upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
+    if (oldVersion === 1 || oldVersion === 2) {
+      db.deleteObjectStore('person');
+      db.deleteObjectStore('document');
+      db.deleteObjectStore('driveActivity');
+      db.deleteObjectStore('meeting');
+      db.deleteObjectStore('attendee');
+      db.deleteObjectStore('tfidf');
+      db.deleteObjectStore('segmentDocument');
+    }
+    if (oldVersion === 3) {
+      db.deleteObjectStore('person');
+      db.deleteObjectStore('document');
+      db.deleteObjectStore('driveActivity');
+      db.deleteObjectStore('meeting');
+      db.deleteObjectStore('attendee');
+      db.deleteObjectStore('tfidf');
+      db.deleteObjectStore('segmentDocument');
+    }
+    if (oldVersion === 4 || oldVersion === 5) {
+      db.deleteObjectStore('person');
+      db.deleteObjectStore('document');
+      db.deleteObjectStore('driveActivity');
+      db.deleteObjectStore('meeting');
+      db.deleteObjectStore('attendee');
+      db.deleteObjectStore('tfidf');
+      db.deleteObjectStore('segmentDocument');
+      db.deleteObjectStore('topWebsite' as any);
+      db.deleteObjectStore('task' as any);
+      db.deleteObjectStore('taskDocument' as any);
+    }
+
+    const personStore = db.createObjectStore('person', {
+      keyPath: 'id',
+    });
+    personStore.createIndex('by-email', 'emailAddresses', { unique: false, multiEntry: true });
+    personStore.createIndex('by-google-id', 'googleIds', { unique: false, multiEntry: true });
+    personStore.createIndex('is-self', 'isCurrentUser', { unique: false });
+
+    db.createObjectStore('document', {
+      keyPath: 'id',
+    });
+
+    const driveActivity = db.createObjectStore('driveActivity', {
+      keyPath: 'id',
+    });
+    driveActivity.createIndex('by-document-id', 'documentId', { unique: false });
+    driveActivity.createIndex('is-self', 'isCurrentUser', { unique: false });
+
+    const meetingStore = db.createObjectStore('meeting', {
+      keyPath: 'id',
+    });
+    meetingStore.createIndex('by-start', 'start', { unique: false });
+
+    const attendeeStore = db.createObjectStore('attendee', {
+      keyPath: 'id',
+    });
+    attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
+    attendeeStore.createIndex('by-day', 'day', { unique: false });
+    attendeeStore.createIndex('by-week', 'week', { unique: false });
+    attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
+
+    const tfidfStore = db.createObjectStore('tfidf', {
+      keyPath: 'id',
+    });
+    tfidfStore.createIndex('by-type', 'type', { unique: false });
+
+    const segmentDocumentStore = db.createObjectStore('segmentDocument', {
+      keyPath: 'id',
+    });
+    segmentDocumentStore.createIndex('by-segment-id', 'segmentId', { unique: false });
+    segmentDocumentStore.createIndex('by-document-id', 'documentId', { unique: false });
+    segmentDocumentStore.createIndex('by-drive-activity-id', 'driveActivityId', {
+      unique: false,
+    });
+    segmentDocumentStore.createIndex('by-day', 'day', { unique: false });
+    segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
+    segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
+    segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
+
+    // top website store - has no indexes
+    const websiteStore = db.createObjectStore('website', {
+      keyPath: 'id',
+    });
+    websiteStore.createIndex('by-domain', 'domain', { unique: false });
+
+    // website image
+    db.createObjectStore('websiteImage', {
+      keyPath: 'id',
+    });
+  },
+  blocked() {
+    console.error('blocked');
+  },
+  blocking() {
+    console.error('blocking');
+  },
+  terminated: () => {
+    console.error('terminated');
+    ErrorTracking.logErrorInRollbar('db terminated');
+  },
+};
+
+const timeout = (ms: number) => new Promise((resolve) => setTimeout(() => resolve('error'), ms));
+
 export type dbType = IDBPDatabase<Db>;
 
 export const deleteDatabase = async (environment: 'production' | 'test' | 'extension') =>
@@ -100,7 +205,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
    * Delete the database if it is old
    * This helps solve contact dupe issues and old calendar events that were removed
    * TODO: handle chrome storage
-   */
+
   if (typeof localStorage === 'object') {
     const lastUpdated = localStorage.getItem('kelpLastUpdated');
     const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
@@ -112,111 +217,20 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
     }
     localStorage.setItem('kelpLastUpdated', new Date().toISOString());
   }
+   */
 
-  const db = await openDB<Db>(dbNameHash[environment], databaseVerson, {
-    upgrade(db, oldVersion) {
-      if (oldVersion === 1 || oldVersion === 2) {
-        db.deleteObjectStore('person');
-        db.deleteObjectStore('document');
-        db.deleteObjectStore('driveActivity');
-        db.deleteObjectStore('meeting');
-        db.deleteObjectStore('attendee');
-        db.deleteObjectStore('tfidf');
-        db.deleteObjectStore('segmentDocument');
-      }
-      if (oldVersion === 3) {
-        db.deleteObjectStore('person');
-        db.deleteObjectStore('document');
-        db.deleteObjectStore('driveActivity');
-        db.deleteObjectStore('meeting');
-        db.deleteObjectStore('attendee');
-        db.deleteObjectStore('tfidf');
-        db.deleteObjectStore('segmentDocument');
-      }
-      if (oldVersion === 4 || oldVersion === 5) {
-        db.deleteObjectStore('person');
-        db.deleteObjectStore('document');
-        db.deleteObjectStore('driveActivity');
-        db.deleteObjectStore('meeting');
-        db.deleteObjectStore('attendee');
-        db.deleteObjectStore('tfidf');
-        db.deleteObjectStore('segmentDocument');
-        db.deleteObjectStore('topWebsite' as any);
-        db.deleteObjectStore('task' as any);
-        db.deleteObjectStore('taskDocument' as any);
-      }
-
-      const personStore = db.createObjectStore('person', {
-        keyPath: 'id',
-      });
-      personStore.createIndex('by-email', 'emailAddresses', { unique: false, multiEntry: true });
-      personStore.createIndex('by-google-id', 'googleIds', { unique: false, multiEntry: true });
-      personStore.createIndex('is-self', 'isCurrentUser', { unique: false });
-
-      db.createObjectStore('document', {
-        keyPath: 'id',
-      });
-
-      const driveActivity = db.createObjectStore('driveActivity', {
-        keyPath: 'id',
-      });
-      driveActivity.createIndex('by-document-id', 'documentId', { unique: false });
-      driveActivity.createIndex('is-self', 'isCurrentUser', { unique: false });
-
-      const meetingStore = db.createObjectStore('meeting', {
-        keyPath: 'id',
-      });
-      meetingStore.createIndex('by-start', 'start', { unique: false });
-
-      const attendeeStore = db.createObjectStore('attendee', {
-        keyPath: 'id',
-      });
-      attendeeStore.createIndex('by-segment-id', 'segmentId', { unique: false });
-      attendeeStore.createIndex('by-day', 'day', { unique: false });
-      attendeeStore.createIndex('by-week', 'week', { unique: false });
-      attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
-
-      const tfidfStore = db.createObjectStore('tfidf', {
-        keyPath: 'id',
-      });
-      tfidfStore.createIndex('by-type', 'type', { unique: false });
-
-      const segmentDocumentStore = db.createObjectStore('segmentDocument', {
-        keyPath: 'id',
-      });
-      segmentDocumentStore.createIndex('by-segment-id', 'segmentId', { unique: false });
-      segmentDocumentStore.createIndex('by-document-id', 'documentId', { unique: false });
-      segmentDocumentStore.createIndex('by-drive-activity-id', 'driveActivityId', {
-        unique: false,
-      });
-      segmentDocumentStore.createIndex('by-day', 'day', { unique: false });
-      segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
-      segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
-      segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
-
-      // top website store - has no indexes
-      const websiteStore = db.createObjectStore('website', {
-        keyPath: 'id',
-      });
-      websiteStore.createIndex('by-domain', 'domain', { unique: false });
-
-      // website image
-      db.createObjectStore('websiteImage', {
-        keyPath: 'id',
-      });
-    },
-    blocked() {
-      console.log('blocked');
-    },
-    blocking() {
-      console.log('blocking');
-    },
-    terminated: () => {
-      console.log('terminated');
-      ErrorTracking.logErrorInRollbar('db terminated');
-    },
-  });
-  return db;
+  try {
+    const db = await Promise.race([
+      openDB<Db>(dbNameHash[environment], databaseVerson, options),
+      timeout(1000),
+    ]);
+    if (db === 'error') {
+      return null;
+    }
+    return db as IDBPDatabase<Db>;
+  } catch (e) {
+    return null;
+  }
 };
 
 export default setupDatabase;
