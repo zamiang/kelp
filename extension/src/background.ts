@@ -7,6 +7,7 @@ import { doTick } from './tracker';
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
+const timeToWaitBeforeTracking = 60 * 1000;
 
 const getOrCreateStore = async () => {
   if (store) {
@@ -144,7 +145,6 @@ chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightIn
       chrome.tabs.query(queryOptions, (result: chrome.tabs.Tab[]) => {
         const tab = result[0];
         if (tab && tab.url && tab.id == highlightInfo.tabIds[0]) {
-          console.log('recording', tab);
           try {
             doTick(store, tab);
             captureVisibleTab(tab.url);
@@ -155,36 +155,13 @@ chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightIn
       });
     };
     void checkTab();
-  }, 60000);
+  }, timeToWaitBeforeTracking);
 });
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.meetingId) {
     void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
-    return true;
-  } else if (request.message === 'capture') {
-    chrome.tabs.captureVisibleTab(
-      null as any,
-      {
-        format: 'jpeg',
-        quality: 5,
-      },
-      (image) => {
-        const url = cleanupUrl(request.url);
-
-        if (url && image) {
-          const saveImage = async () => {
-            const s = await getOrCreateStore();
-            if (s) {
-              await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
-            }
-            sendResponse(url);
-          };
-          void saveImage();
-        }
-      },
-    );
     return true;
   }
 });
