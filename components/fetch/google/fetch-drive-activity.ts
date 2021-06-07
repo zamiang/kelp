@@ -12,7 +12,7 @@ const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
     return {
       title: target.driveItem.title,
       link: target.driveItem.name
-        ? `https://docs.google.com/document/d/${target.driveItem.name.replace('items/', '')}`
+        ? `https://docs.google.com/document/d/${target.driveItem.name.replace('items/', '')}/edit`
         : null,
     };
   } else if (target.fileComment) {
@@ -21,7 +21,7 @@ const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
       title: parent && parent.title,
       link:
         parent && parent.name
-          ? `https://docs.google.com/document/d/${parent.name.replace('items/', '')}`
+          ? `https://docs.google.com/document/d/${parent.name.replace('items/', '')}/edit`
           : null,
     };
   } else {

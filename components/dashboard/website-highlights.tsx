@@ -25,8 +25,9 @@ interface IFeaturedWebsite {
  * Finds meeetings documents associated with those meetings
  * It sorts in decending order so upcoming meetings are next
  */
-const maxResult = 25;
+const maxResult = 12;
 const daysToLookBack = 7;
+
 const getFeaturedWebsites = async (props: IStore) => {
   const currentDate = new Date();
 
@@ -116,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     height: 0,
     position: 'relative',
+    marginTop: 3,
   },
 }));
 
@@ -140,14 +142,16 @@ const LargeWebsite = (props: { store: IStore; item: IFeaturedWebsite }) => {
               <IconButton size="small">
                 <img
                   src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
-                  height="18"
-                  width="18"
+                  height="14"
+                  width="14"
                   style={{ margin: '0 auto' }}
                 />
               </IconButton>
             </Grid>
             <Grid item zeroMinWidth xs>
-              <Typography noWrap>{props.item.text}</Typography>
+              <Typography noWrap style={{ marginLeft: 3, marginTop: 1 }}>
+                {props.item.text}
+              </Typography>
             </Grid>
           </Grid>
           <div
