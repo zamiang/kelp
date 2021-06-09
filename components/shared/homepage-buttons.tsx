@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { boxShadow } from '../../constants/theme';
 import { IStore } from '../store/use-store';
 
@@ -24,9 +24,26 @@ export const HomepageButtons = (props: {
   currentFilter: string | undefined;
 }) => {
   const classes = useStyles();
+  const [filterDomains, setFilterDomains] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      store.get;
+    };
+    void fetchData();
+  }, []);
 
   return (
     <Grid container alignItems="center" justify="space-between">
+      <Grid item>
+        <Button
+          disableElevation={false}
+          className={classes.button}
+          onClick={() => props.toggleFilter('all')}
+        >
+          All
+        </Button>
+      </Grid>
       <Grid item>
         <Button
           disableElevation={false}
@@ -60,7 +77,7 @@ export const HomepageButtons = (props: {
             <img src={`chrome://favicon/size/48@1x/https://sheets.google.com`} height="12" />
           }
         >
-          Google sheets
+          Google Sheets
         </Button>
       </Grid>
       <Grid item>

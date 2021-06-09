@@ -1,3 +1,5 @@
+import { subDays } from 'date-fns';
+import config from '../../../constants/config';
 import { IWebsite } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
@@ -29,9 +31,37 @@ export default class WebsiteModel {
     // return chrome.storage.sync.set({ kelpWebsites: JSON.stringify(all) });
   }
 
-  async getAll() {
+  async filterWebsites(
+    websites: IWebsite[],
+    domainBlocklistStore: IStore['domainBlocklistStore'],
+    websiteBlocklistStore: IStore['websiteBlocklistStore'],
+  ) {
+    const domainBlocklistArray = await domainBlocklistStore.getAll();
+    const websiteBlocklistArray = await websiteBlocklistStore.getAll();
+    const domainBlocklist: { [id: string]: boolean } = {};
+    const websiteBlocklist: { [id: string]: boolean } = {};
+
+    // Make some hashes
+    domainBlocklistArray.forEach((item) => (domainBlocklist[item.id] = true));
+    websiteBlocklistArray.forEach((item) => (websiteBlocklist[item.id] = true));
+
+    const currentDate = new Date();
+    const filterTime = subDays(currentDate, config.NUMBER_OF_DAYS_BACK);
+    return websites.filter(
+      (item) =>
+        !item.isHidden &&
+        item.visitedTime > filterTime &&
+        !domainBlocklist[item.domain] &&
+        !websiteBlocklist[item.url],
+    );
+  }
+
+  async getAll(
+    domainBlocklistStore: IStore['domainBlocklistStore'],
+    websiteBlocklistStore: IStore['websiteBlocklistStore'],
+  ) {
     const websites = await this.db.getAll('website');
-    return websites.filter((w) => !w.isHidden);
+    return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
   async addHistoryToStore(data: any) {

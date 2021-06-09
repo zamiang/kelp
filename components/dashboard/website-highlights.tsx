@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import config from '../../constants/config';
 import { boxShadow } from '../../constants/theme';
 import CloseIcon from '../../public/icons/close.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
@@ -30,29 +31,18 @@ interface IFeaturedWebsite {
  * It sorts in decending order so upcoming meetings are next
  */
 const maxResult = 12;
-const daysToLookBack = 7;
 
 const getFeaturedWebsites = async (props: IStore) => {
   const currentDate = new Date();
+  const filterTime = subDays(currentDate, config.NUMBER_OF_DAYS_BACK);
 
   // For documents edited by the current user that may not be associated with a meeting
   const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
-  const websites = await props.websitesStore.getAll();
-
-  const domainBlocklistArray = await props.domainBlocklistStore.getAll();
-  const websiteBlocklistArray = await props.websiteBlocklistStore.getAll();
-  const domainBlocklist: { [id: string]: boolean } = {};
-  const websiteBlocklist: { [id: string]: boolean } = {};
-
-  // Make some hashes
-  domainBlocklistArray.forEach((item) => (domainBlocklist[item.id] = true));
-  websiteBlocklistArray.forEach((item) => (websiteBlocklist[item.id] = true));
-
-  const filterTime = subDays(currentDate, daysToLookBack);
-  const filteredWebsites = websites.filter(
-    (item) =>
-      item.visitedTime > filterTime && !domainBlocklist[item.domain] && !websiteBlocklist[item.url],
+  const filteredWebsites = await props.websitesStore.getAll(
+    props.domainBlocklistStore,
+    props.websiteBlocklistStore,
   );
+
   const filteredDriveActivity = driveActivity.filter((item) => item.time > filterTime);
 
   const urlCount: { [url: string]: number } = {};
@@ -289,7 +279,7 @@ const AllWebsites = (props: { store: IStore }) => {
                   onClick={() => hideDomain(hideDialogDomain)}
                   className={classes.button}
                 >
-                  Hide all websites at {hideDialogDomain}
+                  Hide all from {hideDialogDomain}
                 </Button>
               </Grid>
               <Grid item>
