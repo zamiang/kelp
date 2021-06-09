@@ -33,14 +33,6 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
-  desktopSourceButton: {
-    position: 'absolute',
-    top: theme.spacing(2),
-    right: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
   edit: {},
   title: {
     wordBreak: 'break-word',

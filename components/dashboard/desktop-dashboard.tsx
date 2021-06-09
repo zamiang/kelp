@@ -12,8 +12,7 @@ import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
-import NavBar from '../nav/nav-bar';
-import SearchBar from '../nav/search-bar';
+import PopupHeader from '../mobile/popup-header';
 import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
@@ -22,7 +21,12 @@ import Search from './search';
 import WebsitesHighlights from './website-highlights';
 
 const useStyles = makeStyles((theme) => ({
-  appBarSpacer: theme.mixins.toolbar,
+  box: {
+    background: '#fff',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+  },
   '@keyframes backgroundAnimation': {
     from: {
       backgroundPosition: '0% 75%',
@@ -44,10 +48,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(2),
     overflow: 'hidden',
   },
-  heading: {
-    display: 'block',
-    marginBottom: theme.spacing(2),
-  },
 }));
 
 const is500Error = (error: Error) => (error as any).status === 500;
@@ -64,10 +64,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
     router.push(hash.replace('#', ''));
   }
 
-  const onDialogClose = () => {
-    router.push('/home');
-  };
-
   const toggleFilter = (f: string) => {
     if (f === filter) {
       setFilter('all');
@@ -83,59 +79,38 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           <Typography>{store.error}</Typography>
         </Alert>
       </Dialog>
-      <MeetingHighlight store={props.store} />
       <div className={classes.content}>
         <Container maxWidth="lg">
-          <NavBar store={store} />
-          <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
-          <WebsitesHighlights store={store} currentFilter={filter} />
+          <PopupHeader store={store} shouldAlwaysShowSettings />
           <div>
             <Switch>
               <Route path="/search">
-                <Dialog maxWidth="md" open={true} onClose={onDialogClose} fullScreen>
-                  <Container maxWidth="xl">
-                    <div
-                      style={{
-                        maxWidth: 800,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginTop: 48,
-                      }}
-                    >
-                      <Box
-                        boxShadow={1}
-                        borderRadius={16}
-                        overflow="auto"
-                        style={{ background: '#fff' }}
-                      >
-                        <SearchBar />
-                      </Box>
-                      <div style={{ marginBottom: 12 }}>
-                        <Search store={store} />
-                      </div>
-                    </div>
-                  </Container>
-                </Dialog>
+                <Search store={store} />
               </Route>
               <Route path="/meetings/:slug">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
+                <Box className={classes.box} boxShadow={1} borderRadius={16}>
                   <ExpandedMeeting store={store} />
-                </Dialog>
+                </Box>
               </Route>
               <Route path="/documents/:slug">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
+                <Box className={classes.box} boxShadow={1} borderRadius={16}>
                   <ExpandedDocument store={store} />
-                </Dialog>
+                </Box>
               </Route>
               <Route path="/people/:slug">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
+                <Box className={classes.box} boxShadow={1} borderRadius={16}>
                   <ExpandPerson store={store} />
-                </Dialog>
+                </Box>
               </Route>
               <Route path="/settings">
-                <Dialog maxWidth="sm" open={true} onClose={onDialogClose}>
+                <Box className={classes.box} boxShadow={1} borderRadius={16}>
                   <Settings />
-                </Dialog>
+                </Box>
+              </Route>
+              <Route>
+                <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
+                <WebsitesHighlights store={store} currentFilter={filter} />
+                <MeetingHighlight store={props.store} />
               </Route>
             </Switch>
           </div>

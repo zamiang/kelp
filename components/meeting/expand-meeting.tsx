@@ -13,7 +13,6 @@ import EmailIcon from '../../public/icons/email-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
-import { GoToSourceButton } from '../mobile/popup-header';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -177,9 +176,6 @@ const ExpandedMeeting = (props: {
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
-        <div className={classes.desktopSourceButton}>
-          <GoToSourceButton store={props.store} type="meetings" id={meeting.id} />
-        </div>
         <div className={classes.headingContainer}>
           <Typography variant="h3" gutterBottom>
             {meeting.summary || '(no title)'}
