@@ -213,7 +213,7 @@ const useStylesAllWebsites = makeStyles((theme) => ({
   },
 }));
 
-const AllWebsites = (props: { store: IStore }) => {
+const AllWebsites = (props: { store: IStore; currentFilter: string }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [hideDialogUrl, setHideDialogUrl] = useState<string | undefined>();
   const hideDialogDomain = hideDialogUrl ? new URL(hideDialogUrl).host : undefined;
@@ -221,11 +221,16 @@ const AllWebsites = (props: { store: IStore }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const featuredWebsite = await getFeaturedWebsites(props.store);
-      setTopWebsites(featuredWebsite.filter(Boolean));
+      const featuredWebsites = await getFeaturedWebsites(props.store);
+      const filtereredWebsites = featuredWebsites.filter((item) =>
+        item && props.currentFilter === 'all'
+          ? true
+          : item.websiteId.indexOf(props.currentFilter) > -1,
+      );
+      setTopWebsites(filtereredWebsites);
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading, props.currentFilter]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
@@ -302,9 +307,9 @@ const AllWebsites = (props: { store: IStore }) => {
   );
 };
 
-const WebsitesHighlights = (props: { store: IStore }) => (
+const WebsitesHighlights = (props: { store: IStore; currentFilter: string }) => (
   <div>
-    <AllWebsites store={props.store} />
+    <AllWebsites store={props.store} currentFilter={props.currentFilter} />
   </div>
 );
 

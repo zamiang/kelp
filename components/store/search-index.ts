@@ -53,7 +53,10 @@ export default class SearchIndex {
     });
 
     // Websites
-    const websites = await store.websitesStore.getAll();
+    const websites = await store.websitesStore.getAll(
+      store.domainBlocklistStore,
+      store.websiteBlocklistStore,
+    );
     websites.map((website) => {
       searchIndex.push({
         text: website.title.toLowerCase(),

@@ -1,6 +1,6 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useEffect, useState } from 'react';
 import { boxShadow } from '../../constants/theme';
 import { IStore } from '../store/use-store';
@@ -16,7 +16,15 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(3),
     paddingLeft: theme.spacing(3),
   },
+  container: {
+    marginBottom: theme.spacing(2),
+  },
+  label: {
+    marginLeft: theme.spacing(1),
+  },
 }));
+
+const maxItems = 20;
 
 export const HomepageButtons = (props: {
   store: IStore;
@@ -24,72 +32,40 @@ export const HomepageButtons = (props: {
   currentFilter: string | undefined;
 }) => {
   const classes = useStyles();
-  const [filterDomains, setFilterDomains] = useState([]);
+  const [filterDomains, setFilterDomains] = useState<[string, number][]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      store.get;
+      const websites = await props.store.websitesStore.getAll(
+        props.store.domainBlocklistStore,
+        props.store.websiteBlocklistStore,
+      );
+      const domainHash = websites.reduce(
+        (acc: { [id: string]: number }, curr) => (
+          (acc[curr.domain] = (acc[curr.domain] || 0) + 1), acc
+        ),
+        {},
+      );
+      const orderedDomains = Object.entries(domainHash).sort((a, b) => b[1] - a[1]);
+      setFilterDomains(orderedDomains.slice(0, maxItems));
     };
     void fetchData();
   }, []);
 
   return (
-    <Grid container alignItems="center" justify="space-between">
-      <Grid item>
-        <Button
-          disableElevation={false}
-          className={classes.button}
-          onClick={() => props.toggleFilter('all')}
-        >
-          All
-        </Button>
-      </Grid>
-      <Grid item>
-        <Button
-          disableElevation={false}
-          className={classes.button}
-          onClick={() => props.toggleFilter('docs')}
-          startIcon={
-            <img src={`chrome://favicon/size/48@1x/https://docs.google.com`} height="12" />
-          }
-        >
-          Google Docs
-        </Button>
-      </Grid>
-      <Grid item>
-        <Button
-          disableElevation={false}
-          className={classes.button}
-          onClick={() => props.toggleFilter('slides')}
-          startIcon={
-            <img src={`chrome://favicon/size/48@1x/https://slides.google.com`} height="12" />
-          }
-        >
-          Google Slides
-        </Button>
-      </Grid>
-      <Grid item>
-        <Button
-          disableElevation={false}
-          className={classes.button}
-          onClick={() => props.toggleFilter('sheets')}
-          startIcon={
-            <img src={`chrome://favicon/size/48@1x/https://sheets.google.com`} height="12" />
-          }
-        >
-          Google Sheets
-        </Button>
-      </Grid>
-      <Grid item>
-        <Button
-          disableElevation={false}
-          className={classes.button}
-          onClick={() => props.toggleFilter('figma')}
-          startIcon={<img src={`chrome://favicon/size/48@1x/https://www.figma.com`} height="12" />}
-        >
-          Figma
-        </Button>
-      </Grid>
-    </Grid>
+    <ToggleButtonGroup
+      value={props.currentFilter || 'all'}
+      className={classes.container}
+      exclusive
+      onChange={(_event, value) => props.toggleFilter(value)}
+    >
+      <ToggleButton value="all">All</ToggleButton>
+      {filterDomains.map((item) => (
+        <ToggleButton value={item[0]} key={item[0]}>
+          <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="12" />
+          <div className={classes.label}>{item[0]}</div>
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
   );
 };

@@ -56,7 +56,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const classes = useStyles();
   const store = props.store;
   const router = useHistory();
-  const [filter, setFilter] = useState<string | undefined>(undefined);
+  const [filter, setFilter] = useState<string>('all');
 
   const hash = window.location.hash;
   if (hash.includes('meetings')) {
@@ -70,12 +70,11 @@ export const DesktopDashboard = (props: { store: IStore }) => {
 
   const toggleFilter = (f: string) => {
     if (f === filter) {
-      setFilter(undefined);
+      setFilter('all');
     } else {
       setFilter(f);
     }
   };
-
   return (
     <ErrorBoundaryComponent>
       <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
@@ -89,7 +88,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
         <Container maxWidth="lg">
           <NavBar store={store} />
           <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
-          <WebsitesHighlights store={store} />
+          <WebsitesHighlights store={store} currentFilter={filter} />
           <div>
             <Switch>
               <Route path="/search">
