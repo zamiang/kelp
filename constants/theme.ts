@@ -103,6 +103,7 @@ const theme = createMuiTheme({
     boxShadow,
     boxShadow,
     boxShadow,
+    boxShadow,
   ],
   typography: {
     fontSize: 14,

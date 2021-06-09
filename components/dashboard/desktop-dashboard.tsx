@@ -1,7 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
@@ -39,44 +38,15 @@ const useStyles = makeStyles((theme) => ({
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',
     minHeight: '100vh',
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     overflow: 'hidden',
   },
-  center: {
-    margin: '0px auto',
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-    borderRadius: theme.spacing(1),
-    background: theme.palette.background.paper,
-    maxWidth: 530,
-    position: 'relative',
-    maxHeight: 'calc(100vh - 66px)',
-    overflow: 'auto',
-    width: '100%',
-  },
-  fullWidth: {
-    maxWidth: '90%',
-  },
-  rightIcon: {
-    float: 'right',
-    marginTop: -theme.spacing(1),
-    marginRight: -theme.spacing(1),
-    opacity: 0.8,
-  },
   heading: {
     display: 'block',
     marginBottom: theme.spacing(2),
-  },
-  logo: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    display: 'block',
-    height: 80,
   },
 }));
 
@@ -116,17 +86,10 @@ export const DesktopDashboard = (props: { store: IStore }) => {
       </Dialog>
       <MeetingHighlight store={props.store} />
       <div className={classes.content}>
-        <Container maxWidth="xl">
-          <img src="/kelp.svg" className={classes.logo} />
+        <Container maxWidth="lg">
           <NavBar store={store} />
-          <Container maxWidth="md">
-            <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
-          </Container>
-          <Grid container spacing={4} style={{ marginTop: 5 }} justify="center">
-            <Grid item xs={9}>
-              <WebsitesHighlights store={store} />
-            </Grid>
-          </Grid>
+          <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
+          <WebsitesHighlights store={store} />
           <div>
             <Switch>
               <Route path="/search">

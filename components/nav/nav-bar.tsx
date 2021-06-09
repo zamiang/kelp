@@ -10,7 +10,6 @@ import LockIcon from '../../public/icons/lock.svg';
 import RotateIcon from '../../public/icons/rotate.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import { getGreeting } from '../shared/get-greeting';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -19,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     border: '0px',
     zIndex: 6,
     justifyContent: 'space-between',
-    maxWidth: 800,
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: theme.spacing(2),
@@ -27,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
     background: theme.palette.background.paper,
-    borderRadius: 10,
+    borderRadius: 35,
     minHeight: 55,
   },
   innerContainer: {},
@@ -74,7 +72,6 @@ const NavBar = (props: { store: IStore }) => {
 
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [currentUser, setCurrentUser] = useState<IPerson | undefined>();
-  const greeting = getGreeting();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,7 +105,7 @@ const NavBar = (props: { store: IStore }) => {
         <Grid item>
           <div className={classes.greeting}>
             <Typography variant="h3" style={{ fontSize: 22, color: 'rgba(0,0,0,0.2)' }}>
-              Good {greeting}
+              Search your recent history
             </Typography>
           </div>
         </Grid>

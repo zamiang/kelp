@@ -12,14 +12,14 @@ export default class DomainBlocklistModel {
     return this.db.getAll('domainBlocklist');
   }
 
-  async addWebsite(url: string) {
+  async addDomain(domain: string) {
     return this.db.put('domainBlocklist', {
-      id: url,
+      id: domain,
       createdAt: new Date(),
     });
   }
 
-  async removeWebsite(url: string) {
+  async removeDomain(url: string) {
     return this.db.delete('domainBlocklist', url);
   }
 }

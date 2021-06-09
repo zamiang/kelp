@@ -1,4 +1,6 @@
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
@@ -7,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { boxShadow } from '../../constants/theme';
 import CloseIcon from '../../public/icons/close.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IDocument, ISegment, IWebsiteImage } from '../store/data-types';
@@ -36,8 +39,20 @@ const getFeaturedWebsites = async (props: IStore) => {
   const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
   const websites = await props.websitesStore.getAll();
 
+  const domainBlocklistArray = await props.domainBlocklistStore.getAll();
+  const websiteBlocklistArray = await props.websiteBlocklistStore.getAll();
+  const domainBlocklist: { [id: string]: boolean } = {};
+  const websiteBlocklist: { [id: string]: boolean } = {};
+
+  // Make some hashes
+  domainBlocklistArray.forEach((item) => (domainBlocklist[item.id] = true));
+  websiteBlocklistArray.forEach((item) => (websiteBlocklist[item.id] = true));
+
   const filterTime = subDays(currentDate, daysToLookBack);
-  const filteredWebsites = websites.filter((item) => item.visitedTime > filterTime);
+  const filteredWebsites = websites.filter(
+    (item) =>
+      item.visitedTime > filterTime && !domainBlocklist[item.domain] && !websiteBlocklist[item.url],
+  );
   const filteredDriveActivity = driveActivity.filter((item) => item.time > filterTime);
 
   const urlCount: { [url: string]: number } = {};
@@ -192,8 +207,27 @@ const LargeWebsite = (props: {
   );
 };
 
+const useStylesAllWebsites = makeStyles((theme) => ({
+  button: {
+    textDecoration: 'none',
+    cursor: 'pointer',
+    boxShadow,
+    borderRadius: 20,
+    background: theme.palette.background.paper,
+    color: theme.palette.primary.main,
+    paddingRight: theme.spacing(3),
+    paddingLeft: theme.spacing(3),
+  },
+  dialogContent: {
+    padding: theme.spacing(8),
+  },
+}));
+
 const AllWebsites = (props: { store: IStore }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
+  const [hideDialogUrl, setHideDialogUrl] = useState<string | undefined>();
+  const hideDialogDomain = hideDialogUrl ? new URL(hideDialogUrl).host : undefined;
+  const classes = useStylesAllWebsites();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -205,11 +239,20 @@ const AllWebsites = (props: { store: IStore }) => {
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
-  const hideItem = async (item: IFeaturedWebsite) => {
-    console.log('!!!!!!!!!!', item);
-    await props.store.websiteBlocklistStore.removeWebsite(item.websiteId);
+  const hideItem = (item: IFeaturedWebsite) => setHideDialogUrl(item.websiteId);
+
+  const hideUrl = async (url: string) => {
+    await props.store.websiteBlocklistStore.addWebsite(url);
     const featuredWebsite = await getFeaturedWebsites(props.store);
     setTopWebsites(featuredWebsite.filter(Boolean));
+    setHideDialogUrl(undefined);
+  };
+
+  const hideDomain = async (domain: string) => {
+    await props.store.domainBlocklistStore.addDomain(domain);
+    const featuredWebsite = await getFeaturedWebsites(props.store);
+    setTopWebsites(featuredWebsite.filter(Boolean));
+    setHideDialogUrl(undefined);
   };
 
   return (
@@ -220,6 +263,51 @@ const AllWebsites = (props: { store: IStore }) => {
           <LargeWebsite key={item.websiteId} item={item} store={props.store} hideItem={hideItem} />
         ))}
       </Grid>
+      <Dialog
+        maxWidth="md"
+        open={hideDialogUrl ? true : false}
+        onBackdropClick={() => setHideDialogUrl(undefined)}
+      >
+        {hideDialogUrl && hideDialogDomain && (
+          <div className={classes.dialogContent}>
+            <Grid container justify="space-between">
+              <Grid item>
+                <Typography variant="h3" noWrap>
+                  No longer recommend this website
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={() => setHideDialogUrl(undefined)}>
+                  <CloseIcon width="24" height="24" />
+                </IconButton>
+              </Grid>
+            </Grid>
+            <Grid container alignItems="center" justify="space-between">
+              <Grid item xs={5}>
+                <Button
+                  disableElevation={false}
+                  onClick={() => hideDomain(hideDialogDomain)}
+                  className={classes.button}
+                >
+                  Hide all websites at {hideDialogDomain}
+                </Button>
+              </Grid>
+              <Grid item>
+                <Typography variant="h3">OR</Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Button
+                  disableElevation={false}
+                  onClick={() => hideUrl(hideDialogUrl)}
+                  className={classes.button}
+                >
+                  Hide this website
+                </Button>
+              </Grid>
+            </Grid>
+          </div>
+        )}
+      </Dialog>
     </div>
   );
 };
