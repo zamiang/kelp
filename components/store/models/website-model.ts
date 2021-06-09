@@ -8,6 +8,7 @@ interface IWebsiteNotFormatted {
   pathname: string;
   url: string;
   title?: string;
+  isHidden?: boolean;
 }
 
 export default class WebsiteModel {
@@ -29,7 +30,8 @@ export default class WebsiteModel {
   }
 
   async getAll() {
-    return await this.db.getAll('website');
+    const websites = await this.db.getAll('website');
+    return websites.filter((w) => !w.isHidden);
   }
 
   async addHistoryToStore(data: any) {

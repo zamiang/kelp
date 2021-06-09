@@ -5,15 +5,21 @@ import FetchAll from '../fetch/fetch-all';
 import { dbType } from './db';
 import AttendeeStore from './models/attendee-model';
 import DocumentDataStore from './models/document-model';
+import DomainBlocklistStore from './models/domain-blocklist-model';
+import DomainFilterStore from './models/domain-filter-model';
 import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
 import TfidfDataStore from './models/tfidf-model';
+import WebsiteBlocklistStore from './models/website-blocklist-model';
 import WebsiteImageStore from './models/website-image-model';
 import WebsitesStore from './models/website-model';
 
 export interface IStore {
+  readonly domainFilterStore: DomainFilterStore;
+  readonly websiteBlocklistStore: WebsiteBlocklistStore;
+  readonly domainBlocklistStore: DomainBlocklistStore;
   readonly personDataStore: PersonDataStore;
   readonly timeDataStore: TimeDataStore;
   readonly documentDataStore: DocumentDataStore;
@@ -49,8 +55,14 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websitesStore = new WebsitesStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
+  const websiteBlocklistStore = new WebsiteBlocklistStore(db);
+  const domainBlocklistStore = new DomainBlocklistStore(db);
+  const domainFilterStore = new DomainFilterStore(db);
 
   return {
+    domainFilterStore,
+    websiteBlocklistStore,
+    domainBlocklistStore,
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
     websitesStore,
@@ -88,6 +100,9 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websitesStore = new WebsitesStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
+  const websiteBlocklistStore = new WebsiteBlocklistStore(db);
+  const domainBlocklistStore = new DomainBlocklistStore(db);
+  const domainFilterStore = new DomainFilterStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -202,6 +217,9 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
     segmentDocumentStore,
     websitesStore,
     websiteImageStore,
+    websiteBlocklistStore,
+    domainBlocklistStore,
+    domainFilterStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,

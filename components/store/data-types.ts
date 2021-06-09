@@ -137,3 +137,19 @@ export interface IWebsiteImage {
   readonly image: string;
   readonly date: Date;
 }
+
+export interface IWebsiteBlocklist {
+  readonly id: string;
+  readonly createdAt: Date;
+}
+
+export interface IDomainBlocklist {
+  readonly id: string;
+  readonly createdAt: Date;
+}
+
+export interface IDomainFilter {
+  readonly id: string;
+  readonly createdAt: Date;
+  readonly order: number;
+}

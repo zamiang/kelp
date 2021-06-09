@@ -54,6 +54,7 @@ export default {
     'calendar.google.com',
     'chrome://',
     'www.google.com',
+    'meet.google.com',
     'twitter.com/home',
   ],
 };

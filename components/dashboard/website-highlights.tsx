@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import CloseIcon from '../../public/icons/close.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IDocument, ISegment, IWebsiteImage } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -121,8 +122,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LargeWebsite = (props: { store: IStore; item: IFeaturedWebsite }) => {
+const LargeWebsite = (props: {
+  store: IStore;
+  item: IFeaturedWebsite;
+  hideItem: (item: IFeaturedWebsite) => void;
+}) => {
   const [image, setImage] = useState<IWebsiteImage>();
+  const [isCloseVisible, setCloseVisible] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -134,7 +140,12 @@ const LargeWebsite = (props: { store: IStore; item: IFeaturedWebsite }) => {
   }, []);
 
   return (
-    <Grid item xs={3}>
+    <Grid
+      item
+      xs={3}
+      onMouseEnter={() => setCloseVisible(true)}
+      onMouseLeave={() => setCloseVisible(false)}
+    >
       <Link href={props.item.websiteId} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
           <Grid container alignItems="center">
@@ -153,6 +164,21 @@ const LargeWebsite = (props: { store: IStore; item: IFeaturedWebsite }) => {
                 {props.item.text}
               </Typography>
             </Grid>
+            {isCloseVisible && (
+              <Grid item>
+                <IconButton
+                  size="small"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    void props.hideItem(props.item);
+                    return false;
+                  }}
+                >
+                  <CloseIcon width="14" height="14" />
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
           <div
             className={classes.imageContainer}
@@ -179,12 +205,19 @@ const AllWebsites = (props: { store: IStore }) => {
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
+  const hideItem = async (item: IFeaturedWebsite) => {
+    console.log('!!!!!!!!!!', item);
+    await props.store.websiteBlocklistStore.removeWebsite(item.websiteId);
+    const featuredWebsite = await getFeaturedWebsites(props.store);
+    setTopWebsites(featuredWebsite.filter(Boolean));
+  };
+
   return (
     <div>
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid container spacing={4}>
         {topWebsites.map((item) => (
-          <LargeWebsite key={item.websiteId} item={item} store={props.store} />
+          <LargeWebsite key={item.websiteId} item={item} store={props.store} hideItem={hideItem} />
         ))}
       </Grid>
     </div>

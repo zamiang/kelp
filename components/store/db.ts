@@ -2,12 +2,15 @@ import { DBSchema, IDBPDatabase, openDB } from 'idb';
 import ErrorTracking from '../error-tracking/error-tracking';
 import {
   IDocument,
+  IDomainBlocklist,
+  IDomainFilter,
   IFormattedAttendee,
   IFormattedDriveActivity,
   IPerson,
   ISegment,
   ISegmentDocument,
   IWebsite,
+  IWebsiteBlocklist,
   IWebsiteImage,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
@@ -77,6 +80,18 @@ interface Db extends DBSchema {
   };
   websiteImage: {
     value: IWebsiteImage;
+    key: string;
+  };
+  websiteBlocklist: {
+    value: IWebsiteBlocklist;
+    key: string;
+  };
+  domainBlocklist: {
+    value: IDomainBlocklist;
+    key: string;
+  };
+  domainFilter: {
+    value: IDomainFilter;
     key: string;
   };
 }
@@ -178,6 +193,18 @@ const options = {
 
     // website image
     db.createObjectStore('websiteImage', {
+      keyPath: 'id',
+    });
+    // website blocklist
+    db.createObjectStore('websiteBlocklist', {
+      keyPath: 'id',
+    });
+    // domain blocklist
+    db.createObjectStore('domainBlocklist', {
+      keyPath: 'id',
+    });
+    // domain filter
+    db.createObjectStore('domainFilter', {
       keyPath: 'id',
     });
   },
