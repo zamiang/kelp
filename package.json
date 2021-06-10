@@ -34,7 +34,7 @@
     "@material-ui/lab": "4.0.0-alpha.58",
     "@material-ui/styles": "4.11.4",
     "@rehooks/component-size": "1.0.3",
-    "@types/chrome": "0.0.144",
+    "@types/chrome": "0.0.145",
     "@types/d3": "6.7.0",
     "@types/express": "4.17.12",
     "@types/faker": "5.5.6",
