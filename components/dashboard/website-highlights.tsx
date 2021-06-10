@@ -30,7 +30,7 @@ interface IFeaturedWebsite {
  * Finds meeetings documents associated with those meetings
  * It sorts in decending order so upcoming meetings are next
  */
-const maxResult = 12;
+const maxResult = 8;
 
 const getFeaturedWebsites = async (props: IStore) => {
   const currentDate = new Date();
@@ -96,10 +96,10 @@ const getFeaturedWebsites = async (props: IStore) => {
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    padding: theme.spacing(),
     background: theme.palette.background.paper,
     opacity: 1,
     transition: 'opacity 0.3s',
+    overflow: 'hidden',
     '&:hover': {
       opacity: 0.8,
     },
@@ -124,6 +124,13 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     position: 'relative',
     marginTop: 3,
+  },
+  textContainer: {
+    marginTop: 5,
+  },
+  text: {
+    marginLeft: 5,
+    marginTop: 1,
   },
 }));
 
@@ -153,38 +160,6 @@ const LargeWebsite = (props: {
     >
       <Link href={props.item.websiteId} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
-          <Grid container alignItems="center">
-            <Grid item>
-              <IconButton size="small">
-                <img
-                  src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
-                  height="14"
-                  width="14"
-                  style={{ margin: '0 auto' }}
-                />
-              </IconButton>
-            </Grid>
-            <Grid item zeroMinWidth xs>
-              <Typography noWrap style={{ marginLeft: 3, marginTop: 1 }}>
-                {props.item.text}
-              </Typography>
-            </Grid>
-            {isCloseVisible && (
-              <Grid item>
-                <IconButton
-                  size="small"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    void props.hideItem(props.item);
-                    return false;
-                  }}
-                >
-                  <CloseIcon width="14" height="14" />
-                </IconButton>
-              </Grid>
-            )}
-          </Grid>
           <div
             className={classes.imageContainer}
             style={{ backgroundImage: `url('${image?.image}')` }}
@@ -192,6 +167,38 @@ const LargeWebsite = (props: {
             <div className={classes.dots}></div>
           </div>
         </Box>
+        <Grid container alignItems="center" className={classes.textContainer}>
+          <Grid item>
+            <IconButton size="small">
+              <img
+                src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
+                height="14"
+                width="14"
+                style={{ margin: '0 auto' }}
+              />
+            </IconButton>
+          </Grid>
+          <Grid item zeroMinWidth xs>
+            <Typography noWrap className={classes.text}>
+              {props.item.text}
+            </Typography>
+          </Grid>
+          {isCloseVisible && (
+            <Grid item>
+              <IconButton
+                size="small"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  void props.hideItem(props.item);
+                  return false;
+                }}
+              >
+                <CloseIcon width="14" height="14" />
+              </IconButton>
+            </Grid>
+          )}
+        </Grid>
       </Link>
     </Grid>
   );

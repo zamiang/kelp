@@ -82,7 +82,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
         </Alert>
       </Dialog>
       <div className={classes.content}>
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
           <PopupHeader store={store} shouldAlwaysShowSettings />
           <div>
             <Switch>
