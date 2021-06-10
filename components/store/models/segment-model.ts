@@ -73,6 +73,7 @@ export default class SegmentModel {
     );
   }
 
+  // TODO: Use an index
   async getCurrentSegment() {
     const segments = await this.getAll();
     const start = subMinutes(new Date(), config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
@@ -82,6 +83,17 @@ export default class SegmentModel {
         const isUpNext = segment.start > start && segment.start < end;
         const isCurrent = start > segment.start && start < segment.end;
         return segment.selfResponseStatus === 'accepted' && (isUpNext || isCurrent);
+      }),
+    );
+  }
+
+  async getCurrentSegmentForWebsites() {
+    const segments = await this.getAll();
+    const start = new Date();
+    return first(
+      segments.filter((segment) => {
+        const isCurrent = start > segment.start && start < segment.end;
+        return segment.selfResponseStatus === 'accepted' && isCurrent;
       }),
     );
   }

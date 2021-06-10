@@ -55,7 +55,7 @@ export const HomepageButtons = (props: {
       setFilterDomains(orderedDomains.slice(0, maxItems));
     };
     void fetchData();
-  }, []);
+  }, [props.store.isLoading, props.store.lastUpdated]);
 
   return (
     <div className={classes.maxWidth}>
@@ -70,7 +70,7 @@ export const HomepageButtons = (props: {
         {filterDomains.map((item) => (
           <ToggleButton value={item[0]} key={item[0]}>
             <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="12" />
-            <div className={classes.label}>{item[0].split('-')[0]}</div>
+            <div className={classes.label}>{item[0].split('-')[0].replace('www.', '')}</div>
           </ToggleButton>
         ))}
       </ToggleButtonGroup>

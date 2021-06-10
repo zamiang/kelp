@@ -64,6 +64,7 @@ export default {
   ],
   BLOCKED_DOMAINS: [
     'mail.google.com',
+    'www.google.com',
     'calendar.google.com',
     'chrome://',
     'www.google.com',

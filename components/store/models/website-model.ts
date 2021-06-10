@@ -1,5 +1,6 @@
 import { subDays } from 'date-fns';
 import config from '../../../constants/config';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IWebsite } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
@@ -68,13 +69,21 @@ export default class WebsiteModel {
     return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
-  async addHistoryToStore(data: any) {
-    console.log(data, 'trying to add to the website store');
+  async addHistoryToStore(websites: IWebsite[]) {
+    const tx = this.db.transaction('website', 'readwrite');
+    const results = await Promise.allSettled(websites.map((website) => tx.store.put(website)));
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async trackVisit(website: IWebsiteNotFormatted, timeStore: IStore['timeDataStore']) {
-    const currentMeeting = await timeStore.getCurrentSegment();
-
+    const currentMeeting = await timeStore.getCurrentSegmentForWebsites();
     const result = await this.db.put('website', {
       id: `${website.url}-${website.startAt.toDateString()}`,
       title: website.title || '',

@@ -12,17 +12,18 @@ const formatSite = (site: chrome.history.HistoryItem): IWebsite => ({
   isHidden: false,
 });
 
-const fetchHistory = (domain: string): Promise<IWebsite[]> => {
-  if (!window['chrome'] || !window['chrome']['topSites']) {
-    return [] as any;
-  }
-
-  return new Promise((resolve) => {
-    chrome.history.search(domain as any, (sites) => {
-      resolve(sites.filter((site) => site.url && site.title).map((site) => formatSite(site)));
-    });
+const fetchHistory = (domain: string): Promise<IWebsite[]> =>
+  new Promise((resolve) => {
+    chrome.history.search(
+      {
+        text: domain,
+        startTime: constants.startDate.valueOf(),
+      },
+      (sites) => {
+        resolve(sites.filter((site) => site.url && site.title).map((site) => formatSite(site)));
+      },
+    );
   });
-};
 
 export const fetchAllHistory = async (): Promise<IWebsite[]> => {
   const websites = await Promise.all(constants.ALLOWED_DOMAINS.map((d) => fetchHistory(d)));

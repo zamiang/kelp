@@ -9,7 +9,6 @@ import {
   ISegment,
   IWebsite,
 } from '../store/data-types';
-import { fetchAllHistory } from './chrome/fetch-history';
 import fetchCalendarEvents, {
   getDocumentsFromCalendarEvents,
 } from './google/fetch-calendar-events';
@@ -108,11 +107,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   ] as any);
 
   /**
-   * TOP WEBSITES
-   */
-  const websites = useAsyncAbortable(fetchAllHistory, []);
-
-  /**
    * CALENDAR
    */
   const calendarResponse = useAsyncAbortable(
@@ -197,7 +191,7 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     contacts: contactsResponse.result || [],
     currentUser: currentUser.result || undefined,
     emailAddresses: emailList,
-    websites: websites.result || [],
+    websites: [],
     refetch: async () => {
       // Current user will reloadd if it fails
       await currentUser.execute();
