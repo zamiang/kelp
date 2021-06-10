@@ -18,13 +18,14 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   label: {
-    marginLeft: theme.spacing(1),
+    marginLeft: 3,
   },
 }));
 
-const maxItems = 20;
+const maxItems = 8;
 
 export const HomepageButtons = (props: {
   store: IStore;
@@ -55,6 +56,7 @@ export const HomepageButtons = (props: {
   return (
     <ToggleButtonGroup
       value={props.currentFilter || 'all'}
+      size="small"
       className={classes.container}
       exclusive
       onChange={(_event, value) => props.toggleFilter(value)}
@@ -63,7 +65,7 @@ export const HomepageButtons = (props: {
       {filterDomains.map((item) => (
         <ToggleButton value={item[0]} key={item[0]}>
           <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="12" />
-          <div className={classes.label}>{item[0]}</div>
+          <div className={classes.label}>{item[0].split('-')[0]}</div>
         </ToggleButton>
       ))}
     </ToggleButtonGroup>

@@ -64,8 +64,10 @@ export const DesktopDashboard = (props: { store: IStore }) => {
     router.push(hash.replace('#', ''));
   }
 
-  const toggleFilter = (f: string) => {
-    if (f === filter) {
+  const toggleFilter = (f?: string) => {
+    if (!f) {
+      return;
+    } else if (f === filter) {
       setFilter('all');
     } else {
       setFilter(f);
