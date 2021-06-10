@@ -146,7 +146,7 @@ const MobileDashboard = (props: { store: IStore }) => {
           </Route>
           <Route path="/settings">
             <Box className={classes.box} boxShadow={1} borderRadius={16}>
-              <Settings />
+              <Settings store={store} />
             </Box>
           </Route>
           <Route exact path="/">
