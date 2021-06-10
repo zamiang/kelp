@@ -89,9 +89,9 @@ const getFeaturedWebsites = async (props: IStore) => {
     'websiteId',
   );
 
-  return concattedWebsitesAndDocuments
-    .sort((a, b) => (urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1))
-    .slice(0, maxResult);
+  return concattedWebsitesAndDocuments.sort((a, b) =>
+    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
+  );
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -227,7 +227,7 @@ const AllWebsites = (props: { store: IStore; currentFilter: string }) => {
           ? true
           : item.websiteId.indexOf(props.currentFilter) > -1,
       );
-      setTopWebsites(filtereredWebsites);
+      setTopWebsites(filtereredWebsites.slice(0, maxResult));
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading, props.currentFilter]);
