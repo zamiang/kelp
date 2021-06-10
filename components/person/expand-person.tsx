@@ -9,7 +9,6 @@ import { flatten, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EmailIcon from '../../public/icons/email-orange.svg';
-import { GoToSourceButton } from '../mobile/popup-header';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -90,9 +89,6 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
   const emailAddress = person.emailAddresses[0];
   return (
     <div className={panelClasses.panel}>
-      <div className={classes.desktopSourceButton}>
-        <GoToSourceButton store={props.store} type="people" id={person.id} />
-      </div>
       <div className={classes.topContainer}>
         <Box flexDirection="column" alignItems="center" display="flex">
           <Avatar

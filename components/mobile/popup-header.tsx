@@ -12,7 +12,6 @@ import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import SearchBar from '../nav/search-bar';
 import { getGreeting } from '../shared/get-greeting';
-import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const useHeaderStyles = makeStyles((theme) => ({
@@ -58,7 +57,7 @@ const useHeaderStyles = makeStyles((theme) => ({
   },
 }));
 
-export const GoToSourceButton = (props: {
+const GoToSourceButton = (props: {
   store: IStore;
   type: 'meetings' | 'documents' | 'people';
   id: string;
@@ -98,7 +97,7 @@ export const GoToSourceButton = (props: {
   );
 };
 
-const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
+const PluginHeader = (props: { store: IStore; shouldAlwaysShowSettings?: boolean }) => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
   const classes = useHeaderStyles();
   const router = useHistory();
@@ -143,7 +142,8 @@ const PluginHeader = (props: { store: IStore; user?: IPerson }) => {
     );
   }
 
-  const shouldRenderChromeIcon = window['chrome'] && window['chrome']['tabs'];
+  const shouldRenderChromeIcon =
+    !props.shouldAlwaysShowSettings && window['chrome'] && window['chrome']['tabs'];
 
   return (
     <Box className={classes.drawerPaper} boxShadow={1}>

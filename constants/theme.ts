@@ -241,6 +241,30 @@ const theme = createMuiTheme({
         background: backgroundGradient,
       },
     },
+    MuiToggleButton: {
+      root: {
+        border: '0px solid',
+        textTransform: 'none',
+        lineHeight: 1.35,
+      },
+      label: {
+        height: 14,
+        overflow: 'hidden',
+      },
+    },
+    MuiToggleButtonGroup: {
+      groupedHorizontal: {
+        '&:not(:last-child)': {
+          borderRadius: 4,
+          borderTopRightRadius: 4,
+          borderBottomRightRadius: 4,
+        },
+        '&:not(:first-child)': {
+          borderRopLeftRadius: 4,
+          borderBottomLeftRadius: 4,
+        },
+      },
+    },
     MuiFilledInput: {
       root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
       input: {

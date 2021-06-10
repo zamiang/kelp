@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { backgroundGradient } from '../../constants/theme';
 import Home from '../dashboard/chrome-popup';
@@ -11,7 +11,6 @@ import Search from '../dashboard/search';
 import ExpandedDocument from '../documents/expand-document';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import ExpandPerson from '../person/expand-person';
-import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
 import Handle404 from './handle-404';
@@ -103,21 +102,10 @@ const useInfoStyles = makeStyles((theme) => ({
 const MobileDashboard = (props: { store: IStore }) => {
   const store = props.store;
   const classes = useInfoStyles();
-  const [user, setUser] = useState<IPerson | undefined>(undefined);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const user = await store.personDataStore.getSelf();
-      if (user) {
-        setUser(user);
-      }
-    };
-    void fetchData();
-  }, [store.isLoading]);
 
   return (
     <div className={classes.content}>
-      <PopupHeader user={user} store={store} />
+      <PopupHeader store={store} />
       <div className={classes.container}>
         <Switch>
           <Route path="/search">
