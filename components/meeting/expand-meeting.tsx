@@ -17,9 +17,16 @@ import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { IDocument, IFormattedAttendee, ISegment, ISegmentDocument } from '../store/data-types';
+import {
+  IDocument,
+  IFormattedAttendee,
+  ISegment,
+  ISegmentDocument,
+  IWebsite,
+} from '../store/data-types';
 import { getFormattedGuestStats } from '../store/helpers';
 import { IStore } from '../store/use-store';
+import { WebsiteRow } from '../website/website-row';
 import { createMeetingNotes } from './create-meeting-notes';
 
 const EmailGuestsButton = (props: {
@@ -100,6 +107,7 @@ const ExpandedMeeting = (props: {
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
+  const [websites, setWebsites] = useState<IWebsite[]>([]);
   const [segmentDocumentsForAttendees, setSegmentDocumentsForAttendees] = useState<
     ISegmentDocument[]
   >([]);
@@ -125,6 +133,16 @@ const ExpandedMeeting = (props: {
       if (meetingId) {
         const result = await props.store.attendeeDataStore.getAllForSegmentId(meetingId);
         setAttendees(result);
+      }
+    };
+    void fetchData();
+  }, [props.store.isLoading, meetingId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (meetingId) {
+        const result = await props.store.websitesStore.getAllForSegmentId(meetingId);
+        setWebsites(result);
       }
     };
     void fetchData();
@@ -173,6 +191,7 @@ const ExpandedMeeting = (props: {
     segmentDocumentsForAttendees.length > 0 ||
     segmentDocumentsForNonAttendees.length > 0 ||
     segmentDocumentsFromPastMeetings.length > 0;
+  const hasWebsites = websites.length > 0;
   return (
     <React.Fragment>
       <div className={classes.topContainer}>
@@ -264,6 +283,16 @@ const ExpandedMeeting = (props: {
               store={props.store}
               isSmall={true}
             />
+          </React.Fragment>
+        )}
+        {hasWebsites && (
+          <React.Fragment>
+            <Typography variant="h6" style={{ marginBottom: 0 }}>
+              Websites you may need
+            </Typography>
+            {websites.map((item) => (
+              <WebsiteRow key={item.id} website={item} store={props.store} />
+            ))}
           </React.Fragment>
         )}
         {hasDescription && !isHtml && (

@@ -76,6 +76,7 @@ interface Db extends DBSchema {
     key: string;
     indexes: {
       'by-domain': string;
+      'by-segment-id': string;
     };
   };
   websiteImage: {
@@ -190,6 +191,7 @@ const options = {
       keyPath: 'id',
     });
     websiteStore.createIndex('by-domain', 'domain', { unique: false });
+    websiteStore.createIndex('by-segment-id', 'meetingId', { unique: false });
 
     // website image
     db.createObjectStore('websiteImage', {

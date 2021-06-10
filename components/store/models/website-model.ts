@@ -25,6 +25,10 @@ export default class WebsiteModel {
     return this.db.get('website', id);
   }
 
+  async getAllForSegmentId(segmentId: string) {
+    return this.db.getAllFromIndex('website', 'by-segment-id', segmentId);
+  }
+
   async saveToChromeStorage() {
     // TODO: hm
     // const all = await this.db.getAll('website');
