@@ -1,6 +1,7 @@
 import { subMinutes } from 'date-fns';
 import { useEffect, useState } from 'react';
 import ErrorTracking from '../error-tracking/error-tracking';
+import { fetchAllHistory } from '../fetch/chrome/fetch-history';
 import FetchAll from '../fetch/fetch-all';
 import { dbType } from './db';
 import AttendeeStore from './models/attendee-model';
@@ -140,18 +141,6 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
     void addData();
   }, [documents.length.toString()]);
 
-  // Save top sites
-  useEffect(() => {
-    const addData = async () => {
-      if (data.websites) {
-        setLoadingMessage('Saving Top Websites');
-        // TODO:
-        await websitesStore.addHistoryToStore(data.websites);
-      }
-    };
-    void addData();
-  }, [data.websites.length.toString()]);
-
   // Relationships
   useEffect(() => {
     const addData = async () => {
@@ -166,6 +155,17 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
         data.contacts,
         data.emailAddresses,
       );
+
+      // Save history
+      const currentWebsites = await websitesStore.getAll(
+        domainBlocklistStore,
+        websiteBlocklistStore,
+      );
+      if (currentWebsites.length < 1) {
+        setLoadingMessage('Saving Websites');
+        const historyWebsites = await fetchAllHistory();
+        await websitesStore.addHistoryToStore(historyWebsites);
+      }
 
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);

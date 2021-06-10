@@ -74,7 +74,7 @@ const captureVisibleTab = (url: string) => {
     null as any,
     {
       format: 'jpeg',
-      quality: 5,
+      quality: 1,
     },
     (image) => {
       const cleanedUrl = cleanupUrl(url);
