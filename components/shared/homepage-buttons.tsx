@@ -23,9 +23,13 @@ const useStyles = makeStyles((theme) => ({
   label: {
     marginLeft: 3,
   },
+  maxWidth: {
+    maxWidth: theme.breakpoints.width('md'),
+    overflow: 'hidden',
+  },
 }));
 
-const maxItems = 8;
+const maxItems = 7;
 
 export const HomepageButtons = (props: {
   store: IStore;
@@ -54,20 +58,22 @@ export const HomepageButtons = (props: {
   }, []);
 
   return (
-    <ToggleButtonGroup
-      value={props.currentFilter || 'all'}
-      size="small"
-      className={classes.container}
-      exclusive
-      onChange={(_event, value) => props.toggleFilter(value)}
-    >
-      <ToggleButton value="all">All</ToggleButton>
-      {filterDomains.map((item) => (
-        <ToggleButton value={item[0]} key={item[0]}>
-          <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="12" />
-          <div className={classes.label}>{item[0].split('-')[0]}</div>
-        </ToggleButton>
-      ))}
-    </ToggleButtonGroup>
+    <div className={classes.maxWidth}>
+      <ToggleButtonGroup
+        value={props.currentFilter || 'all'}
+        size="small"
+        className={classes.container}
+        exclusive
+        onChange={(_event, value) => props.toggleFilter(value)}
+      >
+        <ToggleButton value="all">All</ToggleButton>
+        {filterDomains.map((item) => (
+          <ToggleButton value={item[0]} key={item[0]}>
+            <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="12" />
+            <div className={classes.label}>{item[0].split('-')[0]}</div>
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+    </div>
   );
 };
