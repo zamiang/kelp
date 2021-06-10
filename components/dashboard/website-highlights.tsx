@@ -125,6 +125,17 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     marginTop: 3,
   },
+  faviconContainer: {
+    display: 'block',
+    paddingBottom: '66%',
+    overflow: 'hidden',
+    height: 0,
+    position: 'relative',
+    marginTop: 3,
+    backgroundSize: 'auto',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+  },
   textContainer: {
     marginTop: 5,
   },
@@ -161,10 +172,14 @@ const LargeWebsite = (props: {
       <Link href={props.item.websiteId} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
           <div
-            className={classes.imageContainer}
-            style={{ backgroundImage: `url('${image?.image}')` }}
+            className={image?.image ? classes.imageContainer : classes.faviconContainer}
+            style={{
+              backgroundImage: image?.image
+                ? `url('${image?.image}')`
+                : `url('chrome://favicon/size/48@1x/${props.item.websiteId}')`,
+            }}
           >
-            <div className={classes.dots}></div>
+            {image?.image && <div className={classes.dots}></div>}
           </div>
         </Box>
         <Grid container alignItems="center" className={classes.textContainer}>

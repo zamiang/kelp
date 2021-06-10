@@ -17,10 +17,6 @@
   "content_scripts": [{
     "js": ["calendar.js"],
     "matches": ["https://calendar.google.com/*"]
-  }, {
-    "matches": ["<all_urls>"],
-    "js": ["capture.js"],
-    "run_at": "document_idle"
   }],
   "oauth2": {
     "client_id": "REPLACED IN WEBPACK CONFIG",
@@ -33,8 +29,6 @@
     "tabs",
     "history",
     "<all_urls>",
-    "storage",
-    "idle",
     "https://calendar.google.com/*",
     "chrome://favicon/"
 ],
