@@ -1,5 +1,4 @@
 import { chunk, flatten, uniq } from 'lodash';
-import ErrorTracking from '../../error-tracking/error-tracking';
 import { IPerson } from '../../store/data-types';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
@@ -58,27 +57,6 @@ export const formatGmailAddress = (email: string) => {
     return `${splitEmail[0].replaceAll('.', '')}@${splitEmail[1]}`.toLocaleLowerCase();
   }
   return email.toLocaleLowerCase();
-};
-
-export const fetchPerson = async (personId: string, authToken: string) => {
-  const params = {
-    personFields: usedPersonFields,
-  };
-
-  const personResponse = await fetch(
-    `https://people.googleapis.com/v1/${personId}?${new URLSearchParams(params).toString()}`,
-    {
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-    },
-  );
-  const result = await personResponse.json();
-  if (!personResponse.ok) {
-    ErrorTracking.logErrorInfo(JSON.stringify(params));
-    ErrorTracking.logErrorInRollbar(personResponse.statusText);
-  }
-  return formatPerson(result as gapi.client.people.Person);
 };
 
 export const batchFetchPeople = async (peopleIds: string[], authToken: string, limit: any) => {
