@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns';
+import { differenceInDays, subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { IDocument, ISegment } from '../store/data-types';
@@ -12,6 +12,16 @@ export interface IFeaturedWebsite {
   text?: string;
   date: Date;
 }
+
+const decay = 0.95;
+
+const getValueForDate = (date: Date) => {
+  const daysFromToday = differenceInDays(new Date(), date);
+  if (daysFromToday < 1) {
+    return 1;
+  }
+  return decay ** daysFromToday;
+};
 
 /**
  * Gets websites in the featured section by looking through meetings for the coming week
@@ -39,9 +49,9 @@ export const getFeaturedWebsites = async (props: IStore) => {
         return null;
       }
       if (urlCount[item.link]) {
-        urlCount[item.link] = urlCount[item.link] + 1;
+        urlCount[item.link] = urlCount[item.link] + getValueForDate(item.time);
       } else {
-        urlCount[item.link] = 1;
+        urlCount[item.link] = getValueForDate(item.time);
       }
       return {
         documentId: item.id,
@@ -56,9 +66,9 @@ export const getFeaturedWebsites = async (props: IStore) => {
 
   const websiteVisits = filteredWebsites.map((item) => {
     if (urlCount[item.url]) {
-      urlCount[item.url] = urlCount[item.url] + 1;
+      urlCount[item.url] = urlCount[item.url] + getValueForDate(item.visitedTime);
     } else {
-      urlCount[item.url] = 1;
+      urlCount[item.url] = getValueForDate(item.visitedTime);
     }
     return {
       documentId: item.documentId,
@@ -74,7 +84,6 @@ export const getFeaturedWebsites = async (props: IStore) => {
     currentUserDocuments.concat(websiteVisits).sort((a, b) => (a.date > b.date ? -1 : 1)),
     'websiteId',
   );
-
   return concattedWebsitesAndDocuments.sort((a, b) =>
     urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
   );
