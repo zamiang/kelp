@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const numberHours = 12;
+const numberHours = 8;
 
 const useMeetingLineStyles = makeStyles((theme) => ({
   line: {

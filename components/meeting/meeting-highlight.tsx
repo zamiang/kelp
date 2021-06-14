@@ -11,7 +11,7 @@ import { LineCalendar } from './line-calendar';
 const useStyles = makeStyles((theme) => ({
   highlight: {
     position: 'absolute',
-    bottom: theme.spacing(2),
+    top: theme.spacing(2),
     right: theme.spacing(2),
     minWidth: 280,
     zIndex: 10,
