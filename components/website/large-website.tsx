@@ -2,6 +2,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
@@ -110,9 +111,11 @@ export const LargeWebsite = (props: {
             </IconButton>
           </Grid>
           <Grid item zeroMinWidth xs>
-            <Typography noWrap className={classes.text}>
-              {props.item.text}
-            </Typography>
+            <Tooltip title={props.item.text || ''}>
+              <Typography noWrap className={classes.text}>
+                {props.item.text}
+              </Typography>
+            </Tooltip>
           </Grid>
           {isCloseVisible && (
             <Grid item>

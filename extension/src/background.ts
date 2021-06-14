@@ -7,8 +7,9 @@ let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
 const timeToWaitBeforeTracking = 60 * 1000;
+const timeToWaitBeforeCapture = 8 * 1000;
 
-const tick = (site: string, startAt: Date, store: IStore, title?: string) => {
+const storeTrackedVisit = (site: string, startAt: Date, store: IStore, title?: string) => {
   const url = new URL(site);
   const domain = url.host;
   const pathname = url.pathname;
@@ -25,14 +26,14 @@ const tick = (site: string, startAt: Date, store: IStore, title?: string) => {
   );
 };
 
-export const doTick = (store: IStore, tab: chrome.tabs.Tab) => {
+const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
   if (tab) {
     const currentUrl = cleanupUrl(tab.url || '');
     const isDomainAllowed =
       config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
     if (currentUrl && isDomainAllowed) {
       // remove query params and hash
-      void tick(currentUrl, new Date(), store, tab.title);
+      void storeTrackedVisit(currentUrl, new Date(), store, tab.title);
     }
   }
 };
@@ -174,8 +175,7 @@ chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightIn
         const tab = result[0];
         if (tab && tab.url && tab.id == highlightInfo.tabIds[0]) {
           try {
-            doTick(store, tab);
-            captureVisibleTab(tab.url);
+            trackVisit(store, tab);
           } catch (e) {
             console.error(e);
           }
@@ -184,6 +184,23 @@ chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightIn
     };
     void checkTab();
   }, timeToWaitBeforeTracking);
+
+  setTimeout(() => {
+    const checkTab = async () => {
+      const queryOptions = { active: true, currentWindow: true };
+      chrome.tabs.query(queryOptions, (result: chrome.tabs.Tab[]) => {
+        const tab = result[0];
+        if (tab && tab.url && tab.id == highlightInfo.tabIds[0]) {
+          try {
+            captureVisibleTab(tab.url);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
+    };
+    void checkTab();
+  }, timeToWaitBeforeCapture);
 });
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
