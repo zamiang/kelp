@@ -61,6 +61,9 @@ export default {
     'obsidian.md',
     'clickup.com',
     'asana.com',
+    'hypercontext.com',
+    'soapboxhq.com',
+    'almanac.io',
   ],
   BLOCKED_DOMAINS: [
     'mail.google.com',

@@ -56,14 +56,14 @@ const AllWebsites = (props: { store: IStore; currentFilter: string }) => {
   const hideUrl = async (url: string) => {
     await props.store.websiteBlocklistStore.addWebsite(url);
     const featuredWebsite = await getFeaturedWebsites(props.store);
-    setTopWebsites(featuredWebsite.filter(Boolean));
+    setTopWebsites(featuredWebsite.filter(Boolean).slice(0, maxResult));
     setHideDialogUrl(undefined);
   };
 
   const hideDomain = async (domain: string) => {
     await props.store.domainBlocklistStore.addDomain(domain);
     const featuredWebsite = await getFeaturedWebsites(props.store);
-    setTopWebsites(featuredWebsite.filter(Boolean));
+    setTopWebsites(featuredWebsite.filter(Boolean).slice(0, maxResult));
     setHideDialogUrl(undefined);
   };
 
