@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: theme.spacing(2),
     right: theme.spacing(2),
-    minWidth: 280,
+    width: 280,
     zIndex: 10,
   },
   lineContainer: {

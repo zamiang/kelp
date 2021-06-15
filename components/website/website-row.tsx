@@ -3,12 +3,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BackIcon from '../../public/icons/close.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { IFeaturedWebsite } from './get-featured-websites';
 
 const useStyles = makeStyles(() => ({
   showRow: {
@@ -22,11 +23,61 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+export const FeaturedWebsiteRow = (props: {
+  featuredWebsite: IFeaturedWebsite;
+  noMargins?: boolean;
+  store: IStore;
+}) => {
+  const [website, setWebsite] = useState<IWebsite | undefined>();
+
+  console.log(props.featuredWebsite, '<<<<<<<<<featured websire row<<<<<<');
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.featuredWebsite.websiteDatabaseId) {
+        const result = await props.store.websitesStore.getById(
+          props.featuredWebsite.websiteDatabaseId,
+        );
+        console.log(result, 'found websire for ', props.featuredWebsite);
+        setWebsite(result);
+      } else if (props.featuredWebsite.documentId) {
+        const document = await props.store.documentDataStore.getById(
+          props.featuredWebsite.documentId,
+        );
+        if (document) {
+          setWebsite({
+            id: props.featuredWebsite.websiteId,
+            title: document.name || '',
+            url: props.featuredWebsite.websiteId,
+            domain: document?.link || '', // todo
+            documentId: props.featuredWebsite.documentId,
+            visitedTime: props.featuredWebsite.date,
+            isHidden: false,
+          });
+        }
+      }
+    };
+    void fetchData();
+  }, [props.store.isLoading, props.featuredWebsite.websiteId]);
+
+  if (website) {
+    return <WebsiteRow website={website} noMargins={props.noMargins} store={props.store} />;
+  }
+  return null;
+};
+
 export const WebsiteRow = (props: { website: IWebsite; noMargins?: boolean; store: IStore }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [isVisible, setVisible] = useState(!props.website.isHidden);
+
+  const hideUrl = async (url: string) => {
+    await props.store.websiteBlocklistStore.addWebsite(url);
+
+    setTimeout(() => {
+      setVisible(false);
+    }, 100);
+  };
 
   return (
     <div
@@ -65,11 +116,7 @@ export const WebsiteRow = (props: { website: IWebsite; noMargins?: boolean; stor
             <IconButton
               onClick={(event) => {
                 event.stopPropagation();
-                alert('todo');
-                setTimeout(() => {
-                  setVisible(false);
-                }, 100);
-
+                void hideUrl(props.website.id);
                 return false;
               }}
             >

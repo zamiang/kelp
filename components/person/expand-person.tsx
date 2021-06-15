@@ -67,7 +67,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
           await props.store.segmentDocumentStore.getAllForPersonId(personId);
         const segmentDocumentsFromSegments = await Promise.all(
           filteredSegments.map(async (s: ISegment) =>
-            props.store.segmentDocumentStore.getAllForSegmentId(s.id),
+            props.store.segmentDocumentStore.getAllForSegment(s),
           ),
         );
         const segmentDocumentsCombined = uniqBy(

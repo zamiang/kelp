@@ -1,9 +1,11 @@
 import { subDays } from 'date-fns';
+import { uniqBy } from 'lodash';
 import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
-import { IWebsite } from '../data-types';
+import { ISegment, IWebsite } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
+import { formatSegmentTitle } from './segment-document-model';
 
 interface IWebsiteNotFormatted {
   startAt: Date;
@@ -26,8 +28,24 @@ export default class WebsiteModel {
     return this.db.get('website', id);
   }
 
-  async getAllForSegmentId(segmentId: string) {
-    return this.db.getAllFromIndex('website', 'by-segment-id', segmentId);
+  async getAllForSegment(
+    segment: ISegment,
+    domainBlocklistStore: IStore['domainBlocklistStore'],
+    websiteBlocklistStore: IStore['websiteBlocklistStore'],
+  ) {
+    const websitesById = await this.db.getAllFromIndex('website', 'by-segment-id', segment.id);
+    let websitesByTitle = [] as IWebsite[];
+    const formattedTitle = formatSegmentTitle(segment.summary);
+
+    if (formattedTitle) {
+      websitesByTitle = await this.db.getAllFromIndex(
+        'website',
+        'by-segment-title',
+        formattedTitle,
+      );
+    }
+    const websites = uniqBy(websitesByTitle.concat(websitesById), 'id');
+    return await this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
   async saveToChromeStorage() {
@@ -92,6 +110,7 @@ export default class WebsiteModel {
       isHidden: false,
       visitedTime: website.startAt,
       meetingId: currentMeeting ? currentMeeting.id : undefined,
+      meetingName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
     });
 
     void this.saveToChromeStorage();

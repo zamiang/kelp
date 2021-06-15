@@ -1,5 +1,5 @@
 import { differenceInDays, subDays } from 'date-fns';
-import { uniqBy } from 'lodash';
+import { flatten, uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -9,6 +9,7 @@ export interface IFeaturedWebsite {
   websiteId: string;
   document?: IDocument;
   meetings: ISegment[];
+  websiteDatabaseId: string | null;
   text?: string;
   date: Date;
 }
@@ -48,18 +49,20 @@ export const getFeaturedWebsites = async (props: IStore) => {
       if (!item.documentId) {
         return null;
       }
-      if (urlCount[item.link]) {
-        urlCount[item.link] = urlCount[item.link] + getValueForDate(item.time);
+      const link = `${item.link}`;
+      if (urlCount[link]) {
+        urlCount[link] = urlCount[link] + getValueForDate(item.time);
       } else {
-        urlCount[item.link] = getValueForDate(item.time);
+        urlCount[link] = getValueForDate(item.time);
       }
       return {
         documentId: item.id,
         meetings: [] as any,
         nextMeetingStartsAt: undefined,
-        websiteId: item.link,
+        websiteId: link,
         text: item.title,
         date: item.time,
+        websiteDatabaseId: null,
       } as IFeaturedWebsite;
     })
     .filter(Boolean) as IFeaturedWebsite[];
@@ -77,6 +80,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
       websiteId: item.url,
       text: item.title,
       date: item.visitedTime,
+      websiteDatabaseId: item.id,
     } as IFeaturedWebsite;
   });
 
@@ -87,4 +91,93 @@ export const getFeaturedWebsites = async (props: IStore) => {
   return concattedWebsitesAndDocuments.sort((a, b) =>
     urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
   );
+};
+
+/**
+ * Gets websites in the meeting
+ * TODO: ensure this pulls from the description
+ */
+export const getWebsitesForMeeting = async (
+  meeting: ISegment,
+  store: IStore,
+): Promise<IFeaturedWebsite[]> => {
+  const similarMeetings = await store.timeDataStore.getSegmentsForName(meeting.summary || '');
+
+  const segmentDocumentsForMeeting = flatten(
+    await Promise.all(
+      similarMeetings.map(async (m) => {
+        const result2 = await store.segmentDocumentStore.getAllForSegment(m);
+        return result2 ? result2.filter((s) => s.isPersonAttendee) : [];
+      }),
+    ),
+  );
+
+  // For documents edited by the current user that may not be associated with a meeting
+  const filteredWebsites = flatten(
+    await Promise.all(
+      similarMeetings.map((m) =>
+        store.websitesStore.getAllForSegment(
+          m,
+          store.domainBlocklistStore,
+          store.websiteBlocklistStore,
+        ),
+      ),
+    ),
+  );
+
+  const urlCount: { [url: string]: number } = {};
+
+  const currentUserDocuments = (
+    await Promise.all(
+      segmentDocumentsForMeeting.map(async (item) => {
+        if (!item.documentId) {
+          return null;
+        }
+        const document = await store.documentDataStore.getById(item.documentId);
+        if (!document || !document.link) {
+          return;
+        }
+        const link = `${document.link}`;
+        if (urlCount[link]) {
+          urlCount[link] = urlCount[link] + getValueForDate(item.date);
+        } else {
+          urlCount[link] = getValueForDate(item.date);
+        }
+        return {
+          documentId: item.id,
+          meetings: [meeting],
+          nextMeetingStartsAt: undefined,
+          websiteId: link,
+          websiteDatabaseId: item.id,
+          text: document.name,
+          date: item.date,
+        };
+      }),
+    )
+  ).filter(Boolean) as IFeaturedWebsite[];
+
+  const websiteVisits = filteredWebsites.map((item) => {
+    if (urlCount[item.url]) {
+      urlCount[item.url] = urlCount[item.url] + getValueForDate(item.visitedTime);
+    } else {
+      urlCount[item.url] = getValueForDate(item.visitedTime);
+    }
+    return {
+      documentId: item.documentId,
+      meetings: [meeting],
+      nextMeetingStartsAt: undefined,
+      websiteId: item.url,
+      websiteDatabaseId: item.id,
+      text: item.title,
+      date: item.visitedTime,
+    } as IFeaturedWebsite;
+  });
+
+  const concattedWebsitesAndDocuments = uniqBy(
+    currentUserDocuments.concat(websiteVisits).sort((a, b) => (a.date > b.date ? -1 : 1)),
+    'websiteId',
+  );
+  return concattedWebsitesAndDocuments.sort((a, b) =>
+    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
+  ) as any;
 };

@@ -129,6 +129,12 @@ export default class SegmentModel {
     );
   }
 
+  async getSegmentsForName(summary: string) {
+    // TODO: Use an index
+    const segments = await this.getAll();
+    return segments.filter((segment) => segment.summary === summary);
+  }
+
   async getSegmentsForEmail(email: string) {
     const attendees = await this.db.getAllFromIndex('attendee', 'by-email', email);
     return Promise.all(attendees.map((attendee) => this.db.get('meeting', attendee.segmentId)));

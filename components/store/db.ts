@@ -77,6 +77,7 @@ interface Db extends DBSchema {
     indexes: {
       'by-domain': string;
       'by-segment-id': string;
+      'by-segment-title': string;
     };
   };
   websiteImage: {
@@ -103,7 +104,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 6;
+const databaseVerson = 7;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
@@ -115,8 +116,7 @@ const options = {
       db.deleteObjectStore('attendee');
       db.deleteObjectStore('tfidf');
       db.deleteObjectStore('segmentDocument');
-    }
-    if (oldVersion === 3) {
+    } else if (oldVersion === 3) {
       db.deleteObjectStore('person');
       db.deleteObjectStore('document');
       db.deleteObjectStore('driveActivity');
@@ -124,8 +124,7 @@ const options = {
       db.deleteObjectStore('attendee');
       db.deleteObjectStore('tfidf');
       db.deleteObjectStore('segmentDocument');
-    }
-    if (oldVersion === 4 || oldVersion === 5) {
+    } else if (oldVersion === 4 || oldVersion === 5) {
       db.deleteObjectStore('person');
       db.deleteObjectStore('document');
       db.deleteObjectStore('driveActivity');
@@ -136,6 +135,15 @@ const options = {
       db.deleteObjectStore('topWebsite' as any);
       db.deleteObjectStore('task' as any);
       db.deleteObjectStore('taskDocument' as any);
+    } else if (oldVersion === 6) {
+      db.deleteObjectStore('website');
+      const store = db.createObjectStore('website', {
+        keyPath: 'id',
+      });
+      store.createIndex('by-domain', 'domain', { unique: false });
+      store.createIndex('by-segment-id', 'meetingId', { unique: false });
+      store.createIndex('by-segment-title', 'meetingName', { unique: false });
+      return;
     }
 
     const personStore = db.createObjectStore('person', {
@@ -192,6 +200,7 @@ const options = {
     });
     websiteStore.createIndex('by-domain', 'domain', { unique: false });
     websiteStore.createIndex('by-segment-id', 'meetingId', { unique: false });
+    websiteStore.createIndex('by-segment-title', 'meetingName', { unique: false });
 
     // website image
     db.createObjectStore('websiteImage', {

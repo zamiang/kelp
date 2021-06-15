@@ -1,5 +1,5 @@
 import { getDayOfYear } from 'date-fns';
-import { flatten, orderBy } from 'lodash';
+import { flatten, orderBy, uniqBy } from 'lodash';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
@@ -10,7 +10,7 @@ import DriveActivityModel from './drive-activity-model';
 import PersonModel from './person-model';
 import SegmentModel from './segment-model';
 
-const formatSegmentTitle = (text?: string) =>
+export const formatSegmentTitle = (text?: string) =>
   text
     ? text.replace(removePunctuationRegex, '').split(' ').join('').toLocaleLowerCase()
     : undefined;
@@ -143,21 +143,24 @@ export default class SegmentDocumentModel {
     return orderBy(activity, 'date', 'desc');
   }
 
-  async getAllForSegmentId(segmentId: string) {
-    const activity = await this.db.getAllFromIndex('segmentDocument', 'by-segment-id', segmentId);
-    return orderBy(activity, 'date', 'desc');
-  }
+  // Transitioned to using this method to get both by id and title together
+  async getAllForSegment(segment: ISegment) {
+    const activityBySegmentId = await this.db.getAllFromIndex(
+      'segmentDocument',
+      'by-segment-id',
+      segment.id,
+    );
 
-  async getAllForMeetingName(title: string) {
-    const formattedTitle = formatSegmentTitle(title);
+    const formattedTitle = formatSegmentTitle(segment.summary);
+    let activityByTitle = [] as ISegmentDocument[];
     if (formattedTitle) {
-      const activity = await this.db.getAllFromIndex(
+      activityByTitle = await this.db.getAllFromIndex(
         'segmentDocument',
         'by-segment-title',
         formattedTitle,
       );
-      return orderBy(activity, 'date', 'desc');
     }
+    return orderBy(uniqBy(activityBySegmentId.concat(activityByTitle), 'id'), 'date', 'desc');
   }
 
   async getAllForDocumentId(documentId: string) {

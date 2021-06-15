@@ -127,7 +127,7 @@ export interface IWebsite {
   readonly domain: string;
   readonly documentId?: string;
   readonly meetingId?: string;
-  readonly taskId?: string;
+  readonly meetingName?: string;
   readonly visitedTime: Date;
   readonly isHidden: boolean;
 }
