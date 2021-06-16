@@ -28,10 +28,10 @@ const SearchBar = (props: { onClose?: () => void }) => {
   };
 
   return (
-    <Grid container alignItems="center" className={classes.container}>
+    <Grid container alignItems="flex-start" justify="space-between">
       <Grid item>
         <IconButton>
-          <SearchIcon width="24" height="24" style={{ marginLeft: 5 }} />
+          <SearchIcon width="24" height="24" />
         </IconButton>
       </Grid>
       <Grid item xs>
@@ -48,6 +48,7 @@ const SearchBar = (props: { onClose?: () => void }) => {
             className: classes.input,
             disableUnderline: true,
           }}
+          style={{ marginTop: 3 }}
         />
       </Grid>
       <Grid item>

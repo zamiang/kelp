@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     position: 'relative',
-    height: 36,
+    height: 30,
     overflowX: 'hidden',
   },
   overflowContainer: {},
@@ -134,7 +134,6 @@ export const LineCalendar = (props: { store: IStore }) => {
 
   return (
     <div className={classes.overflowContainer} ref={elementRef}>
-      <Typography className={classes.heading}>Today</Typography>
       <div className={classes.container} ref={elementRef}>
         <div className={classes.border}></div>
         {meetings.map((meeting) => (

@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
     '50%': { backgroundPosition: '100% 26%' },
     to: { backgroundPosition: '0% 75%' },
   },
+  container: {
+    marginTop: '10vh',
+  },
   content: {
     background: backgroundGradient,
     backgroundSize: '400% 400%',
@@ -82,8 +85,8 @@ export const DesktopDashboard = (props: { store: IStore }) => {
         </Alert>
       </Dialog>
       <div className={classes.content}>
-        <Container maxWidth="md">
-          <PopupHeader store={store} shouldAlwaysShowSettings />
+        <PopupHeader store={store} shouldAlwaysShowSettings />
+        <Container maxWidth="md" className={classes.container}>
           <div>
             <Switch>
               <Route path="/search">
@@ -110,9 +113,9 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 </Box>
               </Route>
               <Route>
+                <MeetingHighlight store={props.store} />
                 <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
                 <WebsitesHighlights store={store} currentFilter={filter} />
-                <MeetingHighlight store={props.store} />
               </Route>
             </Switch>
           </div>

@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import { formatDistanceToNow, subHours } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -12,10 +13,11 @@ import MeetingRowBelow from './meeting-row-below';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    textAlign: 'center',
-    borderRadius: 5,
     paddingTop: theme.spacing(1),
     cursor: 'pointer',
+    borderBottom: `2px solid ${theme.palette.divider}`,
+    marginBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       paddingTop: 0,
     },
@@ -24,8 +26,17 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginBottom: 0,
   },
-  heading: {
-    fontSize: 18,
+  heading: {},
+  button: {
+    marginLeft: 'auto',
+    width: 'auto',
+    paddingLeft: 40,
+    paddingRight: 40,
+    marginTop: 8,
+    display: 'block',
+  },
+  topSpacing: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -52,10 +63,7 @@ export const FeaturedMeeting = (props: {
       }}
     >
       <Grid container alignItems="center">
-        <Grid item xs={12}>
-          <Typography className={classes.heading} style={{ cursor: 'pointer' }}>
-            {props.meeting.summary || '(no title)'}
-          </Typography>
+        <Grid item xs={12} sm={9}>
           {isHappeningNow && (
             <Typography variant="h6" className={classes.meetingTimeInWords}>
               Happening Now
@@ -66,23 +74,18 @@ export const FeaturedMeeting = (props: {
               In {formatDistanceToNow(props.meeting.start)}
             </Typography>
           )}
+          <Typography className={classes.heading} style={{ cursor: 'pointer' }} variant="h2">
+            {props.meeting.summary || '(no title)'}
+          </Typography>
         </Grid>
         {domain && isInNextHour && (
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={3}>
             <Button
-              className={buttonClasses.button}
+              className={clsx(buttonClasses.button, classes.button)}
               variant="contained"
               disableElevation
               color="primary"
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
-              style={{
-                marginRight: 'auto',
-                marginLeft: 'auto',
-                width: 'auto',
-                paddingLeft: 40,
-                paddingRight: 40,
-                marginTop: 8,
-              }}
             >
               Join {domain?.host}
             </Button>
@@ -90,7 +93,9 @@ export const FeaturedMeeting = (props: {
         )}
         {isInNextHour && (
           <Grid item xs={12}>
-            <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft={false} />
+            <div className={classes.topSpacing}>
+              <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft={false} />
+            </div>
           </Grid>
         )}
       </Grid>
