@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       paddingTop: 0,
+      borderBottom: '0px solid',
     },
   },
   meetingTimeInWords: {
@@ -28,12 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {},
   button: {
-    marginLeft: 'auto',
     width: 'auto',
     paddingLeft: 40,
     paddingRight: 40,
-    marginTop: 8,
-    display: 'block',
   },
   topSpacing: {
     marginTop: theme.spacing(2),
@@ -62,7 +60,7 @@ export const FeaturedMeeting = (props: {
         return false;
       }}
     >
-      <Grid container alignItems="center">
+      <Grid container alignItems="flex-end">
         <Grid item xs={12} sm={9}>
           {isHappeningNow && (
             <Typography variant="h6" className={classes.meetingTimeInWords}>
@@ -79,11 +77,10 @@ export const FeaturedMeeting = (props: {
           </Typography>
         </Grid>
         {domain && isInNextHour && (
-          <Grid item xs={12} sm={3}>
+          <Grid item>
             <Button
               className={clsx(buttonClasses.button, classes.button)}
               variant="contained"
-              disableElevation
               color="primary"
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
             >

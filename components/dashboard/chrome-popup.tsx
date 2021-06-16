@@ -9,7 +9,6 @@ import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../../public/icons/chevron-right.svg';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
-import { QuickActionButtons } from '../shared/quick-action-buttons';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -74,20 +73,9 @@ const Home = (props: { store: IStore }) => {
 
   return (
     <div className={classes.panel}>
-      <div style={{ marginBottom: 20 }}>
-        <QuickActionButtons />
-      </div>
-      <Typography variant="h6" className={classes.heading} onClick={() => router.push('/meetings')}>
-        Next Meetings
-        <IconButton className={rowClasses.rightIcon}>
-          <ArrowIcon width="24" height="24" />
-        </IconButton>
-      </Typography>
-      <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
-        {featuredMeeting && (
-          <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
-        )}
-      </Box>
+      {featuredMeeting && (
+        <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
+      )}
       {featuredPeople.length > 0 && (
         <div className={classes.panel}>
           <Typography
