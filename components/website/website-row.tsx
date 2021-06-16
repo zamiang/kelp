@@ -30,14 +30,12 @@ export const FeaturedWebsiteRow = (props: {
 }) => {
   const [website, setWebsite] = useState<IWebsite | undefined>();
 
-  console.log(props.featuredWebsite, '<<<<<<<<<featured websire row<<<<<<');
   useEffect(() => {
     const fetchData = async () => {
       if (props.featuredWebsite.websiteDatabaseId) {
         const result = await props.store.websitesStore.getById(
           props.featuredWebsite.websiteDatabaseId,
         );
-        console.log(result, 'found websire for ', props.featuredWebsite);
         setWebsite(result);
       } else if (props.featuredWebsite.documentId) {
         const document = await props.store.documentDataStore.getById(

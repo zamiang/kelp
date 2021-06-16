@@ -6,6 +6,9 @@ const withReactSvg = require('next-react-svg');
 const path = require('path');
 
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack5: true,
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (process.env.ANALYZE) {
