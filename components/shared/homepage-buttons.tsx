@@ -34,7 +34,8 @@ const maxItems = 7;
 export const HomepageButtons = (props: {
   store: IStore;
   toggleFilter: (filter: string) => void;
-  currentFilter: string | undefined;
+  currentFilter?: string;
+  hideDialogUrl?: string;
 }) => {
   const classes = useStyles();
   const [filterDomains, setFilterDomains] = useState<[string, number][]>([]);
@@ -55,7 +56,7 @@ export const HomepageButtons = (props: {
       setFilterDomains(orderedDomains.slice(0, maxItems));
     };
     void fetchData();
-  }, [props.store.isLoading, props.store.lastUpdated]);
+  }, [props.store.isLoading, props.store.lastUpdated, props.hideDialogUrl]);
 
   return (
     <div className={classes.maxWidth}>

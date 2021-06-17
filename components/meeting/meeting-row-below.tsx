@@ -5,9 +5,15 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 
-const maxNumberOfWebsites = 5;
+const maxNumberOfWebsites = 6;
 
-const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLeft: boolean }) => {
+const MeetingRowBelow = (props: {
+  meeting: ISegment;
+  store: IStore;
+  shouldPadLeft: boolean;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+  hideDialogUrl?: string;
+}) => {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
 
   useEffect(() => {
@@ -16,21 +22,18 @@ const MeetingRowBelow = (props: { meeting: ISegment; store: IStore; shouldPadLef
       setWebsites(result.slice(0, maxNumberOfWebsites));
     };
     void fetchData();
-  }, [props.store.isLoading, props.meeting.id]);
-
-  const hideUrl = (item: IFeaturedWebsite) => {
-    const update = async () => {
-      await props.store.websiteBlocklistStore.addWebsite(item.websiteId);
-      const result = await getWebsitesForMeeting(props.meeting, props.store);
-      setWebsites(result.slice(0, maxNumberOfWebsites));
-    };
-    void update();
-  };
+  }, [props.store.isLoading, props.meeting.id, props.hideDialogUrl]);
 
   return (
     <Grid container spacing={4}>
       {websites.map((item) => (
-        <LargeWebsite key={item.websiteId} item={item} store={props.store} hideItem={hideUrl} />
+        <LargeWebsite
+          key={item.websiteId}
+          item={item}
+          store={props.store}
+          hideItem={props.hideWebsite}
+          smGridSize={4}
+        />
       ))}
     </Grid>
   );

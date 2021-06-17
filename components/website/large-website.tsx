@@ -66,6 +66,7 @@ export const LargeWebsite = (props: {
   store: IStore;
   item: IFeaturedWebsite;
   hideItem: (item: IFeaturedWebsite) => void;
+  smGridSize?: number;
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
   const [isCloseVisible, setCloseVisible] = useState(false);
@@ -82,7 +83,7 @@ export const LargeWebsite = (props: {
     <Grid
       item
       xs={6}
-      sm={3}
+      sm={props.smGridSize || (3 as any)}
       onMouseEnter={() => setCloseVisible(true)}
       onMouseLeave={() => setCloseVisible(false)}
     >

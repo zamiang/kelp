@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import MeetingRowBelow from './meeting-row-below';
 
 const useStyles = makeStyles((theme) => ({
   smallContainer: {
@@ -59,7 +58,6 @@ const MeetingRow = (props: {
 }) => {
   const classes = useStyles();
   const router = useHistory();
-  const isSelected = props.selectedMeetingId === props.meeting.id || props.isOpen;
 
   const isPast = new Date() > props.meeting.end;
   const isFuture = new Date() < props.meeting.start;
@@ -104,7 +102,6 @@ const MeetingRow = (props: {
           </Grid>
         </Grid>
       </Grid>
-      {isSelected && <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft />}
     </div>
   );
 };

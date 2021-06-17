@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,8 @@ export const FeaturedMeeting = (props: {
   meeting: ISegment;
   store: IStore;
   showButton?: boolean;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+  hideDialogUrl?: string;
 }) => {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
@@ -93,7 +96,13 @@ export const FeaturedMeeting = (props: {
         )}
         <Grid item xs={12}>
           <div className={classes.topSpacing}>
-            <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft={false} />
+            <MeetingRowBelow
+              meeting={props.meeting}
+              store={props.store}
+              shouldPadLeft={false}
+              hideWebsite={props.hideWebsite}
+              hideDialogUrl={props.hideDialogUrl}
+            />
           </div>
         </Grid>
       </Grid>

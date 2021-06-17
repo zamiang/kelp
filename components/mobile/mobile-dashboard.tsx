@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { backgroundGradient } from '../../constants/theme';
 import Home from '../dashboard/chrome-popup';
@@ -13,6 +13,8 @@ import ExpandedMeeting from '../meeting/expand-meeting';
 import ExpandPerson from '../person/expand-person';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { HideUrlDialog } from '../website/hide-url-dialog';
 import Handle404 from './handle-404';
 import PopupHeader from './popup-header';
 
@@ -102,17 +104,38 @@ const useInfoStyles = makeStyles((theme) => ({
 const MobileDashboard = (props: { store: IStore }) => {
   const store = props.store;
   const classes = useInfoStyles();
+  const [hideDialogUrl, setHideDialogUrl] = useState<string | undefined>();
+  const hideDialogDomain = hideDialogUrl ? new URL(hideDialogUrl).host : undefined;
+
+  const hideItem = (item: IFeaturedWebsite) => setHideDialogUrl(item.websiteId);
+
+  const hideUrl = async (url: string) => {
+    await props.store.websiteBlocklistStore.addWebsite(url);
+    setHideDialogUrl(undefined);
+  };
+
+  const hideDomain = async (domain: string) => {
+    await props.store.domainBlocklistStore.addDomain(domain);
+    setHideDialogUrl(undefined);
+  };
 
   return (
     <div className={classes.content}>
       <PopupHeader store={store} />
+      <HideUrlDialog
+        hideDomain={hideDomain}
+        hideUrl={hideUrl}
+        hideDialogDomain={hideDialogDomain}
+        hideDialogUrl={hideDialogUrl}
+        setHideDialogUrl={setHideDialogUrl}
+      />
       <div className={classes.container}>
         <Switch>
           <Route path="/search">
             <Search store={store} />
           </Route>
           <Route path="/home">
-            <Home store={store} />
+            <Home store={store} hideWebsite={hideItem} hideDialogUrl={hideDialogUrl} />
           </Route>
           <Route path="/people/:slug">
             <Box className={classes.box} boxShadow={1} borderRadius={16}>
@@ -131,7 +154,7 @@ const MobileDashboard = (props: { store: IStore }) => {
           </Route>
           <Route path="/meetings">
             <Box className={classes.box} boxShadow={1} borderRadius={16}>
-              <Meetings store={store} />
+              <Meetings store={store} hideWebsite={hideItem} hideDialogUrl={hideDialogUrl} />
             </Box>
           </Route>
           <Route path="/people">

@@ -128,7 +128,7 @@ const Settings = (props: { store: IStore }) => {
       <Divider />
       <div className={classes.section}>
         <div className={formClasses.textField}>
-          <Typography variant="h4" style={{ marginBottom: 24 }}>
+          <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
             Hidden websites
           </Typography>
           {shouldShowEmptyWebsiteBlocklist && <Typography variant="h6">None</Typography>}
@@ -153,11 +153,10 @@ const Settings = (props: { store: IStore }) => {
           ))}
         </div>
       </div>
-      <Divider />
       <div className={classes.section}>
         <div className={formClasses.textField}>
-          <Typography variant="h4" style={{ marginBottom: 24 }}>
-            Hidden domains (all websites at these domains are hidden)
+          <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
+            Hidden domains (all urls under these domains are hidden)
           </Typography>
           {shouldShowEmptyDomainBlocklist && <Typography variant="h6">None</Typography>}
           {domainBlocklists.map((item) => (

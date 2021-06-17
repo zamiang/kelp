@@ -14,6 +14,7 @@ import panelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
 
 const shouldRenderMeetingsBar = false;
 
@@ -158,7 +159,12 @@ const scrollCurrentTimeIntoView = () => {
 
 const DAYS_BACK = 0;
 
-const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => void }) => {
+const MeetingsByDay = (props: {
+  store: IStore;
+  setMeetingId?: (id: string) => void;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+  hideDialogUrl?: string;
+}) => {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const selectedMeetingId = useLocation().pathname.replace('/meetings', '').replace('/', '');
@@ -207,7 +213,14 @@ const MeetingsByDay = (props: { store: IStore; setMeetingId?: (id: string) => vo
           }}
         />
       )}
-      {featuredMeeting && <FeaturedMeeting meeting={featuredMeeting} store={props.store} />}
+      {featuredMeeting && (
+        <FeaturedMeeting
+          meeting={featuredMeeting}
+          store={props.store}
+          hideWebsite={props.hideWebsite}
+          hideDialogUrl={props.hideDialogUrl}
+        />
+      )}
       {days.map((day) => (
         <DayContainer
           key={day}

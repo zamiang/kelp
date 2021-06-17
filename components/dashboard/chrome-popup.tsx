@@ -12,6 +12,7 @@ import PersonRow from '../person/person-row';
 import useRowStyles from '../shared/row-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { IFeaturedPerson, getFeaturedPeople } from './people';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = (props: { store: IStore }) => {
+const Home = (props: {
+  store: IStore;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+  hideDialogUrl?: string;
+}) => {
   const classes = useStyles();
   const rowClasses = useRowStyles();
   const router = useHistory();
@@ -74,7 +79,13 @@ const Home = (props: { store: IStore }) => {
   return (
     <div className={classes.panel}>
       {featuredMeeting && (
-        <FeaturedMeeting meeting={featuredMeeting} store={props.store} showButton />
+        <FeaturedMeeting
+          meeting={featuredMeeting}
+          store={props.store}
+          showButton
+          hideWebsite={props.hideWebsite}
+          hideDialogUrl={props.hideDialogUrl}
+        />
       )}
       {featuredPeople.length > 0 && (
         <div className={classes.panel}>

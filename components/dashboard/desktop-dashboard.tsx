@@ -7,7 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { backgroundGradient } from '../../constants/theme';
+import { backgroundGradient, boxShadow } from '../../constants/theme';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
@@ -17,8 +17,10 @@ import ExpandPerson from '../person/expand-person';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { HideUrlDialog } from '../website/hide-url-dialog';
 import Search from './search';
-import WebsitesHighlights from './website-highlights';
+import { WebsiteHighlights } from './website-highlights';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -51,6 +53,19 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(2),
     overflow: 'hidden',
   },
+  dialogContent: {
+    padding: theme.spacing(8),
+  },
+  button: {
+    textDecoration: 'none',
+    cursor: 'pointer',
+    boxShadow,
+    borderRadius: 20,
+    background: theme.palette.background.paper,
+    color: theme.palette.primary.main,
+    paddingRight: theme.spacing(3),
+    paddingLeft: theme.spacing(3),
+  },
 }));
 
 const is500Error = (error: Error) => (error as any).status === 500;
@@ -60,6 +75,8 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const store = props.store;
   const router = useHistory();
   const [filter, setFilter] = useState<string>('all');
+  const [hideDialogUrl, setHideDialogUrl] = useState<string | undefined>();
+  const hideDialogDomain = hideDialogUrl ? new URL(hideDialogUrl).host : undefined;
 
   const hash = window.location.hash;
   if (hash.includes('meetings')) {
@@ -76,6 +93,19 @@ export const DesktopDashboard = (props: { store: IStore }) => {
       setFilter(f);
     }
   };
+
+  const hideItem = (item: IFeaturedWebsite) => setHideDialogUrl(item.websiteId);
+
+  const hideUrl = async (url: string) => {
+    await props.store.websiteBlocklistStore.addWebsite(url);
+    setHideDialogUrl(undefined);
+  };
+
+  const hideDomain = async (domain: string) => {
+    await props.store.domainBlocklistStore.addDomain(domain);
+    setHideDialogUrl(undefined);
+  };
+
   return (
     <ErrorBoundaryComponent>
       <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
@@ -84,6 +114,13 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           <Typography>{store.error}</Typography>
         </Alert>
       </Dialog>
+      <HideUrlDialog
+        hideDomain={hideDomain}
+        hideUrl={hideUrl}
+        hideDialogDomain={hideDialogDomain}
+        hideDialogUrl={hideDialogUrl}
+        setHideDialogUrl={setHideDialogUrl}
+      />
       <div className={classes.content}>
         <PopupHeader store={store} shouldAlwaysShowSettings />
         <Container maxWidth="md" className={classes.container}>
@@ -113,9 +150,23 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 </Box>
               </Route>
               <Route>
-                <MeetingHighlight store={props.store} />
-                <HomepageButtons store={store} toggleFilter={toggleFilter} currentFilter={filter} />
-                <WebsitesHighlights store={store} currentFilter={filter} />
+                <MeetingHighlight
+                  store={props.store}
+                  hideWebsite={hideItem}
+                  hideDialogUrl={hideDialogUrl}
+                />
+                <HomepageButtons
+                  store={store}
+                  toggleFilter={toggleFilter}
+                  currentFilter={filter}
+                  hideDialogUrl={hideDialogUrl}
+                />
+                <WebsiteHighlights
+                  store={store}
+                  currentFilter={filter}
+                  hideWebsite={hideItem}
+                  hideDialogUrl={hideDialogUrl}
+                />
               </Route>
             </Switch>
           </div>
