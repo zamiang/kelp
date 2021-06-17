@@ -4,9 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import MeetingIcon from '../../public/icons/calendar.svg';
 import CloseIcon from '../../public/icons/close.svg';
-import DocumentIcon from '../../public/icons/file.svg';
 import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,16 +50,6 @@ const SearchBar = (props: { onClose?: () => void }) => {
           }}
           style={{ marginTop: 3 }}
         />
-      </Grid>
-      <Grid item>
-        <IconButton href="https://docs.new" target="_blank">
-          <DocumentIcon width="24" height="24" />
-        </IconButton>
-      </Grid>
-      <Grid item>
-        <IconButton target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE">
-          <MeetingIcon width="24" height="24" />
-        </IconButton>
       </Grid>
       <Grid item>
         <IconButton

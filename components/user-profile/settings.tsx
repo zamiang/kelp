@@ -1,15 +1,15 @@
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
+import CloseIcon from '../../public/icons/close.svg';
 import panelStyles from '../shared/panel-styles';
 import { IDomainBlocklist, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -26,6 +26,15 @@ const useStyles = makeStyles((theme) => ({
   },
   maxWidth: {
     padding: theme.spacing(2),
+  },
+  grid: {
+    maxWidth: theme.breakpoints.width('sm'),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    minHeight: 70,
+    paddingTop: 9,
+    '&:last-child': {
+      borderBottom: '0px solid',
+    },
   },
 }));
 
@@ -123,18 +132,25 @@ const Settings = (props: { store: IStore }) => {
             Hidden websites
           </Typography>
           {shouldShowEmptyWebsiteBlocklist && <Typography variant="h6">None</Typography>}
-          <Container maxWidth="sm" style={{ marginLeft: 0 }}>
-            {websiteBlocklist.map((item) => (
-              <Grid key={item.id} container alignContent="center" justify="space-between">
-                <Grid item xs={8}>
-                  <Typography noWrap>{item.id}</Typography>
-                </Grid>
-                <Grid item xs={2}>
-                  <Button onClick={() => removeWebsite(item.id)}>remove</Button>
-                </Grid>
+          {websiteBlocklist.map((item) => (
+            <Grid
+              key={item.id}
+              container
+              alignItems="center"
+              justify="space-between"
+              className={formClasses.grid}
+              spacing={2}
+            >
+              <Grid item xs={10}>
+                <Typography noWrap>{item.id}</Typography>
               </Grid>
-            ))}
-          </Container>
+              <Grid item>
+                <IconButton onClick={() => removeWebsite(item.id)}>
+                  <CloseIcon width="24" height="24" />
+                </IconButton>
+              </Grid>
+            </Grid>
+          ))}
         </div>
       </div>
       <Divider />
@@ -144,18 +160,25 @@ const Settings = (props: { store: IStore }) => {
             Hidden domains (all websites at these domains are hidden)
           </Typography>
           {shouldShowEmptyDomainBlocklist && <Typography variant="h6">None</Typography>}
-          <Container maxWidth="sm" style={{ marginLeft: 0 }}>
-            {domainBlocklists.map((item) => (
-              <Grid key={item.id} container alignContent="center" justify="space-between">
-                <Grid item xs={8}>
-                  <Typography noWrap>{item.id}</Typography>
-                </Grid>
-                <Grid item xs={2}>
-                  <Button onClick={() => removeDomain(item.id)}>remove</Button>
-                </Grid>
+          {domainBlocklists.map((item) => (
+            <Grid
+              key={item.id}
+              container
+              alignItems="center"
+              justify="space-between"
+              className={formClasses.grid}
+              spacing={2}
+            >
+              <Grid item xs={10}>
+                <Typography noWrap>{item.id}</Typography>
               </Grid>
-            ))}
-          </Container>
+              <Grid item>
+                <IconButton onClick={() => removeDomain(item.id)}>
+                  <CloseIcon width="24" height="24" />
+                </IconButton>
+              </Grid>
+            </Grid>
+          ))}
         </div>
       </div>
     </div>

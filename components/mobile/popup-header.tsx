@@ -3,8 +3,9 @@ import IconButton from '@material-ui/core/IconButton';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import BackIcon from '../../public/icons/back.svg';
+import MeetingIcon from '../../public/icons/calendar.svg';
 import EditIcon from '../../public/icons/edit.svg';
-import ExternalIcon from '../../public/icons/external.svg';
+import DocumentIcon from '../../public/icons/file.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import { LineCalendar } from '../meeting/line-calendar';
@@ -86,9 +87,6 @@ const PluginHeader = (props: { store: IStore; shouldAlwaysShowSettings?: boolean
     return <SearchBar onClose={() => setSearchInputVisible(false)} />;
   }
 
-  const shouldRenderChromeIcon =
-    !props.shouldAlwaysShowSettings && window['chrome'] && window['chrome']['tabs'];
-
   return (
     <Grid
       container
@@ -101,39 +99,33 @@ const PluginHeader = (props: { store: IStore; shouldAlwaysShowSettings?: boolean
           <SearchIcon width="24" height="24" />
         </IconButton>
       </Grid>
-      <Grid item zeroMinWidth style={{ width: 'calc(100vw - 127px)' }}>
+      <Grid item xs>
         <div style={{ marginTop: 16 }}>
           <LineCalendar store={props.store} />
         </div>
       </Grid>
       <Grid item>
-        {shouldRenderChromeIcon && (
-          <IconButton
-            className={'ignore-react-onclickoutside'}
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={() =>
-              window['chrome'] &&
-              window['chrome']['tabs'] &&
-              chrome.tabs.create({ url: '/dashboard.html' })
-            }
-          >
-            <ExternalIcon width="24" height="24" />
-          </IconButton>
-        )}
-        {!shouldRenderChromeIcon && (
-          <IconButton
-            className={'ignore-react-onclickoutside'}
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={(event) => {
-              event.preventDefault();
-              return router.push('/settings');
-            }}
-          >
-            <SettingsIcon width="24" height="24" />
-          </IconButton>
-        )}
+        <IconButton href="https://docs.new" target="_blank">
+          <DocumentIcon width="24" height="24" />
+        </IconButton>
+      </Grid>
+      <Grid item>
+        <IconButton target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE">
+          <MeetingIcon width="24" height="24" />
+        </IconButton>
+      </Grid>
+      <Grid item>
+        <IconButton
+          className={'ignore-react-onclickoutside'}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={(event) => {
+            event.preventDefault();
+            return router.push('/settings');
+          }}
+        >
+          <SettingsIcon width="24" height="24" />
+        </IconButton>
       </Grid>
     </Grid>
   );
