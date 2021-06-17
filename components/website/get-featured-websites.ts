@@ -56,7 +56,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
         urlCount[link] = getValueForDate(item.time);
       }
       return {
-        documentId: item.id,
+        documentId: item.documentId,
         meetings: [] as any,
         nextMeetingStartsAt: undefined,
         websiteId: link,
@@ -144,14 +144,14 @@ export const getWebsitesForMeeting = async (
           urlCount[link] = getValueForDate(item.date);
         }
         return {
-          documentId: item.id,
+          documentId: item.documentId,
           meetings: [meeting],
           nextMeetingStartsAt: undefined,
           websiteId: link,
-          websiteDatabaseId: item.id,
+          websiteDatabaseId: undefined,
           text: document.name,
           date: item.date,
-        };
+        } as any;
       }),
     )
   ).filter(Boolean) as IFeaturedWebsite[];

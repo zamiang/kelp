@@ -39,7 +39,7 @@ const formatGoogleDoc = (googleDoc?: gapi.client.drive.File): IDocument | null =
     name: googleDoc.name,
     viewedByMe: googleDoc.viewedByMe,
     viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
-    link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
+    link: (googleDoc.webViewLink || '').replace('?usp=drivesdk', ''),
     iconLink: googleDoc.iconLink,
     mimeType: googleDoc.mimeType as any,
     isStarred: !!googleDoc.starred,

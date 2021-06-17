@@ -52,7 +52,9 @@ export const HomepageButtons = (props: {
         ),
         {},
       );
-      const orderedDomains = Object.entries(domainHash).sort((a, b) => b[1] - a[1]);
+      const orderedDomains = Object.entries(domainHash)
+        .sort((a, b) => b[1] - a[1])
+        .filter(Boolean);
       setFilterDomains(orderedDomains.slice(0, maxItems));
     };
     void fetchData();

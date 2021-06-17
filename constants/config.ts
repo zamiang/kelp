@@ -71,6 +71,7 @@ export default {
     'calendar.google.com',
     'chrome://',
     'meet.google.com',
+    'file:///',
     'twitter.com/home',
   ],
 };

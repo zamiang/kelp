@@ -22,7 +22,7 @@ import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured
 import { FeaturedWebsiteRow } from '../website/website-row';
 import { createMeetingNotes } from './create-meeting-notes';
 
-const maxNumberOfWebsites = 5;
+const maxNumberOfWebsites = 6;
 
 const EmailGuestsButton = (props: {
   meeting: ISegment;
