@@ -52,6 +52,9 @@ export const FeaturedMeeting = (props: {
   const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
+  if (!isInNextHour) {
+    return null;
+  }
   return (
     <div
       className={classes.container}
@@ -76,7 +79,7 @@ export const FeaturedMeeting = (props: {
             {props.meeting.summary || '(no title)'}
           </Typography>
         </Grid>
-        {domain && isInNextHour && (
+        {domain && (
           <Grid item>
             <Button
               className={clsx(buttonClasses.button, classes.button)}
@@ -88,13 +91,11 @@ export const FeaturedMeeting = (props: {
             </Button>
           </Grid>
         )}
-        {isInNextHour && (
-          <Grid item xs={12}>
-            <div className={classes.topSpacing}>
-              <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft={false} />
-            </div>
-          </Grid>
-        )}
+        <Grid item xs={12}>
+          <div className={classes.topSpacing}>
+            <MeetingRowBelow meeting={props.meeting} store={props.store} shouldPadLeft={false} />
+          </div>
+        </Grid>
       </Grid>
     </div>
   );
