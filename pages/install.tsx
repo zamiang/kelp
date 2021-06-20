@@ -30,10 +30,11 @@ const App = () => {
         <Container maxWidth="md">
           <img style={{ width: 100 }} src="/kelp.svg" alt="Kelp logo" />
           <Typography variant="h1" className={classes.heading}>
-            How does kelp work?
+            Install Kelp
           </Typography>
           <Typography className={classes.subheading}>
-            Kelp is an application that you run on your computer.
+            Before installing Kelp, you may want to review the permissions used and our security
+            practices by reading below. If not, just click &lsquo;add to chrome&rsquo;.
           </Typography>
           <Container className={classes.buttonContainer}>
             <Button
