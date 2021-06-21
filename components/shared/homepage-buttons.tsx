@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { boxShadow } from '../../constants/theme';
 import { IStore } from '../store/use-store';
 
@@ -17,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(3),
   },
   container: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
     textAlign: 'left',
+    width: '100%',
   },
   label: {
     marginLeft: theme.spacing(2),
@@ -36,6 +36,7 @@ export const HomepageButtons = (props: {
   hideDialogUrl?: string;
 }) => {
   const classes = useStyles();
+  const router = useHistory();
   const [filterDomains, setFilterDomains] = useState<[string, number][]>([]);
   const [isVisible, setVisible] = useState(false);
 
@@ -67,14 +68,19 @@ export const HomepageButtons = (props: {
       onMouseLeave={() => setVisible(false)}
       exclusive
       orientation="vertical"
-      onChange={(_event, value) => props.toggleFilter(value)}
+      onChange={(_event, value) => {
+        props.toggleFilter(value);
+        router.push('/home');
+      }}
     >
       <ToggleButton value="all">All</ToggleButton>
       {filterDomains.map((item) => (
         <ToggleButton value={item[0]} key={item[0]}>
           <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="18" width="18" />
           {isVisible && (
-            <div className={classes.label}>{item[0].split('-')[0].replace('www.', '')}</div>
+            <div className={classes.label}>
+              {item[0].split('-')[0].replace('www.', '').replace('.com', '')}
+            </div>
           )}
         </ToggleButton>
       ))}

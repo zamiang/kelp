@@ -122,7 +122,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
         setHideDialogUrl={setHideDialogUrl}
       />
       <div className={classes.content}>
-        <LineCalendar store={props.store} />
         <LeftNav
           store={store}
           toggleFilter={toggleFilter}
@@ -156,6 +155,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 </Box>
               </Route>
               <Route>
+                <LineCalendar store={props.store} />
                 <MeetingHighlight
                   store={props.store}
                   hideWebsite={hideItem}
