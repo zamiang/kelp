@@ -61,29 +61,32 @@ export const HomepageButtons = (props: {
   }, [props.store.isLoading, props.store.lastUpdated, props.hideDialogUrl]);
 
   return (
-    <ToggleButtonGroup
-      value={props.currentFilter || 'all'}
+    <div
       className={classes.container}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
-      exclusive
-      orientation="vertical"
-      onChange={(_event, value) => {
-        props.toggleFilter(value);
-        router.push('/home');
-      }}
     >
-      <ToggleButton value="all">All</ToggleButton>
-      {filterDomains.map((item) => (
-        <ToggleButton value={item[0]} key={item[0]}>
-          <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="18" width="18" />
-          {isVisible && (
-            <div className={classes.label}>
-              {item[0].split('-')[0].replace('www.', '').replace('.com', '')}
-            </div>
-          )}
-        </ToggleButton>
-      ))}
-    </ToggleButtonGroup>
+      <ToggleButtonGroup
+        value={props.currentFilter || 'all'}
+        exclusive
+        orientation="vertical"
+        onChange={(_event, value) => {
+          props.toggleFilter(value);
+          router.push('/home');
+        }}
+      >
+        <ToggleButton value="all">All</ToggleButton>
+        {filterDomains.map((item) => (
+          <ToggleButton value={item[0]} key={item[0]}>
+            <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="18" width="18" />
+            {isVisible && (
+              <div className={classes.label}>
+                {item[0].split('-')[0].replace('www.', '').replace('.com', '')}
+              </div>
+            )}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+    </div>
   );
 };

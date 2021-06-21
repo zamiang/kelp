@@ -7,8 +7,11 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { FeaturedMeeting } from './featured-meeting';
 
-const useStyles = makeStyles(() => ({
-  highlight: {},
+const useStyles = makeStyles((theme) => ({
+  highlight: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 export const MeetingHighlight = (props: {

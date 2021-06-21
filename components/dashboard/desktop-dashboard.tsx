@@ -7,7 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { backgroundGradient, boxShadow } from '../../constants/theme';
+import { boxShadow } from '../../constants/theme';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
@@ -29,20 +29,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
   },
-  '@keyframes backgroundAnimation': {
-    from: {
-      backgroundPosition: '0% 75%',
-    },
-    '50%': { backgroundPosition: '100% 26%' },
-    to: { backgroundPosition: '0% 75%' },
-  },
-  container: {
-    marginTop: '10vh',
-  },
+  container: {},
   content: {
-    background: backgroundGradient,
-    backgroundSize: '400% 400%',
-    animation: '$backgroundAnimation 20s ease infinite',
+    background: '#FBF2DD',
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',

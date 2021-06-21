@@ -5,7 +5,7 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 
-const maxNumberOfWebsites = 6;
+const maxNumberOfWebsites = 3;
 
 const MeetingRowBelow = (props: {
   meeting: ISegment;
@@ -24,17 +24,23 @@ const MeetingRowBelow = (props: {
     void fetchData();
   }, [props.store.isLoading, props.meeting.id, props.hideDialogUrl]);
 
+  if (websites.length < 1) {
+    return null;
+  }
+
   return (
-    <Grid container spacing={4}>
-      {websites.map((item) => (
-        <LargeWebsite
-          key={item.websiteId}
-          item={item}
-          store={props.store}
-          hideItem={props.hideWebsite}
-          smGridSize={4}
-        />
-      ))}
+    <Grid item xs={12}>
+      <Grid container spacing={4}>
+        {websites.map((item) => (
+          <LargeWebsite
+            key={item.websiteId}
+            item={item}
+            store={props.store}
+            hideItem={props.hideWebsite}
+            smGridSize={4}
+          />
+        ))}
+      </Grid>
     </Grid>
   );
 };

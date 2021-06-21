@@ -71,8 +71,6 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
     position: 'relative',
     height: 30,
     overflowX: 'hidden',
@@ -91,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     top: theme.spacing(1),
     zIndex: 2,
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.hint,
     pointerEvents: 'none',
   },
   endTime: {
@@ -99,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     top: theme.spacing(1),
     zIndex: 2,
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.hint,
     pointerEvents: 'none',
   },
   heading: {

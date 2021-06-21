@@ -14,21 +14,24 @@ import MeetingRowBelow from './meeting-row-below';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingTop: theme.spacing(1),
-    cursor: 'pointer',
-    borderBottom: `2px solid ${theme.palette.divider}`,
+    padding: theme.spacing(4),
+    border: `1px solid ${theme.palette.primary.main}`,
+    borderRadius: 3,
     marginBottom: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: 0,
-      borderBottom: '0px solid',
-    },
+    [theme.breakpoints.down('sm')]: {},
   },
   meetingTimeInWords: {
     display: 'inline-block',
     marginBottom: 0,
+    color: theme.palette.text.hint,
   },
-  heading: {},
+  heading: {
+    color: theme.palette.text.primary,
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   button: {
     width: 'auto',
     paddingLeft: 40,
@@ -36,6 +39,44 @@ const useStyles = makeStyles((theme) => ({
   },
   topSpacing: {
     marginTop: theme.spacing(2),
+  },
+  '@keyframes fadeOut': {
+    from: { opacity: 1 },
+    '50%': {
+      opacity: 0.8,
+    },
+    to: {
+      opacity: 1,
+    },
+  },
+  '@keyframes fadeOut2': {
+    from: { opacity: 0.2 },
+    '50%': {
+      opacity: 0.1,
+    },
+    to: {
+      opacity: 0.2,
+    },
+  },
+  outerDot: {
+    width: 40,
+    height: 40,
+    background: '#FF4500',
+    borderRadius: 20,
+    animation: '$fadeOut2 5s ease infinite',
+  },
+  innerDot: {
+    width: 13,
+    borderRadius: 7,
+    height: 13,
+    position: 'absolute',
+    top: 14,
+    left: 14,
+    background: '#FF4500',
+    animation: '$fadeOut 5s ease infinite',
+  },
+  dotContainer: {
+    position: 'relative',
   },
 }));
 
@@ -59,26 +100,31 @@ export const FeaturedMeeting = (props: {
     return null;
   }
   return (
-    <div
-      className={classes.container}
-      onClick={() => {
-        void router.push(`/meetings/${props.meeting.id}`);
-        return false;
-      }}
-    >
-      <Grid container alignItems="flex-end">
-        <Grid item xs={12} sm={9}>
+    <div className={classes.container}>
+      <Grid container alignItems="flex-end" spacing={2}>
+        <Grid item>
+          <div className={classes.dotContainer}>
+            <div className={classes.outerDot}></div>
+            <div className={classes.innerDot}></div>
+          </div>
+        </Grid>
+        <Grid item xs>
           {isHappeningNow && (
-            <Typography variant="h6" className={classes.meetingTimeInWords}>
-              Happening Now
-            </Typography>
+            <Typography className={classes.meetingTimeInWords}>Happening Now</Typography>
           )}
           {isFuture && (
-            <Typography variant="h6" className={classes.meetingTimeInWords}>
+            <Typography className={classes.meetingTimeInWords}>
               In {formatDistanceToNow(props.meeting.start)}
             </Typography>
           )}
-          <Typography className={classes.heading} style={{ cursor: 'pointer' }} variant="h2">
+          <Typography
+            className={classes.heading}
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              void router.push(`/meetings/${props.meeting.id}`);
+              return false;
+            }}
+          >
             {props.meeting.summary || '(no title)'}
           </Typography>
         </Grid>
@@ -90,21 +136,17 @@ export const FeaturedMeeting = (props: {
               color="primary"
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
             >
-              Join {domain?.host}
+              Join
             </Button>
           </Grid>
         )}
-        <Grid item xs={12}>
-          <div className={classes.topSpacing}>
-            <MeetingRowBelow
-              meeting={props.meeting}
-              store={props.store}
-              shouldPadLeft={false}
-              hideWebsite={props.hideWebsite}
-              hideDialogUrl={props.hideDialogUrl}
-            />
-          </div>
-        </Grid>
+        <MeetingRowBelow
+          meeting={props.meeting}
+          store={props.store}
+          shouldPadLeft={false}
+          hideWebsite={props.hideWebsite}
+          hideDialogUrl={props.hideDialogUrl}
+        />
       </Grid>
     </div>
   );

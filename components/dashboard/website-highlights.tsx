@@ -5,7 +5,7 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 
-const maxResult = 8;
+const maxResult = 6;
 
 export const WebsiteHighlights = (props: {
   store: IStore;
@@ -40,6 +40,7 @@ export const WebsiteHighlights = (props: {
             item={item}
             store={props.store}
             hideItem={props.hideWebsite}
+            smGridSize={4}
           />
         ))}
       </Grid>
