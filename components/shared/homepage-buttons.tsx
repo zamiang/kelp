@@ -19,13 +19,11 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
+    textAlign: 'left',
   },
   label: {
-    marginLeft: 3,
-  },
-  maxWidth: {
-    maxWidth: theme.breakpoints.width('md'),
-    overflow: 'hidden',
+    marginLeft: theme.spacing(2),
+    textAlign: 'left',
   },
 }));
 
@@ -39,6 +37,7 @@ export const HomepageButtons = (props: {
 }) => {
   const classes = useStyles();
   const [filterDomains, setFilterDomains] = useState<[string, number][]>([]);
+  const [isVisible, setVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,22 +60,24 @@ export const HomepageButtons = (props: {
   }, [props.store.isLoading, props.store.lastUpdated, props.hideDialogUrl]);
 
   return (
-    <div className={classes.maxWidth}>
-      <ToggleButtonGroup
-        value={props.currentFilter || 'all'}
-        size="small"
-        className={classes.container}
-        exclusive
-        onChange={(_event, value) => props.toggleFilter(value)}
-      >
-        <ToggleButton value="all">All</ToggleButton>
-        {filterDomains.map((item) => (
-          <ToggleButton value={item[0]} key={item[0]}>
-            <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="12" />
+    <ToggleButtonGroup
+      value={props.currentFilter || 'all'}
+      className={classes.container}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+      exclusive
+      orientation="vertical"
+      onChange={(_event, value) => props.toggleFilter(value)}
+    >
+      <ToggleButton value="all">All</ToggleButton>
+      {filterDomains.map((item) => (
+        <ToggleButton value={item[0]} key={item[0]}>
+          <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="18" width="18" />
+          {isVisible && (
             <div className={classes.label}>{item[0].split('-')[0].replace('www.', '')}</div>
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
-    </div>
+          )}
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
   );
 };

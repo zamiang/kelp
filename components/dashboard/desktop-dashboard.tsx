@@ -11,14 +11,14 @@ import { backgroundGradient, boxShadow } from '../../constants/theme';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
+import { LineCalendar } from '../meeting/line-calendar';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
-import PopupHeader from '../mobile/popup-header';
 import ExpandPerson from '../person/expand-person';
-import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { HideUrlDialog } from '../website/hide-url-dialog';
+import { LeftNav } from './left-nav';
 import Search from './search';
 import { WebsiteHighlights } from './website-highlights';
 
@@ -122,7 +122,13 @@ export const DesktopDashboard = (props: { store: IStore }) => {
         setHideDialogUrl={setHideDialogUrl}
       />
       <div className={classes.content}>
-        <PopupHeader store={store} shouldAlwaysShowSettings />
+        <LineCalendar store={props.store} />
+        <LeftNav
+          store={store}
+          toggleFilter={toggleFilter}
+          currentFilter={filter}
+          hideDialogUrl={hideDialogUrl}
+        />
         <Container maxWidth="md" className={classes.container}>
           <div>
             <Switch>
@@ -153,12 +159,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <MeetingHighlight
                   store={props.store}
                   hideWebsite={hideItem}
-                  hideDialogUrl={hideDialogUrl}
-                />
-                <HomepageButtons
-                  store={store}
-                  toggleFilter={toggleFilter}
-                  currentFilter={filter}
                   hideDialogUrl={hideDialogUrl}
                 />
                 <WebsiteHighlights

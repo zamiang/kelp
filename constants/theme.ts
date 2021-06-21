@@ -246,10 +246,12 @@ const theme = createMuiTheme({
         border: '0px solid',
         textTransform: 'none',
         lineHeight: 1.35,
+        justifyContent: 'left',
       },
       label: {
-        height: 14,
         overflow: 'hidden',
+        fontFamily: bodyFontFamily,
+        color: primaryTextColor,
       },
     },
     MuiToggleButtonGroup: {
