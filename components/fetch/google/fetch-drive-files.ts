@@ -135,7 +135,6 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string, limi
       }
     }),
   );
-  console.log('ids to refetch drive files', idsToRefetch);
   return results.map((document) => formatGoogleDoc(document));
 };
 

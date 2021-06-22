@@ -20,7 +20,7 @@ import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { HideUrlDialog } from '../website/hide-url-dialog';
 import { LeftNav } from './left-nav';
 import Search from './search';
-import { WebsiteHighlights } from './website-highlights';
+import { WebsiteHighlights } from '../website/website-highlights';
 
 const useStyles = makeStyles((theme) => ({
   box: {

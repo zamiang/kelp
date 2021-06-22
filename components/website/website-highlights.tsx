@@ -2,8 +2,9 @@ import Grid from '@material-ui/core/Grid';
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite, getFeaturedWebsites } from '../website/get-featured-websites';
-import { LargeWebsite } from '../website/large-website';
+import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
+import { LargeWebsite } from './large-website';
+import { RightArrow } from './right-arrow';
 
 const maxResult = 6;
 
@@ -14,6 +15,7 @@ export const WebsiteHighlights = (props: {
   hideDialogUrl?: string;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
+  const [shouldShowAll, setShouldShowAll] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,16 +25,32 @@ export const WebsiteHighlights = (props: {
           ? true
           : item.websiteId.indexOf(props.currentFilter) > -1,
       );
-      setTopWebsites(filtereredWebsites.slice(0, maxResult));
+      if (shouldShowAll) {
+        setTopWebsites(filtereredWebsites.slice(0, maxResult * 10));
+      } else {
+        setTopWebsites(filtereredWebsites.slice(0, maxResult));
+      }
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, props.currentFilter, props.hideDialogUrl]);
+  }, [
+    props.store.lastUpdated,
+    props.store.isLoading,
+    props.currentFilter,
+    props.hideDialogUrl,
+    shouldShowAll,
+  ]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
+      <RightArrow
+        isEnabled={shouldShowAll}
+        onClick={() => {
+          setShouldShowAll(!shouldShowAll);
+        }}
+      />
       <Grid container spacing={4}>
         {topWebsites.map((item) => (
           <LargeWebsite

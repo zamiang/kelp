@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { formatDistanceToNow, subHours } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import config from '../../constants/config';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 3,
     marginBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {},
+  },
+  containerNow: {
+    borderColor: config.LIGHT_BLUE,
   },
   meetingTimeInWords: {
     display: 'inline-block',
@@ -75,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
     background: '#FF4500',
     animation: '$fadeOut 5s ease infinite',
   },
+  dotNow: {
+    background: config.LIGHT_BLUE,
+  },
   dotContainer: {
     position: 'relative',
   },
@@ -100,12 +107,12 @@ export const FeaturedMeeting = (props: {
     return null;
   }
   return (
-    <div className={classes.container}>
+    <div className={clsx(classes.container, !isHappeningNow && classes.containerNow)}>
       <Grid container alignItems="flex-end" spacing={2}>
         <Grid item>
           <div className={classes.dotContainer}>
-            <div className={classes.outerDot}></div>
-            <div className={classes.innerDot}></div>
+            <div className={clsx(classes.outerDot, !isHappeningNow && classes.dotNow)}></div>
+            <div className={clsx(classes.innerDot, !isHappeningNow && classes.dotNow)}></div>
           </div>
         </Grid>
         <Grid item xs>
