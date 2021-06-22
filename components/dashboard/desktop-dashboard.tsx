@@ -18,9 +18,9 @@ import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { HideUrlDialog } from '../website/hide-url-dialog';
+import { WebsiteHighlights } from '../website/website-highlights';
 import { LeftNav } from './left-nav';
 import Search from './search';
-import { WebsiteHighlights } from '../website/website-highlights';
 
 const useStyles = makeStyles((theme) => ({
   box: {
