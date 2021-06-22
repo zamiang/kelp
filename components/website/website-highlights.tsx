@@ -7,6 +7,7 @@ import { LargeWebsite } from './large-website';
 import { RightArrow } from './right-arrow';
 
 const maxResult = 6;
+const maxDisplay = maxResult * 10;
 
 export const WebsiteHighlights = (props: {
   store: IStore;
@@ -16,6 +17,7 @@ export const WebsiteHighlights = (props: {
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
+  const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +27,9 @@ export const WebsiteHighlights = (props: {
           ? true
           : item.websiteId.indexOf(props.currentFilter) > -1,
       );
+
+      const extraResultLength = filtereredWebsites.length - maxResult;
+      setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
       if (shouldShowAll) {
         setTopWebsites(filtereredWebsites.slice(0, maxResult * 10));
       } else {
@@ -45,12 +50,6 @@ export const WebsiteHighlights = (props: {
   return (
     <div style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
-      <RightArrow
-        isEnabled={shouldShowAll}
-        onClick={() => {
-          setShouldShowAll(!shouldShowAll);
-        }}
-      />
       <Grid container spacing={4}>
         {topWebsites.map((item) => (
           <LargeWebsite
@@ -62,6 +61,15 @@ export const WebsiteHighlights = (props: {
           />
         ))}
       </Grid>
+      {extraItemsCount > 0 && (
+        <RightArrow
+          isEnabled={shouldShowAll}
+          count={extraItemsCount}
+          onClick={() => {
+            setShouldShowAll(!shouldShowAll);
+          }}
+        />
+      )}
     </div>
   );
 };
