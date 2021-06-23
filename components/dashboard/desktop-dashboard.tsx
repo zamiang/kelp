@@ -139,7 +139,12 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 </Box>
               </Route>
               <Route path="/meetings">
-                <Meetings store={store} hideWebsite={hideItem} hideDialogUrl={hideDialogUrl} />
+                <Meetings
+                  store={store}
+                  hideWebsite={hideItem}
+                  hideDialogUrl={hideDialogUrl}
+                  currentFilter={filter}
+                />
               </Route>
               <Route path="/settings">
                 <Box className={classes.box} boxShadow={1} borderRadius={16}>
@@ -151,6 +156,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                   store={props.store}
                   hideWebsite={hideItem}
                   hideDialogUrl={hideDialogUrl}
+                  currentFilter={filter}
                 />
                 <WebsiteHighlights
                   store={store}

@@ -85,6 +85,7 @@ const Home = (props: {
           showButton
           hideWebsite={props.hideWebsite}
           hideDialogUrl={props.hideDialogUrl}
+          currentFilter="all"
         />
       )}
       {featuredPeople.length > 0 && (

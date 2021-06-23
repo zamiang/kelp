@@ -107,6 +107,7 @@ export const FeaturedMeeting = (props: {
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   showLine?: boolean;
+  currentFilter: string;
 }) => {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
@@ -183,7 +184,7 @@ export const FeaturedMeeting = (props: {
               <MeetingRowBelow
                 meeting={props.meeting}
                 store={props.store}
-                shouldPadLeft={false}
+                currentFilter={props.currentFilter}
                 hideWebsite={props.hideWebsite}
                 hideDialogUrl={props.hideDialogUrl}
               />
@@ -194,7 +195,7 @@ export const FeaturedMeeting = (props: {
           <MeetingRowBelow
             meeting={props.meeting}
             store={props.store}
-            shouldPadLeft={false}
+            currentFilter={props.currentFilter}
             hideWebsite={props.hideWebsite}
             hideDialogUrl={props.hideDialogUrl}
           />

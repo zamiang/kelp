@@ -154,7 +154,12 @@ const MobileDashboard = (props: { store: IStore }) => {
           </Route>
           <Route path="/meetings">
             <Box className={classes.box} boxShadow={1} borderRadius={16}>
-              <Meetings store={store} hideWebsite={hideItem} hideDialogUrl={hideDialogUrl} />
+              <Meetings
+                store={store}
+                hideWebsite={hideItem}
+                hideDialogUrl={hideDialogUrl}
+                currentFilter="all"
+              />
             </Box>
           </Route>
           <Route path="/people">

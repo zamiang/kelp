@@ -7,13 +7,14 @@ import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 
-const DAYS_BACK = 2;
+const DAYS_BACK = 5;
 const DAYS_FORWARD = -1;
 
 const Meetings = (props: {
   store: IStore;
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
+  currentFilter: string;
 }) => {
   const [meetings, setMeetings] = useState<ISegment[]>([]);
 
@@ -42,6 +43,7 @@ const Meetings = (props: {
           store={props.store}
           hideWebsite={props.hideWebsite}
           showLine
+          currentFilter={props.currentFilter}
         />
       ))}
     </div>

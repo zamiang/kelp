@@ -12,9 +12,9 @@ const maxDisplay = maxResult * 10;
 const MeetingRowBelow = (props: {
   meeting: ISegment;
   store: IStore;
-  shouldPadLeft: boolean;
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
+  currentFilter: string;
 }) => {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -24,12 +24,18 @@ const MeetingRowBelow = (props: {
     const fetchData = async () => {
       const result = await getWebsitesForMeeting(props.meeting, props.store);
 
-      const extraResultLength = result.length - maxResult;
+      const filtereredWebsites = result.filter((item) =>
+        item && props.currentFilter === 'all'
+          ? true
+          : item.websiteId.indexOf(props.currentFilter) > -1,
+      );
+
+      const extraResultLength = filtereredWebsites.length - maxResult;
       setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
       if (shouldShowAll) {
-        setWebsites(result.slice(0, maxResult * 10));
+        setWebsites(filtereredWebsites.slice(0, maxResult * 10));
       } else {
-        setWebsites(result.slice(0, maxResult));
+        setWebsites(filtereredWebsites.slice(0, maxResult));
       }
     };
     void fetchData();

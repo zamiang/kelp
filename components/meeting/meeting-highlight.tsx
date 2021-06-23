@@ -18,6 +18,7 @@ export const MeetingHighlight = (props: {
   store: IStore;
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
+  currentFilter: string;
 }) => {
   const classes = useStyles();
   const currentTime = new Date();
@@ -47,6 +48,7 @@ export const MeetingHighlight = (props: {
         <FeaturedMeeting
           store={props.store}
           meeting={featuredMeeting}
+          currentFilter={props.currentFilter}
           showButton
           hideWebsite={props.hideWebsite}
           hideDialogUrl={props.hideDialogUrl}
