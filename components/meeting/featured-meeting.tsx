@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { formatDistanceToNow, subHours } from 'date-fns';
+import { format, formatDistanceToNow, subHours } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import config from '../../constants/config';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
     background: theme.palette.divider,
     height: '100%',
-    marginTop: -1,
+    marginTop: -10,
     marginLeft: 27,
   },
   containerNow: {
@@ -113,6 +113,7 @@ export const FeaturedMeeting = (props: {
   const router = useHistory();
 
   const isFuture = new Date() < props.meeting.start;
+  const isPast = new Date() > props.meeting.end;
   const isInNextHour = new Date() > subHours(props.meeting.start, 1);
   const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
 
@@ -144,6 +145,11 @@ export const FeaturedMeeting = (props: {
               In {formatDistanceToNow(props.meeting.start)}
             </Typography>
           )}
+          {isPast && (
+            <Typography className={classes.meetingTimeInWords}>
+              {format(props.meeting.start, 'EEEE, MMMM d')} at {format(props.meeting.start, 'p')}
+            </Typography>
+          )}
           <Typography
             className={classes.heading}
             style={{ cursor: 'pointer' }}
@@ -169,8 +175,8 @@ export const FeaturedMeeting = (props: {
           </Grid>
         )}
         {props.showLine && (
-          <Grid container>
-            <Grid item style={{ width: 60 }}>
+          <Grid container style={{ marginTop: 12 }}>
+            <Grid item style={{ width: 60, minHeight: 30 }}>
               <div className={classes.leftLine}></div>
             </Grid>
             <Grid item xs>
