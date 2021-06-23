@@ -2,8 +2,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import LeftArrowIcon from '../../public/icons/minus.svg';
-import RightArrowIcon from '../../public/icons/plus.svg';
+import ChevronIcon from '../../public/icons/chevron-right.svg';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,6 +15,15 @@ const useStyles = makeStyles((theme) => ({
     background: 'rgba(0, 0, 0, 0.1)',
     padding: 12,
   },
+  showMoreText: {
+    color: theme.palette.text.hint,
+  },
+  upArrow: {
+    transform: 'rotate(-90deg)',
+  },
+  downArrow: {
+    transform: 'rotate(90deg)',
+  },
 }));
 
 export const RightArrow = (props: { onClick: () => void; isEnabled: boolean; count: number }) => {
@@ -24,15 +32,15 @@ export const RightArrow = (props: { onClick: () => void; isEnabled: boolean; cou
     <div className={classes.container}>
       <IconButton onClick={props.onClick} className={classes.arrow}>
         {props.isEnabled ? (
-          <LeftArrowIcon width="24" height="24" />
+          <ChevronIcon className={classes.upArrow} width="24" height="24" />
         ) : (
-          <RightArrowIcon width="24" height="24" />
+          <ChevronIcon className={classes.downArrow} width="24" height="24" />
         )}
       </IconButton>
       {props.isEnabled ? (
         <Typography>Hide</Typography>
       ) : (
-        <Typography>Show {props.count} more</Typography>
+        <Typography className={classes.showMoreText}>Show {props.count} more</Typography>
       )}
     </div>
   );
