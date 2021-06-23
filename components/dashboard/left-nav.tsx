@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import MeetingsIcon from '../../public/icons/calendar.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import SearchBar from '../nav/search-bar';
@@ -99,6 +100,19 @@ export const LeftNav = (props: {
       )}
       <Grid item xs={12}>
         <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <IconButton
+              className={'ignore-react-onclickoutside'}
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={(event) => {
+                event.preventDefault();
+                return router.push('/meetings');
+              }}
+            >
+              <MeetingsIcon width="24" height="24" />
+            </IconButton>
+          </Grid>
           <Grid item xs={12}>
             <IconButton
               className={'ignore-react-onclickoutside'}

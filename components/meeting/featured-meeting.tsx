@@ -23,6 +23,17 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {},
   },
+  containerLine: {
+    paddingTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+  },
+  leftLine: {
+    width: 1,
+    background: theme.palette.divider,
+    height: '100%',
+    marginTop: -1,
+    marginLeft: 27,
+  },
   containerNow: {
     borderColor: config.LIGHT_BLUE,
   },
@@ -95,6 +106,7 @@ export const FeaturedMeeting = (props: {
   showButton?: boolean;
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
+  showLine?: boolean;
 }) => {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
@@ -109,7 +121,13 @@ export const FeaturedMeeting = (props: {
     return null;
   }
   return (
-    <div className={clsx(classes.container, !isHappeningNow && classes.containerNow)}>
+    <div
+      className={clsx(
+        !props.showLine && classes.container,
+        !isHappeningNow && classes.containerNow,
+        props.showLine && classes.containerLine,
+      )}
+    >
       <Grid container alignItems="flex-end" spacing={2}>
         <Grid item>
           <div className={classes.dotContainer}>
@@ -150,13 +168,31 @@ export const FeaturedMeeting = (props: {
             </Button>
           </Grid>
         )}
-        <MeetingRowBelow
-          meeting={props.meeting}
-          store={props.store}
-          shouldPadLeft={false}
-          hideWebsite={props.hideWebsite}
-          hideDialogUrl={props.hideDialogUrl}
-        />
+        {props.showLine && (
+          <Grid container>
+            <Grid item style={{ width: 60 }}>
+              <div className={classes.leftLine}></div>
+            </Grid>
+            <Grid item xs>
+              <MeetingRowBelow
+                meeting={props.meeting}
+                store={props.store}
+                shouldPadLeft={false}
+                hideWebsite={props.hideWebsite}
+                hideDialogUrl={props.hideDialogUrl}
+              />
+            </Grid>
+          </Grid>
+        )}
+        {!props.showLine && (
+          <MeetingRowBelow
+            meeting={props.meeting}
+            store={props.store}
+            shouldPadLeft={false}
+            hideWebsite={props.hideWebsite}
+            hideDialogUrl={props.hideDialogUrl}
+          />
+        )}
       </Grid>
     </div>
   );

@@ -8,6 +8,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { boxShadow } from '../../constants/theme';
+import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
@@ -136,6 +137,9 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 <Box className={classes.box} boxShadow={1} borderRadius={16}>
                   <ExpandPerson store={store} />
                 </Box>
+              </Route>
+              <Route path="/meetings">
+                <Meetings store={store} hideWebsite={hideItem} hideDialogUrl={hideDialogUrl} />
               </Route>
               <Route path="/settings">
                 <Box className={classes.box} boxShadow={1} borderRadius={16}>
