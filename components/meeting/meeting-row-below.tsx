@@ -39,7 +39,13 @@ const MeetingRowBelow = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, props.meeting.id, props.hideDialogUrl, shouldShowAll]);
+  }, [
+    props.store.isLoading,
+    props.meeting.id,
+    props.hideDialogUrl,
+    shouldShowAll,
+    props.currentFilter,
+  ]);
 
   if (websites.length < 1) {
     return null;

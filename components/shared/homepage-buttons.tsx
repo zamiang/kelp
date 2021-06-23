@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { boxShadow } from '../../constants/theme';
 import { IStore } from '../store/use-store';
 
@@ -36,7 +35,6 @@ export const HomepageButtons = (props: {
   hideDialogUrl?: string;
 }) => {
   const classes = useStyles();
-  const router = useHistory();
   const [filterDomains, setFilterDomains] = useState<[string, number][]>([]);
   const [isVisible, setVisible] = useState(false);
 
@@ -70,10 +68,7 @@ export const HomepageButtons = (props: {
         value={props.currentFilter || 'all'}
         exclusive
         orientation="vertical"
-        onChange={(_event, value) => {
-          props.toggleFilter(value);
-          router.push('/home');
-        }}
+        onChange={(_event, value) => props.toggleFilter(value)}
       >
         <ToggleButton value="all">All</ToggleButton>
         {filterDomains.map((item) => (
