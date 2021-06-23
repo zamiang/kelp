@@ -7,7 +7,7 @@ import { formatDistanceToNow, subHours } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import config from '../../constants/config';
-import VideoIcon from '../../public/icons/video-white.svg';
+import VideoIcon from '../../public/icons/video.svg';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -142,8 +142,8 @@ export const FeaturedMeeting = (props: {
             <Button
               className={clsx(buttonClasses.button, classes.button)}
               variant="contained"
-              color="primary"
-              startIcon={<VideoIcon width={18} height={18} />}
+              color={isHappeningNow ? 'primary' : (config.LIGHT_BLUE as any)}
+              startIcon={<VideoIcon width="24" height="24" />}
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
             >
               Join
