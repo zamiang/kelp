@@ -3,7 +3,6 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import BackIcon from '../../public/icons/back.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import SearchBar from '../nav/search-bar';
@@ -14,25 +13,6 @@ import { IFeaturedPerson, getFeaturedPeople } from './people';
 
 const SearchBarContainer = () => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
-  const router = useHistory();
-  const isOnSubpage =
-    router.location.pathname !== '/home' && router.location.pathname !== '/search';
-
-  if (isOnSubpage) {
-    return (
-      <Grid container alignItems="flex-start" justify="space-between">
-        <Grid item>
-          <IconButton
-            onClick={() => {
-              router.goBack();
-            }}
-          >
-            <BackIcon width="24" height="24" />
-          </IconButton>
-        </Grid>
-      </Grid>
-    );
-  }
 
   if (isSearchInputVisible) {
     return (

@@ -7,6 +7,7 @@ import { formatDistanceToNow, subHours } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import config from '../../constants/config';
+import VideoIcon from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -16,8 +17,9 @@ import MeetingRowBelow from './meeting-row-below';
 const useStyles = makeStyles((theme) => ({
   container: {
     padding: theme.spacing(4),
+    paddingTop: theme.spacing(3),
     border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: 3,
+    borderRadius: 16,
     marginBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {},
   },
@@ -47,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   '@keyframes fadeOut': {
     from: { opacity: 1 },
     '50%': {
-      opacity: 0.8,
+      opacity: 0.4,
     },
     to: {
       opacity: 1,
@@ -56,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   '@keyframes fadeOut2': {
     from: { opacity: 0.2 },
     '50%': {
-      opacity: 0.1,
+      opacity: 0.05,
     },
     to: {
       opacity: 0.2,
@@ -141,6 +143,7 @@ export const FeaturedMeeting = (props: {
               className={clsx(buttonClasses.button, classes.button)}
               variant="contained"
               color="primary"
+              startIcon={<VideoIcon width={18} height={18} />}
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
             >
               Join

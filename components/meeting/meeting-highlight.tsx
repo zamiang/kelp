@@ -9,7 +9,7 @@ import { FeaturedMeeting } from './featured-meeting';
 
 const useStyles = makeStyles((theme) => ({
   highlight: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(4),
   },
 }));

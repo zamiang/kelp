@@ -9,7 +9,7 @@ import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
   input: {
-    fontSize: 22,
+    marginTop: 0,
     [theme.breakpoints.down('sm')]: {},
   },
   container: {
@@ -48,7 +48,6 @@ const SearchBar = (props: { onClose?: () => void }) => {
             className: classes.input,
             disableUnderline: true,
           }}
-          style={{ marginTop: 3 }}
         />
       </Grid>
       <Grid item>

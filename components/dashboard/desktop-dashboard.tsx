@@ -11,7 +11,6 @@ import { boxShadow } from '../../constants/theme';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
-import { LineCalendar } from '../meeting/line-calendar';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import ExpandPerson from '../person/expand-person';
 import { IStore } from '../store/use-store';
@@ -144,7 +143,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
                 </Box>
               </Route>
               <Route>
-                <LineCalendar store={props.store} />
                 <MeetingHighlight
                   store={props.store}
                   hideWebsite={hideItem}
