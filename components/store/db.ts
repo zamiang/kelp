@@ -12,6 +12,7 @@ import {
   IWebsite,
   IWebsiteBlocklist,
   IWebsiteImage,
+  IWebsitePin,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -80,6 +81,10 @@ interface Db extends DBSchema {
       'by-segment-title': string;
     };
   };
+  websitePin: {
+    value: IWebsitePin;
+    key: string;
+  };
   websiteImage: {
     value: IWebsiteImage;
     key: string;
@@ -104,7 +109,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 7;
+const databaseVerson = 8;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
@@ -143,6 +148,9 @@ const options = {
       store.createIndex('by-domain', 'domain', { unique: false });
       store.createIndex('by-segment-id', 'meetingId', { unique: false });
       store.createIndex('by-segment-title', 'meetingName', { unique: false });
+      return;
+    } else if (oldVersion === 7) {
+      db.createObjectStore('websitePin', { keyPath: 'id' });
       return;
     }
 
@@ -218,6 +226,9 @@ const options = {
     db.createObjectStore('domainFilter', {
       keyPath: 'id',
     });
+
+    // website pin
+    db.createObjectStore('websitePin', { keyPath: 'id' });
   },
   blocked() {
     console.error('blocked');

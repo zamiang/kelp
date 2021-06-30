@@ -3,7 +3,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
 import MeetingsIcon from '../../public/icons/calendar.svg';
+import HomeIconOrange from '../../public/icons/home-orange.svg';
 import HomeIcon from '../../public/icons/home.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
@@ -72,6 +74,7 @@ export const LeftNav = (props: {
   const classes = useStyles();
   const router = useHistory();
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
+  const [tab, setTab] = useState<string>('home');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,10 +111,15 @@ export const LeftNav = (props: {
               aria-haspopup="true"
               onClick={(event) => {
                 event.preventDefault();
+                setTab('home');
                 return router.push('/home');
               }}
             >
-              <HomeIcon width="24" height="24" />
+              {tab === 'home' ? (
+                <HomeIconOrange width="24" height="24" />
+              ) : (
+                <HomeIcon width="24" height="24" />
+              )}
             </IconButton>
           </Grid>
           <Grid item xs={12}>
@@ -121,10 +129,15 @@ export const LeftNav = (props: {
               aria-haspopup="true"
               onClick={(event) => {
                 event.preventDefault();
+                setTab('meetings');
                 return router.push('/meetings');
               }}
             >
-              <MeetingsIcon width="24" height="24" />
+              {tab === 'meetings' ? (
+                <MeetingsIconOrange width="24" height="24" />
+              ) : (
+                <MeetingsIcon width="24" height="24" />
+              )}
             </IconButton>
           </Grid>
           <Grid item xs={12}>

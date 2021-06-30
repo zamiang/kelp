@@ -153,3 +153,8 @@ export interface IDomainFilter {
   readonly createdAt: Date;
   readonly order: number;
 }
+
+export interface IWebsitePin {
+  readonly id: string;
+  readonly createdAt: Date;
+}

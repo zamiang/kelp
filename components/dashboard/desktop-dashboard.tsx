@@ -68,7 +68,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
   const hideDialogDomain = hideDialogUrl ? new URL(hideDialogUrl).host : undefined;
 
   const hash = window.location.hash;
-  if (hash.includes('meetings')) {
+  if (hash.includes('meetings/')) {
     window.location.hash = '';
     router.push(hash.replace('#', ''));
   }
