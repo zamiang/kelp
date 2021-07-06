@@ -11,9 +11,9 @@ import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import SearchBar from '../nav/search-bar';
 import { SmallPersonRow } from '../person/small-person-row';
+import { IFeaturedPerson, getFeaturedPeople } from '../shared/get-featured-people';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
-import { IFeaturedPerson, getFeaturedPeople } from './people';
 
 const SearchBarContainer = () => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);

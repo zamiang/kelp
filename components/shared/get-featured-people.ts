@@ -1,11 +1,5 @@
-import Typography from '@material-ui/core/Typography';
 import { format } from 'date-fns';
-import { Dictionary, groupBy, sortBy, uniq } from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import PersonRow from '../person/person-row';
-import panelStyles from '../shared/panel-styles';
-import useRowStyles from '../shared/row-styles';
+import { sortBy, uniq } from 'lodash';
 import { IPerson, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
