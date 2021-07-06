@@ -30,7 +30,7 @@ const SearchBarContainer = () => {
     <Grid
       container
       alignItems="flex-start"
-      justify="space-between"
+      justifyContent="space-between"
       onClick={() => setSearchInputVisible(true)}
     >
       <Grid item>

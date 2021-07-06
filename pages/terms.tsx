@@ -25,7 +25,7 @@ const Terms = () => {
       `}</style>
       <div>
         <Header />
-        <Grid container className={classes.subpage} alignItems="center" justify="center">
+        <Grid container className={classes.subpage} alignItems="center" justifyContent="center">
           <Grid item sm={7}>
             <Container maxWidth="sm">
               <Typography variant="h3">Terms And Conditions</Typography>

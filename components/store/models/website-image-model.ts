@@ -1,3 +1,5 @@
+import config from '../../../constants/config';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IWebsiteImage } from '../data-types';
 import { dbType } from '../db';
 
@@ -20,7 +22,25 @@ export default class WebsiteImageModel {
   }
 
   async getAll() {
-    return await this.db.getAll('websiteImage');
+    const results = await this.db.getAll('websiteImage');
+    return results;
+  }
+
+  async cleanupWebsiteImages(images: IWebsiteImage[]) {
+    const imagesToDelete = images.filter((image) => image.date < config.startDate);
+    console.log(imagesToDelete, '<<<<<<<<<<');
+    const tx = this.db.transaction('websiteImage', 'readwrite');
+    const results = await Promise.allSettled(
+      imagesToDelete.map((item) => this.db.delete('websiteImage', item.id)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async saveWebsiteImage(url: string, image: string, date: Date) {

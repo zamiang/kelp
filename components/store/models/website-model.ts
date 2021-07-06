@@ -87,6 +87,22 @@ export default class WebsiteModel {
     return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
+  async cleanupWebsites(websites: IWebsite[]) {
+    const websitesToDelete = websites.filter((site) => site.visitedTime < config.startDate);
+    const tx = this.db.transaction('website', 'readwrite');
+    const results = await Promise.allSettled(
+      websitesToDelete.map((item) => this.db.delete('website', item.id)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
+  }
+
   async addHistoryToStore(websites: IWebsite[]) {
     const tx = this.db.transaction('website', 'readwrite');
     const results = await Promise.allSettled(websites.map((website) => tx.store.put(website)));

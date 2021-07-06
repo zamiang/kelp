@@ -1,12 +1,13 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
+const backgroundGradient = 'linear-gradient(248deg, #f3fff9, #fbf2dd)';
 export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
-// export const backgroundGradient = 'linear-gradient(248deg, #f3fff9, #fbf2dd)';
+
 // 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
 export const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
@@ -38,7 +39,7 @@ const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
 const lightTextColor = 'rgba(0,0,0,0.5)';
 export const lightGreyColor = 'rgba(0,0,0,0.08)';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   props: {
     MuiButtonBase: {
       disableRipple: true, // No more ripple, on the whole application

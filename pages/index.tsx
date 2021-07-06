@@ -315,7 +315,7 @@ const App = () => {
       </Container>
       <br />
       <Container maxWidth="md">
-        <Grid container alignItems="center" justify="center">
+        <Grid container alignItems="center" justifyContent="center">
           <Grid
             sm={12}
             md={6}

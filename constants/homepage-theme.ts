@@ -1,4 +1,4 @@
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
@@ -30,7 +30,7 @@ const basisMedium = {
   src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
 };
 
-const theme = createMuiTheme({
+const theme = createTheme({
   props: {
     MuiButtonBase: {
       disableRipple: true, // No more ripple, on the whole application

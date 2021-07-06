@@ -89,7 +89,7 @@ const Header = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="lg">
-      <Grid container justify="space-between" className={classes.header} alignItems="center">
+      <Grid container justifyContent="space-between" className={classes.header} alignItems="center">
         <Grid item xs={6} sm={3} style={{ textAlign: 'left' }}>
           <Grid container alignItems="center">
             <Grid item>
@@ -112,7 +112,7 @@ const Header = () => {
             spacing={4}
             alignItems="center"
             className={classes.links}
-            justify="center"
+            justifyContent="center"
           >
             <Grid item>
               <Link href="/about">

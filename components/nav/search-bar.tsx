@@ -28,7 +28,7 @@ const SearchBar = (props: { onClose?: () => void }) => {
   };
 
   return (
-    <Grid container alignItems="flex-start" justify="space-between">
+    <Grid container alignItems="flex-start" justifyContent="space-between">
       <Grid item>
         <IconButton>
           <SearchIcon width="24" height="24" />

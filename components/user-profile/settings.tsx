@@ -137,7 +137,7 @@ const Settings = (props: { store: IStore }) => {
               key={item.id}
               container
               alignItems="center"
-              justify="space-between"
+              justifyContent="space-between"
               className={formClasses.grid}
               spacing={2}
             >
@@ -164,7 +164,7 @@ const Settings = (props: { store: IStore }) => {
               key={item.id}
               container
               alignItems="center"
-              justify="space-between"
+              justifyContent="space-between"
               className={formClasses.grid}
               spacing={2}
             >

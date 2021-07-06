@@ -167,6 +167,13 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
         await websitesStore.addHistoryToStore(historyWebsites);
       }
 
+      // Cleanup website images
+      const currentImages = await websiteImageStore.getAll();
+      await websiteImageStore.cleanupWebsiteImages(currentImages);
+
+      // Cleanup websites
+      await websitesStore.cleanupWebsites(currentWebsites);
+
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
 
