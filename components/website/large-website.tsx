@@ -81,6 +81,7 @@ export const LargeWebsite = (props: {
     };
     void fetchData();
   }, []);
+  console.log(props.item, '<<<<');
   return (
     <Grid
       item
@@ -120,21 +121,6 @@ export const LargeWebsite = (props: {
               </Typography>
             </Tooltip>
           </Grid>
-          {(isCloseVisible || props.item.isPinned) && (
-            <Grid item>
-              <IconButton
-                size="small"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  void props.togglePin(props.item, !props.item.isPinned);
-                  return false;
-                }}
-              >
-                <PinIcon width="14" height="14" />
-              </IconButton>
-            </Grid>
-          )}
           {isCloseVisible && (
             <Grid item>
               <IconButton
@@ -147,6 +133,21 @@ export const LargeWebsite = (props: {
                 }}
               >
                 <CloseIcon width="14" height="14" />
+              </IconButton>
+            </Grid>
+          )}
+          {(isCloseVisible || props.item.isPinned) && (
+            <Grid item>
+              <IconButton
+                size="small"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  void props.togglePin(props.item, props.item.isPinned);
+                  return false;
+                }}
+              >
+                <PinIcon width="14" height="14" />
               </IconButton>
             </Grid>
           )}

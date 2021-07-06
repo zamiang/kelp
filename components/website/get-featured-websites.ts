@@ -97,7 +97,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
     'websiteId',
   );
   return concattedWebsitesAndDocuments.sort((a, b) =>
-    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
+    a.isPinned ? -1 : urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
   );
 };
 
@@ -193,6 +193,6 @@ export const getWebsitesForMeeting = async (
     'websiteId',
   );
   return concattedWebsitesAndDocuments.sort((a, b) =>
-    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
+    a.isPinned ? -1 : urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
   ) as any;
 };
