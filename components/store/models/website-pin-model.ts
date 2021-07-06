@@ -16,6 +16,10 @@ export default class WebsitePinModel {
     return result;
   }
 
+  async delete(websiteId: string) {
+    return await this.db.delete('websitePin', websiteId);
+  }
+
   async getAll() {
     const websitePins = await this.db.getAll('websitePin');
     return websitePins;

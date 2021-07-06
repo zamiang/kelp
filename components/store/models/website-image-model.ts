@@ -28,7 +28,6 @@ export default class WebsiteImageModel {
 
   async cleanupWebsiteImages(images: IWebsiteImage[]) {
     const imagesToDelete = images.filter((image) => image.date < config.startDate);
-    console.log(imagesToDelete, '<<<<<<<<<<');
     const tx = this.db.transaction('websiteImage', 'readwrite');
     const results = await Promise.allSettled(
       imagesToDelete.map((item) => this.db.delete('websiteImage', item.id)),

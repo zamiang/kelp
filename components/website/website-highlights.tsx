@@ -9,6 +9,27 @@ import { RightArrow } from './right-arrow';
 const maxResult = 6;
 const maxDisplay = maxResult * 10;
 
+const fetchData = async (
+  store: IStore,
+  currentFilter: string,
+  shouldShowAll: boolean,
+  setWebsites: (websites: IFeaturedWebsite[]) => void,
+  setExtraItemsCount: (n: number) => void,
+) => {
+  const featuredWebsites = await getFeaturedWebsites(store);
+  const filtereredWebsites = featuredWebsites.filter((item) =>
+    item && currentFilter === 'all' ? true : item.websiteId.indexOf(currentFilter) > -1,
+  );
+
+  const extraResultLength = filtereredWebsites.length - maxResult;
+  setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+  if (shouldShowAll) {
+    setWebsites(filtereredWebsites.slice(0, maxResult * 10));
+  } else {
+    setWebsites(filtereredWebsites.slice(0, maxResult));
+  }
+};
+
 export const WebsiteHighlights = (props: {
   store: IStore;
   currentFilter: string;
@@ -20,23 +41,13 @@ export const WebsiteHighlights = (props: {
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const featuredWebsites = await getFeaturedWebsites(props.store);
-      const filtereredWebsites = featuredWebsites.filter((item) =>
-        item && props.currentFilter === 'all'
-          ? true
-          : item.websiteId.indexOf(props.currentFilter) > -1,
-      );
-
-      const extraResultLength = filtereredWebsites.length - maxResult;
-      setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
-      if (shouldShowAll) {
-        setTopWebsites(filtereredWebsites.slice(0, maxResult * 10));
-      } else {
-        setTopWebsites(filtereredWebsites.slice(0, maxResult));
-      }
-    };
-    void fetchData();
+    void fetchData(
+      props.store,
+      props.currentFilter,
+      shouldShowAll,
+      setTopWebsites,
+      setExtraItemsCount,
+    );
   }, [
     props.store.lastUpdated,
     props.store.isLoading,
@@ -44,6 +55,21 @@ export const WebsiteHighlights = (props: {
     props.hideDialogUrl,
     shouldShowAll,
   ]);
+
+  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
+    if (isPinned) {
+      await props.store.websitePinStore.delete(item.websiteId);
+    } else {
+      await props.store.websitePinStore.create(item.websiteId);
+    }
+    void fetchData(
+      props.store,
+      props.currentFilter,
+      shouldShowAll,
+      setTopWebsites,
+      setExtraItemsCount,
+    );
+  };
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
@@ -58,6 +84,7 @@ export const WebsiteHighlights = (props: {
             store={props.store}
             hideItem={props.hideWebsite}
             smGridSize={4}
+            togglePin={togglePin}
           />
         ))}
       </Grid>

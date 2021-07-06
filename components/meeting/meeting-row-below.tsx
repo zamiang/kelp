@@ -9,6 +9,29 @@ import { RightArrow } from '../website/right-arrow';
 const maxResult = 3;
 const maxDisplay = maxResult * 10;
 
+const fetchData = async (
+  meeting: ISegment,
+  store: IStore,
+  currentFilter: string,
+  shouldShowAll: boolean,
+  setWebsites: (websites: IFeaturedWebsite[]) => void,
+  setExtraItemsCount: (n: number) => void,
+) => {
+  const result = await getWebsitesForMeeting(meeting, store);
+
+  const filtereredWebsites = result.filter((item) =>
+    item && currentFilter === 'all' ? true : item.websiteId.indexOf(currentFilter) > -1,
+  );
+
+  const extraResultLength = filtereredWebsites.length - maxResult;
+  setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+  if (shouldShowAll) {
+    setWebsites(filtereredWebsites.slice(0, maxResult * 10));
+  } else {
+    setWebsites(filtereredWebsites.slice(0, maxResult));
+  }
+};
+
 const MeetingRowBelow = (props: {
   meeting: ISegment;
   store: IStore;
@@ -21,24 +44,14 @@ const MeetingRowBelow = (props: {
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getWebsitesForMeeting(props.meeting, props.store);
-
-      const filtereredWebsites = result.filter((item) =>
-        item && props.currentFilter === 'all'
-          ? true
-          : item.websiteId.indexOf(props.currentFilter) > -1,
-      );
-
-      const extraResultLength = filtereredWebsites.length - maxResult;
-      setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
-      if (shouldShowAll) {
-        setWebsites(filtereredWebsites.slice(0, maxResult * 10));
-      } else {
-        setWebsites(filtereredWebsites.slice(0, maxResult));
-      }
-    };
-    void fetchData();
+    void fetchData(
+      props.meeting,
+      props.store,
+      props.currentFilter,
+      shouldShowAll,
+      setWebsites,
+      setExtraItemsCount,
+    );
   }, [
     props.store.isLoading,
     props.meeting.id,
@@ -46,6 +59,22 @@ const MeetingRowBelow = (props: {
     shouldShowAll,
     props.currentFilter,
   ]);
+
+  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
+    if (isPinned) {
+      await props.store.websitePinStore.delete(item.websiteId);
+    } else {
+      await props.store.websitePinStore.create(item.websiteId);
+    }
+    void fetchData(
+      props.meeting,
+      props.store,
+      props.currentFilter,
+      shouldShowAll,
+      setWebsites,
+      setExtraItemsCount,
+    );
+  };
 
   if (websites.length < 1) {
     return null;
@@ -62,6 +91,7 @@ const MeetingRowBelow = (props: {
               store={props.store}
               hideItem={props.hideWebsite}
               smGridSize={4}
+              togglePin={togglePin}
             />
           ))}
         </Grid>

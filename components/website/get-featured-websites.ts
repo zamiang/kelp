@@ -10,6 +10,7 @@ export interface IFeaturedWebsite {
   document?: IDocument;
   meetings: ISegment[];
   websiteDatabaseId: string | null;
+  isPinned: boolean;
   text?: string;
   date: Date;
 }
@@ -32,6 +33,11 @@ const getValueForDate = (date: Date) => {
 export const getFeaturedWebsites = async (props: IStore) => {
   const currentDate = new Date();
   const filterTime = subDays(currentDate, config.NUMBER_OF_DAYS_BACK);
+
+  // setup pin index
+  const pinIndex: { [url: string]: boolean } = {};
+  const pins = await props.websitePinStore.getAll();
+  pins.map((p) => (pinIndex[p.id] = true));
 
   // For documents edited by the current user that may not be associated with a meeting
   const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
@@ -63,6 +69,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
         text: item.title,
         date: item.time,
         websiteDatabaseId: null,
+        isPinned: pinIndex[link] ? true : false,
       } as IFeaturedWebsite;
     })
     .filter(Boolean) as IFeaturedWebsite[];
@@ -81,6 +88,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
       text: item.title,
       date: item.visitedTime,
       websiteDatabaseId: item.id,
+      isPinned: pinIndex[item.url] ? true : false,
     } as IFeaturedWebsite;
   });
 
@@ -125,6 +133,11 @@ export const getWebsitesForMeeting = async (
     ),
   );
 
+  // setup pin index
+  const pinIndex: { [url: string]: boolean } = {};
+  const pins = await store.websitePinStore.getAll();
+  pins.map((p) => (pinIndex[p.id] = true));
+
   const urlCount: { [url: string]: number } = {};
 
   const currentUserDocuments = (
@@ -148,10 +161,11 @@ export const getWebsitesForMeeting = async (
           meetings: [meeting],
           nextMeetingStartsAt: undefined,
           websiteId: link,
-          websiteDatabaseId: undefined,
+          websiteDatabaseId: undefined as any,
           text: document.name,
           date: item.date,
-        } as any;
+          isPinned: pinIndex[link] ? true : false,
+        } as IFeaturedWebsite;
       }),
     )
   ).filter(Boolean) as IFeaturedWebsite[];
@@ -170,6 +184,7 @@ export const getWebsitesForMeeting = async (
       websiteDatabaseId: item.id,
       text: item.title,
       date: item.visitedTime,
+      isPinned: pinIndex[item.url] ? true : false,
     } as IFeaturedWebsite;
   });
 
