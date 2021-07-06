@@ -70,7 +70,7 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="lg" className={classes.footer}>
-      <Grid container alignItems="center" justify="center">
+      <Grid container alignItems="center" justifyContent="center">
         <Grid item className={classes.footerItem}>
           <Link href="/about">
             <Typography variant="body2" className={classes.footerLink}>

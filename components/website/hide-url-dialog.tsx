@@ -45,11 +45,15 @@ export const HideUrlDialog = (props: {
     <Dialog
       maxWidth="md"
       open={props.hideDialogUrl ? true : false}
-      onBackdropClick={() => props.setHideDialogUrl(undefined)}
+      onClose={(_event, reason) => {
+        if (reason === 'backdropClick') {
+          props.setHideDialogUrl(undefined);
+        }
+      }}
     >
       {props.hideDialogUrl && props.hideDialogDomain && (
         <div className={classes.dialogContent}>
-          <Grid container justify="space-between">
+          <Grid container justifyContent="space-between">
             <Grid item>
               <Typography variant="h3">No longer recommend this website</Typography>
               <br />
@@ -65,7 +69,7 @@ export const HideUrlDialog = (props: {
               </IconButton>
             </Grid>
           </Grid>
-          <Grid container alignItems="center" justify="space-between">
+          <Grid container alignItems="center" justifyContent="space-between">
             <Grid item xs={12}>
               <Button
                 disableElevation={false}

@@ -29,7 +29,12 @@ const Terms = () => {
       `}</style>
       <div>
         <Header />
-        <Grid container className={clsx(classes.subpage)} alignItems="center" justify="center">
+        <Grid
+          container
+          className={clsx(classes.subpage)}
+          alignItems="center"
+          justifyContent="center"
+        >
           <Grid item sm={7}>
             <Container maxWidth="sm">
               <Typography variant="h3">Privacy Policy</Typography>

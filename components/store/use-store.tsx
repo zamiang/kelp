@@ -16,6 +16,7 @@ import TfidfDataStore from './models/tfidf-model';
 import WebsiteBlocklistStore from './models/website-blocklist-model';
 import WebsiteImageStore from './models/website-image-model';
 import WebsitesStore from './models/website-model';
+import WebsitePinStore from './models/website-pin-model';
 
 export interface IStore {
   readonly domainFilterStore: DomainFilterStore;
@@ -29,6 +30,7 @@ export interface IStore {
   readonly attendeeDataStore: AttendeeStore;
   readonly websitesStore: WebsitesStore;
   readonly websiteImageStore: WebsiteImageStore;
+  readonly websitePinStore: WebsitePinStore;
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
@@ -57,6 +59,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
   const websitesStore = new WebsitesStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
   const websiteBlocklistStore = new WebsiteBlocklistStore(db);
+  const websitePinStore = new WebsitePinStore(db);
   const domainBlocklistStore = new DomainBlocklistStore(db);
   const domainFilterStore = new DomainFilterStore(db);
 
@@ -70,6 +73,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
     personDataStore,
     documentDataStore,
     attendeeDataStore,
+    websitePinStore,
     segmentDocumentStore,
     websiteImageStore,
     tfidfStore,
@@ -104,6 +108,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
   const websiteBlocklistStore = new WebsiteBlocklistStore(db);
   const domainBlocklistStore = new DomainBlocklistStore(db);
   const domainFilterStore = new DomainFilterStore(db);
+  const websitePinStore = new WebsitePinStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -167,6 +172,13 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
         await websitesStore.addHistoryToStore(historyWebsites);
       }
 
+      // Cleanup website images
+      const currentImages = await websiteImageStore.getAll();
+      await websiteImageStore.cleanupWebsiteImages(currentImages);
+
+      // Cleanup websites
+      await websitesStore.cleanupWebsites(currentWebsites);
+
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
 
@@ -218,6 +230,7 @@ const useStoreWithFetching = (db: dbType, googleOauthToken: string, scope: strin
     websitesStore,
     websiteImageStore,
     websiteBlocklistStore,
+    websitePinStore,
     domainBlocklistStore,
     domainFilterStore,
     tfidfStore,

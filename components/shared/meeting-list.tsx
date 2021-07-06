@@ -35,7 +35,7 @@ export const Meeting = (props: {
         <Grid item zeroMinWidth xs>
           <Grid
             container
-            justify="space-between"
+            justifyContent="space-between"
             alignItems="center"
             className={rowStyles.rowTopPadding}
           >

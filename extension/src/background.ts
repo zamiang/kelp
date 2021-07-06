@@ -210,3 +210,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     return true;
   }
 });
+
+chrome.browserAction.onClicked.addListener(() => {
+  void chrome.tabs.create({ url: '/dashboard.html' });
+});

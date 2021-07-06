@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
+import PinIcon from '../../public/icons/pin.svg';
 import { IWebsiteImage } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
@@ -66,6 +67,7 @@ export const LargeWebsite = (props: {
   store: IStore;
   item: IFeaturedWebsite;
   hideItem: (item: IFeaturedWebsite) => void;
+  togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
   smGridSize?: number;
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
@@ -79,6 +81,7 @@ export const LargeWebsite = (props: {
     };
     void fetchData();
   }, []);
+  console.log(props.item, '<<<<');
   return (
     <Grid
       item
@@ -130,6 +133,21 @@ export const LargeWebsite = (props: {
                 }}
               >
                 <CloseIcon width="14" height="14" />
+              </IconButton>
+            </Grid>
+          )}
+          {(isCloseVisible || props.item.isPinned) && (
+            <Grid item>
+              <IconButton
+                size="small"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  void props.togglePin(props.item, props.item.isPinned);
+                  return false;
+                }}
+              >
+                <PinIcon width="14" height="14" />
               </IconButton>
             </Grid>
           )}
