@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
@@ -13,7 +12,6 @@ import ReactDOM from 'react-dom';
 import './popup.css';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
-import MobileDashboard from '../../components/mobile/mobile-dashboard';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
@@ -29,7 +27,6 @@ const LoadingMobileDashboardContainer = (props: {
   scope: string;
 }) => {
   const store = getStore(props.database, props.accessToken, props.scope);
-  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
 
   return (
     <div>
@@ -45,7 +42,7 @@ const LoadingMobileDashboardContainer = (props: {
       )}
       {store && (
         <Router initialEntries={['/home', '/meetings', '/settings']} initialIndex={0}>
-          {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
+          <DesktopDashboard store={store} />
         </Router>
       )}
     </div>

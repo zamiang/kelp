@@ -89,11 +89,6 @@ const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: 'center',
   },
-  hideForMobile: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
   triGroup: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),

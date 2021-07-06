@@ -6,7 +6,7 @@ import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-
 const bodyFontFamily = "'basis-grotesque', sans-serif";
 export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
-export const backgroundGradient = 'linear-gradient(248deg, #f3fff9, #fbf2dd)';
+// export const backgroundGradient = 'linear-gradient(248deg, #f3fff9, #fbf2dd)';
 // 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
 export const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
