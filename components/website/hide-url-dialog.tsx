@@ -45,7 +45,11 @@ export const HideUrlDialog = (props: {
     <Dialog
       maxWidth="md"
       open={props.hideDialogUrl ? true : false}
-      onBackdropClick={() => props.setHideDialogUrl(undefined)}
+      onClose={(_event, reason) => {
+        if (reason === 'backdropClick') {
+          props.setHideDialogUrl(undefined);
+        }
+      }}
     >
       {props.hideDialogUrl && props.hideDialogDomain && (
         <div className={classes.dialogContent}>
