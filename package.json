@@ -39,7 +39,7 @@
     "@types/express": "4.17.12",
     "@types/faker": "5.5.6",
     "@types/gapi": "0.0.39",
-    "@types/gapi.auth2": "0.0.54",
+    "@types/gapi.auth2": "0.0.55",
     "@types/gapi.client.calendar": "3.0.10",
     "@types/gapi.client.drive": "3.0.13",
     "@types/gapi.client.driveactivity": "2.0.0",
