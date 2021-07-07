@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
-import SearchIcon from '../../public/icons/search.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
+import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
   input: {
