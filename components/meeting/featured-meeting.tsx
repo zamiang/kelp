@@ -8,6 +8,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import config from '../../constants/config';
 import VideoIcon from '../../public/icons/video.svg';
+import VideoIconWhite from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -168,7 +169,13 @@ export const FeaturedMeeting = (props: {
               className={clsx(buttonClasses.button, classes.button)}
               variant="contained"
               color={isHappeningNow ? 'primary' : (config.LIGHT_BLUE as any)}
-              startIcon={<VideoIcon width="24" height="24" />}
+              startIcon={
+                isHappeningNow ? (
+                  <VideoIconWhite width="24" height="24" />
+                ) : (
+                  <VideoIcon width="24" height="24" />
+                )
+              }
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
             >
               Join

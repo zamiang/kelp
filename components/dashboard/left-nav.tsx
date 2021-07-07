@@ -8,36 +8,40 @@ import MeetingsIcon from '../../public/icons/calendar.svg';
 import HomeIconOrange from '../../public/icons/home-orange.svg';
 import HomeIcon from '../../public/icons/home.svg';
 import SearchIcon from '../../public/icons/search.svg';
+import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
+import SettingsIconOrange from '../../public/icons/settings-orange.svg';
 import SearchBar from '../nav/search-bar';
 import { SmallPersonRow } from '../person/small-person-row';
 import { IFeaturedPerson, getFeaturedPeople } from '../shared/get-featured-people';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 
-const SearchBarContainer = () => {
+const SearchBarContainer = (props: { tab: string; setTab: (t: string) => void }) => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
 
   if (isSearchInputVisible) {
     return (
-      <div style={{ height: 40 }}>
-        <SearchBar onClose={() => setSearchInputVisible(false)} />
-      </div>
+      <Grid item xs={12}>
+        <SearchBar onClose={() => setSearchInputVisible(false)} tab={props.tab} />
+      </Grid>
     );
   }
 
   return (
-    <Grid
-      container
-      alignItems="flex-start"
-      justifyContent="space-between"
-      onClick={() => setSearchInputVisible(true)}
-    >
-      <Grid item>
-        <IconButton onClick={() => setSearchInputVisible(true)}>
+    <Grid item xs={12}>
+      <IconButton
+        onClick={() => {
+          props.setTab('search');
+          setSearchInputVisible(true);
+        }}
+      >
+        {props.tab === 'search' ? (
+          <SearchIconOrange width="24" height="24" />
+        ) : (
           <SearchIcon width="24" height="24" />
-        </IconButton>
-      </Grid>
+        )}
+      </IconButton>
     </Grid>
   );
 };
@@ -87,23 +91,8 @@ export const LeftNav = (props: {
   return (
     <Grid container className={classes.container} spacing={3}>
       <Grid item xs={12}>
-        <SearchBarContainer />
-      </Grid>
-      <Grid item xs={12}>
-        <HomepageButtons
-          store={props.store}
-          toggleFilter={props.toggleFilter}
-          currentFilter={props.currentFilter}
-          hideDialogUrl={props.hideDialogUrl}
-        />
-      </Grid>
-      {featuredPeople.length > 0 && (
-        <Grid item xs={12}>
-          <FeaturedPeople featuredPeople={featuredPeople} />
-        </Grid>
-      )}
-      <Grid item xs={12}>
         <Grid container spacing={1}>
+          <SearchBarContainer tab={tab} setTab={setTab} />
           <Grid item xs={12}>
             <IconButton
               className={'ignore-react-onclickoutside'}
@@ -147,14 +136,32 @@ export const LeftNav = (props: {
               aria-haspopup="true"
               onClick={(event) => {
                 event.preventDefault();
+                setTab('settings');
                 return router.push('/settings');
               }}
             >
-              <SettingsIcon width="24" height="24" />
+              {tab === 'settings' ? (
+                <SettingsIconOrange width="24" height="24" />
+              ) : (
+                <SettingsIcon width="24" height="24" />
+              )}
             </IconButton>
           </Grid>
         </Grid>
       </Grid>
+      <Grid item xs={12}>
+        <HomepageButtons
+          store={props.store}
+          toggleFilter={props.toggleFilter}
+          currentFilter={props.currentFilter}
+          hideDialogUrl={props.hideDialogUrl}
+        />
+      </Grid>
+      {featuredPeople.length > 0 && (
+        <Grid item xs={12}>
+          <FeaturedPeople featuredPeople={featuredPeople} />
+        </Grid>
+      )}
     </Grid>
   );
 };

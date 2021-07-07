@@ -6,6 +6,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
 import SearchIcon from '../../public/icons/search.svg';
+import SearchIconOrange from '../../public/icons/search-orange.svg';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = (props: { onClose?: () => void }) => {
+const SearchBar = (props: { tab: string; onClose?: () => void }) => {
   const classes = useStyles();
   const router = useHistory();
 
@@ -31,7 +32,11 @@ const SearchBar = (props: { onClose?: () => void }) => {
     <Grid container alignItems="flex-start" justifyContent="space-between">
       <Grid item>
         <IconButton>
-          <SearchIcon width="24" height="24" />
+          {props.tab === 'search' ? (
+            <SearchIconOrange width="24" height="24" />
+          ) : (
+            <SearchIcon width="24" height="24" />
+          )}
         </IconButton>
       </Grid>
       <Grid item xs>
