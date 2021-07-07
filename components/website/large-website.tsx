@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     height: 0,
     position: 'relative',
-    marginTop: 3,
   },
   faviconContainer: {
     display: 'block',
