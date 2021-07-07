@@ -35,7 +35,7 @@
     "@rehooks/component-size": "1.0.3",
     "@types/chrome": "0.0.146",
     "@types/d3": "7.0.0",
-    "@types/express": "4.17.12",
+    "@types/express": "4.17.13",
     "@types/gapi": "0.0.39",
     "@types/gapi.auth2": "0.0.55",
     "@types/gapi.client.calendar": "3.0.10",
