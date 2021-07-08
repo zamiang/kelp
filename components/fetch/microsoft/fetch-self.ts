@@ -1,13 +1,17 @@
-import { loginRequest } from './auth-config';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { graphConfig, loginRequest } from './auth-config';
 import { callMSGraph } from './fetch-helper';
 import { getTokenPopup } from './fetch-token';
 
-export const fetchSelf = async () => {
+export const fetchSelf = async (msal: PublicClientApplication, accountId: string) => {
   const currentAcc = msal.getAccountByHomeId(accountId);
   if (currentAcc) {
-    const response = await getTokenPopup(loginRequest, currentAcc).catch((error) => {
+    const response = await getTokenPopup(loginRequest, currentAcc, msal).catch((error) => {
       console.log(error);
     });
-    return callMSGraph(graphConfig.graphMeEndpoint, response.accessToken, updateUI);
+    console.log(response, '<<<<<<<< response from fetch selt');
+    if (response) {
+      return callMSGraph(graphConfig.graphMeEndpoint, response.accessToken);
+    }
   }
 };
