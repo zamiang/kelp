@@ -14,6 +14,7 @@ export const Meeting = (props: {
   meeting: ISegment;
   personStore: PersonDataStore;
   info?: string;
+  isSmall?: boolean;
 }) => {
   const rowStyles = useRowStyles();
   const router = useHistory();
@@ -21,9 +22,9 @@ export const Meeting = (props: {
   return (
     <Button
       onClick={() => router.push(`/meetings/${props.meeting.id}`)}
-      className={clsx(rowStyles.row)}
+      className={clsx(rowStyles.row, props.isSmall && rowStyles.rowSmall)}
     >
-      <Grid container wrap="nowrap" spacing={2} alignItems="center">
+      <Grid container wrap="nowrap" alignItems="center">
         <Grid item className={rowStyles.rowLeft}>
           <CalendarIcon
             width="24"
@@ -32,7 +33,12 @@ export const Meeting = (props: {
           />
         </Grid>
         <Grid item zeroMinWidth xs>
-          <Grid container justify="space-between" alignItems="center">
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            className={rowStyles.rowTopPadding}
+          >
             <Grid item xs={12}>
               <Typography noWrap>{props.meeting.summary || '(No title)'}</Typography>
             </Grid>
@@ -74,7 +80,14 @@ const MeetingList = (props: {
     <div>
       {sortedSegments.map(
         (segment) =>
-          segment && <Meeting key={segment.id} meeting={segment} personStore={props.personStore} />,
+          segment && (
+            <Meeting
+              key={segment.id}
+              meeting={segment}
+              personStore={props.personStore}
+              isSmall={true}
+            />
+          ),
       )}
     </div>
   );

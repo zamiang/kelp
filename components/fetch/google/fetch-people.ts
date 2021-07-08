@@ -1,5 +1,4 @@
 import { chunk, flatten, uniq } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
 import { IPerson } from '../../store/data-types';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
@@ -18,28 +17,32 @@ const formatName = (personName?: string, id?: string) => {
 };
 
 export const formatPerson = (
-  person: gapi.client.people.Person,
+  person?: gapi.client.people.Person,
   requestedResourceName?: string | null,
 ): IPerson | null => {
+  if (!person || !requestedResourceName) {
+    return null;
+  }
   const emailAddresses =
     (person?.emailAddresses
       ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
-      .filter((Boolean as any) as ExcludesFalse) as string[]) || [];
+      .filter(Boolean as any as ExcludesFalse) as string[]) || [];
   const displayName = person?.names && person?.names[0]?.displayName;
-  const id = requestedResourceName!;
-  let name = displayName || emailAddresses[0] || requestedResourceName!;
+  const id = requestedResourceName;
+  let name = displayName || emailAddresses[0] || requestedResourceName;
   name = formatName(name, id);
 
   return {
     id,
     name,
-    googleId: requestedResourceName || undefined,
-    isInContacts: person && person.names ? true : false,
+    googleIds: requestedResourceName ? [requestedResourceName] : [],
+    isInContacts: person.names ? true : false,
     isCurrentUser: 0,
-    notes: person?.biographies ? getNotesForBiographies(person.biographies) : undefined,
+    notes: person.biographies ? getNotesForBiographies(person.biographies) : undefined,
     emailAddresses,
+    dateAdded: new Date(),
     etag: person.etag,
-    imageUrl: person?.photos && person.photos[0].url ? person.photos[0].url : undefined,
+    imageUrl: person.photos && person.photos[0].url ? person.photos[0].url : undefined,
   };
 };
 
@@ -54,27 +57,6 @@ export const formatGmailAddress = (email: string) => {
     return `${splitEmail[0].replaceAll('.', '')}@${splitEmail[1]}`.toLocaleLowerCase();
   }
   return email.toLocaleLowerCase();
-};
-
-export const fetchPerson = async (personId: string, authToken: string) => {
-  const params = {
-    personFields: usedPersonFields,
-  };
-
-  const personResponse = await fetch(
-    `https://people.googleapis.com/v1/${personId}?${new URLSearchParams(params).toString()}`,
-    {
-      headers: {
-        authorization: `Bearer ${authToken}`,
-      },
-    },
-  );
-  const result = await personResponse.json();
-  if (!personResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(personResponse.statusText);
-  }
-  return formatPerson(result as gapi.client.people.Person);
 };
 
 export const batchFetchPeople = async (peopleIds: string[], authToken: string, limit: any) => {

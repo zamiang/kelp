@@ -13,7 +13,6 @@ const scopes = [
   'https://www.googleapis.com/auth/drive.metadata.readonly',
   'https://www.googleapis.com/auth/drive.activity.readonly',
   'https://www.googleapis.com/auth/drive.file',
-  'https://www.googleapis.com/auth/tasks',
 ];
 
 const modifyManifest = (buffer) => {
@@ -29,6 +28,7 @@ const getConfig = () => ({
   entry: {
     popup: path.join(__dirname, 'src/popup.tsx'),
     background: path.join(__dirname, 'src/background.ts'),
+    calendar: path.join(__dirname, 'src/calendar.ts'),
   },
   output: { path: path.join(__dirname, 'dist'), filename: '[name].js' },
   module: {

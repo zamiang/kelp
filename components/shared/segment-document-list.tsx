@@ -38,7 +38,13 @@ const SegmentDocumentItem = (props: {
   }, [props.segmentDocument.personId]);
 
   if (!document) {
-    return <MissingDocumentRow segmentDocument={props.segmentDocument} isSmall={props.isSmall} />;
+    return (
+      <MissingDocumentRow
+        segmentDocument={props.segmentDocument}
+        isSmall={props.isSmall}
+        store={props.store}
+      />
+    );
   }
 
   const tooltipText = getTooltipText(props.segmentDocument, person);
@@ -48,7 +54,7 @@ const SegmentDocumentItem = (props: {
       store={props.store}
       document={document}
       selectedDocumentId={null}
-      isSmall={props.isSmall}
+      noMargins={props.isSmall}
       tooltipText={tooltipText}
     />
   );

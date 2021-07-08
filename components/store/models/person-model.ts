@@ -1,5 +1,5 @@
 import { first, uniq } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress, formatPerson } from '../../fetch/google/fetch-people';
 import { IPerson } from '../data-types';
 import { dbType } from '../db';
@@ -8,11 +8,13 @@ const createNewPersonFromEmail = (email: string): IPerson => ({
   id: email,
   name: email,
   emailAddresses: [email],
+  googleIds: [],
   isCurrentUser: 0,
   isInContacts: false,
+  dateAdded: new Date(),
 });
 
-const formatPersonForStore = (person: IPerson) => ({
+const formatPersonForStore = (person: IPerson): IPerson => ({
   ...person,
   id: person.id,
 });
@@ -24,6 +26,18 @@ export default class PersonModel {
     this.db = db;
   }
 
+  /**
+   * IMPORTANT NOTE
+   * in google, a unique individual can have
+   * - multiple email addresses
+   * - multiple person ids for each email address
+   *
+   * @param people
+   * @param currentUser
+   * @param contacts
+   * @param emailAddresses
+   * @returns
+   */
   async addPeopleToStore(
     people: IPerson[],
     currentUser?: IPerson,
@@ -82,7 +96,11 @@ export default class PersonModel {
         }
       });
       if (contact) {
+        // NOTE: this is where both are added
         peopleToAdd.push(contact);
+        if (person.id && person.id !== (contact as any).id) {
+          peopleToAdd.push(person);
+        }
       } else if (person.id) {
         peopleToAdd.push(formatPersonForStore(person));
       }
@@ -113,7 +131,7 @@ export default class PersonModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;
@@ -125,7 +143,7 @@ export default class PersonModel {
       try {
         await this.db.put('person', formattedPerson);
       } catch (e) {
-        RollbarErrorTracking.logErrorInRollbar(e);
+        ErrorTracking.logErrorInRollbar(e);
       }
     }
     return formattedPerson;
@@ -143,14 +161,36 @@ export default class PersonModel {
 
   async getById(id: string): Promise<IPerson | undefined> {
     if (id) {
-      return this.db.get('person', id);
+      const people = await this.db.getAllFromIndex('person', 'by-google-id', id);
+      return people[0];
     }
     return undefined;
   }
 
-  async getPersonIdForEmailAddress(emailAddress: string) {
-    const person = await this.db.getFromIndex('person', 'by-email', emailAddress);
-    return person?.id;
+  async getByEmail(email: string): Promise<IPerson> {
+    const people = await this.db.getAllFromIndex('person', 'by-email', email);
+    if (people.length > 1) {
+      const sortedPeople = people.sort((a, b) => {
+        const isBothInContacts = a.isInContacts && b.isInContacts;
+        const aDateAdded = a.dateAdded || new Date(new Date().setFullYear(1970));
+        const bDateAdded = b.dateAdded || new Date(new Date().setFullYear(1970));
+        if (isBothInContacts) {
+          return aDateAdded > bDateAdded ? -1 : 1;
+        } else {
+          return a.isInContacts ? -1 : 1;
+        }
+      });
+
+      await Promise.all(
+        sortedPeople.map(async (p, index) => {
+          if (index > 0) {
+            return await this.db.delete('person', p.id);
+          }
+        }),
+      );
+      return sortedPeople[0];
+    }
+    return people[0];
   }
 
   async getBulkByEmail(emails: string[]): Promise<IPerson[]> {
@@ -164,7 +204,10 @@ export default class PersonModel {
   async getBulkByPersonId(personIds: string[]): Promise<IPerson[]> {
     const uniqIds = uniq(personIds);
     const people = await Promise.all(
-      uniqIds.map((email) => this.db.getFromIndex('person', 'by-google-id', email)),
+      uniqIds.map(async (id) => {
+        const people = await this.db.getAllFromIndex('person', 'by-google-id', id);
+        return people[0];
+      }),
     );
     return people.filter(Boolean) as any;
   }

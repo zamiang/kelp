@@ -1,10 +1,11 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
 import { IFormattedAttendee, IPerson, ISegment } from '../data-types';
 import { dbType } from '../db';
+import { IStore } from '../use-store';
 
 interface IAttendee {
   readonly email?: string;
@@ -20,7 +21,6 @@ const formatAttendee = (
   id: `${segment.id}-${person.id}`,
   segmentId: segment.id,
   personId: person.id,
-  personGoogleId: person.googleId || undefined,
   responseStatus: attendee.responseStatus,
   self: attendee.self,
   emailAddress: attendee.email ? formatGmailAddress(attendee.email) : undefined,
@@ -37,7 +37,7 @@ export default class AttendeeModel {
   }
 
   // We need to make sure the current user is an attendee of all meetings
-  async addAttendeesToStore(segments: ISegment[]) {
+  async addAttendeesToStore(segments: ISegment[], personDataStore: IStore['personDataStore']) {
     const attendees = await Promise.all(
       segments.map(async (segment) => {
         const attendees = segment.attendees;
@@ -46,11 +46,13 @@ export default class AttendeeModel {
         }
         return await Promise.all(
           attendees.map(async (attendee) => {
-            const people = await this.db.getAllFromIndex('person', 'by-email', attendee.email);
-            if (people[0] && people[0].id) {
-              return formatAttendee(attendee, people[0], segment);
-            } else {
-              console.error('missing', attendee, people);
+            if (attendee.email) {
+              const person = await personDataStore.getByEmail(attendee.email);
+              if (person) {
+                return formatAttendee(attendee, person, segment);
+              } else {
+                console.error('missing', attendee);
+              }
             }
           }),
         );
@@ -66,7 +68,7 @@ export default class AttendeeModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;

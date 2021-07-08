@@ -1,3 +1,4 @@
+import { cleanupUrl } from '../../components/shared/cleanup-url';
 import db from '../../components/store/db';
 import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
@@ -5,28 +6,99 @@ import config from '../../constants/config';
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
+const timeToWaitBeforeTracking = 60 * 1000;
+const timeToWaitBeforeCapture = 8 * 1000;
+
+const storeTrackedVisit = (site: string, startAt: Date, store: IStore, title?: string) => {
+  const url = new URL(site);
+  const domain = url.host;
+  const pathname = url.pathname;
+
+  return store.websitesStore.trackVisit(
+    {
+      startAt,
+      domain,
+      pathname,
+      url: url.href,
+      title,
+    },
+    store.timeDataStore,
+  );
+};
+
+const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
+  if (tab) {
+    const currentUrl = cleanupUrl(tab.url || '');
+    const isDomainAllowed =
+      config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
+    if (currentUrl && isDomainAllowed) {
+      // remove query params and hash
+      void storeTrackedVisit(currentUrl, new Date(), store, tab.title);
+    }
+  }
+};
 
 const getOrCreateStore = async () => {
   if (store) {
     return store;
   }
   const d = await db('production');
-  store = setupStoreNoFetch(d);
-  return store;
+  if (!d) {
+    throw new Error('Unable to connect to the database');
+  }
+  const s = setupStoreNoFetch(d);
+  if (s) {
+    store = s;
+    return store;
+  }
 };
 
 const fetchDataAndCreateStore = async () => {
+  if (store) {
+    return store;
+  }
+
   const d = await db('production');
-  store = setupStore(d, 'oauth-token', 'scope');
+  if (!d) {
+    throw new Error('unable to connect');
+  }
+  const s = setupStore(d, 'oauth-token', 'scope');
+  if (s) {
+    store = s;
+    return store;
+  }
   return store;
+};
+
+const captureVisibleTab = (url: string) => {
+  chrome.tabs.captureVisibleTab(
+    null as any,
+    {
+      format: 'jpeg',
+      quality: 1,
+    },
+    (image) => {
+      const cleanedUrl = cleanupUrl(url);
+
+      if (cleanedUrl && image) {
+        const saveImage = async () => {
+          const s = await getOrCreateStore();
+          if (s) {
+            await s.websiteImageStore.saveWebsiteImage(cleanedUrl, image, new Date());
+          }
+        };
+        void saveImage();
+      }
+    },
+  );
 };
 
 const queryAndSendNotification = async () => {
   if (!localStorage.getItem(config.NOTIFICATIONS_KEY)) {
-    localStorage.setItem(config.NOTIFICATIONS_KEY, 'true');
+    localStorage.setItem(config.NOTIFICATIONS_KEY, 'enabled');
   }
 
-  const isEnabled = localStorage.getItem(config.NOTIFICATIONS_KEY) === 'true';
+  const isEnabled = localStorage.getItem(config.NOTIFICATIONS_KEY) !== 'disabled';
   if (!isEnabled) {
     return;
   }
@@ -55,7 +127,9 @@ const queryAndSendNotification = async () => {
   }
 };
 
-chrome.notifications.onClicked.addListener(() => chrome.tabs.create({ url: `/dashboard.html` }));
+chrome.notifications.onClicked.addListener(
+  () => void chrome.tabs.create({ url: `/dashboard.html` }),
+);
 
 const alarmListener = (alarm: chrome.alarms.Alarm) => void onAlarm(alarm);
 
@@ -66,21 +140,24 @@ const setupTimers = async () => {
 };
 
 const setAlarm = () => {
-  chrome.alarms.clearAll();
+  void chrome.alarms.clearAll();
   chrome.alarms.create(notificationAlarmName, { periodInMinutes: 1 });
   chrome.alarms.create(refreshAlarmName, { periodInMinutes: 60 });
 };
 
 const onAlarm = (alarm: chrome.alarms.Alarm) => {
-  if (alarm.name === notificationAlarmName) {
-    return queryAndSendNotification();
-  } else if (alarm.name === refreshAlarmName) {
-    return fetchDataAndCreateStore();
+  switch (alarm.name) {
+    case notificationAlarmName: {
+      return queryAndSendNotification();
+    }
+    case refreshAlarmName: {
+      return fetchDataAndCreateStore();
+    }
   }
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.create({ url: 'https://www.kelp.nyc/about' });
+  void chrome.tabs.create({ url: '/dashboard.html' });
   void setupTimers();
   void getOrCreateStore();
 });
@@ -90,31 +167,50 @@ chrome.runtime.onSuspendCanceled.addListener(() => {
   void getOrCreateStore();
 });
 
-/*
-const suggestResults = async (
-  text: string,
-  suggest: (items: chrome.omnibox.SuggestResult[]) => void,
-) => {
-  console.log('inputchanged', text);
+chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightInfo) => {
+  setTimeout(() => {
+    const checkTab = async () => {
+      const queryOptions = { active: true, currentWindow: true };
+      chrome.tabs.query(queryOptions, (result: chrome.tabs.Tab[]) => {
+        const tab = result[0];
+        if (tab && tab.url && tab.id == highlightInfo.tabIds[0]) {
+          try {
+            trackVisit(store, tab);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
+    };
+    void checkTab();
+  }, timeToWaitBeforeTracking);
 
-  const store = await getOrCreateStore();
-  if (store) {
-    suggest([
-      { content: ' one', description: 'the first one' },
-      { content: ' number two', description: 'the second entry' },
-    ]);
+  setTimeout(() => {
+    const checkTab = async () => {
+      const queryOptions = { active: true, currentWindow: true };
+      chrome.tabs.query(queryOptions, (result: chrome.tabs.Tab[]) => {
+        const tab = result[0];
+        if (tab && tab.url && tab.id == highlightInfo.tabIds[0]) {
+          try {
+            captureVisibleTab(tab.url);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
+    };
+    void checkTab();
+  }, timeToWaitBeforeCapture);
+});
+
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  if (request.meetingId) {
+    void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
+    sendResponse({ success: true });
+    return true;
   }
-};
-
-chrome.omnibox.setDefaultSuggestion({
-  description: 'Search for a person or document',
 });
 
-// This event is fired each time the user updates the text in the omnibox,
-// as long as the extension's keyword mode is still active.
-chrome.omnibox.onInputChanged.addListener((text, suggest) => void suggestResults(text, suggest));
-
-chrome.omnibox.onInputEntered.addListener((text) => {
-  console.log(text, '<<<<<<<<<<<<');
+chrome.browserAction.onClicked.addListener(() => {
+  void chrome.tabs.create({ url: '/dashboard.html' });
 });
-*/

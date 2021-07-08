@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { addScope } from '../fetch/google/fetch-token';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
 
 const documentCreateScope = 'https://www.googleapis.com/auth/drive.file';
 const contentType = 'text/html';
@@ -11,9 +12,9 @@ const closeDelim = `\r\n--${boundary}--`;
 
 const getCreateDocumentRequestBody = async (
   meeting: ISegment,
-  documentIds: string[],
+  websites: IFeaturedWebsite[],
   personDataStore: IStore['personDataStore'],
-  documentDataStore: IStore['documentDataStore'],
+  websiteStore: IStore['websitesStore'],
   attendeeDataStore: IStore['attendeeDataStore'],
 ) => {
   const attendees = await attendeeDataStore.getAllForSegmentId(meeting.id);
@@ -30,9 +31,11 @@ const getCreateDocumentRequestBody = async (
   );
 
   const relatedDocuments = await Promise.all(
-    documentIds.map(async (id) => {
-      const document = await documentDataStore.getById(id);
-      return `<li><a href="${document?.link}">${document?.name}</a></li>`;
+    websites.map(async (w) => {
+      const website = await websiteStore.getById(w.websiteId);
+      if (website) {
+        return `<li><a href="${website.url}">${website.title}</a></li>`;
+      }
     }),
   );
 
@@ -60,9 +63,9 @@ const getCreateDocumentRequestBody = async (
 // Based on: https://developers.google.com/drive/api/v3/integrate-open#node.js
 const createDocument = async (
   meeting: ISegment,
-  documentIds: string[],
+  websites: IFeaturedWebsite[],
   personDataStore: IStore['personDataStore'],
-  documentDataStore: IStore['documentDataStore'],
+  websitesStore: IStore['websitesStore'],
   attendeeDataStore: IStore['attendeeDataStore'],
   scope: string,
   authToken: string,
@@ -74,9 +77,9 @@ const createDocument = async (
 
   const body = await getCreateDocumentRequestBody(
     meeting,
-    documentIds,
+    websites,
     personDataStore,
-    documentDataStore,
+    websitesStore,
     attendeeDataStore,
   );
 
@@ -103,10 +106,10 @@ const createDocument = async (
 
 export const createMeetingNotes = async (
   meeting: ISegment,
-  documentIds: string[],
+  websites: IFeaturedWebsite[],
   setMeetingNotesLoading: (isLoading: boolean) => void,
   personDataStore: IStore['personDataStore'],
-  documentDataStore: IStore['documentDataStore'],
+  websitesStore: IStore['websitesStore'],
   attendeeDataStore: IStore['attendeeDataStore'],
   refetch: () => void,
   scope: string,
@@ -115,31 +118,16 @@ export const createMeetingNotes = async (
   setMeetingNotesLoading(true);
   const document = await createDocument(
     meeting,
-    documentIds,
+    websites,
     personDataStore,
-    documentDataStore,
+    websitesStore,
     attendeeDataStore,
     scope,
     authToken,
   );
 
   setMeetingNotesLoading(false);
-  const emailsToInvite = meeting.attendees
-    .map((a) => {
-      const shouldInvite = !a.self && a.responseStatus === 'accepted';
-      if (shouldInvite) {
-        return a.email;
-      }
-    })
-    .filter(Boolean);
-
-  const params = new URLSearchParams({
-    actionButton: '1',
-    userstoinvite: emailsToInvite.join(','),
-  });
-  const documentShareUrl = document
-    ? `https://docs.google.com/document/d/${document.id}?${params.toString()}`
-    : null;
+  const documentShareUrl = document ? `https://docs.google.com/document/d/${document.id}` : null;
   if (documentShareUrl) {
     window.open(documentShareUrl, '_blank');
   }

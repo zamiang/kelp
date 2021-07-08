@@ -106,11 +106,11 @@ const UiBlocks = () => {
       >
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
-            <div className={classes.dot}></div>Organization for humans
+            <div className={classes.dot}></div>Made for humans
           </Typography>
           <Typography>
-            Kelp meets you where you are. It doesn’t ask you to change how you organize your work or
-            how you collaborate.
+            Kelp meets you where you are. It doesn’t ask you to change how you organize information
+            or collaborate.
           </Typography>
         </Grid>
         <Grid
@@ -123,17 +123,17 @@ const UiBlocks = () => {
         </Grid>
       </Grid>
       <Grid container className={clsx(classes.section)} alignItems="center">
-        <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
-          <img src="images/documents.svg" style={{ maxHeight: 231, maxWidth: '100%' }} />
-        </Grid>
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Quickly prepare for meetings
           </Typography>
           <Typography>
-            Kelp scans your calendar and documents to automatically collect the documents you need.
-            It then annotates your calendar. Easy.
+            Kelp scans your calendar, browser history and documents to automatically collect get you
+            the information you need when you need it.
           </Typography>
+        </Grid>
+        <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
+          <img src="images/documents.svg" style={{ maxHeight: 231, maxWidth: '100%' }} />
         </Grid>
       </Grid>
       <Grid

@@ -1,25 +1,37 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format, formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import HelpIcon from '../../public/icons/help.svg';
-import useButtonStyles from '../shared/button-styles';
+import SearchIcon from '../../public/icons/search.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
-import { IDocument, ISegmentDocument } from '../store/data-types';
+import { IDocument, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 export const MissingDocumentRow = (props: {
   segmentDocument: ISegmentDocument;
+  store: IStore;
   isSmall?: boolean;
 }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
+  const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (props.segmentDocument.segmentId) {
+        const result = await props.store.timeDataStore.getById(props.segmentDocument.segmentId);
+        setMeeting(result);
+      }
+    };
+    void fetchData();
+  }, [props.segmentDocument.segmentId, props.store.isLoading]);
+
   return (
     <div
       className={clsx(!props.isSmall && rowStyles.row, props.isSmall && rowStyles.rowSmall)}
@@ -31,28 +43,19 @@ export const MissingDocumentRow = (props: {
         );
       }}
     >
-      <Grid container spacing={2} alignItems="center">
+      <Grid container alignItems="center">
         <Grid item className={rowStyles.rowLeft}>
-          <HelpIcon
-            height="24"
-            width="24"
-            style={{ margin: '0 auto' }}
-            className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
-          />
+          <IconButton size="small">
+            <HelpIcon
+              height="18"
+              width="18"
+              style={{ margin: '0 auto' }}
+              className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
+            />
+          </IconButton>
         </Grid>
         <Grid item xs={8}>
-          <Grid container>
-            <Grid item xs={12} zeroMinWidth>
-              <Typography noWrap>{props.segmentDocument.documentId}</Typography>
-            </Grid>
-            {!props.isSmall && (
-              <Grid item xs={12} zeroMinWidth>
-                <Typography variant="body2">
-                  {format(new Date(props.segmentDocument.date), "MMM do, yyyy 'at' hh:mm a")}
-                </Typography>
-              </Grid>
-            )}
-          </Grid>
+          <Typography noWrap>Document from {meeting ? meeting.summary : 'this meeting'}</Typography>
         </Grid>
       </Grid>
     </div>
@@ -66,8 +69,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 auto',
   },
   imageSpacing: {
-    maxHeight: 18,
-    maxWidth: 18,
+    width: 18,
     marginTop: 5,
   },
   time: {
@@ -97,13 +99,12 @@ const DocumentRow = (props: {
   document: IDocument;
   selectedDocumentId: string | null;
   store: IStore;
-  isSmall?: boolean;
   tooltipText?: string;
   text?: string;
+  noMargins?: boolean;
 }) => {
   const isSelected = props.selectedDocumentId === props.document.id;
   const router = useHistory();
-  const buttonStyles = useButtonStyles();
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -128,8 +129,8 @@ const DocumentRow = (props: {
       }}
       ref={setReferenceElement as any}
       className={clsx(
-        !props.isSmall && rowStyles.row,
-        props.isSmall && rowStyles.rowSmall,
+        rowStyles.row,
+        props.noMargins && rowStyles.rowSmall,
         isSelected && rowStyles.rowPrimaryMain,
       )}
     >
@@ -137,49 +138,29 @@ const DocumentRow = (props: {
         shouldWrap={!!props.tooltipText}
         wrapper={(children: any) => <Tooltip title={props.tooltipText!}>{children}</Tooltip>}
       >
-        <Grid container spacing={2} alignItems="center">
+        <Grid container alignItems="center">
           <Grid item className={rowStyles.rowLeft}>
-            {!props.isSmall && (
+            <IconButton size="small">
               <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
-            )}
-            {props.isSmall && (
-              <img
-                src={props.document.iconLink}
-                className={clsx(classes.image, classes.imageSpacing)}
-              />
-            )}
+            </IconButton>
           </Grid>
           <Grid item zeroMinWidth xs>
-            <Grid container>
-              <Grid item xs={12} zeroMinWidth>
-                <Typography noWrap>{props.document.name}</Typography>
-              </Grid>
-              {!props.isSmall && (
-                <Grid item xs={12} zeroMinWidth>
-                  <Typography variant="body2" noWrap>
-                    {props.text
-                      ? props.text
-                      : `Last updated ${formatDistanceToNow(
-                          new Date(props.document.updatedAt!),
-                        )} ago`}
-                  </Typography>
-                </Grid>
-              )}
-            </Grid>
+            <Typography noWrap className={rowStyles.rowTopPadding}>
+              {props.document.name}
+            </Typography>
           </Grid>
-          {!props.isSmall && isDetailsVisible && (
-            <Grid item style={{ marginLeft: 'auto' }}>
-              <Button
-                className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
-                variant="outlined"
+          {isDetailsVisible && (
+            <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
+              <IconButton
+                size="small"
                 onClick={(event) => {
                   event.stopPropagation();
                   void router.push(`/documents/${props.document.id}`);
                   return false;
                 }}
               >
-                Details
-              </Button>
+                <SearchIcon width="24" height="24" />
+              </IconButton>
             </Grid>
           )}
         </Grid>

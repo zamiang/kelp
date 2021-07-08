@@ -1,7 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { mediumFontFamily } from '../../constants/theme';
+import { lightGreyColor, mediumFontFamily } from '../../constants/theme';
 
 const useStyles = makeStyles((theme) => ({
+  '@keyframes fadeInAnimation': {
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 1,
+    },
+  },
   border: {
     borderRadius: 4,
     background: theme.palette.secondary.main,
@@ -40,25 +48,32 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.info.main,
     },
   },
+  rightIcon: {
+    float: 'right',
+    marginTop: -theme.spacing(1),
+    marginRight: -theme.spacing(1),
+  },
   row: {
     background: 'transparent',
     transition: 'background 0.3s, opacity 0.3s',
     cursor: 'pointer',
     textAlign: 'left',
-    opacity: 1,
-    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     width: '100%',
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    '&:last-child': {
-      borderBottom: `1px solid transparent`,
-    },
+    animation: '$fadeInAnimation ease 0.4s',
+    animationIterationCount: 1,
+    animationFillMode: 'forwards',
     '&:hover': {
-      backgroundColor: 'rgba(0,0,0,0.04)',
+      backgroundColor: lightGreyColor,
     },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
-      borderColor: theme.palette.primary.main,
     },
+  },
+  rowTopPadding: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
   rowNoHover: {
     background: 'transparent',
@@ -78,21 +93,13 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(3),
   },
   rowSmall: {
-    width: '100%',
-    background: 'transparent',
-    transition: 'background 0.3s, opacity 0.3s',
-    cursor: 'pointer',
-    textAlign: 'left',
+    padding: 0,
   },
   rowHighlight: {
-    background: theme.palette.secondary.light,
-    marginTop: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(3),
-    borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(1),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    marginBottom: theme.spacing(2),
   },
   rowHighlightPadding: {
     paddingLeft: theme.spacing(2),
@@ -100,10 +107,15 @@ const useStyles = makeStyles((theme) => ({
   },
   rowDefault: {},
   rowText: {
-    paddingLeft: theme.spacing(2),
     color: '#9D9D99',
     fontWeight: 500,
     fontFamily: mediumFontFamily,
+  },
+  rowHeading: {
+    color: '#9D9D99',
+    fontWeight: 500,
+    fontFamily: mediumFontFamily,
+    marginLeft: theme.spacing(2),
   },
   rowHint: {
     color: theme.palette.text.hint,
@@ -119,11 +131,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rowLeft: {
-    width: 48,
     textAlign: 'center',
+    marginRight: theme.spacing(2),
   },
   rowPrimaryMain: {
-    background: 'rgba(0,0,0,0.04)',
+    background: lightGreyColor,
     '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: theme.palette.secondary.light,
       background: theme.palette.secondary.light,

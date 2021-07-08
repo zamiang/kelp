@@ -1,6 +1,6 @@
 import { flatten, uniq } from 'lodash';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IFormattedDriveActivity } from '../../store/data-types';
 
 const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
@@ -12,7 +12,7 @@ const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
     return {
       title: target.driveItem.title,
       link: target.driveItem.name
-        ? `https://docs.google.com/document/d/${target.driveItem.name.replace('items/', '')}`
+        ? `https://docs.google.com/document/d/${target.driveItem.name.replace('items/', '')}/edit`
         : null,
     };
   } else if (target.fileComment) {
@@ -21,7 +21,7 @@ const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
       title: parent && parent.title,
       link:
         parent && parent.name
-          ? `https://docs.google.com/document/d/${parent.name.replace('items/', '')}`
+          ? `https://docs.google.com/document/d/${parent.name.replace('items/', '')}/edit`
           : null,
     };
   } else {
@@ -63,8 +63,8 @@ const fetchDriveActivityForDocument = async (
   }
 
   if (!activityResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(activityResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(activityResponse.statusText);
   }
 
   const response: {
@@ -73,7 +73,7 @@ const fetchDriveActivityForDocument = async (
   const activity =
     response && response.activities
       ? response.activities.filter(
-          (activity) => activity.actors && activity.actors[0] && activity.actors[0].user,
+          (activity) => activity?.actors && activity.actors[0] && activity.actors[0].user,
         )
       : [];
 
@@ -100,7 +100,7 @@ const fetchDriveActivityForDocument = async (
         link: targetInfo && targetInfo.link,
       } as IFormattedDriveActivity;
     })
-    .filter((Boolean as any) as ExcludesFalse);
+    .filter(Boolean as any as ExcludesFalse);
 
   // these are returned as 'people ids'
   const peopleIds = formattedDriveActivity

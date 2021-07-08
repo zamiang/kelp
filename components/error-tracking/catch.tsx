@@ -1,5 +1,5 @@
 import React from 'react';
-import RollbarErrorTracking from './rollbar';
+import ErrorTracking from './error-tracking';
 
 export default function Catch(component: any, errorHandler?: any) {
   return class extends React.Component {
@@ -20,8 +20,8 @@ export default function Catch(component: any, errorHandler?: any) {
 
     componentDidCatch(error: any, info: any) {
       if (errorHandler) {
-        RollbarErrorTracking.logErrorInfo(info);
-        RollbarErrorTracking.logErrorInRollbar(error);
+        ErrorTracking.logErrorInfo(info);
+        ErrorTracking.logErrorInRollbar(error);
         errorHandler(error, info);
       }
     }

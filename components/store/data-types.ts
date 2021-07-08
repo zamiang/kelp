@@ -1,5 +1,3 @@
-export type TaskList = gapi.client.tasks.TaskList;
-
 type DocumentType =
   | 'UNKNOWN'
   | 'application/vnd.google-apps.presentation'
@@ -22,7 +20,6 @@ export interface IDocument {
 export interface IFormattedAttendee {
   readonly id: string;
   readonly personId?: string;
-  readonly personGoogleId?: string;
   readonly emailAddress?: string;
   readonly responseStatus?: string;
   readonly self?: boolean;
@@ -48,10 +45,11 @@ export interface IPerson {
   readonly emailAddresses: string[];
   readonly imageUrl?: string;
   readonly notes?: string;
-  readonly googleId?: string;
+  readonly googleIds: string[];
   readonly isCurrentUser: number; // needs to be a number to be a valid index
   readonly isInContacts: boolean;
   readonly etag?: string;
+  readonly dateAdded: Date;
 }
 
 /**
@@ -119,57 +117,44 @@ export interface ISegmentDocument {
   readonly personId: string;
   readonly day: number;
   readonly week: number;
+  readonly category: 'self' | 'attendee' | 'non-attendee' | 'meeting-description';
 }
 
-export interface ITaskDocument {
-  readonly id: string;
-  readonly driveActivityId?: string;
-  readonly documentId?: string;
-  readonly taskId: string;
-  readonly taskTitle?: string;
-  readonly date: Date;
-  readonly reason: string;
-  readonly segmentId?: string;
-  readonly day: number;
-  readonly week: number;
-}
-
-export type ITask = {
+export interface IWebsite {
   readonly id: string;
   readonly title: string;
-  readonly listId: string;
-  readonly listTitle?: string;
-  readonly completedAt?: Date;
-  readonly updatedAt: Date;
-  readonly hidden?: boolean;
-  readonly deleted?: boolean;
-  readonly status?: 'needsAction' | 'completed';
-  /**
-   * Due date of the task (as a RFC 3339 timestamp). Optional. The due date only records date information; the time portion of the timestamp is discarded when setting the due date. It
-   * isn't possible to read or write the time that a task is due via the API.
-   */
-  readonly due?: Date;
-  /** Collection of links. This collection is read-only. */
-  readonly links?: Array<{
-    /** The description. In HTML speak: Everything between <a> and </a>. */
-    readonly description?: string;
-    /** The URL. */
-    readonly link?: string;
-    /** Type of the link, e.g. "email". */
-    readonly type?: string;
-  }>;
-  /** Notes describing the task. Optional. */
-  readonly notes?: string;
-  /**
-   * Parent task identifier. This field is omitted if it is a top-level task. This field is read-only. Use the "move" method to move the task under a different parent or to the top level.
-   */
-  readonly parent?: string;
-  /**
-   * String indicating the position of the task among its sibling tasks under the same parent task or at the top level. If this string is greater than another task's corresponding
-   * position string according to lexicographical ordering, the task is positioned after the other task under the same parent task (or at the top level). This field is read-only. Use the
-   * "move" method to move the task to another position.
-   */
-  readonly position?: string;
-  /** URL pointing to this task. Used to retrieve, update, or delete this task. */
-  readonly selfLink?: string;
-};
+  readonly url: string;
+  readonly domain: string;
+  readonly documentId?: string;
+  readonly meetingId?: string;
+  readonly meetingName?: string;
+  readonly visitedTime: Date;
+  readonly isHidden: boolean;
+}
+
+export interface IWebsiteImage {
+  readonly id: string;
+  readonly image: string;
+  readonly date: Date;
+}
+
+export interface IWebsiteBlocklist {
+  readonly id: string;
+  readonly createdAt: Date;
+}
+
+export interface IDomainBlocklist {
+  readonly id: string;
+  readonly createdAt: Date;
+}
+
+export interface IDomainFilter {
+  readonly id: string;
+  readonly createdAt: Date;
+  readonly order: number;
+}
+
+export interface IWebsitePin {
+  readonly id: string;
+  readonly createdAt: Date;
+}

@@ -31,6 +31,7 @@ module.exports = {
     'react',
     'security',
     'react-hooks',
+    'material-ui',
   ],
   rules: {
     'import/no-unresolved': [2, { ignore: ['gapi'] }],

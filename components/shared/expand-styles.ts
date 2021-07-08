@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   headingContainer: {
     marginBottom: theme.spacing(3),
+    textAlign: 'center',
   },
   relativeContainer: {
     position: 'relative',
@@ -87,11 +88,6 @@ const useStyles = makeStyles((theme) => ({
   },
   center: {
     textAlign: 'center',
-  },
-  hideForMobile: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
   triGroup: {
     paddingLeft: theme.spacing(4),

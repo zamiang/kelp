@@ -1,15 +1,18 @@
 import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
+import CloseIcon from '../../public/icons/close.svg';
 import panelStyles from '../shared/panel-styles';
-import LogoutButton from '../user-profile/logout-button';
+import { IDomainBlocklist, IWebsiteBlocklist } from '../store/data-types';
+import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -22,32 +25,74 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
   },
   maxWidth: {
-    maxWidth: 500,
     padding: theme.spacing(2),
+  },
+  grid: {
+    maxWidth: theme.breakpoints.width('sm'),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    minHeight: 70,
+    paddingTop: 9,
+    '&:last-child': {
+      borderBottom: '0px solid',
+    },
   },
 }));
 
-const Settings = () => {
+const Settings = (props: { store: IStore }) => {
   const classes = panelStyles();
   const formClasses = useStyles();
-  const [isNotificationsDisabled, setNotificationsDisabled] = useState<boolean>(
-    localStorage.getItem(config.NOTIFICATIONS_KEY) === 'false' ? false : true,
+  const [domainBlocklists, setDomainBlocklist] = useState<IDomainBlocklist[]>([]);
+  const [websiteBlocklist, setWebsiteBlocklist] = useState<IWebsiteBlocklist[]>([]);
+
+  const [isNotificationsEnabled, setNotificationsEnabled] = useState<boolean>(
+    localStorage.getItem(config.NOTIFICATIONS_KEY) !== 'disabled' ? true : false,
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
 
+  useEffect(() => {
+    const fetch = async () => {
+      const domainBlocklistArray = await props.store.domainBlocklistStore.getAll();
+      const websiteBlocklistArray = await props.store.websiteBlocklistStore.getAll();
+      setDomainBlocklist(domainBlocklistArray);
+      setWebsiteBlocklist(websiteBlocklistArray);
+    };
+    void fetch();
+  }, []);
+
   const toggleChecked = (enabled: boolean) => {
     if (enabled) {
-      setNotificationsDisabled(true);
-      localStorage.setItem(config.NOTIFICATIONS_KEY, 'true');
+      setNotificationsEnabled(true);
+      localStorage.setItem(config.NOTIFICATIONS_KEY, 'enabled');
     } else {
-      setNotificationsDisabled(false);
-      localStorage.setItem(config.NOTIFICATIONS_KEY, 'false');
+      setNotificationsEnabled(false);
+      localStorage.setItem(config.NOTIFICATIONS_KEY, 'disabled');
     }
     if ('Notification' in window) {
       return Notification.requestPermission();
     } else {
       alert('Notifications are not supported on this device');
     }
+  };
+
+  const shouldShowEmptyDomainBlocklist = domainBlocklists.length < 1;
+  const shouldShowEmptyWebsiteBlocklist = websiteBlocklist.length < 1;
+
+  const removeDomain = (domain: string) => {
+    const fetch = async () => {
+      await props.store.domainBlocklistStore.removeDomain(domain);
+      const domainBlocklistArray = await props.store.domainBlocklistStore.getAll();
+      setDomainBlocklist(domainBlocklistArray);
+    };
+    void fetch();
+  };
+
+  const removeWebsite = (domain: string) => {
+    const fetch = async () => {
+      await props.store.websiteBlocklistStore.removeWebsite(domain);
+      const websiteBlocklistArray = await props.store.websiteBlocklistStore.getAll();
+      setWebsiteBlocklist(websiteBlocklistArray);
+    };
+    void fetch();
   };
 
   return (
@@ -68,8 +113,8 @@ const Settings = () => {
               control={
                 <Switch
                   color="primary"
-                  checked={!isNotificationsDisabled}
-                  onChange={() => toggleChecked(!isNotificationsDisabled)}
+                  checked={isNotificationsEnabled}
+                  onChange={() => toggleChecked(!isNotificationsEnabled)}
                 />
               }
               label="Meeting prep notifications"
@@ -82,9 +127,58 @@ const Settings = () => {
       </div>
       <Divider />
       <div className={classes.section}>
-        <FormControl className={clsx(formClasses.margin, formClasses.textField)}>
-          <LogoutButton />
-        </FormControl>
+        <div className={formClasses.textField}>
+          <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
+            Hidden websites
+          </Typography>
+          {shouldShowEmptyWebsiteBlocklist && <Typography variant="h6">None</Typography>}
+          {websiteBlocklist.map((item) => (
+            <Grid
+              key={item.id}
+              container
+              alignItems="center"
+              justifyContent="space-between"
+              className={formClasses.grid}
+              spacing={2}
+            >
+              <Grid item xs={10}>
+                <Typography noWrap>{item.id}</Typography>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={() => removeWebsite(item.id)}>
+                  <CloseIcon width="24" height="24" />
+                </IconButton>
+              </Grid>
+            </Grid>
+          ))}
+        </div>
+      </div>
+      <div className={classes.section}>
+        <div className={formClasses.textField}>
+          <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
+            Hidden domains (all urls under these domains are hidden)
+          </Typography>
+          {shouldShowEmptyDomainBlocklist && <Typography variant="h6">None</Typography>}
+          {domainBlocklists.map((item) => (
+            <Grid
+              key={item.id}
+              container
+              alignItems="center"
+              justifyContent="space-between"
+              className={formClasses.grid}
+              spacing={2}
+            >
+              <Grid item xs={10}>
+                <Typography noWrap>{item.id}</Typography>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={() => removeDomain(item.id)}>
+                  <CloseIcon width="24" height="24" />
+                </IconButton>
+              </Grid>
+            </Grid>
+          ))}
+        </div>
       </div>
     </div>
   );

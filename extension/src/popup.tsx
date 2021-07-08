@@ -1,9 +1,9 @@
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
@@ -11,14 +11,12 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './popup.css';
 import { MemoryRouter as Router } from 'react-router-dom';
-import MobileDashboard from '../../components/mobile/dashboard';
+import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import Loading from '../../components/shared/loading';
-import { ScrollToTop } from '../../components/shared/scroll-to-top';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
-import { DesktopDashboard } from '../../pages/dashboard';
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
@@ -29,14 +27,24 @@ const LoadingMobileDashboardContainer = (props: {
   scope: string;
 }) => {
   const store = getStore(props.database, props.accessToken, props.scope);
-  const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
 
   return (
     <div>
-      <Router initialEntries={['/meetings', '/settings']} initialIndex={0}>
-        <ScrollToTop />
-        {isMobile ? <MobileDashboard store={store} /> : <DesktopDashboard store={store} />}
-      </Router>
+      {!store && (
+        <Alert severity="error">
+          <AlertTitle>Authentication Error</AlertTitle>
+          <Typography style={{ width: 315 }}>
+            Unable to connect to the database. Please restart your browser This is an issue I do not
+            fully understand where the database does not accept connections. If you are familar with
+            connection issues with indexdb, please email brennan@kelp.nyc.
+          </Typography>
+        </Alert>
+      )}
+      {store && (
+        <Router initialEntries={['/home', '/meetings', '/settings']} initialIndex={0}>
+          <DesktopDashboard store={store} />
+        </Router>
+      )}
     </div>
   );
 };
@@ -50,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const [token, setToken] = useState<string | null>(null);
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
+  const [hasDatabaseError, setHasDatabaseError] = useState<boolean>(false);
   const [database, setDatabase] = useState<any>(undefined);
   const classes = useStyles();
 
@@ -70,48 +79,67 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setDatabase(await db('production'));
+      const result = await db('production');
+      if (result) {
+        setDatabase(result);
+      } else {
+        setHasDatabaseError(true);
+      }
     };
     void fetchData();
   }, []);
-  const shouldShowLoading = !hasAuthError && (!token || !database);
+  const shouldShowLoading = !hasAuthError && !hasDatabaseError && (!token || !database);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      {hasDatabaseError && (
+        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+          <Alert severity="error">
+            <AlertTitle>Please restart your browser</AlertTitle>
+            <Typography>
+              Unable to connect to the database. This is an issue I do not fully understand where
+              the database does not accept connections. If you are familar with connection issues
+              with indexdb, please email brennan@kelp.nyc.
+            </Typography>
+          </Alert>
+        </Container>
+      )}
       {hasAuthError && (
-        <Alert severity="error">
-          <AlertTitle>Authentication Error</AlertTitle>
-          <Typography style={{ width: 315 }}>
-            It looks like your organization has the{' '}
-            <Link href="https://landing.google.com/advancedprotection/">
-              Google Advanced Protection Program
-            </Link>{' '}
-            enabled.
-            <br />
-            <br />
-            Ask your IT administrator to whitelist
-            <br />
-            <br />
-            <Button
-              variant="outlined"
-              onClick={(event) => {
-                event.stopPropagation();
-                void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);
-                return false;
-              }}
-            >
-              <Typography noWrap variant="caption">
-                {GOOGLE_CLIENT_ID}
-              </Typography>
-            </Button>
-            <br />
-            <Typography variant="caption">Click to copy to your clipboard</Typography>
-            <br />
-            <br />
-            Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-            questions.
-          </Typography>
-        </Alert>
+        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+          <Alert severity="error">
+            <AlertTitle>Authentication Error</AlertTitle>
+            <Typography>
+              It looks like your organization has the{' '}
+              <Link href="https://landing.google.com/advancedprotection/">
+                Google Advanced Protection Program
+              </Link>{' '}
+              enabled.
+              <br />
+              <br />
+              Ask your IT administrator to whitelist
+              <br />
+              <br />
+              <Button
+                variant="outlined"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);
+                  return false;
+                }}
+              >
+                <Typography noWrap variant="caption">
+                  {GOOGLE_CLIENT_ID}
+                </Typography>
+              </Button>
+              <br />
+              <Typography variant="caption">Click to copy to your clipboard</Typography>
+              <br />
+              <br />
+              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
+              questions.
+            </Typography>
+          </Alert>
+        </Container>
       )}
       {shouldShowLoading && (
         <div className={classes.header}>

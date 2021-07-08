@@ -1,15 +1,16 @@
 import { getDayOfYear } from 'date-fns';
-import { flatten, orderBy } from 'lodash';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import { flatten, orderBy, uniqBy } from 'lodash';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
 import { IFormattedDriveActivity, ISegment, ISegmentDocument } from '../data-types';
 import { dbType } from '../db';
 import AttendeeModel from './attendee-model';
 import DriveActivityModel from './drive-activity-model';
+import PersonModel from './person-model';
 import SegmentModel from './segment-model';
 
-const formatSegmentTitle = (text?: string) =>
+export const formatSegmentTitle = (text?: string) =>
   text
     ? text.replace(removePunctuationRegex, '').split(' ').join('').toLocaleLowerCase()
     : undefined;
@@ -18,16 +19,18 @@ const formatSegmentDocument = (
   driveActivity: IFormattedDriveActivity,
   segment?: ISegment,
   isPersonAttendee?: boolean,
+  isPersonCurrentUser?: boolean,
 ): ISegmentDocument => ({
   id: driveActivity.id,
   driveActivityId: driveActivity.id,
   documentId: driveActivity.documentId!,
   segmentId: segment?.id,
   segmentTitle: formatSegmentTitle(segment?.summary),
+  category: isPersonCurrentUser ? 'self' : isPersonAttendee ? 'attendee' : 'non-attendee',
+  isPersonAttendee,
   date: driveActivity.time,
   reason: driveActivity.action,
   personId: driveActivity.actorPersonId!,
-  isPersonAttendee,
   day: getDayOfYear(driveActivity.time),
   week: getWeek(driveActivity.time),
 });
@@ -42,6 +45,7 @@ const formatSegmentDocumentFromDescription = (
   segmentId: segment.id,
   segmentTitle: formatSegmentTitle(segment.summary),
   date: segment.start,
+  category: 'meeting-description',
   reason: 'Listed in meeting description',
   personId,
   isPersonAttendee: true,
@@ -60,6 +64,7 @@ export default class SegmentDocumentModel {
     driveActivityStore: DriveActivityModel,
     timeStore: SegmentModel,
     attendeeStore: AttendeeModel,
+    personStore: PersonModel,
   ) {
     const driveActivity = await driveActivityStore.getAll();
     const segments = await timeStore.getAll();
@@ -68,24 +73,30 @@ export default class SegmentDocumentModel {
     const driveActivityToAdd = await Promise.all(
       driveActivity.map(async (driveActivityItem) => {
         let isActorAttendee = false;
+        let isActorCurrentUser = false;
         const segment = segments.find(
           (s) => s.start < driveActivityItem.time && s.end > driveActivityItem.time,
         );
         if (segment) {
           const summary = segment.summary?.toLocaleLowerCase();
-          if (summary?.includes('ooo') || summary?.includes('out of office')) {
-            // do nothing
-          } else {
+          if (!summary?.includes('ooo') && !summary?.includes('out of office')) {
             const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-            isActorAttendee = !!attendees.find(
-              (a) => a.personGoogleId === driveActivityItem.actorPersonId,
+            const people = await personStore.getBulkByEmail(
+              attendees.map((a) => a.emailAddress).filter(Boolean) as string[],
             );
+            isActorAttendee = !!people.find(
+              (a) =>
+                driveActivityItem.actorPersonId &&
+                a.googleIds.includes(driveActivityItem.actorPersonId),
+            );
+            isActorCurrentUser = !!attendees.find((a) => a.self);
           }
         }
         const formattedDocument = formatSegmentDocument(
           driveActivityItem,
           segment,
           isActorAttendee,
+          isActorCurrentUser,
         );
         return formattedDocument;
       }),
@@ -116,7 +127,7 @@ export default class SegmentDocumentModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;
@@ -132,21 +143,24 @@ export default class SegmentDocumentModel {
     return orderBy(activity, 'date', 'desc');
   }
 
-  async getAllForSegmentId(segmentId: string) {
-    const activity = await this.db.getAllFromIndex('segmentDocument', 'by-segment-id', segmentId);
-    return orderBy(activity, 'date', 'desc');
-  }
+  // Transitioned to using this method to get both by id and title together
+  async getAllForSegment(segment: ISegment) {
+    const activityBySegmentId = await this.db.getAllFromIndex(
+      'segmentDocument',
+      'by-segment-id',
+      segment.id,
+    );
 
-  async getAllForMeetingName(title: string) {
-    const formattedTitle = formatSegmentTitle(title);
+    const formattedTitle = formatSegmentTitle(segment.summary);
+    let activityByTitle = [] as ISegmentDocument[];
     if (formattedTitle) {
-      const activity = await this.db.getAllFromIndex(
+      activityByTitle = await this.db.getAllFromIndex(
         'segmentDocument',
         'by-segment-title',
         formattedTitle,
       );
-      return orderBy(activity, 'date', 'desc');
     }
+    return orderBy(uniqBy(activityBySegmentId.concat(activityByTitle), 'id'), 'date', 'desc');
   }
 
   async getAllForDocumentId(documentId: string) {

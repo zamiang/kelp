@@ -1,4 +1,4 @@
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IPerson } from '../../store/data-types';
 import { formatPerson, usedPersonFields } from './fetch-people';
 
@@ -13,6 +13,7 @@ const fetchContacts = async (authToken: string) => {
     personFields: usedPersonFields,
     resourceName: 'people/me',
     sortOrder: 'LAST_MODIFIED_DESCENDING',
+    pageSize: '300',
   };
   // Ref: gapi.client.people.people.connections.list();
   const peopleResponse = await fetch(
@@ -27,8 +28,8 @@ const fetchContacts = async (authToken: string) => {
   );
   const peopleBody = await peopleResponse.json();
   if (!peopleResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(peopleResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(peopleResponse.statusText);
   }
 
   const results = peopleBody?.connections?.map((person: gapi.client.people.Person) =>

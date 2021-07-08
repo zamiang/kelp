@@ -1,23 +1,26 @@
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
-import panelStyles from '../../components/shared/panel-styles';
 import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
-import { IDocument, IPerson, ISegment } from '../store/data-types';
+import { IDocument, IPerson, ISegment, IWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
+import { WebsiteRow } from '../website/website-row';
 
 const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
   const meetings: ISearchItem[] = [];
   const documents: ISearchItem[] = [];
+  const websites: ISearchItem[] = [];
   searchResults.forEach((searchResult) => {
     const result = searchResult.item;
-    if (searchResult.score! > 0.7) {
+    if (!searchResult.score || searchResult.score > 0.7) {
       return;
     }
     switch (result.type) {
@@ -27,17 +30,38 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
         return people.push(result);
       case 'segment':
         return meetings.push(result);
+      case 'website':
+        return websites.push(result);
     }
   });
   return {
     people,
     meetings,
     documents,
+    websites,
   };
 };
 
+const useStyles = makeStyles((theme) => ({
+  panel: {
+    marginTop: theme.spacing(3),
+  },
+  boxStyle: {
+    background: '#fff',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  heading: {
+    marginLeft: 0,
+    color: '#000',
+  },
+  lineCalendarContainer: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 const Search = (props: { store: IStore }) => {
-  const classes = panelStyles();
+  const classes = useStyles();
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
 
@@ -64,53 +88,79 @@ const Search = (props: { store: IStore }) => {
     .replace('?query=', '')
     .toLowerCase()
     .replace(uncommonPunctuation, ' ');
+
   const results = searchQuery ? fuse.search(searchQuery) : [];
   const filteredResults = filterSearchResults(results);
   return (
-    <div className={classes.panel}>
-      {filteredResults.documents.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={classes.headingPadding} variant="body2">
-            Documents
-          </Typography>
-          {filteredResults.documents.map((result) => (
-            <DocumentRow
-              selectedDocumentId={null}
-              key={result.item.id}
-              document={result.item as IDocument}
-              store={props.store}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.people.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={classes.headingPadding} variant="body2">
-            People
-          </Typography>
-          {filteredResults.people.map((result) => (
-            <PersonRow
-              selectedPersonId={null}
-              key={result.item.id}
-              person={result.item as IPerson}
-            />
-          ))}
-        </div>
-      )}
-      {filteredResults.meetings.length > 0 && (
-        <div className={classes.section}>
-          <Typography className={classes.headingPadding} variant="body2">
-            Meetings
-          </Typography>
-          {filteredResults.meetings.map((result) => (
-            <Meeting
-              key={result.item.id}
-              meeting={result.item as ISegment}
-              personStore={props.store['personDataStore']}
-            />
-          ))}
-        </div>
-      )}
+    <div>
+      <div className={classes.panel}>
+        {filteredResults.documents.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              Documents
+            </Typography>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
+              {filteredResults.documents.map((result: any) => (
+                <DocumentRow
+                  selectedDocumentId={null}
+                  key={result.item.id}
+                  document={result.item as IDocument}
+                  store={props.store}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+        {filteredResults.websites.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              Websites
+            </Typography>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
+              {filteredResults.websites.map((result: any) => (
+                <WebsiteRow
+                  store={props.store}
+                  key={result.item.id}
+                  website={result.item as IWebsite}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+        {filteredResults.people.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              People
+            </Typography>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
+              {filteredResults.people.map((result: any) => (
+                <PersonRow
+                  selectedPersonId={null}
+                  key={result.item.id}
+                  person={result.item as IPerson}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+        {filteredResults.meetings.length > 0 && (
+          <div className={classes.panel}>
+            <Typography className={classes.heading} variant="h6">
+              Meetings
+            </Typography>
+            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
+              {filteredResults.meetings.map((result: any) => (
+                <Meeting
+                  key={result.item.id}
+                  meeting={result.item as ISegment}
+                  personStore={props.store['personDataStore']}
+                  isSmall={false}
+                />
+              ))}
+            </Box>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

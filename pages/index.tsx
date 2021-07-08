@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import MuiLink from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -12,7 +11,6 @@ import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
 import Footer from '../components/homepage/footer';
-import Header from '../components/homepage/header';
 import UiBlocks from '../components/homepage/ui-blocks';
 import { italicFontFamily } from '../constants/theme';
 
@@ -31,19 +29,44 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: theme.palette.secondary.light,
   },
-  heading: {
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 32,
-    },
-  },
   footerContainer: {
     marginTop: theme.spacing(6),
     marginBottom: theme.spacing(10),
     textAlign: 'center',
   },
-  subheading: {
-    marginTop: 48,
+  logoImage: {
+    height: 120,
+    opacity: 1,
+    cursor: 'pointer',
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      opacity: 0.5,
+    },
+    [theme.breakpoints.down('md')]: {
+      height: 70,
+    },
+  },
+  logo: {
+    cursor: 'pointer',
+    fontSize: 42,
+    margin: 0,
+    marginTop: theme.spacing(4),
+    color: theme.palette.text.primary,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 42,
+    },
+  },
+  heading: {
     fontSize: 32,
+    marginTop: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 32,
+    },
+  },
+  subheading: {
+    marginTop: 32,
+    fontSize: 24,
+    marginBottom: theme.spacing(3),
     [theme.breakpoints.down('sm')]: {
       fontSize: 16,
       marginTop: theme.spacing(4),
@@ -57,7 +80,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   hero: {
     marginTop: theme.spacing(15),
-    marginBottom: theme.spacing(12),
+    marginBottom: theme.spacing(6),
     width: '100%',
     textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
@@ -109,11 +132,13 @@ export const useStyles = makeStyles((theme) => ({
   meetingContainer: {
     width: '100%',
     textAlign: 'center',
-    borderRadius: 300,
-    marginTop: theme.spacing(4),
+    borderRadius: 30,
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: '#47B7B8',
+    maxHeight: 700,
+    overflow: 'hidden',
+    marginBottom: theme.spacing(4),
     [theme.breakpoints.down('sm')]: {
       borderRadius: 25,
       marginTop: theme.spacing(2),
@@ -122,11 +147,10 @@ export const useStyles = makeStyles((theme) => ({
   },
   meetingImage: {
     display: 'block',
-    paddingTop: 56,
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     margin: '0px auto',
-    maxWidth: 680,
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       display: 'none',
@@ -186,14 +210,14 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 // <meta name="slack-app-id" content="A01E5A9263B" />
-const description = 'Kelp automatically find the documents you need for your next meeting.';
+const description = 'A newtab page that gets you what you need when you need it.';
 
 const App = () => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
       <Head>
-        <title>Kelp - Your information filtration system</title>
+        <title>Kelp - A newtab page that gets you what you need when you need it</title>
         <meta name="description" content={description} />
         {/* Twitter */}
         <meta name="twitter:card" content="summary" key="twcard" />
@@ -219,15 +243,19 @@ const App = () => {
           background-color: #faf5eb;
         }
       `}</style>
-      <Header />
       <div className={classes.hero}>
         <Container maxWidth="md">
+          <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
+          <Typography variant="h4" className={classes.logo}>
+            Kelp
+          </Typography>
           <Typography variant="h1" className={classes.heading}>
-            Your information filtration system
+            A New Tab page that gets you what you need when you need it
           </Typography>
           <Typography className={classes.subheading}>
-            Kelp automatically organizes your documents, events and contacts to make work make
-            sense.
+            Kelp automatically associates your webpages with your meetings and shows you the right
+            links for your next meeting. Install Kelp to leave tags and folders behind, and switch
+            to an organization system that adapts to the real world.
           </Typography>
         </Container>
         <Container className={classes.buttonContainer}>
@@ -236,6 +264,7 @@ const App = () => {
             size="large"
             color="primary"
             className={classes.login}
+            startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
             onClick={() => (window.location.pathname = '/install')}
             disableElevation={true}
           >
@@ -249,69 +278,44 @@ const App = () => {
           <img src="images/meetings-mobile.svg" className={classes.meetingImageMobile} />
         </div>
       </Container>
-      <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h3" className={classes.quote} style={{ textAlign: 'center' }}>
-          Kelp started out of a need for better way to prepare for meetings. It helps you quickly
-          gather the information you need.
-        </Typography>
-      </Container>
       <UiBlocks />
-      <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h2" className={classes.largeText}>
-          Currently works with
-        </Typography>
-        <Container maxWidth="sm" style={{ textAlign: 'center' }}>
-          <Typography variant="h3" style={{ marginBottom: 24 }}>
-            Google
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.login}
-            onClick={() => (window.location.pathname = '/dashboard')}
-            disableElevation={true}
-            style={{ marginBottom: 48 }}
-          >
-            Sign In with Google
-          </Button>
-          <Typography>
-            We&lsquo;re also working on other integrations (like Microsoft Teams)! Meanwhile,
-          </Typography>
-          <Typography>
-            <MuiLink
-              target="_blank"
-              color="primary"
-              rel="noopener noreferrer"
-              href="https://twitter.com/kelpnyc"
-            >
-              Let us know
-            </MuiLink>{' '}
-            what you would like us to add!
-          </Typography>
-        </Container>
-      </Container>
       <Container maxWidth="md" className={classes.bodyCopySection}>
         <Typography variant="h2" className={classes.largeText}>
           Your data is your data
         </Typography>
         <Container maxWidth="sm">
-          <Typography style={{ textAlign: 'center' }}>
-            When visiting the Kelp website, your computer is storing and processing your data. Kelp
-            is a static website that does not have any kind of data processing or data storage
-            capability.
-            <br />
-            <MuiLink color="primary" href="/about">
-              Read more
-            </MuiLink>
+          <Typography>
+            Kelp does not store your passwords or personal data. We take security seriously and
+            apply experience from e-commerce, and healthcare data security. Kelp’s security
+            practices include but are not limited to: static code analysis, static dependency
+            checking, web vulnerability scanning, end-to-end encryption, and a bug bounty program.
           </Typography>
+          <br />
+          <List disablePadding className={classes.list}>
+            <ListItem disableGutters>
+              <div className={classes.emojiIcon}>💻</div>
+              <ListItemText>
+                Kelp is a chrome extension that runs entirely on your computer
+              </ListItemText>
+            </ListItem>
+            <ListItem disableGutters>
+              <div className={classes.emojiIcon}>🛑 </div>
+              <ListItemText>Kelp does not send your data to third parties</ListItemText>
+            </ListItem>
+            <ListItem disableGutters>
+              <div className={classes.emojiIcon}>🔐</div>
+              <ListItemText>Kelp does not record your email or Google Profile</ListItemText>
+            </ListItem>
+            <ListItem disableGutters>
+              <div className={classes.emojiIcon}>🛤</div>
+              <ListItemText>Kelp does not include analytics or tracking tools</ListItemText>
+            </ListItem>
+          </List>
         </Container>
       </Container>
       <br />
-      <Divider />
-      <br />
       <Container maxWidth="md">
-        <Grid container alignItems="center" justify="center">
+        <Grid container alignItems="center" justifyContent="center">
           <Grid
             sm={12}
             md={6}
@@ -327,6 +331,7 @@ const App = () => {
                 size="large"
                 color="primary"
                 className={classes.login}
+                startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
                 onClick={() => (window.location.pathname = '/install')}
                 disableElevation={true}
               >
@@ -360,6 +365,9 @@ const App = () => {
           </Grid>
         </Grid>
       </Container>
+      <br />
+      <br />
+      <Divider />
       <Footer />
     </div>
   );

@@ -1,14 +1,14 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { last } from 'lodash';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { IDocument } from '../../store/data-types';
 
 const isRefetchEnabled = false;
 const driveFileFields =
   'id, name, mimeType, webViewLink, owners, shared, starred, iconLink, trashed, modifiedByMe, modifiedTime, viewedByMe, viewedByMeTime, sharedWithMeTime, createdTime';
 
-export const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
+const getModifiedTimeProxy = (file: gapi.client.drive.File) =>
   last(
     [file?.modifiedTime, file?.sharedWithMeTime, file?.createdTime, file?.viewedByMeTime]
       .filter(Boolean)
@@ -28,14 +28,18 @@ const isFileWithinTimeWindow = (file: gapi.client.drive.File) => {
 };
 
 // TODO: handle one person w/ multiple email addresses
-const formatGoogleDoc = (googleDoc: gapi.client.drive.File): IDocument => {
+const formatGoogleDoc = (googleDoc?: gapi.client.drive.File): IDocument | null => {
+  if (!googleDoc?.id) {
+    return null;
+  }
+
   const modifiedTimeProxy = getModifiedTimeProxy(googleDoc);
   return {
-    id: googleDoc.id!,
+    id: googleDoc.id,
     name: googleDoc.name,
     viewedByMe: googleDoc.viewedByMe,
     viewedByMeAt: googleDoc.viewedByMeTime ? new Date(googleDoc.viewedByMeTime) : undefined,
-    link: (googleDoc.webViewLink || '').replace('/edit?usp=drivesdk', ''),
+    link: (googleDoc.webViewLink || '').replace('?usp=drivesdk', ''),
     iconLink: googleDoc.iconLink,
     mimeType: googleDoc.mimeType as any,
     isStarred: !!googleDoc.starred,
@@ -68,8 +72,8 @@ const fetchDriveFilePage = async (googleOauthToken: string, pageToken?: string) 
   );
   const body = await driveResponse.json();
   if (!driveResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(driveResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(driveResponse.statusText);
   }
 
   return body;
@@ -119,8 +123,8 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string, limi
         }),
       );
       if (!fileResponse.ok) {
-        RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-        RollbarErrorTracking.logErrorInRollbar(fileResponse.statusText);
+        ErrorTracking.logErrorInfo(JSON.stringify(params));
+        ErrorTracking.logErrorInRollbar(fileResponse.statusText);
       }
 
       if (fileResponse.status === 200) {
@@ -131,7 +135,6 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string, limi
       }
     }),
   );
-  console.log('ids to refetch drive files', idsToRefetch);
   return results.map((document) => formatGoogleDoc(document));
 };
 

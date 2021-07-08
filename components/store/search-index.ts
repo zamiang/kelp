@@ -1,10 +1,10 @@
-import { IDocument, IPerson, ISegment } from './data-types';
+import { IDocument, IPerson, ISegment, IWebsite } from './data-types';
 import { IStore } from './use-store';
 
 export interface ISearchItem {
   text: string;
-  type: 'segment' | 'document' | 'person';
-  item: IPerson | ISegment | IDocument;
+  type: 'segment' | 'document' | 'person' | 'website';
+  item: IPerson | ISegment | IDocument | IWebsite;
 }
 
 export default class SearchIndex {
@@ -14,28 +14,24 @@ export default class SearchIndex {
     this.results = [];
   }
 
-  async addData(store: {
-    documentDataStore: IStore['documentDataStore'];
-    driveActivityStore: IStore['driveActivityStore'];
-    timeDataStore: IStore['timeDataStore'];
-    personDataStore: IStore['personDataStore'];
-  }) {
+  async addData(store: IStore) {
     const searchIndex = [] as ISearchItem[];
     // Docs
     const documents = await store.documentDataStore.getAll();
-    documents.map((doc) => {
-      if (doc && doc.name) {
+    documents?.map((document) => {
+      if (document?.name) {
         searchIndex.push({
-          text: doc.name.toLowerCase(),
+          text: document.name.toLowerCase(),
           type: 'document',
-          item: doc,
+          item: document,
         });
       }
     });
+
     // Meetings
     const segments = await store.timeDataStore.getAll();
     segments.map((segment) => {
-      if (segment.summary) {
+      if (segment?.summary) {
         searchIndex.push({
           text: segment.summary.toLowerCase(),
           type: 'segment',
@@ -43,10 +39,11 @@ export default class SearchIndex {
         });
       }
     });
+
     // People
     const people = await store.personDataStore.getAll(false);
     people.map((person) => {
-      if (person && person.name.toLowerCase().indexOf('unknown contributor') < 0) {
+      if (person?.name?.toLowerCase().indexOf('unknown contributor') < 0) {
         searchIndex.push({
           text: person.name.toLowerCase(),
           type: 'person',
@@ -54,6 +51,20 @@ export default class SearchIndex {
         });
       }
     });
+
+    // Websites
+    const websites = await store.websitesStore.getAll(
+      store.domainBlocklistStore,
+      store.websiteBlocklistStore,
+    );
+    websites.map((website) => {
+      searchIndex.push({
+        text: website.title.toLowerCase(),
+        type: 'website',
+        item: website,
+      });
+    });
+
     this.results = searchIndex;
   }
 }

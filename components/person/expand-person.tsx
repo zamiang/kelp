@@ -19,9 +19,7 @@ import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee, IPerson, ISegment, ISegmentDocument } from '../store/data-types';
 import { getAssociates } from '../store/helpers';
 import { IStore } from '../store/use-store';
-import PersonNotes from './person-notes';
 
-const shouldShowPersonNotes = false;
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
 
@@ -43,13 +41,14 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
     const fetchData = async () => {
       const p = await props.store.personDataStore.getById(personId);
       setPerson(p);
-    };
-    void fetchData();
-  }, [props.store.isLoading, personId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const s = await props.store.timeDataStore.getSegmentsForPersonId(personId);
+      const s =
+        p &&
+        flatten(
+          await Promise.all(
+            p.emailAddresses.map((e) => props.store.timeDataStore.getSegmentsForEmail(e)),
+          ),
+        );
       if (s) {
         const filteredSegments = s.filter(Boolean) as ISegment[];
         setSegments(filteredSegments);
@@ -64,12 +63,11 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
 
         // segment documents
         // potentially should be in the database
-        const segmentDocumentsFromPersonEdits = await props.store.segmentDocumentStore.getAllForPersonId(
-          personId,
-        );
+        const segmentDocumentsFromPersonEdits =
+          await props.store.segmentDocumentStore.getAllForPersonId(personId);
         const segmentDocumentsFromSegments = await Promise.all(
           filteredSegments.map(async (s: ISegment) =>
-            props.store.segmentDocumentStore.getAllForSegmentId(s.id),
+            props.store.segmentDocumentStore.getAllForSegment(s),
           ),
         );
         const segmentDocumentsCombined = uniqBy(
@@ -137,19 +135,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <MeetingList segments={upcomingSegments} personStore={props.store.personDataStore} />
           </div>
         )}
-        {shouldShowPersonNotes && person.isInContacts && person.googleId && (
-          <div className={classes.section}>
-            <Typography variant="h6">Notes</Typography>
-            <PersonNotes
-              person={person}
-              setPerson={(p: any) => setPerson(p)}
-              personStore={props.store.personDataStore}
-              scope={props.store.scope || ''}
-              accessToken={props.store.googleOauthToken || ''}
-            />
-          </div>
-        )}
-        {(!person.isInContacts || !person.googleId) && (
+        {!person.isInContacts && (
           <div className={classes.section}>
             <Typography variant="body2">
               Add this person to your google contacts for more info{' '}
@@ -173,7 +159,11 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <Typography variant="h6" style={{ marginBottom: 0 }}>
               Related documents
             </Typography>
-            <SegmentDocumentList segmentDocuments={segmentDocuments} store={props.store} />
+            <SegmentDocumentList
+              segmentDocuments={segmentDocuments}
+              store={props.store}
+              isSmall={true}
+            />
           </div>
         )}
         {associates.length > 0 && (
@@ -184,6 +174,7 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
               attendees={associates}
               attendeeMeetingCount={associatesStats}
               showAll={true}
+              isSmall={true}
             />
           </div>
         )}

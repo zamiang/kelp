@@ -1,7 +1,7 @@
 import { addMinutes, format, getDate, getWeek, isSameDay, subMinutes } from 'date-fns';
 import { first, flatten, groupBy } from 'lodash';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { ISegment } from '../data-types';
 import { dbType } from '../db';
 
@@ -14,8 +14,14 @@ export default class SegmentModel {
 
   async addSegments(segments: ISegment[], shouldClearStore?: boolean) {
     if (shouldClearStore) {
-      // TODO: figure out a better way to do this.
-      // await this.db.clear('meeting');
+      const existingSegments = await this.getAll();
+      const existingSegmentIds = existingSegments.map((s) => s.id);
+      const newSegmentIds = segments.map((s) => s.id);
+      const idsToDelete = existingSegmentIds.filter(
+        (existingSegmentId) => !newSegmentIds.includes(existingSegmentId),
+      );
+
+      await Promise.allSettled(idsToDelete.map((id) => this.db.delete('meeting', id)));
     }
 
     // console.log(formattedSegments, 'about to save segments');
@@ -25,7 +31,7 @@ export default class SegmentModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        RollbarErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logErrorInRollbar(result.reason);
       }
     });
     return;
@@ -67,6 +73,7 @@ export default class SegmentModel {
     );
   }
 
+  // TODO: Use an index
   async getCurrentSegment() {
     const segments = await this.getAll();
     const start = subMinutes(new Date(), config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
@@ -76,6 +83,17 @@ export default class SegmentModel {
         const isUpNext = segment.start > start && segment.start < end;
         const isCurrent = start > segment.start && start < segment.end;
         return segment.selfResponseStatus === 'accepted' && (isUpNext || isCurrent);
+      }),
+    );
+  }
+
+  async getCurrentSegmentForWebsites() {
+    const segments = await this.getAll();
+    const start = new Date();
+    return first(
+      segments.filter((segment) => {
+        const isCurrent = start > segment.start && start < segment.end;
+        return segment.selfResponseStatus === 'accepted' && isCurrent;
       }),
     );
   }
@@ -111,21 +129,25 @@ export default class SegmentModel {
     );
   }
 
-  async getSegmentsForPersonId(personId: string) {
-    const attendees = await this.db.getAllFromIndex('attendee', 'by-person-id', personId);
+  async getSegmentsForName(summary: string) {
+    // TODO: Use an index
+    const segments = await this.getAll();
+    return segments.filter((segment) => segment.summary === summary);
+  }
+
+  async getSegmentsForEmail(email: string) {
+    const attendees = await this.db.getAllFromIndex('attendee', 'by-email', email);
     return Promise.all(attendees.map((attendee) => this.db.get('meeting', attendee.segmentId)));
   }
 
   async getDriveActivityIdsForWeek(week: number) {
     const segments = await this.getAll();
-    // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
     flatten(segments.filter((segment) => getWeek(segment.start) === week).map(() => []));
     return segments;
   }
 
   async getDriveActivityIdsForDate(date: number) {
     const segments = await this.getAll();
-    // this.db.getAllFromIndex('segmentDriveActivity', 'segment-id //segment.driveActivityIds),
     flatten(segments.filter((segment) => getDate(segment.start) === date).map(() => []));
     return segments;
   }

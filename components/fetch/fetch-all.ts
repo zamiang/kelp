@@ -7,8 +7,7 @@ import {
   IFormattedDriveActivity,
   IPerson,
   ISegment,
-  ITask,
-  TaskList,
+  IWebsite,
 } from '../store/data-types';
 import fetchCalendarEvents, {
   getDocumentsFromCalendarEvents,
@@ -19,7 +18,6 @@ import fetchDriveFiles from './google/fetch-drive-files';
 import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
 import { batchFetchPeople } from './google/fetch-people';
 import { fetchSelf } from './google/fetch-self';
-import { fetchTasks } from './google/fetch-tasks';
 
 interface IReturnType {
   readonly personList: IPerson[];
@@ -28,8 +26,7 @@ interface IReturnType {
   readonly currentUser?: IPerson;
   readonly calendarEvents: ISegment[];
   readonly driveFiles: IDocument[];
-  readonly tasks: ITask[];
-  readonly defaultTaskList?: TaskList;
+  readonly websites: IWebsite[];
   readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
   readonly refetch: () => void;
@@ -38,7 +35,6 @@ interface IReturnType {
   readonly driveResponseLoading: boolean;
   readonly calendarResponseLoading: boolean;
   readonly contactsResponseLoading: boolean;
-  readonly tasksResponseLoading: boolean;
   readonly driveActivityLoading: boolean;
   readonly currentUserLoading: boolean;
   readonly peopleLoading: boolean;
@@ -111,13 +107,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   ] as any);
 
   /**
-   * TASKS
-   */
-  const tasksResponse = useAsyncAbortable(() => fetchTasks(googleOauthToken, limit), [
-    googleOauthToken,
-  ] as any);
-
-  /**
    * CALENDAR
    */
   const calendarResponse = useAsyncAbortable(
@@ -179,7 +168,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
 
   const debouncedIsLoading = useDebounce(
     peopleResponse.loading ||
-      tasksResponse.loading ||
       currentUser.loading ||
       driveResponse.loading ||
       calendarResponse.loading ||
@@ -190,9 +178,9 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     200,
   );
 
-  const driveFiles = driveResponse.result || [];
+  const driveFiles = (driveResponse.result || []).filter(Boolean) as IDocument[];
   if (missingGoogleDocs.missingDriveFiles) {
-    driveFiles.concat(missingGoogleDocs.missingDriveFiles);
+    driveFiles.concat(missingGoogleDocs.missingDriveFiles.filter(Boolean) as IDocument[]);
   }
 
   return {
@@ -201,10 +189,9 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
     driveFiles,
     contacts: contactsResponse.result || [],
-    currentUser: currentUser.result,
-    tasks: tasksResponse.result ? tasksResponse.result.tasks : [],
-    defaultTaskList: tasksResponse.result ? tasksResponse.result.defaultTaskList : undefined,
+    currentUser: currentUser.result || undefined,
     emailAddresses: emailList,
+    websites: [],
     refetch: async () => {
       // Current user will reloadd if it fails
       await currentUser.execute();
@@ -218,7 +205,6 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading,
-    tasksResponseLoading: tasksResponse.loading,
     peopleLoading: peopleResponse.loading,
     isLoading: debouncedIsLoading,
     error:

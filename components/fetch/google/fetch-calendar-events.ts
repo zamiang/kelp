@@ -1,16 +1,20 @@
 import { first, uniq } from 'lodash';
 import urlRegex from 'url-regex';
 import config from '../../../constants/config';
-import RollbarErrorTracking from '../../error-tracking/rollbar';
+import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
 
-export const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
+const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
   const currentTime = new Date();
-  if (event.end! > currentTime && event.start! < currentTime) {
+  if (!event.end || !event.start) {
+    return 'past';
+  }
+
+  if (event.end > currentTime && event.start < currentTime) {
     return 'current';
-  } else if (event.end! > currentTime) {
+  } else if (event.end > currentTime) {
     return 'upcoming';
   } else return 'past';
 };
@@ -49,13 +53,17 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
   );
 };
 
-const formatSegment = (event: gapi.client.calendar.Event): ISegment => {
+const formatSegment = (event?: gapi.client.calendar.Event): ISegment | null => {
+  if (!event?.id) {
+    return null;
+  }
+
   const documents = getDocumentsFromCalendarEvents(event);
   const videoLink = getVideoLinkFromCalendarEvent(event);
   const start = new Date(event.start!.dateTime!);
   const end = new Date(event.end!.dateTime!);
   return {
-    id: event.id!,
+    id: event.id,
     link: event.htmlLink,
     summary: event.summary,
     start,
@@ -83,7 +91,7 @@ const formatSegment = (event: gapi.client.calendar.Event): ISegment => {
   };
 };
 
-export const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
+const getSelfResponseStatus = (attendees: attendee[]): responseStatus => {
   for (const person of attendees) {
     if (person.self) {
       return (person.responseStatus as any) || 'accepted';
@@ -135,8 +143,8 @@ const fetchCalendarEvents = async (
   );
   const calendarBody = await calendarResponse.json();
   if (!calendarResponse.ok) {
-    RollbarErrorTracking.logErrorInfo(JSON.stringify(params));
-    RollbarErrorTracking.logErrorInRollbar(calendarResponse.statusText);
+    ErrorTracking.logErrorInfo(JSON.stringify(params));
+    ErrorTracking.logErrorInRollbar(calendarResponse.statusText);
   }
   const filteredCalendarEvents =
     calendarBody && calendarBody.items ? (calendarBody.items as gapi.client.calendar.Event[]) : [];
@@ -160,6 +168,7 @@ const fetchCalendarEvents = async (
     calendarEvents: filteredCalendarEvents
       .filter(
         (event) =>
+          event &&
           event.id &&
           event.start &&
           event.start.dateTime &&
@@ -168,7 +177,8 @@ const fetchCalendarEvents = async (
           (!config.SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS ||
             isSelfConfirmedAttending(event.attendees || [], event.creator)),
       )
-      .map((event) => formatSegment(event)),
+      .map((event) => formatSegment(event))
+      .filter(Boolean) as ISegment[],
     // calendar events return little attendee information beyond email addresses (contradicting docs)
     uniqueAttendeeEmails,
   };

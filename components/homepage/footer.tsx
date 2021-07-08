@@ -70,63 +70,53 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="lg" className={classes.footer}>
-      <Grid container justify="space-between">
-        <Grid item xs={12} sm={1}>
-          <Link href="/">
-            <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
+      <Grid container alignItems="center" justifyContent="center">
+        <Grid item className={classes.footerItem}>
+          <Link href="/about">
+            <Typography variant="body2" className={classes.footerLink}>
+              About
+            </Typography>
           </Link>
         </Grid>
-        <Grid item xs>
-          <Grid container alignItems="center" justify="center">
-            <Grid item className={classes.footerItem}>
-              <Link href="/about">
-                <Typography variant="body2" className={classes.footerLink}>
-                  About
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item className={classes.footerItem}>
-              <a
-                rel="noreferrer"
-                href="https://updates.kelp.nyc"
-                className={classes.footerLink}
-                target="_blank"
-              >
-                <Typography variant="body2" className={classes.footerLink}>
-                  Updates
-                </Typography>
-              </a>
-            </Grid>
-            <Grid item className={classes.footerItem}>
-              <Link href="/privacy">
-                <Typography variant="body2" className={classes.footerLink}>
-                  Privacy
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item className={classes.footerItem}>
-              <Link href="/terms">
-                <Typography variant="body2" className={classes.footerLink}>
-                  Terms
-                </Typography>
-              </Link>
-            </Grid>
-          </Grid>
-          <Typography className={classes.copyright}>
-            {'Copyright © '}
-            <MuiLink
-              color="textSecondary"
-              href="https://www.zamiang.com"
-              style={{ textDecoration: 'none' }}
-            >
-              Kelp Information Filtration, LLC
-            </MuiLink>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-          </Typography>
+        <Grid item className={classes.footerItem}>
+          <a
+            rel="noreferrer"
+            href="https://updates.kelp.nyc"
+            className={classes.footerLink}
+            target="_blank"
+          >
+            <Typography variant="body2" className={classes.footerLink}>
+              Updates
+            </Typography>
+          </a>
         </Grid>
-        <Grid item xs={1} className={classes.hideOnMobile}></Grid>
+        <Grid item className={classes.footerItem}>
+          <Link href="/privacy">
+            <Typography variant="body2" className={classes.footerLink}>
+              Privacy
+            </Typography>
+          </Link>
+        </Grid>
+        <Grid item className={classes.footerItem}>
+          <Link href="/terms">
+            <Typography variant="body2" className={classes.footerLink}>
+              Terms
+            </Typography>
+          </Link>
+        </Grid>
       </Grid>
+      <Typography className={classes.copyright}>
+        {'Copyright © '}
+        <MuiLink
+          color="textSecondary"
+          href="https://www.zamiang.com"
+          style={{ textDecoration: 'none' }}
+        >
+          Kelp Information Filtration, LLC
+        </MuiLink>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
     </Container>
   );
 };

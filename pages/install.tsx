@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -30,10 +29,10 @@ const App = () => {
         <Container maxWidth="md">
           <img style={{ width: 100 }} src="/kelp.svg" alt="Kelp logo" />
           <Typography variant="h1" className={classes.heading}>
-            How does kelp work?
+            Install Kelp
           </Typography>
           <Typography className={classes.subheading}>
-            Kelp is an application that you run on your computer.
+            Review the permissions used and our security practices below.
           </Typography>
           <Container className={classes.buttonContainer}>
             <Button
@@ -42,10 +41,10 @@ const App = () => {
               color="primary"
               className={classes.login}
               disableElevation={true}
+              startIcon={<img src="/icons/chrome.svg" width="24" height="24" />}
               style={{
                 marginLeft: 'auto',
                 marginRight: 'auto',
-                display: 'block',
                 textAlign: 'center',
               }}
               href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
@@ -59,7 +58,7 @@ const App = () => {
       <InstallUiBlocks />
       <Divider />
       <Container maxWidth="md" className={classes.installButtonContainer}>
-        <Grid container alignItems="center" justify="center">
+        <Grid container alignItems="center" justifyContent="center">
           <Grid sm={12} md={6} item>
             <Typography variant="h4" className={classes.quote}>
               Ready to get started?
@@ -71,13 +70,11 @@ const App = () => {
                 color="primary"
                 className={classes.login}
                 disableElevation={true}
+                startIcon={<img src="/icons/chrome.svg" width="24" height="24" />}
                 href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
               >
                 Add to Chrome
               </Button>
-              <br />
-              <br />
-              or <Link href="/dashboard">try out Kelp in your browser</Link>.
             </div>
           </Grid>
           <Grid
@@ -87,6 +84,12 @@ const App = () => {
             className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
           >
             <List disablePadding className={classes.list}>
+              <ListItem disableGutters>
+                <div className={classes.emojiIcon}>💻</div>
+                <ListItemText>
+                  Kelp is a chrome extension that runs entirely on your computer
+                </ListItemText>
+              </ListItem>
               <ListItem disableGutters>
                 <div className={classes.emojiIcon}>🛑 </div>
                 <ListItemText>Kelp does not send your data to third parties</ListItemText>

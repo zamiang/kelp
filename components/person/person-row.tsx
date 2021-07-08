@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useButtonStyles from '../shared/button-styles';
@@ -29,6 +28,8 @@ const useStyles = makeStyles(() => ({
   person: {
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
+    paddingTop: 2,
+    paddingBottom: 2,
     '& > *': {
       borderBottom: 'unset',
     },
@@ -42,9 +43,9 @@ const PersonRow = (props: {
   selectedPersonId: string | null;
   person: IPerson;
   info?: string;
-  isSmall?: boolean;
   responseStatus?: string;
   text?: string;
+  noMargin?: boolean;
 }) => {
   const classes = useStyles();
   const isSelected = props.selectedPersonId === props.person.id;
@@ -73,8 +74,8 @@ const PersonRow = (props: {
       onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       ref={setReferenceElement as any}
       className={clsx(
-        !props.isSmall && rowStyles.row,
-        props.isSmall && rowStyles.rowSmall,
+        rowStyles.row,
+        props.noMargin && rowStyles.rowSmall,
         classes.person,
         props.responseStatus === 'accepted' && classes.personAccepted,
         props.responseStatus === 'tentative' && classes.personTentative,
@@ -83,7 +84,7 @@ const PersonRow = (props: {
         isSelected && rowStyles.rowPrimaryMain,
       )}
     >
-      <Grid container spacing={2} alignItems="center" wrap="nowrap">
+      <Grid container alignItems="center" wrap="nowrap">
         <Grid item className={rowStyles.rowLeft}>
           {props.person.imageUrl ? (
             <Avatar
@@ -103,38 +104,32 @@ const PersonRow = (props: {
           )}
         </Grid>
         <Grid item xs zeroMinWidth>
-          <Grid container>
-            <Grid item xs={12} zeroMinWidth>
-              <Typography noWrap>{name}</Typography>
-            </Grid>
-            {!props.isSmall && (
-              <Grid item xs={12}>
-                <Typography variant="body2" noWrap>
-                  {props.text || uniq(props.person.emailAddresses).join(', ')}
-                </Typography>
+          <div className={rowStyles.rowTopPadding}>
+            <Grid container>
+              <Grid item xs={12} zeroMinWidth>
+                <Typography noWrap>{name}</Typography>
               </Grid>
-            )}
-            {!props.isSmall && (
               <Grid item xs={12}>
                 <Typography variant="body2" noWrap>
                   {props.person.notes}
                 </Typography>
               </Grid>
-            )}
-            {props.info && (
-              <Grid item xs={12}>
-                <Typography variant="body2" noWrap>
-                  {props.info}
-                </Typography>
-              </Grid>
-            )}
-          </Grid>
+              {props.info && (
+                <Grid item xs={12}>
+                  <Typography variant="body2" noWrap>
+                    {props.info}
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+          </div>
         </Grid>
-        {!props.isSmall && isDetailsVisible && props.person.emailAddresses[0] && (
-          <Grid item style={{ marginLeft: 'auto' }}>
+        {isDetailsVisible && props.person.emailAddresses[0] && (
+          <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
             <Button
               className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
               variant="outlined"
+              style={{ minHeight: 0 }}
               onClick={(event) => {
                 event.stopPropagation();
                 void navigator.clipboard.writeText(props.person.emailAddresses[0]);

@@ -3,68 +3,71 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
+import CloseIcon from '../../public/icons/close.svg';
+import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
-  inputContainer: {},
   input: {
-    width: 282,
-    fontSize: 16,
-    [theme.breakpoints.down('sm')]: {
-      width: 240,
-    },
+    marginTop: 0,
+    [theme.breakpoints.down('sm')]: {},
+  },
+  container: {
+    paddingTop: 5,
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
   },
 }));
 
-type FormValues = {
-  query: string;
-};
-
-const SearchBar = () => {
+const SearchBar = (props: { tab: string; onClose?: () => void }) => {
   const classes = useStyles();
-  const { handleSubmit, register, setValue } = useForm<FormValues>({
-    defaultValues: {
-      query: '',
-    },
-  });
   const router = useHistory();
 
-  const onSubmit = handleSubmit(async (data) => {
-    void router.push(`/search?query=${data.query}`);
-    setValue('query', '');
-  });
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue('query', e.target.value);
     void router.push(`/search?query=${e.target.value}`);
   };
 
   return (
-    <form onSubmit={onSubmit} className={classes.inputContainer}>
-      <Grid container alignItems="center">
-        <Grid item>
-          <IconButton disabled>
+    <Grid container alignItems="flex-start" justifyContent="space-between">
+      <Grid item>
+        <IconButton>
+          {props.tab === 'search' ? (
+            <SearchIconOrange width="24" height="24" />
+          ) : (
             <SearchIcon width="24" height="24" />
-          </IconButton>
-        </Grid>
-        <Grid item>
-          <TextField
-            id="search-input-for-nav"
-            type="text"
-            placeholder="Search…"
-            fullWidth
-            autoComplete="off"
-            autoFocus={true}
-            onChange={handleChange}
-            name="query"
-            margin="dense"
-            className={classes.input}
-            inputRef={register}
-          />
-        </Grid>
+          )}
+        </IconButton>
       </Grid>
-    </form>
+      <Grid item xs>
+        <TextField
+          type="text"
+          placeholder="Search…"
+          fullWidth
+          autoComplete="off"
+          autoFocus={true}
+          onChange={handleChange}
+          name="query"
+          margin="dense"
+          InputProps={{
+            className: classes.input,
+            disableUnderline: true,
+          }}
+        />
+      </Grid>
+      <Grid item>
+        <IconButton
+          onClick={() => {
+            router.push('/home');
+            if (props.onClose) {
+              props.onClose();
+            }
+          }}
+        >
+          <CloseIcon width="24" height="24" />
+        </IconButton>
+      </Grid>
+    </Grid>
   );
 };
 

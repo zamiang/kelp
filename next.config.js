@@ -6,9 +6,10 @@ const withReactSvg = require('next-react-svg');
 const path = require('path');
 
 const nextConfig = {
-  future: {
-    webpack5: true,
+  eslint: {
+    ignoreDuringBuilds: true,
   },
+  webpack5: true,
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (process.env.ANALYZE) {
       config.plugins.push(
@@ -64,20 +65,16 @@ const nextConfig = {
                 'https://content.googleapis.com',
                 'https://accounts.google.com',
                 'https://content-gmail.googleapis.com',
-                'https://tasks.googleapis.com',
                 'https://content-driveactivity.googleapis.com',
                 'https://content-people.googleapis.com',
               ],
               connectSrc: [
                 "'self'",
                 'https://auth.kelp.nyc/oauth/token',
-                // 'https://slack.com/api/conversations.list',
-                'https://api.rollbar.com/api/1/item/',
                 'https://content.googleapis.com',
                 'https://accounts.google.com',
                 'https://content-people.googleapis.com',
                 'https://content-driveactivity.googleapis.com',
-                'https://tasks.googleapis.com',
                 'https://people.googleapis.com',
                 'https://www.googleapis.com',
               ],
@@ -104,7 +101,7 @@ module.exports = withPlugins(
     [
       withReactSvg,
       {
-        include: path.resolve(__dirname, 'public/icons'),
+        include: path.resolve(__dirname, 'public'),
       },
     ],
   ],
