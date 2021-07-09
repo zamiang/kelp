@@ -9,7 +9,6 @@ export default async (_req: Request, res: Response) => {
     ],
   };
 
-  res.setHeader('Content-Type', 'text/json');
-  res.write(JSON.stringify(json));
-  return res.end();
+  res.json(json);
+  res.end();
 };
