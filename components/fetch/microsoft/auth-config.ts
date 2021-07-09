@@ -5,7 +5,7 @@ export const msalConfig = {
   auth: {
     clientId: '64c123a2-2c05-4bc0-8be3-76f29fe93af4',
     authority: 'https://login.windows-ppe.net/common/',
-    redirectUri: window.location.href,
+    redirectUri: chrome.identity.getRedirectURL(),
   },
   cache: {
     cacheLocation: 'sessionStorage', // This configures where your cache will be stored
