@@ -1,14 +1,16 @@
 import { LogLevel } from '@azure/msal-browser';
 
 // Config object to be passed to Msal on creation
+const redirectUri = chrome.identity.getRedirectURL();
 export const msalConfig = {
   auth: {
     clientId: '64c123a2-2c05-4bc0-8be3-76f29fe93af4',
-    authority: 'https://login.windows-ppe.net/common/',
-    redirectUri: chrome.identity.getRedirectURL(),
+    authority: 'https://login.microsoftonline.com/common',
+    redirectUri,
+    postLogoutRedirectUri: redirectUri,
   },
   cache: {
-    cacheLocation: 'sessionStorage', // This configures where your cache will be stored
+    cacheLocation: 'localStorage', //'sessionStorage', // This configures where your cache will be stored
     storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
   },
   system: {

@@ -1,4 +1,3 @@
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
@@ -60,25 +59,6 @@ const useStyles = makeStyles((theme) => ({
 
 const is500Error = (error: Error) => (error as any).status === 500;
 
-function WelcomeUser() {
-  const { accounts } = useMsal();
-  const username = accounts[0].username;
-
-  return <p>Welcome, {username}</p>;
-}
-
-function signInClickHandler(instance: any) {
-  instance.loginPopup();
-}
-
-// SignInButton Component returns a button that invokes a popup login when clicked
-function SignInButton() {
-  // useMsal hook will return the PublicClientApplication instance you provided to MsalProvider
-  const { instance } = useMsal();
-
-  return <button onClick={() => signInClickHandler(instance)}>Sign In</button>;
-}
-
 export const DesktopDashboard = (props: { store: IStore }) => {
   const classes = useStyles();
   const store = props.store;
@@ -136,17 +116,8 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           currentFilter={filter}
           hideDialogUrl={hideDialogUrl}
         />
-
         <Container maxWidth="md" className={classes.container}>
           <div>
-            <AuthenticatedTemplate>
-              <p>This will only render if a user is signed-in.</p>
-              <WelcomeUser />
-            </AuthenticatedTemplate>
-            <UnauthenticatedTemplate>
-              <p>This will only render if a user is not signed-in.</p>
-              <SignInButton />
-            </UnauthenticatedTemplate>
             <Switch>
               <Route path="/search">
                 <Search store={store} />

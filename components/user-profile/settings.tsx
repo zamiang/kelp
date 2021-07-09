@@ -1,3 +1,4 @@
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -10,6 +11,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
+import { SignInButton, WelcomeUser } from '../shared/microsoft-login';
 import panelStyles from '../shared/panel-styles';
 import { IDomainBlocklist, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -123,6 +125,20 @@ const Settings = (props: { store: IStore }) => {
           <Typography style={{ marginBottom: 22 }} variant="body2">
             Current browser permission status: {notificationPermission || 'not enabled'}
           </Typography>
+        </div>
+      </div>
+      <Divider />
+      <div className={classes.section}>
+        <div className={formClasses.textField} style={{ marginBottom: 22 }}>
+          <Typography variant="h4" style={{ marginBottom: 24, marginTop: 55 }}>
+            Sign in to Microsoft Teams
+          </Typography>
+          <AuthenticatedTemplate>
+            <WelcomeUser />
+          </AuthenticatedTemplate>
+          <UnauthenticatedTemplate>
+            <SignInButton />
+          </UnauthenticatedTemplate>
         </div>
       </div>
       <Divider />

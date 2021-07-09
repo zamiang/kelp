@@ -26,6 +26,7 @@ import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
 
+console.log(msalConfig, '<<<<<<<<');
 export const msalInstance = new PublicClientApplication(msalConfig);
 
 // Account selection logic is app dependent. Adjust as needed for different use cases.
