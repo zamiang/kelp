@@ -26,7 +26,6 @@ import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
 
-console.log(msalConfig, '<<<<<<<<');
 export const msalInstance = new PublicClientApplication(msalConfig);
 
 // Account selection logic is app dependent. Adjust as needed for different use cases.
@@ -51,7 +50,7 @@ const LoadingMobileDashboardContainer = (props: {
   accessToken: string;
   scope: string;
 }) => {
-  const store = getStore(props.database, props.accessToken, props.scope);
+  const store = getStore(props.database, props.accessToken, props.scope, msalInstance);
 
   return (
     <div>

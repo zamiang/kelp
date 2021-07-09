@@ -81,11 +81,7 @@ const limit = pRateLimit({
 
 const initialEmailList: string[] = [];
 
-const FetchAll = (
-  googleOauthToken: string,
-  msal?: PublicClientApplication,
-  microsoftAccountId?: string,
-): IReturnType => {
+const FetchAll = (googleOauthToken: string, msal?: PublicClientApplication): IReturnType => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
     setEmailList(uniq(emailAddresses.concat(emailList)));
@@ -193,16 +189,15 @@ const FetchAll = (
    * Microsoft
    */
   const microsoftCalendarResponse = useAsyncAbortable(
-    (_, m, accountId) => {
-      console.log(m, accountId, '<<<<<<<<<<<<<<< fetching calendar response');
-      if (m && accountId) {
-        return fetchCalendar(m as any, accountId as any);
+    (_, m) => {
+      if (m) {
+        return fetchCalendar(m as any);
       }
       return new Promise(() => null);
     },
-    [msal, microsoftAccountId],
+    [msal],
   );
-  console.log(microsoftCalendarResponse, '<<<<<<<calendar response<<<<<<<<<<');
+  console.log(microsoftCalendarResponse, '<<<<<<<< ersponse');
 
   return {
     personList: peopleResponse.result ? peopleResponse.result : [],
