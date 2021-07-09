@@ -30,12 +30,8 @@ const nextConfig = {
         destination: '/api/sitemap',
       },
       {
-        source: '/dashboard/(.*)',
-        destination: '/dashboard',
-      },
-      {
-        source: '/test-dashboard/(.*)',
-        destination: '/test-dashboard',
+        source: '/.well-known/microsoft-identity-association.json',
+        destination: '/api/microsoft-auth',
       },
     ];
   },
