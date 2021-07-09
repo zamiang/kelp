@@ -1,3 +1,10 @@
+import {
+  AuthenticationResult,
+  EventMessage,
+  EventType,
+  PublicClientApplication,
+} from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,11 +19,28 @@ import ReactDOM from 'react-dom';
 import './popup.css';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
+import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import theme from '../../constants/theme';
+
+export const msalInstance = new PublicClientApplication(msalConfig);
+
+// Account selection logic is app dependent. Adjust as needed for different use cases.
+const accounts = msalInstance.getAllAccounts();
+if (accounts.length > 0) {
+  msalInstance.setActiveAccount(accounts[0]);
+}
+
+msalInstance.addEventCallback((event: EventMessage) => {
+  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+    const payload = event.payload as AuthenticationResult;
+    const account = payload.account;
+    msalInstance.setActiveAccount(account);
+  }
+});
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
@@ -91,64 +115,66 @@ const App = () => {
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && (!token || !database);
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {hasDatabaseError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Please restart your browser</AlertTitle>
-            <Typography>
-              Unable to connect to the database. This is an issue I do not fully understand where
-              the database does not accept connections. If you are familar with connection issues
-              with indexdb, please email brennan@kelp.nyc.
-            </Typography>
-          </Alert>
-        </Container>
-      )}
-      {hasAuthError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Authentication Error</AlertTitle>
-            <Typography>
-              It looks like your organization has the{' '}
-              <Link href="https://landing.google.com/advancedprotection/">
-                Google Advanced Protection Program
-              </Link>{' '}
-              enabled.
-              <br />
-              <br />
-              Ask your IT administrator to whitelist
-              <br />
-              <br />
-              <Button
-                variant="outlined"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);
-                  return false;
-                }}
-              >
-                <Typography noWrap variant="caption">
-                  {GOOGLE_CLIENT_ID}
-                </Typography>
-              </Button>
-              <br />
-              <Typography variant="caption">Click to copy to your clipboard</Typography>
-              <br />
-              <br />
-              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-              questions.
-            </Typography>
-          </Alert>
-        </Container>
-      )}
-      {shouldShowLoading && (
-        <div className={classes.header}>
-          <Loading isOpen={!token || !database} message="Loading" />
-        </div>
-      )}
-      {!hasAuthError && token && database && (
-        <LoadingMobileDashboardContainer database={database} accessToken={token} scope={scopes} />
-      )}
+      <MsalProvider instance={msalInstance}>
+        <CssBaseline />
+        {hasDatabaseError && (
+          <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+            <Alert severity="error">
+              <AlertTitle>Please restart your browser</AlertTitle>
+              <Typography>
+                Unable to connect to the database. This is an issue I do not fully understand where
+                the database does not accept connections. If you are familar with connection issues
+                with indexdb, please email brennan@kelp.nyc.
+              </Typography>
+            </Alert>
+          </Container>
+        )}
+        {hasAuthError && (
+          <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+            <Alert severity="error">
+              <AlertTitle>Authentication Error</AlertTitle>
+              <Typography>
+                It looks like your organization has the{' '}
+                <Link href="https://landing.google.com/advancedprotection/">
+                  Google Advanced Protection Program
+                </Link>{' '}
+                enabled.
+                <br />
+                <br />
+                Ask your IT administrator to whitelist
+                <br />
+                <br />
+                <Button
+                  variant="outlined"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);
+                    return false;
+                  }}
+                >
+                  <Typography noWrap variant="caption">
+                    {GOOGLE_CLIENT_ID}
+                  </Typography>
+                </Button>
+                <br />
+                <Typography variant="caption">Click to copy to your clipboard</Typography>
+                <br />
+                <br />
+                Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
+                questions.
+              </Typography>
+            </Alert>
+          </Container>
+        )}
+        {shouldShowLoading && (
+          <div className={classes.header}>
+            <Loading isOpen={!token || !database} message="Loading" />
+          </div>
+        )}
+        {!hasAuthError && token && database && (
+          <LoadingMobileDashboardContainer database={database} accessToken={token} scope={scopes} />
+        )}
+      </MsalProvider>
     </ThemeProvider>
   );
 };

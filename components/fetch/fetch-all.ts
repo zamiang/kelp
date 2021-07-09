@@ -1,3 +1,4 @@
+import { PublicClientApplication } from '@azure/msal-browser';
 import { flatten, uniq } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
@@ -18,6 +19,7 @@ import fetchDriveFiles from './google/fetch-drive-files';
 import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
 import { batchFetchPeople } from './google/fetch-people';
 import { fetchSelf } from './google/fetch-self';
+import { fetchCalendar } from './microsoft/fetch-calendar';
 
 interface IReturnType {
   readonly personList: IPerson[];
@@ -79,7 +81,11 @@ const limit = pRateLimit({
 
 const initialEmailList: string[] = [];
 
-const FetchAll = (googleOauthToken: string): IReturnType => {
+const FetchAll = (
+  googleOauthToken: string,
+  msal?: PublicClientApplication,
+  microsoftAccountId?: string,
+): IReturnType => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
     setEmailList(uniq(emailAddresses.concat(emailList)));
@@ -182,6 +188,21 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
   if (missingGoogleDocs.missingDriveFiles) {
     driveFiles.concat(missingGoogleDocs.missingDriveFiles.filter(Boolean) as IDocument[]);
   }
+
+  /**
+   * Microsoft
+   */
+  const microsoftCalendarResponse = useAsyncAbortable(
+    (_, m, accountId) => {
+      console.log(m, accountId, '<<<<<<<<<<<<<<< fetching calendar response');
+      if (m && accountId) {
+        return fetchCalendar(m as any, accountId as any);
+      }
+      return new Promise(() => null);
+    },
+    [msal, microsoftAccountId],
+  );
+  console.log(microsoftCalendarResponse, '<<<<<<<calendar response<<<<<<<<<<');
 
   return {
     personList: peopleResponse.result ? peopleResponse.result : [],

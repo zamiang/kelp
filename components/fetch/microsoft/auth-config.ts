@@ -3,9 +3,9 @@ import { LogLevel } from '@azure/msal-browser';
 // Config object to be passed to Msal on creation
 export const msalConfig = {
   auth: {
-    clientId: '3fba556e-5d4a-48e3-8e1a-fd57c12cb82e',
+    clientId: '64c123a2-2c05-4bc0-8be3-76f29fe93af4',
     authority: 'https://login.windows-ppe.net/common/',
-    redirectUri: 'http://localhost:3000/dashboard',
+    redirectUri: window.location.href,
   },
   cache: {
     cacheLocation: 'sessionStorage', // This configures where your cache will be stored
@@ -44,15 +44,15 @@ export const loginRequest = {
 // Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {
   graphMeEndpoint: 'https://graph.microsoft-ppe.com/v1.0/me',
-  graphMailEndpoint: 'https://graph.microsoft-ppe.com/v1.0/me/messages',
+  graphCalendarEndpoint: 'https://graph.microsoft.com/v1.0/me/calendar/events', // https://docs.microsoft.com/en-us/graph/query-parameters
 };
 
 // Add here scopes for access token to be used at MS Graph API endpoints.
 export const tokenRequest = {
-  scopes: ['Mail.Read'],
+  scopes: ['Calendars.Read'],
   forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
 };
 
-export const silentRequest = {
-  scopes: ['openid', 'profile', 'User.Read', 'Mail.Read'],
-};
+// export const silentRequest = {
+//  scopes: ['openid', 'profile', 'User.Read', 'Calendars.Read'],
+// };
