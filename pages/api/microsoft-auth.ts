@@ -10,5 +10,5 @@ export default async (_req: Request, res: Response) => {
   };
 
   res.json(json);
-  return res.end();
+  res.end();
 };
