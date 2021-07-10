@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
-import { SignInButton, WelcomeUser } from '../shared/microsoft-login';
+import { LogOutButton, SignInButton, WelcomeUser } from '../shared/microsoft-login';
 import panelStyles from '../shared/panel-styles';
 import { IDomainBlocklist, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -135,6 +135,7 @@ const Settings = (props: { store: IStore }) => {
           </Typography>
           <AuthenticatedTemplate>
             <WelcomeUser />
+            <LogOutButton />
           </AuthenticatedTemplate>
           <UnauthenticatedTemplate>
             <SignInButton />

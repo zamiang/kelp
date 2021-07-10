@@ -21,6 +21,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import Loading from '../../components/shared/loading';
+import { signInClickHandler } from '../../components/shared/microsoft-login';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
@@ -34,11 +35,17 @@ if (accounts.length > 0) {
   msalInstance.setActiveAccount(accounts[0]);
 }
 
+// NOTE: These appear to never fire
 msalInstance.addEventCallback((event: EventMessage) => {
+  console.log(event, 'event from msal instance');
   if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
     const payload = event.payload as AuthenticationResult;
     const account = payload.account;
     msalInstance.setActiveAccount(account);
+  } else if (event.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
+    // TODO: ???
+    console.log('acquire token failure');
+    void signInClickHandler(msalInstance);
   }
 });
 

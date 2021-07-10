@@ -37,7 +37,7 @@ const launchAuthFlow = (msal: IPublicClientApplication, url: string) =>
     );
   });
 
-const signInClickHandler = async (msal: IPublicClientApplication) => {
+export const signInClickHandler = async (msal: IPublicClientApplication) => {
   const url = (await getLoginUrl(msal)) as any;
   return await launchAuthFlow(msal, url);
 };
@@ -47,5 +47,33 @@ export const SignInButton = () => {
   // useMsal hook will return the PublicClientApplication instance you provided to MsalProvider
   const { instance } = useMsal();
 
-  return <Button onClick={() => signInClickHandler(instance)}>Sign In</Button>;
+  return (
+    <Button
+      variant="contained"
+      disableElevation
+      color="primary"
+      onClick={() => signInClickHandler(instance)}
+    >
+      Sign In
+    </Button>
+  );
+};
+
+const logOutClickHandler = async (msal: IPublicClientApplication) => msal.logout();
+
+// SignInButton Component returns a button that invokes a popup login when clicked
+export const LogOutButton = () => {
+  // useMsal hook will return the PublicClientApplication instance you provided to MsalProvider
+  const { instance } = useMsal();
+
+  return (
+    <Button
+      variant="contained"
+      disableElevation
+      color="primary"
+      onClick={() => logOutClickHandler(instance)}
+    >
+      Log Out
+    </Button>
+  );
 };
