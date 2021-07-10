@@ -37,7 +37,7 @@ const launchAuthFlow = (msal: IPublicClientApplication, url: string) =>
     );
   });
 
-export const signInClickHandler = async (msal: IPublicClientApplication) => {
+const signInClickHandler = async (msal: IPublicClientApplication) => {
   const url = (await getLoginUrl(msal)) as any;
   return await launchAuthFlow(msal, url);
 };
@@ -59,7 +59,12 @@ export const SignInButton = () => {
   );
 };
 
-const logOutClickHandler = async (msal: IPublicClientApplication) => msal.logout();
+const logOutClickHandler = (msal: IPublicClientApplication) => {
+  const logoutRequest = {
+    account: msal.getActiveAccount(),
+  };
+  return msal.logoutRedirect(logoutRequest);
+};
 
 // SignInButton Component returns a button that invokes a popup login when clicked
 export const LogOutButton = () => {
