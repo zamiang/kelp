@@ -1,3 +1,4 @@
+import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 import { flatten, uniq } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
@@ -18,6 +19,7 @@ import fetchDriveFiles from './google/fetch-drive-files';
 import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
 import { batchFetchPeople } from './google/fetch-people';
 import { fetchSelf } from './google/fetch-self';
+import { fetchCalendar } from './microsoft/fetch-calendar';
 
 interface IReturnType {
   readonly personList: IPerson[];
@@ -79,7 +81,11 @@ const limit = pRateLimit({
 
 const initialEmailList: string[] = [];
 
-const FetchAll = (googleOauthToken: string): IReturnType => {
+const FetchAll = (
+  googleOauthToken: string,
+  microsoftAccount?: AccountInfo,
+  msal?: IPublicClientApplication,
+): IReturnType => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
     setEmailList(uniq(emailAddresses.concat(emailList)));
@@ -183,10 +189,22 @@ const FetchAll = (googleOauthToken: string): IReturnType => {
     driveFiles.concat(missingGoogleDocs.missingDriveFiles.filter(Boolean) as IDocument[]);
   }
 
+  /**
+   * Microsoft
+   */
+  const microsoftCalendarResponse = useAsyncAbortable(() => fetchCalendar(microsoftAccount, msal), [
+    microsoftAccount?.localAccountId,
+  ] as any);
+
+  let calendarEvents = calendarResponse.result ? calendarResponse.result.calendarEvents : [];
+  if (microsoftCalendarResponse.result && microsoftCalendarResponse.result) {
+    calendarEvents = calendarEvents.concat(microsoftCalendarResponse.result);
+  }
+
   return {
     personList: peopleResponse.result ? peopleResponse.result : [],
     driveActivity,
-    calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
+    calendarEvents,
     driveFiles,
     contacts: contactsResponse.result || [],
     currentUser: currentUser.result || undefined,

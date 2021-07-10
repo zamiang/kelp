@@ -94,7 +94,6 @@ export const DesktopDashboard = (props: { store: IStore }) => {
     await props.store.domainBlocklistStore.addDomain(domain);
     setHideDialogUrl(undefined);
   };
-
   return (
     <ErrorBoundaryComponent>
       <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
