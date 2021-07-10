@@ -195,7 +195,6 @@ const FetchAll = (
   const microsoftCalendarResponse = useAsyncAbortable(() => fetchCalendar(microsoftAccount, msal), [
     microsoftAccount?.localAccountId,
   ] as any);
-  console.log(microsoftCalendarResponse.result, '<<<<<<<< calendar response result');
 
   let calendarEvents = calendarResponse.result ? calendarResponse.result.calendarEvents : [];
   if (microsoftCalendarResponse.result && microsoftCalendarResponse.result) {
