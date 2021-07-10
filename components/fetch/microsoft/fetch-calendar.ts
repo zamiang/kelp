@@ -189,7 +189,7 @@ interface Attendee {
   status?: ResponseStatus;
 }
 
-export interface Event {
+interface Event {
   id: string;
   /**
    * True if the meeting organizer allows invitees to propose a new time when responding, false otherwise. Optional. Default
