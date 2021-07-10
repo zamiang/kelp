@@ -10,8 +10,6 @@ export const callMSGraph = (endpoint: string, accessToken: string) => {
     headers,
   };
 
-  console.log('request made to Graph API at: ' + new Date().toString());
-
   return fetch(endpoint, options)
     .then((response) => response.json())
     .catch((error) => console.log(error));

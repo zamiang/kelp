@@ -5,8 +5,9 @@ import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
+import { Event } from '../microsoft/fetch-calendar';
 
-const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
+const getStateForMeeting = (event: gapi.client.calendar.Event | Event): segmentState => {
   const currentTime = new Date();
   if (!event.end || !event.start) {
     return 'past';

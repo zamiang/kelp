@@ -197,10 +197,15 @@ const FetchAll = (
   ] as any);
   console.log(microsoftCalendarResponse.result, '<<<<<<<< calendar response result');
 
+  let calendarEvents = calendarResponse.result ? calendarResponse.result.calendarEvents : [];
+  if (microsoftCalendarResponse.result && microsoftCalendarResponse.result) {
+    calendarEvents = calendarEvents.concat(microsoftCalendarResponse.result);
+  }
+
   return {
     personList: peopleResponse.result ? peopleResponse.result : [],
     driveActivity,
-    calendarEvents: calendarResponse.result ? calendarResponse.result.calendarEvents : [],
+    calendarEvents,
     driveFiles,
     contacts: contactsResponse.result || [],
     currentUser: currentUser.result || undefined,

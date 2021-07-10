@@ -12,9 +12,9 @@ export const getTokenPopup = async (
 ) => {
   request.account = account;
   return await msal.acquireTokenSilent(request).catch(async (error) => {
-    console.log('silent token acquisition fails.');
+    // console.log('silent token acquisition fails.');
     if (error instanceof InteractionRequiredAuthError) {
-      console.log('acquiring token using popup');
+      // console.log('acquiring token using popup');
       return msal.acquireTokenPopup(request).catch((error) => {
         console.error(error);
       });

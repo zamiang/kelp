@@ -34,7 +34,6 @@ if (accounts.length > 0) {
   msalInstance.setActiveAccount(accounts[0]);
 }
 
-// NOTE: These appear to never fire
 msalInstance.addEventCallback((event: EventMessage) => {
   console.log(event, 'event from msal instance');
   if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
