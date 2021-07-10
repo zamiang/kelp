@@ -1,4 +1,4 @@
-import { PublicClientApplication } from '@azure/msal-browser';
+import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 import { flatten, uniq } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
 import { useEffect, useState } from 'react';
@@ -81,7 +81,11 @@ const limit = pRateLimit({
 
 const initialEmailList: string[] = [];
 
-const FetchAll = (googleOauthToken: string, msal?: PublicClientApplication): IReturnType => {
+const FetchAll = (
+  googleOauthToken: string,
+  microsoftAccount?: AccountInfo,
+  msal?: IPublicClientApplication,
+): IReturnType => {
   const [emailList, setEmailList] = useState(initialEmailList);
   const addEmailAddressesToStore = (emailAddresses: string[]) => {
     setEmailList(uniq(emailAddresses.concat(emailList)));
@@ -188,16 +192,10 @@ const FetchAll = (googleOauthToken: string, msal?: PublicClientApplication): IRe
   /**
    * Microsoft
    */
-  const microsoftCalendarResponse = useAsyncAbortable(
-    (_, m) => {
-      if (m) {
-        return fetchCalendar(m as any);
-      }
-      return new Promise(() => null);
-    },
-    [msal],
-  );
-  console.log(microsoftCalendarResponse, '<<<<<<<< ersponse');
+  const microsoftCalendarResponse = useAsyncAbortable(() => fetchCalendar(microsoftAccount, msal), [
+    microsoftAccount?.localAccountId,
+  ] as any);
+  console.log(microsoftCalendarResponse.result, '<<<<<<<< calendar response result');
 
   return {
     personList: peopleResponse.result ? peopleResponse.result : [],

@@ -4,7 +4,7 @@ import {
   EventType,
   PublicClientApplication,
 } from '@azure/msal-browser';
-import { MsalProvider } from '@azure/msal-react';
+import { MsalProvider, useMsal } from '@azure/msal-react';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,7 +21,6 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import Loading from '../../components/shared/loading';
-import { signInClickHandler } from '../../components/shared/microsoft-login';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
@@ -45,7 +44,9 @@ msalInstance.addEventCallback((event: EventMessage) => {
   } else if (event.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
     // TODO: ???
     console.log('acquire token failure');
-    void signInClickHandler(msalInstance);
+    void msalInstance.acquireTokenSilent({
+      scopes: ['Calendars.Read', 'openid', 'profile'],
+    });
   }
 });
 
@@ -57,7 +58,15 @@ const LoadingMobileDashboardContainer = (props: {
   accessToken: string;
   scope: string;
 }) => {
-  const store = getStore(props.database, props.accessToken, props.scope, msalInstance);
+  const { instance } = useMsal();
+  const currentAccount = instance.getActiveAccount();
+  const store = getStore(
+    props.database,
+    props.accessToken,
+    props.scope,
+    currentAccount || undefined,
+    instance,
+  );
 
   return (
     <div>

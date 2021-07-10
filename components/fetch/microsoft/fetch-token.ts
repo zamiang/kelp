@@ -1,14 +1,15 @@
 // https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/samples/msal-browser-samples/VanillaJSTestApp2.0/app/onPageLoad/auth.js
 import {
+  AccountInfo,
   AuthenticationResult,
+  IPublicClientApplication,
   InteractionRequiredAuthError,
-  PublicClientApplication,
 } from '@azure/msal-browser';
 import { loginRequest } from './auth-config';
 
 let accountId = '';
 
-const handleResponse = (resp: AuthenticationResult | null, msal: PublicClientApplication) => {
+const handleResponse = (resp: AuthenticationResult | null, msal: IPublicClientApplication) => {
   if (resp && resp.account) {
     accountId = resp.account.homeAccountId;
     // showWelcomeMessage(resp.account);
@@ -28,7 +29,7 @@ const handleResponse = (resp: AuthenticationResult | null, msal: PublicClientApp
   }
 };
 
-export const signIn = (msal: PublicClientApplication) =>
+export const signIn = (msal: IPublicClientApplication) =>
   msal
     .loginPopup(loginRequest)
     .then((res: any) => handleResponse(res, msal))
@@ -36,14 +37,18 @@ export const signIn = (msal: PublicClientApplication) =>
       console.log(error);
     });
 
-export const signOut = (msal: PublicClientApplication) => {
+export const signOut = (msal: IPublicClientApplication) => {
   const logoutRequest = {
     account: msal.getAccountByHomeId(accountId),
   };
   return msal.logoutRedirect(logoutRequest);
 };
 
-export const getTokenPopup = async (request: any, account: any, msal: PublicClientApplication) => {
+export const getTokenPopup = async (
+  request: any,
+  account: AccountInfo,
+  msal: IPublicClientApplication,
+) => {
   request.account = account;
   return await msal.acquireTokenSilent(request).catch(async (error) => {
     console.log('silent token acquisition fails.');
@@ -59,7 +64,7 @@ export const getTokenPopup = async (request: any, account: any, msal: PublicClie
 };
 
 // Register Callbacks for Redirect flow
-export const setupMicrosoftAuth = (msal: PublicClientApplication) =>
+export const setupMicrosoftAuth = (msal: IPublicClientApplication) =>
   msal
     .handleRedirectPromise()
     .then((res) => handleResponse(res, msal))

@@ -1,4 +1,4 @@
-import { PublicClientApplication } from '@azure/msal-browser';
+import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 import { subMinutes } from 'date-fns';
 import { useEffect, useState } from 'react';
 import ErrorTracking from '../error-tracking/error-tracking';
@@ -94,10 +94,11 @@ const useStoreWithFetching = (
   db: dbType,
   googleOauthToken: string,
   scope: string,
-  msal?: PublicClientApplication,
+  microsoftAccount?: AccountInfo,
+  msal?: IPublicClientApplication,
 ): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
-  const data = FetchAll(googleOauthToken, msal);
+  const data = FetchAll(googleOauthToken, microsoftAccount, msal);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const people = data.personList || [];
@@ -257,8 +258,9 @@ const useStoreWithFetching = (
 const useStore = (
   db: dbType | null,
   googleOauthToken: string,
-  scope: string,
-  msal?: PublicClientApplication,
+  googleScope: string,
+  microsoftAccount?: AccountInfo,
+  msal?: IPublicClientApplication,
 ): IStore | null => {
   if (!db) {
     return null;
@@ -268,7 +270,7 @@ const useStore = (
   if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {
     localStorage.setItem('kelpStoreLastUpdated', new Date().toDateString());
     // eslint-disable-next-line
-    return useStoreWithFetching(db, googleOauthToken, scope, msal);
+    return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);
   } else {
     return setupStoreNoFetch(db);
   }

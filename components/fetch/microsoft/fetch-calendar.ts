@@ -1,17 +1,21 @@
-import { PublicClientApplication } from '@azure/msal-browser';
+import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 import { graphConfig, tokenRequest } from './auth-config';
 import { callMSGraph } from './fetch-helper';
 import { getTokenPopup } from './fetch-token';
 
-export const fetchCalendar = async (msal: PublicClientApplication) => {
-  const currentAcc = msal.getActiveAccount();
-  if (currentAcc) {
-    const response = await getTokenPopup(tokenRequest, currentAcc, msal).catch((error) => {
+export const fetchCalendar = async (
+  activeAccount?: AccountInfo,
+  msal?: IPublicClientApplication,
+) => {
+  if (activeAccount && msal) {
+    const token = await getTokenPopup(tokenRequest, activeAccount, msal).catch((error) => {
       console.log(error);
     });
-    console.log(response, '<<<<<<<< response from fetch calendar');
-    if (response) {
-      return callMSGraph(graphConfig.graphCalendarEndpoint, response.accessToken);
+    console.log(token, '<<<<<<<< response from get token popup');
+    if (token) {
+      const result = await callMSGraph(graphConfig.graphCalendarEndpoint, token.accessToken);
+      console.log(result, '<<<<<<<result<<<<<<<<<<<');
+      return result.value;
     }
   }
 };
