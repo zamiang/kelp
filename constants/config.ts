@@ -17,6 +17,7 @@ const NUMBER_OF_DAYS_FORWARD = 14;
 
 export default {
   REDIRECT_URI: process.env.NEXT_PUBLIC_REDIRECT_URI || 'http://localhost:3000/dashboard',
+  DARK_MODE: 'DARK_MODE',
   GOOGLE_SCOPES: scopes,
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS: true,

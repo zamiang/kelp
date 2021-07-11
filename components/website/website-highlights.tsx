@@ -76,7 +76,7 @@ export const WebsiteHighlights = (props: {
   return (
     <div style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
-      <Grid container spacing={4}>
+      <Grid container spacing={5}>
         {topWebsites.map((item) => (
           <LargeWebsite
             key={item.websiteId}

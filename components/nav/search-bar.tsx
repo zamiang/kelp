@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SearchIcon from '../../public/icons/search.svg';
@@ -20,9 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = (props: { tab: string; onClose?: () => void }) => {
+const SearchBar = (props: { onClose?: () => void }) => {
   const classes = useStyles();
   const router = useHistory();
+  const location = useLocation();
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     void router.push(`/search?query=${e.target.value}`);
@@ -32,7 +33,7 @@ const SearchBar = (props: { tab: string; onClose?: () => void }) => {
     <Grid container alignItems="flex-start" justifyContent="space-between">
       <Grid item>
         <IconButton>
-          {props.tab === 'search' ? (
+          {location.pathname.indexOf('search') > -1 ? (
             <SearchIconOrange width="24" height="24" />
           ) : (
             <SearchIcon width="24" height="24" />

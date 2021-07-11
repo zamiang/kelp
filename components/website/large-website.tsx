@@ -106,8 +106,8 @@ export const LargeWebsite = (props: {
             <IconButton size="small">
               <img
                 src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
-                height="14"
-                width="14"
+                height="16"
+                width="16"
                 style={{ margin: '0 auto' }}
               />
             </IconButton>
@@ -130,7 +130,7 @@ export const LargeWebsite = (props: {
                   return false;
                 }}
               >
-                <CloseIcon width="14" height="14" />
+                <CloseIcon width="16" height="16" />
               </IconButton>
             </Grid>
           )}
@@ -145,7 +145,7 @@ export const LargeWebsite = (props: {
                   return false;
                 }}
               >
-                <PinIcon width="14" height="14" />
+                <PinIcon width="16" height="16" />
               </IconButton>
             </Grid>
           )}

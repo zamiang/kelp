@@ -2,41 +2,35 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
 import MeetingsIcon from '../../public/icons/calendar.svg';
 import HomeIconOrange from '../../public/icons/home-orange.svg';
 import HomeIcon from '../../public/icons/home.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SearchIcon from '../../public/icons/search.svg';
-import SettingsIconOrange from '../../public/icons/settings-orange.svg';
-import SettingsIcon from '../../public/icons/settings.svg';
 import SearchBar from '../nav/search-bar';
 import { SmallPersonRow } from '../person/small-person-row';
 import { IFeaturedPerson, getFeaturedPeople } from '../shared/get-featured-people';
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 
-const SearchBarContainer = (props: { tab: string; setTab: (t: string) => void }) => {
+const SearchBarContainer = () => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
+  const location = useLocation();
 
   if (isSearchInputVisible) {
     return (
       <Grid item xs={12}>
-        <SearchBar onClose={() => setSearchInputVisible(false)} tab={props.tab} />
+        <SearchBar onClose={() => setSearchInputVisible(false)} />
       </Grid>
     );
   }
 
   return (
     <Grid item xs={12}>
-      <IconButton
-        onClick={() => {
-          props.setTab('search');
-          setSearchInputVisible(true);
-        }}
-      >
-        {props.tab === 'search' ? (
+      <IconButton onClick={() => setSearchInputVisible(true)}>
+        {location.pathname.indexOf('search') > -1 ? (
           <SearchIconOrange width="24" height="24" />
         ) : (
           <SearchIcon width="24" height="24" />
@@ -64,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     top: theme.spacing(2),
     left: theme.spacing(2),
-    maxWidth: 180,
+    maxWidth: 172,
     overflow: 'hidden',
   },
 }));
@@ -77,8 +71,8 @@ export const LeftNav = (props: {
 }) => {
   const classes = useStyles();
   const router = useHistory();
+  const location = useLocation();
   const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
-  const [tab, setTab] = useState<string>('home');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,7 +86,7 @@ export const LeftNav = (props: {
     <Grid container className={classes.container} spacing={3}>
       <Grid item xs={12}>
         <Grid container spacing={1}>
-          <SearchBarContainer tab={tab} setTab={setTab} />
+          <SearchBarContainer />
           <Grid item xs={12}>
             <IconButton
               className={'ignore-react-onclickoutside'}
@@ -100,11 +94,10 @@ export const LeftNav = (props: {
               aria-haspopup="true"
               onClick={(event) => {
                 event.preventDefault();
-                setTab('home');
                 return router.push('/home');
               }}
             >
-              {tab === 'home' ? (
+              {location.pathname === '/home' ? (
                 <HomeIconOrange width="24" height="24" />
               ) : (
                 <HomeIcon width="24" height="24" />
@@ -118,32 +111,13 @@ export const LeftNav = (props: {
               aria-haspopup="true"
               onClick={(event) => {
                 event.preventDefault();
-                setTab('meetings');
                 return router.push('/meetings');
               }}
             >
-              {tab === 'meetings' ? (
+              {location.pathname === '/meetings' ? (
                 <MeetingsIconOrange width="24" height="24" />
               ) : (
                 <MeetingsIcon width="24" height="24" />
-              )}
-            </IconButton>
-          </Grid>
-          <Grid item xs={12}>
-            <IconButton
-              className={'ignore-react-onclickoutside'}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                setTab('settings');
-                return router.push('/settings');
-              }}
-            >
-              {tab === 'settings' ? (
-                <SettingsIconOrange width="24" height="24" />
-              ) : (
-                <SettingsIcon width="24" height="24" />
               )}
             </IconButton>
           </Grid>

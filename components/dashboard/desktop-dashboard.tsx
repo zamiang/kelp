@@ -20,6 +20,7 @@ import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { HideUrlDialog } from '../website/hide-url-dialog';
 import { WebsiteHighlights } from '../website/website-highlights';
 import { LeftNav } from './left-nav';
+import { RightNav } from './right-nav';
 import Search from './search';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
   },
-  container: {},
+  container: {
+    paddingLeft: 180,
+    paddingRight: 180,
+  },
   content: {
     background: '#FBF2DD',
     overscrollBehavior: 'contain',
@@ -116,57 +120,60 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           currentFilter={filter}
           hideDialogUrl={hideDialogUrl}
         />
-        <Container maxWidth="md" className={classes.container}>
-          <div>
-            <Switch>
-              <Route path="/search">
-                <Search store={store} />
-              </Route>
-              <Route path="/meetings/:slug">
-                <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                  <ExpandedMeeting store={store} />
-                </Box>
-              </Route>
-              <Route path="/documents/:slug">
-                <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                  <ExpandedDocument store={store} />
-                </Box>
-              </Route>
-              <Route path="/people/:slug">
-                <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                  <ExpandPerson store={store} />
-                </Box>
-              </Route>
-              <Route path="/meetings">
-                <Meetings
-                  store={store}
-                  hideWebsite={hideItem}
-                  hideDialogUrl={hideDialogUrl}
-                  currentFilter={filter}
-                />
-              </Route>
-              <Route path="/settings">
-                <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                  <Settings store={store} />
-                </Box>
-              </Route>
-              <Route>
-                <MeetingHighlight
-                  store={props.store}
-                  hideWebsite={hideItem}
-                  hideDialogUrl={hideDialogUrl}
-                  currentFilter={filter}
-                />
-                <WebsiteHighlights
-                  store={store}
-                  currentFilter={filter}
-                  hideWebsite={hideItem}
-                  hideDialogUrl={hideDialogUrl}
-                />
-              </Route>
-            </Switch>
-          </div>
-        </Container>
+        <RightNav />
+        <div className={classes.container}>
+          <Container maxWidth="lg" disableGutters>
+            <div>
+              <Switch>
+                <Route path="/search">
+                  <Search store={store} />
+                </Route>
+                <Route path="/meetings/:slug">
+                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
+                    <ExpandedMeeting store={store} />
+                  </Box>
+                </Route>
+                <Route path="/documents/:slug">
+                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
+                    <ExpandedDocument store={store} />
+                  </Box>
+                </Route>
+                <Route path="/people/:slug">
+                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
+                    <ExpandPerson store={store} />
+                  </Box>
+                </Route>
+                <Route path="/meetings">
+                  <Meetings
+                    store={store}
+                    hideWebsite={hideItem}
+                    hideDialogUrl={hideDialogUrl}
+                    currentFilter={filter}
+                  />
+                </Route>
+                <Route path="/settings">
+                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
+                    <Settings store={store} />
+                  </Box>
+                </Route>
+                <Route>
+                  <MeetingHighlight
+                    store={props.store}
+                    hideWebsite={hideItem}
+                    hideDialogUrl={hideDialogUrl}
+                    currentFilter={filter}
+                  />
+                  <WebsiteHighlights
+                    store={store}
+                    currentFilter={filter}
+                    hideWebsite={hideItem}
+                    hideDialogUrl={hideDialogUrl}
+                  />
+                </Route>
+              </Switch>
+            </div>
+          </Container>
+        </div>
       </div>
     </ErrorBoundaryComponent>
   );
