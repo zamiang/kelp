@@ -15,7 +15,7 @@ const getLoginUrl = async (msal: IPublicClientApplication) =>
   new Promise(
     (resolve) =>
       void msal.loginRedirect({
-        scopes: ['Calendars.Read', 'openid', 'profile'],
+        scopes: ['Calendars.Read', 'openid', 'profile', 'offline_access'],
         onRedirectNavigate: (u: string) => {
           resolve(u);
           return false;

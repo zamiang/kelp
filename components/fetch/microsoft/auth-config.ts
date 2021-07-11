@@ -14,6 +14,9 @@ export const msalConfig = {
     storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
   },
   system: {
+    windowHashTimeout: 9000, // Applies just to popup calls - In milliseconds
+    iframeHashTimeout: 9000, // Applies just to silent calls - In milliseconds
+    loadFrameTimeout: 9000, // Applies to both silent and popup calls - In milliseconds
     loggerOptions: {
       loggerCallback: (level: LogLevel, message: string, containsPii: boolean) => {
         if (containsPii) {
@@ -46,6 +49,6 @@ export const graphConfig = {
 
 // Add here scopes for access token to be used at MS Graph API endpoints.
 export const tokenRequest = {
-  scopes: ['Calendars.Read'],
+  scopes: ['Calendars.Read', 'offline_access'],
   forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
 };

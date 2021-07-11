@@ -43,9 +43,9 @@ msalInstance.addEventCallback((event: EventMessage) => {
   } else if (event.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
     // TODO: ???
     console.log('acquire token failure');
-    void msalInstance.acquireTokenSilent({
-      scopes: ['Calendars.Read', 'openid', 'profile'],
-    });
+    // void msalInstance.acquireTokenSilent({
+    //  scopes: ['Calendars.Read', 'openid', 'profile', 'offline_access],
+    // });
   }
 });
 

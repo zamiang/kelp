@@ -340,10 +340,8 @@ interface Event {
   // singleValueExtendedProperties?: SingleValueLegacyExtendedProperty[];
 }
 
-const getStateForMeeting = (event: gapi.client.calendar.Event | Event): segmentState => {
+const getStateForMeeting = (start?: Date, end?: Date): segmentState => {
   const currentTime = new Date();
-  const start = event.start?.dateTime ? new Date(event.start?.dateTime) : undefined;
-  const end = event.end?.dateTime ? new Date(event.end?.dateTime) : undefined;
   if (!start || !end) {
     return 'past';
   }
@@ -381,9 +379,8 @@ const formatResponseStatus = (status?: ResponseType): responseStatus => {
 
 const formatCalendarEvent = (event: Event): ISegment | null => {
   const videoLink = event.onlineMeetingUrl;
-  console.log(event, '<<<<<<<<<<<<<<');
-  const start = event.start?.dateTime ? new Date(event.start?.dateTime) : undefined;
-  const end = event.end?.dateTime ? new Date(event.end?.dateTime) : undefined;
+  const start = event.start?.dateTime ? new Date(`${event.start?.dateTime}+0000`) : undefined;
+  const end = event.end?.dateTime ? new Date(`${event.end?.dateTime}+0000`) : undefined;
   if (!start || !end) {
     return null;
   }
@@ -410,7 +407,7 @@ const formatCalendarEvent = (event: Event): ISegment | null => {
     attachments: [],
     meetingNotesLink: undefined,
     videoLink,
-    state: getStateForMeeting(event),
+    state: getStateForMeeting(start, end),
   };
 };
 
