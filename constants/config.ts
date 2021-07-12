@@ -63,6 +63,7 @@ export default {
     'almanac.io',
   ],
   BLOCKED_DOMAINS: [
+    'onkkkcfnlbkoialleldfbgodakajfpnl', // extension url
     'mail.google.com',
     'www.google.com',
     'calendar.google.com',
