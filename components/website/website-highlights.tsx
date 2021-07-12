@@ -77,29 +77,35 @@ export const WebsiteHighlights = (props: {
   return (
     <div style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
-      <Grid container spacing={5}>
-        {topWebsites.map((item) => (
-          <LargeWebsite
-            key={item.websiteId}
-            item={item}
-            store={props.store}
-            hideItem={props.hideWebsite}
-            smGridSize={4}
-            togglePin={togglePin}
-            isDarkMode={props.isDarkMode}
-          />
-        ))}
+      <Grid container spacing={2}>
+        <Grid item>
+          <Grid container spacing={5}>
+            {topWebsites.map((item) => (
+              <LargeWebsite
+                key={item.websiteId}
+                item={item}
+                store={props.store}
+                hideItem={props.hideWebsite}
+                smGridSize={4}
+                togglePin={togglePin}
+                isDarkMode={props.isDarkMode}
+              />
+            ))}
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          {extraItemsCount > 0 && (
+            <RightArrow
+              isEnabled={shouldShowAll}
+              count={extraItemsCount}
+              isDarkMode={props.isDarkMode}
+              onClick={() => {
+                setShouldShowAll(!shouldShowAll);
+              }}
+            />
+          )}
+        </Grid>
       </Grid>
-      {extraItemsCount > 0 && (
-        <RightArrow
-          isEnabled={shouldShowAll}
-          count={extraItemsCount}
-          isDarkMode={props.isDarkMode}
-          onClick={() => {
-            setShouldShowAll(!shouldShowAll);
-          }}
-        />
-      )}
     </div>
   );
 };

@@ -25,6 +25,7 @@ export default {
   WEEK_STARTS_ON: 0,
   MEETING_PREP_NOTIFICATION_EARLY_MINUTES: 10,
   ATTENDEE_MAX: 10, // for 'show more'
+  ICON_SIZE: 20,
   IS_GMAIL_ENABLED: false,
   GOOGLE_CALENDAR_FILTER: ['declined'], // Could be ['needsAction', 'declined']
   MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,

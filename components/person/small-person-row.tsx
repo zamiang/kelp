@@ -16,15 +16,13 @@ const useStyles = makeStyles((theme) => ({
   },
   rowLeft: {
     textAlign: 'center',
-    marginRight: theme.spacing(2),
   },
   container: {
     cursor: 'pointer',
-    paddingLeft: 11,
-    paddingRight: 11,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    height: 37,
+    paddingLeft: 9,
+    paddingRight: 9,
+    paddingTop: 9,
+    paddingBottom: 9,
     overflow: 'hidden',
     '&:hover': {
       backgroundColor: theme.palette.divider,

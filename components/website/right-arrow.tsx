@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
     textAlign: 'center',
-    marginTop: theme.spacing(4),
   },
   arrow: {
     margin: '0px auto',
@@ -16,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '8px 18px',
     fontFamily: theme.typography.fontFamily,
     borderRadius: 22,
+    width: '100%',
   },
   showMoreText: {
     color: theme.palette.text.hint,

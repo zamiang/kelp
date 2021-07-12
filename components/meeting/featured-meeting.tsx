@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     padding: theme.spacing(4),
     paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
     border: `1px solid ${theme.palette.primary.main}`,
     borderRadius: 16,
     marginBottom: theme.spacing(2),

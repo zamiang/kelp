@@ -61,13 +61,13 @@ export const HomepageButtons = (props: {
   return (
     <div
       className={classes.container}
-      onMouseEnter={() => setVisible(true)}
+      onMouseEnter={() => setVisible(false)}
       onMouseLeave={() => setVisible(false)}
     >
       <ToggleButtonGroup
         value={props.currentFilter || 'all'}
         exclusive
-        orientation="vertical"
+        orientation="horizontal"
         onChange={(_event, value) => props.toggleFilter(value)}
       >
         <ToggleButton value="all">All</ToggleButton>

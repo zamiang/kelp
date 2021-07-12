@@ -250,6 +250,7 @@ export const lightTheme = createTheme({
         textTransform: 'none',
         lineHeight: 1.35,
         justifyContent: 'left',
+        padding: 9,
       },
       label: {
         overflow: 'hidden',
@@ -504,6 +505,7 @@ export const darkTheme = createTheme({
         textTransform: 'none',
         lineHeight: 1.35,
         justifyContent: 'left',
+        padding: 9,
       },
       label: {
         overflow: 'hidden',

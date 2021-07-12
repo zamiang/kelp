@@ -1,8 +1,9 @@
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import config from '../../constants/config';
 import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
 import MeetingsIconWhite from '../../public/icons/calendar-white.svg';
 import MeetingsIcon from '../../public/icons/calendar.svg';
@@ -13,9 +14,6 @@ import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SearchBar from '../nav/search-bar';
-import { SmallPersonRow } from '../person/small-person-row';
-import { IFeaturedPerson, getFeaturedPeople } from '../shared/get-featured-people';
-import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 
 const SearchBarContainer = (props: { isDarkMode: boolean }) => {
@@ -34,26 +32,13 @@ const SearchBarContainer = (props: { isDarkMode: boolean }) => {
     <Grid item xs={12}>
       <IconButton onClick={() => setSearchInputVisible(true)}>
         {location.pathname.indexOf('search') > -1 ? (
-          <SearchIconOrange width="24" height="24" />
+          <SearchIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
         ) : props.isDarkMode ? (
-          <SearchIconWhite width="24" height="24" />
+          <SearchIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
         ) : (
-          <SearchIcon width="24" height="24" />
+          <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
         )}
       </IconButton>
-    </Grid>
-  );
-};
-
-const FeaturedPeople = (props: { featuredPeople: IFeaturedPerson[] }) => {
-  const [isVisible, setVisible] = useState(false);
-  return (
-    <Grid container onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}>
-      {props.featuredPeople.map((featuredPerson) => (
-        <Grid item key={featuredPerson.person.id} xs={12}>
-          <SmallPersonRow person={featuredPerson.person} isTextVisible={isVisible} />
-        </Grid>
-      ))}
     </Grid>
   );
 };
@@ -61,10 +46,11 @@ const FeaturedPeople = (props: { featuredPeople: IFeaturedPerson[] }) => {
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'fixed',
-    top: theme.spacing(2),
-    left: theme.spacing(2),
-    maxWidth: 172,
+    top: theme.spacing(0),
+    left: theme.spacing(1),
     overflow: 'hidden',
+    maxWidth: 200,
+    width: 164,
   },
 }));
 
@@ -78,74 +64,50 @@ export const LeftNav = (props: {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
-  const [featuredPeople, setFeaturedPeople] = useState<IFeaturedPerson[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const fp = await getFeaturedPeople(props.store);
-      setFeaturedPeople(fp);
-    };
-    void fetchData();
-  }, [props.store.isLoading, props.store.lastUpdated]);
 
   return (
-    <Grid container className={classes.container} spacing={3}>
-      <Grid item xs={12}>
-        <Grid container spacing={1}>
-          <SearchBarContainer isDarkMode={props.isDarkMode} />
-          <Grid item xs={12}>
-            <IconButton
-              className={'ignore-react-onclickoutside'}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                return router.push('/home');
-              }}
-            >
-              {location.pathname === '/home' ? (
-                <HomeIconOrange width="24" height="24" />
-              ) : props.isDarkMode ? (
-                <HomeIconWhite width="24" height="24" />
-              ) : (
-                <HomeIcon width="24" height="24" />
-              )}
-            </IconButton>
-          </Grid>
-          <Grid item xs={12}>
-            <IconButton
-              className={'ignore-react-onclickoutside'}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                return router.push('/meetings');
-              }}
-            >
-              {location.pathname === '/meetings' ? (
-                <MeetingsIconOrange width="24" height="24" />
-              ) : props.isDarkMode ? (
-                <MeetingsIconWhite width="24" height="24" />
-              ) : (
-                <MeetingsIcon width="24" height="24" />
-              )}
-            </IconButton>
-          </Grid>
-        </Grid>
+    <Grid container className={classes.container}>
+      <Grid item>
+        <IconButton
+          className={'ignore-react-onclickoutside'}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={(event) => {
+            event.preventDefault();
+            return router.push('/home');
+          }}
+        >
+          {location.pathname === '/home' ? (
+            <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+          ) : props.isDarkMode ? (
+            <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+          ) : (
+            <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+          )}
+        </IconButton>
       </Grid>
-      <Grid item xs={12}>
-        <HomepageButtons
-          store={props.store}
-          toggleFilter={props.toggleFilter}
-          currentFilter={props.currentFilter}
-          hideDialogUrl={props.hideDialogUrl}
-        />
+      <Grid item>
+        <IconButton
+          className={'ignore-react-onclickoutside'}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={(event) => {
+            event.preventDefault();
+            return router.push('/meetings');
+          }}
+        >
+          {location.pathname === '/meetings' ? (
+            <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+          ) : props.isDarkMode ? (
+            <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+          ) : (
+            <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+          )}
+        </IconButton>
       </Grid>
-      {featuredPeople.length > 0 && (
-        <Grid item xs={12}>
-          <FeaturedPeople featuredPeople={featuredPeople} />
-        </Grid>
-      )}
+      <Grid item>
+        <SearchBarContainer isDarkMode={props.isDarkMode} />
+      </Grid>
     </Grid>
   );
 };

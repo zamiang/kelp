@@ -98,16 +98,18 @@ const MeetingRowBelow = (props: {
           ))}
         </Grid>
       </Grid>
-      {extraItemsCount > 0 && (
-        <RightArrow
-          isEnabled={shouldShowAll}
-          isDarkMode={props.isDarkMode}
-          count={extraItemsCount}
-          onClick={() => {
-            setShouldShowAll(!shouldShowAll);
-          }}
-        />
-      )}
+      <Grid item xs={12}>
+        {extraItemsCount > 0 && (
+          <RightArrow
+            isEnabled={shouldShowAll}
+            isDarkMode={props.isDarkMode}
+            count={extraItemsCount}
+            onClick={() => {
+              setShouldShowAll(!shouldShowAll);
+            }}
+          />
+        )}
+      </Grid>
     </React.Fragment>
   );
 };

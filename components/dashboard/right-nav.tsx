@@ -15,10 +15,10 @@ import DayIconWhite from '../../public/icons/sun-white.svg';
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'fixed',
-    top: theme.spacing(2),
-    right: theme.spacing(2),
+    top: theme.spacing(0),
+    right: theme.spacing(0),
     overflow: 'hidden',
-    width: 64,
+    width: 120,
   },
 }));
 
@@ -31,7 +31,7 @@ export const RightNav = (props: {
   const location = useLocation();
 
   return (
-    <Grid container className={classes.container} spacing={1} justifyContent="center">
+    <Grid container className={classes.container} justifyContent="center" alignItems="center">
       <Grid item>
         <IconButton
           className={'ignore-react-onclickoutside'}
@@ -44,9 +44,9 @@ export const RightNav = (props: {
           }}
         >
           {props.isDarkMode ? (
-            <DayIconWhite width="24" height="24" />
+            <DayIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
           ) : (
-            <DayIconOrange width="24" height="24" />
+            <DayIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
           )}
         </IconButton>
       </Grid>
@@ -79,11 +79,11 @@ export const RightNav = (props: {
           }}
         >
           {location.pathname === '/settings' ? (
-            <SettingsIconOrange width="24" height="24" />
+            <SettingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
           ) : props.isDarkMode ? (
-            <SettingsIconWhite width="24" height="24" />
+            <SettingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
           ) : (
-            <SettingsIcon width="24" height="24" />
+            <SettingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
           )}
         </IconButton>
       </Grid>

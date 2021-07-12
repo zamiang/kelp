@@ -22,6 +22,7 @@ import { WebsiteHighlights } from '../website/website-highlights';
 import { LeftNav } from './left-nav';
 import { RightNav } from './right-nav';
 import Search from './search';
+import { TopFilters } from './top-filters';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -149,6 +150,13 @@ export const DesktopDashboard = (props: {
                   </Box>
                 </Route>
                 <Route path="/meetings">
+                  <TopFilters
+                    store={props.store}
+                    toggleFilter={toggleFilter}
+                    hideDialogUrl={hideDialogUrl}
+                    currentFilter={filter}
+                    isDarkMode={props.isDarkMode}
+                  />
                   <Meetings
                     store={store}
                     hideWebsite={hideItem}
@@ -163,6 +171,13 @@ export const DesktopDashboard = (props: {
                   </Box>
                 </Route>
                 <Route>
+                  <TopFilters
+                    store={props.store}
+                    hideDialogUrl={hideDialogUrl}
+                    toggleFilter={toggleFilter}
+                    currentFilter={filter}
+                    isDarkMode={props.isDarkMode}
+                  />
                   <MeetingHighlight
                     store={props.store}
                     hideWebsite={hideItem}
