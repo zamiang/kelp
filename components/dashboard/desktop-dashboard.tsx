@@ -25,7 +25,7 @@ import Search from './search';
 
 const useStyles = makeStyles((theme) => ({
   box: {
-    background: '#fff',
+    background: theme.palette.background.paper,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 180,
   },
   content: {
-    background: '#FBF2DD',
+    background: theme.palette.background.default,
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',

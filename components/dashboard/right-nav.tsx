@@ -30,7 +30,7 @@ export const RightNav = () => {
   );
 
   return (
-    <Grid container className={classes.container} spacing={2} justifyContent="center">
+    <Grid container className={classes.container} spacing={1} justifyContent="center">
       <Grid item>
         <IconButton
           className={'ignore-react-onclickoutside'}

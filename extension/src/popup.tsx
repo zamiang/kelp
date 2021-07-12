@@ -24,7 +24,7 @@ import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
-import theme from '../../constants/theme';
+import { darkTheme, lightTheme } from '../../constants/theme';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -128,8 +128,9 @@ const App = () => {
     void fetchData();
   }, []);
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && (!token || !database);
+  const isDarkMode = localStorage.getItem(config.DARK_MODE) === 'true';
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <MsalProvider instance={msalInstance}>
         <CssBaseline />
         {hasDatabaseError && (

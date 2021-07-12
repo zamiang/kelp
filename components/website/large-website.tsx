@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   faviconContainer: {
+    background: theme.palette.background.paper,
     display: 'block',
     paddingBottom: '66%',
     overflow: 'hidden',
