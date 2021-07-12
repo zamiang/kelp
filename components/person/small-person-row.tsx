@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     height: 37,
     overflow: 'hidden',
     '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      backgroundColor: theme.palette.divider,
     },
   },
 }));

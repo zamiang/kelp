@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     paddingTop: 5,
     paddingBottom: 5,
-    borderColor: 'rgba(0,0,0,0.12)',
+    borderColor: theme.palette.divider,
   },
   selected: {
     borderBottom: `2px solid ${theme.palette.primary.main}`,

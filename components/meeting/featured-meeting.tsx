@@ -3,11 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format, formatDistanceToNow, subHours } from 'date-fns';
+import { format, formatDistanceToNow, subHours, subMinutes } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import VideoIconWhite from '../../public/icons/video-white.svg';
-import VideoIcon from '../../public/icons/video.svg';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -117,7 +116,8 @@ export const FeaturedMeeting = (props: {
   const isFuture = new Date() < props.meeting.start;
   const isPast = new Date() > props.meeting.end;
   const isInNextHour = new Date() > subHours(props.meeting.start, 1);
-  const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
+  const isHappeningNow =
+    new Date() > subMinutes(props.meeting.start, 5) && new Date() < props.meeting.end;
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
   if (!isInNextHour) {
@@ -163,19 +163,13 @@ export const FeaturedMeeting = (props: {
             {props.meeting.summary || '(no title)'}
           </Typography>
         </Grid>
-        {domain && (
+        {domain && isHappeningNow && (
           <Grid item>
             <Button
               className={clsx(buttonClasses.button, classes.button)}
               variant="contained"
-              color={isHappeningNow ? 'primary' : 'secondary'}
-              startIcon={
-                isHappeningNow ? (
-                  <VideoIconWhite width="24" height="24" />
-                ) : (
-                  <VideoIcon width="24" height="24" />
-                )
-              }
+              color={'primary'}
+              startIcon={<VideoIconWhite width="24" height="24" />}
               onClick={() => window.open(props.meeting.videoLink, '_blank')}
             >
               Join
