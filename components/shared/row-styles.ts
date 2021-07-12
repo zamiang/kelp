@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { lightGreyColor, mediumFontFamily } from '../../constants/theme';
+import { mediumFontFamily } from '../../constants/theme';
 
 const useStyles = makeStyles((theme) => ({
   '@keyframes fadeInAnimation': {
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     animationIterationCount: 1,
     animationFillMode: 'forwards',
     '&:hover': {
-      backgroundColor: lightGreyColor,
+      backgroundColor: theme.palette.divider,
     },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   rowPrimaryMain: {
-    background: lightGreyColor,
+    background: theme.palette.divider,
     '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
       borderColor: theme.palette.secondary.light,
       background: theme.palette.secondary.light,

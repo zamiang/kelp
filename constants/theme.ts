@@ -36,7 +36,7 @@ const basisMedium = {
 const primaryTextColor = 'rgba(0,0,0,0.87)';
 const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
 const lightTextColor = 'rgba(0,0,0,0.5)';
-export const lightGreyColor = 'rgba(0,0,0,0.08)';
+const lightGreyColor = 'rgba(0,0,0,0.12)';
 const white = '#fff';
 const black = '#000';
 
@@ -80,6 +80,9 @@ export const lightTheme = createTheme({
       disabled: 'rgba(0, 0, 0, 0.38)',
       hint: lightTextColor,
     },
+  },
+  divider: {
+    background: lightGreyColor,
   },
   shadows: [
     boxShadow,
@@ -293,6 +296,7 @@ export const lightTheme = createTheme({
 const darkPrimaryTextColor = 'rgba(255,255,255,0.87)';
 const darkSecondaryTextColor = 'rgba(255, 255, 255, 0.70)';
 const darkLightTextColor = 'rgba(255,255,255,0.5)';
+const darkLightGreyColor = 'rgba(255,255,255,0.12)';
 
 export const darkTheme = createTheme({
   props: {
@@ -330,6 +334,9 @@ export const darkTheme = createTheme({
       disabled: 'rgba(255, 255, 255, 0.38)',
       hint: darkLightTextColor,
     },
+  },
+  divider: {
+    background: darkLightGreyColor,
   },
   shadows: [
     boxShadow,

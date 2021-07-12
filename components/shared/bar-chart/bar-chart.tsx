@@ -65,8 +65,6 @@ export const D3Component = (props: {
   width: number;
   maxDate: Date;
   minDate: Date;
-  startGradient: string;
-  endGradient: string;
   label: string;
   smallLabel: string;
 }) => {
@@ -80,8 +78,8 @@ export const D3Component = (props: {
     selector: d3Container?.current,
     minDate: props.minDate,
     maxDate: props.maxDate,
-    startGradient: props.startGradient,
-    endGradient: props.endGradient,
+    startGradient: 'rgba(0,0,0,0.12)', // todo
+    endGradient: 'rgba(0,0,0,0.12)', // todo
     smallLabel: props.smallLabel,
     label: props.label,
   });

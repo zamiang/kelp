@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { lightGreyColor } from '../../constants/theme';
 
 const useStyles = makeStyles((theme) => ({
   panel: {
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     opacity: 1,
     transition: 'opacity 0.3s',
-    background: lightGreyColor,
+    background: theme.palette.divider,
     padding: theme.spacing(1),
     color: theme.palette.text.primary,
     '&:hover': {

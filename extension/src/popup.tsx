@@ -56,6 +56,8 @@ const LoadingMobileDashboardContainer = (props: {
   database: any;
   accessToken: string;
   scope: string;
+  setIsDarkMode: (isDarkMode: boolean) => void;
+  isDarkMode: boolean;
 }) => {
   const { instance } = useMsal();
   const currentAccount = instance.getActiveAccount();
@@ -81,7 +83,11 @@ const LoadingMobileDashboardContainer = (props: {
       )}
       {store && (
         <Router initialEntries={['/home', '/meetings', '/settings']} initialIndex={0}>
-          <DesktopDashboard store={store} />
+          <DesktopDashboard
+            store={store}
+            setIsDarkMode={props.setIsDarkMode}
+            isDarkMode={props.isDarkMode}
+          />
         </Router>
       )}
     </div>
@@ -99,6 +105,9 @@ const App = () => {
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
   const [hasDatabaseError, setHasDatabaseError] = useState<boolean>(false);
   const [database, setDatabase] = useState<any>(undefined);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(
+    localStorage.getItem(config.DARK_MODE) === 'true',
+  );
   const classes = useStyles();
 
   useEffect(() => {
@@ -128,7 +137,6 @@ const App = () => {
     void fetchData();
   }, []);
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && (!token || !database);
-  const isDarkMode = localStorage.getItem(config.DARK_MODE) === 'true';
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <MsalProvider instance={msalInstance}>
@@ -188,7 +196,13 @@ const App = () => {
           </div>
         )}
         {!hasAuthError && token && database && (
-          <LoadingMobileDashboardContainer database={database} accessToken={token} scope={scopes} />
+          <LoadingMobileDashboardContainer
+            database={database}
+            accessToken={token}
+            scope={scopes}
+            setIsDarkMode={setIsDarkMode}
+            isDarkMode={isDarkMode}
+          />
         )}
       </MsalProvider>
     </ThemeProvider>

@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
 import MoonIconOrange from '../../public/icons/moon-orange.svg';
@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RightNav = () => {
+export const RightNav = (props: {
+  isDarkMode: boolean;
+  setIsDarkMode: (isDarkMode: boolean) => void;
+}) => {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
-  const [isDarkMode, setDarkMode] = useState<boolean>(
-    localStorage.getItem(config.DARK_MODE) === 'true',
-  );
 
   return (
     <Grid container className={classes.container} spacing={1} justifyContent="center">
@@ -38,11 +38,11 @@ export const RightNav = () => {
           aria-haspopup="true"
           onClick={(event) => {
             event.preventDefault();
-            setDarkMode(!isDarkMode);
-            localStorage.setItem(config.DARK_MODE, String(!isDarkMode));
+            props.setIsDarkMode(false);
+            localStorage.setItem(config.DARK_MODE, String(false));
           }}
         >
-          {isDarkMode ? (
+          {props.isDarkMode ? (
             <DayIcon width="24" height="24" />
           ) : (
             <DayIconOrange width="24" height="24" />
@@ -56,11 +56,11 @@ export const RightNav = () => {
           aria-haspopup="true"
           onClick={(event) => {
             event.preventDefault();
-            setDarkMode(!isDarkMode);
-            localStorage.setItem(config.DARK_MODE, String(!isDarkMode));
+            props.setIsDarkMode(true);
+            localStorage.setItem(config.DARK_MODE, String(true));
           }}
         >
-          {isDarkMode ? (
+          {props.isDarkMode ? (
             <MoonIconOrange width="18" height="18" />
           ) : (
             <MoonIcon width="18" height="18" />

@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { format, formatDistanceToNow, subHours } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import config from '../../constants/config';
 import VideoIconWhite from '../../public/icons/video-white.svg';
 import VideoIcon from '../../public/icons/video.svg';
 import useButtonStyles from '../shared/button-styles';
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 27,
   },
   containerNow: {
-    borderColor: config.LIGHT_BLUE,
+    borderColor: theme.palette.divider,
   },
   meetingTimeInWords: {
     display: 'inline-block',
@@ -94,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     animation: '$fadeOut 5s ease infinite',
   },
   dotNow: {
-    background: config.LIGHT_BLUE,
+    background: theme.palette.divider,
   },
   dotContainer: {
     position: 'relative',
@@ -168,7 +167,7 @@ export const FeaturedMeeting = (props: {
             <Button
               className={clsx(buttonClasses.button, classes.button)}
               variant="contained"
-              color={isHappeningNow ? 'primary' : (config.LIGHT_BLUE as any)}
+              color={isHappeningNow ? 'primary' : 'secondary'}
               startIcon={
                 isHappeningNow ? (
                   <VideoIconWhite width="24" height="24" />

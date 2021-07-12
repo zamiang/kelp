@@ -7,7 +7,6 @@ import { addDays, differenceInCalendarDays, format, subDays } from 'date-fns';
 import { times } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import config from '../../constants/config';
 import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
 import PersonRow from '../person/person-row';
@@ -190,8 +189,6 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
             height={300}
             minDate={minDate}
             maxDate={maxDate}
-            startGradient={config.BLUE_BACKGROUND}
-            endGradient={config.BLUE_BACKGROUND}
             label={'Activity Graph'}
             smallLabel={'for this document'}
           />

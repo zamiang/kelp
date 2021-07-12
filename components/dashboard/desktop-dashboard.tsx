@@ -63,7 +63,11 @@ const useStyles = makeStyles((theme) => ({
 
 const is500Error = (error: Error) => (error as any).status === 500;
 
-export const DesktopDashboard = (props: { store: IStore }) => {
+export const DesktopDashboard = (props: {
+  store: IStore;
+  setIsDarkMode: (isDarkMode: boolean) => void;
+  isDarkMode: boolean;
+}) => {
   const classes = useStyles();
   const store = props.store;
   const router = useHistory();
@@ -120,7 +124,7 @@ export const DesktopDashboard = (props: { store: IStore }) => {
           currentFilter={filter}
           hideDialogUrl={hideDialogUrl}
         />
-        <RightNav />
+        <RightNav setIsDarkMode={props.setIsDarkMode} isDarkMode={props.isDarkMode} />
         <div className={classes.container}>
           <Container maxWidth="lg" disableGutters>
             <div>

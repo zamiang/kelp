@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import { addHours, format, intervalToDuration } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import config from '../../constants/config';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -13,7 +12,7 @@ const numberHours = 8;
 
 const useMeetingLineStyles = makeStyles((theme) => ({
   line: {
-    background: config.LIGHT_BLUE,
+    background: theme.palette.divider,
     height: 8,
     position: 'absolute',
     top: 0,
@@ -25,7 +24,7 @@ const useMeetingLineStyles = makeStyles((theme) => ({
     },
   },
   linePast: {
-    background: config.LIGHT_BLUE,
+    background: theme.palette.divider,
   },
   lineCurrent: {
     background: theme.palette.primary.main,

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
   arrow: {
     margin: '0px auto',
-    background: 'rgba(0, 0, 0, 0.1)',
+    background: theme.palette.divider,
     padding: '8px 18px',
     fontFamily: theme.typography.fontFamily,
     borderRadius: 22,
