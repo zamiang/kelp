@@ -1,3 +1,4 @@
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
@@ -54,9 +55,14 @@ export const TopFilters = (props: {
         />
       </Grid>
       {featuredPeople.length > 0 && (
-        <Grid item>
-          <FeaturedPeople featuredPeople={featuredPeople} />
-        </Grid>
+        <React.Fragment>
+          <Grid item>
+            <Divider orientation="vertical" />
+          </Grid>
+          <Grid item>
+            <FeaturedPeople featuredPeople={featuredPeople} />
+          </Grid>
+        </React.Fragment>
       )}
     </Grid>
   );

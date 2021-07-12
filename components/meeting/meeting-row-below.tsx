@@ -82,7 +82,7 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <React.Fragment>
+    <Grid container spacing={1}>
       <Grid item xs={12}>
         <Grid container spacing={4}>
           {websites.map((item) => (
@@ -110,7 +110,7 @@ const MeetingRowBelow = (props: {
           />
         )}
       </Grid>
-    </React.Fragment>
+    </Grid>
   );
 };
 
