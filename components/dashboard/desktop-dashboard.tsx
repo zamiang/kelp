@@ -13,6 +13,7 @@ import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
+import SearchBar from '../nav/search-bar';
 import ExpandPerson from '../person/expand-person';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
@@ -132,6 +133,7 @@ export const DesktopDashboard = (props: {
             <div>
               <Switch>
                 <Route path="/search">
+                  <SearchBar isDarkMode={props.isDarkMode} />
                   <Search store={store} />
                 </Route>
                 <Route path="/meetings/:slug">

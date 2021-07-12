@@ -15,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {},
   },
   container: {
-    paddingTop: 5,
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: theme.spacing(0.5),
+    marginTop: -theme.spacing(1),
+    background: theme.palette.background.paper,
+    borderRadius: 16,
   },
 }));
 
-const SearchBar = (props: { onClose?: () => void; isDarkMode: boolean }) => {
+const SearchBar = (props: { isDarkMode: boolean }) => {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
@@ -31,7 +31,12 @@ const SearchBar = (props: { onClose?: () => void; isDarkMode: boolean }) => {
   };
 
   return (
-    <Grid container alignItems="flex-start" justifyContent="space-between">
+    <Grid
+      container
+      alignItems="flex-start"
+      justifyContent="space-between"
+      className={classes.container}
+    >
       <Grid item>
         <IconButton>
           {location.pathname.indexOf('search') > -1 ? (
@@ -63,9 +68,6 @@ const SearchBar = (props: { onClose?: () => void; isDarkMode: boolean }) => {
         <IconButton
           onClick={() => {
             router.push('/home');
-            if (props.onClose) {
-              props.onClose();
-            }
           }}
         >
           <CloseIcon width="24" height="24" />
