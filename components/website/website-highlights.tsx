@@ -6,8 +6,8 @@ import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
 import { RightArrow } from './right-arrow';
 
-const maxResult = 6;
-const maxDisplay = maxResult * 10;
+const maxResult = 12;
+const maxDisplay = maxResult * 6;
 
 const fetchData = async (
   store: IStore,
