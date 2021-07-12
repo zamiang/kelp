@@ -47,13 +47,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   boxStyle: {
-    background: '#fff',
+    background: theme.palette.background.paper,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
   heading: {
     marginLeft: 0,
-    color: '#000',
   },
   lineCalendarContainer: {
     borderBottom: `1px solid ${theme.palette.divider}`,

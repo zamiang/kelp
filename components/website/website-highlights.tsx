@@ -35,6 +35,7 @@ export const WebsiteHighlights = (props: {
   currentFilter: string;
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
+  isDarkMode: boolean;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -85,6 +86,7 @@ export const WebsiteHighlights = (props: {
             hideItem={props.hideWebsite}
             smGridSize={4}
             togglePin={togglePin}
+            isDarkMode={props.isDarkMode}
           />
         ))}
       </Grid>
@@ -92,6 +94,7 @@ export const WebsiteHighlights = (props: {
         <RightArrow
           isEnabled={shouldShowAll}
           count={extraItemsCount}
+          isDarkMode={props.isDarkMode}
           onClick={() => {
             setShouldShowAll(!shouldShowAll);
           }}

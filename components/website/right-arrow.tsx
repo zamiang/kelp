@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
+import ChevronIconWhite from '../../public/icons/chevron-right-white.svg';
 import ChevronIcon from '../../public/icons/chevron-right.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,14 +28,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RightArrow = (props: { onClick: () => void; isEnabled: boolean; count: number }) => {
+export const RightArrow = (props: {
+  onClick: () => void;
+  isEnabled: boolean;
+  count: number;
+  isDarkMode: boolean;
+}) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
       <Button
         endIcon={
           props.isEnabled ? (
-            <ChevronIcon className={classes.upArrow} width="24" height="24" />
+            props.isDarkMode ? (
+              <ChevronIconWhite className={classes.upArrow} width="24" height="24" />
+            ) : (
+              <ChevronIcon className={classes.upArrow} width="24" height="24" />
+            )
+          ) : props.isDarkMode ? (
+            <ChevronIconWhite className={classes.downArrow} width="24" height="24" />
           ) : (
             <ChevronIcon className={classes.downArrow} width="24" height="24" />
           )

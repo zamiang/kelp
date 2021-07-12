@@ -15,6 +15,7 @@ const Meetings = (props: {
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   currentFilter: string;
+  isDarkMode: boolean;
 }) => {
   const [meetings, setMeetings] = useState<ISegment[]>([]);
 
@@ -44,6 +45,7 @@ const Meetings = (props: {
           hideWebsite={props.hideWebsite}
           showLine
           currentFilter={props.currentFilter}
+          isDarkMode={props.isDarkMode}
         />
       ))}
     </div>

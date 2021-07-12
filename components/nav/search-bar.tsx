@@ -6,6 +6,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
+import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = (props: { onClose?: () => void }) => {
+const SearchBar = (props: { onClose?: () => void; isDarkMode: boolean }) => {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
@@ -35,6 +36,8 @@ const SearchBar = (props: { onClose?: () => void }) => {
         <IconButton>
           {location.pathname.indexOf('search') > -1 ? (
             <SearchIconOrange width="24" height="24" />
+          ) : props.isDarkMode ? (
+            <SearchIconWhite width="24" height="24" />
           ) : (
             <SearchIcon width="24" height="24" />
           )}

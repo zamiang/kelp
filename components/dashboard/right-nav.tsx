@@ -7,9 +7,10 @@ import config from '../../constants/config';
 import MoonIconOrange from '../../public/icons/moon-orange.svg';
 import MoonIcon from '../../public/icons/moon.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
+import SettingsIconWhite from '../../public/icons/settings-white.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import DayIconOrange from '../../public/icons/sun-orange.svg';
-import DayIcon from '../../public/icons/sun.svg';
+import DayIconWhite from '../../public/icons/sun-white.svg';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,7 +44,7 @@ export const RightNav = (props: {
           }}
         >
           {props.isDarkMode ? (
-            <DayIcon width="24" height="24" />
+            <DayIconWhite width="24" height="24" />
           ) : (
             <DayIconOrange width="24" height="24" />
           )}
@@ -79,6 +80,8 @@ export const RightNav = (props: {
         >
           {location.pathname === '/settings' ? (
             <SettingsIconOrange width="24" height="24" />
+          ) : props.isDarkMode ? (
+            <SettingsIconWhite width="24" height="24" />
           ) : (
             <SettingsIcon width="24" height="24" />
           )}

@@ -38,6 +38,7 @@ const MeetingRowBelow = (props: {
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   currentFilter: string;
+  isDarkMode: boolean;
 }) => {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -92,6 +93,7 @@ const MeetingRowBelow = (props: {
               hideItem={props.hideWebsite}
               smGridSize={4}
               togglePin={togglePin}
+              isDarkMode={props.isDarkMode}
             />
           ))}
         </Grid>
@@ -99,6 +101,7 @@ const MeetingRowBelow = (props: {
       {extraItemsCount > 0 && (
         <RightArrow
           isEnabled={shouldShowAll}
+          isDarkMode={props.isDarkMode}
           count={extraItemsCount}
           onClick={() => {
             setShouldShowAll(!shouldShowAll);

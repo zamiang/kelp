@@ -123,6 +123,7 @@ export const DesktopDashboard = (props: {
           toggleFilter={toggleFilter}
           currentFilter={filter}
           hideDialogUrl={hideDialogUrl}
+          isDarkMode={props.isDarkMode}
         />
         <RightNav setIsDarkMode={props.setIsDarkMode} isDarkMode={props.isDarkMode} />
         <div className={classes.container}>
@@ -153,6 +154,7 @@ export const DesktopDashboard = (props: {
                     hideWebsite={hideItem}
                     hideDialogUrl={hideDialogUrl}
                     currentFilter={filter}
+                    isDarkMode={props.isDarkMode}
                   />
                 </Route>
                 <Route path="/settings">
@@ -166,12 +168,14 @@ export const DesktopDashboard = (props: {
                     hideWebsite={hideItem}
                     hideDialogUrl={hideDialogUrl}
                     currentFilter={filter}
+                    isDarkMode={props.isDarkMode}
                   />
                   <WebsiteHighlights
                     store={store}
                     currentFilter={filter}
                     hideWebsite={hideItem}
                     hideDialogUrl={hideDialogUrl}
+                    isDarkMode={props.isDarkMode}
                   />
                 </Route>
               </Switch>

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
+import PinIconWhite from '../../public/icons/pin-white.svg';
 import PinIcon from '../../public/icons/pin.svg';
 import { IWebsiteImage } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -69,6 +70,7 @@ export const LargeWebsite = (props: {
   hideItem: (item: IFeaturedWebsite) => void;
   togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
   smGridSize?: number;
+  isDarkMode: boolean;
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
   const [isCloseVisible, setCloseVisible] = useState(false);
@@ -146,7 +148,11 @@ export const LargeWebsite = (props: {
                   return false;
                 }}
               >
-                <PinIcon width="16" height="16" />
+                {props.isDarkMode ? (
+                  <PinIconWhite width="16" height="16" />
+                ) : (
+                  <PinIcon width="16" height="16" />
+                )}
               </IconButton>
             </Grid>
           )}

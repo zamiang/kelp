@@ -19,6 +19,7 @@ export const MeetingHighlight = (props: {
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   currentFilter: string;
+  isDarkMode: boolean;
 }) => {
   const classes = useStyles();
   const currentTime = new Date();
@@ -52,6 +53,7 @@ export const MeetingHighlight = (props: {
           showButton
           hideWebsite={props.hideWebsite}
           hideDialogUrl={props.hideDialogUrl}
+          isDarkMode={props.isDarkMode}
         />
       )}
     </div>

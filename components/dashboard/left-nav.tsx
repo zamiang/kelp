@@ -4,10 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
+import MeetingsIconWhite from '../../public/icons/calendar-white.svg';
 import MeetingsIcon from '../../public/icons/calendar.svg';
 import HomeIconOrange from '../../public/icons/home-orange.svg';
+import HomeIconWhite from '../../public/icons/home-white.svg';
 import HomeIcon from '../../public/icons/home.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
+import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import SearchBar from '../nav/search-bar';
 import { SmallPersonRow } from '../person/small-person-row';
@@ -15,14 +18,14 @@ import { IFeaturedPerson, getFeaturedPeople } from '../shared/get-featured-peopl
 import { HomepageButtons } from '../shared/homepage-buttons';
 import { IStore } from '../store/use-store';
 
-const SearchBarContainer = () => {
+const SearchBarContainer = (props: { isDarkMode: boolean }) => {
   const [isSearchInputVisible, setSearchInputVisible] = useState<boolean>(false);
   const location = useLocation();
 
   if (isSearchInputVisible) {
     return (
       <Grid item xs={12}>
-        <SearchBar onClose={() => setSearchInputVisible(false)} />
+        <SearchBar onClose={() => setSearchInputVisible(false)} isDarkMode={props.isDarkMode} />
       </Grid>
     );
   }
@@ -32,6 +35,8 @@ const SearchBarContainer = () => {
       <IconButton onClick={() => setSearchInputVisible(true)}>
         {location.pathname.indexOf('search') > -1 ? (
           <SearchIconOrange width="24" height="24" />
+        ) : props.isDarkMode ? (
+          <SearchIconWhite width="24" height="24" />
         ) : (
           <SearchIcon width="24" height="24" />
         )}
@@ -68,6 +73,7 @@ export const LeftNav = (props: {
   toggleFilter: (filter: string) => void;
   currentFilter?: string;
   hideDialogUrl?: string;
+  isDarkMode: boolean;
 }) => {
   const classes = useStyles();
   const router = useHistory();
@@ -86,7 +92,7 @@ export const LeftNav = (props: {
     <Grid container className={classes.container} spacing={3}>
       <Grid item xs={12}>
         <Grid container spacing={1}>
-          <SearchBarContainer />
+          <SearchBarContainer isDarkMode={props.isDarkMode} />
           <Grid item xs={12}>
             <IconButton
               className={'ignore-react-onclickoutside'}
@@ -99,6 +105,8 @@ export const LeftNav = (props: {
             >
               {location.pathname === '/home' ? (
                 <HomeIconOrange width="24" height="24" />
+              ) : props.isDarkMode ? (
+                <HomeIconWhite width="24" height="24" />
               ) : (
                 <HomeIcon width="24" height="24" />
               )}
@@ -116,6 +124,8 @@ export const LeftNav = (props: {
             >
               {location.pathname === '/meetings' ? (
                 <MeetingsIconOrange width="24" height="24" />
+              ) : props.isDarkMode ? (
+                <MeetingsIconWhite width="24" height="24" />
               ) : (
                 <MeetingsIcon width="24" height="24" />
               )}

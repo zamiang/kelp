@@ -108,6 +108,7 @@ export const FeaturedMeeting = (props: {
   hideDialogUrl?: string;
   showLine?: boolean;
   currentFilter: string;
+  isDarkMode: boolean;
 }) => {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
@@ -193,6 +194,7 @@ export const FeaturedMeeting = (props: {
                 currentFilter={props.currentFilter}
                 hideWebsite={props.hideWebsite}
                 hideDialogUrl={props.hideDialogUrl}
+                isDarkMode={props.isDarkMode}
               />
             </Grid>
           </Grid>
@@ -204,6 +206,7 @@ export const FeaturedMeeting = (props: {
             currentFilter={props.currentFilter}
             hideWebsite={props.hideWebsite}
             hideDialogUrl={props.hideDialogUrl}
+            isDarkMode={props.isDarkMode}
           />
         )}
       </Grid>
