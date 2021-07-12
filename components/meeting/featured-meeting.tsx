@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { format, formatDistanceToNow, subHours, subMinutes } from 'date-fns';
+import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import VideoIconWhite from '../../public/icons/video-white.svg';
@@ -117,14 +117,10 @@ export const FeaturedMeeting = (props: {
 
   const isFuture = new Date() < props.meeting.start;
   const isPast = new Date() > props.meeting.end;
-  const isInNextHour = new Date() > subHours(props.meeting.start, 1);
   const isHappeningNow =
     new Date() > subMinutes(props.meeting.start, 5) && new Date() < props.meeting.end;
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
-  if (!isInNextHour) {
-    return null;
-  }
   return (
     <div
       className={clsx(

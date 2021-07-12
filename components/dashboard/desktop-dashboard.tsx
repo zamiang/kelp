@@ -148,7 +148,12 @@ export const DesktopDashboard = (props: {
                 </Route>
                 <Route path="/people/:slug">
                   <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                    <ExpandPerson store={store} />
+                    <ExpandPerson
+                      store={store}
+                      hideWebsite={hideItem}
+                      currentFilter={filter}
+                      isDarkMode={props.isDarkMode}
+                    />
                   </Box>
                 </Route>
                 <Route path="/meetings">

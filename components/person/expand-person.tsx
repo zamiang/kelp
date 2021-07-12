@@ -19,11 +19,19 @@ import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee, IPerson, ISegment, ISegmentDocument } from '../store/data-types';
 import { getAssociates } from '../store/helpers';
 import { IStore } from '../store/use-store';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
 
 const ADD_SENDER_LINK =
   'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
 
-const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => void }) => {
+const ExpandPerson = (props: {
+  store: IStore;
+  personId?: string;
+  close?: () => void;
+  isDarkMode: boolean;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+  currentFilter: string;
+}) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
   const panelClasses = usePanelStyles();
@@ -132,7 +140,13 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
             <Typography variant="h6" className={rowStyles.rowText}>
               Upcoming Meetings
             </Typography>
-            <MeetingList segments={upcomingSegments} personStore={props.store.personDataStore} />
+            <MeetingList
+              segments={upcomingSegments}
+              store={props.store}
+              isDarkMode={props.isDarkMode}
+              currentFilter={props.currentFilter}
+              hideWebsite={props.hideWebsite}
+            />
           </div>
         )}
         {!person.isInContacts && (
@@ -180,7 +194,13 @@ const ExpandPerson = (props: { store: IStore; personId?: string; close?: () => v
         )}
         <div className={classes.section}>
           <Typography variant="h6">Meetings you both attended</Typography>
-          <MeetingList segments={segments} personStore={props.store.personDataStore} />
+          <MeetingList
+            segments={segments}
+            store={props.store}
+            isDarkMode={props.isDarkMode}
+            currentFilter={props.currentFilter}
+            hideWebsite={props.hideWebsite}
+          />
         </div>
       </div>
     </div>

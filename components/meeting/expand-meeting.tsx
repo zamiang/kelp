@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -256,9 +257,12 @@ const ExpandedMeeting = (props: {
         {meeting.location && (
           <div className={classes.section}>
             <Typography variant="h6">Location</Typography>
-            <Typography variant="body2" className={classes.overflowEllipsis}>
+            <MuiLink
+              className={classes.overflowEllipsis}
+              href={`https://maps.google.com/?q=${meeting.location}`}
+            >
               {meeting.location}
-            </Typography>
+            </MuiLink>
           </div>
         )}
       </div>
