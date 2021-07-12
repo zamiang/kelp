@@ -3,6 +3,30 @@ import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { IFormattedDriveActivity } from '../../store/data-types';
 
+type mimeType =
+  | 'application/vnd.google-apps.audio'
+  | 'application/vnd.google-apps.document' //	Google Docs
+  | 'application/vnd.google-apps.drive-sdk' // 3rd party shortcut
+  | 'application/vnd.google-apps.drawing' //	Google Drawing
+  | 'application/vnd.google-apps.file' //Google Drive file
+  | 'application/vnd.google-apps.folder' //	Google Drive folder
+  | 'application/vnd.google-apps.form' //	Google Forms
+  | 'application/vnd.google-apps.fusiontable' //	Google Fusion Tables
+  | 'application/vnd.google-apps.map' //	Google My Maps
+  | 'application/vnd.google-apps.photo'
+  | 'application/vnd.google-apps.presentation' //Google Slides
+  | 'application/vnd.google-apps.script' // Google Apps Scripts
+  | 'application/vnd.google-apps.shortcut' // Shortcut
+  | 'application/vnd.google-apps.site' // Google Sites
+  | 'application/vnd.google-apps.spreadsheet' // Google Sheets
+  | 'application/vnd.google-apps.unknown'
+  | 'application/vnd.google-apps.video';
+
+const getUrlForMimeType = (id: string, mt?: mimeType) =>
+  `https://docs.google.com/${
+    mt ? mt.replace('application/vnd.google-apps.', '') : 'document'
+  }/d/${id}/edit`;
+
 const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
   if (target.drive) {
     // Not handling these
@@ -12,7 +36,10 @@ const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
     return {
       title: target.driveItem.title,
       link: target.driveItem.name
-        ? `https://docs.google.com/document/d/${target.driveItem.name.replace('items/', '')}/edit`
+        ? getUrlForMimeType(
+            target.driveItem.name.replace('items/', ''),
+            target.driveItem.mimeType as any,
+          )
         : null,
     };
   } else if (target.fileComment) {
@@ -21,7 +48,10 @@ const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
       title: parent && parent.title,
       link:
         parent && parent.name
-          ? `https://docs.google.com/document/d/${parent.name.replace('items/', '')}/edit`
+          ? getUrlForMimeType(
+              parent.name.replace('items/', ''),
+              target.fileComment.parent?.mimeType as any,
+            )
           : null,
     };
   } else {
