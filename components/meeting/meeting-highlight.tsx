@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { setHours, setMinutes, subDays } from 'date-fns';
+import { setHours, setMinutes, subDays, subMinutes } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { ISegment } from '../store/data-types';
@@ -38,7 +38,11 @@ export const MeetingHighlight = (props: {
   let featuredMeeting: ISegment | undefined;
   // Assumes meetings are already sorted
   flatten(Object.values(meetingsByDay)).forEach((meeting) => {
-    if (!featuredMeeting && currentTime < meeting.end) {
+    if (
+      !featuredMeeting &&
+      currentTime < meeting.end &&
+      currentTime > subMinutes(meeting.start, 10)
+    ) {
       featuredMeeting = meeting;
     }
   });
