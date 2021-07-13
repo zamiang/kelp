@@ -1,3 +1,4 @@
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -72,14 +73,25 @@ export const HomepageButtons = (props: {
       >
         <ToggleButton value="all">All</ToggleButton>
         {filterDomains.map((item) => (
-          <ToggleButton value={item[0]} key={item[0]}>
-            <img src={`chrome://favicon/size/48@1x/https://${item[0]}`} height="18" width="18" />
-            {isVisible && (
-              <div className={classes.label}>
-                {item[0].split('-')[0].replace('www.', '').replace('.com', '')}
-              </div>
-            )}
-          </ToggleButton>
+          <Tooltip
+            key={item[0]}
+            title={item[0].split('-')[0].replace('www.', '').replace('.com', '')}
+          >
+            <ToggleButton value={item[0]}>
+              <React.Fragment>
+                <img
+                  src={`chrome://favicon/size/48@1x/https://${item[0]}`}
+                  height="18"
+                  width="18"
+                />
+                {isVisible && (
+                  <div className={classes.label}>
+                    {item[0].split('-')[0].replace('www.', '').replace('.com', '')}
+                  </div>
+                )}
+              </React.Fragment>
+            </ToggleButton>
+          </Tooltip>
         ))}
       </ToggleButtonGroup>
     </div>

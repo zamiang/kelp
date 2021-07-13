@@ -159,6 +159,17 @@ export default class PersonModel {
     return first(currentUser);
   }
 
+  async getByIdOrEmail(idOrEmail: string): Promise<IPerson | undefined> {
+    if (idOrEmail) {
+      let people = await this.db.getAllFromIndex('person', 'by-google-id', idOrEmail);
+      if (!people[0]) {
+        people = await this.db.getAllFromIndex('person', 'by-email', idOrEmail);
+      }
+      return people[0];
+    }
+    return undefined;
+  }
+
   async getById(id: string): Promise<IPerson | undefined> {
     if (id) {
       const people = await this.db.getAllFromIndex('person', 'by-google-id', id);

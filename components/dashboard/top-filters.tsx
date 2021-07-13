@@ -1,5 +1,6 @@
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { SmallPersonRow } from '../person/small-person-row';
@@ -13,7 +14,11 @@ const FeaturedPeople = (props: { featuredPeople: IFeaturedPerson[] }) => {
     <Grid container onMouseEnter={() => setVisible(false)} onMouseLeave={() => setVisible(false)}>
       {props.featuredPeople.map((featuredPerson) => (
         <Grid item key={featuredPerson.person.id}>
-          <SmallPersonRow person={featuredPerson.person} isTextVisible={isVisible} />
+          <Tooltip title={featuredPerson.person.name || featuredPerson.person.emailAddresses[0]}>
+            <div>
+              <SmallPersonRow person={featuredPerson.person} isTextVisible={isVisible} />
+            </div>
+          </Tooltip>
         </Grid>
       ))}
     </Grid>

@@ -47,7 +47,7 @@ const ExpandPerson = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const p = await props.store.personDataStore.getById(personId);
+      const p = await props.store.personDataStore.getByIdOrEmail(personId);
       setPerson(p);
 
       const s =
