@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from 'next/link';
 import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -72,37 +71,32 @@ const Footer = () => {
     <Container maxWidth="lg" className={classes.footer}>
       <Grid container alignItems="center" justifyContent="center">
         <Grid item className={classes.footerItem}>
-          <Link href="/about">
+          <MuiLink href="https://www.kelp.nyc/about">
             <Typography variant="body2" className={classes.footerLink}>
               About
             </Typography>
-          </Link>
+          </MuiLink>
         </Grid>
         <Grid item className={classes.footerItem}>
-          <a
-            rel="noreferrer"
-            href="https://updates.kelp.nyc"
-            className={classes.footerLink}
-            target="_blank"
-          >
+          <MuiLink href="https://chrome.google.com/webstore/detail/kelp-new-tab-page-for-peo/onkkkcfnlbkoialleldfbgodakajfpnl?hl=en&authuser=0">
             <Typography variant="body2" className={classes.footerLink}>
-              Updates
+              Download
             </Typography>
-          </a>
+          </MuiLink>
         </Grid>
         <Grid item className={classes.footerItem}>
-          <Link href="/privacy">
+          <MuiLink href="https://www.kelp.nyc/privacy">
             <Typography variant="body2" className={classes.footerLink}>
               Privacy
             </Typography>
-          </Link>
+          </MuiLink>
         </Grid>
         <Grid item className={classes.footerItem}>
-          <Link href="/terms">
+          <MuiLink href="https://www.kelp.nyc/terms">
             <Typography variant="body2" className={classes.footerLink}>
               Terms
             </Typography>
-          </Link>
+          </MuiLink>
         </Grid>
       </Grid>
       <Typography className={classes.copyright}>

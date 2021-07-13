@@ -156,9 +156,6 @@ const Header = () => {
                   <MenuItem component="a" href="/about">
                     About
                   </MenuItem>
-                  <MenuItem component="a" href="https://updates.kelp.nyc">
-                    Updates
-                  </MenuItem>
                   <MenuItem>
                     <Link href="/dashboard">
                       <Typography>Log In</Typography>
