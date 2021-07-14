@@ -10,6 +10,6 @@
     "target": "es5",
     "jsx": "react"
   },
-  "include": ["../@types", "./src/**/*", "src/custom.d.ts"],
+  "include": ["../@types", "./src/**/*", "src/custom.d.ts", "public/background-color.js"],
   "exclude": ["node_modules"]
 }
