@@ -9,7 +9,6 @@ import { FeaturedMeeting } from './featured-meeting';
 
 const useStyles = makeStyles((theme) => ({
   highlight: {
-    marginTop: theme.spacing(3),
     marginBottom: theme.spacing(4),
   },
 }));
@@ -47,19 +46,21 @@ export const MeetingHighlight = (props: {
     }
   });
 
+  if (!featuredMeeting) {
+    return null;
+  }
+
   return (
     <div className={classes.highlight}>
-      {featuredMeeting && (
-        <FeaturedMeeting
-          store={props.store}
-          meeting={featuredMeeting}
-          currentFilter={props.currentFilter}
-          showButton
-          hideWebsite={props.hideWebsite}
-          hideDialogUrl={props.hideDialogUrl}
-          isDarkMode={props.isDarkMode}
-        />
-      )}
+      <FeaturedMeeting
+        store={props.store}
+        meeting={featuredMeeting}
+        currentFilter={props.currentFilter}
+        showButton
+        hideWebsite={props.hideWebsite}
+        hideDialogUrl={props.hideDialogUrl}
+        isDarkMode={props.isDarkMode}
+      />
     </div>
   );
 };

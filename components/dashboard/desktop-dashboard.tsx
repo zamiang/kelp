@@ -1,4 +1,3 @@
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
@@ -21,10 +20,8 @@ import Settings from '../user-profile/settings';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { HideUrlDialog } from '../website/hide-url-dialog';
 import { WebsiteHighlights } from '../website/website-highlights';
-import { LeftNav } from './left-nav';
-import { RightNav } from './right-nav';
 import Search from './search';
-import { TopFilters } from './top-filters';
+import { TopNav } from './top-nav';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -36,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingLeft: 180,
     paddingRight: 180,
+    marginTop: theme.spacing(6),
   },
   content: {
     background: theme.palette.background.default,
@@ -121,14 +119,14 @@ export const DesktopDashboard = (props: {
         setHideDialogUrl={setHideDialogUrl}
       />
       <div className={classes.content}>
-        <LeftNav
+        <TopNav
           store={store}
           toggleFilter={toggleFilter}
           currentFilter={filter}
           hideDialogUrl={hideDialogUrl}
           isDarkMode={props.isDarkMode}
+          setIsDarkMode={props.setIsDarkMode}
         />
-        <RightNav setIsDarkMode={props.setIsDarkMode} isDarkMode={props.isDarkMode} />
         <div className={classes.container}>
           <Container maxWidth="lg" disableGutters>
             <div>
@@ -138,33 +136,20 @@ export const DesktopDashboard = (props: {
                   <Search store={store} />
                 </Route>
                 <Route path="/meetings/:slug">
-                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                    <ExpandedMeeting store={store} />
-                  </Box>
+                  <ExpandedMeeting store={store} />
                 </Route>
                 <Route path="/documents/:slug">
-                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                    <ExpandedDocument store={store} />
-                  </Box>
+                  <ExpandedDocument store={store} />
                 </Route>
                 <Route path="/people/:slug">
-                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                    <ExpandPerson
-                      store={store}
-                      hideWebsite={hideItem}
-                      currentFilter={filter}
-                      isDarkMode={props.isDarkMode}
-                    />
-                  </Box>
-                </Route>
-                <Route path="/meetings">
-                  <TopFilters
-                    store={props.store}
-                    toggleFilter={toggleFilter}
-                    hideDialogUrl={hideDialogUrl}
+                  <ExpandPerson
+                    store={store}
+                    hideWebsite={hideItem}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
                   />
+                </Route>
+                <Route path="/meetings">
                   <Meetings
                     store={store}
                     hideWebsite={hideItem}
@@ -174,18 +159,9 @@ export const DesktopDashboard = (props: {
                   />
                 </Route>
                 <Route path="/settings">
-                  <Box className={classes.box} boxShadow={1} borderRadius={16}>
-                    <Settings store={store} />
-                  </Box>
+                  <Settings store={store} />
                 </Route>
                 <Route>
-                  <TopFilters
-                    store={props.store}
-                    hideDialogUrl={hideDialogUrl}
-                    toggleFilter={toggleFilter}
-                    currentFilter={filter}
-                    isDarkMode={props.isDarkMode}
-                  />
                   <MeetingHighlight
                     store={props.store}
                     hideWebsite={hideItem}

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 9,
     paddingBottom: 9,
     overflow: 'hidden',
+    borderRadius: 4,
     '&:hover': {
       backgroundColor: theme.palette.divider,
     },

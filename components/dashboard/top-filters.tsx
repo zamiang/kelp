@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -26,9 +27,7 @@ const FeaturedPeople = (props: { featuredPeople: IFeaturedPerson[] }) => {
 };
 
 const useStyles = makeStyles(() => ({
-  container: {
-    marginTop: -15,
-  },
+  container: {},
 }));
 
 export const TopFilters = (props: {
@@ -50,7 +49,10 @@ export const TopFilters = (props: {
   }, [props.store.isLoading, props.store.lastUpdated]);
 
   return (
-    <Grid container className={classes.container}>
+    <Grid container className={classes.container} alignItems="center" spacing={1}>
+      <Grid item>
+        <Typography>Filter:</Typography>
+      </Grid>
       <Grid item>
         <HomepageButtons
           store={props.store}
@@ -62,7 +64,7 @@ export const TopFilters = (props: {
       {featuredPeople.length > 0 && (
         <React.Fragment>
           <Grid item>
-            <Divider orientation="vertical" />
+            <Divider orientation="vertical" style={{ height: 20 }} />
           </Grid>
           <Grid item>
             <FeaturedPeople featuredPeople={featuredPeople} />
