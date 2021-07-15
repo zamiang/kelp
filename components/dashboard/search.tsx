@@ -1,20 +1,22 @@
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Fuse from 'fuse.js';
+import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Meeting } from '../../components/shared/meeting-list';
+import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
-import { IPerson, ISegment } from '../store/data-types';
+import { IPerson, ISegment, IWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
+import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 
 const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
   const meetings: ISearchItem[] = [];
-  const documents: ISearchItem[] = [];
   const websites: ISearchItem[] = [];
   searchResults.forEach((searchResult) => {
     const result = searchResult.item;
@@ -22,8 +24,6 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
       return;
     }
     switch (result.type) {
-      case 'document':
-        return documents.push(result);
       case 'person':
         return people.push(result);
       case 'segment':
@@ -35,9 +35,38 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   return {
     people,
     meetings,
-    documents,
     websites,
   };
+};
+
+const WebsiteResults = (props: { store: IStore; isDarkMode: boolean; websites: ISearchItem[] }) => {
+  const websites = (
+    uniqBy(
+      props.websites.map((r) => r.item),
+      'id',
+    ) as any
+  ).map(
+    (website: IWebsite): IFeaturedWebsite => ({
+      websiteId: website.id,
+      meetings: [],
+      websiteDatabaseId: website.id,
+      isPinned: false,
+      text: website.title,
+      date: website.visitedTime,
+    }),
+  );
+  return (
+    <React.Fragment>
+      {websites.map((website: IFeaturedWebsite) => (
+        <LargeWebsite
+          store={props.store}
+          key={website.websiteId}
+          item={website}
+          isDarkMode={props.isDarkMode}
+        />
+      ))}
+    </React.Fragment>
+  );
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -96,14 +125,13 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
             <Typography className={classes.heading} variant="h6">
               Websites
             </Typography>
-            {filteredResults.websites.map((result: any) => (
-              <LargeWebsite
+            <Grid container spacing={4}>
+              <WebsiteResults
                 store={props.store}
-                key={result.item.id}
-                item={result.item}
+                websites={filteredResults.websites}
                 isDarkMode={props.isDarkMode}
               />
-            ))}
+            </Grid>
           </div>
         )}
         {filteredResults.people.length > 0 && (
@@ -126,11 +154,13 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
               Meetings
             </Typography>
             {filteredResults.meetings.map((result: any) => (
-              <Meeting
+              <FeaturedMeeting
                 key={result.item.id}
                 meeting={result.item as ISegment}
-                personStore={props.store['personDataStore']}
-                isSmall={false}
+                store={props.store}
+                showLine
+                currentFilter={'all'}
+                isDarkMode={props.isDarkMode}
               />
             ))}
           </div>

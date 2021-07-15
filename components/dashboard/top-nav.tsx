@@ -114,15 +114,17 @@ export const TopNav = (props: {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item>
-              <TopFilters
-                store={props.store}
-                toggleFilter={props.toggleFilter}
-                hideDialogUrl={props.hideDialogUrl}
-                currentFilter={props.currentFilter}
-                isDarkMode={props.isDarkMode}
-              />
-            </Grid>
+            {(location.pathname === '/meetings' || location.pathname === '/home') && (
+              <Grid item>
+                <TopFilters
+                  store={props.store}
+                  toggleFilter={props.toggleFilter}
+                  hideDialogUrl={props.hideDialogUrl}
+                  currentFilter={props.currentFilter}
+                  isDarkMode={props.isDarkMode}
+                />
+              </Grid>
+            )}
           </Grid>
         </Container>
       </Grid>

@@ -7,6 +7,16 @@ export interface ISearchItem {
   item: IPerson | ISegment | IDocument | IWebsite;
 }
 
+const documentToWebsite = (document: IDocument): IWebsite => ({
+  id: document.link!,
+  title: document.name!,
+  url: document.link!,
+  documentId: document.id,
+  domain: document.link!,
+  visitedTime: document.updatedAt!,
+  isHidden: false,
+});
+
 export default class SearchIndex {
   results: ISearchItem[];
 
@@ -22,8 +32,8 @@ export default class SearchIndex {
       if (document?.name) {
         searchIndex.push({
           text: document.name.toLowerCase(),
-          type: 'document',
-          item: document,
+          type: 'website',
+          item: documentToWebsite(document),
         });
       }
     });
