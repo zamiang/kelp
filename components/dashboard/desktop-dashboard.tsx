@@ -117,7 +117,7 @@ export const DesktopDashboard = (props: {
                   <Search store={store} isDarkMode={props.isDarkMode} />
                 </Route>
                 <Route path="/meetings/:slug">
-                  <ExpandedMeeting store={store} />
+                  <ExpandedMeeting store={store} isDarkMode={props.isDarkMode} />
                 </Route>
                 <Route path="/documents/:slug">
                   <ExpandedDocument store={store} />

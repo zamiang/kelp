@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
-import EmailIcon from '../../public/icons/email-orange.svg';
+import EmailIcon from '../../public/icons/email-white.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
@@ -19,7 +19,7 @@ import { IFormattedAttendee, ISegment, IWebsite } from '../store/data-types';
 import { getFormattedGuestStats } from '../store/helpers';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
-import { FeaturedWebsiteRow } from '../website/website-row';
+import { LargeWebsite } from '../website/large-website';
 import { createMeetingNotes } from './create-meeting-notes';
 
 const maxNumberOfWebsites = 6;
@@ -54,6 +54,7 @@ const EmailGuestsButton = (props: {
       href={link}
       target="_blank"
       variant="contained"
+      color="primary"
       startIcon={<EmailIcon width="24" height="24" />}
       className={buttonClasses.button}
     >
@@ -84,6 +85,7 @@ const ExpandedMeeting = (props: {
   store: IStore;
   meetingId?: string;
   close?: () => void;
+  isDarkMode: boolean;
   hideHeader?: boolean;
 }) => {
   const classes = useExpandStyles();
@@ -220,7 +222,12 @@ const ExpandedMeeting = (props: {
               Websites you may need
             </Typography>
             {websites.map((item) => (
-              <FeaturedWebsiteRow key={item.websiteId} featuredWebsite={item} store={props.store} />
+              <LargeWebsite
+                key={item.websiteId}
+                item={item}
+                store={props.store}
+                isDarkMode={props.isDarkMode}
+              />
             ))}
           </React.Fragment>
         )}

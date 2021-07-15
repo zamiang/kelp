@@ -63,7 +63,7 @@ export const FeaturedWebsiteRow = (props: {
   return null;
 };
 
-export const WebsiteRow = (props: { website: IWebsite; noMargins?: boolean; store: IStore }) => {
+const WebsiteRow = (props: { website: IWebsite; noMargins?: boolean; store: IStore }) => {
   const rowStyles = useRowStyles();
   const classes = useStyles();
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
