@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
@@ -214,21 +213,22 @@ const ExpandedMeeting = (props: {
           )}
         </Grid>
       </div>
-      <Divider />
       <div className={classes.container}>
         {hasWebsites && (
           <React.Fragment>
             <Typography variant="h6" style={{ marginBottom: 0 }}>
               Websites you may need
             </Typography>
-            {websites.map((item) => (
-              <LargeWebsite
-                key={item.websiteId}
-                item={item}
-                store={props.store}
-                isDarkMode={props.isDarkMode}
-              />
-            ))}
+            <Grid container spacing={4}>
+              {websites.map((item) => (
+                <LargeWebsite
+                  key={item.websiteId}
+                  item={item}
+                  store={props.store}
+                  isDarkMode={props.isDarkMode}
+                />
+              ))}
+            </Grid>
           </React.Fragment>
         )}
         {hasDescription && !isHtml && (

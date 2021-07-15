@@ -129,7 +129,7 @@ export const FeaturedMeeting = (props: {
         props.showLine && classes.containerLine,
       )}
     >
-      <Grid container alignItems="flex-end" spacing={2}>
+      <Grid container alignItems="center" spacing={2}>
         <Grid item>
           <div className={classes.dotContainer}>
             <div className={clsx(classes.outerDot, !isHappeningNow && classes.dotNow)}></div>
