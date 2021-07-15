@@ -26,9 +26,7 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     width: 'auto',
   },
-  maxWidth: {
-    padding: theme.spacing(2),
-  },
+  maxWidth: {},
   grid: {
     maxWidth: theme.breakpoints.width('sm'),
     borderBottom: `1px solid ${theme.palette.divider}`,

@@ -11,15 +11,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   footer: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(4),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(6),
     textAlign: 'center',
     position: 'relative',
-    [theme.breakpoints.down('sm')]: {
-      marginTop: theme.spacing(10),
-    },
   },
   alignLeft: {
     textAlign: 'left',

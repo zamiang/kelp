@@ -5,20 +5,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(4),
     margin: 0,
     width: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(2),
-      paddingBottom: theme.spacing(3),
-      paddingTop: 0,
-    },
   },
   container: {
-    padding: theme.spacing(3),
-    paddingTop: theme.spacing(2),
     margin: 0,
     width: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(2),
-    },
   },
   headingContainer: {
     marginBottom: theme.spacing(3),
@@ -37,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     wordBreak: 'break-word',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      marginTop: theme.spacing(3),
-    },
   },
   titleCenter: {
     textAlign: 'center',

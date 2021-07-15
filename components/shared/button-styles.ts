@@ -26,12 +26,6 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
     },
   },
-  buttonPrimary: {
-    color: theme.palette.primary.main,
-    paddingTop: 5,
-    paddingBottom: 5,
-    borderColor: theme.palette.divider,
-  },
   selected: {
     borderBottom: `2px solid ${theme.palette.primary.main}`,
     borderRadius: 0,

@@ -4,7 +4,6 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
@@ -54,9 +53,9 @@ const EmailGuestsButton = (props: {
     <Button
       href={link}
       target="_blank"
-      variant="outlined"
+      variant="contained"
       startIcon={<EmailIcon width="24" height="24" />}
-      className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+      className={buttonClasses.button}
     >
       Email guests
     </Button>
@@ -170,7 +169,8 @@ const ExpandedMeeting = (props: {
                 disabled={isMeetingNotesLoading}
                 disableElevation
                 variant="outlined"
-                className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+                color="primary"
+                className={buttonClasses.button}
               >
                 Smart Notes
               </Button>
@@ -179,10 +179,11 @@ const ExpandedMeeting = (props: {
           {hasMeetingNotes && (
             <Grid item xs={6}>
               <Button
-                variant="outlined"
+                variant="contained"
+                color="primary"
                 onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
                 startIcon={<SaveIcon width="24" height="24" />}
-                className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
+                className={buttonClasses.button}
               >
                 View Notes
               </Button>

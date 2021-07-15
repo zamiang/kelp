@@ -1,4 +1,3 @@
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Fuse from 'fuse.js';
@@ -98,16 +97,14 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               Documents
             </Typography>
-            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
-              {filteredResults.documents.map((result: any) => (
-                <DocumentRow
-                  selectedDocumentId={null}
-                  key={result.item.id}
-                  document={result.item as IDocument}
-                  store={props.store}
-                />
-              ))}
-            </Box>
+            {filteredResults.documents.map((result: any) => (
+              <DocumentRow
+                selectedDocumentId={null}
+                key={result.item.id}
+                document={result.item as IDocument}
+                store={props.store}
+              />
+            ))}
           </div>
         )}
         {filteredResults.websites.length > 0 && (
@@ -115,15 +112,13 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               Websites
             </Typography>
-            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
-              {filteredResults.websites.map((result: any) => (
-                <WebsiteRow
-                  store={props.store}
-                  key={result.item.id}
-                  website={result.item as IWebsite}
-                />
-              ))}
-            </Box>
+            {filteredResults.websites.map((result: any) => (
+              <WebsiteRow
+                store={props.store}
+                key={result.item.id}
+                website={result.item as IWebsite}
+              />
+            ))}
           </div>
         )}
         {filteredResults.people.length > 0 && (
@@ -131,15 +126,13 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               People
             </Typography>
-            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
-              {filteredResults.people.map((result: any) => (
-                <PersonRow
-                  selectedPersonId={null}
-                  key={result.item.id}
-                  person={result.item as IPerson}
-                />
-              ))}
-            </Box>
+            {filteredResults.people.map((result: any) => (
+              <PersonRow
+                selectedPersonId={null}
+                key={result.item.id}
+                person={result.item as IPerson}
+              />
+            ))}
           </div>
         )}
         {filteredResults.meetings.length > 0 && (
@@ -147,16 +140,14 @@ const Search = (props: { store: IStore }) => {
             <Typography className={classes.heading} variant="h6">
               Meetings
             </Typography>
-            <Box boxShadow={1} borderRadius={16} className={classes.boxStyle}>
-              {filteredResults.meetings.map((result: any) => (
-                <Meeting
-                  key={result.item.id}
-                  meeting={result.item as ISegment}
-                  personStore={props.store['personDataStore']}
-                  isSmall={false}
-                />
-              ))}
-            </Box>
+            {filteredResults.meetings.map((result: any) => (
+              <Meeting
+                key={result.item.id}
+                meeting={result.item as ISegment}
+                personStore={props.store['personDataStore']}
+                isSmall={false}
+              />
+            ))}
           </div>
         )}
       </div>

@@ -127,8 +127,9 @@ const PersonRow = (props: {
         {isDetailsVisible && props.person.emailAddresses[0] && (
           <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
             <Button
-              className={clsx(buttonStyles.button, buttonStyles.buttonPrimary)}
-              variant="outlined"
+              className={buttonStyles.button}
+              variant="contained"
+              color="primary"
               style={{ minHeight: 0 }}
               onClick={(event) => {
                 event.stopPropagation();

@@ -1,10 +1,8 @@
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import CloseIcon from '../../public/icons/close.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
@@ -18,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -theme.spacing(1),
     background: theme.palette.background.paper,
     borderRadius: 16,
+    height: 40,
+  },
+  icon: {
+    padding: theme.spacing(1),
   },
 }));
 
@@ -38,7 +40,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
       className={classes.container}
     >
       <Grid item>
-        <IconButton>
+        <div className={classes.icon}>
           {location.pathname.indexOf('search') > -1 ? (
             <SearchIconOrange width="24" height="24" />
           ) : props.isDarkMode ? (
@@ -46,7 +48,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
           ) : (
             <SearchIcon width="24" height="24" />
           )}
-        </IconButton>
+        </div>
       </Grid>
       <Grid item xs>
         <TextField
@@ -63,15 +65,6 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
             disableUnderline: true,
           }}
         />
-      </Grid>
-      <Grid item>
-        <IconButton
-          onClick={() => {
-            router.push('/home');
-          }}
-        >
-          <CloseIcon width="24" height="24" />
-        </IconButton>
       </Grid>
     </Grid>
   );

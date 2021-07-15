@@ -1,14 +1,12 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import { flatten, uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import EmailIcon from '../../public/icons/email-orange.svg';
+import EmailIcon from '../../public/icons/email-white.svg';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
@@ -121,8 +119,9 @@ const ExpandPerson = (props: {
             </Typography>
             <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
-                className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-                variant="outlined"
+                className={buttonClasses.button}
+                variant="contained"
+                color="primary"
                 href={`mailto:${emailAddress}`}
                 target="_blank"
                 startIcon={<EmailIcon width="24" height="24" />}
@@ -133,7 +132,6 @@ const ExpandPerson = (props: {
           </div>
         )}
       </div>
-      <Divider />
       <div className={classes.container}>
         {upcomingSegments.length > 0 && (
           <div className={rowStyles.rowHighlight} style={{ margin: 0 }}>

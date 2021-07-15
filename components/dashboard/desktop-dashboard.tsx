@@ -6,14 +6,12 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { boxShadow } from '../../constants/theme';
 import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import Footer from '../homepage/footer';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
-import SearchBar from '../nav/search-bar';
 import ExpandPerson from '../person/expand-person';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
@@ -24,16 +22,13 @@ import Search from './search';
 import { TopNav } from './top-nav';
 
 const useStyles = makeStyles((theme) => ({
-  box: {
-    background: theme.palette.background.paper,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-  },
   container: {
     paddingLeft: 180,
     paddingRight: 180,
     marginTop: theme.spacing(6),
+  },
+  footerContainer: {
+    background: theme.palette.background.default,
   },
   content: {
     background: theme.palette.background.default,
@@ -46,19 +41,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     overflow: 'hidden',
-  },
-  dialogContent: {
-    padding: theme.spacing(8),
-  },
-  button: {
-    textDecoration: 'none',
-    cursor: 'pointer',
-    boxShadow,
-    borderRadius: 20,
-    background: theme.palette.background.paper,
-    color: theme.palette.primary.main,
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(3),
   },
 }));
 
@@ -132,7 +114,6 @@ export const DesktopDashboard = (props: {
             <div>
               <Switch>
                 <Route path="/search">
-                  <SearchBar isDarkMode={props.isDarkMode} />
                   <Search store={store} />
                 </Route>
                 <Route path="/meetings/:slug">
@@ -182,7 +163,9 @@ export const DesktopDashboard = (props: {
           </Container>
         </div>
       </div>
-      <Footer />
+      <div className={classes.footerContainer}>
+        <Footer />
+      </div>
     </ErrorBoundaryComponent>
   );
 };

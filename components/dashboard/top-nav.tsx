@@ -1,6 +1,7 @@
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -13,14 +14,12 @@ import HomeIconWhite from '../../public/icons/home-white.svg';
 import HomeIcon from '../../public/icons/home.svg';
 import MoonIconOrange from '../../public/icons/moon-orange.svg';
 import MoonIcon from '../../public/icons/moon.svg';
-import SearchIconOrange from '../../public/icons/search-orange.svg';
-import SearchIconWhite from '../../public/icons/search-white.svg';
-import SearchIcon from '../../public/icons/search.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
 import SettingsIconWhite from '../../public/icons/settings-white.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import DayIconOrange from '../../public/icons/sun-orange.svg';
 import DayIconWhite from '../../public/icons/sun-white.svg';
+import SearchBar from '../nav/search-bar';
 import { IStore } from '../store/use-store';
 import { TopFilters } from './top-filters';
 
@@ -40,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     width: 187,
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
+  },
+  searchContainer: {
+    paddingTop: 7,
   },
 }));
 
@@ -63,20 +65,9 @@ export const TopNav = (props: {
       alignContent="center"
     >
       <Grid item className={classes.leftRightSection}>
-        <IconButton
-          onClick={(event) => {
-            event.preventDefault();
-            return router.push('/search');
-          }}
-        >
-          {location.pathname.indexOf('search') > -1 ? (
-            <SearchIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-          ) : props.isDarkMode ? (
-            <SearchIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-          ) : (
-            <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-          )}
-        </IconButton>
+        <div className={classes.searchContainer}>
+          <SearchBar isDarkMode={props.isDarkMode} />
+        </div>
       </Grid>
       <Grid item xs>
         <Container maxWidth="lg" disableGutters>
@@ -138,59 +129,65 @@ export const TopNav = (props: {
       <Grid item className={classes.leftRightSection}>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <IconButton
-              className={'ignore-react-onclickoutside'}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                props.setIsDarkMode(false);
-                localStorage.setItem(config.DARK_MODE, String(false));
-              }}
-            >
-              {props.isDarkMode ? (
-                <DayIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              ) : (
-                <DayIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              )}
-            </IconButton>
+            <Tooltip title="Light Mode">
+              <IconButton
+                className={'ignore-react-onclickoutside'}
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={(event) => {
+                  event.preventDefault();
+                  props.setIsDarkMode(false);
+                  localStorage.setItem(config.DARK_MODE, String(false));
+                }}
+              >
+                {props.isDarkMode ? (
+                  <DayIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                ) : (
+                  <DayIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                )}
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item>
-            <IconButton
-              className={'ignore-react-onclickoutside'}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                props.setIsDarkMode(true);
-                localStorage.setItem(config.DARK_MODE, String(true));
-              }}
-            >
-              {props.isDarkMode ? (
-                <MoonIconOrange width="18" height="18" />
-              ) : (
-                <MoonIcon width="18" height="18" />
-              )}
-            </IconButton>
+            <Tooltip title="Dark Mode">
+              <IconButton
+                className={'ignore-react-onclickoutside'}
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={(event) => {
+                  event.preventDefault();
+                  props.setIsDarkMode(true);
+                  localStorage.setItem(config.DARK_MODE, String(true));
+                }}
+              >
+                {props.isDarkMode ? (
+                  <MoonIconOrange width="18" height="18" />
+                ) : (
+                  <MoonIcon width="18" height="18" />
+                )}
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item>
-            <IconButton
-              className={'ignore-react-onclickoutside'}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                return router.push('/settings');
-              }}
-            >
-              {location.pathname === '/settings' ? (
-                <SettingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              ) : props.isDarkMode ? (
-                <SettingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              ) : (
-                <SettingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              )}
-            </IconButton>
+            <Tooltip title="Settings">
+              <IconButton
+                className={'ignore-react-onclickoutside'}
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={(event) => {
+                  event.preventDefault();
+                  return router.push('/settings');
+                }}
+              >
+                {location.pathname === '/settings' ? (
+                  <SettingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                ) : props.isDarkMode ? (
+                  <SettingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                ) : (
+                  <SettingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                )}
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </Grid>

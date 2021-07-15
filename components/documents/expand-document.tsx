@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import useComponentSize from '@rehooks/component-size';
-import clsx from 'clsx';
 import { addDays, differenceInCalendarDays, format, subDays } from 'date-fns';
 import { times } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -126,8 +125,9 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           )}
         </div>
         <Button
-          className={clsx(buttonClasses.button, buttonClasses.buttonPrimary)}
-          variant="outlined"
+          className={buttonClasses.button}
+          variant="contained"
+          color="primary"
           href={`${document.link}?${shareParams.toString()}`}
           startIcon={<ShareIcon width="24" height="24" />}
           target="_blank"
