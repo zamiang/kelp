@@ -114,7 +114,7 @@ export const DesktopDashboard = (props: {
             <div>
               <Switch>
                 <Route path="/search">
-                  <Search store={store} />
+                  <Search store={store} isDarkMode={props.isDarkMode} />
                 </Route>
                 <Route path="/meetings/:slug">
                   <ExpandedMeeting store={store} />

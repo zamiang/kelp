@@ -71,7 +71,7 @@ export const TopNav = (props: {
       </Grid>
       <Grid item xs>
         <Container maxWidth="lg" disableGutters>
-          <Grid container justify="space-between">
+          <Grid container justifyContent="space-between">
             <Grid item>
               <Grid container>
                 <Grid item>
@@ -114,7 +114,7 @@ export const TopNav = (props: {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item justifyContent="flex-end">
+            <Grid item>
               <TopFilters
                 store={props.store}
                 toggleFilter={props.toggleFilter}

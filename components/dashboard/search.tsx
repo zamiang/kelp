@@ -4,13 +4,12 @@ import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Meeting } from '../../components/shared/meeting-list';
-import DocumentRow from '../documents/document-row';
 import PersonRow from '../person/person-row';
-import { IDocument, IPerson, ISegment, IWebsite } from '../store/data-types';
+import { IPerson, ISegment } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
-import { WebsiteRow } from '../website/website-row';
+import { LargeWebsite } from '../website/large-website';
 
 const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
@@ -58,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = (props: { store: IStore }) => {
+const Search = (props: { store: IStore; isDarkMode: boolean }) => {
   const classes = useStyles();
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
@@ -92,31 +91,17 @@ const Search = (props: { store: IStore }) => {
   return (
     <div>
       <div className={classes.panel}>
-        {filteredResults.documents.length > 0 && (
-          <div className={classes.panel}>
-            <Typography className={classes.heading} variant="h6">
-              Documents
-            </Typography>
-            {filteredResults.documents.map((result: any) => (
-              <DocumentRow
-                selectedDocumentId={null}
-                key={result.item.id}
-                document={result.item as IDocument}
-                store={props.store}
-              />
-            ))}
-          </div>
-        )}
         {filteredResults.websites.length > 0 && (
           <div className={classes.panel}>
             <Typography className={classes.heading} variant="h6">
               Websites
             </Typography>
             {filteredResults.websites.map((result: any) => (
-              <WebsiteRow
+              <LargeWebsite
                 store={props.store}
                 key={result.item.id}
-                website={result.item as IWebsite}
+                item={result.item}
+                isDarkMode={props.isDarkMode}
               />
             ))}
           </div>

@@ -67,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
 export const LargeWebsite = (props: {
   store: IStore;
   item: IFeaturedWebsite;
-  hideItem: (item: IFeaturedWebsite) => void;
-  togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
+  hideItem?: (item: IFeaturedWebsite) => void;
+  togglePin?: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
   smGridSize?: number;
   isDarkMode: boolean;
 }) => {
@@ -122,14 +122,16 @@ export const LargeWebsite = (props: {
               </Typography>
             </Tooltip>
           </Grid>
-          {isCloseVisible && (
+          {isCloseVisible && props.hideItem && (
             <Grid item>
               <IconButton
                 size="small"
                 onClick={(event) => {
                   event.stopPropagation();
                   event.preventDefault();
-                  void props.hideItem(props.item);
+                  if (props.hideItem) {
+                    void props.hideItem(props.item);
+                  }
                   return false;
                 }}
               >
@@ -137,14 +139,16 @@ export const LargeWebsite = (props: {
               </IconButton>
             </Grid>
           )}
-          {(isCloseVisible || props.item.isPinned) && (
+          {(isCloseVisible || props.item.isPinned) && props.togglePin && (
             <Grid item>
               <IconButton
                 size="small"
                 onClick={(event) => {
                   event.stopPropagation();
                   event.preventDefault();
-                  void props.togglePin(props.item, props.item.isPinned);
+                  if (props.togglePin) {
+                    void props.togglePin(props.item, props.item.isPinned);
+                  }
                   return false;
                 }}
               >
