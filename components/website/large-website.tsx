@@ -86,8 +86,7 @@ export const LargeWebsite = (props: {
   return (
     <Grid
       item
-      xs={6}
-      sm={props.smGridSize || (3 as any)}
+      xs={props.smGridSize || (4 as any)}
       onMouseEnter={() => setCloseVisible(true)}
       onMouseLeave={() => setCloseVisible(false)}
     >

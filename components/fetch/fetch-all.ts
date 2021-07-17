@@ -20,6 +20,7 @@ import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
 import { batchFetchPeople } from './google/fetch-people';
 import { fetchSelf } from './google/fetch-self';
 import { fetchCalendar } from './microsoft/fetch-calendar';
+import { fetchMicrosoftSelf } from './microsoft/fetch-self';
 
 interface IReturnType {
   readonly personList: IPerson[];
@@ -97,6 +98,9 @@ const FetchAll = (
   const currentUser = useAsyncAbortable(() => fetchSelf(googleOauthToken), [
     googleOauthToken,
   ] as any);
+  if (msal && msal.getActiveAccount()) {
+    currentUser.result = fetchMicrosoftSelf(msal, currentUser.result || undefined);
+  }
 
   /**
    * DRIVE FILES
@@ -192,9 +196,10 @@ const FetchAll = (
   /**
    * Microsoft
    */
-  const microsoftCalendarResponse = useAsyncAbortable(() => fetchCalendar(microsoftAccount, msal), [
-    microsoftAccount?.localAccountId,
-  ] as any);
+  const microsoftCalendarResponse = useAsyncAbortable(
+    () => fetchCalendar(microsoftAccount, msal, currentUser?.result || undefined),
+    [microsoftAccount?.localAccountId] as any,
+  );
 
   let calendarEvents = calendarResponse.result ? calendarResponse.result.calendarEvents : [];
   if (microsoftCalendarResponse.result && microsoftCalendarResponse.result) {

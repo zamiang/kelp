@@ -1,5 +1,5 @@
 import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
-import { ISegment, responseStatus, segmentState } from '../../store/data-types';
+import { IPerson, ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { graphConfig, tokenRequest } from './auth-config';
 import { callMSGraph } from './fetch-helper';
 import { getTokenPopup } from './fetch-token';
@@ -377,13 +377,16 @@ const formatResponseStatus = (status?: ResponseType): responseStatus => {
   return 'notAttending';
 };
 
-const formatCalendarEvent = (event: Event): ISegment | null => {
+const formatCalendarEvent = (event: Event, currentUser: IPerson): ISegment | null => {
   const videoLink = event.onlineMeetingUrl;
   const start = event.start?.dateTime ? new Date(`${event.start?.dateTime}+0000`) : undefined;
   const end = event.end?.dateTime ? new Date(`${event.end?.dateTime}+0000`) : undefined;
   if (!start || !end) {
     return null;
   }
+  const creator = event?.organizer?.emailAddress?.address?.includes('outlook_')
+    ? undefined
+    : { email: event.organizer?.emailAddress?.address };
   return {
     id: event.id,
     link: event.webLink,
@@ -393,16 +396,21 @@ const formatCalendarEvent = (event: Event): ISegment | null => {
     location: event.location?.displayName,
     reminders: undefined,
     selfResponseStatus: formatResponseStatus(event.responseStatus?.response),
-    creator: { email: event.organizer?.emailAddress?.address },
-    organizer: { email: event.organizer?.emailAddress?.address },
-    description: event.body?.content,
+    creator: creator || currentUser,
+    organizer: creator || currentUser,
+    description: event.body?.content?.trim(),
     attendees: (event.attendees || [])
       .filter(
-        (attendee) => attendee.emailAddress && attendee.type !== 'resource', // filter out conference rooms
+        (attendee) => attendee.emailAddress?.address && attendee.type !== 'resource', // filter out conference rooms
       )
-      .map((a) => ({
-        email: a.emailAddress?.address,
-      })),
+
+      .map(
+        (a): attendee => ({
+          email: a.emailAddress?.address,
+          self: a.emailAddress?.address === currentUser.id,
+        }),
+      )
+      .filter((a) => a.email && !a.email.split('@')[0].includes('outlook_')),
     documentIdsFromDescription: [],
     attachments: [],
     meetingNotesLink: undefined,
@@ -414,14 +422,15 @@ const formatCalendarEvent = (event: Event): ISegment | null => {
 export const fetchCalendar = async (
   activeAccount?: AccountInfo,
   msal?: IPublicClientApplication,
+  currentUser?: IPerson,
 ): Promise<ISegment[]> => {
-  if (activeAccount && msal) {
+  if (activeAccount && msal && currentUser) {
     const token = await getTokenPopup(tokenRequest, activeAccount, msal).catch((error) => {
-      console.log(error);
+      console.log(error, 'getTokenPopup failure');
     });
     if (token) {
       const result = await callMSGraph(graphConfig.graphCalendarEndpoint, token.accessToken);
-      return result.value.map((event: Event) => formatCalendarEvent(event));
+      return result.value.map((event: Event) => formatCalendarEvent(event, currentUser));
     }
   }
   return [];

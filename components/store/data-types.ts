@@ -53,8 +53,7 @@ export interface IPerson {
 }
 
 /**
-
-* The attendee's response status. Possible values are:
+ * The attendee's response status. Possible values are:
  * - "needsAction" - The attendee has not responded to the invitation.
  * - "declined" - The attendee has declined the invitation.
  * - "tentative" - The attendee has tentatively accepted the invitation.

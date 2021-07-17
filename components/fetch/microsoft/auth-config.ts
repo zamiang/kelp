@@ -1,4 +1,6 @@
 import { LogLevel } from '@azure/msal-browser';
+import { formatISO } from 'date-fns';
+import config from '../../../constants/config';
 
 // Config object to be passed to Msal on creation
 const redirectUri = chrome.identity.getRedirectURL();
@@ -44,7 +46,9 @@ export const msalConfig = {
 // Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {
   graphMeEndpoint: 'https://graph.microsoft-ppe.com/v1.0/me',
-  graphCalendarEndpoint: 'https://graph.microsoft.com/v1.0/me/calendar/events', // https://docs.microsoft.com/en-us/graph/query-parameters
+  graphCalendarEndpoint: `https://graph.microsoft.com/v1.0/me/calendar/events?$filter=start/dateTime ge '${formatISO(
+    config.startDate,
+  )}' and start/dateTime lt '${formatISO(config.endDate)}'`, // https://docs.microsoft.com/en-us/graph/query-parameters
 };
 
 // Add here scopes for access token to be used at MS Graph API endpoints.
