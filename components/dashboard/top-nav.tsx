@@ -56,7 +56,8 @@ export const TopNav = (props: {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
-
+  console.log(location.pathname);
+  const isSearch = location.pathname === '/search';
   return (
     <Grid
       container
@@ -70,67 +71,69 @@ export const TopNav = (props: {
         </div>
       </Grid>
       <Grid item xs>
-        <Container maxWidth="lg" disableGutters>
-          <Grid container justifyContent="space-between">
-            <Grid item>
-              <Grid container>
-                <Grid item>
-                  <Tooltip title="Websites List">
-                    <IconButton
-                      className={'ignore-react-onclickoutside'}
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        return router.push('/home');
-                      }}
-                    >
-                      {location.pathname === '/home' ? (
-                        <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                      ) : props.isDarkMode ? (
-                        <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                      ) : (
-                        <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
-                <Grid item>
-                  <Tooltip title="Meetings List">
-                    <IconButton
-                      className={'ignore-react-onclickoutside'}
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        return router.push('/meetings');
-                      }}
-                    >
-                      {location.pathname === '/meetings' ? (
-                        <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                      ) : props.isDarkMode ? (
-                        <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                      ) : (
-                        <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
-              </Grid>
-            </Grid>
-            {(location.pathname === '/meetings' || location.pathname === '/home') && (
+        {!isSearch && (
+          <Container maxWidth="lg" disableGutters>
+            <Grid container justifyContent="space-between">
               <Grid item>
-                <TopFilters
-                  store={props.store}
-                  toggleFilter={props.toggleFilter}
-                  hideDialogUrl={props.hideDialogUrl}
-                  currentFilter={props.currentFilter}
-                  isDarkMode={props.isDarkMode}
-                />
+                <Grid container>
+                  <Grid item>
+                    <Tooltip title="Websites List">
+                      <IconButton
+                        className={'ignore-react-onclickoutside'}
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          return router.push('/home');
+                        }}
+                      >
+                        {location.pathname === '/home' ? (
+                          <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                        ) : props.isDarkMode ? (
+                          <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                        ) : (
+                          <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
+                  <Grid item>
+                    <Tooltip title="Meetings List">
+                      <IconButton
+                        className={'ignore-react-onclickoutside'}
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          return router.push('/meetings');
+                        }}
+                      >
+                        {location.pathname === '/meetings' ? (
+                          <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                        ) : props.isDarkMode ? (
+                          <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                        ) : (
+                          <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
+                </Grid>
               </Grid>
-            )}
-          </Grid>
-        </Container>
+              {(location.pathname === '/meetings' || location.pathname === '/home') && (
+                <Grid item>
+                  <TopFilters
+                    store={props.store}
+                    toggleFilter={props.toggleFilter}
+                    hideDialogUrl={props.hideDialogUrl}
+                    currentFilter={props.currentFilter}
+                    isDarkMode={props.isDarkMode}
+                  />
+                </Grid>
+              )}
+            </Grid>
+          </Container>
+        )}
       </Grid>
       <Grid item className={classes.leftRightSection}>
         <Grid container justifyContent="flex-end">

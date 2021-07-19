@@ -107,7 +107,9 @@ const PersonRow = (props: {
           <div className={rowStyles.rowTopPadding}>
             <Grid container>
               <Grid item xs={12} zeroMinWidth>
-                <Typography noWrap>{name}</Typography>
+                <Typography noWrap className={rowStyles.hoverText}>
+                  {name}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" noWrap>

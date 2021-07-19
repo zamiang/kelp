@@ -58,15 +58,10 @@ const useStyles = makeStyles((theme) => ({
     transition: 'background 0.3s, opacity 0.3s',
     cursor: 'pointer',
     textAlign: 'left',
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
     width: '100%',
     animation: '$fadeInAnimation ease 0.4s',
     animationIterationCount: 1,
     animationFillMode: 'forwards',
-    '&:hover': {
-      backgroundColor: theme.palette.divider,
-    },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
     },
@@ -74,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
   rowTopPadding: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
+  },
+  hoverText: {
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   rowNoHover: {
     background: 'transparent',

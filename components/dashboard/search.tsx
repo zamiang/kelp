@@ -82,6 +82,24 @@ const useStyles = makeStyles((theme) => ({
   lineCalendarContainer: {
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
+  topNav: {
+    position: 'fixed',
+    top: 7,
+    left: 195,
+    zIndex: 12,
+    maxWidth: 500,
+  },
+  button: {
+    borderRadius: 18,
+    background: theme.palette.background.paper,
+    padding: 10,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
 }));
 
 const Search = (props: { store: IStore; isDarkMode: boolean }) => {
@@ -117,9 +135,41 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
   const filteredResults = filterSearchResults(results);
   return (
     <div>
+      <Grid container className={classes.topNav} spacing={2}>
+        {filteredResults.websites.length && (
+          <Grid item>
+            <Typography
+              className={classes.button}
+              onClick={() => document.getElementById('websites')?.scrollIntoView()}
+            >
+              {filteredResults.websites.length} websites
+            </Typography>
+          </Grid>
+        )}
+        {filteredResults.people.length > 1 && (
+          <Grid item>
+            <Typography
+              className={classes.button}
+              onClick={() => document.getElementById('people')?.scrollIntoView()}
+            >
+              {filteredResults.people.length} people
+            </Typography>
+          </Grid>
+        )}
+        {filteredResults.meetings.length > 1 && (
+          <Grid item>
+            <Typography
+              className={classes.button}
+              onClick={() => document.getElementById('meetings')?.scrollIntoView()}
+            >
+              {filteredResults.meetings.length} meetings
+            </Typography>
+          </Grid>
+        )}
+      </Grid>
       <div className={classes.panel}>
         {filteredResults.websites.length > 0 && (
-          <div className={classes.panel}>
+          <div className={classes.panel} id="websites">
             <Typography className={classes.heading} variant="h6">
               Websites
             </Typography>
@@ -133,7 +183,7 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           </div>
         )}
         {filteredResults.people.length > 0 && (
-          <div className={classes.panel}>
+          <div className={classes.panel} id="people">
             <Typography className={classes.heading} variant="h6">
               People
             </Typography>
@@ -147,7 +197,7 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           </div>
         )}
         {filteredResults.meetings.length > 0 && (
-          <div className={classes.panel}>
+          <div className={classes.panel} id="meetings">
             <Typography className={classes.heading} variant="h6">
               Meetings
             </Typography>
