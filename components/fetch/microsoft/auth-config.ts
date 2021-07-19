@@ -51,6 +51,11 @@ export const graphConfig = {
   )}' and start/dateTime lt '${formatISO(config.endDate)}'`, // https://docs.microsoft.com/en-us/graph/query-parameters
 };
 
+export const getGraphCalendarInstancesEndpoint = (id: string) =>
+  `https://graph.microsoft.com/v1.0/me/calendar/events/${id}/instances?startDateTime=${formatISO(
+    config.startDate,
+  )}&endDateTime=${formatISO(config.endDate)}`;
+
 // Add here scopes for access token to be used at MS Graph API endpoints.
 export const tokenRequest = {
   scopes: ['Calendars.Read', 'offline_access'],

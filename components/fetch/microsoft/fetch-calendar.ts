@@ -1,6 +1,7 @@
 import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
+import { flatten } from 'lodash';
 import { IPerson, ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
-import { graphConfig, tokenRequest } from './auth-config';
+import { getGraphCalendarInstancesEndpoint, graphConfig, tokenRequest } from './auth-config';
 import { callMSGraph } from './fetch-helper';
 import { getTokenPopup } from './fetch-token';
 
@@ -387,6 +388,7 @@ const formatCalendarEvent = (event: Event, currentUser: IPerson): ISegment | nul
   const creator = event?.organizer?.emailAddress?.address?.includes('outlook_')
     ? undefined
     : { email: event.organizer?.emailAddress?.address };
+
   return {
     id: event.id,
     link: event.webLink,
@@ -419,6 +421,11 @@ const formatCalendarEvent = (event: Event, currentUser: IPerson): ISegment | nul
   };
 };
 
+const handleRecurringEvent = async (event: Event, accessToken: string, currentUser: IPerson) => {
+  const result = await callMSGraph(getGraphCalendarInstancesEndpoint(event.id), accessToken);
+  return result.value.map((e: Event) => formatCalendarEvent(e, currentUser));
+};
+
 export const fetchCalendar = async (
   activeAccount?: AccountInfo,
   msal?: IPublicClientApplication,
@@ -430,7 +437,16 @@ export const fetchCalendar = async (
     });
     if (token) {
       const result = await callMSGraph(graphConfig.graphCalendarEndpoint, token.accessToken);
-      return result.value.map((event: Event) => formatCalendarEvent(event, currentUser));
+      const regularEvents = result.value
+        .filter((event: Event) => !(event as any).recurrence)
+        .map((event: Event) => formatCalendarEvent(event, currentUser));
+      const recurringEvents = await Promise.all(
+        result.value
+          .filter((event: Event) => !!(event as any).recurrence)
+          .map(async (event: Event) => handleRecurringEvent(event, token.accessToken, currentUser)),
+      );
+
+      return regularEvents.concat(flatten(recurringEvents));
     }
   }
   return [];
