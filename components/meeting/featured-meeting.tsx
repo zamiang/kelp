@@ -117,7 +117,8 @@ export const FeaturedMeeting = (props: {
 
   const isFuture = new Date() < props.meeting.start;
   const isPast = new Date() > props.meeting.end;
-  const isHappeningNow =
+  const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
+  const isHappeningSoon =
     new Date() > subMinutes(props.meeting.start, 5) && new Date() < props.meeting.end;
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
@@ -125,15 +126,15 @@ export const FeaturedMeeting = (props: {
     <div
       className={clsx(
         !props.showLine && classes.container,
-        !isHappeningNow && classes.containerNow,
+        !isHappeningSoon && classes.containerNow,
         props.showLine && classes.containerLine,
       )}
     >
       <Grid container alignItems="center" spacing={2}>
         <Grid item>
           <div className={classes.dotContainer}>
-            <div className={clsx(classes.outerDot, !isHappeningNow && classes.dotNow)}></div>
-            <div className={clsx(classes.innerDot, !isHappeningNow && classes.dotNow)}></div>
+            <div className={clsx(classes.outerDot, !isHappeningSoon && classes.dotNow)}></div>
+            <div className={clsx(classes.innerDot, !isHappeningSoon && classes.dotNow)}></div>
           </div>
         </Grid>
         <Grid item xs>
@@ -161,7 +162,7 @@ export const FeaturedMeeting = (props: {
             {props.meeting.summary || '(no title)'}
           </Typography>
         </Grid>
-        {domain && isHappeningNow && (
+        {domain && isHappeningSoon && (
           <Grid item>
             <Button
               className={clsx(buttonClasses.button, classes.button)}

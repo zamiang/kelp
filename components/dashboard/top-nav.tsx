@@ -75,42 +75,46 @@ export const TopNav = (props: {
             <Grid item>
               <Grid container>
                 <Grid item>
-                  <IconButton
-                    className={'ignore-react-onclickoutside'}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      return router.push('/home');
-                    }}
-                  >
-                    {location.pathname === '/home' ? (
-                      <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    ) : props.isDarkMode ? (
-                      <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    ) : (
-                      <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    )}
-                  </IconButton>
+                  <Tooltip title="Websites List">
+                    <IconButton
+                      className={'ignore-react-onclickoutside'}
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        return router.push('/home');
+                      }}
+                    >
+                      {location.pathname === '/home' ? (
+                        <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      ) : props.isDarkMode ? (
+                        <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      ) : (
+                        <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
                 </Grid>
                 <Grid item>
-                  <IconButton
-                    className={'ignore-react-onclickoutside'}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      return router.push('/meetings');
-                    }}
-                  >
-                    {location.pathname === '/meetings' ? (
-                      <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    ) : props.isDarkMode ? (
-                      <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    ) : (
-                      <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    )}
-                  </IconButton>
+                  <Tooltip title="Meetings List">
+                    <IconButton
+                      className={'ignore-react-onclickoutside'}
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        return router.push('/meetings');
+                      }}
+                    >
+                      {location.pathname === '/meetings' ? (
+                        <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      ) : props.isDarkMode ? (
+                        <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      ) : (
+                        <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
                 </Grid>
               </Grid>
             </Grid>

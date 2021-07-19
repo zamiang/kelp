@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
@@ -73,6 +73,18 @@ export const DesktopDashboard = (props: {
       setFilter(f);
     }
   };
+
+  // This would be the initial time. We can get it from a hook
+  // (meta.modified in your case) or for this example from a ref.
+  // I'm setting this to 2000 meaning it was updated 2 seconds ago.
+  const [minutes, setMinutes] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMinutes((minutes) => minutes + 1);
+    }, 1000 * 60);
+    return () => clearInterval(interval);
+  }, []);
 
   const hideItem = (item: IFeaturedWebsite) => setHideDialogUrl(item.websiteId);
 
@@ -165,6 +177,7 @@ export const DesktopDashboard = (props: {
       </div>
       <div className={classes.footerContainer}>
         <Footer />
+        <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
       </div>
     </ErrorBoundaryComponent>
   );

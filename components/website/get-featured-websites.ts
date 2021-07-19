@@ -1,6 +1,7 @@
-import { differenceInDays, subDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import { flatten, uniqBy } from 'lodash';
 import config from '../../constants/config';
+import { getValueForDate } from '../shared/order-by-count';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -14,16 +15,6 @@ export interface IFeaturedWebsite {
   text?: string;
   date: Date;
 }
-
-const decay = 0.95;
-
-const getValueForDate = (date: Date) => {
-  const daysFromToday = differenceInDays(new Date(), date);
-  if (daysFromToday < 1) {
-    return 1;
-  }
-  return decay ** daysFromToday;
-};
 
 /**
  * Gets websites in the featured section by looking through meetings for the coming week

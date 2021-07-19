@@ -2,17 +2,18 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Fuse from 'fuse.js';
-import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
-import { IPerson, ISegment, IWebsite } from '../store/data-types';
+import { IPerson, ISegment } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
+
+const minScore = 0.75;
 
 const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
@@ -20,7 +21,7 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const websites: ISearchItem[] = [];
   searchResults.forEach((searchResult) => {
     const result = searchResult.item;
-    if (!searchResult.score || searchResult.score > 0.7) {
+    if (!searchResult.score || searchResult.score > minScore) {
       return;
     }
     switch (result.type) {
@@ -39,25 +40,22 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   };
 };
 
+const maxWebsiteResults = 12;
+
 const WebsiteResults = (props: { store: IStore; isDarkMode: boolean; websites: ISearchItem[] }) => {
-  const websites = (
-    uniqBy(
-      props.websites.map((r) => r.item),
-      'id',
-    ) as any
-  ).map(
-    (website: IWebsite): IFeaturedWebsite => ({
-      websiteId: website.id,
+  const websites = props.websites.map(
+    (website: ISearchItem): IFeaturedWebsite => ({
+      websiteId: website.item.id,
       meetings: [],
-      websiteDatabaseId: website.id,
+      websiteDatabaseId: website.item.id,
       isPinned: false,
-      text: website.title,
-      date: website.visitedTime,
+      text: (website.item as any).title,
+      date: (website.item as any).visitedTime,
     }),
   );
   return (
     <React.Fragment>
-      {websites.map((website: IFeaturedWebsite) => (
+      {websites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
         <LargeWebsite
           store={props.store}
           key={website.websiteId}
@@ -139,7 +137,7 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
             <Typography className={classes.heading} variant="h6">
               People
             </Typography>
-            {filteredResults.people.map((result: any) => (
+            {filteredResults.people.slice(0, 9).map((result: any) => (
               <PersonRow
                 selectedPersonId={null}
                 key={result.item.id}
@@ -153,7 +151,7 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
             <Typography className={classes.heading} variant="h6">
               Meetings
             </Typography>
-            {filteredResults.meetings.map((result: any) => (
+            {filteredResults.meetings.slice(0, 9).map((result: any) => (
               <FeaturedMeeting
                 key={result.item.id}
                 meeting={result.item as ISegment}

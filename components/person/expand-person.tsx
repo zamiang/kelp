@@ -1,9 +1,10 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import { flatten, uniqBy } from 'lodash';
+import { flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EmailIcon from '../../public/icons/email-white.svg';
@@ -11,16 +12,15 @@ import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
+import { orderByCount } from '../shared/order-by-count';
 import usePanelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee, IPerson, ISegment, ISegmentDocument } from '../store/data-types';
 import { getAssociates } from '../store/helpers';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite } from '../website/get-featured-websites';
-
-const ADD_SENDER_LINK =
-  'https://www.lifewire.com/add-a-sender-to-your-gmail-address-book-fast-1171918';
+import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
+import { LargeWebsite } from '../website/large-website';
 
 const ExpandPerson = (props: {
   store: IStore;
@@ -39,9 +39,10 @@ const ExpandPerson = (props: {
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
   const [segments, setSegments] = useState<ISegment[]>([]);
   const [upcomingSegments, setUpcomingSegments] = useState<ISegment[]>([]);
-  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+  const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   const [associatesStats, setAssociatesStats] = useState<any>({});
+  const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,21 +68,21 @@ const ExpandPerson = (props: {
         setAssociates(a.attendees.slice(0, 5));
         setAssociatesStats(a.attendeeStats);
 
-        // segment documents
-        // potentially should be in the database
+        const websitesForMeetings = await Promise.all(
+          filteredSegments.map(async (meeting) => {
+            if (meeting) {
+              const result = await getWebsitesForMeeting(meeting, props.store);
+              return result;
+            }
+            return [];
+          }),
+        );
+        const flattenedWebsites = orderByCount(flatten(websitesForMeetings), 'websiteId', 'date');
+        setWebsites(flattenedWebsites);
+
         const segmentDocumentsFromPersonEdits =
           await props.store.segmentDocumentStore.getAllForPersonId(personId);
-        const segmentDocumentsFromSegments = await Promise.all(
-          filteredSegments.map(async (s: ISegment) =>
-            props.store.segmentDocumentStore.getAllForSegment(s),
-          ),
-        );
-        const segmentDocumentsCombined = uniqBy(
-          segmentDocumentsFromPersonEdits.concat(flatten(segmentDocumentsFromSegments)),
-          'segmentId',
-        );
-
-        setSegmentDocuments(segmentDocumentsCombined);
+        setSegmentDocuments(segmentDocumentsFromPersonEdits);
       }
     };
     void fetchData();
@@ -133,6 +134,35 @@ const ExpandPerson = (props: {
         )}
       </div>
       <div className={classes.container}>
+        {websites.length > 0 && (
+          <div className={rowStyles.rowHighlight} style={{ margin: 0 }}>
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Associated websites
+            </Typography>
+            <Grid container spacing={4}>
+              {websites.map((item) => (
+                <LargeWebsite
+                  key={item.websiteId}
+                  item={item}
+                  store={props.store}
+                  isDarkMode={props.isDarkMode}
+                />
+              ))}
+            </Grid>
+          </div>
+        )}
+        {segmentDocuments.length > 0 && (
+          <div className={classes.section}>
+            <Typography variant="h6" style={{ marginBottom: 0 }}>
+              Documents they edited recently
+            </Typography>
+            <SegmentDocumentList
+              segmentDocuments={segmentDocuments}
+              store={props.store}
+              isSmall={true}
+            />
+          </div>
+        )}
         {upcomingSegments.length > 0 && (
           <div className={rowStyles.rowHighlight} style={{ margin: 0 }}>
             <Typography variant="h6" className={rowStyles.rowText}>
@@ -144,37 +174,6 @@ const ExpandPerson = (props: {
               isDarkMode={props.isDarkMode}
               currentFilter={props.currentFilter}
               hideWebsite={props.hideWebsite}
-            />
-          </div>
-        )}
-        {!person.isInContacts && (
-          <div className={classes.section}>
-            <Typography variant="body2">
-              Add this person to your google contacts for more info{' '}
-              <Link target="_blank" href={ADD_SENDER_LINK}>
-                (guide)
-              </Link>
-              <br />
-              {person.emailAddresses && (
-                <Link
-                  target="_blank"
-                  href={`https://mail.google.com/mail/u/0/#search/${person.emailAddresses[0]}`}
-                >
-                  (search Gmail)
-                </Link>
-              )}
-            </Typography>
-          </div>
-        )}
-        {segmentDocuments.length > 0 && (
-          <div className={classes.section}>
-            <Typography variant="h6" style={{ marginBottom: 0 }}>
-              Related documents
-            </Typography>
-            <SegmentDocumentList
-              segmentDocuments={segmentDocuments}
-              store={props.store}
-              isSmall={true}
             />
           </div>
         )}

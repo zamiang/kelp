@@ -1,1 +1,6 @@
-export const cleanupUrl = (url: string) => url.split('?')[0].split('#')[0];
+export const cleanupUrl = (url: string) => {
+  if (url.includes('news.ycombinator.com')) {
+    return url;
+  }
+  return url.split('?')[0].split('#')[0];
+};
