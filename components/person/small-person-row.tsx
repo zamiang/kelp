@@ -1,7 +1,7 @@
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { IPerson } from '../store/data-types';

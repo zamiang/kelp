@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import PinIconWhite from '../../public/icons/pin-white.svg';
@@ -90,7 +90,7 @@ export const LargeWebsite = (props: {
       onMouseEnter={() => setCloseVisible(true)}
       onMouseLeave={() => setCloseVisible(false)}
     >
-      <Link href={props.item.websiteId} underline="none">
+      <Link href={props.item.rawUrl} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
           <div
             className={image?.image ? classes.imageContainer : classes.faviconContainer}

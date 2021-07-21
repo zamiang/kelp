@@ -2,7 +2,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
@@ -56,7 +56,6 @@ export const TopNav = (props: {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
-  console.log(location.pathname);
   const isSearch = location.pathname === '/search';
   return (
     <Grid
@@ -120,17 +119,15 @@ export const TopNav = (props: {
                   </Grid>
                 </Grid>
               </Grid>
-              {(location.pathname === '/meetings' || location.pathname === '/home') && (
-                <Grid item>
-                  <TopFilters
-                    store={props.store}
-                    toggleFilter={props.toggleFilter}
-                    hideDialogUrl={props.hideDialogUrl}
-                    currentFilter={props.currentFilter}
-                    isDarkMode={props.isDarkMode}
-                  />
-                </Grid>
-              )}
+              <Grid item>
+                <TopFilters
+                  store={props.store}
+                  toggleFilter={props.toggleFilter}
+                  hideDialogUrl={props.hideDialogUrl}
+                  currentFilter={props.currentFilter}
+                  isDarkMode={props.isDarkMode}
+                />
+              </Grid>
             </Grid>
           </Container>
         )}

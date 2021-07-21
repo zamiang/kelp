@@ -1,5 +1,6 @@
 import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
+import { cleanupUrl } from '../../shared/cleanup-url';
 import { IWebsiteImage } from '../data-types';
 import { dbType } from '../db';
 
@@ -12,6 +13,10 @@ export default class WebsiteImageModel {
   }
 
   async getById(id: string): Promise<IWebsiteImage | undefined> {
+    const imageByRawUrl = await this.db.getFromIndex('websiteImage', 'by-raw-url', id);
+    if (imageByRawUrl) {
+      return imageByRawUrl;
+    }
     return this.db.get('websiteImage', id);
   }
 
@@ -47,7 +52,8 @@ export default class WebsiteImageModel {
       return;
     }
     const result = await this.db.put('websiteImage', {
-      id: url,
+      id: cleanupUrl(url),
+      rawUrl: url,
       image,
       date,
     });

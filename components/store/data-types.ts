@@ -123,6 +123,7 @@ export interface IWebsite {
   readonly id: string;
   readonly title: string;
   readonly url: string;
+  readonly rawUrl: string;
   readonly domain: string;
   readonly documentId?: string;
   readonly meetingId?: string;
@@ -135,6 +136,7 @@ export interface IWebsiteImage {
   readonly id: string;
   readonly image: string;
   readonly date: Date;
+  readonly rawUrl: string;
 }
 
 export interface IWebsiteBlocklist {

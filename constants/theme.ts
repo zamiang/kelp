@@ -124,6 +124,7 @@ export const lightTheme = createTheme({
     h2: {
       fontWeight: 400,
       fontStyle: 'normal',
+      fontSize: 32,
     },
     h3: {
       fontSize: 20,
@@ -240,7 +241,6 @@ export const lightTheme = createTheme({
     },
     MuiDialog: {
       paperWidthSm: {
-        minHeight: '90vh',
         width: '100%',
       },
     },
@@ -378,6 +378,7 @@ export const darkTheme = createTheme({
     },
     h2: {
       fontWeight: 400,
+      fontSize: 32,
       fontStyle: 'normal',
     },
     h3: {
@@ -495,7 +496,6 @@ export const darkTheme = createTheme({
     },
     MuiDialog: {
       paperWidthSm: {
-        minHeight: '90vh',
         width: '100%',
       },
     },

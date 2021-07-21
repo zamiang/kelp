@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 import ChevronIconWhite from '../../public/icons/chevron-right-white.svg';
 import ChevronIcon from '../../public/icons/chevron-right.svg';

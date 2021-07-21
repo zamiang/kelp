@@ -6,6 +6,7 @@ import { IWebsite } from '../../store/data-types';
 const formatSite = (site: chrome.history.HistoryItem): IWebsite => ({
   id: site.id,
   url: cleanupUrl(site.url!),
+  rawUrl: site.url!,
   title: site.title!,
   visitedTime: site.lastVisitTime ? new Date(site.lastVisitTime) : new Date(),
   domain: new URL(site.url!).host,

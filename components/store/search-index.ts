@@ -11,6 +11,7 @@ const documentToWebsite = (document: IDocument): IWebsite => ({
   id: document.link!,
   title: document.name!,
   url: document.link!,
+  rawUrl: document.link!,
   documentId: document.id,
   domain: document.link!,
   visitedTime: document.updatedAt!,

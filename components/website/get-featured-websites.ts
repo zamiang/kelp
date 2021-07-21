@@ -8,6 +8,7 @@ import { IStore } from '../store/use-store';
 export interface IFeaturedWebsite {
   documentId?: string;
   websiteId: string;
+  rawUrl: string;
   document?: IDocument;
   meetings: ISegment[];
   websiteDatabaseId: string | null;
@@ -57,6 +58,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
         meetings: [] as any,
         nextMeetingStartsAt: undefined,
         websiteId: link,
+        rawUrl: item.link,
         text: item.title,
         date: item.time,
         websiteDatabaseId: null,
@@ -76,6 +78,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
       meetings: item.meetingId ? [item.meetingId] : ([] as any),
       nextMeetingStartsAt: undefined,
       websiteId: item.url,
+      rawUrl: item.rawUrl,
       text: item.title,
       date: item.visitedTime,
       websiteDatabaseId: item.id,
@@ -152,6 +155,7 @@ export const getWebsitesForMeeting = async (
           meetings: [meeting],
           nextMeetingStartsAt: undefined,
           websiteId: link,
+          rawUrl: link,
           websiteDatabaseId: undefined as any,
           text: document.name,
           date: item.date,
@@ -174,6 +178,7 @@ export const getWebsitesForMeeting = async (
       websiteId: item.url,
       websiteDatabaseId: item.id,
       text: item.title,
+      rawUrl: item.rawUrl,
       date: item.visitedTime,
       isPinned: pinIndex[item.url] ? true : false,
     } as IFeaturedWebsite;

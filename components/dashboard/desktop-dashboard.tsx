@@ -1,17 +1,20 @@
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
+import { darkTheme, lightTheme } from '../../constants/theme';
 import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import Footer from '../homepage/footer';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
+import { Onboarding } from '../onboarding/onboarding';
 import ExpandPerson from '../person/expand-person';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
@@ -121,6 +124,9 @@ export const DesktopDashboard = (props: {
           isDarkMode={props.isDarkMode}
           setIsDarkMode={props.setIsDarkMode}
         />
+        <ThemeProvider theme={props.isDarkMode ? lightTheme : darkTheme}>
+          <Onboarding />
+        </ThemeProvider>
         <div className={classes.container}>
           <Container maxWidth="lg" disableGutters>
             <div>

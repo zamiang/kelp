@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   maxWidth: {},
   grid: {
-    maxWidth: theme.breakpoints.width('sm'),
+    maxWidth: theme.breakpoints.values.sm,
     borderBottom: `1px solid ${theme.palette.divider}`,
     minHeight: 70,
     paddingTop: 9,

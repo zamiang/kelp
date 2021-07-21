@@ -1,12 +1,12 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Fuse from 'fuse.js';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
-import { IPerson, ISegment } from '../store/data-types';
+import { IPerson, ISegment, IWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
@@ -49,8 +49,9 @@ const WebsiteResults = (props: { store: IStore; isDarkMode: boolean; websites: I
       meetings: [],
       websiteDatabaseId: website.item.id,
       isPinned: false,
-      text: (website.item as any).title,
-      date: (website.item as any).visitedTime,
+      rawUrl: (website.item as IWebsite).rawUrl || website.item.id,
+      text: (website.item as IWebsite).title,
+      date: (website.item as IWebsite).visitedTime,
     }),
   );
   return (

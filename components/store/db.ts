@@ -76,6 +76,7 @@ interface Db extends DBSchema {
     value: IWebsite;
     key: string;
     indexes: {
+      'by-raw-url': string;
       'by-domain': string;
       'by-segment-id': string;
       'by-segment-title': string;
@@ -88,6 +89,9 @@ interface Db extends DBSchema {
   websiteImage: {
     value: IWebsiteImage;
     key: string;
+    indexes: {
+      'by-raw-url': string;
+    };
   };
   websiteBlocklist: {
     value: IWebsiteBlocklist;
@@ -109,7 +113,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 8;
+const databaseVerson = 9;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
@@ -151,6 +155,23 @@ const options = {
       return;
     } else if (oldVersion === 7) {
       db.createObjectStore('websitePin', { keyPath: 'id' });
+      return;
+    } else if (oldVersion === 8) {
+      db.deleteObjectStore('websiteImage');
+      const store = db.createObjectStore('websiteImage', {
+        keyPath: 'id',
+      });
+
+      store.createIndex('by-raw-url', 'rawUrl', { unique: false });
+
+      db.deleteObjectStore('website');
+      const websiteStore = db.createObjectStore('website', {
+        keyPath: 'id',
+      });
+      websiteStore.createIndex('by-raw-url', 'rawUrl', { unique: false });
+      websiteStore.createIndex('by-domain', 'domain', { unique: false });
+      websiteStore.createIndex('by-segment-id', 'meetingId', { unique: false });
+      websiteStore.createIndex('by-segment-title', 'meetingName', { unique: false });
       return;
     }
 
