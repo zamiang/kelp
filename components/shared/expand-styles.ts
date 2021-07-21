@@ -2,10 +2,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   topContainer: {
-    paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
-    margin: 0,
-    width: 'auto',
   },
   container: {
     margin: 0,
@@ -58,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     height: 73,
     width: 73,
     fontSize: 50,
-    marginBottom: theme.spacing(2),
   },
   link: {
     color: theme.palette.primary.dark,

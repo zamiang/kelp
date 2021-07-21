@@ -143,8 +143,13 @@ const ExpandedMeeting = (props: {
   const hasWebsites = websites.length > 0;
   return (
     <React.Fragment>
-      <div className={classes.topContainer}>
-        <div className={classes.headingContainer}>
+      <Grid
+        container
+        className={classes.topContainer}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Grid item>
           <Typography variant="h3" gutterBottom>
             {meeting.summary || '(no title)'}
           </Typography>
@@ -152,67 +157,69 @@ const ExpandedMeeting = (props: {
             {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
             {format(meeting.end, 'p')}
           </Typography>
-        </div>
-        <Grid container spacing={2}>
-          {!hasMeetingNotes && (
-            <Grid item xs={6}>
-              <Button
-                onClick={() =>
-                  createSmartMeetingNotes(meeting, props.store, websites, setMeetingNotesLoading)
-                }
-                startIcon={
-                  isMeetingNotesLoading ? (
-                    <CircularProgress size={20} />
-                  ) : (
-                    <PlusIcon width="24" height="24" />
-                  )
-                }
-                disabled={isMeetingNotesLoading}
-                disableElevation
-                variant="outlined"
-                color="primary"
-                className={buttonClasses.button}
-              >
-                Smart Notes
-              </Button>
-            </Grid>
-          )}
-          {hasMeetingNotes && (
-            <Grid item xs={6}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
-                startIcon={<SaveIcon width="24" height="24" />}
-                className={buttonClasses.button}
-              >
-                View Notes
-              </Button>
-            </Grid>
-          )}
-          <Grid item xs={6}>
-            <EmailGuestsButton
-              meeting={meeting}
-              websites={websites}
-              websiteStore={props.store.websitesStore}
-            />
-          </Grid>
-          {shouldShowMeetingLink && (
-            <Grid item xs={12}>
-              <Button
-                onClick={() => window.open(meeting.videoLink, '_blank')}
-                variant="contained"
-                disableElevation
-                color="primary"
-                startIcon={<VideoIcon width="24" height="24" />}
-                className={buttonClasses.button}
-              >
-                Join {videoLinkDomain}
-              </Button>
-            </Grid>
-          )}
         </Grid>
-      </div>
+        <Grid item>
+          <Grid container spacing={2}>
+            {!hasMeetingNotes && (
+              <Grid item>
+                <Button
+                  onClick={() =>
+                    createSmartMeetingNotes(meeting, props.store, websites, setMeetingNotesLoading)
+                  }
+                  startIcon={
+                    isMeetingNotesLoading ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <PlusIcon width="24" height="24" />
+                    )
+                  }
+                  disabled={isMeetingNotesLoading}
+                  disableElevation
+                  variant="outlined"
+                  color="primary"
+                  className={buttonClasses.button}
+                >
+                  Smart Notes
+                </Button>
+              </Grid>
+            )}
+            {hasMeetingNotes && (
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
+                  startIcon={<SaveIcon width="24" height="24" />}
+                  className={buttonClasses.button}
+                >
+                  View Notes
+                </Button>
+              </Grid>
+            )}
+            <Grid item>
+              <EmailGuestsButton
+                meeting={meeting}
+                websites={websites}
+                websiteStore={props.store.websitesStore}
+              />
+            </Grid>
+            {shouldShowMeetingLink && (
+              <Grid item>
+                <Button
+                  onClick={() => window.open(meeting.videoLink, '_blank')}
+                  variant="contained"
+                  disableElevation
+                  color="primary"
+                  startIcon={<VideoIcon width="24" height="24" />}
+                  className={buttonClasses.button}
+                >
+                  Join {videoLinkDomain}
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
       <div className={classes.container}>
         {hasWebsites && (
           <React.Fragment>

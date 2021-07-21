@@ -1,5 +1,4 @@
 import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
@@ -13,7 +12,6 @@ import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import { orderByCount } from '../shared/order-by-count';
-import usePanelStyles from '../shared/panel-styles';
 import useRowStyles from '../shared/row-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee, IPerson, ISegment, ISegmentDocument } from '../store/data-types';
@@ -32,7 +30,6 @@ const ExpandPerson = (props: {
 }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
-  const panelClasses = usePanelStyles();
   const rowStyles = useRowStyles();
   const { slug }: any = useParams();
   const personId = props.personId || decodeURIComponent(slug);
@@ -93,31 +90,44 @@ const ExpandPerson = (props: {
   }
   const emailAddress = person.emailAddresses[0];
   return (
-    <div className={panelClasses.panel}>
-      <div className={classes.topContainer}>
-        <Box flexDirection="column" alignItems="center" display="flex">
-          <Avatar
-            alt={`Profile photo for ${person.name || person.emailAddresses[0] || undefined}`}
-            className={classes.avatar}
-            src={person.imageUrl || ''}
-          >
-            {(person.name || person.id)[0]}
-          </Avatar>
-          <Typography className={classes.titleCenter} variant="h3" color="textPrimary" gutterBottom>
-            {person.name}
-          </Typography>
-        </Box>
-        {emailAddress && (
-          <div style={{ textAlign: 'center' }}>
-            <Typography variant="h5">
-              {emailAddress}{' '}
-              <Link
-                style={{ cursor: 'pointer' }}
-                onClick={() => navigator.clipboard.writeText(emailAddress)}
+    <React.Fragment>
+      <Grid container className={classes.topContainer} justifyContent="space-between">
+        <Grid item>
+          <Grid container alignItems="center" spacing={2}>
+            <Grid item>
+              <Avatar
+                alt={`Profile photo for ${person.name || person.emailAddresses[0] || undefined}`}
+                className={classes.avatar}
+                src={person.imageUrl || ''}
               >
-                copy
-              </Link>
-            </Typography>
+                {(person.name || person.id)[0]}
+              </Avatar>
+            </Grid>
+            <Grid item>
+              <Typography
+                className={classes.titleCenter}
+                variant="h3"
+                color="textPrimary"
+                gutterBottom
+              >
+                {person.name}
+              </Typography>
+              {emailAddress && (
+                <Typography variant="h5">
+                  {emailAddress}{' '}
+                  <Link
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigator.clipboard.writeText(emailAddress)}
+                  >
+                    copy
+                  </Link>
+                </Typography>
+              )}
+            </Grid>
+          </Grid>
+        </Grid>
+        {emailAddress && (
+          <Grid item justify="flex-end">
             <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
                 className={buttonClasses.button}
@@ -130,9 +140,9 @@ const ExpandPerson = (props: {
                 Email Contact
               </Button>
             </div>
-          </div>
+          </Grid>
         )}
-      </div>
+      </Grid>
       <div className={classes.container}>
         {websites.length > 0 && (
           <div className={rowStyles.rowHighlight} style={{ margin: 0 }}>
@@ -200,7 +210,7 @@ const ExpandPerson = (props: {
           />
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
