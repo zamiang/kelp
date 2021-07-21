@@ -141,7 +141,9 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           <Grid item>
             <Typography
               className={classes.button}
-              onClick={() => document.getElementById('websites')?.scrollIntoView()}
+              onClick={() =>
+                document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
+              }
             >
               {filteredResults.websites.length} websites
             </Typography>
@@ -151,7 +153,9 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           <Grid item>
             <Typography
               className={classes.button}
-              onClick={() => document.getElementById('people')?.scrollIntoView()}
+              onClick={() =>
+                document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
+              }
             >
               {filteredResults.people.length} people
             </Typography>
@@ -161,7 +165,9 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           <Grid item>
             <Typography
               className={classes.button}
-              onClick={() => document.getElementById('meetings')?.scrollIntoView()}
+              onClick={() =>
+                document.getElementById('meetings')?.scrollIntoView({ behavior: 'smooth' })
+              }
             >
               {filteredResults.meetings.length} meetings
             </Typography>

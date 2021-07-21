@@ -127,7 +127,7 @@ const ExpandPerson = (props: {
           </Grid>
         </Grid>
         {emailAddress && (
-          <Grid item justify="flex-end">
+          <Grid item justifyContent="flex-end">
             <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
                 className={buttonClasses.button}

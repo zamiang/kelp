@@ -1,5 +1,5 @@
 import { LogLevel } from '@azure/msal-browser';
-import { formatISO } from 'date-fns';
+import { format } from 'date-fns';
 import config from '../../../constants/config';
 
 // Config object to be passed to Msal on creation
@@ -43,18 +43,22 @@ export const msalConfig = {
   },
 };
 
+const dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
 // Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {
   graphMeEndpoint: 'https://graph.microsoft-ppe.com/v1.0/me',
-  graphCalendarEndpoint: `https://graph.microsoft.com/v1.0/me/calendar/events?$filter=start/dateTime ge '${formatISO(
+  graphCalendarEndpoint: `https://graph.microsoft.com/v1.0/me/calendar/events?$filter=start/dateTime ge '${format(
     config.startDate,
-  )}' and start/dateTime lt '${formatISO(config.endDate)}'`, // https://docs.microsoft.com/en-us/graph/query-parameters
+    dateFormat,
+  )}' and start/dateTime lt '${format(config.endDate, dateFormat)}'`, // https://docs.microsoft.com/en-us/graph/query-parameters
 };
 
 export const getGraphCalendarInstancesEndpoint = (id: string) =>
-  `https://graph.microsoft.com/v1.0/me/calendar/events/${id}/instances?startDateTime=${formatISO(
+  `https://graph.microsoft.com/v1.0/me/calendar/events/${id}/instances?startDateTime=${format(
     config.startDate,
-  )}&endDateTime=${formatISO(config.endDate)}`;
+    dateFormat,
+  )}&endDateTime=${format(config.endDate, dateFormat)}`;
 
 // Add here scopes for access token to be used at MS Graph API endpoints.
 export const tokenRequest = {

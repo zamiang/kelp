@@ -38,12 +38,12 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     maxWidth: 251,
     top: 54,
-    left: 247,
+    left: 217,
     zIndex: 20,
   },
   tooltipSettings: {
     left: 'auto',
-    right: 0,
+    right: 3,
   },
   tooltipLightTheme: {
     left: 'auto',
