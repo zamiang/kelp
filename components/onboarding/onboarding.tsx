@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   tooltip: {},
 }));
 
-export const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => {
+const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
     <Dialog maxWidth="sm" open={true}>
@@ -76,10 +76,7 @@ export const WelcomePopup = (props: { step: number; setStep: (step: number) => v
   );
 };
 
-export const WebsitesCalendarSwitcher = (props: {
-  step: number;
-  setStep: (step: number) => void;
-}) => {
+const WebsitesCalendarSwitcher = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
     <div className={classes.tooltip}>
@@ -94,7 +91,7 @@ export const WebsitesCalendarSwitcher = (props: {
   );
 };
 
-export const LightDarkMode = (props: { step: number; setStep: (step: number) => void }) => {
+const LightDarkMode = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
     <div className={classes.tooltip}>
@@ -110,7 +107,7 @@ export const LightDarkMode = (props: { step: number; setStep: (step: number) => 
   );
 };
 
-export const WebsitesList = (props: { step: number; setStep: (step: number) => void }) => {
+const WebsitesList = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
     <div className={classes.tooltip}>
@@ -129,7 +126,7 @@ export const WebsitesList = (props: { step: number; setStep: (step: number) => v
   );
 };
 
-export const SettingsTab = (props: { step: number; setStep: (step: number) => void }) => {
+const SettingsTab = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
     <div className={classes.tooltip}>
