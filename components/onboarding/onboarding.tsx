@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/theme';
@@ -31,7 +32,66 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: mediumFontFamily,
     fontWeight: 500,
   },
-  tooltip: {},
+  tooltip: {
+    background: theme.palette.background.default,
+    position: 'fixed',
+    padding: theme.spacing(2),
+    maxWidth: 251,
+    top: 54,
+    left: 247,
+    zIndex: 20,
+  },
+  tooltipSettings: {
+    left: 'auto',
+    right: 0,
+  },
+  tooltipLightTheme: {
+    left: 'auto',
+    right: 35,
+  },
+  tooltipWebsites: {
+    top: 159,
+    left: 39,
+  },
+  arrowUp: {
+    position: 'absolute',
+    top: -8,
+    left: theme.spacing(2),
+    width: 0,
+    height: 0,
+    borderLeft: '8px solid transparent',
+    borderRight: '8px solid transparent',
+    borderBottom: `8px solid ${theme.palette.background.default}`,
+  },
+  arrowRight: {
+    position: 'absolute',
+    right: -8,
+    top: theme.spacing(2),
+    width: 0,
+    height: 0,
+    borderTop: '8px solid transparent',
+    borderBottom: '8px solid transparent',
+    borderLeft: `8px solid ${theme.palette.background.default}`,
+  },
+  arrowUpLightTheme: {
+    left: 'auto',
+    right: theme.spacing(6),
+  },
+  arrowUpSettings: {
+    left: 'auto',
+    right: theme.spacing(2),
+  },
+  button: {
+    padding: 0,
+    marginTop: theme.spacing(1),
+    fontStyle: 'normal',
+    fontFamily: mediumFontFamily,
+    fontWeight: 500,
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
 }));
 
 const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => {
@@ -80,13 +140,21 @@ const WebsitesCalendarSwitcher = (props: { step: number; setStep: (step: number)
   const classes = useStyles();
   return (
     <div className={classes.tooltip}>
-      💡<Typography className={classes.bold}>Tip {props.step - 1}/3</Typography>
+      <div className={classes.arrowUp}></div>
       <Typography>
+        💡
+        <span className={classes.bold}>
+          Tip {props.step - 1}/{maxTips}
+        </span>
         : Switch to calender view to see documents associated with your meetings.
       </Typography>
-      <Button color="primary" onClick={() => props.setStep(props.step + 1)}>
+      <Typography
+        color="primary"
+        onClick={() => props.setStep(props.step + 1)}
+        className={classes.button}
+      >
         Next
-      </Button>
+      </Typography>
     </div>
   );
 };
@@ -94,15 +162,22 @@ const WebsitesCalendarSwitcher = (props: { step: number; setStep: (step: number)
 const LightDarkMode = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
-    <div className={classes.tooltip}>
-      💡
-      <Typography className={classes.bold}>
-        Tip {props.step - 1}/{maxTips}
+    <div className={clsx(classes.tooltip, classes.tooltipLightTheme)}>
+      <div className={clsx(classes.arrowUp, classes.arrowUpLightTheme)}></div>
+      <Typography>
+        💡
+        <span className={classes.bold}>
+          Tip {props.step - 1}/{maxTips}
+        </span>
+        : Prefer a light or dark theme? Toggle to switch.
       </Typography>
-      <Typography>: Prefer a light theme? Toggle to switch.</Typography>
-      <Button color="primary" onClick={() => props.setStep(props.step + 1)}>
+      <Typography
+        color="primary"
+        onClick={() => props.setStep(props.step + 1)}
+        className={classes.button}
+      >
         Next
-      </Button>
+      </Typography>
     </div>
   );
 };
@@ -110,18 +185,26 @@ const LightDarkMode = (props: { step: number; setStep: (step: number) => void })
 const WebsitesList = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
-    <div className={classes.tooltip}>
-      💡
-      <Typography className={classes.bold}>
-        Tip {props.step - 1}/{maxTips}
-      </Typography>
+    <div className={clsx(classes.tooltip, classes.tooltipWebsites)}>
+      <div className={classes.arrowRight}></div>
       <Typography>
-        : These tiles are ordered based on your habit. From frequently visited sites. Hover over the
-        text to remove website.
+        💡
+        <span className={classes.bold}>
+          Tip {props.step - 1}/{maxTips}
+        </span>
+        : These tiles are ordered based on your frequently visited sites. Hover over the text to
+        remove or pin websites.
       </Typography>
-      <Button color="primary" onClick={() => props.setStep(props.step + 1)}>
-        Next
-      </Button>
+      <Typography
+        color="primary"
+        onClick={() => {
+          props.setStep(props.step + 1);
+          return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
+        }}
+        className={classes.button}
+      >
+        Done!
+      </Typography>
     </div>
   );
 };
@@ -129,15 +212,22 @@ const WebsitesList = (props: { step: number; setStep: (step: number) => void }) 
 const SettingsTab = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
-    <div className={classes.tooltip}>
-      💡
-      <Typography className={classes.bold}>
-        Tip {props.step - 1}/{maxTips}
+    <div className={clsx(classes.tooltip, classes.tooltipSettings)}>
+      <div className={clsx(classes.arrowUp, classes.arrowUpSettings)}></div>
+      <Typography>
+        💡
+        <span className={classes.bold}>
+          Tip {props.step - 1}/{maxTips}
+        </span>
+        : Setup Microsoft Teams or edit filtered websites in the settings tab.
       </Typography>
-      <Typography>: Setup Microsoft Teams or filter websites in the settings tab.</Typography>
-      <Button color="primary" onClick={() => props.setStep(props.step + 1)}>
+      <Typography
+        color="primary"
+        onClick={() => props.setStep(props.step + 1)}
+        className={classes.button}
+      >
         Next
-      </Button>
+      </Typography>
     </div>
   );
 };
@@ -156,9 +246,9 @@ export const Onboarding = () => {
     case 3:
       return <LightDarkMode setStep={setStep} step={step} />;
     case 4:
-      return <WebsitesList setStep={setStep} step={step} />;
-    case 5:
       return <SettingsTab setStep={setStep} step={step} />;
+    case 5:
+      return <WebsitesList setStep={setStep} step={step} />;
     default:
       return null;
   }
