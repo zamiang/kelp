@@ -113,7 +113,7 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 9;
+const databaseVerson = 10;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
@@ -184,6 +184,9 @@ const options = {
     });
     websiteImageStore.createIndex('by-raw-url', 'rawUrl', { unique: false });
 
+    // website pin
+    db.createObjectStore('websitePin', { keyPath: 'id' });
+
     // website blocklist
     db.createObjectStore('websiteBlocklist', {
       keyPath: 'id',
@@ -196,9 +199,6 @@ const options = {
     db.createObjectStore('domainFilter', {
       keyPath: 'id',
     });
-
-    // website pin
-    db.createObjectStore('websitePin', { keyPath: 'id' });
   },
   blocked() {
     console.error('blocked');
@@ -329,6 +329,25 @@ const deleteAllStores = (db: IDBPDatabase<Db>) => {
   } catch (e) {
     console.log(e);
   }
+
+  try {
+    db.deleteObjectStore('websiteBlocklist');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('domainFilter');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('domainBlocklist');
+  } catch (e) {
+    console.log(e);
+  }
+
   return;
 };
 
