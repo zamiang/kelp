@@ -268,7 +268,7 @@ const useStore = (
   const lastUpdated = localStorage.getItem('kelpStoreLastUpdated');
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
   if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {
-    localStorage.setItem('kelpStoreLastUpdated', new Date().toDateString());
+    localStorage.setItem('kelpStoreLastUpdated', new Date().toISOString());
     // eslint-disable-next-line
     return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);
   } else {

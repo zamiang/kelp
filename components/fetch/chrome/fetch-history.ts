@@ -21,7 +21,16 @@ const fetchHistory = (domain: string): Promise<IWebsite[]> =>
         startTime: constants.startDate.valueOf(),
       },
       (sites) => {
-        resolve(sites.filter((site) => site.url && site.title).map((site) => formatSite(site)));
+        resolve(
+          sites
+            .filter((site) => {
+              const isDomainAllowed =
+                constants.BLOCKED_DOMAINS.filter((d) => site.url && site.url.indexOf(d) > -1)
+                  .length < 1;
+              return isDomainAllowed && site.url && site.title;
+            })
+            .map((site) => formatSite(site)),
+        );
       },
     );
   });
