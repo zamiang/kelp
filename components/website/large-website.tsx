@@ -83,7 +83,6 @@ export const LargeWebsite = (props: {
     };
     void fetchData();
   }, [props.item.websiteId]);
-  console.log(props.item, '<<<<<<<<');
   return (
     <Grid
       item
