@@ -59,7 +59,7 @@
     "fuse.js": "6.4.6",
     "idb": "6.1.2",
     "lodash": "4.17.21",
-    "material-ui-popup-state": "1.8.4",
+    "material-ui-popup-state": "1.9.0",
     "next": "11.0.1",
     "next-compose-plugins": "2.2.1",
     "next-fonts": "1.5.1",
