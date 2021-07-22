@@ -269,10 +269,12 @@ const useStore = (
   }
   const lastUpdated = localStorage.getItem(config.LAST_UPDATED);
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
-  if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {
+  if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 5)) {
+    console.log('fetching data');
     // eslint-disable-next-line
     return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);
   } else {
+    console.log('not fetching data');
     return setupStoreNoFetch(db);
   }
 };

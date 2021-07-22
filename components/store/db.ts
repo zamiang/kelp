@@ -113,11 +113,11 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 10;
+const databaseVerson = 11;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
-    if (oldVersion < 10) {
+    if (oldVersion < databaseVerson) {
       deleteAllStores(db);
     }
 
