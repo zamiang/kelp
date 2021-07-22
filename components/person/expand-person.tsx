@@ -104,12 +104,7 @@ const ExpandPerson = (props: {
               </Avatar>
             </Grid>
             <Grid item>
-              <Typography
-                className={classes.titleCenter}
-                variant="h3"
-                color="textPrimary"
-                gutterBottom
-              >
+              <Typography variant="h3" color="textPrimary" gutterBottom>
                 {person.name}
               </Typography>
               {emailAddress && (

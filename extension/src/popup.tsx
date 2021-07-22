@@ -18,7 +18,7 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './popup.css';
-import { MemoryRouter as Router } from 'react-router-dom';
+import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import Loading from '../../components/shared/loading';
@@ -28,6 +28,16 @@ import config from '../../constants/config';
 import { darkTheme, lightTheme } from '../../constants/theme';
 
 const msalInstance = new PublicClientApplication(msalConfig);
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 // Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();
@@ -79,6 +89,7 @@ const LoadingMobileDashboardContainer = (props: {
       )}
       {store && (
         <Router initialEntries={['/home', '/meetings', '/settings']} initialIndex={0}>
+          <ScrollToTop />
           <DesktopDashboard
             store={store}
             setIsDarkMode={props.setIsDarkMode}

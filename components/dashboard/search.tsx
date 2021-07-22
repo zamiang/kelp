@@ -143,7 +143,7 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
   return (
     <div>
       <Grid container className={classes.topNav} spacing={2}>
-        {filteredResults.websites.length && (
+        {filteredResults.websites.length > 1 && (
           <Grid item>
             <Typography
               className={classes.button}

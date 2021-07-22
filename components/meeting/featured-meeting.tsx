@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.divider,
     height: '100%',
     marginTop: -10,
-    marginLeft: 27,
+    marginLeft: 32,
   },
   containerNow: {
     borderColor: theme.palette.divider,
