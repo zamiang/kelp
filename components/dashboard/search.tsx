@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
+import { orderByCount } from '../shared/order-by-count';
 import { IPerson, ISegment, IWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
@@ -43,15 +44,20 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
 const maxWebsiteResults = 12;
 
 const WebsiteResults = (props: { store: IStore; isDarkMode: boolean; websites: ISearchItem[] }) => {
-  const websites = props.websites.map(
-    (website: ISearchItem): IFeaturedWebsite => ({
-      websiteId: website.item.id,
+  const filteredResults = orderByCount(
+    props.websites.map((i) => i.item as IWebsite),
+    'url',
+    'visitedTime',
+  );
+  const websites = filteredResults.map(
+    (website: IWebsite): IFeaturedWebsite => ({
+      websiteId: website.url,
       meetings: [],
-      websiteDatabaseId: website.item.id,
+      websiteDatabaseId: website.id,
       isPinned: false,
-      rawUrl: (website.item as IWebsite).rawUrl || website.item.id,
-      text: (website.item as IWebsite).title,
-      date: (website.item as IWebsite).visitedTime,
+      rawUrl: website.rawUrl || website.id,
+      text: website.title,
+      date: website.visitedTime,
     }),
   );
   return (

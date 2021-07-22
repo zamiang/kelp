@@ -82,7 +82,8 @@ export const LargeWebsite = (props: {
       setImage(i);
     };
     void fetchData();
-  }, []);
+  }, [props.item.websiteId]);
+  console.log(props.item, '<<<<<<<<');
   return (
     <Grid
       item

@@ -269,7 +269,6 @@ const useStore = (
   }
   const lastUpdated = localStorage.getItem(config.LAST_UPDATED);
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
-  console.log(lastUpdatedDate, '<<<<<<<<<<', lastUpdatedDate! < subMinutes(new Date(), 10));
   if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {
     // eslint-disable-next-line
     return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);
