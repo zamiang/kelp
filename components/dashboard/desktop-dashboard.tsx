@@ -84,7 +84,9 @@ export const DesktopDashboard = (props: {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setMinutes((minutes) => minutes + 1);
+      if (document.hasFocus()) {
+        setMinutes((minutes) => minutes + 1);
+      }
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, []);
