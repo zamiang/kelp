@@ -117,62 +117,8 @@ const databaseVerson = 9;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
-    if (oldVersion === 1 || oldVersion === 2) {
-      db.deleteObjectStore('person');
-      db.deleteObjectStore('document');
-      db.deleteObjectStore('driveActivity');
-      db.deleteObjectStore('meeting');
-      db.deleteObjectStore('attendee');
-      db.deleteObjectStore('tfidf');
-      db.deleteObjectStore('segmentDocument');
-    } else if (oldVersion === 3) {
-      db.deleteObjectStore('person');
-      db.deleteObjectStore('document');
-      db.deleteObjectStore('driveActivity');
-      db.deleteObjectStore('meeting');
-      db.deleteObjectStore('attendee');
-      db.deleteObjectStore('tfidf');
-      db.deleteObjectStore('segmentDocument');
-    } else if (oldVersion === 4 || oldVersion === 5) {
-      db.deleteObjectStore('person');
-      db.deleteObjectStore('document');
-      db.deleteObjectStore('driveActivity');
-      db.deleteObjectStore('meeting');
-      db.deleteObjectStore('attendee');
-      db.deleteObjectStore('tfidf');
-      db.deleteObjectStore('segmentDocument');
-      db.deleteObjectStore('topWebsite' as any);
-      db.deleteObjectStore('task' as any);
-      db.deleteObjectStore('taskDocument' as any);
-    } else if (oldVersion === 6) {
-      db.deleteObjectStore('website');
-      const store = db.createObjectStore('website', {
-        keyPath: 'id',
-      });
-      store.createIndex('by-domain', 'domain', { unique: false });
-      store.createIndex('by-segment-id', 'meetingId', { unique: false });
-      store.createIndex('by-segment-title', 'meetingName', { unique: false });
-      return;
-    } else if (oldVersion === 7) {
-      db.createObjectStore('websitePin', { keyPath: 'id' });
-      return;
-    } else if (oldVersion === 8) {
-      db.deleteObjectStore('websiteImage');
-      const store = db.createObjectStore('websiteImage', {
-        keyPath: 'id',
-      });
-
-      store.createIndex('by-raw-url', 'rawUrl', { unique: false });
-
-      db.deleteObjectStore('website');
-      const websiteStore = db.createObjectStore('website', {
-        keyPath: 'id',
-      });
-      websiteStore.createIndex('by-raw-url', 'rawUrl', { unique: false });
-      websiteStore.createIndex('by-domain', 'domain', { unique: false });
-      websiteStore.createIndex('by-segment-id', 'meetingId', { unique: false });
-      websiteStore.createIndex('by-segment-title', 'meetingName', { unique: false });
-      return;
+    if (oldVersion < 10) {
+      deleteAllStores(db);
     }
 
     const personStore = db.createObjectStore('person', {
@@ -223,7 +169,7 @@ const options = {
     segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
     segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
 
-    // top website store - has no indexes
+    // website store
     const websiteStore = db.createObjectStore('website', {
       keyPath: 'id',
     });
@@ -237,8 +183,6 @@ const options = {
       keyPath: 'id',
     });
     websiteImageStore.createIndex('by-raw-url', 'rawUrl', { unique: false });
-
-    db.deleteObjectStore('website');
 
     // website blocklist
     db.createObjectStore('websiteBlocklist', {
@@ -306,6 +250,86 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
   } catch (e) {
     return null;
   }
+};
+
+const deleteAllStores = (db: IDBPDatabase<Db>) => {
+  try {
+    db.deleteObjectStore('person');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('document');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('driveActivity');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('meeting');
+  } catch (e) {
+    console.log(e);
+  }
+  try {
+    db.deleteObjectStore('attendee');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('tfidf');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('segmentDocument');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('topWebsite' as any);
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('task' as any);
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('taskDocument' as any);
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('website');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('websiteImage');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('websitePin');
+  } catch (e) {
+    console.log(e);
+  }
+  return;
 };
 
 export default setupDatabase;
