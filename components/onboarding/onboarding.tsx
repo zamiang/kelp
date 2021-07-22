@@ -146,7 +146,7 @@ const WebsitesCalendarSwitcher = (props: { step: number; setStep: (step: number)
         <span className={classes.bold}>
           Tip {props.step - 1}/{maxTips}
         </span>
-        : Switch to calender view to see documents associated with your meetings.
+        : Switch to the calendar view to see documents associated with your meetings.
       </Typography>
       <Typography
         color="primary"

@@ -157,7 +157,6 @@ const onAlarm = (alarm: chrome.alarms.Alarm) => {
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  void chrome.tabs.create({ url: '/dashboard.html' });
   void setupTimers();
   void getOrCreateStore();
 });

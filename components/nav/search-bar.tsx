@@ -37,7 +37,11 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
-    void router.push(`/search?query=${e.target.value}`);
+    if (e.target.value.length > 0) {
+      void router.push(`/search?query=${e.target.value}`);
+    } else {
+      void router.push(`/home`);
+    }
   };
 
   return (
