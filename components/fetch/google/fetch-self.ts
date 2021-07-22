@@ -1,3 +1,4 @@
+import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { IPerson } from '../../store/data-types';
 import { deleteDatabase } from '../../store/db';
@@ -32,16 +33,16 @@ export const fetchSelf = async (authToken: string): Promise<IPerson | null> => {
   // that to what we get in subsequent fetches.
   // NOTE: This doesn't appear to work very well. Perhaps things that are being saved while deleting the db?
   if (typeof localStorage === 'object') {
-    const lastUpdatedUserId = localStorage.getItem('kelpLastUpdatedUserId');
+    const lastUpdatedUserId = localStorage.getItem(config.LAST_UPDATED_USER_ID);
     if (!lastUpdatedUserId && person.resourceName) {
-      localStorage.setItem('kelpLastUpdatedUserId', person.resourceName);
+      localStorage.setItem(config.LAST_UPDATED_USER_ID, person.resourceName);
     } else if (person.resourceName && lastUpdatedUserId !== person.resourceName) {
       try {
         await deleteDatabase('production');
       } catch (e) {
         alert(JSON.stringify(e));
       }
-      localStorage.setItem('kelpLastUpdatedUserId', person.resourceName);
+      localStorage.setItem(config.LAST_UPDATED_USER_ID, person.resourceName);
       window.location.reload();
     }
   }

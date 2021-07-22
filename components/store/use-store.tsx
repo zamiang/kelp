@@ -1,6 +1,7 @@
 import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 import { subMinutes } from 'date-fns';
 import { useEffect, useState } from 'react';
+import config from '../../constants/config';
 import ErrorTracking from '../error-tracking/error-tracking';
 import { fetchAllHistory } from '../fetch/chrome/fetch-history';
 import FetchAll from '../fetch/fetch-all';
@@ -203,6 +204,7 @@ const useStoreWithFetching = (
         if (data.error) {
           ErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
         }
+        localStorage.setItem(config.LAST_UPDATED, new Date().toISOString());
       }
     };
     void addData();
@@ -265,10 +267,9 @@ const useStore = (
   if (!db) {
     return null;
   }
-  const lastUpdated = localStorage.getItem('kelpStoreLastUpdated');
+  const lastUpdated = localStorage.getItem(config.LAST_UPDATED);
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
   if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 10)) {
-    localStorage.setItem('kelpStoreLastUpdated', new Date().toISOString());
     // eslint-disable-next-line
     return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);
   } else {

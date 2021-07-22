@@ -230,11 +230,16 @@ const options = {
     websiteStore.createIndex('by-domain', 'domain', { unique: false });
     websiteStore.createIndex('by-segment-id', 'meetingId', { unique: false });
     websiteStore.createIndex('by-segment-title', 'meetingName', { unique: false });
+    websiteStore.createIndex('by-raw-url', 'rawUrl', { unique: false });
 
     // website image
-    db.createObjectStore('websiteImage', {
+    const websiteImageStore = db.createObjectStore('websiteImage', {
       keyPath: 'id',
     });
+    websiteImageStore.createIndex('by-raw-url', 'rawUrl', { unique: false });
+
+    db.deleteObjectStore('website');
+
     // website blocklist
     db.createObjectStore('websiteBlocklist', {
       keyPath: 'id',
@@ -280,7 +285,7 @@ const setupDatabase = async (environment: 'production' | 'test' | 'extension') =
     const lastUpdated = localStorage.getItem('kelpLastUpdated');
     const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
     if (!lastUpdatedDate || lastUpdatedDate < subHours(new Date(), 12)) {
-      console.log('deleting the database and starting from scratch');
+    console.log('deleting the database and starting from scratch');
       indexedDB.deleteDatabase(dbNameHash[environment]);
     } else if (environment === 'test') {
       indexedDB.deleteDatabase(dbNameHash[environment]);

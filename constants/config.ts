@@ -32,8 +32,10 @@ export default {
   MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,
   startDate: subDays(new Date(), NUMBER_OF_DAYS_BACK),
   endDate: addDays(new Date(), NUMBER_OF_DAYS_FORWARD),
-  NOTIFICATIONS_KEY: 'kelpNotificationsSetting',
-  LAST_NOTIFICATION_KEY: 'kelpLastNotificationId',
+  NOTIFICATIONS_KEY: 'KELP_NOTIFICATION_SETTING',
+  LAST_NOTIFICATION_KEY: 'KELP_LAST_NOTIFICATION_ID',
+  LAST_UPDATED: 'KELP_LAST_UPDATED',
+  LAST_UPDATED_USER_ID: 'KELP_LAST_UPDATED_USER_ID',
   ALLOWED_DOMAINS: [
     'docs.google.com',
     'slides.google.com',
