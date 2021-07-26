@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 500,
   },
   button: {
-    borderRadius: 18,
+    borderRadius: 21,
     background: theme.palette.background.paper,
     padding: 10,
     paddingLeft: theme.spacing(3),

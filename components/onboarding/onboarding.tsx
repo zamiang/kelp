@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.default,
     position: 'fixed',
     padding: theme.spacing(2),
+    borderRadius: theme.spacing(1),
     maxWidth: 251,
     top: 54,
     left: 217,
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tooltipLightTheme: {
     left: 'auto',
-    right: 35,
+    right: 47,
   },
   tooltipWebsites: {
     top: 159,

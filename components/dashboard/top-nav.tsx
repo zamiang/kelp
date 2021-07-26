@@ -29,16 +29,22 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     overflow: 'hidden',
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingTop: theme.spacing(1.5),
+    paddingBottom: theme.spacing(1.5),
     background: theme.palette.background.default,
     zIndex: 10,
   },
-  leftRightSection: {
+  leftSection: {
     maxWidth: 200,
     width: 187,
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: theme.spacing(0.5),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+  },
+  rightSection: {
+    maxWidth: 200,
+    width: 187,
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
   },
   searchContainer: {
     paddingTop: 7,
@@ -64,7 +70,7 @@ export const TopNav = (props: {
       justifyContent="space-between"
       alignContent="center"
     >
-      <Grid item className={classes.leftRightSection}>
+      <Grid item className={classes.leftSection}>
         <div className={classes.searchContainer}>
           <SearchBar isDarkMode={props.isDarkMode} />
         </div>
@@ -132,7 +138,7 @@ export const TopNav = (props: {
           </Container>
         )}
       </Grid>
-      <Grid item className={classes.leftRightSection}>
+      <Grid item className={classes.rightSection}>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Tooltip title="Light Mode">

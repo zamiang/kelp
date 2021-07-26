@@ -243,6 +243,9 @@ export const lightTheme = createTheme({
       paperWidthSm: {
         width: '100%',
       },
+      paperScrollPaper: {
+        borderRadius: 16,
+      },
     },
     MuiToggleButton: {
       root: {
@@ -266,6 +269,7 @@ export const lightTheme = createTheme({
           borderBottomRightRadius: 4,
         },
         '&:not(:first-child)': {
+          marginLeft: 0,
           borderRopLeftRadius: 4,
           borderBottomLeftRadius: 4,
         },
@@ -498,6 +502,9 @@ export const darkTheme = createTheme({
       paperWidthSm: {
         width: '100%',
       },
+      paperScrollPaper: {
+        borderRadius: 16,
+      },
     },
     MuiToggleButton: {
       root: {
@@ -521,6 +528,7 @@ export const darkTheme = createTheme({
           borderBottomRightRadius: 4,
         },
         '&:not(:first-child)': {
+          marginLeft: 0,
           borderRopLeftRadius: 4,
           borderBottomLeftRadius: 4,
         },

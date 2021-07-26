@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: -theme.spacing(1),
     background: theme.palette.background.paper,
-    borderRadius: 16,
+    borderRadius: 21,
     height: 40,
   },
   icon: {

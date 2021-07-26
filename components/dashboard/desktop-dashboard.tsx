@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingLeft: 180,
     paddingRight: 180,
-    marginTop: theme.spacing(6),
+    marginTop: 93,
   },
   footerContainer: {
     background: theme.palette.background.default,

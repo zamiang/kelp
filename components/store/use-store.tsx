@@ -257,6 +257,8 @@ const useStoreWithFetching = (
   };
 };
 
+const updateThrottleMinutes = 1;
+
 const useStore = (
   db: dbType | null,
   googleOauthToken: string,
@@ -269,7 +271,7 @@ const useStore = (
   }
   const lastUpdated = localStorage.getItem(config.LAST_UPDATED);
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
-  if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), 5)) {
+  if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), updateThrottleMinutes)) {
     console.log('fetching data');
     // eslint-disable-next-line
     return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);

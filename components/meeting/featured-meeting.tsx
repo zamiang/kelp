@@ -30,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
   leftLine: {
     width: 1,
     background: theme.palette.divider,
-    height: '100%',
-    marginTop: -10,
-    marginLeft: 32,
+    height: 'calc(100% + 39px)',
+    marginTop: -14,
+    marginLeft: 26,
   },
   containerNow: {
     borderColor: theme.palette.divider,
@@ -77,19 +77,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   outerDot: {
-    width: 51,
-    height: 51,
+    width: 40,
+    height: 40,
     background: '#FF4500',
-    borderRadius: 26,
+    borderRadius: 20,
     animation: '$fadeOut2 5s ease infinite',
   },
   innerDot: {
-    width: 28,
-    borderRadius: 14,
-    height: 28,
+    width: 12,
+    borderRadius: 6,
+    height: 12,
     position: 'absolute',
-    top: 12,
-    left: 12,
+    top: 14,
+    left: 14,
     background: '#FF4500',
     animation: '$fadeOut 5s ease infinite',
   },
@@ -193,14 +193,16 @@ export const FeaturedMeeting = (props: {
           </Grid>
         )}
         {!props.showLine && (
-          <MeetingRowBelow
-            meeting={props.meeting}
-            store={props.store}
-            currentFilter={props.currentFilter}
-            hideWebsite={props.hideWebsite}
-            hideDialogUrl={props.hideDialogUrl}
-            isDarkMode={props.isDarkMode}
-          />
+          <Grid item xs={12}>
+            <MeetingRowBelow
+              meeting={props.meeting}
+              store={props.store}
+              currentFilter={props.currentFilter}
+              hideWebsite={props.hideWebsite}
+              hideDialogUrl={props.hideDialogUrl}
+              isDarkMode={props.isDarkMode}
+            />
+          </Grid>
         )}
       </Grid>
     </div>

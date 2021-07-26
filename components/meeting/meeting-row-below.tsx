@@ -82,35 +82,31 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={12}>
-        <Grid container spacing={4}>
-          {websites.map((item) => (
-            <LargeWebsite
-              key={item.websiteId}
-              item={item}
-              store={props.store}
-              hideItem={props.hideWebsite}
-              smGridSize={4}
-              togglePin={togglePin}
-              isDarkMode={props.isDarkMode}
-            />
-          ))}
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        {extraItemsCount > 0 && (
-          <RightArrow
-            isEnabled={shouldShowAll}
+    <React.Fragment>
+      <Grid container spacing={4}>
+        {websites.map((item) => (
+          <LargeWebsite
+            key={item.websiteId}
+            item={item}
+            store={props.store}
+            hideItem={props.hideWebsite}
+            smGridSize={4}
+            togglePin={togglePin}
             isDarkMode={props.isDarkMode}
-            count={extraItemsCount}
-            onClick={() => {
-              setShouldShowAll(!shouldShowAll);
-            }}
           />
-        )}
+        ))}
       </Grid>
-    </Grid>
+      {extraItemsCount > 0 && (
+        <RightArrow
+          isEnabled={shouldShowAll}
+          isDarkMode={props.isDarkMode}
+          count={extraItemsCount}
+          onClick={() => {
+            setShouldShowAll(!shouldShowAll);
+          }}
+        />
+      )}
+    </React.Fragment>
   );
 };
 
