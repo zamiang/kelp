@@ -1,11 +1,12 @@
 import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
+import { uniq } from 'lodash';
 import { IPerson } from '../../store/data-types';
 
 const formatPerson = (person: AccountInfo, googleSelf?: IPerson): IPerson => ({
   id: person.username,
   name: person.name || person.username,
   emailAddresses: googleSelf?.emailAddresses
-    ? googleSelf?.emailAddresses.concat(person.username)
+    ? uniq(googleSelf?.emailAddresses.concat(person.username))
     : [person.username],
   googleIds: googleSelf?.googleIds || [],
   isCurrentUser: 1,

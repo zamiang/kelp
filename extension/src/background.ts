@@ -6,7 +6,7 @@ import config from '../../constants/config';
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
-const timeToWaitBeforeTracking = 60 * 1000;
+const timeToWaitBeforeTracking = 30 * 1000;
 const timeToWaitBeforeCapture = 8 * 1000;
 
 const storeTrackedVisit = (site: string, startAt: Date, store: IStore, title?: string) => {

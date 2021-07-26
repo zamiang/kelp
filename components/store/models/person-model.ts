@@ -54,7 +54,14 @@ export default class PersonModel {
     const contactLookup: any = {};
     const peopleToAdd: IPerson[] = [formattedCurrentUser];
 
+    // designed to work across microsoft and google which have different id schemes
     contactLookup[formattedCurrentUser.id] = formattedCurrentUser;
+    if (formattedCurrentUser.emailAddresses[0]) {
+      contactLookup[formattedCurrentUser.emailAddresses[0]] = formattedCurrentUser;
+    }
+    if (formattedCurrentUser.googleIds[0]) {
+      contactLookup[formattedCurrentUser.googleIds[0]] = formattedCurrentUser;
+    }
     formattedCurrentUser.emailAddresses.forEach((email: string) => {
       contactLookup[email] = formattedCurrentUser;
       emailAddressToPersonIdHash[formatGmailAddress(email)] = formattedCurrentUser.id;

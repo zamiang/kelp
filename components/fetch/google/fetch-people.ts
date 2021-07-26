@@ -24,9 +24,11 @@ export const formatPerson = (
     return null;
   }
   const emailAddresses =
-    (person?.emailAddresses
-      ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
-      .filter(Boolean as any as ExcludesFalse) as string[]) || [];
+    uniq(
+      person?.emailAddresses
+        ?.map((address) => (address.value ? formatGmailAddress(address.value) : undefined))
+        .filter(Boolean as any as ExcludesFalse) as string[],
+    ) || [];
   const displayName = person?.names && person?.names[0]?.displayName;
   const id = requestedResourceName;
   let name = displayName || emailAddresses[0] || requestedResourceName;

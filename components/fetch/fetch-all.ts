@@ -98,9 +98,11 @@ const FetchAll = (
   const currentUser = useAsyncAbortable(() => fetchSelf(googleOauthToken), [
     googleOauthToken,
   ] as any);
+  console.log(currentUser, '<<<<<<<<<<<<<<<<<<');
   if (msal && msal.getActiveAccount()) {
     currentUser.result = fetchMicrosoftSelf(msal, currentUser.result || undefined);
   }
+  console.log(currentUser, 'post edit<<<<<<<<<<<<<<<<<<');
 
   /**
    * DRIVE FILES

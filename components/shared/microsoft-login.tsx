@@ -3,7 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import config from '../../constants/config';
+import { ensureDataRefresh } from './ensure-refresh';
 
 export const WelcomeUser = () => {
   const { accounts } = useMsal();
@@ -41,7 +41,7 @@ const launchAuthFlow = (msal: IPublicClientApplication, url: string) =>
 
 export const signInClickHandler = async (msal: IPublicClientApplication) => {
   const url = (await getLoginUrl(msal)) as any;
-  localStorage.removeItem(config.LAST_UPDATED_USER_ID);
+  ensureDataRefresh();
   return await launchAuthFlow(msal, url);
 };
 

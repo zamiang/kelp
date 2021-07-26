@@ -162,6 +162,7 @@ const useStoreWithFetching = (
       }
 
       setLoadingMessage('Saving Contacts');
+      console.log(data.currentUser, people, 'adding to store');
       await personDataStore.addPeopleToStore(
         people,
         data.currentUser,

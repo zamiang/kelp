@@ -1,6 +1,7 @@
 import { LogLevel } from '@azure/msal-browser';
 import { format } from 'date-fns';
 import config from '../../../constants/config';
+import { ensureDataRefresh } from '../../shared/ensure-refresh';
 
 // Config object to be passed to Msal on creation
 const redirectUri = chrome.identity.getRedirectURL();
@@ -26,6 +27,7 @@ export const msalConfig = {
         }
         switch (level) {
           case LogLevel.Error:
+            ensureDataRefresh();
             console.error(message);
             return;
           case LogLevel.Info:
@@ -35,6 +37,7 @@ export const msalConfig = {
             console.debug(message);
             return;
           case LogLevel.Warning:
+            ensureDataRefresh();
             console.warn(message);
             return;
         }

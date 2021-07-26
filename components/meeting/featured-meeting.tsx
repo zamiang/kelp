@@ -180,20 +180,6 @@ export const FeaturedMeeting = (props: {
             <Grid item style={{ width: 60, minHeight: 30 }}>
               <div className={classes.leftLine}></div>
             </Grid>
-            <Grid item xs>
-              <MeetingRowBelow
-                meeting={props.meeting}
-                store={props.store}
-                currentFilter={props.currentFilter}
-                hideWebsite={props.hideWebsite}
-                hideDialogUrl={props.hideDialogUrl}
-                isDarkMode={props.isDarkMode}
-              />
-            </Grid>
-          </Grid>
-        )}
-        {!props.showLine && (
-          <Grid item xs={12}>
             <MeetingRowBelow
               meeting={props.meeting}
               store={props.store}
@@ -203,6 +189,16 @@ export const FeaturedMeeting = (props: {
               isDarkMode={props.isDarkMode}
             />
           </Grid>
+        )}
+        {!props.showLine && (
+          <MeetingRowBelow
+            meeting={props.meeting}
+            store={props.store}
+            currentFilter={props.currentFilter}
+            hideWebsite={props.hideWebsite}
+            hideDialogUrl={props.hideDialogUrl}
+            isDarkMode={props.isDarkMode}
+          />
         )}
       </Grid>
     </div>

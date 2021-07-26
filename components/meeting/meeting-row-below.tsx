@@ -82,7 +82,7 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <React.Fragment>
+    <Grid item xs>
       <Grid container spacing={4}>
         {websites.map((item) => (
           <LargeWebsite
@@ -106,7 +106,7 @@ const MeetingRowBelow = (props: {
           }}
         />
       )}
-    </React.Fragment>
+    </Grid>
   );
 };
 
