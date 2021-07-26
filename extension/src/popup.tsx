@@ -11,7 +11,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
@@ -112,11 +111,8 @@ const App = () => {
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
   const [hasDatabaseError, setHasDatabaseError] = useState<boolean>(false);
   const [database, setDatabase] = useState<any>(undefined);
-  const isDarkModeEnabled = useMediaQuery('(prefers-color-scheme: dark)');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
-    localStorage.getItem(config.DARK_MODE)
-      ? localStorage.getItem(config.DARK_MODE) === 'true'
-      : isDarkModeEnabled,
+    localStorage.getItem(config.DARK_MODE) !== 'false',
   );
   const classes = useStyles();
 

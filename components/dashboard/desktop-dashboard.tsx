@@ -32,9 +32,11 @@ const useStyles = makeStyles((theme) => ({
   },
   footerContainer: {
     background: theme.palette.background.default,
+    transition: 'background 0.3s',
   },
   content: {
     background: theme.palette.background.default,
+    transition: 'background 0.3s',
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',

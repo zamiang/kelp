@@ -13,6 +13,7 @@ const maxTips = 4;
 const useStyles = makeStyles((theme) => ({
   stepOneContainer: {
     background: theme.palette.background.default,
+    transition: 'background 0.3s',
     padding: theme.spacing(4),
   },
   heading: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tooltip: {
     background: theme.palette.background.default,
+    transition: 'background 0.3s',
     position: 'fixed',
     padding: theme.spacing(2),
     borderRadius: theme.spacing(1),

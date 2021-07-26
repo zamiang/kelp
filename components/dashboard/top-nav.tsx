@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1.5),
     paddingBottom: theme.spacing(1.5),
     background: theme.palette.background.default,
+    transition: 'background 0.3s',
     zIndex: 10,
   },
   leftSection: {
@@ -87,6 +88,7 @@ export const TopNav = (props: {
                         className={'ignore-react-onclickoutside'}
                         aria-controls="simple-menu"
                         aria-haspopup="true"
+                        style={{ borderRadius: 4 }}
                         onClick={(event) => {
                           event.preventDefault();
                           return router.push('/home');
@@ -108,6 +110,7 @@ export const TopNav = (props: {
                         className={'ignore-react-onclickoutside'}
                         aria-controls="simple-menu"
                         aria-haspopup="true"
+                        style={{ borderRadius: 4 }}
                         onClick={(event) => {
                           event.preventDefault();
                           return router.push('/meetings');
