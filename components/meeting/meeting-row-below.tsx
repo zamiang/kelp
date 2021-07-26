@@ -39,6 +39,7 @@ const MeetingRowBelow = (props: {
   hideDialogUrl?: string;
   currentFilter: string;
   isDarkMode: boolean;
+  isFullWidth: boolean;
 }) => {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -82,7 +83,7 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <Grid item xs>
+    <Grid item xs={props.isFullWidth ? 12 : 11}>
       <Grid container spacing={4}>
         {websites.map((item) => (
           <LargeWebsite

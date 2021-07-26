@@ -187,6 +187,7 @@ export const FeaturedMeeting = (props: {
               hideWebsite={props.hideWebsite}
               hideDialogUrl={props.hideDialogUrl}
               isDarkMode={props.isDarkMode}
+              isFullWidth={false}
             />
           </Grid>
         )}
@@ -198,6 +199,7 @@ export const FeaturedMeeting = (props: {
             hideWebsite={props.hideWebsite}
             hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
+            isFullWidth={false}
           />
         )}
       </Grid>
