@@ -17,7 +17,10 @@ import SegmentDocumentList from '../shared/segment-document-list';
 import { IFormattedAttendee, IPerson, ISegment, ISegmentDocument } from '../store/data-types';
 import { getAssociates } from '../store/helpers';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
+import {
+  IFeaturedWebsite,
+  fetchWebsitesForMeetingFiltered,
+} from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 
 const ExpandPerson = (props: {
@@ -68,13 +71,23 @@ const ExpandPerson = (props: {
         const websitesForMeetings = await Promise.all(
           filteredSegments.map(async (meeting) => {
             if (meeting) {
-              const result = await getWebsitesForMeeting(meeting, props.store);
+              const result = await fetchWebsitesForMeetingFiltered(
+                meeting,
+                props.store,
+                props.currentFilter,
+                false,
+              );
               return result;
             }
             return [];
           }),
         );
-        const flattenedWebsites = orderByCount(flatten(websitesForMeetings), 'websiteId', 'date');
+
+        const flattenedWebsites = orderByCount(
+          flatten(websitesForMeetings).filter(Boolean),
+          'websiteId',
+          'date',
+        );
         setWebsites(flattenedWebsites);
 
         const segmentDocumentsFromPersonEdits =
@@ -83,7 +96,7 @@ const ExpandPerson = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, personId]);
+  }, [props.store.isLoading, personId, props.currentFilter]);
 
   if (!person) {
     return null;
@@ -122,7 +135,7 @@ const ExpandPerson = (props: {
           </Grid>
         </Grid>
         {emailAddress && (
-          <Grid item justifyContent="flex-end">
+          <Grid item>
             <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
                 className={buttonClasses.button}
@@ -197,7 +210,7 @@ const ExpandPerson = (props: {
         <div className={classes.section}>
           <Typography variant="h6">Meetings you both attended</Typography>
           <MeetingList
-            segments={segments}
+            segments={segments.filter((s) => s.end < new Date())}
             store={props.store}
             isDarkMode={props.isDarkMode}
             currentFilter={props.currentFilter}

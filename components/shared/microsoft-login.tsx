@@ -31,18 +31,21 @@ const launchAuthFlow = (msal: IPublicClientApplication, url: string) =>
         interactive: true,
         url,
       },
-      (responseUrl) =>
-        void msal
-          .handleRedirectPromise(`#${responseUrl!.split('#')[1]}`)
-          .then(resolve)
-          .catch(reject),
+      (responseUrl) => {
+        if (responseUrl) {
+          return void msal
+            .handleRedirectPromise(`#${responseUrl.split('#')[1]}`)
+            .then(resolve)
+            .catch(reject);
+        }
+      },
     );
   });
 
 export const signInClickHandler = async (msal: IPublicClientApplication) => {
   const url = (await getLoginUrl(msal)) as any;
   ensureDataRefresh();
-  return await launchAuthFlow(msal, url);
+  return await launchAuthFlow(msal, `${url}&prompt=login`);
 };
 
 // SignInButton Component returns a button that invokes a popup login when clicked

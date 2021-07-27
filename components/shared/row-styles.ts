@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rowHighlight: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(4),
     borderBottom: `1px solid ${theme.palette.divider}`,
     marginBottom: theme.spacing(2),
   },

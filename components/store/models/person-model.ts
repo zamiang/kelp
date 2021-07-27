@@ -4,7 +4,7 @@ import { formatGmailAddress, formatPerson } from '../../fetch/google/fetch-peopl
 import { IPerson } from '../data-types';
 import { dbType } from '../db';
 
-const createNewPersonFromEmail = (email: string): IPerson => ({
+export const createNewPersonFromEmail = (email: string): IPerson => ({
   id: email,
   name: email,
   emailAddresses: [email],
@@ -103,9 +103,8 @@ export default class PersonModel {
         }
       });
       if (contact) {
-        // NOTE: this is where both are added
         peopleToAdd.push(contact);
-        if (person.id && person.id !== (contact as any).id) {
+        if (!(contact as any).isCurrentUser && person.id && person.id !== (contact as any).id) {
           peopleToAdd.push(person);
         }
       } else if (person.id) {

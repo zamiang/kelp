@@ -19,6 +19,7 @@ const maxResult = 3;
 export const getFeaturedPeople = async (props: IStore) => {
   const currentDate = new Date();
   const result = await props.attendeeDataStore.getForNextDays(currentDate);
+
   const peopleForAttendees = await props.personDataStore.getBulk(
     uniq(result.map((r) => r.personId!)),
   );
@@ -40,8 +41,9 @@ export const getFeaturedPeople = async (props: IStore) => {
 
   const p = peopleForAttendees
     .map((person) => {
+      // include current meetings
       const meetings = sortBy(meetingsForAttendees[person.id], 'start').filter(
-        (m) => m.start > currentDate,
+        (m) => m.end > currentDate,
       );
       const nextMeetingStartAt = meetings[0] ? meetings[0].start : undefined;
       const text =

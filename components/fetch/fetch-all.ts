@@ -10,6 +10,7 @@ import {
   ISegment,
   IWebsite,
 } from '../store/data-types';
+import { createNewPersonFromEmail } from '../store/models/person-model';
 import fetchCalendarEvents, {
   getDocumentsFromCalendarEvents,
 } from './google/fetch-calendar-events';
@@ -98,11 +99,9 @@ const FetchAll = (
   const currentUser = useAsyncAbortable(() => fetchSelf(googleOauthToken), [
     googleOauthToken,
   ] as any);
-  console.log(currentUser, '<<<<<<<<<<<<<<<<<<');
   if (msal && msal.getActiveAccount()) {
     currentUser.result = fetchMicrosoftSelf(msal, currentUser.result || undefined);
   }
-  console.log(currentUser, 'post edit<<<<<<<<<<<<<<<<<<');
 
   /**
    * DRIVE FILES
@@ -206,6 +205,14 @@ const FetchAll = (
   let calendarEvents = calendarResponse.result ? calendarResponse.result.calendarEvents : [];
   if (microsoftCalendarResponse.result && microsoftCalendarResponse.result) {
     calendarEvents = calendarEvents.concat(microsoftCalendarResponse.result);
+    if (contactsResponse.result) {
+      const calendarEventsPeople = uniq(
+        flatten(calendarEvents.map((c) => c.attendees)).map((a) => a.email),
+      )
+        .map((email) => email && createNewPersonFromEmail(email))
+        .filter(Boolean) as IPerson[];
+      contactsResponse.result.concat(calendarEventsPeople);
+    }
   }
 
   return {
@@ -223,6 +230,7 @@ const FetchAll = (
       await calendarResponse.execute();
       await driveResponse.execute();
       await peopleResponse.execute();
+      await microsoftCalendarResponse.execute();
     },
     lastUpdated: new Date(),
     currentUserLoading: currentUser.loading,

@@ -93,8 +93,8 @@ export const WebsiteHighlights = (props: {
             ))}
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          {extraItemsCount > 0 && (
+        {extraItemsCount > 0 && (
+          <Grid item xs={12}>
             <RightArrow
               isEnabled={shouldShowAll}
               count={extraItemsCount}
@@ -103,8 +103,8 @@ export const WebsiteHighlights = (props: {
                 setShouldShowAll(!shouldShowAll);
               }}
             />
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

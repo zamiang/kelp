@@ -1,7 +1,7 @@
-import { Typography } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import { SmallPersonRow } from '../person/small-person-row';
@@ -43,6 +43,7 @@ export const TopFilters = (props: {
   useEffect(() => {
     const fetchData = async () => {
       const fp = await getFeaturedPeople(props.store);
+      console.log(fp, '<<<<<<<<<<<<<<<<<<<<<<<<');
       setFeaturedPeople(fp);
     };
     void fetchData();

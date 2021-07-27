@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { format } from 'date-fns';
+import { uniqBy } from 'lodash';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CalendarIcon from '../../public/icons/calendar.svg';
@@ -79,9 +80,10 @@ const MeetingList = (props: {
     return <Typography variant="caption">None</Typography>;
   }
 
-  const sortedSegments = props.segments
-    .filter((item) => !!item)
-    .sort((a, b) => (a!.start < b!.start ? -1 : 1));
+  const sortedSegments = uniqBy(
+    props.segments.filter((item) => !!item).sort((a, b) => (a!.start < b!.start ? -1 : 1)),
+    'id',
+  );
   return (
     <div>
       {sortedSegments.map(

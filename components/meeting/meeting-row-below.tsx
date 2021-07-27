@@ -2,35 +2,12 @@ import Grid from '@material-ui/core/Grid';
 import React, { useEffect, useState } from 'react';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
+import {
+  IFeaturedWebsite,
+  fetchWebsitesForMeetingFiltered,
+} from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 import { RightArrow } from '../website/right-arrow';
-
-const maxResult = 3;
-const maxDisplay = maxResult * 10;
-
-const fetchData = async (
-  meeting: ISegment,
-  store: IStore,
-  currentFilter: string,
-  shouldShowAll: boolean,
-  setWebsites: (websites: IFeaturedWebsite[]) => void,
-  setExtraItemsCount: (n: number) => void,
-) => {
-  const result = await getWebsitesForMeeting(meeting, store);
-
-  const filtereredWebsites = result.filter((item) =>
-    item && currentFilter === 'all' ? true : item.websiteId.indexOf(currentFilter) > -1,
-  );
-
-  const extraResultLength = filtereredWebsites.length - maxResult;
-  setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
-  if (shouldShowAll) {
-    setWebsites(filtereredWebsites.slice(0, maxResult * 10));
-  } else {
-    setWebsites(filtereredWebsites.slice(0, maxResult));
-  }
-};
 
 const MeetingRowBelow = (props: {
   meeting: ISegment;
@@ -46,7 +23,7 @@ const MeetingRowBelow = (props: {
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   useEffect(() => {
-    void fetchData(
+    void fetchWebsitesForMeetingFiltered(
       props.meeting,
       props.store,
       props.currentFilter,
@@ -68,7 +45,7 @@ const MeetingRowBelow = (props: {
     } else {
       await props.store.websitePinStore.create(item.websiteId);
     }
-    void fetchData(
+    void fetchWebsitesForMeetingFiltered(
       props.meeting,
       props.store,
       props.currentFilter,
@@ -98,14 +75,16 @@ const MeetingRowBelow = (props: {
         ))}
       </Grid>
       {extraItemsCount > 0 && (
-        <RightArrow
-          isEnabled={shouldShowAll}
-          isDarkMode={props.isDarkMode}
-          count={extraItemsCount}
-          onClick={() => {
-            setShouldShowAll(!shouldShowAll);
-          }}
-        />
+        <div style={{ marginTop: 12 }}>
+          <RightArrow
+            isEnabled={shouldShowAll}
+            isDarkMode={props.isDarkMode}
+            count={extraItemsCount}
+            onClick={() => {
+              setShouldShowAll(!shouldShowAll);
+            }}
+          />
+        </div>
       )}
     </Grid>
   );

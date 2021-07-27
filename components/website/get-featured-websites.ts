@@ -5,6 +5,38 @@ import { getValueForDate } from '../shared/order-by-count';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
+const maxResult = 3;
+const maxDisplay = maxResult * 10;
+
+export const fetchWebsitesForMeetingFiltered = async (
+  meeting: ISegment,
+  store: IStore,
+  currentFilter: string,
+  shouldShowAll: boolean,
+  setWebsites?: (websites: IFeaturedWebsite[]) => void,
+  setExtraItemsCount?: (n: number) => void,
+) => {
+  const result = await getWebsitesForMeeting(meeting, store);
+
+  const filtereredWebsites = result.filter((item) =>
+    item && currentFilter === 'all' ? true : item.websiteId.indexOf(currentFilter) > -1,
+  );
+
+  if (setExtraItemsCount) {
+    const extraResultLength = filtereredWebsites.length - maxResult;
+    setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+  }
+
+  const websites = shouldShowAll
+    ? filtereredWebsites.slice(0, maxResult * 10)
+    : filtereredWebsites.slice(0, maxResult);
+  if (setWebsites) {
+    setWebsites(websites);
+  } else {
+    return websites;
+  }
+};
+
 export interface IFeaturedWebsite {
   documentId?: string;
   websiteId: string;

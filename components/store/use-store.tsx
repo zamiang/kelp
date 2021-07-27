@@ -123,7 +123,8 @@ const useStoreWithFetching = (
     const addData = async () => {
       if (!data.calendarResponseLoading) {
         setLoadingMessage('Saving Calendar Events');
-        await timeDataStore.addSegments(data.calendarEvents, true);
+        // Sometimes there is an error and we get no data, don't drop the store in that case
+        await timeDataStore.addSegments(data.calendarEvents, data.calendarEvents.length > 0);
       }
     };
     void addData();
@@ -162,7 +163,6 @@ const useStoreWithFetching = (
       }
 
       setLoadingMessage('Saving Contacts');
-      console.log(data.currentUser, people, 'adding to store');
       await personDataStore.addPeopleToStore(
         people,
         data.currentUser,

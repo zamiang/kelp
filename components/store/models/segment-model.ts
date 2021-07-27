@@ -24,7 +24,6 @@ export default class SegmentModel {
       await Promise.allSettled(idsToDelete.map((id) => this.db.delete('meeting', id)));
     }
 
-    // console.log(formattedSegments, 'about to save segments');
     const tx = this.db.transaction('meeting', 'readwrite');
     const results = await Promise.allSettled(segments.map((event) => tx.store.put(event)));
     await tx.done;

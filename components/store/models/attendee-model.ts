@@ -21,7 +21,7 @@ const formatAttendee = (
   id: `${segment.id}-${person.id}`,
   segmentId: segment.id,
   personId: person.id,
-  responseStatus: attendee.responseStatus,
+  responseStatus: attendee.responseStatus || 'accepted',
   self: attendee.self,
   emailAddress: attendee.email ? formatGmailAddress(attendee.email) : undefined,
   week: getWeek(segment.start),

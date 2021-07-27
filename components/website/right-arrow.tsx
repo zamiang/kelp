@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   arrow: {
-    margin: '0px auto',
+    margin: '0 auto',
     background: theme.palette.divider,
     padding: '8px 18px',
     fontFamily: theme.typography.fontFamily,
