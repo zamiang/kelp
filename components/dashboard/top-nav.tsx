@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import clsx from 'clsx';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
@@ -50,6 +51,13 @@ const useStyles = makeStyles((theme) => ({
   searchContainer: {
     paddingTop: 7,
   },
+  button: {
+    borderRadius: 4,
+    transition: 'background 0.3s',
+  },
+  isSelected: {
+    background: theme.palette.divider,
+  },
 }));
 
 export const TopNav = (props: {
@@ -64,6 +72,8 @@ export const TopNav = (props: {
   const router = useHistory();
   const location = useLocation();
   const isSearch = location.pathname === '/search';
+  const isHomeSelected = location.pathname === '/home';
+  const isMeetingsSelected = location.pathname === '/meetings';
   return (
     <Grid
       container
@@ -85,16 +95,15 @@ export const TopNav = (props: {
                   <Grid item>
                     <Tooltip title="Websites List">
                       <IconButton
-                        className={'ignore-react-onclickoutside'}
                         aria-controls="simple-menu"
                         aria-haspopup="true"
-                        style={{ borderRadius: 4 }}
+                        className={clsx(classes.button, isHomeSelected && classes.isSelected)}
                         onClick={(event) => {
                           event.preventDefault();
                           return router.push('/home');
                         }}
                       >
-                        {location.pathname === '/home' ? (
+                        {isHomeSelected ? (
                           <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
                         ) : props.isDarkMode ? (
                           <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
@@ -107,16 +116,15 @@ export const TopNav = (props: {
                   <Grid item>
                     <Tooltip title="Meetings List">
                       <IconButton
-                        className={'ignore-react-onclickoutside'}
                         aria-controls="simple-menu"
                         aria-haspopup="true"
-                        style={{ borderRadius: 4 }}
+                        className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
                         onClick={(event) => {
                           event.preventDefault();
                           return router.push('/meetings');
                         }}
                       >
-                        {location.pathname === '/meetings' ? (
+                        {isMeetingsSelected ? (
                           <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
                         ) : props.isDarkMode ? (
                           <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
@@ -146,7 +154,6 @@ export const TopNav = (props: {
           <Grid item>
             <Tooltip title="Light Mode">
               <IconButton
-                className={'ignore-react-onclickoutside'}
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={(event) => {
@@ -166,7 +173,6 @@ export const TopNav = (props: {
           <Grid item>
             <Tooltip title="Dark Mode">
               <IconButton
-                className={'ignore-react-onclickoutside'}
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={(event) => {
@@ -186,7 +192,6 @@ export const TopNav = (props: {
           <Grid item>
             <Tooltip title="Settings">
               <IconButton
-                className={'ignore-react-onclickoutside'}
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={(event) => {

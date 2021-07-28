@@ -43,7 +43,6 @@ export const TopFilters = (props: {
   useEffect(() => {
     const fetchData = async () => {
       const fp = await getFeaturedPeople(props.store);
-      console.log(fp, '<<<<<<<<<<<<<<<<<<<<<<<<');
       setFeaturedPeople(fp);
     };
     void fetchData();

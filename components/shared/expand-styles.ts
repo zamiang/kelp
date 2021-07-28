@@ -16,10 +16,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   section: {
-    marginTop: theme.spacing(2),
-    '&:first-child': {
-      marginTop: 0,
-    },
+    marginTop: 88,
   },
   edit: {},
   title: {
@@ -109,6 +106,10 @@ const useStyles = makeStyles((theme) => ({
   showMoreButton: {
     cursor: 'pointer',
     textDecoration: 'underline',
+  },
+  buttonSecton: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    paddingBottom: theme.spacing(4),
   },
 }));
 

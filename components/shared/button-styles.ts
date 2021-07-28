@@ -9,6 +9,8 @@ const useStyles = makeStyles((theme) => ({
     transition: 'opacity 0.3s',
     minHeight: 48,
     opacity: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
     '&:hover': {
       opacity: 0.6,
     },
@@ -24,6 +26,17 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.primary.main,
       color: theme.palette.background.paper,
       opacity: 0.8,
+    },
+  },
+  greyButton: {
+    borderRadius: 21,
+    background: theme.palette.background.paper,
+    padding: 10,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
     },
   },
   selected: {

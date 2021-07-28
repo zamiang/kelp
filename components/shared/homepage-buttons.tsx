@@ -77,7 +77,7 @@ export const HomepageButtons = (props: {
             key={item[0]}
             title={item[0].split('-')[0].replace('www.', '').replace('.com', '')}
           >
-            <ToggleButton value={item[0]}>
+            <ToggleButton value={item[0]} selected={item[0] === props.currentFilter}>
               <React.Fragment>
                 <img
                   src={`chrome://favicon/size/48@1x/https://${item[0]}`}
