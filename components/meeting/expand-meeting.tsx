@@ -1,13 +1,16 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
-import EmailIcon from '../../public/icons/email-white.svg';
+import EmailIcon from '../../public/icons/email-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
@@ -49,16 +52,15 @@ const EmailGuestsButton = (props: {
   }&body=${bodyText}`;
 
   return (
-    <Button
-      href={link}
-      target="_blank"
-      variant="contained"
-      color="primary"
-      startIcon={<EmailIcon width="24" height="24" />}
-      className={buttonClasses.button}
-    >
-      Email guests
-    </Button>
+    <Tooltip title="Email guests">
+      <IconButton
+        onClick={() => window.open(link)}
+        color="primary"
+        className={buttonClasses.iconButton}
+      >
+        <EmailIcon width="24" height="24" />
+      </IconButton>
+    </Tooltip>
   );
 };
 
@@ -139,7 +141,8 @@ const ExpandedMeeting = (props: {
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const hasMeetingNotes = !!meeting.meetingNotesLink;
-
+  const meetingDescriptionIsMicrosoftHtml =
+    isHtml && meeting.description?.includes('<span itemscope');
   const hasWebsites = websites.length > 0;
   return (
     <React.Fragment>
@@ -162,38 +165,40 @@ const ExpandedMeeting = (props: {
           <Grid container spacing={2}>
             {!hasMeetingNotes && (
               <Grid item>
-                <Button
-                  onClick={() =>
-                    createSmartMeetingNotes(meeting, props.store, websites, setMeetingNotesLoading)
-                  }
-                  startIcon={
-                    isMeetingNotesLoading ? (
+                <Tooltip title="Create Smart Meeting notes">
+                  <IconButton
+                    onClick={() =>
+                      createSmartMeetingNotes(
+                        meeting,
+                        props.store,
+                        websites,
+                        setMeetingNotesLoading,
+                      )
+                    }
+                    disabled={isMeetingNotesLoading}
+                    color="primary"
+                    className={buttonClasses.iconButton}
+                  >
+                    {isMeetingNotesLoading ? (
                       <CircularProgress size={20} />
                     ) : (
                       <PlusIcon width="24" height="24" />
-                    )
-                  }
-                  disabled={isMeetingNotesLoading}
-                  disableElevation
-                  variant="outlined"
-                  color="primary"
-                  className={buttonClasses.button}
-                >
-                  Smart Notes
-                </Button>
+                    )}
+                  </IconButton>
+                </Tooltip>
               </Grid>
             )}
             {hasMeetingNotes && (
               <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
-                  startIcon={<SaveIcon width="24" height="24" />}
-                  className={buttonClasses.button}
-                >
-                  View Notes
-                </Button>
+                <Tooltip title="Open meeting notes">
+                  <IconButton
+                    color="primary"
+                    onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
+                    className={buttonClasses.iconButton}
+                  >
+                    <SaveIcon width="24" height="24" />
+                  </IconButton>
+                </Tooltip>
               </Grid>
             )}
             <Grid item>
@@ -220,9 +225,35 @@ const ExpandedMeeting = (props: {
           </Grid>
         </Grid>
       </Grid>
+      <Grid container className={classes.buttonSecton} spacing={2}>
+        {websites.length > 0 && (
+          <Grid item>
+            <Typography
+              onClick={() =>
+                document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
+              }
+              className={buttonClasses.greyButton}
+            >
+              Websites
+            </Typography>
+          </Grid>
+        )}
+        {attendees.length > 0 && (
+          <Grid item>
+            <Typography
+              onClick={() =>
+                document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
+              }
+              className={buttonClasses.greyButton}
+            >
+              Guests
+            </Typography>
+          </Grid>
+        )}
+      </Grid>
       <div className={classes.container}>
         {hasWebsites && (
-          <React.Fragment>
+          <div className={classes.section}>
             <Typography variant="h6" style={{ marginBottom: 0 }}>
               Websites you may need
             </Typography>
@@ -236,7 +267,7 @@ const ExpandedMeeting = (props: {
                 />
               ))}
             </Grid>
-          </React.Fragment>
+          </div>
         )}
         {hasDescription && !isHtml && (
           <div className={classes.section}>
@@ -250,7 +281,10 @@ const ExpandedMeeting = (props: {
           <div className={classes.section}>
             <Typography variant="h6">Description</Typography>
             <Typography
-              className={classes.description}
+              className={clsx(
+                classes.description,
+                meetingDescriptionIsMicrosoftHtml && classes.descriptionMicrosoft,
+              )}
               dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
             />
           </div>

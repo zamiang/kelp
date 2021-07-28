@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  descriptionMicrosoft: {
+    whiteSpace: 'normal',
+  },
   center: {
     textAlign: 'center',
   },

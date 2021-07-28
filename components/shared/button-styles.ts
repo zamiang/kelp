@@ -28,6 +28,16 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
     },
   },
+  iconButton: {
+    border: `1px solid ${theme.palette.primary.main}`,
+    padding: 10,
+    opacity: 1,
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      borderColor: theme.palette.primary.main,
+      opacity: 0.8,
+    },
+  },
   greyButton: {
     borderRadius: 21,
     background: theme.palette.background.paper,
