@@ -17,8 +17,8 @@ import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
+import useRowStyles from '../shared/row-styles';
 import { IFormattedAttendee, ISegment, IWebsite } from '../store/data-types';
-import { getFormattedGuestStats } from '../store/helpers';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
@@ -91,6 +91,7 @@ const ExpandedMeeting = (props: {
 }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
+  const rowStyles = useRowStyles();
   const { slug }: any = useParams();
   const meetingId = props.meetingId || slug;
   const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
@@ -137,7 +138,6 @@ const ExpandedMeeting = (props: {
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
 
-  const guestStats = getFormattedGuestStats(attendees);
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const hasMeetingNotes = !!meeting.meetingNotesLink;
@@ -254,7 +254,7 @@ const ExpandedMeeting = (props: {
       <div className={classes.container}>
         {hasWebsites && (
           <div className={classes.section}>
-            <Typography variant="h6" style={{ marginBottom: 0 }}>
+            <Typography variant="h6" className={rowStyles.rowText}>
               Websites you may need
             </Typography>
             <Grid container spacing={4}>
@@ -271,7 +271,9 @@ const ExpandedMeeting = (props: {
         )}
         {hasDescription && !isHtml && (
           <div className={classes.section}>
-            <Typography variant="h6">Description</Typography>
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Description
+            </Typography>
             <Typography className={classes.description}>
               <Linkify>{meeting.description?.trim()}</Linkify>
             </Typography>
@@ -279,7 +281,9 @@ const ExpandedMeeting = (props: {
         )}
         {hasDescription && isHtml && (
           <div className={classes.section}>
-            <Typography variant="h6">Description</Typography>
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Description
+            </Typography>
             <Typography
               className={clsx(
                 classes.description,
@@ -291,9 +295,8 @@ const ExpandedMeeting = (props: {
         )}
         {hasAttendees && (
           <div className={classes.section}>
-            <Typography variant="h6">Guests</Typography>
-            <Typography variant="caption" className={classes.smallCaption}>
-              {guestStats}
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Guests
             </Typography>
             <AttendeeList
               personStore={props.store.personDataStore}
@@ -305,7 +308,9 @@ const ExpandedMeeting = (props: {
         )}
         {meeting.location && (
           <div className={classes.section}>
-            <Typography variant="h6">Location</Typography>
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Location
+            </Typography>
             <MuiLink
               className={classes.overflowEllipsis}
               href={`https://maps.google.com/?q=${meeting.location}`}

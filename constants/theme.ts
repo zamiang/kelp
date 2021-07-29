@@ -224,8 +224,8 @@ export const lightTheme = createTheme({
     },
     MuiAvatar: {
       root: {
-        height: 34,
-        width: 34,
+        height: 40,
+        width: 40,
         fontSize: '1rem',
         textTransform: 'uppercase',
         color: white,
@@ -483,8 +483,8 @@ export const darkTheme = createTheme({
     },
     MuiAvatar: {
       root: {
-        height: 34,
-        width: 34,
+        height: 40,
+        width: 40,
         fontSize: '1rem',
         textTransform: 'uppercase',
         color: white,
