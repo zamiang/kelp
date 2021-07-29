@@ -272,7 +272,12 @@ const useStore = (
   }
   const lastUpdated = localStorage.getItem(config.LAST_UPDATED);
   const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
-  if (!lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), updateThrottleMinutes)) {
+  // Always fetch for microsoft, no real rate limit issues yet
+  if (
+    microsoftAccount ||
+    !lastUpdatedDate ||
+    lastUpdatedDate < subMinutes(new Date(), updateThrottleMinutes)
+  ) {
     console.log('fetching data');
     // eslint-disable-next-line
     return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);

@@ -67,7 +67,7 @@ export default class SegmentModel {
         const isUpNext =
           start < segment.start &&
           new Date() > subMinutes(segment.start, config.MEETING_PREP_NOTIFICATION_EARLY_MINUTES);
-        return segment.selfResponseStatus === 'accepted' && isUpNext;
+        return segment.selfResponseStatus !== 'notAttending' && isUpNext;
       }),
     );
   }
@@ -81,7 +81,7 @@ export default class SegmentModel {
       segments.filter((segment) => {
         const isUpNext = segment.start > start && segment.start < end;
         const isCurrent = start > segment.start && start < segment.end;
-        return segment.selfResponseStatus === 'accepted' && (isUpNext || isCurrent);
+        return segment.selfResponseStatus !== 'notAttending' && (isUpNext || isCurrent);
       }),
     );
   }
@@ -92,7 +92,7 @@ export default class SegmentModel {
     return first(
       segments.filter((segment) => {
         const isCurrent = start > segment.start && start < segment.end;
-        return segment.selfResponseStatus === 'accepted' && isCurrent;
+        return segment.selfResponseStatus !== 'notAttending' && isCurrent;
       }),
     );
   }

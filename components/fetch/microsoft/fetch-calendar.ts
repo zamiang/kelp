@@ -405,7 +405,6 @@ const formatCalendarEvent = (event: Event, currentUser: IPerson): ISegment | nul
       .filter(
         (attendee) => attendee.emailAddress?.address && attendee.type !== 'resource', // filter out conference rooms
       )
-
       .map(
         (a): attendee => ({
           email: a.emailAddress?.address,
@@ -446,7 +445,12 @@ export const fetchCalendar = async (
           .map(async (event: Event) => handleRecurringEvent(event, token.accessToken, currentUser)),
       );
 
-      return regularEvents.concat(flatten(recurringEvents));
+      console.log(regularEvents, 'regular events');
+      console.log(recurringEvents, 'regular events');
+
+      return regularEvents
+        .concat(flatten(recurringEvents))
+        .filter((e: ISegment) => e.selfResponseStatus !== 'notAttending');
     }
   }
   return [];

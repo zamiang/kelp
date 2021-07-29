@@ -51,14 +51,14 @@ const dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 // Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {
   graphMeEndpoint: 'https://graph.microsoft-ppe.com/v1.0/me',
-  graphCalendarEndpoint: `https://graph.microsoft.com/v1.0/me/calendar/events?$top=200&filter=start/dateTime ge '${format(
+  graphCalendarEndpoint: `https://graph.microsoft.com/v1.0/me/calendar/events?$top=250&filter=start/dateTime ge '${format(
     config.startDate,
     dateFormat,
   )}' and start/dateTime lt '${format(config.endDate, dateFormat)}'`, // https://docs.microsoft.com/en-us/graph/query-parameters
 };
 
 export const getGraphCalendarInstancesEndpoint = (id: string) =>
-  `https://graph.microsoft.com/v1.0/me/calendar/events/${id}/instances?top=100&startDateTime=${format(
+  `https://graph.microsoft.com/v1.0/me/calendar/events/${id}/instances?top=250&startDateTime=${format(
     config.startDate,
     dateFormat,
   )}&endDateTime=${format(config.endDate, dateFormat)}`;
