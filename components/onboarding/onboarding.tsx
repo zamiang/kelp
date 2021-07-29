@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tooltipSettings: {
     left: 'auto',
-    right: 3,
+    right: 10,
   },
   tooltipLightTheme: {
     left: 'auto',

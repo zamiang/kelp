@@ -6,7 +6,9 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
+import useExpandStyles from '../shared/expand-styles';
 import { orderByCount } from '../shared/order-by-count';
+import useRowStyles from '../shared/row-styles';
 import { IPerson, ISegment, IWebsite } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
@@ -75,9 +77,6 @@ const WebsiteResults = (props: { store: IStore; isDarkMode: boolean; websites: I
 };
 
 const useStyles = makeStyles((theme) => ({
-  panel: {
-    marginTop: theme.spacing(3),
-  },
   boxStyle: {
     background: theme.palette.background.paper,
     paddingTop: theme.spacing(2),
@@ -91,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topNav: {
     position: 'fixed',
-    top: 7,
+    top: 11,
     left: 195,
     zIndex: 12,
     maxWidth: 500,
@@ -110,6 +109,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Search = (props: { store: IStore; isDarkMode: boolean }) => {
+  const rowStyles = useRowStyles();
+  const expandStyles = useExpandStyles();
   const classes = useStyles();
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
@@ -180,10 +181,10 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           </Grid>
         )}
       </Grid>
-      <div className={classes.panel}>
+      <div className={expandStyles.container}>
         {filteredResults.websites.length > 0 && (
-          <div className={classes.panel} id="websites">
-            <Typography className={classes.heading} variant="h6">
+          <div className={expandStyles.section} id="websites">
+            <Typography variant="h6" className={rowStyles.rowText}>
               Websites
             </Typography>
             <Grid container spacing={4}>
@@ -196,8 +197,8 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           </div>
         )}
         {filteredResults.people.length > 0 && (
-          <div className={classes.panel} id="people">
-            <Typography className={classes.heading} variant="h6">
+          <div className={expandStyles.section} id="people">
+            <Typography variant="h6" className={rowStyles.rowText}>
               People
             </Typography>
             {filteredResults.people.slice(0, 9).map((result: any) => (
@@ -210,8 +211,8 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
           </div>
         )}
         {filteredResults.meetings.length > 0 && (
-          <div className={classes.panel} id="meetings">
-            <Typography className={classes.heading} variant="h6">
+          <div className={expandStyles.section} id="meetings">
+            <Typography variant="h6" className={rowStyles.rowText}>
               Meetings
             </Typography>
             {filteredResults.meetings.slice(0, 9).map((result: any) => (

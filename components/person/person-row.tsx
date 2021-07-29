@@ -11,7 +11,7 @@ import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/data-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   personAccepted: {},
   personTentative: {
     opacity: 0.8,
@@ -28,8 +28,8 @@ const useStyles = makeStyles(() => ({
   person: {
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
-    paddingTop: 2,
-    paddingBottom: 2,
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
     '& > *': {
       borderBottom: 'unset',
     },
