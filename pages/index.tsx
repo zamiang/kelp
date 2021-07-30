@@ -135,7 +135,6 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: 30,
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: '#47B7B8',
     maxHeight: 700,
     overflow: 'hidden',
     marginBottom: theme.spacing(4),
@@ -147,9 +146,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   meetingImage: {
     display: 'block',
-    paddingTop: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
     margin: '0px auto',
     width: '100%',
     [theme.breakpoints.down('sm')]: {
