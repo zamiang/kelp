@@ -203,7 +203,7 @@ const FetchAll = (
   );
 
   let calendarEvents = calendarResponse.result ? calendarResponse.result.calendarEvents : [];
-  if (microsoftCalendarResponse.result && microsoftCalendarResponse.result) {
+  if (microsoftCalendarResponse.result) {
     calendarEvents = calendarEvents.concat(microsoftCalendarResponse.result);
     if (contactsResponse.result) {
       const calendarEventsPeople = uniq(
@@ -211,6 +211,7 @@ const FetchAll = (
       )
         .map((email) => email && createNewPersonFromEmail(email))
         .filter(Boolean) as IPerson[];
+      console.log(calendarEventsPeople, '<<<<<<<<<<<<<<<<');
       contactsResponse.result.concat(calendarEventsPeople);
     }
   }

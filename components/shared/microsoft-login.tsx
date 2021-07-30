@@ -45,7 +45,7 @@ const launchAuthFlow = (msal: IPublicClientApplication, url: string) =>
 export const signInClickHandler = async (msal: IPublicClientApplication) => {
   const url = (await getLoginUrl(msal)) as any;
   ensureDataRefresh();
-  return await launchAuthFlow(msal, `${url}&prompt=login`);
+  return await launchAuthFlow(msal, url);
 };
 
 // SignInButton Component returns a button that invokes a popup login when clicked

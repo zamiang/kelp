@@ -442,11 +442,8 @@ export const fetchCalendar = async (
       const recurringEvents = await Promise.all(
         result.value
           .filter((event: Event) => !!(event as any).recurrence)
-          .map(async (event: Event) => handleRecurringEvent(event, token.accessToken, currentUser)),
+          .map((event: Event) => handleRecurringEvent(event, token.accessToken, currentUser)),
       );
-
-      console.log(regularEvents, 'regular events');
-      console.log(recurringEvents, 'regular events');
 
       return regularEvents
         .concat(flatten(recurringEvents))
