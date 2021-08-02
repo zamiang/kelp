@@ -225,7 +225,7 @@ const FetchAll = (
     emailAddresses: emailList,
     websites: [],
     refetch: async () => {
-      // Current user will reloadd if it fails
+      // Current user will reload if it fails
       await currentUser.execute();
       await calendarResponse.execute();
       await driveResponse.execute();

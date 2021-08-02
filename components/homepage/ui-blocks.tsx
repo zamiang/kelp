@@ -48,7 +48,8 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       paddingLeft: 0,
       paddingRight: 0,
-      paddingTop: theme.spacing(3),
+      paddingTop: 0,
+      paddingBottom: theme.spacing(3),
     },
   },
   sectionImageRightTop: {
@@ -69,7 +70,12 @@ export const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   },
-  section: {},
+  section: {
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+    },
+  },
   notificationContainer: {
     marginRight: 28,
     [theme.breakpoints.down('sm')]: {
@@ -88,22 +94,13 @@ export const useStyles = makeStyles((theme) => ({
       marginRight: 'auto',
     },
   },
-  sectionMobileReverse: {
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column-reverse',
-    },
-  },
 }));
 
 const UiBlocks = () => {
   const classes = useStyles();
   return (
     <Container maxWidth="md">
-      <Grid
-        container
-        className={clsx(classes.section, classes.sectionMobileReverse)}
-        alignItems="center"
-      >
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Made for humans
@@ -122,7 +119,7 @@ const UiBlocks = () => {
           <img src="images/meeting.svg" style={{ maxHeight: 212, maxWidth: '100%' }} />
         </Grid>
       </Grid>
-      <Grid container className={clsx(classes.section)} alignItems="center">
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Quickly prepare for meetings
@@ -136,11 +133,7 @@ const UiBlocks = () => {
           <img src="images/documents.svg" style={{ maxHeight: 231, maxWidth: '100%' }} />
         </Grid>
       </Grid>
-      <Grid
-        container
-        className={clsx(classes.section, classes.sectionMobileReverse)}
-        alignItems="center"
-      >
+      <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Manage work relationships

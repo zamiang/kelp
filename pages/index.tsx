@@ -42,6 +42,9 @@ export const useStyles = makeStyles((theme) => ({
     '&:hover': {
       opacity: 0.5,
     },
+    [theme.breakpoints.down('lg')]: {
+      height: 100,
+    },
     [theme.breakpoints.down('md')]: {
       height: 70,
     },
@@ -70,6 +73,7 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 16,
       marginTop: theme.spacing(4),
+      marginBottom: theme.spacing(1),
     },
   },
   loginMargin: {
@@ -139,7 +143,7 @@ export const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     marginBottom: theme.spacing(4),
     [theme.breakpoints.down('sm')]: {
-      borderRadius: 25,
+      borderRadius: 15,
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(8),
     },
@@ -148,20 +152,6 @@ export const useStyles = makeStyles((theme) => ({
     display: 'block',
     margin: '0px auto',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  meetingImageMobile: {
-    display: 'block',
-    paddingTop: theme.spacing(5),
-    paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(5),
-    margin: '0px auto',
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
   },
   bodyCopySection: {
     paddingTop: theme.spacing(10),
@@ -271,7 +261,6 @@ const App = () => {
       <Container maxWidth="lg">
         <div className={classes.meetingContainer}>
           <img src="images/meetings-large.svg" className={classes.meetingImage} />
-          <img src="images/meetings-mobile.svg" className={classes.meetingImageMobile} />
         </div>
       </Container>
       <UiBlocks />
