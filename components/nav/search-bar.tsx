@@ -16,10 +16,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {},
   },
   container: {
-    marginTop: -theme.spacing(1),
     background: theme.palette.background.paper,
     borderRadius: 21,
-    height: 40,
+    height: 39,
   },
   icon: {
     padding: theme.spacing(1),

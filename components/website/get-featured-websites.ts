@@ -122,9 +122,14 @@ export const getFeaturedWebsites = async (props: IStore) => {
     currentUserDocuments.concat(websiteVisits).sort((a, b) => (a.date > b.date ? -1 : 1)),
     'websiteId',
   );
-  return concattedWebsitesAndDocuments.sort((a, b) =>
-    a.isPinned ? -1 : urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
-  );
+
+  const pinned = concattedWebsitesAndDocuments
+    .filter((a) => a.isPinned)
+    .sort((a, b) => (urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1));
+  const notPinned = concattedWebsitesAndDocuments
+    .filter((a) => !a.isPinned)
+    .sort((a, b) => (urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1));
+  return pinned.concat(notPinned);
 };
 
 /**

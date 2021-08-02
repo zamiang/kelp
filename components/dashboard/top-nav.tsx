@@ -37,20 +37,18 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 10,
   },
   leftSection: {
-    maxWidth: 200,
-    width: 187,
+    width: 194,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
+    flexShrink: 0,
   },
   rightSection: {
-    maxWidth: 200,
-    width: 187,
+    width: 194,
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(1),
+    flexShrink: 0,
   },
-  searchContainer: {
-    paddingTop: 7,
-  },
+  searchContainer: {},
   button: {
     borderRadius: 4,
     transition: 'background 0.3s',
@@ -79,7 +77,7 @@ export const TopNav = (props: {
       container
       className={classes.container}
       justifyContent="space-between"
-      alignContent="center"
+      alignItems="center"
     >
       <Grid item className={classes.leftSection}>
         <div className={classes.searchContainer}>

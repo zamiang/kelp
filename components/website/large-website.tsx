@@ -45,15 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
   faviconContainer: {
     background: theme.palette.background.paper,
-    display: 'block',
-    paddingBottom: '66%',
-    overflow: 'hidden',
-    height: 0,
-    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 3,
-    backgroundSize: 'auto',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
+    paddingTop: 'calc(33% - 18px)',
+    paddingBottom: 'calc(33% - 18px)',
   },
   textContainer: {
     marginTop: 5,
@@ -63,6 +60,38 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 1,
   },
 }));
+
+const WebsiteImage = (props: {
+  image?: IWebsiteImage;
+  item: IFeaturedWebsite;
+  isDarkMode: boolean;
+}) => {
+  const classes = useStyles();
+
+  if (props.image?.image) {
+    return (
+      <div
+        className={classes.imageContainer}
+        style={{
+          backgroundImage: `url('${props.image.image}')`,
+        }}
+      >
+        <div className={classes.dots}></div>
+      </div>
+    );
+  }
+  return (
+    <div className={classes.faviconContainer}>
+      <IconButton
+        style={{
+          backgroundColor: props.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+        }}
+      >
+        <img src={`chrome://favicon/size/48@1x/${props.item.websiteId}`} height="16" width="16" />
+      </IconButton>
+    </div>
+  );
+};
 
 export const LargeWebsite = (props: {
   store: IStore;
@@ -92,16 +121,7 @@ export const LargeWebsite = (props: {
     >
       <Link href={props.item.rawUrl} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
-          <div
-            className={image?.image ? classes.imageContainer : classes.faviconContainer}
-            style={{
-              backgroundImage: image?.image
-                ? `url('${image?.image}')`
-                : `url('chrome://favicon/size/48@1x/${props.item.websiteId}')`,
-            }}
-          >
-            {image?.image && <div className={classes.dots}></div>}
-          </div>
+          <WebsiteImage image={image} item={props.item} isDarkMode={props.isDarkMode} />
         </Box>
         <Grid container alignItems="center" className={classes.textContainer}>
           <Grid item>

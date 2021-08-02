@@ -312,7 +312,7 @@ export const darkTheme = createTheme({
   palette: {
     type: 'dark',
     background: {
-      paper: '#3e3f54',
+      paper: '#363641',
       default: '#262736',
     },
     primary: {

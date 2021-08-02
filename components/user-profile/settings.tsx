@@ -146,7 +146,11 @@ const Settings = (props: { store: IStore }) => {
           <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
             Hidden websites
           </Typography>
-          {shouldShowEmptyWebsiteBlocklist && <Typography variant="h6">None</Typography>}
+          {shouldShowEmptyWebsiteBlocklist && (
+            <Typography variant="h6">
+              Add to this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+            </Typography>
+          )}
           {websiteBlocklist.map((item) => (
             <Grid
               key={item.id}
@@ -173,7 +177,11 @@ const Settings = (props: { store: IStore }) => {
           <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
             Hidden domains (all urls under these domains are hidden)
           </Typography>
-          {shouldShowEmptyDomainBlocklist && <Typography variant="h6">None</Typography>}
+          {shouldShowEmptyDomainBlocklist && (
+            <Typography variant="h6">
+              Add to this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+            </Typography>
+          )}
           {domainBlocklists.map((item) => (
             <Grid
               key={item.id}
