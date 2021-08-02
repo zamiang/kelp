@@ -211,7 +211,6 @@ const FetchAll = (
       )
         .map((email) => email && createNewPersonFromEmail(email))
         .filter(Boolean) as IPerson[];
-      console.log(calendarEventsPeople, '<<<<<<<<<<<<<<<<');
       contactsResponse.result.concat(calendarEventsPeople);
     }
   }
