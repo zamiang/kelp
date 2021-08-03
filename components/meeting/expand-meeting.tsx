@@ -88,6 +88,8 @@ const ExpandedMeeting = (props: {
   close?: () => void;
   isDarkMode: boolean;
   hideHeader?: boolean;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+  hideDialogUrl?: string;
 }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
@@ -98,6 +100,8 @@ const ExpandedMeeting = (props: {
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
+  // used to refetch websites
+  const [pinIncrement, setPinIncrement] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,7 +131,16 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, meeting?.id]);
+  }, [props.store.isLoading, meeting?.id, pinIncrement, props.hideDialogUrl]);
+
+  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
+    if (isPinned) {
+      await props.store.websitePinStore.delete(item.websiteId);
+    } else {
+      await props.store.websitePinStore.create(item.websiteId);
+    }
+    setPinIncrement(pinIncrement + 1);
+  };
 
   if (!meeting) {
     return null;
@@ -264,6 +277,8 @@ const ExpandedMeeting = (props: {
                   item={item}
                   store={props.store}
                   isDarkMode={props.isDarkMode}
+                  hideItem={props.hideWebsite}
+                  togglePin={togglePin}
                 />
               ))}
             </Grid>

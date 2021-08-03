@@ -136,10 +136,20 @@ export const DesktopDashboard = (props: {
             <div>
               <Switch>
                 <Route path="/search">
-                  <Search store={store} isDarkMode={props.isDarkMode} />
+                  <Search
+                    hideDialogUrl={hideDialogUrl}
+                    store={store}
+                    isDarkMode={props.isDarkMode}
+                    hideWebsite={hideItem}
+                  />
                 </Route>
                 <Route path="/meetings/:slug">
-                  <ExpandedMeeting store={store} isDarkMode={props.isDarkMode} />
+                  <ExpandedMeeting
+                    hideDialogUrl={hideDialogUrl}
+                    store={store}
+                    isDarkMode={props.isDarkMode}
+                    hideWebsite={hideItem}
+                  />
                 </Route>
                 <Route path="/documents/:slug">
                   <ExpandedDocument store={store} />
@@ -147,6 +157,7 @@ export const DesktopDashboard = (props: {
                 <Route path="/people/:slug">
                   <ExpandPerson
                     store={store}
+                    hideDialogUrl={hideDialogUrl}
                     hideWebsite={hideItem}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}

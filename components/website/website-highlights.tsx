@@ -40,6 +40,8 @@ export const WebsiteHighlights = (props: {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
+  // used to refetch websites
+  const [pinIncrement, setPinIncrement] = useState(0);
 
   useEffect(() => {
     void fetchData(
@@ -55,6 +57,7 @@ export const WebsiteHighlights = (props: {
     props.currentFilter,
     props.hideDialogUrl,
     shouldShowAll,
+    pinIncrement,
   ]);
 
   const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
@@ -63,13 +66,7 @@ export const WebsiteHighlights = (props: {
     } else {
       await props.store.websitePinStore.create(item.websiteId);
     }
-    void fetchData(
-      props.store,
-      props.currentFilter,
-      shouldShowAll,
-      setTopWebsites,
-      setExtraItemsCount,
-    );
+    setPinIncrement(pinIncrement + 1);
   };
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;

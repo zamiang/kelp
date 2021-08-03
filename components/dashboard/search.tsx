@@ -45,7 +45,13 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
 
 const maxWebsiteResults = 12;
 
-const WebsiteResults = (props: { store: IStore; isDarkMode: boolean; websites: ISearchItem[] }) => {
+const WebsiteResults = (props: {
+  store: IStore;
+  isDarkMode: boolean;
+  websites: ISearchItem[];
+  togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+}) => {
   const filteredResults = orderByCount(
     props.websites.map((i) => i.item as IWebsite),
     'url',
@@ -70,6 +76,8 @@ const WebsiteResults = (props: { store: IStore; isDarkMode: boolean; websites: I
           key={website.websiteId}
           item={website}
           isDarkMode={props.isDarkMode}
+          togglePin={props.togglePin}
+          hideItem={props.hideWebsite}
         />
       ))}
     </React.Fragment>
@@ -108,12 +116,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = (props: { store: IStore; isDarkMode: boolean }) => {
+const Search = (props: {
+  store: IStore;
+  isDarkMode: boolean;
+  hideDialogUrl?: string;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+}) => {
   const rowStyles = useRowStyles();
   const expandStyles = useExpandStyles();
   const classes = useStyles();
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
+  // used to refetch data
+  const [pinIncrement, setPinIncrement] = useState(0);
+
+  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
+    if (isPinned) {
+      await props.store.websitePinStore.delete(item.websiteId);
+    } else {
+      await props.store.websitePinStore.create(item.websiteId);
+    }
+    setPinIncrement(pinIncrement + 1);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,9 +150,10 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
         keys: ['text'],
       });
       setFuse(fuse);
+      console.log('setting fuse');
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.lastUpdated, props.store.isLoading, pinIncrement, props.hideDialogUrl]);
 
   if (!fuse) {
     return null;
@@ -192,6 +217,11 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
                 store={props.store}
                 websites={filteredResults.websites}
                 isDarkMode={props.isDarkMode}
+                togglePin={togglePin}
+                hideWebsite={(website) => {
+                  props.hideWebsite(website);
+                  setPinIncrement(pinIncrement + 1);
+                }}
               />
             </Grid>
           </div>
@@ -221,6 +251,7 @@ const Search = (props: { store: IStore; isDarkMode: boolean }) => {
                 meeting={result.item as ISegment}
                 store={props.store}
                 showLine
+                hideWebsite={props.hideWebsite}
                 currentFilter={'all'}
                 isDarkMode={props.isDarkMode}
               />

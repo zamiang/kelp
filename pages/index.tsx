@@ -139,7 +139,7 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: 30,
     marginLeft: 'auto',
     marginRight: 'auto',
-    maxHeight: 700,
+    maxHeight: 629,
     overflow: 'hidden',
     marginBottom: theme.spacing(4),
     [theme.breakpoints.down('sm')]: {

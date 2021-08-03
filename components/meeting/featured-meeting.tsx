@@ -105,7 +105,7 @@ export const FeaturedMeeting = (props: {
   meeting: ISegment;
   store: IStore;
   showButton?: boolean;
-  hideWebsite?: (item: IFeaturedWebsite) => void;
+  hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   showLine?: boolean;
   currentFilter: string;

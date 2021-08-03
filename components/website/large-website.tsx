@@ -96,8 +96,8 @@ const WebsiteImage = (props: {
 export const LargeWebsite = (props: {
   store: IStore;
   item: IFeaturedWebsite;
-  hideItem?: (item: IFeaturedWebsite) => void;
-  togglePin?: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
+  hideItem: (item: IFeaturedWebsite) => void;
+  togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
   smGridSize?: number;
   isDarkMode: boolean;
 }) => {

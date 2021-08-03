@@ -12,7 +12,7 @@ import { RightArrow } from '../website/right-arrow';
 const MeetingRowBelow = (props: {
   meeting: ISegment;
   store: IStore;
-  hideWebsite?: (item: IFeaturedWebsite) => void;
+  hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   currentFilter: string;
   isDarkMode: boolean;

@@ -29,6 +29,7 @@ const ExpandPerson = (props: {
   isDarkMode: boolean;
   hideWebsite: (item: IFeaturedWebsite) => void;
   currentFilter: string;
+  hideDialogUrl?: string;
 }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
@@ -42,6 +43,8 @@ const ExpandPerson = (props: {
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   const [associatesStats, setAssociatesStats] = useState<any>({});
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+  // used to refetch websites
+  const [pinIncrement, setPinIncrement] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,7 +98,16 @@ const ExpandPerson = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, personId, props.currentFilter]);
+  }, [props.store.isLoading, personId, props.currentFilter, pinIncrement, props.hideDialogUrl]);
+
+  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
+    if (isPinned) {
+      await props.store.websitePinStore.delete(item.websiteId);
+    } else {
+      await props.store.websitePinStore.create(item.websiteId);
+    }
+    setPinIncrement(pinIncrement + 1);
+  };
 
   if (!person) {
     return null;
@@ -200,7 +212,9 @@ const ExpandPerson = (props: {
                   key={item.websiteId}
                   item={item}
                   store={props.store}
+                  hideItem={props.hideWebsite}
                   isDarkMode={props.isDarkMode}
+                  togglePin={togglePin}
                 />
               ))}
             </Grid>
