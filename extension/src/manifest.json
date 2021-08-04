@@ -4,7 +4,7 @@
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlxKcE8dzPhRWKOZtCEVWL2MPlabQfIaBsHJ2Ok5oNlAgIYyb65mWqjQJtrEFgBZimtpmFatI75UQivDekcJ+zz2APxdvydZ9mHQLtnhQQwIIfzR0HdRwR4UUt013VxtBD5ks3sznq/y42jMDCZ6ye2VVS18xdCCK9ibxrI1PbJltAQ0Y6jlaISCJOYRELx5IPv5jQ/dRXt8kGUD2b94qYQpIzqbwfxanWjQjBep5QJYOeobXjzFau1pNMOQ6odvyig2FVX9uf4jlVDreKxm/kSUkLZf3dEZD85SruG8QDfBO8EJz1R3Hc+vhugp5b1U7AKnx4aFSJscNUeTSgLlQVwIDAQAB",
   "author": "brennanmoore@gmail.com",
   "manifest_version": 2,
-  "version": "2.1.5",
+  "version": "2.1.6",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
