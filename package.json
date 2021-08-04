@@ -45,7 +45,7 @@
     "@types/gapi.client.drive": "3.0.13",
     "@types/gapi.client.driveactivity": "2.0.0",
     "@types/gapi.client.people": "1.0.3",
-    "@types/lodash": "4.14.171",
+    "@types/lodash": "4.14.172",
     "@types/pluralize": "0.0.29",
     "@types/react-linkify": "1.0.1",
     "@types/react-onclickoutside": "6.7.4",
