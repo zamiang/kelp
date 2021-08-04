@@ -148,12 +148,8 @@ const UiBlocks = () => {
           md={6}
           sm={12}
           className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-          style={{ textAlign: 'center' }}
         >
-          <img
-            src="images/person.svg"
-            style={{ maxHeight: 210, maxWidth: '100%', margin: '0px auto' }}
-          />
+          <img src="images/person.svg" style={{ maxWidth: '100%', margin: '0px auto' }} />
         </Grid>
       </Grid>
     </Container>
