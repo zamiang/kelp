@@ -97,6 +97,7 @@ const useStoreWithFetching = (
   scope: string,
   microsoftAccount?: AccountInfo,
   msal?: IPublicClientApplication,
+  isMicrosoftLoadingOrError?: boolean,
 ): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken, microsoftAccount, msal);
@@ -121,14 +122,14 @@ const useStoreWithFetching = (
   // Save calendar events
   useEffect(() => {
     const addData = async () => {
-      if (!data.calendarResponseLoading) {
+      if (!data.calendarResponseLoading && !isMicrosoftLoadingOrError) {
         setLoadingMessage('Saving Calendar Events');
         // Sometimes there is an error and we get no data, don't drop the store in that case
         await timeDataStore.addSegments(data.calendarEvents, data.calendarEvents.length > 0);
       }
     };
     void addData();
-  }, [data.calendarEvents.length.toString()]);
+  }, [data.calendarEvents.length.toString(), isMicrosoftLoadingOrError]);
 
   // Save drive activity
   useEffect(() => {
@@ -266,6 +267,7 @@ const useStore = (
   googleScope: string,
   microsoftAccount?: AccountInfo,
   msal?: IPublicClientApplication,
+  isMicrosoftLoadingOrError?: boolean,
 ): IStore | null => {
   if (!db) {
     return null;
@@ -278,11 +280,18 @@ const useStore = (
     !lastUpdatedDate ||
     lastUpdatedDate < subMinutes(new Date(), updateThrottleMinutes)
   ) {
-    console.log('fetching data');
+    // console.log('fetching data');
     // eslint-disable-next-line
-    return useStoreWithFetching(db, googleOauthToken, googleScope, microsoftAccount, msal);
+    return useStoreWithFetching(
+      db,
+      googleOauthToken,
+      googleScope,
+      microsoftAccount,
+      msal,
+      isMicrosoftLoadingOrError,
+    );
   } else {
-    console.log('not fetching data');
+    // console.log('not fetching data');
     return setupStoreNoFetch(db);
   }
 };

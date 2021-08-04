@@ -236,8 +236,8 @@ const FetchAll = (
     currentUserLoading: currentUser.loading,
     driveResponseLoading: driveResponse.loading,
     driveActivityLoading: driveActivityResponse.loading,
-    calendarResponseLoading: calendarResponse.loading,
-    contactsResponseLoading: contactsResponse.loading,
+    calendarResponseLoading: calendarResponse.loading || microsoftCalendarResponse.loading,
+    contactsResponseLoading: contactsResponse.loading || microsoftCalendarResponse.loading,
     peopleLoading: peopleResponse.loading,
     isLoading: debouncedIsLoading,
     error:

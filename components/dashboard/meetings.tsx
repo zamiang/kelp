@@ -46,6 +46,7 @@ const Meetings = (props: {
           showLine
           currentFilter={props.currentFilter}
           isDarkMode={props.isDarkMode}
+          happeningSoonLimit={60 * 4}
         />
       ))}
     </div>

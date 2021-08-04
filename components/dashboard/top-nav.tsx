@@ -2,6 +2,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import React from 'react';
@@ -65,6 +66,7 @@ export const TopNav = (props: {
   hideDialogUrl?: string;
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
+  isMicrosoftError: boolean;
 }) => {
   const classes = useStyles();
   const router = useHistory();
@@ -131,6 +133,13 @@ export const TopNav = (props: {
                         )}
                       </IconButton>
                     </Tooltip>
+                  </Grid>
+                  <Grid item>
+                    {props.isMicrosoftError && (
+                      <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
+                        Error: please login to your Microsoft account
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

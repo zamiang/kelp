@@ -31,14 +31,15 @@ export const msalConfig = {
             console.error(message);
             return;
           case LogLevel.Info:
-            console.info(message);
+            //console.info(message);
             return;
           case LogLevel.Verbose:
-            console.debug(message);
+            //console.debug(message);
             return;
           case LogLevel.Warning:
             ensureDataRefresh();
-            console.warn(message);
+            console.error(message);
+            // console.warn(message);
             return;
         }
       },

@@ -55,6 +55,7 @@ export const DesktopDashboard = (props: {
   store: IStore;
   setIsDarkMode: (isDarkMode: boolean) => void;
   isDarkMode: boolean;
+  isMicrosoftError: boolean;
 }) => {
   const classes = useStyles();
   const store = props.store;
@@ -127,6 +128,7 @@ export const DesktopDashboard = (props: {
           hideDialogUrl={hideDialogUrl}
           isDarkMode={props.isDarkMode}
           setIsDarkMode={props.setIsDarkMode}
+          isMicrosoftError={props.isMicrosoftError}
         />
         <ThemeProvider theme={props.isDarkMode ? lightTheme : darkTheme}>
           <Onboarding />

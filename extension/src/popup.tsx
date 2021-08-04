@@ -44,16 +44,6 @@ if (accounts.length > 0) {
   msalInstance.setActiveAccount(accounts[0]);
 }
 
-msalInstance.addEventCallback((event: EventMessage) => {
-  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-    const payload = event.payload as AuthenticationResult;
-    const account = payload.account;
-    msalInstance.setActiveAccount(account);
-  } else if (event.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
-    console.log('acquire token failure');
-  }
-});
-
 const scopes = config.GOOGLE_SCOPES.join(' ');
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
 
@@ -63,6 +53,8 @@ const LoadingMobileDashboardContainer = (props: {
   scope: string;
   setIsDarkMode: (isDarkMode: boolean) => void;
   isDarkMode: boolean;
+  isMicrosoftError: boolean;
+  isMicrosoftLoading: boolean;
 }) => {
   const { instance } = useMsal();
   const currentAccount = instance.getActiveAccount();
@@ -72,6 +64,7 @@ const LoadingMobileDashboardContainer = (props: {
     props.scope,
     currentAccount || undefined,
     instance,
+    props.isMicrosoftError || props.isMicrosoftLoading,
   );
 
   return (
@@ -93,6 +86,7 @@ const LoadingMobileDashboardContainer = (props: {
             store={store}
             setIsDarkMode={props.setIsDarkMode}
             isDarkMode={props.isDarkMode}
+            isMicrosoftError={props.isMicrosoftError}
           />
         </Router>
       )}
@@ -111,10 +105,31 @@ const App = () => {
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
   const [hasDatabaseError, setHasDatabaseError] = useState<boolean>(false);
   const [database, setDatabase] = useState<any>(undefined);
+  const [isMicrosoftError, setMicrosoftError] = useState(false);
+  const [isMicrosoftLoading, setMicrosoftLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     localStorage.getItem(config.DARK_MODE) !== 'false',
   );
   const classes = useStyles();
+
+  msalInstance.addEventCallback((event: EventMessage) => {
+    if (event.eventType === EventType.ACQUIRE_TOKEN_START) {
+      setMicrosoftLoading(true);
+    }
+    if (event.eventType === EventType.ACQUIRE_TOKEN_SUCCESS) {
+      setMicrosoftError(false);
+      setMicrosoftLoading(false);
+    }
+    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+      const payload = event.payload as AuthenticationResult;
+      const account = payload.account;
+      msalInstance.setActiveAccount(account);
+      setMicrosoftError(false);
+      setMicrosoftLoading(false);
+    } else if (event.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
+      setMicrosoftError(true);
+    }
+  });
 
   useEffect(() => {
     chrome.identity.getAuthToken({ interactive: true }, (token) => {
@@ -196,7 +211,7 @@ const App = () => {
             </Alert>
           </Container>
         )}
-        {shouldShowLoading && (
+        {(shouldShowLoading || isMicrosoftLoading) && (
           <div className={classes.header}>
             <Loading isOpen={!token || !database} message="Loading" />
           </div>
@@ -208,6 +223,8 @@ const App = () => {
             scope={scopes}
             setIsDarkMode={setIsDarkMode}
             isDarkMode={isDarkMode}
+            isMicrosoftError={isMicrosoftError}
+            isMicrosoftLoading={isMicrosoftLoading}
           />
         )}
       </MsalProvider>

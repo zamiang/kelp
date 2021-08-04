@@ -150,7 +150,6 @@ const Search = (props: {
         keys: ['text'],
       });
       setFuse(fuse);
-      console.log('setting fuse');
     };
     void fetchData();
   }, [props.store.lastUpdated, props.store.isLoading, pinIncrement, props.hideDialogUrl]);

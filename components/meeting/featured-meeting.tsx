@@ -110,16 +110,19 @@ export const FeaturedMeeting = (props: {
   showLine?: boolean;
   currentFilter: string;
   isDarkMode: boolean;
+  happeningSoonLimit?: number;
 }) => {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
   const router = useHistory();
+  const happeningSoonLimit = props.happeningSoonLimit || 10;
 
   const isFuture = new Date() < props.meeting.start;
   const isPast = new Date() > props.meeting.end;
   const isHappeningNow = new Date() > props.meeting.start && new Date() < props.meeting.end;
   const isHappeningSoon =
-    new Date() > subMinutes(props.meeting.start, 5) && new Date() < props.meeting.end;
+    new Date() > subMinutes(props.meeting.start, happeningSoonLimit) &&
+    new Date() < props.meeting.end;
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
   return (
