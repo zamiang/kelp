@@ -118,7 +118,9 @@ export default class WebsiteModel {
   }
 
   async trackVisit(website: IWebsiteNotFormatted, timeStore: IStore['timeDataStore']) {
-    const currentMeeting = await timeStore.getCurrentSegmentForWebsites();
+    const currentMeeting = await timeStore.getCurrentSegmentForWebsites(
+      website.startAt || new Date(),
+    );
     const result = await this.db.put('website', {
       id: `${website.url}-${website.startAt.toDateString()}`,
       title: website.title || '',

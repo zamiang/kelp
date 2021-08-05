@@ -86,9 +86,8 @@ export default class SegmentModel {
     );
   }
 
-  async getCurrentSegmentForWebsites() {
+  async getCurrentSegmentForWebsites(start: Date) {
     const segments = await this.getAll();
-    const start = new Date();
     return first(
       segments.filter((segment) => {
         const isCurrent = start > segment.start && start < segment.end;

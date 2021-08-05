@@ -375,6 +375,7 @@ const formatResponseStatus = (status?: ResponseType): responseStatus => {
   } else if (status === 'notResponded') {
     return 'needsAction';
   }
+  console.warn('UNKNOWN STATUS', status);
   return 'notAttending';
 };
 
@@ -389,6 +390,22 @@ const formatCalendarEvent = (event: Event, currentUser: IPerson): ISegment | nul
     ? undefined
     : { email: event.organizer?.emailAddress?.address };
 
+  const attendees = (event.attendees || [])
+    .filter(
+      (attendee) => attendee.emailAddress?.address && attendee.type !== 'resource', // filter out conference rooms
+    )
+    .map(
+      (a): attendee => ({
+        email: a.emailAddress?.address,
+        self: a.emailAddress?.address === currentUser.id,
+      }),
+    )
+    .filter((a) => a.email && !a.email.split('@')[0].includes('outlook_'));
+
+  if (attendees.filter((a) => a.email! === currentUser.id).length < 1) {
+    attendees.push({ email: currentUser.id, self: true });
+  }
+
   return {
     id: event.id,
     link: event.webLink,
@@ -401,17 +418,7 @@ const formatCalendarEvent = (event: Event, currentUser: IPerson): ISegment | nul
     creator: creator || currentUser,
     organizer: creator || currentUser,
     description: event.body?.content?.trim(),
-    attendees: (event.attendees || [])
-      .filter(
-        (attendee) => attendee.emailAddress?.address && attendee.type !== 'resource', // filter out conference rooms
-      )
-      .map(
-        (a): attendee => ({
-          email: a.emailAddress?.address,
-          self: a.emailAddress?.address === currentUser.id,
-        }),
-      )
-      .filter((a) => a.email && !a.email.split('@')[0].includes('outlook_')),
+    attendees,
     documentIdsFromDescription: [],
     attachments: [],
     meetingNotesLink: undefined,
