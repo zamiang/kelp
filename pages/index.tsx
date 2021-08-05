@@ -232,16 +232,13 @@ const App = () => {
       <div className={classes.hero}>
         <Container maxWidth="md">
           <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
-          <Typography variant="h4" className={classes.logo}>
-            Kelp
-          </Typography>
           <Typography variant="h1" className={classes.heading}>
-            A New Tab page that gets you what you need when you need it
+            Kelp gets you what you need when you need it
           </Typography>
           <Typography className={classes.subheading}>
-            Kelp automatically associates your webpages with your meetings and shows you the right
-            links for your next meeting. Install Kelp to leave tags and folders behind, and switch
-            to an organization system that adapts to the real world.
+            A New Tab page for Chrome that associates your webpages with your meetings. It shows you
+            the right links for your next meeting. Install Kelp to leave tags and folders behind,
+            and switch to an organization system that adapts to the real world.
           </Typography>
         </Container>
         <Container className={classes.buttonContainer}>
