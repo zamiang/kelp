@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     overscrollBehavior: 'contain',
     overscrollBehaviorY: 'none',
     overscrollBehaviorX: 'none',
+    minHeight: '100vh',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingRight: theme.spacing(2),
