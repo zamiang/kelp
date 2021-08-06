@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 
-// COPIED FROM constancs/config unsure why import doesn't work
+// COPIED FROM constants/config unsure why import doesn't work
 const GOOGLE_OAUTH_TOKEN =
   '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
 const scopes = [
@@ -12,7 +12,6 @@ const scopes = [
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/drive.metadata.readonly',
   'https://www.googleapis.com/auth/drive.activity.readonly',
-  'https://www.googleapis.com/auth/drive.file',
 ];
 
 const modifyManifest = (buffer) => {

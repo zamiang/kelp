@@ -40,8 +40,8 @@ const InstallUiBlocks = () => {
             <div className={classes.dot}></div>Read Document Metadata
           </Typography>
           <Typography>
-            This allows Kelp to know the title of your documents and easily link you to documents.
-            Kelp cannot access the content of documents in you or your companies drive folder.
+            This allows Kelp to know the title and link your documents. Kelp cannot access the
+            content of documents in you or your company Drive.
           </Typography>
         </Grid>
         <Grid
@@ -56,30 +56,11 @@ const InstallUiBlocks = () => {
       <Grid container className={classes.section} alignItems="center">
         <Grid item md={6} sm={12} className={classes.sectionText}>
           <Typography variant="h4" className={classes.heading}>
-            <div className={classes.dot}></div>Create Smart Meeting Notes
-          </Typography>
-          <Typography>
-            Kelp can create smart notes for your upcoming meetings that automatically include
-            relevant documents and attendees.
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          md={6}
-          sm={12}
-          className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
-        >
-          <img src="google-permissions/drive-kelp.png" className={classes.image} />
-        </Grid>
-      </Grid>
-      <Grid container className={classes.section} alignItems="center">
-        <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Typography variant="h4" className={classes.heading}>
             <div className={classes.dot}></div>Read Calendar Events
           </Typography>
           <Typography>
             This allows your Kelp application to see your upcoming meetings and then match them with
-            documents, document events and attendees.
+            relevant websites.
           </Typography>
         </Grid>
         <Grid

@@ -20,6 +20,7 @@ import './popup.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
+import useButtonStyles from '../../components/shared/button-styles';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
@@ -103,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const [token, setToken] = useState<string | null>(null);
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
+  const buttonClasses = useButtonStyles();
+  const [hasGoogleAdvancedProtectionError, setHasGoogleAdvancedProtectionError] =
+    useState<boolean>(false);
   const [hasDatabaseError, setHasDatabaseError] = useState<boolean>(false);
   const [database, setDatabase] = useState<any>(undefined);
   const [isMicrosoftError, setMicrosoftError] = useState(false);
@@ -138,6 +142,8 @@ const App = () => {
         if (
           chrome.runtime.lastError.message?.includes('Service has been disabled for this account')
         ) {
+          setHasGoogleAdvancedProtectionError(true);
+        } else {
           setHasAuthError(true);
         }
       } else {
@@ -179,6 +185,34 @@ const App = () => {
             <Alert severity="error">
               <AlertTitle>Authentication Error</AlertTitle>
               <Typography>
+                Please login with Google
+                <br />
+                <br />
+                <Button
+                  className={buttonClasses.button}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  <Typography noWrap variant="caption">
+                    Try again
+                  </Typography>
+                </Button>
+                <br />
+                <br />
+                Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
+                questions.
+              </Typography>
+            </Alert>
+          </Container>
+        )}
+        {hasGoogleAdvancedProtectionError && (
+          <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+            <Alert severity="error">
+              <AlertTitle>Authentication Error</AlertTitle>
+              <Typography>
                 It looks like your organization has the{' '}
                 <Link href="https://landing.google.com/advancedprotection/">
                   Google Advanced Protection Program
@@ -190,7 +224,9 @@ const App = () => {
                 <br />
                 <br />
                 <Button
-                  variant="outlined"
+                  className={buttonClasses.button}
+                  variant="contained"
+                  color="primary"
                   onClick={(event) => {
                     event.stopPropagation();
                     void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);

@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
@@ -11,7 +10,6 @@ import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
 import EmailIcon from '../../public/icons/email-orange.svg';
-import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';
@@ -22,7 +20,6 @@ import { IFormattedAttendee, ISegment, IWebsite } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
-import { createMeetingNotes } from './create-meeting-notes';
 
 const maxNumberOfWebsites = 6;
 
@@ -64,24 +61,6 @@ const EmailGuestsButton = (props: {
   );
 };
 
-const createSmartMeetingNotes = (
-  meeting: ISegment,
-  store: IStore,
-  websites: IFeaturedWebsite[],
-  setMeetingNotesLoading: (isLoading: boolean) => void,
-) =>
-  createMeetingNotes(
-    meeting,
-    websites,
-    setMeetingNotesLoading,
-    store.personDataStore,
-    store.websitesStore,
-    store.attendeeDataStore,
-    store.refetch,
-    store.scope!,
-    store.googleOauthToken!,
-  );
-
 const ExpandedMeeting = (props: {
   store: IStore;
   meetingId?: string;
@@ -96,7 +75,6 @@ const ExpandedMeeting = (props: {
   const rowStyles = useRowStyles();
   const { slug }: any = useParams();
   const meetingId = props.meetingId || slug;
-  const [isMeetingNotesLoading, setMeetingNotesLoading] = useState<boolean>(false);
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
@@ -176,31 +154,6 @@ const ExpandedMeeting = (props: {
         </Grid>
         <Grid item>
           <Grid container spacing={2}>
-            {!hasMeetingNotes && (
-              <Grid item>
-                <Tooltip title="Create Smart Meeting notes">
-                  <IconButton
-                    onClick={() =>
-                      createSmartMeetingNotes(
-                        meeting,
-                        props.store,
-                        websites,
-                        setMeetingNotesLoading,
-                      )
-                    }
-                    disabled={isMeetingNotesLoading}
-                    color="primary"
-                    className={buttonClasses.iconButton}
-                  >
-                    {isMeetingNotesLoading ? (
-                      <CircularProgress size={20} />
-                    ) : (
-                      <PlusIcon width="24" height="24" />
-                    )}
-                  </IconButton>
-                </Tooltip>
-              </Grid>
-            )}
             {hasMeetingNotes && (
               <Grid item>
                 <Tooltip title="Open meeting notes">
