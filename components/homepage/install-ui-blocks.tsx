@@ -79,7 +79,7 @@ const InstallUiBlocks = () => {
           </Typography>
           <Typography>
             This allows Kelp minimal access to event data like if someone edits or comments on a
-            document.
+            document. Document event data helps Kelp give you more accurate recommendations.
           </Typography>
         </Grid>
         <Grid
