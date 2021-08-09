@@ -35,18 +35,12 @@ export const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   logoImage: {
-    height: 120,
+    height: 64,
     opacity: 1,
     cursor: 'pointer',
     transition: 'opacity 0.3s',
     '&:hover': {
       opacity: 0.5,
-    },
-    [theme.breakpoints.down('lg')]: {
-      height: 100,
-    },
-    [theme.breakpoints.down('md')]: {
-      height: 70,
     },
   },
   logo: {
