@@ -1,6 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../shared/loading-spinner';
+import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
@@ -34,6 +35,8 @@ export const WebsiteHighlights = (props: {
   store: IStore;
   currentFilter: string;
   hideWebsite: (item: IFeaturedWebsite) => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
   hideDialogUrl?: string;
   isDarkMode: boolean;
 }) => {
@@ -86,6 +89,8 @@ export const WebsiteHighlights = (props: {
                 smGridSize={4}
                 togglePin={togglePin}
                 isDarkMode={props.isDarkMode}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
               />
             ))}
           </Grid>

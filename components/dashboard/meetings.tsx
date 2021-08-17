@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import panelStyles from '../shared/panel-styles';
-import { ISegment } from '../store/data-types';
+import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 
@@ -14,6 +14,8 @@ const Meetings = (props: {
   store: IStore;
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
   currentFilter: string;
   isDarkMode: boolean;
 }) => {
@@ -47,6 +49,8 @@ const Meetings = (props: {
           currentFilter={props.currentFilter}
           isDarkMode={props.isDarkMode}
           happeningSoonLimit={60 * 4}
+          websiteTags={props.websiteTags}
+          toggleWebsiteTag={props.toggleWebsiteTag}
         />
       ))}
     </div>

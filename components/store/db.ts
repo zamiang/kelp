@@ -13,6 +13,7 @@ import {
   IWebsiteBlocklist,
   IWebsiteImage,
   IWebsitePin,
+  IWebsiteTag,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -93,6 +94,13 @@ interface Db extends DBSchema {
       'by-raw-url': string;
     };
   };
+  websiteTag: {
+    value: IWebsiteTag;
+    key: string;
+    indexes: {
+      'by-url': string;
+    };
+  };
   websiteBlocklist: {
     value: IWebsiteBlocklist;
     key: string;
@@ -113,14 +121,19 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 11;
+const databaseVerson = 12;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
-    if (oldVersion < databaseVerson) {
+    if (oldVersion < databaseVerson && oldVersion > 10) {
+      const tagStore = db.createObjectStore('websiteTag', {
+        keyPath: 'id',
+      });
+      tagStore.createIndex('by-url', 'url', { unique: false, multiEntry: true });
+      return;
+    } else if (oldVersion < 11) {
       deleteAllStores(db);
     }
-
     const personStore = db.createObjectStore('person', {
       keyPath: 'id',
     });

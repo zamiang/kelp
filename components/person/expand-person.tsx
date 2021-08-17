@@ -13,7 +13,13 @@ import MeetingList from '../shared/meeting-list';
 import { orderByCount } from '../shared/order-by-count';
 import useRowStyles from '../shared/row-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
-import { IFormattedAttendee, IPerson, ISegment, ISegmentDocument } from '../store/data-types';
+import {
+  IFormattedAttendee,
+  IPerson,
+  ISegment,
+  ISegmentDocument,
+  IWebsiteTag,
+} from '../store/data-types';
 import { getAssociates } from '../store/helpers';
 import { IStore } from '../store/use-store';
 import {
@@ -26,6 +32,8 @@ const ExpandPerson = (props: {
   store: IStore;
   personId?: string;
   close?: () => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   hideWebsite: (item: IFeaturedWebsite) => void;
   currentFilter: string;
@@ -215,6 +223,8 @@ const ExpandPerson = (props: {
                   hideItem={props.hideWebsite}
                   isDarkMode={props.isDarkMode}
                   togglePin={togglePin}
+                  websiteTags={props.websiteTags}
+                  toggleWebsiteTag={props.toggleWebsiteTag}
                 />
               ))}
             </Grid>
@@ -257,6 +267,8 @@ const ExpandPerson = (props: {
               isDarkMode={props.isDarkMode}
               currentFilter={props.currentFilter}
               hideWebsite={props.hideWebsite}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
             />
           </div>
         )}
@@ -271,6 +283,8 @@ const ExpandPerson = (props: {
               isDarkMode={props.isDarkMode}
               currentFilter={props.currentFilter}
               hideWebsite={props.hideWebsite}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
             />
           </div>
         )}

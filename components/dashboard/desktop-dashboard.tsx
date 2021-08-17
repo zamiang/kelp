@@ -16,6 +16,8 @@ import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import { Onboarding } from '../onboarding/onboarding';
 import ExpandPerson from '../person/expand-person';
+import { toggleWebsiteTag } from '../shared/website-tag';
+import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
@@ -61,6 +63,7 @@ export const DesktopDashboard = (props: {
   const store = props.store;
   const router = useHistory();
   const [filter, setFilter] = useState<string>('all');
+  const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [hideDialogUrl, setHideDialogUrl] = useState<string | undefined>();
   const hideDialogDomain = hideDialogUrl ? new URL(hideDialogUrl).host : undefined;
 
@@ -93,6 +96,20 @@ export const DesktopDashboard = (props: {
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const i = await props.store.websiteTagStore.getAll();
+      setWebsiteTags(i);
+    };
+    void fetchData();
+  }, []);
+
+  const toggleWebsiteTagClick = async (tag: string, websiteId: string) => {
+    await toggleWebsiteTag(tag, websiteId, websiteTags, store);
+    const i = await props.store.websiteTagStore.getAll();
+    setWebsiteTags(i);
+  };
 
   const hideItem = (item: IFeaturedWebsite) => setHideDialogUrl(item.websiteId);
 
@@ -142,6 +159,8 @@ export const DesktopDashboard = (props: {
                     hideDialogUrl={hideDialogUrl}
                     store={store}
                     isDarkMode={props.isDarkMode}
+                    websiteTags={websiteTags}
+                    toggleWebsiteTag={toggleWebsiteTagClick}
                     hideWebsite={hideItem}
                   />
                 </Route>
@@ -150,6 +169,8 @@ export const DesktopDashboard = (props: {
                     hideDialogUrl={hideDialogUrl}
                     store={store}
                     isDarkMode={props.isDarkMode}
+                    websiteTags={websiteTags}
+                    toggleWebsiteTag={toggleWebsiteTagClick}
                     hideWebsite={hideItem}
                   />
                 </Route>
@@ -161,6 +182,8 @@ export const DesktopDashboard = (props: {
                     store={store}
                     hideDialogUrl={hideDialogUrl}
                     hideWebsite={hideItem}
+                    toggleWebsiteTag={toggleWebsiteTagClick}
+                    websiteTags={websiteTags}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
                   />
@@ -169,6 +192,8 @@ export const DesktopDashboard = (props: {
                   <Meetings
                     store={store}
                     hideWebsite={hideItem}
+                    toggleWebsiteTag={toggleWebsiteTagClick}
+                    websiteTags={websiteTags}
                     hideDialogUrl={hideDialogUrl}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
@@ -181,13 +206,17 @@ export const DesktopDashboard = (props: {
                   <MeetingHighlight
                     store={props.store}
                     hideWebsite={hideItem}
+                    toggleWebsiteTag={toggleWebsiteTagClick}
+                    websiteTags={websiteTags}
                     hideDialogUrl={hideDialogUrl}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
                   />
                   <WebsiteHighlights
                     store={store}
+                    toggleWebsiteTag={toggleWebsiteTagClick}
                     currentFilter={filter}
+                    websiteTags={websiteTags}
                     hideWebsite={hideItem}
                     hideDialogUrl={hideDialogUrl}
                     isDarkMode={props.isDarkMode}

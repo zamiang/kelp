@@ -10,7 +10,7 @@ import CloseIcon from '../../public/icons/close.svg';
 import PinIconWhite from '../../public/icons/pin-white.svg';
 import PinIcon from '../../public/icons/pin.svg';
 import { WebsiteTags } from '../shared/website-tag';
-import { IWebsiteImage } from '../store/data-types';
+import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
@@ -102,8 +102,10 @@ export const LargeWebsite = (props: {
   item: IFeaturedWebsite;
   hideItem: (item: IFeaturedWebsite) => void;
   togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   smGridSize?: number;
   isDarkMode: boolean;
+  websiteTags: IWebsiteTag[];
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
   const [isCloseVisible, setCloseVisible] = useState(false);
@@ -185,7 +187,12 @@ export const LargeWebsite = (props: {
           )}
         </Grid>
       </Link>
-      <WebsiteTags store={props.store} item={props.item} />
+      <WebsiteTags
+        store={props.store}
+        item={props.item}
+        toggleWebsiteTag={props.toggleWebsiteTag}
+        userTags={props.websiteTags}
+      />
     </Grid>
   );
 };

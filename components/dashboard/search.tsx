@@ -9,7 +9,7 @@ import PersonRow from '../person/person-row';
 import useExpandStyles from '../shared/expand-styles';
 import { orderByCount } from '../shared/order-by-count';
 import useRowStyles from '../shared/row-styles';
-import { IPerson, ISegment, IWebsite } from '../store/data-types';
+import { IPerson, ISegment, IWebsite, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
@@ -51,6 +51,8 @@ const WebsiteResults = (props: {
   websites: ISearchItem[];
   togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
   hideWebsite: (item: IFeaturedWebsite) => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
 }) => {
   const filteredResults = orderByCount(
     props.websites.map((i) => i.item as IWebsite),
@@ -78,6 +80,8 @@ const WebsiteResults = (props: {
           isDarkMode={props.isDarkMode}
           togglePin={props.togglePin}
           hideItem={props.hideWebsite}
+          websiteTags={props.websiteTags}
+          toggleWebsiteTag={props.toggleWebsiteTag}
         />
       ))}
     </React.Fragment>
@@ -121,6 +125,8 @@ const Search = (props: {
   isDarkMode: boolean;
   hideDialogUrl?: string;
   hideWebsite: (item: IFeaturedWebsite) => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
 }) => {
   const rowStyles = useRowStyles();
   const expandStyles = useExpandStyles();
@@ -217,6 +223,8 @@ const Search = (props: {
                 websites={filteredResults.websites}
                 isDarkMode={props.isDarkMode}
                 togglePin={togglePin}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
                 hideWebsite={(website) => {
                   props.hideWebsite(website);
                   setPinIncrement(pinIncrement + 1);
@@ -253,6 +261,8 @@ const Search = (props: {
                 hideWebsite={props.hideWebsite}
                 currentFilter={'all'}
                 isDarkMode={props.isDarkMode}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
               />
             ))}
           </div>

@@ -2,6 +2,7 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 
@@ -12,22 +13,32 @@ const useStyles = makeStyles(() => ({
 }));
 
 const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
-  const existingTagText = userTags.map((t) => t.text);
+  const existingTagText = userTags.map((t) => t.tag);
   return existingTagText.includes(text);
 };
 
-const toggleWebsiteTag = async (
+export const toggleWebsiteTag = async (
   tag: string,
   websiteId: string,
   userTags: IWebsiteTag[],
   store: IStore,
 ) => {
   if (isTagSelected(tag, userTags)) {
-    await store.websiteTagStore.addTag(tag, websiteId);
+    await store.websiteTagStore.create(tag, websiteId);
   } else {
-    await store.websiteTagStore.removeTag(tag, websiteId);
+    await store.websiteTagStore.delete(tag, websiteId);
   }
   return;
+};
+
+const getTagsForWebsite = async (websiteTitle: string, store: IStore) => {
+  const tfidf = await store.tfidfStore.getTfidf(store);
+  const values = tfidf.tfidfs(websiteTitle);
+  const terms = websiteTitle.split(' ').map((term, index) => ({
+    term,
+    value: values[index],
+  }));
+  return terms.sort((a, b) => a.value - b.value).map((a) => a.term);
 };
 
 export const WebsiteTags = (props: {
@@ -36,29 +47,26 @@ export const WebsiteTags = (props: {
   userTags: IWebsiteTag[];
   toggleWebsiteTag: (text: string, websiteId: string) => void;
 }) => {
-  const [tags, setTags] = useState<IWebsiteTag>([]);
+  const [websiteTags, setWebsiteTags] = useState<string[]>([]);
   const classes = useStyles();
 
   useEffect(() => {
     const fetchData = async () => {
-      const i = await props.store.websiteTagStore.getById(props.item.websiteId);
-      setTags(i);
+      const i = await getTagsForWebsite(props.item.text!, props.store);
+      setWebsiteTags(i);
     };
     void fetchData();
   }, [props.item.websiteId]);
 
   return (
     <div className={classes.tags}>
-      {tags.map((tag) => (
+      {websiteTags.map((tag) => (
         <div
-          key={tag.id}
-          onClick={() => props.toggleWebsiteTag(tag.text, props.item.websiteId)}
-          className={clsx(
-            classes.tag,
-            isTagSelected(tag.text, props.userTags) && classes.tagSelected,
-          )}
+          key={tag}
+          onClick={() => toggleWebsiteTag(tag, props.item.websiteId, props.userTags, props.store)}
+          className={clsx(classes.tag, isTagSelected(tag, props.userTags) && classes.tagSelected)}
         >
-          <Typography>{tag.text}</Typography>
+          <Typography>{tag}</Typography>
         </div>
       ))}
     </div>

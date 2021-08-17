@@ -19,10 +19,12 @@ import WebsiteBlocklistStore from './models/website-blocklist-model';
 import WebsiteImageStore from './models/website-image-model';
 import WebsitesStore from './models/website-model';
 import WebsitePinStore from './models/website-pin-model';
+import WebsiteTagStore from './models/website-tag-model';
 
 export interface IStore {
   readonly domainFilterStore: DomainFilterStore;
   readonly websiteBlocklistStore: WebsiteBlocklistStore;
+  readonly websiteTagStore: WebsiteTagStore;
   readonly domainBlocklistStore: DomainBlocklistStore;
   readonly personDataStore: PersonDataStore;
   readonly timeDataStore: TimeDataStore;
@@ -56,7 +58,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
   const documentDataStore = new DocumentDataStore(db);
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
-  const tfidfStore = new TfidfDataStore(db);
+  const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websitesStore = new WebsitesStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
@@ -64,6 +66,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
   const websitePinStore = new WebsitePinStore(db);
   const domainBlocklistStore = new DomainBlocklistStore(db);
   const domainFilterStore = new DomainFilterStore(db);
+  const websiteTagStore = new WebsiteTagStore(db);
 
   return {
     domainFilterStore,
@@ -72,6 +75,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
     websitesStore,
+    websiteTagStore,
     personDataStore,
     documentDataStore,
     attendeeDataStore,
@@ -110,7 +114,7 @@ const useStoreWithFetching = (
   const documents = data.driveFiles || [];
   const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
-  const tfidfStore = new TfidfDataStore(db);
+  const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websitesStore = new WebsitesStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
@@ -118,6 +122,7 @@ const useStoreWithFetching = (
   const domainBlocklistStore = new DomainBlocklistStore(db);
   const domainFilterStore = new DomainFilterStore(db);
   const websitePinStore = new WebsitePinStore(db);
+  const websiteTagStore = new WebsiteTagStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -212,25 +217,6 @@ const useStoreWithFetching = (
     void addData();
   }, [data.isLoading]);
 
-  // When everything is all done do the tfidf one
-  /*
-  useEffect(() => {
-    const addData = async () => {
-      if (data.isLoading) {
-        return;
-      }
-      // TFIDF for calendar view
-      await tfidfStore.saveDocuments({
-        driveActivityStore: driveActivityDataStore,
-        timeDataStore,
-        personDataStore,
-        documentDataStore,
-        attendeeDataStore,
-      });
-    };
-    void addData();
-  }, [data.isLoading]);
-  */
   return {
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
@@ -240,6 +226,7 @@ const useStoreWithFetching = (
     segmentDocumentStore,
     websitesStore,
     websiteImageStore,
+    websiteTagStore,
     websiteBlocklistStore,
     websitePinStore,
     domainBlocklistStore,

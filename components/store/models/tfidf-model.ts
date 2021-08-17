@@ -1,5 +1,4 @@
 import Tfidf from '../../shared/tfidf';
-import { dbType } from '../db';
 import { IStore } from '../use-store';
 
 /**
@@ -14,19 +13,18 @@ export interface ITfidfRow {
 }
 
 export default class TfidfStore {
-  private db: dbType;
-
-  constructor(db: dbType) {
-    this.db = db;
-  }
-
-  async getTfidf() {
-    const data = await this.getDocuments();
+  // not sure this caching is a good idea. I don't want to store it and it won't change much during a pageload
+  async getTfidf(store: IStore) {
+    const data = await this.getDocuments(store);
+    if ((window as any).tfidf) {
+      return (window as any).tfidf as Tfidf;
+    }
     const tfidf = new Tfidf(data);
+    (window as any).tfidf = tfidf;
     return tfidf;
   }
 
-  async saveDocuments(store: IStore) {
+  async getDocuments(store: IStore) {
     // Websites
     const websitesList = await store.websitesStore.getAll(
       store.domainBlocklistStore,
@@ -43,39 +41,19 @@ export default class TfidfStore {
     const meetingTitles = segments.map((segment) => segment.summary);
 
     // Formatting
-    const websiteItems = Object.keys(websiteTitles)
-      .map((key) => ({
-        key,
-        text: key,
-      }))
-      .map((item) => ({
-        id: `websites-${item.key}`,
-        key: item.key,
-        type: 'website' as any,
-        text: item.text,
-      }));
-    const meetingItems = Object.keys(meetingTitles)
-      .map((key) => ({
-        key,
-        text: key,
-      }))
-      .map((item) => ({
-        id: `meetings-${item.key}`,
-        key: item.key,
-        type: 'meetings' as any,
-        text: item.text,
-      }));
+    const websiteItems = websiteTitles.map((item) => ({
+      id: `websites-${item}`,
+      key: item,
+      type: 'website' as any,
+      text: item,
+    }));
+    const meetingItems = meetingTitles.map((item) => ({
+      id: `meetings-${item}`,
+      key: item!,
+      type: 'meetings' as any,
+      text: item!,
+    }));
 
-    const tx = this.db.transaction('tfidf', 'readwrite');
-    // console.log(documentItems, 'about to save documentitems tfidf');
-    await Promise.all(websiteItems.map(async (item) => tx.store.put(item)));
-    // console.log(meetingItems, 'about to save meetingitems tfidf');
-    await Promise.all(meetingItems.map(async (item) => tx.store.put(item)));
-    return tx.done;
-  }
-
-  async getDocuments() {
-    const results = await this.db.getAllFromIndex('tfidf', 'by-type');
-    return results;
+    return websiteItems.concat(meetingItems);
   }
 }

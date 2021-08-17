@@ -2,7 +2,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { setHours, setMinutes, subDays, subMinutes } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { ISegment } from '../store/data-types';
+import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { FeaturedMeeting } from './featured-meeting';
@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
 export const MeetingHighlight = (props: {
   store: IStore;
   hideWebsite: (item: IFeaturedWebsite) => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
   hideDialogUrl?: string;
   currentFilter: string;
   isDarkMode: boolean;
@@ -60,6 +62,8 @@ export const MeetingHighlight = (props: {
         hideWebsite={props.hideWebsite}
         hideDialogUrl={props.hideDialogUrl}
         isDarkMode={props.isDarkMode}
+        websiteTags={props.websiteTags}
+        toggleWebsiteTag={props.toggleWebsiteTag}
       />
     </div>
   );
