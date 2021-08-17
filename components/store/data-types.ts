@@ -159,3 +159,10 @@ export interface IWebsitePin {
   readonly id: string;
   readonly createdAt: Date;
 }
+
+export interface IWebsiteTag {
+  readonly id: string;
+  readonly createdAt: Date;
+  readonly url: string;
+  readonly tag: string;
+}

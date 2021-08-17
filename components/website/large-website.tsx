@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import PinIconWhite from '../../public/icons/pin-white.svg';
 import PinIcon from '../../public/icons/pin.svg';
+import { WebsiteTags } from '../shared/website-tag';
 import { IWebsiteImage } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
@@ -59,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     marginTop: 1,
   },
+  tags: {},
+  tag: {},
+  tagSelected: {},
 }));
 
 const WebsiteImage = (props: {
@@ -181,6 +185,7 @@ export const LargeWebsite = (props: {
           )}
         </Grid>
       </Link>
+      <WebsiteTags store={props.store} item={props.item} />
     </Grid>
   );
 };
