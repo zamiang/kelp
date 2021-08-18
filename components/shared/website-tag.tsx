@@ -1,6 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
+import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -33,12 +34,9 @@ export const toggleWebsiteTag = async (
 
 const getTagsForWebsite = async (websiteTitle: string, store: IStore) => {
   const tfidf = await store.tfidfStore.getTfidf(store);
-  const values = tfidf.tfidfs(websiteTitle);
-  const terms = websiteTitle.split(' ').map((term, index) => ({
-    term,
-    value: values[index],
-  }));
-  return terms.sort((a, b) => a.value - b.value).map((a) => a.term);
+  const values = uniqBy(tfidf.tfidfs(websiteTitle), (t) => t.term);
+  const sorted = values.sort((a, b) => b.value - a.value);
+  return sorted.map((a) => a.term);
 };
 
 export const WebsiteTags = (props: {
@@ -62,7 +60,7 @@ export const WebsiteTags = (props: {
     <div className={classes.tags}>
       {websiteTags.map((tag) => (
         <div
-          key={tag}
+          key={`${tag}-${props.item.websiteId}`}
           onClick={() => toggleWebsiteTag(tag, props.item.websiteId, props.userTags, props.store)}
           className={clsx(classes.tag, isTagSelected(tag, props.userTags) && classes.tagSelected)}
         >

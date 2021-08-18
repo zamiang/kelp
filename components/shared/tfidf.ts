@@ -116,6 +116,7 @@ const stopwords = [
   'your',
   'a',
   'i',
+  '-',
 ];
 
 const removeStopwords = (tokens: string[]) =>
@@ -126,7 +127,12 @@ export const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 const buildDocument = (text: string, key: string): IDocumentument =>
   removeStopwords(text.replace(removePunctuationRegex, '').split(' ')).reduce(
     (document: IDocumentument, term: string) => {
-      const formattedTerm = term.replace('(', '').replace(')', '').replace('meeting', '');
+      const formattedTerm = term
+        .replace('(', '')
+        .replace(')', '')
+        .replace('–', '')
+        .replace('/', '')
+        .replace('meeting', '');
       if (formattedTerm.length > 1)
         document[formattedTerm] = document[formattedTerm] ? document[formattedTerm] + 1 : 1;
       return document;
@@ -143,11 +149,13 @@ const documentHasTerm = (term: string, document: IDocumentument) =>
 export default class Tfidf {
   private documents: IDocumentument[];
   private idfCache: IIdfCache;
+  private documentCount: number;
 
   constructor(documentsToAdd: { text: string; key: string }[]) {
-    this.documents = [];
     this.idfCache = {};
-    documentsToAdd.map((doc) => this.addDocument(doc.text, doc.key, true));
+    this.documentCount = documentsToAdd.length;
+    this.documents = [buildDocument(documentsToAdd.map((d) => d.text).join(' '), '0')];
+    this.restoreCache();
   }
 
   idf = (term: string, shouldForce: boolean) => {
@@ -160,44 +168,41 @@ export default class Tfidf {
       0,
     );
 
-    const idf = 1 + Math.log(this.documents.length / (1 + docsWithTerm));
+    const idf = 1 + Math.log(this.documentCount / (1 + docsWithTerm));
 
     // Add the idf to the term cache and return it
     this.idfCache[term] = idf;
     return idf;
   };
 
-  // If restoreCache is set to true, all terms idf scores currently cached will be recomputed.
-  // Otherwise, the cache will just be wiped clean
-  addDocument(text: string, key: string, shouldRestoreCache: boolean) {
-    this.documents.push(buildDocument(text, key));
-
+  restoreCache() {
     // make sure the cache is invalidated when new documents arrive
-    if (shouldRestoreCache) {
-      for (const term in this.idfCache) {
-        // invoking idf with the force option set will
-        // force a recomputation of the idf, and it will
-        // automatically refresh the cache value.
-        this.idf(term, true);
-      }
-    } else {
-      this.idfCache = {};
+    for (const term in this.idfCache) {
+      // invoking idf with the force option set will
+      // force a recomputation of the idf, and it will
+      // automatically refresh the cache value.
+      this.idf(term, true);
     }
   }
 
-  tfidf(term: string, documentIndex: number) {
+  tfidf(terms: string[], documentIndex: number) {
     const getIdf = this.idf;
     const documents = this.documents;
-    return term.split(' ').reduce(function (value, term) {
+    return terms.map((term) => {
       let idf = getIdf(term, false);
       idf = idf === Infinity ? 0 : idf;
       const documentsToSearch = documents.find(
         (item) => item.__key === (documentIndex.toString() as any),
       );
-      return value + tf(term, documentsToSearch!) * idf;
+      if (documentsToSearch) {
+        return tf(term, documentsToSearch) * idf;
+      }
+      console.log('fail');
+      return 0;
     }, 0.0);
   }
 
+  /*
   listTerms(documentIndex: number) {
     const terms: { tfidf: number; term: string }[] = [];
     const documentsToSearch: any = [];
@@ -222,10 +227,13 @@ export default class Tfidf {
     });
     return terms.sort((x: any, y: any) => y.tfidf - x.tfidf);
   }
+*/
 
   tfidfs(terms: string) {
-    return this.documents.map((_document, index) => this.tfidf(terms, index));
+    const formattedTerms = removeStopwords(
+      terms.replace(removePunctuationRegex, '').split(' '),
+    ).filter((t) => t.length > 2);
+    const values = this.documents.map((_document, index) => this.tfidf(formattedTerms, index));
+    return formattedTerms.map((t, index) => ({ term: t, value: values[0][index] }));
   }
-
-  // TODO: write a get max function
 }
