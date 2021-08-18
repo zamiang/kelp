@@ -60,9 +60,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     marginTop: 1,
   },
-  tags: {},
-  tag: {},
-  tagSelected: {},
 }));
 
 const WebsiteImage = (props: {
@@ -192,6 +189,7 @@ export const LargeWebsite = (props: {
         item={props.item}
         toggleWebsiteTag={props.toggleWebsiteTag}
         userTags={props.websiteTags}
+        isHovering={isCloseVisible}
       />
     </Grid>
   );
