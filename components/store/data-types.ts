@@ -122,6 +122,7 @@ export interface ISegmentDocument {
 export interface IWebsite {
   readonly id: string;
   readonly title: string;
+  readonly cleanTitle?: string;
   readonly url: string;
   readonly rawUrl: string;
   readonly domain: string;

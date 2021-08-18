@@ -11,7 +11,7 @@ export default class WebsiteTagModel {
   async create(tag: string, websiteId: string) {
     const result = await this.db.put('websiteTag', {
       id: `${websiteId}-${tag}`,
-      tag,
+      tag: tag.toLocaleLowerCase(),
       url: websiteId,
       createdAt: new Date(),
     });

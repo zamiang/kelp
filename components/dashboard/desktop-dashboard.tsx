@@ -22,6 +22,7 @@ import { IStore } from '../store/use-store';
 import Settings from '../user-profile/settings';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { HideUrlDialog } from '../website/hide-url-dialog';
+import { TagHighlights } from '../website/tag-highlights';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
 import { TopNav } from './top-nav';
@@ -204,6 +205,15 @@ export const DesktopDashboard = (props: {
                 </Route>
                 <Route>
                   <MeetingHighlight
+                    store={props.store}
+                    hideWebsite={hideItem}
+                    toggleWebsiteTag={toggleWebsiteTagClick}
+                    websiteTags={websiteTags}
+                    hideDialogUrl={hideDialogUrl}
+                    currentFilter={filter}
+                    isDarkMode={props.isDarkMode}
+                  />
+                  <TagHighlights
                     store={props.store}
                     hideWebsite={hideItem}
                     toggleWebsiteTag={toggleWebsiteTagClick}

@@ -1,4 +1,4 @@
-interface IDocumentument {
+interface IDocument {
   [text: string]: number;
 }
 
@@ -124,30 +124,33 @@ const removeStopwords = (tokens: string[]) =>
 
 export const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 
-const buildDocument = (text: string, key: string): IDocumentument =>
-  removeStopwords(text.replace(removePunctuationRegex, '').split(' ')).reduce(
-    (document: IDocumentument, term: string) => {
-      const formattedTerm = term
-        .replace('(', '')
-        .replace(')', '')
-        .replace('–', '')
-        .replace('/', '')
-        .replace('meeting', '');
-      if (formattedTerm.length > 1)
-        document[formattedTerm] = document[formattedTerm] ? document[formattedTerm] + 1 : 1;
+export const formatText = (text: string) => {
+  const terms = removeStopwords(
+    text.toLocaleLowerCase().replace(removePunctuationRegex, '').split(' '),
+  );
+  return terms.map((t) =>
+    t.replace('(', '').replace(')', '').replace('–', '').replace('/', '').replace('meeting', ''),
+  );
+};
+
+const buildDocument = (text: string, key: string): IDocument => {
+  const terms = formatText(text);
+  return terms.reduce(
+    (document: IDocument, term: string) => {
+      if (term.length > 1) document[term] = document[term] ? document[term] + 1 : 1;
       return document;
     },
     {
       __key: key,
     } as any,
   );
+};
 
-const tf = (term: string, document: IDocumentument) => (document[term] ? document[term] : 0);
-const documentHasTerm = (term: string, document: IDocumentument) =>
-  document[term] && document[term] > 0;
+const tf = (term: string, document: IDocument) => (document[term] ? document[term] : 0);
+const documentHasTerm = (term: string, document: IDocument) => document[term] && document[term] > 0;
 
 export default class Tfidf {
-  private documents: IDocumentument[];
+  private documents: IDocument[];
   private idfCache: IIdfCache;
   private documentCount: number;
 
@@ -201,33 +204,6 @@ export default class Tfidf {
       return 0;
     }, 0.0);
   }
-
-  /*
-  listTerms(documentIndex: number) {
-    const terms: { tfidf: number; term: string }[] = [];
-    const documentsToSearch: any = [];
-    const addedTerms = {} as any;
-    this.documents.forEach((item) => {
-      if (item.__key === (documentIndex.toString() as any)) {
-        documentsToSearch.push(item);
-      }
-    });
-
-    documentsToSearch.forEach((document: any) => {
-      for (const term in document) {
-        if (term !== '__key')
-          if (!addedTerms[term]) {
-            terms.push({
-              term,
-              tfidf: this.tfidf(term, documentIndex),
-            });
-            addedTerms[term] = true;
-          }
-      }
-    });
-    return terms.sort((x: any, y: any) => y.tfidf - x.tfidf);
-  }
-*/
 
   tfidfs(terms: string) {
     const formattedTerms = removeStopwords(

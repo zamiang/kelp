@@ -67,6 +67,7 @@ const WebsiteResults = (props: {
       isPinned: false,
       rawUrl: website.rawUrl || website.id,
       text: website.title,
+      cleanText: website.cleanTitle || website.title,
       date: website.visitedTime,
     }),
   );
