@@ -106,8 +106,8 @@ export const DesktopDashboard = (props: {
     void fetchData();
   }, []);
 
-  const toggleWebsiteTagClick = async (tag: string, websiteId: string) => {
-    await toggleWebsiteTag(tag, websiteId, websiteTags, store);
+  const toggleWebsiteTagClick = async (tag: string, websiteId?: string) => {
+    await toggleWebsiteTag(tag, websiteTags, store, websiteId);
     const i = await props.store.websiteTagStore.getAll();
     setWebsiteTags(i);
   };

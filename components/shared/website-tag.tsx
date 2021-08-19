@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { cleanText } from './tfidf';
 
 const useStyles = makeStyles((theme) => ({
   tags: {
@@ -46,14 +47,19 @@ const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
 
 export const toggleWebsiteTag = async (
   tag: string,
-  websiteId: string,
   userTags: IWebsiteTag[],
   store: IStore,
+  websiteId?: string,
 ) => {
   if (isTagSelected(tag, userTags)) {
-    return store.websiteTagStore.delete(tag, websiteId);
+    if (websiteId) {
+      return store.websiteTagStore.delete(tag, websiteId);
+    }
+    return store.websiteTagStore.deleteAllForTag(tag);
   }
-  return store.websiteTagStore.create(tag, websiteId);
+  if (websiteId) {
+    return store.websiteTagStore.create(tag, websiteId);
+  }
 };
 
 const getTagsForWebsite = async (websiteTitle: string, store: IStore, userTags: IWebsiteTag[]) => {
@@ -84,7 +90,11 @@ export const WebsiteTags = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const i = await getTagsForWebsite(props.item.text!, props.store, props.userTags);
+      const i = await getTagsForWebsite(
+        props.item.cleanText || cleanText(props.item.text || '').join(' '),
+        props.store,
+        props.userTags,
+      );
       setWebsiteTags(i);
     };
     void fetchData();

@@ -124,7 +124,7 @@ const removeStopwords = (tokens: string[]) =>
 
 export const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 
-export const formatText = (text: string) => {
+export const cleanText = (text: string) => {
   const terms = removeStopwords(
     text.toLocaleLowerCase().replace(removePunctuationRegex, '').split(' '),
   );
@@ -134,7 +134,7 @@ export const formatText = (text: string) => {
 };
 
 const buildDocument = (text: string, key: string): IDocument => {
-  const terms = formatText(text);
+  const terms = cleanText(text);
   return terms.reduce(
     (document: IDocument, term: string) => {
       if (term.length > 1) document[term] = document[term] ? document[term] + 1 : 1;

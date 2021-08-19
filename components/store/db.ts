@@ -99,6 +99,7 @@ interface Db extends DBSchema {
     key: string;
     indexes: {
       'by-url': string;
+      'by-tag': string;
     };
   };
   websiteBlocklist: {
@@ -130,6 +131,7 @@ const options = {
         keyPath: 'id',
       });
       tagStore.createIndex('by-url', 'url', { unique: false, multiEntry: true });
+      tagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
       return;
     } else if (oldVersion < 11) {
       deleteAllStores(db);
@@ -212,6 +214,13 @@ const options = {
     db.createObjectStore('domainFilter', {
       keyPath: 'id',
     });
+
+    // tagstore
+    const tagStore = db.createObjectStore('websiteTag', {
+      keyPath: 'id',
+    });
+    tagStore.createIndex('by-url', 'url', { unique: false, multiEntry: true });
+    tagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
   },
   blocked() {
     console.error('blocked');

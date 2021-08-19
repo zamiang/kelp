@@ -22,6 +22,11 @@ export default class WebsiteTagModel {
     return await this.db.delete('websiteTag', `${websiteId}-${tag}`);
   }
 
+  async deleteAllForTag(tag: string) {
+    const tags = await this.db.getAllFromIndex('websiteTag', 'by-tag', tag);
+    return await Promise.all(tags.map((t) => this.db.delete('websiteTag', t.id)));
+  }
+
   async getAll() {
     const websiteTags = await this.db.getAll('websiteTag');
     return websiteTags;

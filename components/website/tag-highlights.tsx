@@ -1,3 +1,5 @@
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
@@ -19,7 +21,7 @@ export const TagHighlights = (props: {
   store: IStore;
   currentFilter: string;
   hideWebsite: (item: IFeaturedWebsite) => void;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   hideDialogUrl?: string;
   isDarkMode: boolean;
@@ -31,9 +33,16 @@ export const TagHighlights = (props: {
     <div>
       {orderedTags.map((t) => (
         <div className={classes.section} key={t.id}>
-          <Typography variant="h2" className={classes.title}>
-            {t.tag}
-          </Typography>
+          <Grid container alignItems="center" justifyContent="space-between">
+            <Grid item>
+              <Typography variant="h2" className={classes.title}>
+                {t.tag}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button onClick={() => props.toggleWebsiteTag(t.tag)}>Remove</Button>
+            </Grid>
+          </Grid>
           <WebsiteHighlights
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
