@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import React, { useEffect, useState } from 'react';
-import { ISegment } from '../store/data-types';
+import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import {
   IFeaturedWebsite,
@@ -17,6 +17,8 @@ const MeetingRowBelow = (props: {
   currentFilter: string;
   isDarkMode: boolean;
   isFullWidth: boolean;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
 }) => {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -70,6 +72,8 @@ const MeetingRowBelow = (props: {
             hideItem={props.hideWebsite}
             smGridSize={4}
             togglePin={togglePin}
+            websiteTags={props.websiteTags}
+            toggleWebsiteTag={props.toggleWebsiteTag}
             isDarkMode={props.isDarkMode}
           />
         ))}

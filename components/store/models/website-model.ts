@@ -3,6 +3,7 @@ import { uniqBy } from 'lodash';
 import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { cleanupUrl } from '../../shared/cleanup-url';
+import { cleanText } from '../../shared/tfidf';
 import { ISegment, IWebsite } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
@@ -124,6 +125,7 @@ export default class WebsiteModel {
     const result = await this.db.put('website', {
       id: `${website.url}-${website.startAt.toDateString()}`,
       title: website.title || '',
+      cleanTitle: cleanText(website.title || '').join(' '),
       url: cleanupUrl(website.url),
       rawUrl: website.url,
       domain: website.domain,

@@ -8,7 +8,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import VideoIconWhite from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
-import { ISegment } from '../store/data-types';
+import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
@@ -111,6 +111,8 @@ export const FeaturedMeeting = (props: {
   currentFilter: string;
   isDarkMode: boolean;
   happeningSoonLimit?: number;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
 }) => {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
@@ -191,6 +193,8 @@ export const FeaturedMeeting = (props: {
               hideDialogUrl={props.hideDialogUrl}
               isDarkMode={props.isDarkMode}
               isFullWidth={false}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
             />
           </Grid>
         )}
@@ -203,6 +207,8 @@ export const FeaturedMeeting = (props: {
             hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
             isFullWidth={true}
+            websiteTags={props.websiteTags}
+            toggleWebsiteTag={props.toggleWebsiteTag}
           />
         )}
       </Grid>

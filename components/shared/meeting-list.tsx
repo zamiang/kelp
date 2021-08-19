@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import useRowStyles from '../shared/row-styles';
-import { ISegment } from '../store/data-types';
+import { ISegment, IWebsiteTag } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
@@ -75,6 +75,8 @@ const MeetingList = (props: {
   hideWebsite: (item: IFeaturedWebsite) => void;
   currentFilter: string;
   isDarkMode: boolean;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
 }) => {
   if (props.segments.length < 1) {
     return <Typography variant="caption">None</Typography>;
@@ -97,6 +99,8 @@ const MeetingList = (props: {
               showLine
               currentFilter={props.currentFilter}
               isDarkMode={props.isDarkMode}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
             />
           ),
       )}

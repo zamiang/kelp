@@ -2,6 +2,7 @@ import { subDays } from 'date-fns';
 import { flatten, uniqBy } from 'lodash';
 import config from '../../constants/config';
 import { getValueForDate } from '../shared/order-by-count';
+import { cleanText } from '../shared/tfidf';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -46,6 +47,7 @@ export interface IFeaturedWebsite {
   websiteDatabaseId: string | null;
   isPinned: boolean;
   text?: string;
+  cleanText: string;
   date: Date;
 }
 
@@ -92,6 +94,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
         websiteId: link,
         rawUrl: item.link,
         text: item.title,
+        cleanText: item.title ? cleanText(item.title).join(' ') : undefined,
         date: item.time,
         websiteDatabaseId: null,
         isPinned: pinIndex[link] ? true : false,
@@ -112,6 +115,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
       websiteId: item.url,
       rawUrl: item.rawUrl,
       text: item.title,
+      cleanText: item.cleanTitle ? item.cleanTitle : cleanText(item.title).join(' '),
       date: item.visitedTime,
       websiteDatabaseId: item.id,
       isPinned: pinIndex[item.url] ? true : false,
@@ -194,6 +198,7 @@ export const getWebsitesForMeeting = async (
           websiteId: link,
           rawUrl: link,
           websiteDatabaseId: undefined as any,
+          cleanText: document.name ? cleanText(document.name).join(' ') : undefined,
           text: document.name,
           date: item.date,
           isPinned: pinIndex[link] ? true : false,
@@ -215,6 +220,7 @@ export const getWebsitesForMeeting = async (
       websiteId: item.url,
       websiteDatabaseId: item.id,
       text: item.title,
+      cleanText: item.cleanTitle ? item.cleanTitle : cleanText(item.title).join(' '),
       rawUrl: item.rawUrl,
       date: item.visitedTime,
       isPinned: pinIndex[item.url] ? true : false,

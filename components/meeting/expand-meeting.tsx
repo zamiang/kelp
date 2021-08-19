@@ -16,7 +16,7 @@ import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import useRowStyles from '../shared/row-styles';
-import { IFormattedAttendee, ISegment, IWebsite } from '../store/data-types';
+import { IFormattedAttendee, ISegment, IWebsite, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
@@ -69,6 +69,8 @@ const ExpandedMeeting = (props: {
   hideHeader?: boolean;
   hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
 }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
@@ -232,6 +234,8 @@ const ExpandedMeeting = (props: {
                   isDarkMode={props.isDarkMode}
                   hideItem={props.hideWebsite}
                   togglePin={togglePin}
+                  websiteTags={props.websiteTags}
+                  toggleWebsiteTag={props.toggleWebsiteTag}
                 />
               ))}
             </Grid>

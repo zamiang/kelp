@@ -1,13 +1,14 @@
 import Grid from '@material-ui/core/Grid';
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../shared/loading-spinner';
+import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
 import { RightArrow } from './right-arrow';
 
-const maxResult = 12;
-const maxDisplay = maxResult * 6;
+const maxResult = 6;
+const maxDisplay = maxResult * 8;
 
 const fetchData = async (
   store: IStore,
@@ -15,11 +16,19 @@ const fetchData = async (
   shouldShowAll: boolean,
   setWebsites: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount: (n: number) => void,
+  filterByTag?: string,
 ) => {
   const featuredWebsites = await getFeaturedWebsites(store);
-  const filtereredWebsites = featuredWebsites.filter((item) =>
-    item && currentFilter === 'all' ? true : item.websiteId.indexOf(currentFilter) > -1,
-  );
+  const filtereredWebsites = featuredWebsites.filter((item) => {
+    if (filterByTag) {
+      if (item.cleanText) {
+        if (!item.cleanText.includes(filterByTag)) {
+          return false;
+        }
+      }
+    }
+    return item && currentFilter === 'all' ? true : item.websiteId.includes(currentFilter);
+  });
 
   const extraResultLength = filtereredWebsites.length - maxResult;
   setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
@@ -34,8 +43,11 @@ export const WebsiteHighlights = (props: {
   store: IStore;
   currentFilter: string;
   hideWebsite: (item: IFeaturedWebsite) => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
   hideDialogUrl?: string;
   isDarkMode: boolean;
+  filterByTag?: string;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -50,6 +62,7 @@ export const WebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
+      props.filterByTag,
     );
   }, [
     props.store.lastUpdated,
@@ -86,6 +99,8 @@ export const WebsiteHighlights = (props: {
                 smGridSize={4}
                 togglePin={togglePin}
                 isDarkMode={props.isDarkMode}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
               />
             ))}
           </Grid>
