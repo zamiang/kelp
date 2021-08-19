@@ -123,6 +123,8 @@ export interface IWebsite {
   readonly id: string;
   readonly title: string;
   readonly cleanTitle?: string;
+  readonly description?: string;
+  readonly cleanDescription?: string;
   readonly url: string;
   readonly rawUrl: string;
   readonly domain: string;

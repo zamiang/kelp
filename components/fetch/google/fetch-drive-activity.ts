@@ -22,10 +22,14 @@ type mimeType =
   | 'application/vnd.google-apps.unknown'
   | 'application/vnd.google-apps.video';
 
-const getUrlForMimeType = (id: string, mt?: mimeType) =>
-  `https://docs.google.com/${
+const getUrlForMimeType = (id: string, mt?: mimeType) => {
+  if (mt === 'application/vnd.google-apps.spreadsheet') {
+    return `https://docs.google.com/spreadsheets/d/${id}/edit`;
+  }
+  return `https://docs.google.com/${
     mt ? mt.replace('application/vnd.google-apps.', '') : 'document'
   }/d/${id}/edit`;
+};
 
 const getTargetInfo = (target: gapi.client.driveactivity.Target) => {
   if (target.drive) {

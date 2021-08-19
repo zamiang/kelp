@@ -15,6 +15,7 @@ interface IWebsiteNotFormatted {
   pathname: string;
   url: string;
   title?: string;
+  description?: string;
   isHidden?: boolean;
 }
 
@@ -125,6 +126,8 @@ export default class WebsiteModel {
     const result = await this.db.put('website', {
       id: `${website.url}-${website.startAt.toDateString()}`,
       title: website.title || '',
+      description: website.description,
+      cleanDescription: cleanText(website.description || '').join(' '),
       cleanTitle: cleanText(website.title || '').join(' '),
       url: cleanupUrl(website.url),
       rawUrl: website.url,

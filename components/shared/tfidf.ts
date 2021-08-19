@@ -126,10 +126,10 @@ export const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 
 export const cleanText = (text: string) => {
   const terms = removeStopwords(
-    text.toLocaleLowerCase().replace(removePunctuationRegex, '').split(' '),
+    text.toLocaleLowerCase().replace(removePunctuationRegex, '').replaceAll('–', ' ').split(' '),
   );
   return terms.map((t) =>
-    t.replace('(', '').replace(')', '').replace('–', '').replace('/', '').replace('meeting', ''),
+    t.replaceAll('(', '').replaceAll(')', '').replaceAll('/', '').replaceAll('meeting', ''),
   );
 };
 

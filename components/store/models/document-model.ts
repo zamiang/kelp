@@ -8,6 +8,7 @@ export const getIdFromLink = (link: string) =>
     .replace('https://docs.google.com/document/d/', '')
     .replace('https://docs.google.com/presentation/d/', '')
     .replace('https://docs.google.com/spreadsheets/d/', '')
+    .replace('https://docs.google.com/spreadsheet/d/', '') // unsure why
     .split('/')[0];
 
 export default class DocumentModel {

@@ -9,7 +9,13 @@ const refreshAlarmName = 'refresh';
 const timeToWaitBeforeTracking = 30 * 1000;
 const timeToWaitBeforeCapture = 8 * 1000;
 
-const storeTrackedVisit = (site: string, startAt: Date, store: IStore, title?: string) => {
+const storeTrackedVisit = (
+  site: string,
+  startAt: Date,
+  store: IStore,
+  title?: string,
+  description?: string,
+) => {
   const url = new URL(site);
   const domain = url.host;
   const pathname = url.pathname;
@@ -21,19 +27,52 @@ const storeTrackedVisit = (site: string, startAt: Date, store: IStore, title?: s
       pathname,
       url: url.href,
       title,
+      description,
     },
     store.timeDataStore,
   );
 };
 
 const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
+  console.log('about to record visit', tab);
   if (tab) {
     const currentUrl = cleanupUrl(tab.url || '');
     const isDomainAllowed =
       config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
-    if (currentUrl && isDomainAllowed) {
-      // remove query params and hash
-      void storeTrackedVisit(currentUrl, new Date(), store, tab.title);
+    if (currentUrl && isDomainAllowed && tab.id) {
+      const code = `
+        const metaDescription = document.querySelector("meta[name='description']");
+        const metaDescriptionContent = metaDescription?.getAttribute("content");
+        const metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
+        const metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute("content");
+        const metaOgUrl = document.querySelector("meta[name='og:url']");
+        const metaOgUrlContent = metaOgUrl?.getAttribute("content");
+        ({
+          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent
+        });`;
+      void chrome.tabs.executeScript(
+        tab.id,
+        {
+          code,
+        },
+        (results) => {
+          if (!results) {
+            console.log('error');
+            // An error occurred at executing the script. You've probably not got
+            // the permission to execute a content script for the current tab
+            return;
+          }
+          const result = results[0] || ({} as any);
+          void storeTrackedVisit(
+            result.metaOgUrlContent || currentUrl,
+            new Date(),
+            store,
+            tab.title,
+            result.metaTwitterDescription || result.metaDescriptionContent,
+          );
+          // Now, do something with result.title and result.description
+        },
+      );
     }
   }
 };
