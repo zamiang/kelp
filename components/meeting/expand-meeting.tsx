@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -16,10 +17,12 @@ import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import useRowStyles from '../shared/row-styles';
+import { cleanText } from '../shared/tfidf';
 import { IFormattedAttendee, ISegment, IWebsite, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
+import { WebsiteHighlights } from '../website/website-highlights';
 
 const maxNumberOfWebsites = 6;
 
@@ -58,6 +61,63 @@ const EmailGuestsButton = (props: {
         <EmailIcon width="24" height="24" />
       </IconButton>
     </Tooltip>
+  );
+};
+
+const useStyles = makeStyles((theme) => ({
+  section: {
+    marginBottom: theme.spacing(8),
+  },
+  title: {
+    color: theme.palette.text.primary,
+    fontSize: theme.typography.h3.fontSize,
+  },
+  topSection: {
+    marginBottom: theme.spacing(1),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
+
+const TagHighlights = (props: {
+  store: IStore;
+  currentFilter: string;
+  hideWebsite: (item: IFeaturedWebsite) => void;
+  websiteTags: IWebsiteTag[];
+  meetingTags: string[];
+  hideDialogUrl?: string;
+  isDarkMode: boolean;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+}) => {
+  const classes = useStyles();
+
+  return (
+    <div>
+      {props.meetingTags.map((tag) => (
+        <div className={classes.section} key={tag}>
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            className={classes.topSection}
+          >
+            <Grid item>
+              <Typography className={classes.title}>{tag}</Typography>
+            </Grid>
+          </Grid>
+          <WebsiteHighlights
+            store={props.store}
+            currentFilter={props.currentFilter}
+            websiteTags={props.websiteTags}
+            hideWebsite={props.hideWebsite}
+            hideDialogUrl={props.hideDialogUrl}
+            isDarkMode={props.isDarkMode}
+            toggleWebsiteTag={props.toggleWebsiteTag}
+            filterByTag={tag}
+          />
+        </div>
+      ))}
+    </div>
   );
 };
 
@@ -125,7 +185,7 @@ const ExpandedMeeting = (props: {
   if (!meeting) {
     return null;
   }
-
+  const meetingTags = cleanText(meeting.summary || '');
   const videoLinkDomain = meeting.videoLink ? new URL(meeting.videoLink).hostname : undefined;
   const shouldShowMeetingLink = !!meeting.videoLink;
   const hasAttendees = attendees.length > 0;
@@ -137,6 +197,7 @@ const ExpandedMeeting = (props: {
   const meetingDescriptionIsMicrosoftHtml =
     isHtml && meeting.description?.includes('<span itemscope');
   const hasWebsites = websites.length > 0;
+  const hasTags = meetingTags.length > 0;
   return (
     <React.Fragment>
       <Grid
@@ -239,6 +300,23 @@ const ExpandedMeeting = (props: {
                 />
               ))}
             </Grid>
+          </div>
+        )}
+        {hasTags && (
+          <div className={classes.section}>
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Websites from Tags
+            </Typography>
+            <TagHighlights
+              store={props.store}
+              hideWebsite={props.hideWebsite}
+              meetingTags={meetingTags}
+              websiteTags={props.websiteTags}
+              hideDialogUrl={props.hideDialogUrl}
+              currentFilter={'all'}
+              isDarkMode={props.isDarkMode}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+            />
           </div>
         )}
         {hasDescription && !isHtml && (

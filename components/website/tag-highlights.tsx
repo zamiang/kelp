@@ -13,7 +13,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(8),
   },
   title: {
+    color: theme.palette.text.primary,
+    fontSize: theme.typography.h3.fontSize,
+  },
+  topSection: {
     marginBottom: theme.spacing(1),
+    position: 'relative',
+    zIndex: 5,
   },
 }));
 
@@ -33,11 +39,14 @@ export const TagHighlights = (props: {
     <div>
       {orderedTags.map((t) => (
         <div className={classes.section} key={t.id}>
-          <Grid container alignItems="center" justifyContent="space-between">
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            className={classes.topSection}
+          >
             <Grid item>
-              <Typography variant="h2" className={classes.title}>
-                {t.tag}
-              </Typography>
+              <Typography className={classes.title}>{t.tag}</Typography>
             </Grid>
             <Grid item>
               <Button onClick={() => props.toggleWebsiteTag(t.tag)}>Remove</Button>
