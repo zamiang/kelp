@@ -1,6 +1,9 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
-import { ISegment, IWebsiteTag } from '../store/data-types';
+import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import {
   IFeaturedWebsite,
@@ -8,6 +11,22 @@ import {
 } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 import { RightArrow } from '../website/right-arrow';
+import { WebsiteHighlights } from '../website/website-highlights';
+
+const useStyles = makeStyles((theme) => ({
+  section: {
+    marginBottom: theme.spacing(8),
+  },
+  title: {
+    color: theme.palette.text.primary,
+    fontSize: theme.typography.h3.fontSize,
+  },
+  topSection: {
+    marginBottom: theme.spacing(1),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
 
 const MeetingRowBelow = (props: {
   meeting: ISegment;
@@ -19,7 +38,10 @@ const MeetingRowBelow = (props: {
   isFullWidth: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
+  meetingTags: ISegmentTag[];
+  toggleMeetingTag: (tag: string, meetingId: string, meetingSummary: string) => void;
 }) => {
+  const classes = useStyles();
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
@@ -90,6 +112,39 @@ const MeetingRowBelow = (props: {
           />
         </div>
       )}
+      {(props.meetingTags || []).map((t) => (
+        <div className={classes.section} key={t.id}>
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            className={classes.topSection}
+          >
+            <Grid item>
+              <Typography className={classes.title}>{t.tag}</Typography>
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={() =>
+                  props.toggleMeetingTag(t.tag, props.meeting.id, props.meeting.summary || '')
+                }
+              >
+                Remove
+              </Button>
+            </Grid>
+          </Grid>
+          <WebsiteHighlights
+            store={props.store}
+            toggleWebsiteTag={props.toggleWebsiteTag}
+            currentFilter={props.currentFilter}
+            websiteTags={props.websiteTags}
+            hideWebsite={props.hideWebsite}
+            hideDialogUrl={props.hideDialogUrl}
+            isDarkMode={props.isDarkMode}
+            filterByTag={t.tag}
+          />
+        </div>
+      ))}
     </Grid>
   );
 };

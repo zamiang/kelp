@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
-import { isTagSelected } from '../shared/website-tag';
+import { isSegmentTagSelected } from '../meeting/featured-meeting';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -106,7 +106,8 @@ export const AddTagToMeetingDialog = (props: {
                 }
                 className={clsx(
                   classes.tag,
-                  isTagSelected(t, props.userTags) && classes.tagSelected,
+                  isSegmentTagSelected(props.meeting.id, t, props.meetingTags) &&
+                    classes.tagSelected,
                 )}
               >
                 <Typography>{t}</Typography>

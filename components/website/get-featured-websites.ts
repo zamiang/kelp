@@ -51,6 +51,26 @@ export interface IFeaturedWebsite {
   date: Date;
 }
 
+/*
+const getWebsitesForTags = async (store: IStore, tags: string[]) => {
+  // likley will be slow
+  const websites = await getFeaturedWebsites(store);
+  if (tags.length < 1) {
+    return [];
+  }
+  return websites.filter((item) => {
+    if (item.cleanText) {
+      for (const t of tags) {
+        if (item.cleanText.includes(t)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  });
+};
+*/
+
 /**
  * Gets websites in the featured section by looking through meetings for the coming week
  * Finds meeetings documents associated with those meetings

@@ -103,7 +103,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const isTagSelected = (segmentId: string, tag: string, segmentTags: ISegmentTag[]) => {
+export const isSegmentTagSelected = (
+  segmentId: string,
+  tag: string,
+  segmentTags: ISegmentTag[],
+) => {
   const existingTags = segmentTags.map((t) => t.id);
   return existingTags.includes(`${segmentId}-${tag}`);
 };
@@ -124,11 +128,12 @@ export const FeaturedMeeting = (props: {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
   const router = useHistory();
+  const [isAddTagsVisible, setAddTagsVisible] = useState(false);
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
 
   const toggleMeetingTag = (tag: string, meetingId: string, meetingSummary: string) => {
     const updateData = async () => {
-      if (isTagSelected(meetingId, tag, segmentTags)) {
+      if (isSegmentTagSelected(meetingId, tag, segmentTags)) {
         await props.store.segmentTagStore.delete(tag, meetingId);
       } else {
         await props.store.segmentTagStore.create(tag, meetingId, meetingSummary);
@@ -147,8 +152,15 @@ export const FeaturedMeeting = (props: {
     void fetchData();
   }, [props.store.lastUpdated]);
 
+  const relevantTags = segmentTags.filter((t) => {
+    const isTextTheSame =
+      (t.segmentSummary || '').length > 1 &&
+      (props.meeting.summary || '').length > 1 &&
+      t.segmentSummary === props.meeting.summary;
+    const isIdTheSame = t.segmentId === props.meeting.id;
+    return isIdTheSame || isTextTheSame;
+  });
   const happeningSoonLimit = props.happeningSoonLimit || 10;
-  const [isAddTagsVisible, setAddTagsVisible] = useState(false);
 
   const isFuture = new Date() < props.meeting.start;
   const isPast = new Date() > props.meeting.end;
@@ -246,7 +258,9 @@ export const FeaturedMeeting = (props: {
               isDarkMode={props.isDarkMode}
               isFullWidth={false}
               websiteTags={props.websiteTags}
+              meetingTags={relevantTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
+              toggleMeetingTag={toggleMeetingTag}
             />
           </Grid>
         )}
@@ -260,7 +274,9 @@ export const FeaturedMeeting = (props: {
             isDarkMode={props.isDarkMode}
             isFullWidth={true}
             websiteTags={props.websiteTags}
+            meetingTags={relevantTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
+            toggleMeetingTag={toggleMeetingTag}
           />
         )}
       </Grid>

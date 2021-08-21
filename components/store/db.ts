@@ -150,6 +150,9 @@ const options = {
         multiEntry: true,
       });
       segmentTagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
+      if (oldVersion === 12) {
+        return;
+      }
     }
     if (oldVersion < 12) {
       const tagStore = db.createObjectStore('websiteTag', {
@@ -157,7 +160,9 @@ const options = {
       });
       tagStore.createIndex('by-url', 'url', { unique: false, multiEntry: true });
       tagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
-      return;
+      if (oldVersion === 11) {
+        return;
+      }
     }
     if (oldVersion < 11) {
       deleteAllStores(db);
