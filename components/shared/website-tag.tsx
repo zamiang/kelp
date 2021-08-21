@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
+const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
   const existingTagText = userTags.map((t) => t.tag);
   return existingTagText.includes(text);
 };
