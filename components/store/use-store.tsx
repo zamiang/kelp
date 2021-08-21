@@ -14,6 +14,7 @@ import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
+import SegmentTagStore from './models/segment-tag-model';
 import TfidfDataStore from './models/tfidf-model';
 import WebsiteBlocklistStore from './models/website-blocklist-model';
 import WebsiteImageStore from './models/website-image-model';
@@ -35,6 +36,7 @@ export interface IStore {
   readonly websitesStore: WebsitesStore;
   readonly websiteImageStore: WebsiteImageStore;
   readonly websitePinStore: WebsitePinStore;
+  readonly segmentTagStore: SegmentTagStore;
   readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
@@ -67,6 +69,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
   const domainBlocklistStore = new DomainBlocklistStore(db);
   const domainFilterStore = new DomainFilterStore(db);
   const websiteTagStore = new WebsiteTagStore(db);
+  const segmentTagStore = new SegmentTagStore(db);
 
   return {
     domainFilterStore,
@@ -83,6 +86,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
     segmentDocumentStore,
     websiteImageStore,
     tfidfStore,
+    segmentTagStore,
     lastUpdated: new Date(),
     isLoading: false,
     loadingMessage: undefined,
@@ -123,6 +127,7 @@ const useStoreWithFetching = (
   const domainFilterStore = new DomainFilterStore(db);
   const websitePinStore = new WebsitePinStore(db);
   const websiteTagStore = new WebsiteTagStore(db);
+  const segmentTagStore = new SegmentTagStore(db);
 
   // Save calendar events
   useEffect(() => {
@@ -231,6 +236,7 @@ const useStoreWithFetching = (
     websitePinStore,
     domainBlocklistStore,
     domainFilterStore,
+    segmentTagStore,
     tfidfStore,
     lastUpdated: data.lastUpdated,
     isLoading: data.isLoading || isLoading,

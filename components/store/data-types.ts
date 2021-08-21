@@ -169,3 +169,11 @@ export interface IWebsiteTag {
   readonly url: string;
   readonly tag: string;
 }
+
+export interface ISegmentTag {
+  readonly id: string;
+  readonly createdAt: Date;
+  readonly segmentId: string;
+  readonly segmentSummary: string;
+  readonly tag: string;
+}

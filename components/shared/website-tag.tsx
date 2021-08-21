@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
+export const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
   const existingTagText = userTags.map((t) => t.tag);
   return existingTagText.includes(text);
 };
@@ -91,7 +91,10 @@ export const WebsiteTags = (props: {
   useEffect(() => {
     const fetchData = async () => {
       const i = await getTagsForWebsite(
-        props.item.cleanText || cleanText(props.item.text || '').join(' '),
+        props.item.cleanText ||
+          cleanText(props.item.text || '')
+            .join(' ')
+            .toLocaleLowerCase(),
         props.store,
         props.userTags,
       );

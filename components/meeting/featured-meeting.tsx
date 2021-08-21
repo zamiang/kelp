@@ -4,12 +4,14 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import PlusIcon from '../../public/icons/plus-white.svg';
 import VideoIconWhite from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
-import { ISegment, IWebsiteTag } from '../store/data-types';
+import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { AddTagToMeetingDialog } from '../website/add-tag-dialog';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
@@ -101,6 +103,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const isTagSelected = (segmentId: string, tag: string, segmentTags: ISegmentTag[]) => {
+  const existingTags = segmentTags.map((t) => t.id);
+  return existingTags.includes(`${segmentId}-${tag}`);
+};
+
 export const FeaturedMeeting = (props: {
   meeting: ISegment;
   store: IStore;
@@ -117,7 +124,31 @@ export const FeaturedMeeting = (props: {
   const classes = useStyles();
   const buttonClasses = useButtonStyles();
   const router = useHistory();
+  const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
+
+  const toggleMeetingTag = (tag: string, meetingId: string, meetingSummary: string) => {
+    const updateData = async () => {
+      if (isTagSelected(meetingId, tag, segmentTags)) {
+        await props.store.segmentTagStore.delete(tag, meetingId);
+      } else {
+        await props.store.segmentTagStore.create(tag, meetingId, meetingSummary);
+      }
+      const result = await props.store.segmentTagStore.getAll();
+      setSegmentTags(result);
+    };
+    void updateData();
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.store.segmentTagStore.getAll();
+      setSegmentTags(result);
+    };
+    void fetchData();
+  }, [props.store.lastUpdated]);
+
   const happeningSoonLimit = props.happeningSoonLimit || 10;
+  const [isAddTagsVisible, setAddTagsVisible] = useState(false);
 
   const isFuture = new Date() < props.meeting.start;
   const isPast = new Date() > props.meeting.end;
@@ -135,6 +166,15 @@ export const FeaturedMeeting = (props: {
         props.showLine && classes.containerLine,
       )}
     >
+      <AddTagToMeetingDialog
+        meeting={props.meeting}
+        userTags={props.websiteTags}
+        isOpen={isAddTagsVisible}
+        store={props.store}
+        meetingTags={segmentTags}
+        toggleMeetingTag={toggleMeetingTag}
+        close={() => setAddTagsVisible(false)}
+      />
       <Grid container alignItems="center" spacing={2}>
         <Grid item>
           <div className={classes.dotContainer}>
@@ -166,6 +206,18 @@ export const FeaturedMeeting = (props: {
           >
             {props.meeting.summary || '(no title)'}
           </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            onClick={() => setAddTagsVisible(true)}
+            variant="contained"
+            disableElevation
+            color="primary"
+            startIcon={<PlusIcon width="24" height="24" />}
+            className={buttonClasses.button}
+          >
+            Add Tags
+          </Button>
         </Grid>
         {domain && isHappeningSoon && (
           <Grid item>

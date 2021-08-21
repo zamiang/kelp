@@ -4,7 +4,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -64,21 +63,6 @@ const EmailGuestsButton = (props: {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  section: {
-    marginBottom: theme.spacing(8),
-  },
-  title: {
-    color: theme.palette.text.primary,
-    fontSize: theme.typography.h3.fontSize,
-  },
-  topSection: {
-    marginBottom: theme.spacing(1),
-    position: 'relative',
-    zIndex: 5,
-  },
-}));
-
 const TagHighlights = (props: {
   store: IStore;
   currentFilter: string;
@@ -88,38 +72,24 @@ const TagHighlights = (props: {
   hideDialogUrl?: string;
   isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-}) => {
-  const classes = useStyles();
-
-  return (
-    <div>
-      {props.meetingTags.map((tag) => (
-        <div className={classes.section} key={tag}>
-          <Grid
-            container
-            alignItems="center"
-            justifyContent="space-between"
-            className={classes.topSection}
-          >
-            <Grid item>
-              <Typography className={classes.title}>{tag}</Typography>
-            </Grid>
-          </Grid>
-          <WebsiteHighlights
-            store={props.store}
-            currentFilter={props.currentFilter}
-            websiteTags={props.websiteTags}
-            hideWebsite={props.hideWebsite}
-            hideDialogUrl={props.hideDialogUrl}
-            isDarkMode={props.isDarkMode}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-            filterByTag={tag}
-          />
-        </div>
-      ))}
-    </div>
-  );
-};
+}) => (
+  <div>
+    {props.meetingTags.map((tag) => (
+      <WebsiteHighlights
+        key={tag}
+        store={props.store}
+        currentFilter={props.currentFilter}
+        websiteTags={props.websiteTags}
+        hideWebsite={props.hideWebsite}
+        hideDialogUrl={props.hideDialogUrl}
+        isDarkMode={props.isDarkMode}
+        toggleWebsiteTag={props.toggleWebsiteTag}
+        filterByTag={tag}
+        shouldShowFilter
+      />
+    ))}
+  </div>
+);
 
 const ExpandedMeeting = (props: {
   store: IStore;
@@ -302,23 +272,6 @@ const ExpandedMeeting = (props: {
             </Grid>
           </div>
         )}
-        {hasTags && (
-          <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
-              Websites from Tags
-            </Typography>
-            <TagHighlights
-              store={props.store}
-              hideWebsite={props.hideWebsite}
-              meetingTags={meetingTags}
-              websiteTags={props.websiteTags}
-              hideDialogUrl={props.hideDialogUrl}
-              currentFilter={'all'}
-              isDarkMode={props.isDarkMode}
-              toggleWebsiteTag={props.toggleWebsiteTag}
-            />
-          </div>
-        )}
         {hasDescription && !isHtml && (
           <div className={classes.section}>
             <Typography variant="h6" className={rowStyles.rowText}>
@@ -340,6 +293,23 @@ const ExpandedMeeting = (props: {
                 meetingDescriptionIsMicrosoftHtml && classes.descriptionMicrosoft,
               )}
               dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
+            />
+          </div>
+        )}
+        {hasTags && (
+          <div className={classes.section}>
+            <Typography variant="h6" className={rowStyles.rowText}>
+              Websites from Tags
+            </Typography>
+            <TagHighlights
+              store={props.store}
+              hideWebsite={props.hideWebsite}
+              meetingTags={meetingTags}
+              websiteTags={props.websiteTags}
+              hideDialogUrl={props.hideDialogUrl}
+              currentFilter={'all'}
+              isDarkMode={props.isDarkMode}
+              toggleWebsiteTag={props.toggleWebsiteTag}
             />
           </div>
         )}

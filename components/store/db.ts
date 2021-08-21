@@ -9,6 +9,7 @@ import {
   IPerson,
   ISegment,
   ISegmentDocument,
+  ISegmentTag,
   IWebsite,
   IWebsiteBlocklist,
   IWebsiteImage,
@@ -61,6 +62,15 @@ interface Db extends DBSchema {
       'by-person-id': string;
       'by-day': number;
       'by-week': number;
+    };
+  };
+  segmentTag: {
+    value: ISegmentTag;
+    key: string;
+    indexes: {
+      'by-segment-id': string;
+      'by-segment-summary': string;
+      'by-tag': string;
     };
   };
   attendee: {
@@ -122,18 +132,34 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 12;
+const databaseVerson = 13;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
-    if (oldVersion < databaseVerson && oldVersion > 10) {
+    if (oldVersion < 13) {
+      // segment tagstore
+      const segmentTagStore = db.createObjectStore('segmentTag', {
+        keyPath: 'id',
+      });
+      segmentTagStore.createIndex('by-segment-id', 'segmentId', {
+        unique: false,
+        multiEntry: true,
+      });
+      segmentTagStore.createIndex('by-segment-summary', 'segmentSummary', {
+        unique: false,
+        multiEntry: true,
+      });
+      segmentTagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
+    }
+    if (oldVersion < 12) {
       const tagStore = db.createObjectStore('websiteTag', {
         keyPath: 'id',
       });
       tagStore.createIndex('by-url', 'url', { unique: false, multiEntry: true });
       tagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
       return;
-    } else if (oldVersion < 11) {
+    }
+    if (oldVersion < 11) {
       deleteAllStores(db);
     }
     const personStore = db.createObjectStore('person', {
@@ -221,6 +247,17 @@ const options = {
     });
     tagStore.createIndex('by-url', 'url', { unique: false, multiEntry: true });
     tagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
+
+    // segment tagstore
+    const segmentTagStore = db.createObjectStore('segmentTag', {
+      keyPath: 'id',
+    });
+    segmentTagStore.createIndex('by-segment-id', 'segmentId', { unique: false, multiEntry: true });
+    segmentTagStore.createIndex('by-segment-summary', 'segmentSummary', {
+      unique: false,
+      multiEntry: true,
+    });
+    segmentTagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
   },
   blocked() {
     console.error('blocked');

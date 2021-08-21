@@ -24,6 +24,10 @@ export default class TfidfStore {
     return tfidf;
   }
 
+  getCalculatedDocuments() {
+    return (window as any).tfidf?.listTerms();
+  }
+
   async getDocuments(store: IStore) {
     // Websites
     const websitesList = await store.websitesStore.getAll(
