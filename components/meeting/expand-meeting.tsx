@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
 import EmailIcon from '../../public/icons/email-orange.svg';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';
@@ -24,9 +25,11 @@ import {
   IWebsiteTag,
 } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 import { WebsiteHighlights } from '../website/website-highlights';
+import { isSegmentTagSelected } from './featured-meeting';
 
 const maxNumberOfWebsites = 6;
 
@@ -91,6 +94,7 @@ const ExpandedMeeting = (props: {
   // used to refetch websites
   const [pinIncrement, setPinIncrement] = useState(0);
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
+  const [isAddTagsVisible, setAddTagsVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -149,6 +153,19 @@ const ExpandedMeeting = (props: {
     setPinIncrement(pinIncrement + 1);
   };
 
+  const toggleMeetingTag = (tag: string, meetingId: string, meetingSummary: string) => {
+    const updateData = async () => {
+      if (isSegmentTagSelected(meetingId, tag, segmentTags)) {
+        await props.store.segmentTagStore.deleteAllForTag(tag);
+      } else {
+        await props.store.segmentTagStore.create(tag, meetingId, meetingSummary);
+      }
+      const result = await props.store.segmentTagStore.getAll();
+      setSegmentTags(result);
+    };
+    void updateData();
+  };
+
   if (!meeting) {
     return null;
   }
@@ -165,6 +182,15 @@ const ExpandedMeeting = (props: {
   const hasWebsites = websites.length > 0 || relevantTags.length > 0;
   return (
     <React.Fragment>
+      <AddTagToMeetingDialog
+        meeting={meeting}
+        userTags={props.websiteTags}
+        isOpen={isAddTagsVisible}
+        store={props.store}
+        meetingTags={segmentTags}
+        toggleMeetingTag={toggleMeetingTag}
+        close={() => setAddTagsVisible(false)}
+      />
       <Grid
         container
         className={classes.topContainer}
@@ -195,6 +221,18 @@ const ExpandedMeeting = (props: {
                 </Tooltip>
               </Grid>
             )}
+            <Grid item>
+              <Button
+                onClick={() => setAddTagsVisible(true)}
+                variant="outlined"
+                disableElevation
+                color="primary"
+                startIcon={<PlusIcon width="24" height="24" />}
+                className={buttonClasses.button}
+              >
+                Add Tags
+              </Button>
+            </Grid>
             <Grid item>
               <EmailGuestsButton
                 meeting={meeting}
