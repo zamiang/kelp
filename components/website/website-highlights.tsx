@@ -1,6 +1,4 @@
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
@@ -41,13 +39,6 @@ const fetchData = async (
   }
 };
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    color: theme.palette.text.primary,
-    fontSize: theme.typography.h3.fontSize,
-  },
-}));
-
 export const WebsiteHighlights = (props: {
   store: IStore;
   currentFilter: string;
@@ -57,14 +48,12 @@ export const WebsiteHighlights = (props: {
   hideDialogUrl?: string;
   isDarkMode: boolean;
   filterByTag?: string;
-  shouldShowFilter?: boolean;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
   // used to refetch websites
   const [pinIncrement, setPinIncrement] = useState(0);
-  const classes = useStyles();
 
   useEffect(() => {
     void fetchData(
@@ -99,11 +88,6 @@ export const WebsiteHighlights = (props: {
     <div style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          {props.shouldShowFilter && props.filterByTag && topWebsites.length ? (
-            <Typography className={classes.title}>{props.filterByTag}</Typography>
-          ) : null}
-        </Grid>
         <Grid item xs={12}>
           <Grid container spacing={5}>
             {topWebsites.map((item) => (

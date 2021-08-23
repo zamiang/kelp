@@ -16,8 +16,13 @@ import AttendeeList from '../shared/attendee-list';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import useRowStyles from '../shared/row-styles';
-import { cleanText } from '../shared/tfidf';
-import { IFormattedAttendee, ISegment, IWebsite, IWebsiteTag } from '../store/data-types';
+import {
+  IFormattedAttendee,
+  ISegment,
+  ISegmentTag,
+  IWebsite,
+  IWebsiteTag,
+} from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
@@ -63,34 +68,6 @@ const EmailGuestsButton = (props: {
   );
 };
 
-const TagHighlights = (props: {
-  store: IStore;
-  currentFilter: string;
-  hideWebsite: (item: IFeaturedWebsite) => void;
-  websiteTags: IWebsiteTag[];
-  meetingTags: string[];
-  hideDialogUrl?: string;
-  isDarkMode: boolean;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-}) => (
-  <div>
-    {props.meetingTags.map((tag) => (
-      <WebsiteHighlights
-        key={tag}
-        store={props.store}
-        currentFilter={props.currentFilter}
-        websiteTags={props.websiteTags}
-        hideWebsite={props.hideWebsite}
-        hideDialogUrl={props.hideDialogUrl}
-        isDarkMode={props.isDarkMode}
-        toggleWebsiteTag={props.toggleWebsiteTag}
-        filterByTag={tag}
-        shouldShowFilter
-      />
-    ))}
-  </div>
-);
-
 const ExpandedMeeting = (props: {
   store: IStore;
   meetingId?: string;
@@ -109,9 +86,11 @@ const ExpandedMeeting = (props: {
   const meetingId = props.meetingId || slug;
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
+  const [currentTag, setTag] = useState<string>('all');
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   // used to refetch websites
   const [pinIncrement, setPinIncrement] = useState(0);
+  const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,6 +122,23 @@ const ExpandedMeeting = (props: {
     void fetchData();
   }, [props.store.isLoading, meeting?.id, pinIncrement, props.hideDialogUrl]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await props.store.segmentTagStore.getAll();
+      setSegmentTags(result);
+    };
+    void fetchData();
+  }, [props.store.lastUpdated, props.meetingId]);
+
+  const relevantTags = segmentTags.filter((t) => {
+    const isTextTheSame =
+      (t.segmentSummary || '').length > 1 &&
+      (meeting?.summary || '').length > 1 &&
+      t.segmentSummary === meeting?.summary;
+    const isIdTheSame = t.segmentId === meeting?.id;
+    return isIdTheSame || isTextTheSame;
+  });
+
   const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
     if (isPinned) {
       await props.store.websitePinStore.delete(item.websiteId);
@@ -155,7 +151,6 @@ const ExpandedMeeting = (props: {
   if (!meeting) {
     return null;
   }
-  const meetingTags = cleanText(meeting.summary || '');
   const videoLinkDomain = meeting.videoLink ? new URL(meeting.videoLink).hostname : undefined;
   const shouldShowMeetingLink = !!meeting.videoLink;
   const hasAttendees = attendees.length > 0;
@@ -166,8 +161,7 @@ const ExpandedMeeting = (props: {
   const hasMeetingNotes = !!meeting.meetingNotesLink;
   const meetingDescriptionIsMicrosoftHtml =
     isHtml && meeting.description?.includes('<span itemscope');
-  const hasWebsites = websites.length > 0;
-  const hasTags = meetingTags.length > 0;
+  const hasWebsites = websites.length > 0 || relevantTags.length > 0;
   return (
     <React.Fragment>
       <Grid
@@ -225,7 +219,7 @@ const ExpandedMeeting = (props: {
         </Grid>
       </Grid>
       <Grid container className={classes.buttonSecton} spacing={2}>
-        {websites.length > 0 && (
+        {hasWebsites && (
           <Grid item>
             <Typography
               onClick={() =>
@@ -252,24 +246,59 @@ const ExpandedMeeting = (props: {
       </Grid>
       <div className={classes.container}>
         {hasWebsites && (
-          <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
-              Websites you may need
-            </Typography>
-            <Grid container spacing={4}>
-              {websites.map((item) => (
-                <LargeWebsite
-                  key={item.websiteId}
-                  item={item}
-                  store={props.store}
-                  isDarkMode={props.isDarkMode}
-                  hideItem={props.hideWebsite}
-                  togglePin={togglePin}
-                  websiteTags={props.websiteTags}
-                  toggleWebsiteTag={props.toggleWebsiteTag}
-                />
+          <div className={classes.section} id="websites">
+            <Grid container alignItems="center" spacing={2}>
+              <Grid item>
+                <Typography className={rowStyles.rowText}>Filter by:</Typography>
+              </Grid>
+              <Grid item>
+                <Typography
+                  className={clsx(classes.tag, currentTag === 'all' && classes.tagSelected)}
+                  onClick={() => setTag('all')}
+                >
+                  All
+                </Typography>
+              </Grid>
+              {relevantTags.map((t) => (
+                <Grid item key={t.tag}>
+                  <Typography
+                    className={clsx(classes.tag, currentTag === t.tag && classes.tagSelected)}
+                    onClick={() => setTag(t.tag)}
+                  >
+                    {t.tag}
+                  </Typography>
+                </Grid>
               ))}
             </Grid>
+            <br />
+            {currentTag === 'all' && (
+              <Grid container spacing={4}>
+                {websites.map((item) => (
+                  <LargeWebsite
+                    key={item.websiteId}
+                    item={item}
+                    store={props.store}
+                    isDarkMode={props.isDarkMode}
+                    hideItem={props.hideWebsite}
+                    togglePin={togglePin}
+                    websiteTags={props.websiteTags}
+                    toggleWebsiteTag={props.toggleWebsiteTag}
+                  />
+                ))}
+              </Grid>
+            )}
+            {currentTag !== 'all' && (
+              <WebsiteHighlights
+                store={props.store}
+                currentFilter={'all'}
+                websiteTags={props.websiteTags}
+                hideWebsite={props.hideWebsite}
+                hideDialogUrl={props.hideDialogUrl}
+                isDarkMode={props.isDarkMode}
+                toggleWebsiteTag={props.toggleWebsiteTag}
+                filterByTag={currentTag}
+              />
+            )}
           </div>
         )}
         {hasDescription && !isHtml && (
@@ -296,25 +325,8 @@ const ExpandedMeeting = (props: {
             />
           </div>
         )}
-        {hasTags && (
-          <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
-              Websites from Tags
-            </Typography>
-            <TagHighlights
-              store={props.store}
-              hideWebsite={props.hideWebsite}
-              meetingTags={meetingTags}
-              websiteTags={props.websiteTags}
-              hideDialogUrl={props.hideDialogUrl}
-              currentFilter={'all'}
-              isDarkMode={props.isDarkMode}
-              toggleWebsiteTag={props.toggleWebsiteTag}
-            />
-          </div>
-        )}
         {hasAttendees && (
-          <div className={classes.section}>
+          <div className={classes.section} id="people">
             <Typography variant="h6" className={rowStyles.rowText}>
               Guests
             </Typography>

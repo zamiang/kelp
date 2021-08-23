@@ -114,6 +114,15 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     paddingBottom: theme.spacing(4),
   },
+  tag: {
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  tagSelected: {
+    textDecoration: 'underline',
+  },
 }));
 
 export default useStyles;
