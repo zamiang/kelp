@@ -5,6 +5,9 @@ export const cleanupUrl = (url: string) => {
   if (url.includes('microsoft.com')) {
     return url;
   }
+  if (url.includes('sharepoint.com')) {
+    return url;
+  }
   if (url.includes('azure.com')) {
     return url;
   }
