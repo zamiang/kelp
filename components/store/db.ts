@@ -412,6 +412,17 @@ const deleteAllStores = (db: IDBPDatabase<Db>) => {
     console.log(e);
   }
 
+  try {
+    db.deleteObjectStore('websiteTag');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('segmentTag');
+  } catch (e) {
+    console.log(e);
+  }
   return;
 };
 

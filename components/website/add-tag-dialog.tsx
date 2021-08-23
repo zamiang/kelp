@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     background: theme.palette.primary.dark,
   },
+  columnList: {
+    columnCount: 3,
+  },
 }));
 
 export const AddTagToMeetingDialog = (props: {
@@ -97,9 +100,9 @@ export const AddTagToMeetingDialog = (props: {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid container alignItems="center" justifyContent="space-between">
+        <ul className={classes.columnList}>
           {websiteTags.map((t) => (
-            <Grid item xs={2} key={t} zeroMinWidth>
+            <li key={t}>
               <div
                 onClick={() =>
                   props.toggleMeetingTag(t, props.meeting.id, props.meeting.summary || '')
@@ -112,9 +115,9 @@ export const AddTagToMeetingDialog = (props: {
               >
                 <Typography>{t}</Typography>
               </div>
-            </Grid>
+            </li>
           ))}
-        </Grid>
+        </ul>
       </div>
     </Dialog>
   );

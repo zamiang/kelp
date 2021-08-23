@@ -1,4 +1,5 @@
 import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -11,9 +12,6 @@ import config from '../../constants/config';
 import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
 import MeetingsIconWhite from '../../public/icons/calendar-white.svg';
 import MeetingsIcon from '../../public/icons/calendar.svg';
-import HomeIconOrange from '../../public/icons/home-orange.svg';
-import HomeIconWhite from '../../public/icons/home-white.svg';
-import HomeIcon from '../../public/icons/home.svg';
 import MoonIconOrange from '../../public/icons/moon-orange.svg';
 import MoonIcon from '../../public/icons/moon.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
@@ -22,8 +20,9 @@ import SettingsIcon from '../../public/icons/settings.svg';
 import DayIconOrange from '../../public/icons/sun-orange.svg';
 import DayIconWhite from '../../public/icons/sun-white.svg';
 import SearchBar from '../nav/search-bar';
+import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { TopFilters } from './top-filters';
+import { TopTags } from './top-tags';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -67,12 +66,12 @@ export const TopNav = (props: {
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
   isMicrosoftError: boolean;
+  websiteTags: IWebsiteTag[];
 }) => {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
   const isSearch = location.pathname === '/search';
-  const isHomeSelected = location.pathname === '/home';
   const isMeetingsSelected = location.pathname === '/meetings';
   return (
     <Grid
@@ -90,67 +89,19 @@ export const TopNav = (props: {
         {!isSearch && (
           <Container maxWidth="lg" disableGutters>
             <Grid container justifyContent="space-between">
-              <Grid item>
-                <Grid container>
-                  <Grid item>
-                    <Tooltip title="Websites List">
-                      <IconButton
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        className={clsx(classes.button, isHomeSelected && classes.isSelected)}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          return router.push('/home');
-                        }}
-                      >
-                        {isHomeSelected ? (
-                          <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : props.isDarkMode ? (
-                          <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : (
-                          <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    <Tooltip title="Meetings List">
-                      <IconButton
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          return router.push('/meetings');
-                        }}
-                      >
-                        {isMeetingsSelected ? (
-                          <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : props.isDarkMode ? (
-                          <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : (
-                          <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    {props.isMicrosoftError && (
+              {props.isMicrosoftError && (
+                <Grid item>
+                  <Grid container>
+                    <Grid item>
                       <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
                         Error: please login to your Microsoft account
                       </Typography>
-                    )}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item>
-                <TopFilters
-                  store={props.store}
-                  toggleFilter={props.toggleFilter}
-                  hideDialogUrl={props.hideDialogUrl}
-                  currentFilter={props.currentFilter}
-                  isDarkMode={props.isDarkMode}
-                />
+              )}
+              <Grid item xs={12}>
+                <TopTags websiteTags={props.websiteTags} />
               </Grid>
             </Grid>
           </Container>
@@ -158,6 +109,30 @@ export const TopNav = (props: {
       </Grid>
       <Grid item className={classes.rightSection}>
         <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Tooltip title="Meetings List">
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  return router.push('/meetings');
+                }}
+              >
+                {isMeetingsSelected ? (
+                  <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                ) : props.isDarkMode ? (
+                  <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                ) : (
+                  <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                )}
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <Divider orientation="vertical" style={{ height: 20 }} />
+          </Grid>
           <Grid item>
             <Tooltip title="Light Mode">
               <IconButton

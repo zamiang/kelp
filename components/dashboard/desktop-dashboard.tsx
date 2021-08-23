@@ -146,6 +146,7 @@ export const DesktopDashboard = (props: {
           hideDialogUrl={hideDialogUrl}
           isDarkMode={props.isDarkMode}
           setIsDarkMode={props.setIsDarkMode}
+          websiteTags={websiteTags}
           isMicrosoftError={props.isMicrosoftError}
         />
         <ThemeProvider theme={props.isDarkMode ? lightTheme : darkTheme}>

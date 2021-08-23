@@ -15,7 +15,7 @@ import { WebsiteHighlights } from '../website/website-highlights';
 
 const useStyles = makeStyles((theme) => ({
   section: {
-    marginBottom: theme.spacing(8),
+    marginTop: theme.spacing(4),
   },
   title: {
     color: theme.palette.text.primary,
@@ -79,7 +79,7 @@ const MeetingRowBelow = (props: {
     );
   };
 
-  if (websites.length < 1) {
+  if (websites.length < 1 && props.meetingTags.length < 1) {
     return null;
   }
 
@@ -112,7 +112,7 @@ const MeetingRowBelow = (props: {
           />
         </div>
       )}
-      {(props.meetingTags || []).map((t) => (
+      {props.meetingTags.map((t) => (
         <div className={classes.section} key={t.id}>
           <Grid
             container
