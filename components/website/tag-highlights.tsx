@@ -38,7 +38,7 @@ export const TagHighlights = (props: {
   return (
     <div>
       {orderedTags.map((t) => (
-        <div className={classes.section} key={t.id} id={`tag-${t.id}`}>
+        <div className={classes.section} key={t.id} id={`tag-${t.tag}`}>
           <Grid
             container
             alignItems="center"

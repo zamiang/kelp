@@ -39,9 +39,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     padding: theme.spacing(2),
     borderRadius: theme.spacing(1),
-    maxWidth: 251,
+    maxWidth: 258,
     top: 54,
-    left: 217,
+    left: 195,
     zIndex: 20,
   },
   tooltipSettings: {
@@ -107,14 +107,14 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
         </Typography>
         <br />
         <Typography variant="h4" className={classes.body}>
-          Kelp is a New Tab page that gets you what you need when you need it. This means:
+          Kelp is a New Tab page that gets you what you need when you need it.
         </Typography>
         <br />
         <ul>
           <li>
             <Typography variant="h4">
-              <span className={classes.bold}>Continue doing what you do:</span> Kelp automatically
-              associates your webpages with your meetings.
+              <span className={classes.bold}>Add smart tags:</span> Kelp automatically add new
+              related websties to the tag and surface the websites when you need them.
             </Typography>
             <br />
           </li>
@@ -123,6 +123,13 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
               <span className={classes.bold}>Kelp improves over time:</span> The longer you use
               Kelp, the better the recommendations will be.
             </Typography>
+          </li>
+          <li>
+            <Typography variant="h4">
+              <span className={classes.bold}>Continue doing what you do:</span> Kelp automatically
+              associates your webpages with your meetings.
+            </Typography>
+            <br />
           </li>
         </ul>
         <div className={classes.rightAlignButton}>
@@ -149,7 +156,8 @@ const WebsitesCalendarSwitcher = (props: { step: number; setStep: (step: number)
         <span className={classes.bold}>
           Tip {props.step - 1}/{maxTips}
         </span>
-        : Switch to the calendar view to see documents associated with your meetings.
+        : Smart tags are displayed here. Click &lsquo;add&rsquo; or hover over a website to add more
+        tags.
       </Typography>
       <Typography
         color="primary"
@@ -196,7 +204,7 @@ const WebsitesList = (props: { step: number; setStep: (step: number) => void }) 
           Tip {props.step - 1}/{maxTips}
         </span>
         : These tiles are ordered based on your frequently visited sites. Hover over the text to
-        remove or pin websites.
+        remove, pin or tag websites.
       </Typography>
       <Typography
         color="primary"

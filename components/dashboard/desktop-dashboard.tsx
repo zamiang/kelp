@@ -148,6 +148,7 @@ export const DesktopDashboard = (props: {
           setIsDarkMode={props.setIsDarkMode}
           websiteTags={websiteTags}
           isMicrosoftError={props.isMicrosoftError}
+          toggleWebsiteTag={toggleWebsiteTagClick}
         />
         <ThemeProvider theme={props.isDarkMode ? lightTheme : darkTheme}>
           <Onboarding />

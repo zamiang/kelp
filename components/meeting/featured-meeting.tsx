@@ -11,7 +11,7 @@ import VideoIconWhite from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { AddTagToMeetingDialog } from '../website/add-tag-dialog';
+import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
