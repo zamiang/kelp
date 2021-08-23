@@ -8,7 +8,7 @@ export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 
 // 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
-export const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
+const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
 const basisRegular = {
   fontFamily: 'basis-grotesque',

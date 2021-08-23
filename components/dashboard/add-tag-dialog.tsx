@@ -7,8 +7,8 @@ import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
-import { isSegmentTagSelected } from '../meeting/featured-meeting';
-import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
+import { isTagSelected } from '../shared/website-tag';
+import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,15 +52,16 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     background: theme.palette.primary.dark,
   },
+  columnList: {
+    columnCount: 3,
+  },
 }));
 
-export const AddTagToMeetingDialog = (props: {
-  meeting: ISegment;
+export const AddTaggDialog = (props: {
   userTags: IWebsiteTag[];
   close: () => void;
   isOpen: boolean;
-  meetingTags: ISegmentTag[];
-  toggleMeetingTag: (tag: string, segmentId: string, segmentSummary: string) => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   store: IStore;
 }) => {
   const classes = useStyles();
@@ -90,31 +91,28 @@ export const AddTagToMeetingDialog = (props: {
       <div className={classes.dialogContent}>
         <Grid container justifyContent="space-between">
           <Grid item>
-            <Typography variant="h3">Add tags to {props.meeting.summary}</Typography>
+            <Typography variant="h3">Add tags </Typography>
             <br />
             <IconButton onClick={props.close} className={classes.closeButton}>
               <CloseIcon width="24" height="24" />
             </IconButton>
           </Grid>
         </Grid>
-        <Grid container alignItems="center" justifyContent="space-between">
+        <ul className={classes.columnList}>
           {websiteTags.map((t) => (
-            <Grid item xs={2} key={t} zeroMinWidth>
+            <li key={t}>
               <div
-                onClick={() =>
-                  props.toggleMeetingTag(t, props.meeting.id, props.meeting.summary || '')
-                }
+                onClick={() => props.toggleWebsiteTag(t, '<test>')}
                 className={clsx(
                   classes.tag,
-                  isSegmentTagSelected(props.meeting.id, t, props.meetingTags) &&
-                    classes.tagSelected,
+                  isTagSelected(t, props.userTags) && classes.tagSelected,
                 )}
               >
                 <Typography>{t}</Typography>
               </div>
-            </Grid>
+            </li>
           ))}
-        </Grid>
+        </ul>
       </div>
     </Dialog>
   );

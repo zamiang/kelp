@@ -6,12 +6,12 @@ import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import PlusIcon from '../../public/icons/plus-white.svg';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import VideoIconWhite from '../../public/icons/video-white.svg';
 import useButtonStyles from '../shared/button-styles';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { AddTagToMeetingDialog } from '../website/add-tag-dialog';
+import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
@@ -150,7 +150,7 @@ export const FeaturedMeeting = (props: {
       setSegmentTags(result);
     };
     void fetchData();
-  }, [props.store.lastUpdated]);
+  }, [props.store.lastUpdated, props.meeting.id]);
 
   const relevantTags = segmentTags.filter((t) => {
     const isTextTheSame =
@@ -222,7 +222,7 @@ export const FeaturedMeeting = (props: {
         <Grid item>
           <Button
             onClick={() => setAddTagsVisible(true)}
-            variant="contained"
+            variant="outlined"
             disableElevation
             color="primary"
             startIcon={<PlusIcon width="24" height="24" />}

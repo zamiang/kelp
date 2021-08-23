@@ -8,12 +8,6 @@ import clsx from 'clsx';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
-import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
-import MeetingsIconWhite from '../../public/icons/calendar-white.svg';
-import MeetingsIcon from '../../public/icons/calendar.svg';
-import HomeIconOrange from '../../public/icons/home-orange.svg';
-import HomeIconWhite from '../../public/icons/home-white.svg';
-import HomeIcon from '../../public/icons/home.svg';
 import MoonIconOrange from '../../public/icons/moon-orange.svg';
 import MoonIcon from '../../public/icons/moon.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
@@ -22,8 +16,9 @@ import SettingsIcon from '../../public/icons/settings.svg';
 import DayIconOrange from '../../public/icons/sun-orange.svg';
 import DayIconWhite from '../../public/icons/sun-white.svg';
 import SearchBar from '../nav/search-bar';
+import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { TopFilters } from './top-filters';
+import { TopTags } from './top-tags';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -51,11 +46,13 @@ const useStyles = makeStyles((theme) => ({
   },
   searchContainer: {},
   button: {
-    borderRadius: 4,
-    transition: 'background 0.3s',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   isSelected: {
-    background: theme.palette.divider,
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -67,12 +64,13 @@ export const TopNav = (props: {
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
   isMicrosoftError: boolean;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
 }) => {
   const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
   const isSearch = location.pathname === '/search';
-  const isHomeSelected = location.pathname === '/home';
   const isMeetingsSelected = location.pathname === '/meetings';
   return (
     <Grid
@@ -90,67 +88,34 @@ export const TopNav = (props: {
         {!isSearch && (
           <Container maxWidth="lg" disableGutters>
             <Grid container justifyContent="space-between">
-              <Grid item>
-                <Grid container>
-                  <Grid item>
-                    <Tooltip title="Websites List">
-                      <IconButton
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        className={clsx(classes.button, isHomeSelected && classes.isSelected)}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          return router.push('/home');
-                        }}
-                      >
-                        {isHomeSelected ? (
-                          <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : props.isDarkMode ? (
-                          <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : (
-                          <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    <Tooltip title="Meetings List">
-                      <IconButton
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          return router.push('/meetings');
-                        }}
-                      >
-                        {isMeetingsSelected ? (
-                          <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : props.isDarkMode ? (
-                          <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        ) : (
-                          <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    {props.isMicrosoftError && (
+              <Grid item xs={10}>
+                <TopTags
+                  websiteTags={props.websiteTags}
+                  store={props.store}
+                  toggleWebsiteTag={props.toggleWebsiteTag}
+                />
+              </Grid>
+              {props.isMicrosoftError && (
+                <Grid item>
+                  <Grid container>
+                    <Grid item>
                       <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
                         Error: please login to your Microsoft account
                       </Typography>
-                    )}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
+              )}
               <Grid item>
-                <TopFilters
-                  store={props.store}
-                  toggleFilter={props.toggleFilter}
-                  hideDialogUrl={props.hideDialogUrl}
-                  currentFilter={props.currentFilter}
-                  isDarkMode={props.isDarkMode}
-                />
+                <Typography
+                  className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    return router.push('/meetings');
+                  }}
+                >
+                  View by meetings
+                </Typography>
               </Grid>
             </Grid>
           </Container>
