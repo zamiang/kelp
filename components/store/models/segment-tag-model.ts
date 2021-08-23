@@ -13,7 +13,7 @@ export default class SegmentTagModel {
       id: `${segmentId}-${tag}`,
       tag: tag.toLocaleLowerCase(),
       segmentId,
-      segmentSummary,
+      segmentSummary: segmentSummary.toLocaleLowerCase(),
       createdAt: new Date(),
     });
     return result;

@@ -2,12 +2,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Fuse from 'fuse.js';
+import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
 import useExpandStyles from '../shared/expand-styles';
-import { orderByCount } from '../shared/order-by-count';
 import useRowStyles from '../shared/row-styles';
 import { IPerson, ISegment, IWebsite, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
@@ -16,7 +16,8 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 
-const minScore = 0.75;
+// A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
+const minScore = 0.6;
 
 const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
@@ -54,13 +55,9 @@ const WebsiteResults = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
 }) => {
-  const filteredResults = orderByCount(
-    props.websites.map((i) => i.item as IWebsite),
-    'url',
-    'visitedTime',
-  );
-  const websites = filteredResults.map(
-    (website: IWebsite): IFeaturedWebsite => ({
+  const websites = props.websites.map((item): IFeaturedWebsite => {
+    const website = item.item as IWebsite;
+    return {
       websiteId: website.url,
       meetings: [],
       websiteDatabaseId: website.id,
@@ -69,11 +66,13 @@ const WebsiteResults = (props: {
       text: website.title,
       cleanText: website.cleanTitle || website.title,
       date: website.visitedTime,
-    }),
-  );
+    };
+  });
+  const filteredWebsites = uniqBy(websites, 'websiteId');
+
   return (
     <React.Fragment>
-      {websites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
+      {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
         <LargeWebsite
           store={props.store}
           key={website.websiteId}

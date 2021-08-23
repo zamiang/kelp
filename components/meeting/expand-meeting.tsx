@@ -130,11 +130,12 @@ const ExpandedMeeting = (props: {
     void fetchData();
   }, [props.store.lastUpdated, props.meetingId]);
 
+  const meetingSummary = meeting?.summary?.toLocaleLowerCase() || '';
   const relevantTags = segmentTags.filter((t) => {
     const isTextTheSame =
       (t.segmentSummary || '').length > 1 &&
-      (meeting?.summary || '').length > 1 &&
-      t.segmentSummary === meeting?.summary;
+      meetingSummary.length > 1 &&
+      t.segmentSummary === meetingSummary;
     const isIdTheSame = t.segmentId === meeting?.id;
     return isIdTheSame || isTextTheSame;
   });
@@ -162,7 +163,6 @@ const ExpandedMeeting = (props: {
   const meetingDescriptionIsMicrosoftHtml =
     isHtml && meeting.description?.includes('<span itemscope');
   const hasWebsites = websites.length > 0 || relevantTags.length > 0;
-  console.log(currentTag, '<<<<<<<<<<<<<<');
   return (
     <React.Fragment>
       <Grid

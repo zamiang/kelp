@@ -134,7 +134,7 @@ export const FeaturedMeeting = (props: {
   const toggleMeetingTag = (tag: string, meetingId: string, meetingSummary: string) => {
     const updateData = async () => {
       if (isSegmentTagSelected(meetingId, tag, segmentTags)) {
-        await props.store.segmentTagStore.delete(tag, meetingId);
+        await props.store.segmentTagStore.deleteAllForTag(tag);
       } else {
         await props.store.segmentTagStore.create(tag, meetingId, meetingSummary);
       }
@@ -152,11 +152,12 @@ export const FeaturedMeeting = (props: {
     void fetchData();
   }, [props.store.lastUpdated, props.meeting.id]);
 
+  const meetingSummary = props.meeting?.summary?.toLocaleLowerCase() || '';
   const relevantTags = segmentTags.filter((t) => {
     const isTextTheSame =
       (t.segmentSummary || '').length > 1 &&
-      (props.meeting.summary || '').length > 1 &&
-      t.segmentSummary === props.meeting.summary;
+      (meetingSummary || '').length > 1 &&
+      t.segmentSummary === meetingSummary;
     const isIdTheSame = t.segmentId === props.meeting.id;
     return isIdTheSame || isTextTheSame;
   });
