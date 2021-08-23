@@ -71,6 +71,7 @@ export const WebsiteHighlights = (props: {
     props.hideDialogUrl,
     shouldShowAll,
     pinIncrement,
+    props.filterByTag,
   ]);
 
   const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {

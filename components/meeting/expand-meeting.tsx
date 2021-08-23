@@ -162,6 +162,7 @@ const ExpandedMeeting = (props: {
   const meetingDescriptionIsMicrosoftHtml =
     isHtml && meeting.description?.includes('<span itemscope');
   const hasWebsites = websites.length > 0 || relevantTags.length > 0;
+  console.log(currentTag, '<<<<<<<<<<<<<<');
   return (
     <React.Fragment>
       <Grid
