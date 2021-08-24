@@ -12,7 +12,7 @@ import Head from 'next/head';
 import React from 'react';
 import Footer from '../components/homepage/footer';
 import UiBlocks from '../components/homepage/ui-blocks';
-import { italicFontFamily } from '../constants/theme';
+import { italicFontFamily, mediumFontFamily } from '../constants/theme';
 
 export const useStyles = makeStyles((theme) => ({
   container: {
@@ -106,6 +106,8 @@ export const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     opacity: 1,
     transition: 'opacity 0.3s',
+    fontFamily: mediumFontFamily,
+    fontWeight: 500,
     '&:hover': {
       opacity: 0.6,
     },
@@ -197,7 +199,7 @@ const App = () => {
   return (
     <div className={classes.container}>
       <Head>
-        <title>Kelp - A newtab page that gets you what you need when you need it</title>
+        <title>Kelp - a magical website organizer for busy people</title>
         <meta name="description" content={description} />
         {/* Twitter */}
         <meta name="twitter:card" content="summary" key="twcard" />
@@ -213,7 +215,7 @@ const App = () => {
         <meta property="og:site_name" content="Kelp" key="ogsitename" />
         <meta
           property="og:title"
-          content="Kelp - Your information filtration system"
+          content="Kelp - A magical website organizer for busy people"
           key="ogtitle"
         />
         <meta property="og:description" content={description} key="ogdesc" />
@@ -227,12 +229,11 @@ const App = () => {
         <Container maxWidth="md">
           <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
           <Typography variant="h1" className={classes.heading}>
-            Kelp gets you what you need when you need it
+            Kelp is a magical website organizer for busy people
           </Typography>
           <Typography className={classes.subheading}>
-            A New Tab page for Chrome that associates your webpages with your meetings. It shows you
-            the right links for your next meeting. Install Kelp to leave tags and folders behind,
-            and switch to an organization system that adapts to the real world.
+            Install Kelp to leave tags and folders behind, and switch to an organization system that
+            adapts to the real world.
           </Typography>
         </Container>
         <Container className={classes.buttonContainer}>
