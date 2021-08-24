@@ -90,14 +90,13 @@ export const WebsiteTags = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const i = await getTagsForWebsite(
+      const text =
         props.item.cleanText ||
-          cleanText(props.item.text || '')
-            .join(' ')
-            .toLocaleLowerCase(),
-        props.store,
-        props.userTags,
-      );
+        cleanText(props.item.text || '')
+          .join(' ')
+          .toLocaleLowerCase();
+
+      const i = await getTagsForWebsite(text, props.store, props.userTags);
       setWebsiteTags(i);
     };
     void fetchData();

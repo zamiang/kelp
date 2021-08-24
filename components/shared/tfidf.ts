@@ -126,11 +126,18 @@ export const removePunctuationRegex = /[.,/#|!?$<>[\]%^&*;:{}=\-_`~()]/g;
 
 export const cleanText = (text: string) => {
   const terms = removeStopwords(
-    text.toLocaleLowerCase().replace(removePunctuationRegex, '').replaceAll('–', ' ').split(' '),
+    text
+      .toLocaleLowerCase()
+      .replace(removePunctuationRegex, '')
+      .replaceAll('–', ' ')
+      .replaceAll('_', ' ')
+      .replaceAll('/', ' ')
+      .replaceAll('(', '')
+      .replaceAll(')', '')
+      .replaceAll('meeting', '')
+      .split(' '),
   );
-  return terms.map((t) =>
-    t.replaceAll('(', '').replaceAll(')', '').replaceAll('/', '').replaceAll('meeting', ''),
-  );
+  return terms;
 };
 
 const buildDocument = (text: string, key: string): IDocument => {
@@ -206,9 +213,7 @@ export default class Tfidf {
   }
 
   tfidfs(terms: string) {
-    const formattedTerms = removeStopwords(
-      terms.replace(removePunctuationRegex, '').split(' '),
-    ).filter((t) => t.length > 2);
+    const formattedTerms = cleanText(terms).filter((t) => t.length > 2);
     const values = this.documents.map((_document, index) => this.tfidf(formattedTerms, index));
     return formattedTerms.map((t, index) => ({ term: t, value: values[0][index] }));
   }

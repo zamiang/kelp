@@ -6,8 +6,7 @@ import config from '../../constants/config';
 let store: IStore;
 const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
-const timeToWaitBeforeTracking = 30 * 1000;
-const timeToWaitBeforeCapture = 8 * 1000;
+const timeToWaitBeforeTracking = 20 * 1000;
 
 const storeTrackedVisit = (
   site: string,
@@ -34,7 +33,6 @@ const storeTrackedVisit = (
 };
 
 const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
-  console.log('about to record visit', tab);
   if (tab) {
     const currentUrl = cleanupUrl(tab.url || '');
     const isDomainAllowed =
@@ -63,6 +61,7 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
             return;
           }
           const result = results[0] || ({} as any);
+          captureVisibleTab(result.metaOgUrlContent || currentUrl);
           void storeTrackedVisit(
             result.metaOgUrlContent || currentUrl,
             new Date(),
@@ -117,13 +116,11 @@ const captureVisibleTab = (url: string) => {
       quality: 5,
     },
     (image) => {
-      const cleanedUrl = cleanupUrl(url);
-
-      if (cleanedUrl && image) {
+      if (url && image) {
         const saveImage = async () => {
           const s = await getOrCreateStore();
           if (s) {
-            await s.websiteImageStore.saveWebsiteImage(cleanedUrl, image, new Date());
+            await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
           }
         };
         void saveImage();
@@ -222,23 +219,6 @@ chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightIn
     };
     void checkTab();
   }, timeToWaitBeforeTracking);
-
-  setTimeout(() => {
-    const checkTab = async () => {
-      const queryOptions = { active: true, currentWindow: true };
-      chrome.tabs.query(queryOptions, (result: chrome.tabs.Tab[]) => {
-        const tab = result[0];
-        if (tab && tab.url && tab.id == highlightInfo.tabIds[0]) {
-          try {
-            captureVisibleTab(tab.url);
-          } catch (e) {
-            console.error(e);
-          }
-        }
-      });
-    };
-    void checkTab();
-  }, timeToWaitBeforeCapture);
 });
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {

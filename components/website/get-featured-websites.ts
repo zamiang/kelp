@@ -1,6 +1,7 @@
 import { subDays } from 'date-fns';
 import { flatten, uniqBy } from 'lodash';
 import config from '../../constants/config';
+import { getCleanTextForWebsite } from '../dashboard/search';
 import { getValueForDate } from '../shared/order-by-count';
 import { cleanText } from '../shared/tfidf';
 import { IDocument, ISegment } from '../store/data-types';
@@ -135,7 +136,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
       websiteId: item.url,
       rawUrl: item.rawUrl,
       text: item.title,
-      cleanText: item.cleanTitle ? item.cleanTitle : cleanText(item.title).join(' '),
+      cleanText: getCleanTextForWebsite(item),
       date: item.visitedTime,
       websiteDatabaseId: item.id,
       isPinned: pinIndex[item.url] ? true : false,
@@ -240,7 +241,7 @@ export const getWebsitesForMeeting = async (
       websiteId: item.url,
       websiteDatabaseId: item.id,
       text: item.title,
-      cleanText: item.cleanTitle ? item.cleanTitle : cleanText(item.title).join(' '),
+      cleanText: getCleanTextForWebsite(item),
       rawUrl: item.rawUrl,
       date: item.visitedTime,
       isPinned: pinIndex[item.url] ? true : false,

@@ -9,6 +9,7 @@ import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
 import useExpandStyles from '../shared/expand-styles';
 import useRowStyles from '../shared/row-styles';
+import { cleanText } from '../shared/tfidf';
 import { IPerson, ISegment, IWebsite, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
@@ -44,6 +45,11 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   };
 };
 
+export const getCleanTextForWebsite = (website: IWebsite) =>
+  website.cleanTitle
+    ? `${website.cleanTitle} ${website.cleanDescription || ''}`
+    : cleanText(website.title).join(' ');
+
 const maxWebsiteResults = 12;
 
 const WebsiteResults = (props: {
@@ -64,7 +70,7 @@ const WebsiteResults = (props: {
       isPinned: false,
       rawUrl: website.rawUrl || website.id,
       text: website.title,
-      cleanText: website.cleanTitle || website.title,
+      cleanText: getCleanTextForWebsite(website),
       date: website.visitedTime,
     };
   });
