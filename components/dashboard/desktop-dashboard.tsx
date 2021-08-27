@@ -7,7 +7,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { darkTheme, lightTheme } from '../../constants/theme';
+import { lightTheme } from '../../constants/theme';
 import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
@@ -150,7 +150,7 @@ export const DesktopDashboard = (props: {
           isMicrosoftError={props.isMicrosoftError}
           toggleWebsiteTag={toggleWebsiteTagClick}
         />
-        <ThemeProvider theme={props.isDarkMode ? lightTheme : darkTheme}>
+        <ThemeProvider theme={lightTheme}>
           <Onboarding />
         </ThemeProvider>
         <div className={classes.container}>
