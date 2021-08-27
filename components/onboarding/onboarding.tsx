@@ -75,7 +75,7 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
   return (
     <React.Fragment>
       <Typography variant="h2" className={classes.heading}>
-        Thank you! Meet your magical website organizer
+        Meet your magical website organizer
       </Typography>
       <img src="https://www.kelp.nyc/images/meetings-large.svg" className={classes.largeImage} />
       <Grid container justifyContent="space-between" alignItems="center">
