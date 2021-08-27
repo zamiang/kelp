@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
 import Footer from '../components/homepage/footer';
+import { ImageBlocks } from '../components/homepage/image-blocks';
 import UiBlocks from '../components/homepage/ui-blocks';
 import { italicFontFamily, mediumFontFamily } from '../constants/theme';
 
@@ -255,6 +256,7 @@ const App = () => {
           <img src="images/meetings-large.svg" className={classes.meetingImage} />
         </div>
       </Container>
+      <ImageBlocks />
       <UiBlocks />
       <Container maxWidth="md" className={classes.bodyCopySection}>
         <Typography variant="h2" className={classes.largeText}>
