@@ -8,7 +8,7 @@ import meetingGif from '../../public/animations/meetings.gif';
 import pinGif from '../../public/animations/pin.gif';
 import tagGif from '../../public/animations/tags.gif';
 
-export const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   image: {
     margin: '0px auto',
     display: 'block',
