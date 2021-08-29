@@ -23,6 +23,7 @@ import Settings from '../user-profile/settings';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { HideUrlDialog } from '../website/hide-url-dialog';
 import { TagHighlights } from '../website/tag-highlights';
+import { WebsiteDialog } from '../website/website-dialog';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
 import { TopNav } from './top-nav';
@@ -66,7 +67,12 @@ export const DesktopDashboard = (props: {
   const [filter, setFilter] = useState<string>('all');
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [hideDialogUrl, setHideDialogUrl] = useState<string | undefined>();
+  const [websitePopupItem, setWebsitePopupItem] = useState<IFeaturedWebsite | undefined>();
   const hideDialogDomain = hideDialogUrl ? new URL(hideDialogUrl).host : undefined;
+
+  const showWebsitePopup = (item: IFeaturedWebsite) => {
+    setWebsitePopupItem(item);
+  };
 
   const hash = window.location.hash;
   if (hash.includes('meetings/')) {
@@ -138,6 +144,11 @@ export const DesktopDashboard = (props: {
         hideDialogUrl={hideDialogUrl}
         setHideDialogUrl={setHideDialogUrl}
       />
+      <WebsiteDialog
+        store={props.store}
+        item={websitePopupItem}
+        close={() => setWebsitePopupItem(undefined)}
+      />
       <div className={classes.content}>
         <TopNav
           store={store}
@@ -165,6 +176,7 @@ export const DesktopDashboard = (props: {
                     websiteTags={websiteTags}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     hideWebsite={hideItem}
+                    showWebsitePopup={showWebsitePopup}
                   />
                 </Route>
                 <Route path="/meetings/:slug">
@@ -173,8 +185,8 @@ export const DesktopDashboard = (props: {
                     store={store}
                     isDarkMode={props.isDarkMode}
                     websiteTags={websiteTags}
+                    showWebsitePopup={showWebsitePopup}
                     toggleWebsiteTag={toggleWebsiteTagClick}
-                    hideWebsite={hideItem}
                   />
                 </Route>
                 <Route path="/documents/:slug">
@@ -184,22 +196,22 @@ export const DesktopDashboard = (props: {
                   <ExpandPerson
                     store={store}
                     hideDialogUrl={hideDialogUrl}
-                    hideWebsite={hideItem}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     websiteTags={websiteTags}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
+                    showWebsitePopup={showWebsitePopup}
                   />
                 </Route>
                 <Route path="/meetings">
                   <Meetings
                     store={store}
-                    hideWebsite={hideItem}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     websiteTags={websiteTags}
                     hideDialogUrl={hideDialogUrl}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
+                    showWebsitePopup={showWebsitePopup}
                   />
                 </Route>
                 <Route path="/settings">
@@ -208,12 +220,12 @@ export const DesktopDashboard = (props: {
                 <Route>
                   <MeetingHighlight
                     store={props.store}
-                    hideWebsite={hideItem}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     websiteTags={websiteTags}
                     hideDialogUrl={hideDialogUrl}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
+                    showWebsitePopup={showWebsitePopup}
                   />
                   <TagHighlights
                     store={props.store}
@@ -223,15 +235,16 @@ export const DesktopDashboard = (props: {
                     hideDialogUrl={hideDialogUrl}
                     currentFilter={filter}
                     isDarkMode={props.isDarkMode}
+                    showWebsitePopup={showWebsitePopup}
                   />
                   <WebsiteHighlights
                     store={store}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     currentFilter={filter}
                     websiteTags={websiteTags}
-                    hideWebsite={hideItem}
                     hideDialogUrl={hideDialogUrl}
                     isDarkMode={props.isDarkMode}
+                    showWebsitePopup={showWebsitePopup}
                   />
                 </Route>
               </Switch>

@@ -12,9 +12,9 @@ const DAYS_FORWARD = -1;
 
 const Meetings = (props: {
   store: IStore;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   currentFilter: string;
   isDarkMode: boolean;
@@ -44,13 +44,13 @@ const Meetings = (props: {
           key={meeting.id}
           meeting={meeting}
           store={props.store}
-          hideWebsite={props.hideWebsite}
           showLine
           currentFilter={props.currentFilter}
           isDarkMode={props.isDarkMode}
           happeningSoonLimit={60 * 4}
           websiteTags={props.websiteTags}
           toggleWebsiteTag={props.toggleWebsiteTag}
+          showWebsitePopup={props.showWebsitePopup}
         />
       ))}
     </div>

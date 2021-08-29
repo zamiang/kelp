@@ -116,13 +116,13 @@ export const FeaturedMeeting = (props: {
   meeting: ISegment;
   store: IStore;
   showButton?: boolean;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   showLine?: boolean;
   currentFilter: string;
   isDarkMode: boolean;
   happeningSoonLimit?: number;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
   const classes = useStyles();
@@ -254,7 +254,6 @@ export const FeaturedMeeting = (props: {
               meeting={props.meeting}
               store={props.store}
               currentFilter={props.currentFilter}
-              hideWebsite={props.hideWebsite}
               hideDialogUrl={props.hideDialogUrl}
               isDarkMode={props.isDarkMode}
               isFullWidth={false}
@@ -262,6 +261,7 @@ export const FeaturedMeeting = (props: {
               meetingTags={relevantTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               toggleMeetingTag={toggleMeetingTag}
+              showWebsitePopup={props.showWebsitePopup}
             />
           </Grid>
         )}
@@ -270,7 +270,6 @@ export const FeaturedMeeting = (props: {
             meeting={props.meeting}
             store={props.store}
             currentFilter={props.currentFilter}
-            hideWebsite={props.hideWebsite}
             hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
             isFullWidth={true}
@@ -278,6 +277,7 @@ export const FeaturedMeeting = (props: {
             meetingTags={relevantTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
             toggleMeetingTag={toggleMeetingTag}
+            showWebsitePopup={props.showWebsitePopup}
           />
         )}
       </Grid>

@@ -10,33 +10,32 @@ import { cleanText } from './tfidf';
 
 const useStyles = makeStyles((theme) => ({
   tags: {
-    height: 20,
     overflow: 'hidden',
-    marginTop: theme.spacing(0.5),
+    height: 22,
   },
   tag: {
     display: 'inline-block',
-    marginRight: theme.spacing(2),
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: theme.spacing(0.5),
-    opacity: 0,
-    transition: 'opacity 0.3s',
-    borderRadius: 5,
+    marginRight: theme.spacing(1 / 2),
+    marginLeft: theme.spacing(1 / 2),
+    transition: 'borderBottom 0.3s',
     pointerEvents: 'none',
+    borderBottom: '1px solid transparent',
     '&:hover': {
-      textDecoration: 'underline',
+      borderBottomColor: theme.palette.divider,
     },
   },
   tagVisible: {
     pointerEvents: 'all',
     cursor: 'pointer',
-    opacity: 0.8,
   },
   tagSelected: {
     pointerEvents: 'all',
     cursor: 'pointer',
-    background: theme.palette.primary.dark,
-    opacity: 1,
+    borderBottomColor: theme.palette.primary.dark,
+    '&:hover': {
+      opacity: 0.8,
+      borderBottomColor: theme.palette.primary.dark,
+    },
   },
 }));
 
@@ -114,7 +113,7 @@ export const WebsiteTags = (props: {
             isTagSelected(tag, props.userTags) && classes.tagSelected,
           )}
         >
-          <Typography>{tag}</Typography>
+          <Typography variant="body2">{tag}</Typography>
         </div>
       ))}
     </div>

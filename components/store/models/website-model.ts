@@ -17,6 +17,7 @@ interface IWebsiteNotFormatted {
   title?: string;
   description?: string;
   isHidden?: boolean;
+  ogImage?: string;
 }
 
 export default class WebsiteModel {
@@ -136,6 +137,7 @@ export default class WebsiteModel {
       visitedTime: website.startAt,
       meetingId: currentMeeting ? currentMeeting.id : undefined,
       meetingName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
+      ogImage: website.ogImage,
     });
 
     void this.saveToChromeStorage();

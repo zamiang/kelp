@@ -31,6 +31,7 @@ export const TagHighlights = (props: {
   websiteTags: IWebsiteTag[];
   hideDialogUrl?: string;
   isDarkMode: boolean;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
   const orderedTags = props.websiteTags;
   const classes = useStyles();
@@ -57,10 +58,10 @@ export const TagHighlights = (props: {
             toggleWebsiteTag={props.toggleWebsiteTag}
             currentFilter={props.currentFilter}
             websiteTags={props.websiteTags}
-            hideWebsite={props.hideWebsite}
             hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
+            showWebsitePopup={props.showWebsitePopup}
           />
         </div>
       ))}

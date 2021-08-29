@@ -33,9 +33,9 @@ const ExpandPerson = (props: {
   personId?: string;
   close?: () => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   currentFilter: string;
   hideDialogUrl?: string;
 }) => {
@@ -51,8 +51,6 @@ const ExpandPerson = (props: {
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   const [associatesStats, setAssociatesStats] = useState<any>({});
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
-  // used to refetch websites
-  const [pinIncrement, setPinIncrement] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,16 +104,7 @@ const ExpandPerson = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, personId, props.currentFilter, pinIncrement, props.hideDialogUrl]);
-
-  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
-    if (isPinned) {
-      await props.store.websitePinStore.delete(item.websiteId);
-    } else {
-      await props.store.websitePinStore.create(item.websiteId);
-    }
-    setPinIncrement(pinIncrement + 1);
-  };
+  }, [props.store.isLoading, personId, props.currentFilter, props.hideDialogUrl]);
 
   if (!person) {
     return null;
@@ -220,11 +209,10 @@ const ExpandPerson = (props: {
                   key={item.websiteId}
                   item={item}
                   store={props.store}
-                  hideItem={props.hideWebsite}
                   isDarkMode={props.isDarkMode}
-                  togglePin={togglePin}
                   websiteTags={props.websiteTags}
                   toggleWebsiteTag={props.toggleWebsiteTag}
+                  showWebsitePopup={props.showWebsitePopup}
                 />
               ))}
             </Grid>
@@ -266,9 +254,9 @@ const ExpandPerson = (props: {
               store={props.store}
               isDarkMode={props.isDarkMode}
               currentFilter={props.currentFilter}
-              hideWebsite={props.hideWebsite}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
+              showWebsitePopup={props.showWebsitePopup}
             />
           </div>
         )}
@@ -282,9 +270,9 @@ const ExpandPerson = (props: {
               store={props.store}
               isDarkMode={props.isDarkMode}
               currentFilter={props.currentFilter}
-              hideWebsite={props.hideWebsite}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
+              showWebsitePopup={props.showWebsitePopup}
             />
           </div>
         )}

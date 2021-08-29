@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
 
 export const MeetingHighlight = (props: {
   store: IStore;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   hideDialogUrl?: string;
   currentFilter: string;
   isDarkMode: boolean;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
   const classes = useStyles();
   const currentTime = new Date();
@@ -59,9 +59,9 @@ export const MeetingHighlight = (props: {
         meeting={featuredMeeting}
         currentFilter={props.currentFilter}
         showButton
-        hideWebsite={props.hideWebsite}
         hideDialogUrl={props.hideDialogUrl}
         isDarkMode={props.isDarkMode}
+        showWebsitePopup={props.showWebsitePopup}
         websiteTags={props.websiteTags}
         toggleWebsiteTag={props.toggleWebsiteTag}
       />

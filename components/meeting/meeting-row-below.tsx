@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
 const MeetingRowBelow = (props: {
   meeting: ISegment;
   store: IStore;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   hideDialogUrl?: string;
   currentFilter: string;
   isDarkMode: boolean;
   isFullWidth: boolean;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   meetingTags: ISegmentTag[];
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   toggleMeetingTag: (tag: string, meetingId: string, meetingSummary: string) => void;
 }) => {
   const classes = useStyles();
@@ -56,28 +56,13 @@ const MeetingRowBelow = (props: {
       setExtraItemsCount,
     );
   }, [
+    props.store.lastUpdated,
     props.store.isLoading,
     props.meeting.id,
     props.hideDialogUrl,
     shouldShowAll,
     props.currentFilter,
   ]);
-
-  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
-    if (isPinned) {
-      await props.store.websitePinStore.delete(item.websiteId);
-    } else {
-      await props.store.websitePinStore.create(item.websiteId);
-    }
-    void fetchWebsitesForMeetingFiltered(
-      props.meeting,
-      props.store,
-      props.currentFilter,
-      shouldShowAll,
-      setWebsites,
-      setExtraItemsCount,
-    );
-  };
 
   if (websites.length < 1 && props.meetingTags.length < 1) {
     return null;
@@ -91,12 +76,11 @@ const MeetingRowBelow = (props: {
             key={item.websiteId}
             item={item}
             store={props.store}
-            hideItem={props.hideWebsite}
             smGridSize={4}
-            togglePin={togglePin}
             websiteTags={props.websiteTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
             isDarkMode={props.isDarkMode}
+            showWebsitePopup={props.showWebsitePopup}
           />
         ))}
       </Grid>
@@ -138,7 +122,7 @@ const MeetingRowBelow = (props: {
             toggleWebsiteTag={props.toggleWebsiteTag}
             currentFilter={props.currentFilter}
             websiteTags={props.websiteTags}
-            hideWebsite={props.hideWebsite}
+            showWebsitePopup={props.showWebsitePopup}
             hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}

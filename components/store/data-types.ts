@@ -133,6 +133,7 @@ export interface IWebsite {
   readonly meetingName?: string;
   readonly visitedTime: Date;
   readonly isHidden: boolean;
+  readonly ogImage?: string;
 }
 
 export interface IWebsiteImage {

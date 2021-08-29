@@ -90,9 +90,10 @@ export const AddTaggDialog = (props: {
     >
       <div className={classes.dialogContent}>
         <Grid container justifyContent="space-between">
-          <Grid item>
+          <Grid item xs={10}>
             <Typography variant="h3">Add tags </Typography>
-            <br />
+          </Grid>
+          <Grid item xs={2}>
             <IconButton onClick={props.close} className={classes.closeButton}>
               <CloseIcon width="24" height="24" />
             </IconButton>

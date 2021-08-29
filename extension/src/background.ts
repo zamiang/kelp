@@ -14,6 +14,7 @@ const storeTrackedVisit = (
   store: IStore,
   title?: string,
   description?: string,
+  ogImage?: string,
 ) => {
   const url = new URL(site);
   const domain = url.host;
@@ -27,6 +28,7 @@ const storeTrackedVisit = (
       url: url.href,
       title,
       description,
+      ogImage,
     },
     store.timeDataStore,
   );
@@ -44,9 +46,10 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
         const metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
         const metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute("content");
         const metaOgUrl = document.querySelector("meta[name='og:url']");
+        const metaOgImage = document.querySelector("meta[name='og:image']");
         const metaOgUrlContent = metaOgUrl?.getAttribute("content");
         ({
-          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent
+          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent, metaOgImage
         });`;
       void chrome.tabs.executeScript(
         tab.id,
@@ -68,6 +71,7 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
             store,
             tab.title,
             result.metaTwitterDescription || result.metaDescriptionContent,
+            result.metaOgImage,
           );
           // Now, do something with result.title and result.description
         },

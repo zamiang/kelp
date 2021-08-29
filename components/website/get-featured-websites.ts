@@ -46,6 +46,7 @@ export interface IFeaturedWebsite {
   document?: IDocument;
   meetings: ISegment[];
   websiteDatabaseId: string | null;
+  ogImage?: string;
   isPinned: boolean;
   text?: string;
   cleanText: string;
@@ -119,6 +120,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
         date: item.time,
         websiteDatabaseId: null,
         isPinned: pinIndex[link] ? true : false,
+        ogImage: undefined,
       } as IFeaturedWebsite;
     })
     .filter(Boolean) as IFeaturedWebsite[];
@@ -140,6 +142,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
       date: item.visitedTime,
       websiteDatabaseId: item.id,
       isPinned: pinIndex[item.url] ? true : false,
+      ogImage: item.ogImage,
     } as IFeaturedWebsite;
   });
 
@@ -223,6 +226,7 @@ export const getWebsitesForMeeting = async (
           text: document.name,
           date: item.date,
           isPinned: pinIndex[link] ? true : false,
+          ogImage: undefined,
         } as IFeaturedWebsite;
       }),
     )
@@ -245,6 +249,7 @@ export const getWebsitesForMeeting = async (
       rawUrl: item.rawUrl,
       date: item.visitedTime,
       isPinned: pinIndex[item.url] ? true : false,
+      ogImage: item.ogImage,
     } as IFeaturedWebsite;
   });
 
