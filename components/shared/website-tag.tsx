@@ -61,7 +61,11 @@ export const toggleWebsiteTag = async (
   }
 };
 
-const getTagsForWebsite = async (websiteTitle: string, store: IStore, userTags: IWebsiteTag[]) => {
+export const getTagsForWebsite = async (
+  websiteTitle: string,
+  store: IStore,
+  userTags: IWebsiteTag[],
+) => {
   const tfidf = await store.tfidfStore.getTfidf(store);
   const values = uniqBy(tfidf.tfidfs(websiteTitle), (t) => t.term);
   const sorted = values.sort((a, b) => {

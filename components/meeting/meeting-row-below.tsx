@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 const MeetingRowBelow = (props: {
   meeting: ISegment;
   store: IStore;
-  hideDialogUrl?: string;
   currentFilter: string;
   isDarkMode: boolean;
   isFullWidth: boolean;
@@ -59,7 +58,6 @@ const MeetingRowBelow = (props: {
     props.store.lastUpdated,
     props.store.isLoading,
     props.meeting.id,
-    props.hideDialogUrl,
     shouldShowAll,
     props.currentFilter,
   ]);
@@ -123,7 +121,6 @@ const MeetingRowBelow = (props: {
             currentFilter={props.currentFilter}
             websiteTags={props.websiteTags}
             showWebsitePopup={props.showWebsitePopup}
-            hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
           />

@@ -128,8 +128,6 @@ const useStyles = makeStyles((theme) => ({
 const Search = (props: {
   store: IStore;
   isDarkMode: boolean;
-  hideDialogUrl?: string;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
@@ -153,7 +151,7 @@ const Search = (props: {
       setFuse(fuse);
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, props.hideDialogUrl]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   if (!fuse) {
     return null;

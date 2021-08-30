@@ -17,7 +17,6 @@ export const MeetingHighlight = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  hideDialogUrl?: string;
   currentFilter: string;
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
@@ -34,7 +33,7 @@ export const MeetingHighlight = (props: {
       setMeetingsByDay(result);
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, props.hideDialogUrl]);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   let featuredMeeting: ISegment | undefined;
   // Assumes meetings are already sorted
@@ -59,7 +58,6 @@ export const MeetingHighlight = (props: {
         meeting={featuredMeeting}
         currentFilter={props.currentFilter}
         showButton
-        hideDialogUrl={props.hideDialogUrl}
         isDarkMode={props.isDarkMode}
         showWebsitePopup={props.showWebsitePopup}
         websiteTags={props.websiteTags}

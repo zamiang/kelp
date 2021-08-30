@@ -37,7 +37,6 @@ export interface IStore {
   readonly websiteImageStore: WebsiteImageStore;
   readonly websitePinStore: WebsitePinStore;
   readonly segmentTagStore: SegmentTagStore;
-  readonly lastUpdated: Date;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
   readonly isLoading: boolean;
@@ -49,6 +48,9 @@ export interface IStore {
   readonly isMeetingsLoading: boolean;
   readonly isDocumentsLoading: boolean;
   readonly isDriveActivityLoading: boolean;
+
+  // maybe can be updated?
+  lastUpdated: Date;
 }
 
 export const setupStoreNoFetch = (db: dbType | null): IStore | null => {

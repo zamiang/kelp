@@ -12,7 +12,6 @@ const DAYS_FORWARD = -1;
 
 const Meetings = (props: {
   store: IStore;
-  hideDialogUrl?: string;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];

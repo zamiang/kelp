@@ -26,10 +26,8 @@ const useStyles = makeStyles((theme) => ({
 export const TagHighlights = (props: {
   store: IStore;
   currentFilter: string;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  hideDialogUrl?: string;
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
@@ -58,7 +56,6 @@ export const TagHighlights = (props: {
             toggleWebsiteTag={props.toggleWebsiteTag}
             currentFilter={props.currentFilter}
             websiteTags={props.websiteTags}
-            hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
             showWebsitePopup={props.showWebsitePopup}

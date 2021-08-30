@@ -116,7 +116,6 @@ export const FeaturedMeeting = (props: {
   meeting: ISegment;
   store: IStore;
   showButton?: boolean;
-  hideDialogUrl?: string;
   showLine?: boolean;
   currentFilter: string;
   isDarkMode: boolean;
@@ -254,7 +253,6 @@ export const FeaturedMeeting = (props: {
               meeting={props.meeting}
               store={props.store}
               currentFilter={props.currentFilter}
-              hideDialogUrl={props.hideDialogUrl}
               isDarkMode={props.isDarkMode}
               isFullWidth={false}
               websiteTags={props.websiteTags}
@@ -270,7 +268,6 @@ export const FeaturedMeeting = (props: {
             meeting={props.meeting}
             store={props.store}
             currentFilter={props.currentFilter}
-            hideDialogUrl={props.hideDialogUrl}
             isDarkMode={props.isDarkMode}
             isFullWidth={true}
             websiteTags={props.websiteTags}

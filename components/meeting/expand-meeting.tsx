@@ -77,7 +77,6 @@ const ExpandedMeeting = (props: {
   close?: () => void;
   isDarkMode: boolean;
   hideHeader?: boolean;
-  hideDialogUrl?: string;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
@@ -122,7 +121,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, meeting?.id, props.hideDialogUrl]);
+  }, [props.store.lastUpdated, props.store.isLoading, meeting?.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -319,7 +318,6 @@ const ExpandedMeeting = (props: {
                 store={props.store}
                 currentFilter={'all'}
                 websiteTags={props.websiteTags}
-                hideDialogUrl={props.hideDialogUrl}
                 isDarkMode={props.isDarkMode}
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 showWebsitePopup={props.showWebsitePopup}

@@ -137,7 +137,12 @@ export const LargeWebsite = (props: {
           </Typography>
         </Tooltip>
       </Link>
-      <Grid container alignItems="center" className={classes.textContainer} justify="space-between">
+      <Grid
+        container
+        alignItems="center"
+        className={classes.textContainer}
+        justifyContent="space-between"
+      >
         <Grid item xs={1}>
           <IconButton size="small">
             <img

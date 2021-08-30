@@ -44,7 +44,6 @@ export const WebsiteHighlights = (props: {
   currentFilter: string;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  hideDialogUrl?: string;
   isDarkMode: boolean;
   filterByTag?: string;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
@@ -66,7 +65,6 @@ export const WebsiteHighlights = (props: {
     props.store.lastUpdated,
     props.store.isLoading,
     props.currentFilter,
-    props.hideDialogUrl,
     shouldShowAll,
     props.filterByTag,
   ]);

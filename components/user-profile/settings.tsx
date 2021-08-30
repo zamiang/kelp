@@ -148,7 +148,7 @@ const Settings = (props: { store: IStore }) => {
           </Typography>
           {shouldShowEmptyWebsiteBlocklist && (
             <Typography variant="h6">
-              Add to this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+              Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}
           {websiteBlocklist.map((item) => (
@@ -179,7 +179,7 @@ const Settings = (props: { store: IStore }) => {
           </Typography>
           {shouldShowEmptyDomainBlocklist && (
             <Typography variant="h6">
-              Add to this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+              Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}
           {domainBlocklists.map((item) => (

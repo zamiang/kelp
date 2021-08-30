@@ -60,7 +60,6 @@ export const TopNav = (props: {
   store: IStore;
   toggleFilter: (filter: string) => void;
   currentFilter?: string;
-  hideDialogUrl?: string;
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
   isMicrosoftError: boolean;

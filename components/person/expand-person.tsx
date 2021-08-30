@@ -37,7 +37,6 @@ const ExpandPerson = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   currentFilter: string;
-  hideDialogUrl?: string;
 }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
@@ -104,7 +103,7 @@ const ExpandPerson = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, personId, props.currentFilter, props.hideDialogUrl]);
+  }, [props.store.isLoading, personId, props.currentFilter]);
 
   if (!person) {
     return null;

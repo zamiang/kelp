@@ -128,12 +128,13 @@ export const cleanText = (text: string) => {
   const terms = removeStopwords(
     text
       .toLocaleLowerCase()
-      .replace(removePunctuationRegex, '')
       .replaceAll('–', ' ')
+      .replaceAll('—', ' ')
       .replaceAll('_', ' ')
       .replaceAll('/', ' ')
       .replaceAll('(', '')
       .replaceAll(')', '')
+      .replace(removePunctuationRegex, '')
       .replaceAll('meeting', '')
       .split(' '),
   );
