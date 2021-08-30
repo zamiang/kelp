@@ -3,9 +3,13 @@ import Dialog from '@material-ui/core/Dialog';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import { cleanText } from '../shared/tfidf';
@@ -40,31 +44,24 @@ const useStyles = makeStyles((theme) => ({
     right: 42,
   },
   columnList: {
-    columnCount: 2,
-  },
-  tag: {
-    display: 'inline-block',
-    marginRight: theme.spacing(2),
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: theme.spacing(0.5),
-    transition: 'opacity 0.3s',
-    borderRadius: 5,
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  tagSelected: {
-    pointerEvents: 'all',
-    cursor: 'pointer',
-    background: theme.palette.primary.dark,
+    maxHeight: 300,
+    overflow: 'auto',
+    border: `1px solid ${theme.palette.divider}`,
+    marginTop: theme.spacing(1),
+    borderRadius: theme.spacing(1),
   },
   section: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     '&:last-child': {
       marginBottom: 0,
     },
+  },
+  smallButton: {
+    width: 100,
+    background: theme.palette.background.paper,
+    color: theme.palette.primary.main,
+    borderRadius: 16,
   },
 }));
 
@@ -79,6 +76,7 @@ export const WebsiteDialog = (props: {
   const [didHideThisWebsiteSuccess, setHideThisWebsiteSuccess] = useState(false);
   const [didHideAllSuccess, setHideAllSuccess] = useState(false);
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
+  const [value, setValue] = useState('');
 
   const hideDialogDomain = props.item?.websiteId ? new URL(props.item.websiteId).host : undefined;
   const hideUrl = async (url: string) => {
@@ -89,6 +87,10 @@ export const WebsiteDialog = (props: {
   const hideDomain = async (domain: string) => {
     await props.store.domainBlocklistStore.addDomain(domain);
     props.store.lastUpdated = new Date();
+  };
+
+  const removeTag = async (tag: string) => {
+    console.log(tag);
   };
 
   useEffect(() => {
@@ -109,6 +111,10 @@ export const WebsiteDialog = (props: {
     };
     void fetchData();
   }, [props.item?.websiteId]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(cleanText(e.target.value).join(''));
+  };
 
   return (
     <Dialog
@@ -134,27 +140,55 @@ export const WebsiteDialog = (props: {
         </Grid>
         <Divider />
         <div className={classes.section}>
-          <Typography variant="h4">Edit tags</Typography>
-          <ul className={classes.columnList}>
+          <Typography variant="h4">Tags</Typography>
+          <List className={classes.columnList} disablePadding>
             {websiteTags.map((t) => (
-              <li key={t}>
-                <div
-                  onClick={() => props.toggleWebsiteTag(t, '<test>')}
-                  className={clsx(
-                    classes.tag,
-                    isTagSelected(t, props.userTags) && classes.tagSelected,
-                  )}
-                >
-                  <Typography>{t}</Typography>
-                </div>
-              </li>
+              <ListItem
+                key={t}
+                selected={isTagSelected(t, props.userTags)}
+                button
+                onClick={() => props.toggleWebsiteTag(t, props.item?.websiteId || '<test')}
+              >
+                <ListItemText primary={t} />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      return removeTag(t);
+                    }}
+                  >
+                    <CloseIcon width="18" height="18" />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
             ))}
-          </ul>
+            <ListItem>
+              <TextField
+                type="text"
+                placeholder="Enter a custom tag…"
+                fullWidth
+                autoFocus={true}
+                onChange={handleChange}
+                name="query"
+                margin="dense"
+                value={value}
+                InputProps={{
+                  disableUnderline: true,
+                }}
+              />
+              <Button
+                size="small"
+                disableElevation={false}
+                variant="outlined"
+                className={classes.smallButton}
+              >
+                Add Tag
+              </Button>
+            </ListItem>
+          </List>
         </div>
-        <Divider />
         <div className={classes.section}>
           <Typography variant="h4">No longer recommend this website</Typography>
-          <br />
           <Typography color="textSecondary">
             Don’t worry, you can always undo via settings.
           </Typography>
