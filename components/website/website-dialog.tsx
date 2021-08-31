@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import { cleanText } from '../shared/tfidf';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
-import { IWebsiteTag } from '../store/data-types';
+import { IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
@@ -66,18 +66,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const formatAndSetWebsiteTags = async (
-  item: IFeaturedWebsite,
+  item: IWebsiteItem,
   store: IStore,
   userTags: IWebsiteTag[],
   setWebsiteTags: (t: string[]) => void,
   setHideAllSuccess: (b: boolean) => void,
   setHideThisWebsiteSuccess: (b: boolean) => void,
 ) => {
-  const text =
-    item.cleanText ||
-    cleanText(item.text || '')
-      .join(' ')
-      .toLocaleLowerCase();
+  const text = item.tags || '';
 
   const i = await getTagsForWebsite(text, store, userTags);
   setWebsiteTags(i);
@@ -97,6 +93,7 @@ export const WebsiteDialog = (props: {
   const [didHideAllSuccess, setHideAllSuccess] = useState(false);
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
   const [value, setValue] = useState('');
+  const [website, setWebsite] = useState<IWebsiteItem>();
 
   const hideDialogDomain = props.item?.websiteId ? new URL(props.item.websiteId).host : undefined;
   const hideUrl = async (url: string) => {
@@ -111,10 +108,13 @@ export const WebsiteDialog = (props: {
 
   const removeTag = async (tag: string) => {
     const updatedTags = websiteTags.filter((t) => t !== tag);
-    await props.store.websitesStore.updateTags(props.item!.websiteId, updatedTags);
+    await props.store.websiteStore.updateTags(props.item!.websiteId, updatedTags);
 
+    if (!website) {
+      throw new Error('missing website');
+    }
     void formatAndSetWebsiteTags(
-      props.item!,
+      website,
       props.store,
       props.userTags,
       setWebsiteTags,
@@ -124,16 +124,25 @@ export const WebsiteDialog = (props: {
   };
 
   useEffect(() => {
-    props.item &&
-      void formatAndSetWebsiteTags(
-        props.item,
-        props.store,
-        props.userTags,
-        setWebsiteTags,
-        setHideAllSuccess,
-        setHideThisWebsiteSuccess,
-      );
-  }, [props.item?.websiteId, props.store.lastUpdated, props.store.isLoading]);
+    const fetchData = async () => {
+      if (props.item) {
+        const w = await props.store.websiteStore.getById(props.item.websiteId);
+        setWebsite(w);
+
+        if (w) {
+          await formatAndSetWebsiteTags(
+            w,
+            props.store,
+            props.userTags,
+            setWebsiteTags,
+            setHideAllSuccess,
+            setHideThisWebsiteSuccess,
+          );
+        }
+      }
+    };
+    void fetchData();
+  }, [props.item?.websiteId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(cleanText(e.target.value).join(''));
@@ -152,7 +161,7 @@ export const WebsiteDialog = (props: {
       <div className={classes.dialogContent}>
         <Grid container justifyContent="space-between">
           <Grid item xs={10}>
-            <Typography variant="h3">{props.item?.text}</Typography>
+            <Typography variant="h3">{website?.title}</Typography>
             <br />
           </Grid>
           <Grid item xs={2}>

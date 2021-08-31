@@ -1,9 +1,7 @@
 import { subDays } from 'date-fns';
 import { flatten, uniqBy } from 'lodash';
 import config from '../../constants/config';
-import { getCleanTextForWebsite } from '../dashboard/search';
 import { getValueForDate } from '../shared/order-by-count';
-import { cleanText } from '../shared/tfidf';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -42,14 +40,10 @@ export const fetchWebsitesForMeetingFiltered = async (
 export interface IFeaturedWebsite {
   documentId?: string;
   websiteId: string;
-  rawUrl: string;
+  url: string;
   document?: IDocument;
   meetings: ISegment[];
-  websiteDatabaseId: string | null;
-  ogImage?: string;
   isPinned: boolean;
-  text?: string;
-  cleanText: string;
   date: Date;
 }
 
@@ -89,7 +83,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
 
   // For documents edited by the current user that may not be associated with a meeting
   const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
-  const filteredWebsites = await props.websitesStore.getAll(
+  const filteredWebsites = await props.websiteVisitStore.getAll(
     props.domainBlocklistStore,
     props.websiteBlocklistStore,
   );
@@ -114,13 +108,11 @@ export const getFeaturedWebsites = async (props: IStore) => {
         meetings: [] as any,
         nextMeetingStartsAt: undefined,
         websiteId: link,
-        rawUrl: item.link,
+        url: item.link,
         text: item.title,
-        cleanText: item.title ? cleanText(item.title).join(' ') : undefined,
         date: item.time,
         websiteDatabaseId: null,
         isPinned: pinIndex[link] ? true : false,
-        ogImage: undefined,
       } as IFeaturedWebsite;
     })
     .filter(Boolean) as IFeaturedWebsite[];
@@ -132,17 +124,12 @@ export const getFeaturedWebsites = async (props: IStore) => {
       urlCount[item.url] = getValueForDate(item.visitedTime);
     }
     return {
-      documentId: item.documentId,
       meetings: item.meetingId ? [item.meetingId] : ([] as any),
       nextMeetingStartsAt: undefined,
       websiteId: item.url,
-      rawUrl: item.rawUrl,
-      text: item.title,
-      cleanText: getCleanTextForWebsite(item),
+      url: item.url,
       date: item.visitedTime,
-      websiteDatabaseId: item.id,
       isPinned: pinIndex[item.url] ? true : false,
-      ogImage: item.ogImage,
     } as IFeaturedWebsite;
   });
 
@@ -183,7 +170,7 @@ export const getWebsitesForMeeting = async (
   const filteredWebsites = flatten(
     await Promise.all(
       similarMeetings.map((m) =>
-        store.websitesStore.getAllForSegment(
+        store.websiteVisitStore.getAllForSegment(
           m,
           store.domainBlocklistStore,
           store.websiteBlocklistStore,
@@ -209,7 +196,7 @@ export const getWebsitesForMeeting = async (
         if (!document || !document.link) {
           return;
         }
-        const link = `${document.link}`;
+        const link = document.link;
         if (urlCount[link]) {
           urlCount[link] = urlCount[link] + getValueForDate(item.date);
         } else {
@@ -220,13 +207,9 @@ export const getWebsitesForMeeting = async (
           meetings: [meeting],
           nextMeetingStartsAt: undefined,
           websiteId: link,
-          rawUrl: link,
-          websiteDatabaseId: undefined as any,
-          cleanText: document.name ? cleanText(document.name).join(' ') : undefined,
-          text: document.name,
+          url: link,
           date: item.date,
           isPinned: pinIndex[link] ? true : false,
-          ogImage: undefined,
         } as IFeaturedWebsite;
       }),
     )
@@ -239,17 +222,12 @@ export const getWebsitesForMeeting = async (
       urlCount[item.url] = getValueForDate(item.visitedTime);
     }
     return {
-      documentId: item.documentId,
       meetings: [meeting],
       nextMeetingStartsAt: undefined,
-      websiteId: item.url,
-      websiteDatabaseId: item.id,
-      text: item.title,
-      cleanText: getCleanTextForWebsite(item),
-      rawUrl: item.rawUrl,
+      websiteId: item.websiteId,
+      url: item.url,
       date: item.visitedTime,
       isPinned: pinIndex[item.url] ? true : false,
-      ogImage: item.ogImage,
     } as IFeaturedWebsite;
   });
 

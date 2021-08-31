@@ -65,13 +65,9 @@ const WebsiteResults = (props: {
     return {
       websiteId: website.url,
       meetings: [],
-      websiteDatabaseId: website.id,
       isPinned: false,
-      rawUrl: website.rawUrl || website.id,
-      text: website.title,
-      cleanText: getCleanTextForWebsite(website),
       date: website.visitedTime,
-      ogImage: website.ogImage,
+      url: website.url,
     };
   });
   const filteredWebsites = uniqBy(websites, 'websiteId');

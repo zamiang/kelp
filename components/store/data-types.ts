@@ -151,6 +151,7 @@ export interface IWebsiteVisit {
   readonly id: string;
   readonly domain: string;
   readonly url: string;
+  readonly websiteId: string;
   readonly meetingId?: string;
   readonly meetingName?: string;
   readonly visitedTime: Date;

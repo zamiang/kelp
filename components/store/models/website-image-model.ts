@@ -16,18 +16,13 @@ export default class WebsiteImageModel {
     return this.db.get('websiteImage', id);
   }
 
-  async saveToChromeStorage() {
-    // TODO reenable
-    // const all = await this.db.getAll('websiteImage');
-    // chrome.storage.sync.set({ kelpWebsiteImages: JSON.stringify(all) });
-  }
-
   async getAll() {
     const results = await this.db.getAll('websiteImage');
     return results;
   }
 
-  async cleanupWebsiteImages(images: IWebsiteImage[]) {
+  async cleanupWebsiteImages() {
+    const images = await this.getAll();
     const imagesToDelete = images.filter((image) => image.date < config.startDate);
     const tx = this.db.transaction('websiteImage', 'readwrite');
     const results = await Promise.allSettled(
@@ -54,7 +49,6 @@ export default class WebsiteImageModel {
       date,
     });
 
-    void this.saveToChromeStorage();
     return result;
   }
 }

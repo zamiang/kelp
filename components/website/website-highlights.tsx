@@ -19,16 +19,18 @@ const fetchData = async (
   filterByTag?: string,
 ) => {
   const featuredWebsites = await getFeaturedWebsites(store);
-  const filtereredWebsites = featuredWebsites.filter((item) => {
-    if (filterByTag) {
-      if (item.cleanText) {
-        if (!item.cleanText.includes(filterByTag)) {
-          return false;
+  const filtereredWebsites = await Promise.all(
+    featuredWebsites.filter(async (item) => {
+      if (filterByTag) {
+        const website = await store.websiteStore.getById(item.websiteId);
+        const tags = website?.tags;
+        if (tags) {
+          return tags.includes(filterByTag);
         }
       }
-    }
-    return item && currentFilter === 'all' ? true : item.websiteId.includes(currentFilter);
-  });
+      return item && currentFilter === 'all';
+    }),
+  );
 
   const extraResultLength = filtereredWebsites.length - maxResult;
   setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);

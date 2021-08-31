@@ -3,7 +3,7 @@ import { uniqBy } from 'lodash';
 import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { cleanupUrl } from '../../shared/cleanup-url';
-import { ISegment, IWebsiteVisit } from '../data-types';
+import { ISegment, IWebsite, IWebsiteVisit } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
 import { formatSegmentTitle } from './segment-document-model';
@@ -74,11 +74,12 @@ export default class WebsiteVisitModel {
     domainBlocklistStore: IStore['domainBlocklistStore'],
     websiteBlocklistStore: IStore['websiteBlocklistStore'],
   ) {
-    const websites = await this.db.getAll('website');
+    const websites = await this.db.getAll('websiteVisit');
     return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
-  async cleanupWebsites(websites: IWebsiteVisit[]) {
+  async cleanupWebsites() {
+    const websites = await this.db.getAll('websiteVisit');
     const websitesToDelete = websites.filter((site) => site.visitedTime < config.startDate);
     const tx = this.db.transaction('websiteVisit', 'readwrite');
     const results = await Promise.allSettled(
@@ -94,9 +95,26 @@ export default class WebsiteVisitModel {
     return;
   }
 
-  async addHistoryToStore(websites: IWebsiteVisit[]) {
+  async addHistoryToStore(websites: IWebsite[], timeStore: IStore['timeDataStore']) {
     const tx = this.db.transaction('websiteVisit', 'readwrite');
-    const results = await Promise.allSettled(websites.map((website) => tx.store.put(website)));
+    const results = await Promise.allSettled(
+      websites.map(async (website) => {
+        const websiteId = cleanupUrl(website.url);
+        const currentMeeting = await timeStore.getCurrentSegmentForWebsites(
+          website.visitedTime || new Date(),
+        );
+        const formatted = {
+          id: `${website.url}-${website.visitedTime.toDateString()}`,
+          websiteId,
+          url: website.url,
+          domain: website.domain,
+          visitedTime: website.visitedTime,
+          meetingId: currentMeeting ? currentMeeting.id : undefined,
+          meetingName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
+        };
+        await tx.store.put(formatted);
+      }),
+    );
     await tx.done;
 
     results.forEach((result) => {
@@ -111,9 +129,11 @@ export default class WebsiteVisitModel {
     const currentMeeting = await timeStore.getCurrentSegmentForWebsites(
       website.startAt || new Date(),
     );
+    const websiteId = cleanupUrl(website.url);
     const result = await this.db.put('websiteVisit', {
       id: `${website.url}-${website.startAt.toDateString()}`,
-      url: cleanupUrl(website.url),
+      websiteId,
+      url: website.url,
       domain: website.domain,
       visitedTime: website.startAt,
       meetingId: currentMeeting ? currentMeeting.id : undefined,

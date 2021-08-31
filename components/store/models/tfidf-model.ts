@@ -30,7 +30,7 @@ export default class TfidfStore {
 
   async getDocuments(store: IStore) {
     // Websites
-    const websitesList = await store.websitesStore.getAll(
+    const websitesList = await store.websiteStore.getAll(
       store.domainBlocklistStore,
       store.websiteBlocklistStore,
     );
