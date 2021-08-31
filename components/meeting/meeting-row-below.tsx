@@ -123,6 +123,7 @@ const MeetingRowBelow = (props: {
             showWebsitePopup={props.showWebsitePopup}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
+            maxWebsites={8}
           />
         </div>
       ))}

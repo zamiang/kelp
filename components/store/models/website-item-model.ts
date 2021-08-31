@@ -7,7 +7,7 @@ import { IWebsiteItem } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
 
-export interface IWebsiteItemNotFormatted {
+interface IWebsiteItemNotFormatted {
   domain: string;
   pathname: string;
   url: string;

@@ -322,6 +322,7 @@ const ExpandedMeeting = (props: {
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 showWebsitePopup={props.showWebsitePopup}
                 filterByTag={currentTag}
+                maxWebsites={8}
               />
             )}
           </div>

@@ -209,14 +209,17 @@ export const DesktopDashboard = (props: {
                     isDarkMode={props.isDarkMode}
                     showWebsitePopup={showWebsitePopup}
                   />
-                  <WebsiteHighlights
-                    store={store}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                    currentFilter={filter}
-                    websiteTags={websiteTags}
-                    isDarkMode={props.isDarkMode}
-                    showWebsitePopup={showWebsitePopup}
-                  />
+                  <div id="tag-all">
+                    <WebsiteHighlights
+                      store={store}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
+                      currentFilter={filter}
+                      websiteTags={websiteTags}
+                      isDarkMode={props.isDarkMode}
+                      showWebsitePopup={showWebsitePopup}
+                      maxWebsites={8}
+                    />
+                  </div>
                 </Route>
               </Switch>
             </div>

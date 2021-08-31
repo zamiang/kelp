@@ -16,6 +16,7 @@ const fetchData = async (
   shouldShowAll: boolean,
   setWebsites: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount: (n: number) => void,
+  maxWebsites: number,
   filterByTag?: string,
 ) => {
   const featuredWebsites = await getFeaturedWebsites(store);
@@ -35,9 +36,9 @@ const fetchData = async (
   const extraResultLength = filtereredWebsites.length - maxResult;
   setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
   if (shouldShowAll) {
-    setWebsites(filtereredWebsites.slice(0, maxResult * 10));
+    setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
   } else {
-    setWebsites(filtereredWebsites.slice(0, maxResult));
+    setWebsites(filtereredWebsites.slice(0, maxWebsites));
   }
 };
 
@@ -49,6 +50,7 @@ export const WebsiteHighlights = (props: {
   isDarkMode: boolean;
   filterByTag?: string;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  maxWebsites: number;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -61,6 +63,7 @@ export const WebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
+      props.maxWebsites || maxResult,
       props.filterByTag,
     );
   }, [
