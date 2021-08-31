@@ -33,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 10,
   },
   leftSection: {
-    width: 194,
+    width: 228,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
     flexShrink: 0,
   },
   rightSection: {
-    width: 194,
+    width: 228,
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(1),
     flexShrink: 0,

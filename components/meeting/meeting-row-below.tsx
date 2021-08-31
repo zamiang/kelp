@@ -68,7 +68,7 @@ const MeetingRowBelow = (props: {
 
   return (
     <Grid item xs={props.isFullWidth ? 12 : 11}>
-      <Grid container spacing={4}>
+      <Grid container spacing={6}>
         {websites.map((item) => (
           <LargeWebsite
             key={item.websiteId}

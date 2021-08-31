@@ -29,8 +29,8 @@ import { TopNav } from './top-nav';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingLeft: 180,
-    paddingRight: 180,
+    paddingLeft: 210,
+    paddingRight: 210,
     marginTop: 93,
   },
   footerContainer: {

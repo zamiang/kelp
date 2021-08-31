@@ -112,8 +112,8 @@ export const LargeWebsite = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const i = await props.store.websiteStore.getById(props.item.websiteId);
-      setWebsite(i);
+      const w = await props.store.websiteStore.getById(props.item.websiteId);
+      setWebsite(w);
     };
     void fetchData();
   }, [props.item.websiteId]);
@@ -127,7 +127,7 @@ export const LargeWebsite = (props: {
   }, [props.item.websiteId]);
 
   return (
-    <Grid item xs={props.smGridSize || (4 as any)}>
+    <Grid item xs={props.smGridSize || (3 as any)}>
       <Link href={props.item.url} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
           <WebsiteImage
@@ -149,7 +149,7 @@ export const LargeWebsite = (props: {
         className={classes.textContainer}
         justifyContent="space-between"
       >
-        <Grid item xs={1}>
+        <Grid item>
           <IconButton size="small">
             <img
               src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
@@ -158,7 +158,7 @@ export const LargeWebsite = (props: {
             />
           </IconButton>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs>
           <WebsiteTags
             store={props.store}
             item={props.item}
@@ -167,7 +167,7 @@ export const LargeWebsite = (props: {
             isHovering={true}
           />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item>
           <IconButton
             size="small"
             onClick={() => {

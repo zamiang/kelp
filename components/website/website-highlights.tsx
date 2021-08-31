@@ -7,7 +7,7 @@ import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
 import { RightArrow } from './right-arrow';
 
-const maxResult = 6;
+const maxResult = 8;
 const maxDisplay = maxResult * 8;
 
 const fetchData = async (
@@ -78,13 +78,12 @@ export const WebsiteHighlights = (props: {
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={5}>
+          <Grid container spacing={6}>
             {topWebsites.map((item) => (
               <LargeWebsite
                 key={item.websiteId}
                 item={item}
                 store={props.store}
-                smGridSize={4}
                 isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}

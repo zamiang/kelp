@@ -206,7 +206,7 @@ const Search = (props: {
             <Typography variant="h6" className={rowStyles.rowText}>
               Websites
             </Typography>
-            <Grid container spacing={4}>
+            <Grid container spacing={6}>
               <WebsiteResults
                 store={props.store}
                 websites={filteredResults.websites}

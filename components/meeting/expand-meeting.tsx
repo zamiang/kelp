@@ -299,7 +299,7 @@ const ExpandedMeeting = (props: {
             </Grid>
             <br />
             {currentTag === 'all' && (
-              <Grid container spacing={4}>
+              <Grid container spacing={6}>
                 {websites.map((item) => (
                   <LargeWebsite
                     key={item.websiteId}
