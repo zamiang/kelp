@@ -6,9 +6,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
-import CloseIcon from '../../public/icons/close.svg';
-import PinIconWhite from '../../public/icons/pin-white.svg';
-import PinIcon from '../../public/icons/pin.svg';
+import DotsIcon from '../../public/icons/dots-black.svg';
+import DotsIconWhite from '../../public/icons/dots-white.svg';
 import { WebsiteTags } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -57,8 +56,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 5,
   },
   text: {
-    marginLeft: 5,
-    marginTop: 1,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    fontSize: theme.typography.h5.fontSize,
+    fontFamily: theme.typography.h3.fontFamily,
+    fontWeight: theme.typography.h3.fontWeight,
   },
 }));
 
@@ -66,6 +68,7 @@ const WebsiteImage = (props: {
   image?: IWebsiteImage;
   item: IFeaturedWebsite;
   isDarkMode: boolean;
+  ogImage?: string;
 }) => {
   const classes = useStyles();
 
@@ -74,7 +77,7 @@ const WebsiteImage = (props: {
       <div
         className={classes.imageContainer}
         style={{
-          backgroundImage: `url('${props.image.image}')`,
+          backgroundImage: `url('${props.ogImage || props.image.image}')`,
         }}
       >
         <div className={classes.dots}></div>
@@ -97,16 +100,18 @@ const WebsiteImage = (props: {
 export const LargeWebsite = (props: {
   store: IStore;
   item: IFeaturedWebsite;
-  hideItem: (item: IFeaturedWebsite) => void;
-  togglePin: (item: IFeaturedWebsite, isPinned: boolean) => Promise<void>;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
   smGridSize?: number;
   isDarkMode: boolean;
   websiteTags: IWebsiteTag[];
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
-  const [isCloseVisible, setCloseVisible] = useState(false);
+  // const [isCloseVisible, setCloseVisible] = useState(false);
   const classes = useStyles();
+
+  // maybe
+  // const domain = new URL(props.item.rawUrl).hostname.replace('www.', '');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,81 +121,61 @@ export const LargeWebsite = (props: {
     void fetchData();
   }, [props.item.websiteId]);
   return (
-    <Grid
-      item
-      xs={props.smGridSize || (4 as any)}
-      onMouseEnter={() => setCloseVisible(true)}
-      onMouseLeave={() => setCloseVisible(false)}
-    >
+    <Grid item xs={props.smGridSize || (4 as any)}>
       <Link href={props.item.rawUrl} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
-          <WebsiteImage image={image} item={props.item} isDarkMode={props.isDarkMode} />
+          <WebsiteImage
+            image={image}
+            item={props.item}
+            isDarkMode={props.isDarkMode}
+            ogImage={props.item.ogImage}
+          />
         </Box>
-        <Grid container alignItems="center" className={classes.textContainer}>
-          <Grid item>
-            <IconButton size="small">
-              <img
-                src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
-                height="16"
-                width="16"
-                style={{ margin: '0 auto' }}
-              />
-            </IconButton>
-          </Grid>
-          <Grid item zeroMinWidth xs>
-            <Tooltip title={props.item.text || ''}>
-              <Typography noWrap className={classes.text}>
-                {props.item.text}
-              </Typography>
-            </Tooltip>
-          </Grid>
-          {isCloseVisible && props.hideItem && (
-            <Grid item>
-              <IconButton
-                size="small"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  if (props.hideItem) {
-                    void props.hideItem(props.item);
-                  }
-                  return false;
-                }}
-              >
-                <CloseIcon width="16" height="16" />
-              </IconButton>
-            </Grid>
-          )}
-          {(isCloseVisible || props.item.isPinned) && props.togglePin && (
-            <Grid item>
-              <IconButton
-                size="small"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  if (props.togglePin) {
-                    void props.togglePin(props.item, props.item.isPinned);
-                  }
-                  return false;
-                }}
-              >
-                {props.isDarkMode ? (
-                  <PinIconWhite width="16" height="16" />
-                ) : (
-                  <PinIcon width="16" height="16" />
-                )}
-              </IconButton>
-            </Grid>
-          )}
-        </Grid>
+        <Tooltip title={props.item.text || ''}>
+          <Typography noWrap className={classes.text}>
+            {props.item.text}
+          </Typography>
+        </Tooltip>
       </Link>
-      <WebsiteTags
-        store={props.store}
-        item={props.item}
-        toggleWebsiteTag={props.toggleWebsiteTag}
-        userTags={props.websiteTags}
-        isHovering={isCloseVisible}
-      />
+      <Grid
+        container
+        alignItems="center"
+        className={classes.textContainer}
+        justifyContent="space-between"
+      >
+        <Grid item xs={1}>
+          <IconButton size="small">
+            <img
+              src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
+              height="16"
+              width="16"
+            />
+          </IconButton>
+        </Grid>
+        <Grid item xs={10}>
+          <WebsiteTags
+            store={props.store}
+            item={props.item}
+            toggleWebsiteTag={props.toggleWebsiteTag}
+            userTags={props.websiteTags}
+            isHovering={true}
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <IconButton
+            size="small"
+            onClick={() => {
+              void props.showWebsitePopup(props.item);
+            }}
+          >
+            {props.isDarkMode ? (
+              <DotsIconWhite width="16" height="16" />
+            ) : (
+              <DotsIcon width="16" height="16" />
+            )}
+          </IconButton>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

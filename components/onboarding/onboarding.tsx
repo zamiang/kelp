@@ -1,20 +1,22 @@
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import clsx from 'clsx';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/theme';
-import OrangeRightArrow from '../../public/icons/orange-right-arrow.svg';
+import RightArrow from '../../public/icons/right-arrow.svg';
 
-const maxTips = 4;
+const maxTips = 3;
 
 const useStyles = makeStyles((theme) => ({
   stepOneContainer: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
-    padding: theme.spacing(4),
+    padding: theme.spacing(8),
+    paddingTop: 44,
+    paddingBottom: 44,
   },
   heading: {
     marignBottom: theme.spacing(2),
@@ -33,62 +35,33 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: mediumFontFamily,
     fontWeight: 500,
   },
-  tooltip: {
-    background: theme.palette.background.default,
-    transition: 'background 0.3s',
-    position: 'fixed',
-    padding: theme.spacing(2),
-    borderRadius: theme.spacing(1),
-    maxWidth: 258,
-    top: 54,
-    left: 195,
-    zIndex: 20,
+  tooltip: {},
+  li: {
+    paddingBottom: theme.spacing(2),
   },
-  tooltipSettings: {
-    left: 'auto',
-    right: 10,
+  image: {
+    maxWidth: '100%',
+    borderRadius: 20,
+    marginBottom: 20,
+    marginTop: 23,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    height: 492,
+    width: 848,
   },
-  tooltipLightTheme: {
-    left: 'auto',
-    right: 47,
-  },
-  tooltipWebsites: {
-    top: 159,
-    left: 39,
-  },
-  arrowUp: {
-    position: 'absolute',
-    top: -8,
-    left: theme.spacing(2),
-    width: 0,
-    height: 0,
-    borderLeft: '8px solid transparent',
-    borderRight: '8px solid transparent',
-    borderBottom: `8px solid ${theme.palette.background.default}`,
-  },
-  arrowRight: {
-    position: 'absolute',
-    right: -8,
-    top: theme.spacing(2),
-    width: 0,
-    height: 0,
-    borderTop: '8px solid transparent',
-    borderBottom: '8px solid transparent',
-    borderLeft: `8px solid ${theme.palette.background.default}`,
-  },
-  arrowUpLightTheme: {
-    left: 'auto',
-    right: theme.spacing(6),
-  },
-  arrowUpSettings: {
-    left: 'auto',
-    right: theme.spacing(2),
+  largeImage: {
+    maxWidth: '100%',
+    borderRadius: 20,
+    marginBottom: 20,
+    marginTop: 23,
   },
   button: {
     padding: 0,
     marginTop: theme.spacing(1),
     fontStyle: 'normal',
     fontFamily: mediumFontFamily,
+    fontSize: 20,
+    textAlign: 'center',
     fontWeight: 500,
     cursor: 'pointer',
     '&:hover': {
@@ -100,167 +73,158 @@ const useStyles = makeStyles((theme) => ({
 const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
-    <Dialog maxWidth="sm" open={true}>
-      <div className={classes.stepOneContainer}>
-        <Typography variant="h2" className={classes.heading}>
-          Thank you for using Kelp :)
-        </Typography>
-        <br />
-        <Typography variant="h4" className={classes.body}>
-          Kelp is a New Tab page that gets you what you need when you need it.
-        </Typography>
-        <br />
-        <ul>
-          <li>
-            <Typography variant="h4">
-              <span className={classes.bold}>Add smart tags:</span> Kelp automatically add new
-              related websties to the tag and surface the websites when you need them.
-            </Typography>
-            <br />
-          </li>
-          <li>
-            <Typography variant="h4">
-              <span className={classes.bold}>Kelp improves over time:</span> The longer you use
-              Kelp, the better the recommendations will be.
-            </Typography>
-          </li>
-          <li>
-            <Typography variant="h4">
-              <span className={classes.bold}>Continue doing what you do:</span> Kelp automatically
-              associates your webpages with your meetings.
-            </Typography>
-            <br />
-          </li>
-        </ul>
-        <div className={classes.rightAlignButton}>
+    <React.Fragment>
+      <Typography variant="h2" className={classes.heading}>
+        Meet your magical website organizer
+      </Typography>
+      <img src="https://www.kelp.nyc/images/meetings-large.svg" className={classes.largeImage} />
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item>
+          <Typography>Note: Images for your websites will appear over time</Typography>
+        </Grid>
+        <Grid item>
           <Button
             color="primary"
-            endIcon={<OrangeRightArrow height="16" width="16" />}
+            variant="contained"
+            size="large"
+            endIcon={<RightArrow height="16" width="16" />}
             onClick={() => props.setStep(props.step + 1)}
           >
             Let&rsquo;s Go
           </Button>
-        </div>
-      </div>
-    </Dialog>
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
 };
 
-const WebsitesCalendarSwitcher = (props: { step: number; setStep: (step: number) => void }) => {
+const TagsAnimation = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
-    <div className={classes.tooltip}>
-      <div className={classes.arrowUp}></div>
-      <Typography>
-        💡
-        <span className={classes.bold}>
-          Tip {props.step - 1}/{maxTips}
-        </span>
-        : Smart tags are displayed here. Click &lsquo;add&rsquo; or hover over a website to add more
-        tags.
+    <React.Fragment>
+      <Typography variant="h2" className={classes.heading}>
+        Add smart tags
       </Typography>
-      <Typography
-        color="primary"
-        onClick={() => props.setStep(props.step + 1)}
-        className={classes.button}
-      >
-        Next
-      </Typography>
-    </div>
+      <img src="https://www.kelp.nyc/animations/tags.gif" className={classes.image} />
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item>
+          <Typography className={classes.bold} variant="h4">
+            Tip {props.step - 1}/{maxTips}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            endIcon={<RightArrow height="16" width="16" />}
+            onClick={() => props.setStep(props.step + 1)}
+          >
+            Next
+          </Button>
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
 };
 
-const LightDarkMode = (props: { step: number; setStep: (step: number) => void }) => {
+const PinAnimation = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
-    <div className={clsx(classes.tooltip, classes.tooltipLightTheme)}>
-      <div className={clsx(classes.arrowUp, classes.arrowUpLightTheme)}></div>
-      <Typography>
-        💡
-        <span className={classes.bold}>
-          Tip {props.step - 1}/{maxTips}
-        </span>
-        : Prefer a light or dark theme? Toggle to switch.
+    <React.Fragment>
+      <Typography variant="h2" className={classes.heading}>
+        Pin or remove websites.
       </Typography>
-      <Typography
-        color="primary"
-        onClick={() => props.setStep(props.step + 1)}
-        className={classes.button}
-      >
-        Next
-      </Typography>
-    </div>
+      <img src="https://www.kelp.nyc/animations/pin.gif" className={classes.image} />
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item>
+          <Typography className={classes.bold} variant="h4">
+            Tip {props.step - 1}/{maxTips}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            color="primary"
+            endIcon={<RightArrow height="16" width="16" />}
+            variant="contained"
+            size="large"
+            onClick={() => {
+              props.setStep(props.step + 1);
+              return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
+            }}
+          >
+            Done!
+          </Button>
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
 };
 
-const WebsitesList = (props: { step: number; setStep: (step: number) => void }) => {
+const MeetingsAnimation = (props: { step: number; setStep: (step: number) => void }) => {
   const classes = useStyles();
   return (
-    <div className={clsx(classes.tooltip, classes.tooltipWebsites)}>
-      <div className={classes.arrowRight}></div>
-      <Typography>
-        💡
-        <span className={classes.bold}>
-          Tip {props.step - 1}/{maxTips}
-        </span>
-        : These tiles are ordered based on your frequently visited sites. Hover over the text to
-        remove, pin or tag websites.
+    <React.Fragment>
+      <Typography variant="h2" className={classes.heading}>
+        Kelp associates webpages with meetings
       </Typography>
-      <Typography
-        color="primary"
-        onClick={() => {
-          props.setStep(props.step + 1);
-          return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
-        }}
-        className={classes.button}
-      >
-        Done!
-      </Typography>
-    </div>
+      <img src="https://www.kelp.nyc/animations/meetings.gif" className={classes.image} />
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item>
+          <Typography className={classes.bold} variant="h4">
+            {props.step - 1}/{maxTips}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            endIcon={<RightArrow height="16" width="16" />}
+            onClick={() => props.setStep(props.step + 1)}
+          >
+            Next
+          </Button>
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
 };
 
-const SettingsTab = (props: { step: number; setStep: (step: number) => void }) => {
-  const classes = useStyles();
-  return (
-    <div className={clsx(classes.tooltip, classes.tooltipSettings)}>
-      <div className={clsx(classes.arrowUp, classes.arrowUpSettings)}></div>
-      <Typography>
-        💡
-        <span className={classes.bold}>
-          Tip {props.step - 1}/{maxTips}
-        </span>
-        : Setup Microsoft Teams or edit filtered websites in the settings tab.
-      </Typography>
-      <Typography
-        color="primary"
-        onClick={() => props.setStep(props.step + 1)}
-        className={classes.button}
-      >
-        Next
-      </Typography>
-    </div>
-  );
+const OnboardingSteps = (props: { step: number; setStep: (n: number) => void }) => {
+  switch (props.step) {
+    case 0:
+      return null;
+    case 1:
+      return <WelcomePopup setStep={props.setStep} step={props.step} />;
+    case 2:
+      return <MeetingsAnimation setStep={props.setStep} step={props.step} />;
+    case 3:
+      return <TagsAnimation setStep={props.setStep} step={props.step} />;
+    case 4:
+      return <PinAnimation setStep={props.setStep} step={props.step} />;
+    default:
+      return null;
+  }
 };
 
 export const Onboarding = () => {
   const isOnboardingCompleted = !!localStorage.getItem(config.IS_ONBOARDING_COMPLETED);
   const [step, setStep] = useState(isOnboardingCompleted ? 0 : 1);
-
-  switch (step) {
-    case 0:
-      return null;
-    case 1:
-      return <WelcomePopup setStep={setStep} step={step} />;
-    case 2:
-      return <WebsitesCalendarSwitcher setStep={setStep} step={step} />;
-    case 3:
-      return <LightDarkMode setStep={setStep} step={step} />;
-    case 4:
-      return <SettingsTab setStep={setStep} step={step} />;
-    case 5:
-      return <WebsitesList setStep={setStep} step={step} />;
-    default:
-      return null;
-  }
+  const classes = useStyles();
+  return (
+    <Dialog
+      maxWidth="md"
+      open={step > 0 && step <= maxTips + 1}
+      onClose={(_event, reason) => {
+        if (reason === 'backdropClick') {
+          setStep(0);
+        }
+      }}
+    >
+      <div className={classes.stepOneContainer}>
+        <OnboardingSteps step={step} setStep={setStep} />
+      </div>
+    </Dialog>
+  );
 };

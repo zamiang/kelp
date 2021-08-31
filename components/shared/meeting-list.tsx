@@ -72,10 +72,10 @@ export const Meeting = (props: {
 const MeetingList = (props: {
   segments: (ISegment | undefined)[];
   store: IStore;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   currentFilter: string;
   isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
   if (props.segments.length < 1) {
@@ -95,12 +95,12 @@ const MeetingList = (props: {
               key={segment.id}
               meeting={segment}
               store={props.store}
-              hideWebsite={props.hideWebsite}
               showLine
               currentFilter={props.currentFilter}
               isDarkMode={props.isDarkMode}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
+              showWebsitePopup={props.showWebsitePopup}
             />
           ),
       )}

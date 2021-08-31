@@ -77,9 +77,8 @@ const ExpandedMeeting = (props: {
   close?: () => void;
   isDarkMode: boolean;
   hideHeader?: boolean;
-  hideWebsite: (item: IFeaturedWebsite) => void;
-  hideDialogUrl?: string;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
   const classes = useExpandStyles();
@@ -91,8 +90,6 @@ const ExpandedMeeting = (props: {
   const [attendees, setAttendees] = useState<IFormattedAttendee[]>([]);
   const [currentTag, setTag] = useState<string>('all');
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
-  // used to refetch websites
-  const [pinIncrement, setPinIncrement] = useState(0);
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
 
@@ -104,7 +101,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, meetingId]);
+  }, [props.store.lastUpdated, props.store.isLoading, meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,7 +111,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, meetingId]);
+  }, [props.store.lastUpdated, props.store.isLoading, meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,7 +121,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, meeting?.id, pinIncrement, props.hideDialogUrl]);
+  }, [props.store.lastUpdated, props.store.isLoading, meeting?.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,15 +140,6 @@ const ExpandedMeeting = (props: {
     const isIdTheSame = t.segmentId === meeting?.id;
     return isIdTheSame || isTextTheSame;
   });
-
-  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
-    if (isPinned) {
-      await props.store.websitePinStore.delete(item.websiteId);
-    } else {
-      await props.store.websitePinStore.create(item.websiteId);
-    }
-    setPinIncrement(pinIncrement + 1);
-  };
 
   const toggleMeetingTag = (tag: string, meetingId: string, meetingSummary: string) => {
     const updateData = async () => {
@@ -318,10 +306,9 @@ const ExpandedMeeting = (props: {
                     item={item}
                     store={props.store}
                     isDarkMode={props.isDarkMode}
-                    hideItem={props.hideWebsite}
-                    togglePin={togglePin}
                     websiteTags={props.websiteTags}
                     toggleWebsiteTag={props.toggleWebsiteTag}
+                    showWebsitePopup={props.showWebsitePopup}
                   />
                 ))}
               </Grid>
@@ -331,10 +318,9 @@ const ExpandedMeeting = (props: {
                 store={props.store}
                 currentFilter={'all'}
                 websiteTags={props.websiteTags}
-                hideWebsite={props.hideWebsite}
-                hideDialogUrl={props.hideDialogUrl}
                 isDarkMode={props.isDarkMode}
                 toggleWebsiteTag={props.toggleWebsiteTag}
+                showWebsitePopup={props.showWebsitePopup}
                 filterByTag={currentTag}
               />
             )}

@@ -42,18 +42,15 @@ const fetchData = async (
 export const WebsiteHighlights = (props: {
   store: IStore;
   currentFilter: string;
-  hideWebsite: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  hideDialogUrl?: string;
   isDarkMode: boolean;
   filterByTag?: string;
+  showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
-  // used to refetch websites
-  const [pinIncrement, setPinIncrement] = useState(0);
 
   useEffect(() => {
     void fetchData(
@@ -68,20 +65,9 @@ export const WebsiteHighlights = (props: {
     props.store.lastUpdated,
     props.store.isLoading,
     props.currentFilter,
-    props.hideDialogUrl,
     shouldShowAll,
-    pinIncrement,
     props.filterByTag,
   ]);
-
-  const togglePin = async (item: IFeaturedWebsite, isPinned: boolean) => {
-    if (isPinned) {
-      await props.store.websitePinStore.delete(item.websiteId);
-    } else {
-      await props.store.websitePinStore.create(item.websiteId);
-    }
-    setPinIncrement(pinIncrement + 1);
-  };
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
@@ -96,12 +82,11 @@ export const WebsiteHighlights = (props: {
                 key={item.websiteId}
                 item={item}
                 store={props.store}
-                hideItem={props.hideWebsite}
                 smGridSize={4}
-                togglePin={togglePin}
                 isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
+                showWebsitePopup={props.showWebsitePopup}
               />
             ))}
           </Grid>

@@ -1,9 +1,11 @@
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
@@ -15,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   dialogContent: {
     padding: theme.spacing(6),
     position: 'relative',
+    width: 480,
   },
   button: {
     textDecoration: 'none',
@@ -29,6 +32,13 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 12,
     paddingBottom: 12,
     marginTop: theme.spacing(2),
+  },
+  columnList: {
+    maxHeight: 300,
+    overflow: 'auto',
+    border: `1px solid ${theme.palette.divider}`,
+    marginTop: theme.spacing(1),
+    borderRadius: theme.spacing(1),
   },
   closeButton: {
     position: 'absolute',
@@ -51,9 +61,6 @@ const useStyles = makeStyles((theme) => ({
     pointerEvents: 'all',
     cursor: 'pointer',
     background: theme.palette.primary.dark,
-  },
-  columnList: {
-    columnCount: 3,
   },
 }));
 
@@ -100,24 +107,20 @@ export const AddTagToMeetingDialog = (props: {
             </IconButton>
           </Grid>
         </Grid>
-        <ul className={classes.columnList}>
+        <List className={classes.columnList} disablePadding>
           {websiteTags.map((t) => (
-            <li key={t}>
-              <div
-                onClick={() =>
-                  props.toggleMeetingTag(t, props.meeting.id, props.meeting.summary || '')
-                }
-                className={clsx(
-                  classes.tag,
-                  isSegmentTagSelected(props.meeting.id, t, props.meetingTags) &&
-                    classes.tagSelected,
-                )}
-              >
-                <Typography>{t}</Typography>
-              </div>
-            </li>
+            <ListItem
+              key={t}
+              selected={isSegmentTagSelected(props.meeting.id, t, props.meetingTags)}
+              button
+              onClick={() =>
+                props.toggleMeetingTag(t, props.meeting.id, props.meeting.summary || '')
+              }
+            >
+              <ListItemText primary={t} />
+            </ListItem>
           ))}
-        </ul>
+        </List>
       </div>
     </Dialog>
   );
