@@ -13,8 +13,10 @@ import {
   IWebsite,
   IWebsiteBlocklist,
   IWebsiteImage,
+  IWebsiteItem,
   IWebsitePin,
   IWebsiteTag,
+  IWebsiteVisit,
 } from './data-types';
 import { ITfidfRow } from './models/tfidf-model';
 
@@ -93,6 +95,23 @@ interface Db extends DBSchema {
       'by-segment-title': string;
     };
   };
+  websiteItem: {
+    value: IWebsiteItem;
+    key: string;
+    indexes: {
+      'by-domain': string;
+    };
+  };
+  websiteVisit: {
+    value: IWebsiteVisit;
+    key: string;
+    indexes: {
+      'by-url': string;
+      'by-website-item-id': string;
+      'by-segment-id': string;
+      'by-segment-title': string;
+    };
+  };
   websitePin: {
     value: IWebsitePin;
     key: string;
@@ -132,10 +151,40 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 13;
+const databaseVerson = 14;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
+    if (oldVersion < 14) {
+      // website canonical store
+      const websiteItemStore = db.createObjectStore('websiteItem', {
+        keyPath: 'id',
+      });
+      websiteItemStore.createIndex('by-domain', 'domain', { unique: false, multiEntry: true });
+      // website visit store
+      const websiteVisitStore = db.createObjectStore('websiteVisit', {
+        keyPath: 'id',
+      });
+      websiteVisitStore.createIndex('by-segment-id', 'segmentId', {
+        unique: false,
+        multiEntry: true,
+      });
+      websiteVisitStore.createIndex('by-segment-id', 'url', {
+        unique: false,
+        multiEntry: true,
+      });
+      websiteVisitStore.createIndex('by-segment-title', 'segmentSummary', {
+        unique: false,
+        multiEntry: true,
+      });
+      websiteVisitStore.createIndex('by-website-item-id', 'websiteItemId', {
+        unique: false,
+        multiEntry: true,
+      });
+      if (oldVersion === 13) {
+        return;
+      }
+    }
     if (oldVersion < 13) {
       // segment tagstore
       const segmentTagStore = db.createObjectStore('segmentTag', {
@@ -263,6 +312,28 @@ const options = {
       multiEntry: true,
     });
     segmentTagStore.createIndex('by-tag', 'tag', { unique: false, multiEntry: true });
+
+    // website canonical store
+    const websiteItemStore = db.createObjectStore('websiteItem', {
+      keyPath: 'id',
+    });
+    websiteItemStore.createIndex('by-domain', 'domain', { unique: false, multiEntry: true });
+    // website visit store
+    const websiteVisitStore = db.createObjectStore('websiteVisit', {
+      keyPath: 'id',
+    });
+    websiteVisitStore.createIndex('by-segment-id', 'segmentId', {
+      unique: false,
+      multiEntry: true,
+    });
+    websiteVisitStore.createIndex('by-segment-title', 'segmentSummary', {
+      unique: false,
+      multiEntry: true,
+    });
+    websiteVisitStore.createIndex('by-website-item-id', 'websiteItemId', {
+      unique: false,
+      multiEntry: true,
+    });
   },
   blocked() {
     console.error('blocked');

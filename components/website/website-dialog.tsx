@@ -65,6 +65,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const formatAndSetWebsiteTags = async (
+  item: IFeaturedWebsite,
+  store: IStore,
+  userTags: IWebsiteTag[],
+  setWebsiteTags: (t: string[]) => void,
+  setHideAllSuccess: (b: boolean) => void,
+  setHideThisWebsiteSuccess: (b: boolean) => void,
+) => {
+  const text =
+    item.cleanText ||
+    cleanText(item.text || '')
+      .join(' ')
+      .toLocaleLowerCase();
+
+  const i = await getTagsForWebsite(text, store, userTags);
+  setWebsiteTags(i);
+  setHideAllSuccess(false);
+  setHideThisWebsiteSuccess(false);
+};
+
 export const WebsiteDialog = (props: {
   item?: IFeaturedWebsite;
   userTags: IWebsiteTag[];
@@ -90,27 +110,30 @@ export const WebsiteDialog = (props: {
   };
 
   const removeTag = async (tag: string) => {
-    console.log(tag);
+    const updatedTags = websiteTags.filter((t) => t !== tag);
+    await props.store.websitesStore.updateTags(props.item!.websiteId, updatedTags);
+
+    void formatAndSetWebsiteTags(
+      props.item!,
+      props.store,
+      props.userTags,
+      setWebsiteTags,
+      setHideAllSuccess,
+      setHideThisWebsiteSuccess,
+    );
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!props.item) {
-        return;
-      }
-      const text =
-        props.item.cleanText ||
-        cleanText(props.item.text || '')
-          .join(' ')
-          .toLocaleLowerCase();
-
-      const i = await getTagsForWebsite(text, props.store, props.userTags);
-      setWebsiteTags(i);
-      setHideAllSuccess(false);
-      setHideThisWebsiteSuccess(false);
-    };
-    void fetchData();
-  }, [props.item?.websiteId]);
+    props.item &&
+      void formatAndSetWebsiteTags(
+        props.item,
+        props.store,
+        props.userTags,
+        setWebsiteTags,
+        setHideAllSuccess,
+        setHideThisWebsiteSuccess,
+      );
+  }, [props.item?.websiteId, props.store.lastUpdated, props.store.isLoading]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(cleanText(e.target.value).join(''));

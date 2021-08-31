@@ -48,8 +48,9 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
         const metaOgUrl = document.querySelector("meta[name='og:url']");
         const metaOgImage = document.querySelector("meta[name='og:image']");
         const metaOgUrlContent = metaOgUrl?.getAttribute("content");
+        const metaOgImageContent = metaOgUrl?.getAttribute("content");
         ({
-          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent, metaOgImage
+          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent, metaOgImageContent
         });`;
       void chrome.tabs.executeScript(
         tab.id,
@@ -65,13 +66,14 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
           }
           const result = results[0] || ({} as any);
           captureVisibleTab(result.metaOgUrlContent || currentUrl);
+          console.log(result, '<<<<<<<<<<<<<<<<<<');
           void storeTrackedVisit(
             result.metaOgUrlContent || currentUrl,
             new Date(),
             store,
             tab.title,
-            result.metaTwitterDescription || result.metaDescriptionContent,
-            result.metaOgImage,
+            result.metaTwitterDescriptionContent || result.metaDescriptionContent,
+            result.metaOgImageContent,
           );
           // Now, do something with result.title and result.description
         },

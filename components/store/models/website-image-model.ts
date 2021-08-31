@@ -13,10 +13,6 @@ export default class WebsiteImageModel {
   }
 
   async getById(id: string): Promise<IWebsiteImage | undefined> {
-    const imageByRawUrl = await this.db.getFromIndex('websiteImage', 'by-raw-url', id);
-    if (imageByRawUrl) {
-      return imageByRawUrl;
-    }
     return this.db.get('websiteImage', id);
   }
 

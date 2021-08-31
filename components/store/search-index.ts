@@ -15,7 +15,6 @@ const documentToWebsite = (document: IDocument): IWebsite => ({
   documentId: document.id,
   domain: document.link!,
   visitedTime: document.updatedAt!,
-  isHidden: false,
 });
 
 export default class SearchIndex {

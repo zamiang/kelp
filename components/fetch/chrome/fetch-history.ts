@@ -10,7 +10,6 @@ const formatSite = (site: chrome.history.HistoryItem): IWebsite => ({
   title: site.title!,
   visitedTime: site.lastVisitTime ? new Date(site.lastVisitTime) : new Date(),
   domain: new URL(site.url!).host,
-  isHidden: false,
 });
 
 const fetchHistory = (domain: string): Promise<IWebsite[]> =>

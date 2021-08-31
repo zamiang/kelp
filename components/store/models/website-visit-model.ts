@@ -3,23 +3,18 @@ import { uniqBy } from 'lodash';
 import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { cleanupUrl } from '../../shared/cleanup-url';
-import { cleanText } from '../../shared/tfidf';
-import { ISegment, IWebsite } from '../data-types';
+import { ISegment, IWebsiteVisit } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
 import { formatSegmentTitle } from './segment-document-model';
 
-interface IWebsiteNotFormatted {
+interface IWebsiteVisitNotFormatted {
   startAt: Date;
-  domain: string;
-  pathname: string;
   url: string;
-  title?: string;
-  description?: string;
-  ogImage?: string;
+  domain: string;
 }
 
-export default class WebsiteModel {
+export default class WebsiteVisitModel {
   private db: dbType;
 
   constructor(db: dbType) {
@@ -27,8 +22,8 @@ export default class WebsiteModel {
     this.db = db;
   }
 
-  async getById(id: string): Promise<IWebsite | undefined> {
-    return this.db.get('website', id);
+  async getById(id: string): Promise<IWebsiteVisit | undefined> {
+    return this.db.get('websiteVisit', id);
   }
 
   async getAllForSegment(
@@ -36,13 +31,13 @@ export default class WebsiteModel {
     domainBlocklistStore: IStore['domainBlocklistStore'],
     websiteBlocklistStore: IStore['websiteBlocklistStore'],
   ) {
-    const websitesById = await this.db.getAllFromIndex('website', 'by-segment-id', segment.id);
-    let websitesByTitle = [] as IWebsite[];
+    const websitesById = await this.db.getAllFromIndex('websiteVisit', 'by-segment-id', segment.id);
+    let websitesByTitle = [] as IWebsiteVisit[];
     const formattedTitle = formatSegmentTitle(segment.summary);
 
     if (formattedTitle) {
       websitesByTitle = await this.db.getAllFromIndex(
-        'website',
+        'websiteVisit',
         'by-segment-title',
         formattedTitle,
       );
@@ -51,14 +46,8 @@ export default class WebsiteModel {
     return await this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
-  async saveToChromeStorage() {
-    // TODO: hm
-    // const all = await this.db.getAll('website');
-    // return chrome.storage.sync.set({ kelpWebsites: JSON.stringify(all) });
-  }
-
   async filterWebsites(
-    websites: IWebsite[],
+    websites: IWebsiteVisit[],
     domainBlocklistStore: IStore['domainBlocklistStore'],
     websiteBlocklistStore: IStore['websiteBlocklistStore'],
   ) {
@@ -89,11 +78,11 @@ export default class WebsiteModel {
     return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
-  async cleanupWebsites(websites: IWebsite[]) {
+  async cleanupWebsites(websites: IWebsiteVisit[]) {
     const websitesToDelete = websites.filter((site) => site.visitedTime < config.startDate);
-    const tx = this.db.transaction('website', 'readwrite');
+    const tx = this.db.transaction('websiteVisit', 'readwrite');
     const results = await Promise.allSettled(
-      websitesToDelete.map((item) => this.db.delete('website', item.id)),
+      websitesToDelete.map((item) => this.db.delete('websiteVisit', item.id)),
     );
     await tx.done;
 
@@ -105,8 +94,8 @@ export default class WebsiteModel {
     return;
   }
 
-  async addHistoryToStore(websites: IWebsite[]) {
-    const tx = this.db.transaction('website', 'readwrite');
+  async addHistoryToStore(websites: IWebsiteVisit[]) {
+    const tx = this.db.transaction('websiteVisit', 'readwrite');
     const results = await Promise.allSettled(websites.map((website) => tx.store.put(website)));
     await tx.done;
 
@@ -118,30 +107,19 @@ export default class WebsiteModel {
     return;
   }
 
-  async trackVisit(website: IWebsiteNotFormatted, timeStore: IStore['timeDataStore']) {
+  async trackVisit(website: IWebsiteVisitNotFormatted, timeStore: IStore['timeDataStore']) {
     const currentMeeting = await timeStore.getCurrentSegmentForWebsites(
       website.startAt || new Date(),
     );
-    const result = await this.db.put('website', {
+    const result = await this.db.put('websiteVisit', {
       id: `${website.url}-${website.startAt.toDateString()}`,
-      title: website.title || '',
-      description: website.description,
-      cleanDescription: cleanText(website.description || '').join(' '),
-      cleanTitle: cleanText(website.title || '').join(' '),
       url: cleanupUrl(website.url),
-      rawUrl: website.url,
       domain: website.domain,
       visitedTime: website.startAt,
       meetingId: currentMeeting ? currentMeeting.id : undefined,
       meetingName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
-      ogImage: website.ogImage,
     });
 
-    void this.saveToChromeStorage();
     return result;
-  }
-
-  async updateTags(website: string, tags: string[]) {
-    console.log(website, tags);
   }
 }
