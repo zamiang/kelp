@@ -3,7 +3,7 @@ const ErrorTracking = (() => {
     console.info(info);
   };
 
-  const logErrorInRollbar = (error: string) => {
+  const logErrorInRollbar = (error: any) => {
     console.error(error);
   };
 

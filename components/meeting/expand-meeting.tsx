@@ -346,7 +346,7 @@ const ExpandedMeeting = (props: {
                 classes.description,
                 meetingDescriptionIsMicrosoftHtml && classes.descriptionMicrosoft,
               )}
-              dangerouslySetInnerHTML={{ __html: meeting.description!.trim() }}
+              dangerouslySetInnerHTML={{ __html: meeting.description.trim() }}
             />
           </div>
         )}
