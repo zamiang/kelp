@@ -145,6 +145,7 @@ export interface IWebsiteItem {
   readonly domain: string;
   readonly documentId?: string;
   readonly ogImage?: string;
+  readonly userEdited?: boolean;
 }
 
 export interface IWebsiteVisit {
@@ -152,8 +153,8 @@ export interface IWebsiteVisit {
   readonly domain: string;
   readonly url: string;
   readonly websiteId: string;
-  readonly meetingId?: string;
-  readonly meetingName?: string;
+  readonly segmentId?: string;
+  readonly segmentName?: string;
   readonly visitedTime: Date;
 }
 

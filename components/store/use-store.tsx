@@ -194,7 +194,7 @@ const useStoreWithFetching = (
         websiteBlocklistStore,
       );
       // TODO: DO THE MIGRATION HERE
-      if (currentWebsites.length < 1) {
+      if (currentWebsites.length < 1000000000000000000000) {
         setLoadingMessage('Saving Websites');
         const historyWebsites = await fetchAllHistory();
         await websiteStore.addHistoryToStore(historyWebsites);

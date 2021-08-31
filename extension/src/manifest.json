@@ -28,9 +28,9 @@
     "notifications",
     "tabs",
     "history",
-
     "https://calendar.google.com/*",
-    "chrome://favicon/"
+    "chrome://favicon/",
+    "<all_urls>"
 ],
   "chrome_url_overrides" : {
     "newtab": "dashboard.html"

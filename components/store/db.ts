@@ -169,7 +169,7 @@ const options = {
         unique: false,
         multiEntry: true,
       });
-      websiteVisitStore.createIndex('by-segment-id', 'url', {
+      websiteVisitStore.createIndex('by-url', 'url', {
         unique: false,
         multiEntry: true,
       });
@@ -323,6 +323,10 @@ const options = {
       keyPath: 'id',
     });
     websiteVisitStore.createIndex('by-segment-id', 'segmentId', {
+      unique: false,
+      multiEntry: true,
+    });
+    websiteVisitStore.createIndex('by-url', 'url', {
       unique: false,
       multiEntry: true,
     });

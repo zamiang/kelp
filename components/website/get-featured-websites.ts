@@ -118,18 +118,18 @@ export const getFeaturedWebsites = async (props: IStore) => {
     .filter(Boolean) as IFeaturedWebsite[];
 
   const websiteVisits = filteredWebsites.map((item) => {
-    if (urlCount[item.url]) {
-      urlCount[item.url] = urlCount[item.url] + getValueForDate(item.visitedTime);
+    if (urlCount[item.websiteId]) {
+      urlCount[item.websiteId] = urlCount[item.websiteId] + getValueForDate(item.visitedTime);
     } else {
-      urlCount[item.url] = getValueForDate(item.visitedTime);
+      urlCount[item.websiteId] = getValueForDate(item.visitedTime);
     }
     return {
-      meetings: item.meetingId ? [item.meetingId] : ([] as any),
+      meetings: item.segmentId ? [item.segmentId] : ([] as any),
       nextMeetingStartsAt: undefined,
-      websiteId: item.url,
+      websiteId: item.websiteId,
       url: item.url,
       date: item.visitedTime,
-      isPinned: pinIndex[item.url] ? true : false,
+      isPinned: pinIndex[item.websiteId] ? true : false,
     } as IFeaturedWebsite;
   });
 

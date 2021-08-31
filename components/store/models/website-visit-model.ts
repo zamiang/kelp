@@ -2,8 +2,9 @@ import { subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
+import { IChromeWebsite } from '../../fetch/chrome/fetch-history';
 import { cleanupUrl } from '../../shared/cleanup-url';
-import { ISegment, IWebsite, IWebsiteVisit } from '../data-types';
+import { ISegment, IWebsiteVisit } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
 import { formatSegmentTitle } from './segment-document-model';
@@ -95,24 +96,29 @@ export default class WebsiteVisitModel {
     return;
   }
 
-  async addHistoryToStore(websites: IWebsite[], timeStore: IStore['timeDataStore']) {
-    const tx = this.db.transaction('websiteVisit', 'readwrite');
-    const results = await Promise.allSettled(
-      websites.map(async (website) => {
-        const websiteId = cleanupUrl(website.url);
+  async addHistoryToStore(websites: IChromeWebsite[], timeStore: IStore['timeDataStore']) {
+    const formattedWebsites = await Promise.allSettled(
+      websites.map(async (website): Promise<IWebsiteVisit> => {
         const currentMeeting = await timeStore.getCurrentSegmentForWebsites(
           website.visitedTime || new Date(),
         );
-        const formatted = {
-          id: `${website.url}-${website.visitedTime.toDateString()}`,
-          websiteId,
-          url: website.url,
+        return {
+          id: `${website.id}-${website.visitedTime.toDateString()}`,
+          websiteId: website.id,
+          url: website.rawUrl,
           domain: website.domain,
           visitedTime: website.visitedTime,
-          meetingId: currentMeeting ? currentMeeting.id : undefined,
-          meetingName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
+          segmentId: currentMeeting ? currentMeeting.id : undefined,
+          segmentName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
         };
-        await tx.store.put(formatted);
+      }),
+    );
+    const tx = this.db.transaction('websiteVisit', 'readwrite');
+    const results = await Promise.allSettled(
+      formattedWebsites.map((website) => {
+        if (website.status === 'fulfilled') {
+          return tx.store.put(website.value as any);
+        }
       }),
     );
     await tx.done;
@@ -136,8 +142,8 @@ export default class WebsiteVisitModel {
       url: website.url,
       domain: website.domain,
       visitedTime: website.startAt,
-      meetingId: currentMeeting ? currentMeeting.id : undefined,
-      meetingName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
+      segmentId: currentMeeting ? currentMeeting.id : undefined,
+      segmentName: currentMeeting ? formatSegmentTitle(currentMeeting.summary) : undefined,
     });
 
     return result;

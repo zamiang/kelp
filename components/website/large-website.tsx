@@ -108,11 +108,7 @@ export const LargeWebsite = (props: {
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
   const [website, setWebsite] = useState<IWebsiteItem>();
-  // const [isCloseVisible, setCloseVisible] = useState(false);
   const classes = useStyles();
-
-  // maybe
-  // const domain = new URL(props.item.rawUrl).hostname.replace('www.', '');
 
   useEffect(() => {
     const fetchData = async () => {
