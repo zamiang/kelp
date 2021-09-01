@@ -1,3 +1,4 @@
+import { IWebsite } from '../data-types';
 import { dbType } from '../db';
 
 export default class WebsiteModel {
@@ -10,5 +11,11 @@ export default class WebsiteModel {
 
   async getAll() {
     return this.db.getAll('website');
+  }
+
+  async deleteAll(websites: IWebsite[]) {
+    const tx = this.db.transaction('website', 'readwrite');
+    await Promise.allSettled(websites.map((w) => tx.store.delete(w.id)));
+    return tx.done;
   }
 }

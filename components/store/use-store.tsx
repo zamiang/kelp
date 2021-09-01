@@ -5,6 +5,7 @@ import config from '../../constants/config';
 import ErrorTracking from '../error-tracking/error-tracking';
 import { fetchAllHistory } from '../fetch/chrome/fetch-history';
 import FetchAll from '../fetch/fetch-all';
+import { migrateWebsites } from '../shared/migrate-websites';
 import { dbType } from './db';
 import AttendeeStore from './models/attendee-model';
 import DocumentDataStore from './models/document-model';
@@ -19,6 +20,7 @@ import TfidfDataStore from './models/tfidf-model';
 import WebsiteBlocklistStore from './models/website-blocklist-model';
 import WebsiteImageStore from './models/website-image-model';
 import WebsiteStore from './models/website-item-model';
+import DeprecatedWebsiteStore from './models/website-model';
 import WebsitePinStore from './models/website-pin-model';
 import WebsiteTagStore from './models/website-tag-model';
 import WebsiteVisitStore from './models/website-visit-model';
@@ -193,8 +195,16 @@ const useStoreWithFetching = (
         domainBlocklistStore,
         websiteBlocklistStore,
       );
+
+      // for the migraiton
+      const deprecatedWebsiteStore = new DeprecatedWebsiteStore(db);
+      const priorWebsites = await deprecatedWebsiteStore.getAll();
+
       // TODO: DO THE MIGRATION HERE
-      if (currentWebsites.length < 1000000000000000000000) {
+      if (priorWebsites.length > 0) {
+        await migrateWebsites({ deprecatedWebsiteStore, websiteVisitStore, websiteStore });
+      }
+      if (currentWebsites.length < 1) {
         setLoadingMessage('Saving Websites');
         const historyWebsites = await fetchAllHistory();
         await websiteStore.addHistoryToStore(historyWebsites);

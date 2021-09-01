@@ -91,6 +91,7 @@ export const WebsiteDialog = (props: {
   const classes = useStyles();
   const [didHideThisWebsiteSuccess, setHideThisWebsiteSuccess] = useState(false);
   const [didHideAllSuccess, setHideAllSuccess] = useState(false);
+  const [errorText, setErrorText] = useState<string | undefined>();
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
   const [value, setValue] = useState('');
   const [website, setWebsite] = useState<IWebsiteItem>();
@@ -107,20 +108,51 @@ export const WebsiteDialog = (props: {
   };
 
   const removeTag = async (tag: string) => {
-    const updatedTags = websiteTags.filter((t) => t !== tag);
-    await props.store.websiteStore.updateTags(props.item!.websiteId, updatedTags);
-
     if (!website) {
       throw new Error('missing website');
     }
-    void formatAndSetWebsiteTags(
-      website,
-      props.store,
-      props.userTags,
-      setWebsiteTags,
-      setHideAllSuccess,
-      setHideThisWebsiteSuccess,
-    );
+
+    const updatedTags = websiteTags.filter((t) => t !== tag);
+    const w = await props.store.websiteStore.updateTags(website.id, updatedTags.join(' '));
+    if (w) {
+      setWebsite(w);
+      // todo update store so that it refreshes
+      return await formatAndSetWebsiteTags(
+        w,
+        props.store,
+        props.userTags,
+        setWebsiteTags,
+        setHideAllSuccess,
+        setHideThisWebsiteSuccess,
+      );
+    }
+  };
+
+  const addTag = async () => {
+    const tag = value;
+    if (tag.length < 1) {
+      return setErrorText('please enter text');
+    }
+    if (!website) {
+      throw new Error('missing website');
+    }
+    setErrorText(undefined);
+
+    websiteTags.push(tag);
+    const w = await props.store.websiteStore.updateTags(website.id, websiteTags.join(' '));
+    if (w) {
+      setWebsite(w);
+      setValue('');
+      // todo update store so that it refreshes
+      return await formatAndSetWebsiteTags(
+        w,
+        props.store,
+        props.userTags,
+        setWebsiteTags,
+        setHideAllSuccess,
+        setHideThisWebsiteSuccess,
+      );
+    }
   };
 
   useEffect(() => {
@@ -195,6 +227,7 @@ export const WebsiteDialog = (props: {
               </ListItem>
             ))}
             <ListItem>
+              <div>{errorText}</div>
               <TextField
                 type="text"
                 placeholder="Enter a custom tag…"
@@ -213,6 +246,7 @@ export const WebsiteDialog = (props: {
                 disableElevation={false}
                 variant="outlined"
                 className={classes.smallButton}
+                onClick={addTag}
               >
                 Add Tag
               </Button>

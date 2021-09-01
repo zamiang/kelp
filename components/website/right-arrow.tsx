@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 import ChevronIconWhite from '../../public/icons/chevron-right-white.svg';
@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
   },
   arrow: {
     margin: '0 auto',
-    background: theme.palette.divider,
     padding: '8px 18px',
     fontFamily: theme.typography.fontFamily,
     borderRadius: 22,
@@ -37,25 +36,19 @@ export const RightArrow = (props: {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <Button
-        endIcon={
-          props.isEnabled ? (
-            props.isDarkMode ? (
-              <ChevronIconWhite className={classes.upArrow} width="24" height="24" />
-            ) : (
-              <ChevronIcon className={classes.upArrow} width="24" height="24" />
-            )
-          ) : props.isDarkMode ? (
-            <ChevronIconWhite className={classes.downArrow} width="24" height="24" />
+      <IconButton onClick={props.onClick} className={classes.arrow}>
+        {props.isEnabled ? (
+          props.isDarkMode ? (
+            <ChevronIconWhite className={classes.upArrow} width="24" height="24" />
           ) : (
-            <ChevronIcon className={classes.downArrow} width="24" height="24" />
+            <ChevronIcon className={classes.upArrow} width="24" height="24" />
           )
-        }
-        onClick={props.onClick}
-        className={classes.arrow}
-      >
-        {props.isEnabled ? 'Hide' : `More`}
-      </Button>
+        ) : props.isDarkMode ? (
+          <ChevronIconWhite className={classes.downArrow} width="24" height="24" />
+        ) : (
+          <ChevronIcon className={classes.downArrow} width="24" height="24" />
+        )}
+      </IconButton>
     </div>
   );
 };

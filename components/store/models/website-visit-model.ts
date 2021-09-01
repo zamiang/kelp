@@ -4,7 +4,7 @@ import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { IChromeWebsite } from '../../fetch/chrome/fetch-history';
 import { cleanupUrl } from '../../shared/cleanup-url';
-import { ISegment, IWebsiteVisit } from '../data-types';
+import { ISegment, IWebsite, IWebsiteVisit } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
 import { formatSegmentTitle } from './segment-document-model';
@@ -120,6 +120,34 @@ export default class WebsiteVisitModel {
           return tx.store.put(website.value as any);
         }
       }),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
+  }
+
+  async addOldWebsites(websites: IWebsite[]) {
+    const formattedWebsites = websites.map(
+      (website): IWebsiteVisit => ({
+        id: website.id,
+        domain: website.domain,
+        websiteId: website.url,
+        segmentId: website.meetingId,
+        segmentName: website.meetingName,
+        url: website.rawUrl,
+        visitedTime: website.visitedTime,
+      }),
+    );
+
+    const tx = this.db.transaction('websiteVisit', 'readwrite');
+
+    const results = await Promise.allSettled(
+      formattedWebsites.map((website) => tx.store.put(website)),
     );
     await tx.done;
 

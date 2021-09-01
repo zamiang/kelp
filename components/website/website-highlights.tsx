@@ -20,18 +20,25 @@ const fetchData = async (
   filterByTag?: string,
 ) => {
   const featuredWebsites = await getFeaturedWebsites(store);
-  const filtereredWebsites = await Promise.all(
-    featuredWebsites.filter(async (item) => {
-      if (filterByTag) {
-        const website = await store.websiteStore.getById(item.websiteId);
-        const tags = website?.tags;
-        if (tags) {
-          return tags.includes(filterByTag);
-        }
+
+  const websiteMap: any = {};
+  await Promise.all(
+    featuredWebsites.map(async (item) => {
+      const website = await store.websiteStore.getById(item.websiteId);
+      if (website) {
+        websiteMap[website.id] = website;
       }
-      return item && currentFilter === 'all';
     }),
   );
+
+  const filtereredWebsites = featuredWebsites.filter((item) => {
+    if (filterByTag) {
+      const website = websiteMap[item.websiteId];
+      const tags = website?.tags;
+      return tags && tags.indexOf(filterByTag) > -1;
+    }
+    return item && currentFilter === 'all';
+  });
 
   const extraResultLength = filtereredWebsites.length - maxResult;
   setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);

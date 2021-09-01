@@ -3,7 +3,7 @@ import ErrorTracking from '../../error-tracking/error-tracking';
 import { IChromeWebsite } from '../../fetch/chrome/fetch-history';
 import { cleanupUrl } from '../../shared/cleanup-url';
 import { cleanText } from '../../shared/tfidf';
-import { IWebsiteItem } from '../data-types';
+import { IWebsite, IWebsiteItem } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
 
@@ -54,7 +54,6 @@ export default class WebsiteItemModel {
   }
 
   async addHistoryToStore(websites: IChromeWebsite[]) {
-    const tx = this.db.transaction('websiteItem', 'readwrite');
     const formattedWebsites = websites.map((website) => {
       const cleanTitle = cleanText(website.title || '');
       const tags = uniq(cleanTitle).join(' ');
@@ -66,6 +65,40 @@ export default class WebsiteItemModel {
         tags,
       };
     });
+
+    const tx = this.db.transaction('websiteItem', 'readwrite');
+    const results = await Promise.allSettled(
+      formattedWebsites.map((website) => tx.store.put(website)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
+  }
+
+  async addOldWebsites(websites: IWebsite[]) {
+    const formattedWebsites = websites.map((website): IWebsiteItem => {
+      const title = website.cleanTitle?.split(' ') || [];
+      const desc = website.cleanDescription?.split(' ') || [];
+      const tags = uniq(title.concat(desc)).join(' ');
+
+      return {
+        id: website.url,
+        domain: website.domain,
+        title: website.title,
+        description: website.description,
+        documentId: website.documentId,
+        rawUrl: website.rawUrl,
+        tags,
+        ogImage: website.ogImage,
+      };
+    });
+
+    const tx = this.db.transaction('websiteItem', 'readwrite');
 
     const results = await Promise.allSettled(
       formattedWebsites.map((website) => tx.store.put(website)),
@@ -110,10 +143,12 @@ export default class WebsiteItemModel {
     }
   }
 
-  async updateTags(websiteId: string, tags: string[]) {
+  async updateTags(websiteId: string, tags: string) {
     const existingItem = await this.getById(websiteId);
     if (existingItem) {
-      return this.db.put('websiteItem', { ...existingItem, tags: tags.join(' ') });
+      const website = { ...existingItem, tags, userEdited: true };
+      await this.db.put('websiteItem', website);
+      return website;
     }
   }
 }
