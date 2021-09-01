@@ -119,6 +119,7 @@ export interface ISegmentDocument {
   readonly category: 'self' | 'attendee' | 'non-attendee' | 'meeting-description';
 }
 
+// Deprecated
 export interface IWebsite {
   readonly id: string;
   readonly title: string;
@@ -132,8 +133,29 @@ export interface IWebsite {
   readonly meetingId?: string;
   readonly meetingName?: string;
   readonly visitedTime: Date;
-  readonly isHidden: boolean;
   readonly ogImage?: string;
+}
+
+export interface IWebsiteItem {
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string;
+  readonly tags?: string;
+  readonly rawUrl: string;
+  readonly domain: string;
+  readonly documentId?: string;
+  readonly ogImage?: string;
+  readonly userEdited?: boolean;
+}
+
+export interface IWebsiteVisit {
+  readonly id: string;
+  readonly domain: string;
+  readonly url: string;
+  readonly websiteId: string;
+  readonly segmentId?: string;
+  readonly segmentName?: string;
+  readonly visitedTime: Date;
 }
 
 export interface IWebsiteImage {

@@ -29,8 +29,8 @@ import { TopNav } from './top-nav';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingLeft: 180,
-    paddingRight: 180,
+    paddingLeft: 210,
+    paddingRight: 210,
     marginTop: 93,
   },
   footerContainer: {
@@ -209,14 +209,17 @@ export const DesktopDashboard = (props: {
                     isDarkMode={props.isDarkMode}
                     showWebsitePopup={showWebsitePopup}
                   />
-                  <WebsiteHighlights
-                    store={store}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                    currentFilter={filter}
-                    websiteTags={websiteTags}
-                    isDarkMode={props.isDarkMode}
-                    showWebsitePopup={showWebsitePopup}
-                  />
+                  <div id="tag-all">
+                    <WebsiteHighlights
+                      store={store}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
+                      currentFilter={filter}
+                      websiteTags={websiteTags}
+                      isDarkMode={props.isDarkMode}
+                      showWebsitePopup={showWebsitePopup}
+                      maxWebsites={8}
+                    />
+                  </div>
                 </Route>
               </Switch>
             </div>

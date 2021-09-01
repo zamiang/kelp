@@ -9,8 +9,7 @@ import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
 import useExpandStyles from '../shared/expand-styles';
 import useRowStyles from '../shared/row-styles';
-import { cleanText } from '../shared/tfidf';
-import { IPerson, ISegment, IWebsite, IWebsiteTag } from '../store/data-types';
+import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
@@ -45,11 +44,6 @@ const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
   };
 };
 
-export const getCleanTextForWebsite = (website: IWebsite) =>
-  website.cleanTitle
-    ? `${website.cleanTitle} ${website.cleanDescription || ''}`
-    : cleanText(website.title).join(' ');
-
 const maxWebsiteResults = 12;
 
 const WebsiteResults = (props: {
@@ -60,18 +54,14 @@ const WebsiteResults = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
 }) => {
-  const websites = props.websites.map((item): IFeaturedWebsite => {
-    const website = item.item as IWebsite;
+  const websites = props.websites.map((item) => {
+    const website = item.item as any;
     return {
-      websiteId: website.url,
+      websiteId: website.id,
       meetings: [],
-      websiteDatabaseId: website.id,
       isPinned: false,
-      rawUrl: website.rawUrl || website.id,
-      text: website.title,
-      cleanText: getCleanTextForWebsite(website),
-      date: website.visitedTime,
-      ogImage: website.ogImage,
+      url: website.url,
+      date: new Date(),
     };
   });
   const filteredWebsites = uniqBy(websites, 'websiteId');
@@ -108,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   topNav: {
     position: 'fixed',
     top: 11,
-    left: 195,
+    left: 224,
     zIndex: 12,
     maxWidth: 500,
   },
@@ -210,7 +200,7 @@ const Search = (props: {
             <Typography variant="h6" className={rowStyles.rowText}>
               Websites
             </Typography>
-            <Grid container spacing={4}>
+            <Grid container spacing={6}>
               <WebsiteResults
                 store={props.store}
                 websites={filteredResults.websites}

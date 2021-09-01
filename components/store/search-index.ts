@@ -1,21 +1,18 @@
-import { IDocument, IPerson, ISegment, IWebsite } from './data-types';
+import { IDocument, IPerson, ISegment, IWebsiteItem } from './data-types';
 import { IStore } from './use-store';
 
 export interface ISearchItem {
   text: string;
   type: 'segment' | 'document' | 'person' | 'website';
-  item: IPerson | ISegment | IDocument | IWebsite;
+  item: IPerson | ISegment | IDocument | IWebsiteItem;
 }
 
-const documentToWebsite = (document: IDocument): IWebsite => ({
+const documentToWebsite = (document: IDocument): IWebsiteItem => ({
   id: document.link!,
   title: document.name!,
-  url: document.link!,
   rawUrl: document.link!,
   documentId: document.id,
   domain: document.link!,
-  visitedTime: document.updatedAt!,
-  isHidden: false,
 });
 
 export default class SearchIndex {
@@ -64,7 +61,7 @@ export default class SearchIndex {
     });
 
     // Websites
-    const websites = await store.websitesStore.getAll(
+    const websites = await store.websiteStore.getAll(
       store.domainBlocklistStore,
       store.websiteBlocklistStore,
     );

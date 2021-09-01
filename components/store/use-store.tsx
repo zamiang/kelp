@@ -5,6 +5,7 @@ import config from '../../constants/config';
 import ErrorTracking from '../error-tracking/error-tracking';
 import { fetchAllHistory } from '../fetch/chrome/fetch-history';
 import FetchAll from '../fetch/fetch-all';
+import { migrateWebsites } from '../shared/migrate-websites';
 import { dbType } from './db';
 import AttendeeStore from './models/attendee-model';
 import DocumentDataStore from './models/document-model';
@@ -18,9 +19,11 @@ import SegmentTagStore from './models/segment-tag-model';
 import TfidfDataStore from './models/tfidf-model';
 import WebsiteBlocklistStore from './models/website-blocklist-model';
 import WebsiteImageStore from './models/website-image-model';
-import WebsitesStore from './models/website-model';
+import WebsiteStore from './models/website-item-model';
+import DeprecatedWebsiteStore from './models/website-model';
 import WebsitePinStore from './models/website-pin-model';
 import WebsiteTagStore from './models/website-tag-model';
+import WebsiteVisitStore from './models/website-visit-model';
 
 export interface IStore {
   readonly domainFilterStore: DomainFilterStore;
@@ -33,7 +36,8 @@ export interface IStore {
   readonly driveActivityStore: DriveActivityDataStore;
   readonly tfidfStore: TfidfDataStore;
   readonly attendeeDataStore: AttendeeStore;
-  readonly websitesStore: WebsitesStore;
+  readonly websiteStore: WebsiteStore;
+  readonly websiteVisitStore: WebsiteVisitStore;
   readonly websiteImageStore: WebsiteImageStore;
   readonly websitePinStore: WebsitePinStore;
   readonly segmentTagStore: SegmentTagStore;
@@ -64,7 +68,8 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
-  const websitesStore = new WebsitesStore(db);
+  const websiteStore = new WebsiteStore(db);
+  const websiteVisitStore = new WebsiteVisitStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
   const websiteBlocklistStore = new WebsiteBlocklistStore(db);
   const websitePinStore = new WebsitePinStore(db);
@@ -79,7 +84,8 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
     domainBlocklistStore,
     driveActivityStore: driveActivityDataStore,
     timeDataStore,
-    websitesStore,
+    websiteStore,
+    websiteVisitStore,
     websiteTagStore,
     personDataStore,
     documentDataStore,
@@ -122,7 +128,8 @@ const useStoreWithFetching = (
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
-  const websitesStore = new WebsitesStore(db);
+  const websiteStore = new WebsiteStore(db);
+  const websiteVisitStore = new WebsiteVisitStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
   const websiteBlocklistStore = new WebsiteBlocklistStore(db);
   const domainBlocklistStore = new DomainBlocklistStore(db);
@@ -184,22 +191,30 @@ const useStoreWithFetching = (
       );
 
       // Save history
-      const currentWebsites = await websitesStore.getAll(
+      const currentWebsites = await websiteVisitStore.getAll(
         domainBlocklistStore,
         websiteBlocklistStore,
       );
+
+      // for the migraiton
+      const deprecatedWebsiteStore = new DeprecatedWebsiteStore(db);
+      const priorWebsites = await deprecatedWebsiteStore.getAll();
+
+      // TODO: DO THE MIGRATION HERE
+      if (priorWebsites.length > 0) {
+        await migrateWebsites({ deprecatedWebsiteStore, websiteVisitStore, websiteStore });
+      }
       if (currentWebsites.length < 1) {
         setLoadingMessage('Saving Websites');
         const historyWebsites = await fetchAllHistory();
-        await websitesStore.addHistoryToStore(historyWebsites);
+        await websiteStore.addHistoryToStore(historyWebsites);
+        await websiteVisitStore.addHistoryToStore(historyWebsites, timeDataStore);
       }
 
       // Cleanup website images
-      const currentImages = await websiteImageStore.getAll();
-      await websiteImageStore.cleanupWebsiteImages(currentImages);
-
-      // Cleanup websites
-      await websitesStore.cleanupWebsites(currentWebsites);
+      await websiteImageStore.cleanupWebsiteImages();
+      // Cleanup website visits
+      await websiteVisitStore.cleanupWebsites();
 
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
@@ -231,7 +246,8 @@ const useStoreWithFetching = (
     documentDataStore,
     attendeeDataStore,
     segmentDocumentStore,
-    websitesStore,
+    websiteStore,
+    websiteVisitStore,
     websiteImageStore,
     websiteTagStore,
     websiteBlocklistStore,

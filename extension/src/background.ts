@@ -8,7 +8,7 @@ const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
 const timeToWaitBeforeTracking = 20 * 1000;
 
-const storeTrackedVisit = (
+const storeTrackedVisit = async (
   site: string,
   startAt: Date,
   store: IStore,
@@ -20,15 +20,19 @@ const storeTrackedVisit = (
   const domain = url.host;
   const pathname = url.pathname;
 
-  return store.websitesStore.trackVisit(
+  await store.websiteStore.trackVisit({
+    domain,
+    pathname,
+    url: url.href,
+    title,
+    description,
+    ogImage,
+  });
+  return store.websiteVisitStore.trackVisit(
     {
       startAt,
-      domain,
-      pathname,
       url: url.href,
-      title,
-      description,
-      ogImage,
+      domain,
     },
     store.timeDataStore,
   );
@@ -41,15 +45,16 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
       config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
     if (currentUrl && isDomainAllowed && tab.id) {
       const code = `
-        const metaDescription = document.querySelector("meta[name='description']");
+      const metaDescription = document.querySelector("meta[name='description']");
         const metaDescriptionContent = metaDescription?.getAttribute("content");
         const metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
         const metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute("content");
         const metaOgUrl = document.querySelector("meta[name='og:url']");
-        const metaOgImage = document.querySelector("meta[name='og:image']");
         const metaOgUrlContent = metaOgUrl?.getAttribute("content");
+        const metaOgImage = document.querySelector("meta[name='og:image']");
+        const metaOgImageContent = metaOgUrl?.getAttribute("content");
         ({
-          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent, metaOgImage
+          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent, metaOgImageContent
         });`;
       void chrome.tabs.executeScript(
         tab.id,
@@ -65,13 +70,13 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
           }
           const result = results[0] || ({} as any);
           captureVisibleTab(result.metaOgUrlContent || currentUrl);
-          void storeTrackedVisit(
+          return void storeTrackedVisit(
             result.metaOgUrlContent || currentUrl,
             new Date(),
             store,
             tab.title,
-            result.metaTwitterDescription || result.metaDescriptionContent,
-            result.metaOgImage,
+            result.metaTwitterDescriptionContent || result.metaDescriptionContent,
+            result.metaOgImageContent,
           );
           // Now, do something with result.title and result.description
         },

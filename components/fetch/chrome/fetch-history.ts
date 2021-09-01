@@ -1,19 +1,24 @@
 import { flatten } from 'lodash';
 import config from '../../../constants/config';
 import { cleanupUrl } from '../../shared/cleanup-url';
-import { IWebsite } from '../../store/data-types';
 
-const formatSite = (site: chrome.history.HistoryItem): IWebsite => ({
-  id: site.id,
-  url: cleanupUrl(site.url!),
+export interface IChromeWebsite {
+  id: string;
+  rawUrl: string;
+  title: string;
+  visitedTime: Date;
+  domain: string;
+}
+
+const formatSite = (site: chrome.history.HistoryItem): IChromeWebsite => ({
+  id: cleanupUrl(site.url!),
   rawUrl: site.url!,
   title: site.title!,
   visitedTime: site.lastVisitTime ? new Date(site.lastVisitTime) : new Date(),
   domain: new URL(site.url!).host,
-  isHidden: false,
 });
 
-const fetchHistory = (domain: string): Promise<IWebsite[]> =>
+const fetchHistory = (domain: string): Promise<IChromeWebsite[]> =>
   new Promise((resolve) => {
     chrome.history.search(
       {
@@ -39,7 +44,7 @@ const fetchHistory = (domain: string): Promise<IWebsite[]> =>
     );
   });
 
-export const fetchAllHistory = async (): Promise<IWebsite[]> => {
+export const fetchAllHistory = async () => {
   const websites = await Promise.all(config.ALLOWED_DOMAINS.map((d) => fetchHistory(d)));
   return flatten(websites);
 };

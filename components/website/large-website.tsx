@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import DotsIcon from '../../public/icons/dots-black.svg';
 import DotsIconWhite from '../../public/icons/dots-white.svg';
 import { WebsiteTags } from '../shared/website-tag';
-import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
+import { IWebsiteImage, IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
@@ -107,11 +107,16 @@ export const LargeWebsite = (props: {
   websiteTags: IWebsiteTag[];
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
-  // const [isCloseVisible, setCloseVisible] = useState(false);
+  const [website, setWebsite] = useState<IWebsiteItem>();
   const classes = useStyles();
 
-  // maybe
-  // const domain = new URL(props.item.rawUrl).hostname.replace('www.', '');
+  useEffect(() => {
+    const fetchData = async () => {
+      const w = await props.store.websiteStore.getById(props.item.websiteId);
+      setWebsite(w);
+    };
+    void fetchData();
+  }, [props.item.websiteId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,20 +125,21 @@ export const LargeWebsite = (props: {
     };
     void fetchData();
   }, [props.item.websiteId]);
+
   return (
-    <Grid item xs={props.smGridSize || (4 as any)}>
-      <Link href={props.item.rawUrl} underline="none">
+    <Grid item xs={props.smGridSize || (3 as any)}>
+      <Link href={props.item.url} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
           <WebsiteImage
             image={image}
             item={props.item}
             isDarkMode={props.isDarkMode}
-            ogImage={props.item.ogImage}
+            ogImage={website?.ogImage}
           />
         </Box>
-        <Tooltip title={props.item.text || ''}>
+        <Tooltip title={website?.title || ''}>
           <Typography noWrap className={classes.text}>
-            {props.item.text}
+            {website?.title}
           </Typography>
         </Tooltip>
       </Link>
@@ -143,7 +149,7 @@ export const LargeWebsite = (props: {
         className={classes.textContainer}
         justifyContent="space-between"
       >
-        <Grid item xs={1}>
+        <Grid item>
           <IconButton size="small">
             <img
               src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
@@ -152,7 +158,7 @@ export const LargeWebsite = (props: {
             />
           </IconButton>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs>
           <WebsiteTags
             store={props.store}
             item={props.item}
@@ -161,7 +167,7 @@ export const LargeWebsite = (props: {
             isHovering={true}
           />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item>
           <IconButton
             size="small"
             onClick={() => {

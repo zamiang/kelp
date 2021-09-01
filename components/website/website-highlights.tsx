@@ -7,7 +7,7 @@ import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
 import { RightArrow } from './right-arrow';
 
-const maxResult = 6;
+const maxResult = 8;
 const maxDisplay = maxResult * 8;
 
 const fetchData = async (
@@ -16,26 +16,36 @@ const fetchData = async (
   shouldShowAll: boolean,
   setWebsites: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount: (n: number) => void,
+  maxWebsites: number,
   filterByTag?: string,
 ) => {
   const featuredWebsites = await getFeaturedWebsites(store);
+
+  const websiteMap: any = {};
+  await Promise.all(
+    featuredWebsites.map(async (item) => {
+      const website = await store.websiteStore.getById(item.websiteId);
+      if (website) {
+        websiteMap[website.id] = website;
+      }
+    }),
+  );
+
   const filtereredWebsites = featuredWebsites.filter((item) => {
     if (filterByTag) {
-      if (item.cleanText) {
-        if (!item.cleanText.includes(filterByTag)) {
-          return false;
-        }
-      }
+      const website = websiteMap[item.websiteId];
+      const tags = website?.tags;
+      return tags && tags.indexOf(filterByTag) > -1;
     }
-    return item && currentFilter === 'all' ? true : item.websiteId.includes(currentFilter);
+    return item && currentFilter === 'all';
   });
 
   const extraResultLength = filtereredWebsites.length - maxResult;
   setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
   if (shouldShowAll) {
-    setWebsites(filtereredWebsites.slice(0, maxResult * 10));
+    setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
   } else {
-    setWebsites(filtereredWebsites.slice(0, maxResult));
+    setWebsites(filtereredWebsites.slice(0, maxWebsites));
   }
 };
 
@@ -47,6 +57,7 @@ export const WebsiteHighlights = (props: {
   isDarkMode: boolean;
   filterByTag?: string;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  maxWebsites: number;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -59,6 +70,7 @@ export const WebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
+      props.maxWebsites || maxResult,
       props.filterByTag,
     );
   }, [
@@ -76,13 +88,12 @@ export const WebsiteHighlights = (props: {
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={5}>
+          <Grid container spacing={6}>
             {topWebsites.map((item) => (
               <LargeWebsite
                 key={item.websiteId}
                 item={item}
                 store={props.store}
-                smGridSize={4}
                 isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}

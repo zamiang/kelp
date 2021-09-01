@@ -13,17 +13,7 @@ export default class WebsiteImageModel {
   }
 
   async getById(id: string): Promise<IWebsiteImage | undefined> {
-    const imageByRawUrl = await this.db.getFromIndex('websiteImage', 'by-raw-url', id);
-    if (imageByRawUrl) {
-      return imageByRawUrl;
-    }
     return this.db.get('websiteImage', id);
-  }
-
-  async saveToChromeStorage() {
-    // TODO reenable
-    // const all = await this.db.getAll('websiteImage');
-    // chrome.storage.sync.set({ kelpWebsiteImages: JSON.stringify(all) });
   }
 
   async getAll() {
@@ -31,7 +21,8 @@ export default class WebsiteImageModel {
     return results;
   }
 
-  async cleanupWebsiteImages(images: IWebsiteImage[]) {
+  async cleanupWebsiteImages() {
+    const images = await this.getAll();
     const imagesToDelete = images.filter((image) => image.date < config.startDate);
     const tx = this.db.transaction('websiteImage', 'readwrite');
     const results = await Promise.allSettled(
@@ -58,7 +49,6 @@ export default class WebsiteImageModel {
       date,
     });
 
-    void this.saveToChromeStorage();
     return result;
   }
 }

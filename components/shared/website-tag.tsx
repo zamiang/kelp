@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
-import { cleanText } from './tfidf';
 
 const useStyles = makeStyles((theme) => ({
   tags: {
@@ -93,14 +92,13 @@ export const WebsiteTags = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const text =
-        props.item.cleanText ||
-        cleanText(props.item.text || '')
-          .join(' ')
-          .toLocaleLowerCase();
-
-      const i = await getTagsForWebsite(text, props.store, props.userTags);
-      setWebsiteTags(i);
+      const website = await props.store.websiteStore.getById(props.item.websiteId);
+      if (website?.tags) {
+        const i = await getTagsForWebsite(website.tags || '', props.store, props.userTags);
+        setWebsiteTags(i);
+      } else {
+        setWebsiteTags([]);
+      }
     };
     void fetchData();
   }, [props.item.websiteId, props.userTags.length]);

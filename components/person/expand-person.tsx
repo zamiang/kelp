@@ -202,7 +202,7 @@ const ExpandPerson = (props: {
             <Typography variant="h6" className={rowStyles.rowText}>
               Associated websites
             </Typography>
-            <Grid container spacing={4}>
+            <Grid container spacing={6}>
               {websites.map((item) => (
                 <LargeWebsite
                   key={item.websiteId}

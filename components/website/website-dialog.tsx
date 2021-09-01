@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import { cleanText } from '../shared/tfidf';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
-import { IWebsiteTag } from '../store/data-types';
+import { IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
@@ -65,6 +65,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const formatAndSetWebsiteTags = async (
+  item: IWebsiteItem,
+  store: IStore,
+  userTags: IWebsiteTag[],
+  setWebsiteTags: (t: string[]) => void,
+  setHideAllSuccess: (b: boolean) => void,
+  setHideThisWebsiteSuccess: (b: boolean) => void,
+) => {
+  const text = item.tags || '';
+
+  const i = await getTagsForWebsite(text, store, userTags);
+  setWebsiteTags(i);
+  setHideAllSuccess(false);
+  setHideThisWebsiteSuccess(false);
+};
+
 export const WebsiteDialog = (props: {
   item?: IFeaturedWebsite;
   userTags: IWebsiteTag[];
@@ -75,8 +91,10 @@ export const WebsiteDialog = (props: {
   const classes = useStyles();
   const [didHideThisWebsiteSuccess, setHideThisWebsiteSuccess] = useState(false);
   const [didHideAllSuccess, setHideAllSuccess] = useState(false);
+  const [errorText, setErrorText] = useState<string | undefined>();
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
   const [value, setValue] = useState('');
+  const [website, setWebsite] = useState<IWebsiteItem>();
 
   const hideDialogDomain = props.item?.websiteId ? new URL(props.item.websiteId).host : undefined;
   const hideUrl = async (url: string) => {
@@ -90,24 +108,70 @@ export const WebsiteDialog = (props: {
   };
 
   const removeTag = async (tag: string) => {
-    console.log(tag);
+    if (!website) {
+      throw new Error('missing website');
+    }
+
+    const updatedTags = websiteTags.filter((t) => t !== tag);
+    const w = await props.store.websiteStore.updateTags(website.id, updatedTags.join(' '));
+    if (w) {
+      setWebsite(w);
+      // todo update store so that it refreshes
+      return await formatAndSetWebsiteTags(
+        w,
+        props.store,
+        props.userTags,
+        setWebsiteTags,
+        setHideAllSuccess,
+        setHideThisWebsiteSuccess,
+      );
+    }
+  };
+
+  const addTag = async () => {
+    const tag = value;
+    if (tag.length < 1) {
+      return setErrorText('please enter text');
+    }
+    if (!website) {
+      throw new Error('missing website');
+    }
+    setErrorText(undefined);
+
+    websiteTags.push(tag);
+    const w = await props.store.websiteStore.updateTags(website.id, websiteTags.join(' '));
+    if (w) {
+      setWebsite(w);
+      setValue('');
+      // todo update store so that it refreshes
+      return await formatAndSetWebsiteTags(
+        w,
+        props.store,
+        props.userTags,
+        setWebsiteTags,
+        setHideAllSuccess,
+        setHideThisWebsiteSuccess,
+      );
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!props.item) {
-        return;
-      }
-      const text =
-        props.item.cleanText ||
-        cleanText(props.item.text || '')
-          .join(' ')
-          .toLocaleLowerCase();
+      if (props.item) {
+        const w = await props.store.websiteStore.getById(props.item.websiteId);
+        setWebsite(w);
 
-      const i = await getTagsForWebsite(text, props.store, props.userTags);
-      setWebsiteTags(i);
-      setHideAllSuccess(false);
-      setHideThisWebsiteSuccess(false);
+        if (w) {
+          await formatAndSetWebsiteTags(
+            w,
+            props.store,
+            props.userTags,
+            setWebsiteTags,
+            setHideAllSuccess,
+            setHideThisWebsiteSuccess,
+          );
+        }
+      }
     };
     void fetchData();
   }, [props.item?.websiteId]);
@@ -129,7 +193,7 @@ export const WebsiteDialog = (props: {
       <div className={classes.dialogContent}>
         <Grid container justifyContent="space-between">
           <Grid item xs={10}>
-            <Typography variant="h3">{props.item?.text}</Typography>
+            <Typography variant="h3">{website?.title}</Typography>
             <br />
           </Grid>
           <Grid item xs={2}>
@@ -163,6 +227,7 @@ export const WebsiteDialog = (props: {
               </ListItem>
             ))}
             <ListItem>
+              <div>{errorText}</div>
               <TextField
                 type="text"
                 placeholder="Enter a custom tag…"
@@ -181,6 +246,7 @@ export const WebsiteDialog = (props: {
                 disableElevation={false}
                 variant="outlined"
                 className={classes.smallButton}
+                onClick={addTag}
               >
                 Add Tag
               </Button>

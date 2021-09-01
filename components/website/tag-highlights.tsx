@@ -59,6 +59,7 @@ export const TagHighlights = (props: {
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
             showWebsitePopup={props.showWebsitePopup}
+            maxWebsites={4}
           />
         </div>
       ))}
