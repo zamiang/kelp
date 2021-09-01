@@ -1,3 +1,4 @@
+import { IconButton } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
@@ -35,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: mediumFontFamily,
     fontWeight: 500,
   },
-  tooltip: {},
   li: {
     paddingBottom: theme.spacing(2),
   },
@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 23,
     marginLeft: 'auto',
     marginRight: 'auto',
-    height: 492,
-    width: 848,
+    height: 400,
+    width: 600,
   },
   largeImage: {
     maxWidth: '100%',
@@ -77,51 +77,17 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
       <Typography variant="h2" className={classes.heading}>
         Meet your magical website organizer
       </Typography>
-      <img src="https://www.kelp.nyc/images/meetings-large.svg" className={classes.largeImage} />
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Typography>Note: Images for your websites will appear over time</Typography>
-        </Grid>
-        <Grid item>
-          <Button
-            color="primary"
-            variant="contained"
-            size="large"
-            endIcon={<RightArrow height="16" width="16" />}
-            onClick={() => props.setStep(props.step + 1)}
-          >
-            Let&rsquo;s Go
-          </Button>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
-};
-
-const TagsAnimation = (props: { step: number; setStep: (step: number) => void }) => {
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <Typography variant="h2" className={classes.heading}>
-        Add smart tags
-      </Typography>
-      <img src="https://www.kelp.nyc/animations/tags.gif" className={classes.image} />
+      <img src="https://www.kelp.nyc/animations/tag-nav.gif" className={classes.largeImage} />
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Typography className={classes.bold} variant="h4">
-            Tip {props.step - 1}/{maxTips}
+            {props.step - 1}/{maxTips}
           </Typography>
         </Grid>
         <Grid item>
-          <Button
-            color="primary"
-            variant="contained"
-            size="large"
-            endIcon={<RightArrow height="16" width="16" />}
-            onClick={() => props.setStep(props.step + 1)}
-          >
-            Next
-          </Button>
+          <IconButton color="primary" onClick={() => props.setStep(props.step + 1)}>
+            <RightArrow height="16" width="16" />
+          </IconButton>
         </Grid>
       </Grid>
     </React.Fragment>
@@ -200,8 +166,6 @@ const OnboardingSteps = (props: { step: number; setStep: (n: number) => void }) 
     case 2:
       return <MeetingsAnimation setStep={props.setStep} step={props.step} />;
     case 3:
-      return <TagsAnimation setStep={props.setStep} step={props.step} />;
-    case 4:
       return <PinAnimation setStep={props.setStep} step={props.step} />;
     default:
       return null;

@@ -32,6 +32,18 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 210,
     paddingRight: 210,
     marginTop: 93,
+    [theme.breakpoints.down('xl')]: {
+      paddingLeft: 180,
+      paddingRight: 180,
+    },
+    [theme.breakpoints.down('lg')]: {
+      paddingLeft: 160,
+      paddingRight: 160,
+    },
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 120,
+      paddingRight: 120,
+    },
   },
   footerContainer: {
     background: theme.palette.background.default,

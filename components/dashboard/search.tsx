@@ -1,6 +1,8 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useTheme from '@material-ui/styles/useTheme';
 import Fuse from 'fuse.js';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -101,6 +103,15 @@ const useStyles = makeStyles((theme) => ({
     left: 224,
     zIndex: 12,
     maxWidth: 500,
+    [theme.breakpoints.down('xl')]: {
+      left: 184,
+    },
+    [theme.breakpoints.down('lg')]: {
+      left: 178,
+    },
+    [theme.breakpoints.down('md')]: {
+      left: 138,
+    },
   },
   button: {
     borderRadius: 21,
@@ -128,6 +139,11 @@ const Search = (props: {
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+    defaultMatches: true,
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       const searchIndex = new SearchIndex();
@@ -154,6 +170,7 @@ const Search = (props: {
 
   const results = searchQuery ? fuse.search(searchQuery) : [];
   const filteredResults = filterSearchResults(results);
+
   return (
     <div>
       <Grid container className={classes.topNav} spacing={2}>
@@ -200,7 +217,7 @@ const Search = (props: {
             <Typography variant="h6" className={rowStyles.rowText}>
               Websites
             </Typography>
-            <Grid container spacing={6}>
+            <Grid container spacing={isMobile ? 5 : 6}>
               <WebsiteResults
                 store={props.store}
                 websites={filteredResults.websites}

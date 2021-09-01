@@ -3,6 +3,8 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useTheme from '@material-ui/styles/useTheme';
 import { flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -50,6 +52,11 @@ const ExpandPerson = (props: {
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   const [associatesStats, setAssociatesStats] = useState<any>({});
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+    defaultMatches: true,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -202,7 +209,7 @@ const ExpandPerson = (props: {
             <Typography variant="h6" className={rowStyles.rowText}>
               Associated websites
             </Typography>
-            <Grid container spacing={6}>
+            <Grid container spacing={isMobile ? 5 : 6}>
               {websites.map((item) => (
                 <LargeWebsite
                   key={item.websiteId}

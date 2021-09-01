@@ -37,12 +37,30 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
     flexShrink: 0,
+    [theme.breakpoints.down('xl')]: {
+      width: 187,
+    },
+    [theme.breakpoints.down('lg')]: {
+      width: 179,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: 139,
+    },
   },
   rightSection: {
     width: 228,
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(1),
     flexShrink: 0,
+    [theme.breakpoints.down('xl')]: {
+      width: 187,
+    },
+    [theme.breakpoints.down('lg')]: {
+      width: 179,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: 139,
+    },
   },
   searchContainer: {},
   button: {
@@ -87,7 +105,7 @@ export const TopNav = (props: {
         {!isSearch && (
           <Container maxWidth="lg" disableGutters>
             <Grid container justifyContent="space-between">
-              <Grid item xs={10}>
+              <Grid item xs>
                 <TopTags
                   websiteTags={props.websiteTags}
                   store={props.store}

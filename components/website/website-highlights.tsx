@@ -1,4 +1,6 @@
 import Grid from '@material-ui/core/Grid';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useTheme from '@material-ui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
@@ -63,6 +65,11 @@ export const WebsiteHighlights = (props: {
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+    defaultMatches: true,
+  });
+
   useEffect(() => {
     void fetchData(
       props.store,
@@ -88,7 +95,7 @@ export const WebsiteHighlights = (props: {
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={6}>
+          <Grid container spacing={isMobile ? 5 : 6}>
             {topWebsites.map((item) => (
               <LargeWebsite
                 key={item.websiteId}

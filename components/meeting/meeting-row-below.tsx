@@ -2,6 +2,8 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useTheme from '@material-ui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -45,6 +47,11 @@ const MeetingRowBelow = (props: {
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+    defaultMatches: true,
+  });
+
   useEffect(() => {
     void fetchWebsitesForMeetingFiltered(
       props.meeting,
@@ -68,7 +75,7 @@ const MeetingRowBelow = (props: {
 
   return (
     <Grid item xs={props.isFullWidth ? 12 : 11}>
-      <Grid container spacing={6}>
+      <Grid container spacing={isMobile ? 5 : 6}>
         {websites.map((item) => (
           <LargeWebsite
             key={item.websiteId}

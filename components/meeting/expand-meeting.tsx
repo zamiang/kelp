@@ -4,6 +4,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MuiLink from '@material-ui/core/Link';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useTheme from '@material-ui/styles/useTheme';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -92,6 +94,11 @@ const ExpandedMeeting = (props: {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+    defaultMatches: true,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -299,7 +306,7 @@ const ExpandedMeeting = (props: {
             </Grid>
             <br />
             {currentTag === 'all' && (
-              <Grid container spacing={6}>
+              <Grid container spacing={isMobile ? 5 : 6}>
                 {websites.map((item) => (
                   <LargeWebsite
                     key={item.websiteId}
