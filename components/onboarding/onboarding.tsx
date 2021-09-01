@@ -1,13 +1,13 @@
-import { IconButton } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/theme';
-import RightArrow from '../../public/icons/right-arrow.svg';
+import LeftArrow from '../../public/icons/left-arrow-black.svg';
+import RightArrow from '../../public/icons/right-arrow-black.svg';
 
 const maxTips = 3;
 
@@ -15,13 +15,10 @@ const useStyles = makeStyles((theme) => ({
   stepOneContainer: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
-    padding: theme.spacing(8),
-    paddingTop: 44,
-    paddingBottom: 44,
+    padding: 20,
+    paddingBottom: 40,
   },
-  heading: {
-    marignBottom: theme.spacing(2),
-  },
+  heading: { display: 'inline-block', marginLeft: theme.spacing(2) },
   body: {
     marignBottom: theme.spacing(2),
   },
@@ -32,9 +29,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
   },
   bold: {
+    display: 'inline-block',
     fontStyle: 'normal',
     fontFamily: mediumFontFamily,
     fontWeight: 500,
+    color: theme.palette.primary.main,
   },
   li: {
     paddingBottom: theme.spacing(2),
@@ -42,31 +41,17 @@ const useStyles = makeStyles((theme) => ({
   image: {
     maxWidth: '100%',
     borderRadius: 20,
-    marginBottom: 20,
-    marginTop: 23,
+    marginBottom: 30,
     marginLeft: 'auto',
     marginRight: 'auto',
     height: 400,
     width: 600,
   },
-  largeImage: {
-    maxWidth: '100%',
-    borderRadius: 20,
-    marginBottom: 20,
-    marginTop: 23,
-  },
   button: {
-    padding: 0,
-    marginTop: theme.spacing(1),
-    fontStyle: 'normal',
-    fontFamily: mediumFontFamily,
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 500,
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
+    background: 'rgba(0, 0, 0, 0.12)',
+  },
+  leftButton: {
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -74,19 +59,23 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Typography variant="h2" className={classes.heading}>
-        Meet your magical website organizer
-      </Typography>
-      <img src="https://www.kelp.nyc/animations/tag-nav.gif" className={classes.largeImage} />
+      <img src="https://www.kelp.nyc/animations/tag-nav.gif" className={classes.image} />
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Typography className={classes.bold} variant="h4">
-            {props.step - 1}/{maxTips}
+          <Typography className={classes.bold} variant="h3">
+            {props.step} / {maxTips}
+          </Typography>
+          <Typography variant="h3" className={classes.heading}>
+            Meet your magical website organizer
           </Typography>
         </Grid>
         <Grid item>
-          <IconButton color="primary" onClick={() => props.setStep(props.step + 1)}>
-            <RightArrow height="16" width="16" />
+          <IconButton
+            size="medium"
+            className={classes.button}
+            onClick={() => props.setStep(props.step + 1)}
+          >
+            <RightArrow height="22" width="22" />
           </IconButton>
         </Grid>
       </Grid>
@@ -98,29 +87,34 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Typography variant="h2" className={classes.heading}>
-        Pin or remove websites.
-      </Typography>
-      <img src="https://www.kelp.nyc/animations/pin.gif" className={classes.image} />
+      <img src="https://www.kelp.nyc/animations/tag-group.gif" className={classes.image} />
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Typography className={classes.bold} variant="h4">
-            Tip {props.step - 1}/{maxTips}
+          <Typography className={classes.bold} variant="h3">
+            {props.step} / {maxTips}
+          </Typography>
+          <Typography variant="h3" className={classes.heading}>
+            Add Smart tags
           </Typography>
         </Grid>
         <Grid item>
-          <Button
-            color="primary"
-            endIcon={<RightArrow height="16" width="16" />}
-            variant="contained"
-            size="large"
+          <IconButton
+            size="medium"
+            className={classes.leftButton}
+            onClick={() => props.setStep(props.step - 1)}
+          >
+            <LeftArrow height="22" width="22" />
+          </IconButton>
+          <IconButton
+            className={classes.button}
+            size="medium"
             onClick={() => {
               props.setStep(props.step + 1);
               return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
             }}
           >
-            Done!
-          </Button>
+            <RightArrow height="22" width="22" />
+          </IconButton>
         </Grid>
       </Grid>
     </React.Fragment>
@@ -131,26 +125,31 @@ const MeetingsAnimation = (props: { step: number; setStep: (step: number) => voi
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Typography variant="h2" className={classes.heading}>
-        Kelp associates webpages with meetings
-      </Typography>
-      <img src="https://www.kelp.nyc/animations/meetings.gif" className={classes.image} />
+      <img src="https://www.kelp.nyc/animations/tag-meeting.gif" className={classes.image} />
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Typography className={classes.bold} variant="h4">
-            {props.step - 1}/{maxTips}
+          <Typography className={classes.bold} variant="h3">
+            {props.step} / {maxTips}
+          </Typography>
+          <Typography variant="h3" className={classes.heading}>
+            Associate webpages with meetings
           </Typography>
         </Grid>
         <Grid item>
-          <Button
-            color="primary"
-            variant="contained"
-            size="large"
-            endIcon={<RightArrow height="16" width="16" />}
+          <IconButton
+            size="medium"
+            className={classes.leftButton}
+            onClick={() => props.setStep(props.step - 1)}
+          >
+            <LeftArrow height="22" width="22" />
+          </IconButton>
+          <IconButton
+            size="medium"
+            className={classes.button}
             onClick={() => props.setStep(props.step + 1)}
           >
-            Next
-          </Button>
+            <RightArrow height="22" width="22" />
+          </IconButton>
         </Grid>
       </Grid>
     </React.Fragment>
@@ -164,9 +163,9 @@ const OnboardingSteps = (props: { step: number; setStep: (n: number) => void }) 
     case 1:
       return <WelcomePopup setStep={props.setStep} step={props.step} />;
     case 2:
-      return <MeetingsAnimation setStep={props.setStep} step={props.step} />;
-    case 3:
       return <PinAnimation setStep={props.setStep} step={props.step} />;
+    case 3:
+      return <MeetingsAnimation setStep={props.setStep} step={props.step} />;
     default:
       return null;
   }
@@ -179,7 +178,7 @@ export const Onboarding = () => {
   return (
     <Dialog
       maxWidth="md"
-      open={step > 0 && step <= maxTips + 1}
+      open={step > 0 && step <= maxTips}
       onClose={(_event, reason) => {
         if (reason === 'backdropClick') {
           setStep(0);
