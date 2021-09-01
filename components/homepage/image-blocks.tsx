@@ -4,9 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Image from 'next/image';
 import React from 'react';
-import meetingGif from '../../public/animations/meetings.gif';
-import pinGif from '../../public/animations/pin.gif';
-import tagGif from '../../public/animations/tags.gif';
+import tagGif from '../../public/animations/tag-group.gif';
+import meetingGif from '../../public/animations/tag-meeting.gif';
+import pinGif from '../../public/animations/tag-nav.gif';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -42,17 +42,7 @@ export const ImageBlocks = () => {
       <Grid container className={classes.section} alignItems="center" spacing={10}>
         <Grid item>
           <Typography variant="h4" className={classes.heading}>
-            Automatically associate web pages with meetings
-          </Typography>
-          <Image
-            src={meetingGif}
-            className={classes.image}
-            alt="If you view a web apge during a meeting, it will be associated with the meetings"
-          />
-        </Grid>
-        <Grid item>
-          <Typography variant="h4" className={classes.heading}>
-            Smart tags that automatically group web pages
+            Smart tags automatically group web pages
           </Typography>
           <Image
             src={tagGif}
@@ -62,7 +52,17 @@ export const ImageBlocks = () => {
         </Grid>
         <Grid item>
           <Typography variant="h4" className={classes.heading}>
-            Reorder as needed
+            Associate web pages with meetings
+          </Typography>
+          <Image
+            src={meetingGif}
+            className={classes.image}
+            alt="If you view a web apge during a meeting, it will be associated with the meetings"
+          />
+        </Grid>
+        <Grid item>
+          <Typography variant="h4" className={classes.heading}>
+            Easily find what you are looking for
           </Typography>
           <Image
             src={pinGif}

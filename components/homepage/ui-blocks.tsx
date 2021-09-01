@@ -119,39 +119,6 @@ const UiBlocks = () => {
           <img src="images/meeting.svg" style={{ maxHeight: 212, maxWidth: '100%' }} />
         </Grid>
       </Grid>
-      <Grid container className={classes.section} alignItems="center">
-        <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Typography variant="h4" className={classes.heading}>
-            <div className={classes.dot}></div>Quickly prepare for meetings
-          </Typography>
-          <Typography>
-            Kelp scans your calendar, browser history and documents to automatically collect get you
-            the information you need when you need it.
-          </Typography>
-        </Grid>
-        <Grid item md={6} sm={12} className={clsx(classes.sectionImageLeft, classes.greyContainer)}>
-          <img src="images/documents.svg" style={{ maxHeight: 231, maxWidth: '100%' }} />
-        </Grid>
-      </Grid>
-      <Grid container className={classes.section} alignItems="center">
-        <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Typography variant="h4" className={classes.heading}>
-            <div className={classes.dot}></div>Manage work relationships
-          </Typography>
-          <Typography>
-            Kelp infers associations between information, such as between a person, a meeting with
-            the person and document edits by the person.
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          md={6}
-          sm={12}
-          className={clsx(classes.sectionImageRightBottom, classes.greyContainer)}
-        >
-          <img src="images/person.svg" style={{ maxWidth: '100%', margin: '0px auto' }} />
-        </Grid>
-      </Grid>
     </Container>
   );
 };
