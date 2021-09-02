@@ -19,6 +19,7 @@ const fetchData = async (
   setWebsites: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount: (n: number) => void,
   maxWebsites: number,
+  isSubscribed: boolean,
   filterByTag?: string,
 ) => {
   const featuredWebsites = await getFeaturedWebsites(store);
@@ -45,9 +46,9 @@ const fetchData = async (
   const extraResultLength = filtereredWebsites.length - maxResult;
   setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
   if (shouldShowAll) {
-    setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
+    return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
   } else {
-    setWebsites(filtereredWebsites.slice(0, maxWebsites));
+    return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites));
   }
 };
 
@@ -71,6 +72,7 @@ export const WebsiteHighlights = (props: {
   });
 
   useEffect(() => {
+    let isSubscribed = true;
     void fetchData(
       props.store,
       props.currentFilter,
@@ -78,8 +80,10 @@ export const WebsiteHighlights = (props: {
       setTopWebsites,
       setExtraItemsCount,
       props.maxWebsites || maxResult,
+      isSubscribed,
       props.filterByTag,
     );
+    return () => (isSubscribed = false) as any;
   }, [
     props.store.lastUpdated,
     props.store.isLoading,

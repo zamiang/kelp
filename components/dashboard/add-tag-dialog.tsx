@@ -1,11 +1,9 @@
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
@@ -19,19 +17,21 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: 480,
   },
-  button: {
-    textDecoration: 'none',
+  tag: {
+    transition: 'borderBottom 0.3s',
+    borderBottom: '1px solid transparent',
+    display: 'inline-block',
     cursor: 'pointer',
-    borderRadius: 33,
-    background: theme.palette.background.paper,
-    color: theme.palette.primary.main,
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(3),
-    display: 'block',
-    width: '100%',
-    paddingTop: 12,
-    paddingBottom: 12,
-    marginTop: theme.spacing(2),
+    '&:hover': {
+      borderBottomColor: theme.palette.divider,
+    },
+  },
+  tagSelected: {
+    borderBottomColor: theme.palette.primary.dark,
+    '&:hover': {
+      opacity: 0.8,
+      borderBottomColor: theme.palette.primary.dark,
+    },
   },
   closeButton: {
     position: 'absolute',
@@ -39,11 +39,7 @@ const useStyles = makeStyles((theme) => ({
     right: 42,
   },
   columnList: {
-    maxHeight: 300,
-    overflow: 'auto',
-    border: `1px solid ${theme.palette.divider}`,
-    marginTop: theme.spacing(1),
-    borderRadius: theme.spacing(1),
+    columnCount: 3,
   },
 }));
 
@@ -62,7 +58,9 @@ export const AddTaggDialog = (props: {
       const result = await props.store.tfidfStore.getCalculatedDocuments();
       if (result) {
         const tags = result;
-        setWebsiteTags(uniq(tags.concat(props.userTags.map((t) => t.tag))).sort() as any);
+        const formattedTags = tags.concat(props.userTags.map((t) => t.tag));
+        console.log(tags, formattedTags, '<<<<<<<<<<<<<<<<<<<<<<<<');
+        setWebsiteTags(uniq(formattedTags).sort() as any);
       }
     };
     setTimeout(() => void fetchData(), 100);
@@ -89,18 +87,21 @@ export const AddTaggDialog = (props: {
             </IconButton>
           </Grid>
         </Grid>
-        <List className={classes.columnList} disablePadding>
+        <ul className={classes.columnList}>
           {websiteTags.map((t) => (
-            <ListItem
-              key={t}
-              selected={isTagSelected(t, props.userTags)}
-              button
-              onClick={() => props.toggleWebsiteTag(t, '<test>')}
-            >
-              <ListItemText primary={t} />
-            </ListItem>
+            <li key={t}>
+              <div
+                className={clsx(
+                  classes.tag,
+                  isTagSelected(t, props.userTags) && classes.tagSelected,
+                )}
+                onClick={() => props.toggleWebsiteTag(t, '<test>')}
+              >
+                <Typography>{t}</Typography>
+              </div>
+            </li>
           ))}
-        </List>
+        </ul>
       </div>
     </Dialog>
   );

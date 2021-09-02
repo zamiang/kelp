@@ -164,7 +164,6 @@ export const LargeWebsite = (props: {
             item={props.item}
             toggleWebsiteTag={props.toggleWebsiteTag}
             userTags={props.websiteTags}
-            isHovering={true}
           />
         </Grid>
         <Grid item>

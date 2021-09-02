@@ -17,15 +17,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1 / 2),
     marginLeft: theme.spacing(1 / 2),
     transition: 'borderBottom 0.3s',
-    pointerEvents: 'none',
     borderBottom: '1px solid transparent',
+    cursor: 'pointer',
     '&:hover': {
       borderBottomColor: theme.palette.divider,
     },
-  },
-  tagVisible: {
-    pointerEvents: 'all',
-    cursor: 'pointer',
   },
   tagSelected: {
     pointerEvents: 'all',
@@ -85,22 +81,23 @@ export const WebsiteTags = (props: {
   item: IFeaturedWebsite;
   userTags: IWebsiteTag[];
   toggleWebsiteTag: (text: string, websiteId: string) => void;
-  isHovering: boolean;
 }) => {
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
   const classes = useStyles();
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const website = await props.store.websiteStore.getById(props.item.websiteId);
       if (website?.tags) {
         const i = await getTagsForWebsite(website.tags || '', props.store, props.userTags);
-        setWebsiteTags(i);
+        return isSubscribed && setWebsiteTags(i);
       } else {
-        setWebsiteTags([]);
+        return isSubscribed && setWebsiteTags([]);
       }
     };
     void fetchData();
+    return () => (isSubscribed = false) as any;
   }, [props.item.websiteId, props.userTags.length]);
 
   return (
@@ -109,11 +106,7 @@ export const WebsiteTags = (props: {
         <div
           key={`${tag}-${props.item.websiteId}`}
           onClick={() => props.toggleWebsiteTag(tag, props.item.websiteId)}
-          className={clsx(
-            classes.tag,
-            props.isHovering && classes.tagVisible,
-            isTagSelected(tag, props.userTags) && classes.tagSelected,
-          )}
+          className={clsx(classes.tag, isTagSelected(tag, props.userTags) && classes.tagSelected)}
         >
           <Typography variant="body2">{tag}</Typography>
         </div>

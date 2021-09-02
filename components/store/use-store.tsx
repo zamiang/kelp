@@ -202,9 +202,11 @@ const useStoreWithFetching = (
 
       // TODO: DO THE MIGRATION HERE
       if (priorWebsites.length > 0) {
+        console.log('migrating to new store');
         await migrateWebsites({ deprecatedWebsiteStore, websiteVisitStore, websiteStore });
       }
       if (currentWebsites.length < 1) {
+        console.log('saving chrome history');
         setLoadingMessage('Saving Websites');
         const historyWebsites = await fetchAllHistory();
         await websiteStore.addHistoryToStore(historyWebsites);
@@ -212,9 +214,9 @@ const useStoreWithFetching = (
       }
 
       // Cleanup website images
-      await websiteImageStore.cleanupWebsiteImages();
+      // await websiteImageStore.cleanupWebsiteImages();
       // Cleanup website visits
-      await websiteVisitStore.cleanupWebsites();
+      // await websiteVisitStore.cleanupWebsites();
 
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
@@ -270,7 +272,7 @@ const useStoreWithFetching = (
   };
 };
 
-const updateThrottleMinutes = 1;
+const updateThrottleMinutes = 10;
 
 const useStore = (
   db: dbType | null,

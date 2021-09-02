@@ -145,6 +145,7 @@ const Search = (props: {
   });
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const searchIndex = new SearchIndex();
       await searchIndex.addData(props.store);
@@ -154,9 +155,12 @@ const Search = (props: {
         minMatchCharLength: 2,
         keys: ['text'],
       });
-      setFuse(fuse);
+      if (isSubscribed) {
+        setFuse(fuse);
+      }
     };
     void fetchData();
+    return () => (isSubscribed = false) as any;
   }, [props.store.lastUpdated, props.store.isLoading]);
 
   if (!fuse) {

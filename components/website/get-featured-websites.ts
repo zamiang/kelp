@@ -15,6 +15,7 @@ export const fetchWebsitesForMeetingFiltered = async (
   shouldShowAll: boolean,
   setWebsites?: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount?: (n: number) => void,
+  isSubscribed?: boolean,
 ) => {
   const result = await getWebsitesForMeeting(meeting, store);
 
@@ -24,14 +25,15 @@ export const fetchWebsitesForMeetingFiltered = async (
 
   if (setExtraItemsCount) {
     const extraResultLength = filtereredWebsites.length - maxResult;
-    setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+    isSubscribed &&
+      setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
   }
 
   const websites = shouldShowAll
     ? filtereredWebsites.slice(0, maxResult * 10)
     : filtereredWebsites.slice(0, maxResult);
   if (setWebsites) {
-    setWebsites(websites);
+    isSubscribed && setWebsites(websites);
   } else {
     return websites;
   }

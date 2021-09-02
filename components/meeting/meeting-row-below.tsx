@@ -53,6 +53,7 @@ const MeetingRowBelow = (props: {
   });
 
   useEffect(() => {
+    let isSubscribed = true;
     void fetchWebsitesForMeetingFiltered(
       props.meeting,
       props.store,
@@ -60,7 +61,9 @@ const MeetingRowBelow = (props: {
       shouldShowAll,
       setWebsites,
       setExtraItemsCount,
+      isSubscribed,
     );
+    return () => (isSubscribed = false) as any;
   }, [
     props.store.lastUpdated,
     props.store.isLoading,

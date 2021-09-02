@@ -1,8 +1,9 @@
 import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 import { flatten, uniq } from 'lodash';
 import { pRateLimit } from 'p-ratelimit';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
+import { useThrottle } from 'react-use';
 import {
   IDocument,
   IFormattedDriveActivity,
@@ -43,35 +44,6 @@ interface IReturnType {
   readonly currentUserLoading: boolean;
   readonly peopleLoading: boolean;
 }
-
-const useDebounce = (value: any, delay: number) => {
-  // State and setters for debounced value
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  useEffect(
-    () => {
-      // Set debouncedValue to value (passed in) after the specified delay
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
-      // Return a cleanup function that will be called every time ...
-      // ... useEffect is re-called. useEffect will only be re-called ...
-      // ... if value changes (see the inputs array below).
-      // This is how we prevent debouncedValue from changing if value is ...
-      // ... changed within the delay period. Timeout gets cleared and restarted.
-      // To put it in context, if the user is typing within our app's ...
-      // ... search box, we don't want the debouncedValue to update until ...
-      // ... they've stopped typing for more than 500ms.
-      return () => {
-        clearTimeout(handler);
-      };
-    },
-    // Only re-call effect if value changes
-    // You could also add the "delay" var to inputs array if you ...
-    // ... need to be able to change that dynamically.
-    [value],
-  );
-  return debouncedValue;
-};
 
 // create a rate limiter that allows up to x API calls per second, with max concurrency of y
 const limit = pRateLimit({
@@ -177,7 +149,7 @@ const FetchAll = (
     [peopleIds.length.toString()] as any,
   );
 
-  const debouncedIsLoading = useDebounce(
+  const isLoadingDebounced = useThrottle(
     peopleResponse.loading ||
       currentUser.loading ||
       driveResponse.loading ||
@@ -188,6 +160,8 @@ const FetchAll = (
       missingGoogleDocs.missingGoogleDocsLoading,
     200,
   );
+
+  const debouncedLastUpdated = useThrottle(new Date(), 200);
 
   const driveFiles = (driveResponse.result || []).filter(Boolean) as IDocument[];
   if (missingGoogleDocs.missingDriveFiles) {
@@ -232,14 +206,14 @@ const FetchAll = (
       await peopleResponse.execute();
       await microsoftCalendarResponse.execute();
     },
-    lastUpdated: new Date(),
+    lastUpdated: debouncedLastUpdated,
     currentUserLoading: currentUser.loading,
     driveResponseLoading: driveResponse.loading,
     driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading || microsoftCalendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading || microsoftCalendarResponse.loading,
     peopleLoading: peopleResponse.loading,
-    isLoading: debouncedIsLoading,
+    isLoading: isLoadingDebounced,
     error:
       peopleResponse.error ||
       currentUser.error ||

@@ -73,6 +73,7 @@
     "react-linkify": "1.0.0-alpha",
     "react-router-dom": "5.2.1",
     "react-svg-loader": "3.0.3",
+    "react-use": "17.3.1",
     "rimraf": "3.0.2",
     "sitemap": "7.0.0",
     "stream-browserify": "3.0.0",
