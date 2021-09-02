@@ -44,7 +44,8 @@ const fetchData = async (
   });
 
   const extraResultLength = filtereredWebsites.length - maxResult;
-  setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+  isSubscribed &&
+    setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
   if (shouldShowAll) {
     return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
   } else {

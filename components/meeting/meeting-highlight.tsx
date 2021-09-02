@@ -26,13 +26,15 @@ export const MeetingHighlight = (props: {
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const result = await props.store.timeDataStore.getSegmentsByDay(
         subDays(setMinutes(setHours(new Date(), 0), 0), 0),
       );
-      setMeetingsByDay(result);
+      return isSubscribed && setMeetingsByDay(result);
     };
     void fetchData();
+    return () => (isSubscribed = false) as any;
   }, [props.store.lastUpdated, props.store.isLoading]);
 
   let featuredMeeting: ISegment | undefined;

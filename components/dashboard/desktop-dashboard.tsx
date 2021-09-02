@@ -115,7 +115,6 @@ export const DesktopDashboard = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('setting website tags');
       const i = await props.store.websiteTagStore.getAll();
       setWebsiteTags(i);
     };

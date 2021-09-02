@@ -111,19 +111,23 @@ export const LargeWebsite = (props: {
   const classes = useStyles();
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const w = await props.store.websiteStore.getById(props.item.websiteId);
-      setWebsite(w);
+      return isSubscribed && setWebsite(w);
     };
     void fetchData();
+    return () => (isSubscribed = false) as any;
   }, [props.item.websiteId]);
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const i = await props.store.websiteImageStore.getById(props.item.websiteId);
-      setImage(i);
+      return isSubscribed && setImage(i);
     };
     void fetchData();
+    return () => (isSubscribed = false) as any;
   }, [props.item.websiteId]);
 
   return (

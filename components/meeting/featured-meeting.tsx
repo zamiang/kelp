@@ -131,6 +131,7 @@ export const FeaturedMeeting = (props: {
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
 
   const toggleMeetingTag = (tag: string, meetingId: string, meetingSummary: string) => {
+    let isSubscribed = true;
     const updateData = async () => {
       if (isSegmentTagSelected(meetingId, tag, segmentTags)) {
         await props.store.segmentTagStore.deleteAllForTag(tag);
@@ -138,17 +139,20 @@ export const FeaturedMeeting = (props: {
         await props.store.segmentTagStore.create(tag, meetingId, meetingSummary);
       }
       const result = await props.store.segmentTagStore.getAll();
-      setSegmentTags(result);
+      return isSubscribed && setSegmentTags(result);
     };
     void updateData();
+    return () => (isSubscribed = false) as any;
   };
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const result = await props.store.segmentTagStore.getAll();
-      setSegmentTags(result);
+      return isSubscribed && setSegmentTags(result);
     };
     void fetchData();
+    return () => (isSubscribed = false) as any;
   }, [props.store.lastUpdated, props.meeting.id]);
 
   const meetingSummary = props.meeting?.summary?.toLocaleLowerCase() || '';
