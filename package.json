@@ -36,7 +36,7 @@
     "@material-ui/styles": "4.11.4",
     "@microsoft/microsoft-graph-client": "3.0.0",
     "@rehooks/component-size": "1.0.3",
-    "@types/chrome": "0.0.154",
+    "@types/chrome": "0.0.155",
     "@types/d3": "7.0.0",
     "@types/express": "4.17.13",
     "@types/gapi": "0.0.41",
