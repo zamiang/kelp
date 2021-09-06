@@ -155,6 +155,7 @@ const databaseVerson = 14;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
+    console.log('upgrading from ', oldVersion, 'to', databaseVerson);
     if (oldVersion < 14) {
       // website canonical store
       const websiteItemStore = db.createObjectStore('websiteItem', {
@@ -216,6 +217,7 @@ const options = {
     if (oldVersion < 11) {
       deleteAllStores(db);
     }
+
     const personStore = db.createObjectStore('person', {
       keyPath: 'id',
     });
@@ -318,6 +320,7 @@ const options = {
       keyPath: 'id',
     });
     websiteItemStore.createIndex('by-domain', 'domain', { unique: false, multiEntry: true });
+
     // website visit store
     const websiteVisitStore = db.createObjectStore('websiteVisit', {
       keyPath: 'id',
@@ -495,6 +498,18 @@ const deleteAllStores = (db: IDBPDatabase<Db>) => {
 
   try {
     db.deleteObjectStore('segmentTag');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('websiteItem');
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    db.deleteObjectStore('websiteVisit');
   } catch (e) {
     console.log(e);
   }
