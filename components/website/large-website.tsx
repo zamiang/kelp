@@ -14,6 +14,7 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
 const useStyles = makeStyles((theme) => ({
+  website: {},
   container: {
     background: theme.palette.background.paper,
     opacity: 1,
@@ -58,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
   text: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    fontSize: theme.typography.h5.fontSize,
     fontFamily: theme.typography.h3.fontFamily,
     fontWeight: theme.typography.h3.fontWeight,
   },
@@ -130,9 +130,10 @@ export const LargeWebsite = (props: {
     return () => (isSubscribed = false) as any;
   }, [props.item.websiteId]);
 
+  console.log(props.item, '<<<');
   return (
-    <Grid item xs={props.smGridSize || (3 as any)}>
-      <Link href={props.item.url} underline="none">
+    <div className={classes.website}>
+      <Link href={website?.rawUrl} underline="none">
         <Box boxShadow={1} borderRadius={16} className={classes.container}>
           <WebsiteImage
             image={image}
@@ -185,6 +186,6 @@ export const LargeWebsite = (props: {
           </IconButton>
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };

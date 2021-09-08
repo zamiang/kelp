@@ -71,15 +71,16 @@ const WebsiteResults = (props: {
   return (
     <React.Fragment>
       {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
-        <LargeWebsite
-          store={props.store}
-          key={website.websiteId}
-          item={website}
-          isDarkMode={props.isDarkMode}
-          websiteTags={props.websiteTags}
-          toggleWebsiteTag={props.toggleWebsiteTag}
-          showWebsitePopup={props.showWebsitePopup}
-        />
+        <Grid item xs={3} key={website.websiteId}>
+          <LargeWebsite
+            store={props.store}
+            item={website}
+            isDarkMode={props.isDarkMode}
+            websiteTags={props.websiteTags}
+            toggleWebsiteTag={props.toggleWebsiteTag}
+            showWebsitePopup={props.showWebsitePopup}
+          />
+        </Grid>
       ))}
     </React.Fragment>
   );

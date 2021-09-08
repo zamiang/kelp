@@ -5,8 +5,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import React from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { DraggableWebsiteHighlights } from './draggable-website-highlights';
 import { IFeaturedWebsite } from './get-featured-websites';
-import { WebsiteHighlights } from './website-highlights';
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -51,7 +51,7 @@ export const TagHighlights = (props: {
               <Button onClick={() => props.toggleWebsiteTag(t.tag)}>Remove</Button>
             </Grid>
           </Grid>
-          <WebsiteHighlights
+          <DraggableWebsiteHighlights
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
             currentFilter={props.currentFilter}
