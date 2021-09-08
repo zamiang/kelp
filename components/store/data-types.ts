@@ -146,6 +146,7 @@ export interface IWebsiteItem {
   readonly documentId?: string;
   readonly ogImage?: string;
   readonly userEdited?: boolean;
+  readonly index?: number;
 }
 
 export interface IWebsiteVisit {

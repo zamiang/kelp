@@ -1,6 +1,4 @@
 import Grid from '@material-ui/core/Grid';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { LoadingSpinner } from '../shared/loading-spinner';
@@ -55,14 +53,16 @@ const fetchData = async (
     }),
   );
 
-  const filtereredWebsites = featuredWebsites.filter((item) => {
-    if (filterByTag) {
-      const website = websiteMap[item.websiteId];
-      const tags = website?.tags;
-      return tags && tags.indexOf(filterByTag) > -1;
-    }
-    return item && currentFilter === 'all';
-  });
+  const filtereredWebsites = featuredWebsites
+    .filter((item) => {
+      if (filterByTag) {
+        const website = websiteMap[item.websiteId];
+        const tags = website?.tags;
+        return tags && tags.indexOf(filterByTag) > -1;
+      }
+      return item && currentFilter === 'all';
+    })
+    .sort((a, b) => (websiteMap[a.websiteId].index > websiteMap[b.websiteId].index ? 1 : -1));
 
   const extraResultLength = filtereredWebsites.length - maxResult;
   isSubscribed &&
@@ -131,6 +131,8 @@ const DraggableWebsites = (props: {
     const tw = reorder(props.topWebsites, result.source.index, result.destination.index);
 
     props.setTopWebsites(tw);
+
+    void props.store.websiteStore.saveOrder(tw);
   };
 
   return (
@@ -178,11 +180,6 @@ export const DraggableWebsiteHighlights = (props: {
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
-    defaultMatches: true,
-  });
-  console.log(isMobile, '<<<');
   useEffect(() => {
     let isSubscribed = true;
     void fetchData(

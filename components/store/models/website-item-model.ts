@@ -3,6 +3,7 @@ import ErrorTracking from '../../error-tracking/error-tracking';
 import { IChromeWebsite } from '../../fetch/chrome/fetch-history';
 import { cleanupUrl } from '../../shared/cleanup-url';
 import { cleanText } from '../../shared/tfidf';
+import { IFeaturedWebsite } from '../../website/get-featured-websites';
 import { IWebsite, IWebsiteItem } from '../data-types';
 import { dbType } from '../db';
 import { IStore } from '../use-store';
@@ -150,5 +151,20 @@ export default class WebsiteItemModel {
       await this.db.put('websiteItem', website);
       return website;
     }
+  }
+
+  async saveOrder(websiteItems: IFeaturedWebsite[]) {
+    const results = await Promise.allSettled(
+      websiteItems.map(async (featuredWebsite, index) => {
+        const existingItem = await this.getById(featuredWebsite.websiteId);
+        if (existingItem) {
+          const website = { ...existingItem, index };
+          await this.db.put('websiteItem', website);
+          return website;
+        }
+      }),
+    );
+
+    return results;
   }
 }

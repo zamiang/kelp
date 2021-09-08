@@ -45,7 +45,6 @@ export interface IFeaturedWebsite {
   url: string;
   document?: IDocument;
   meetings: ISegment[];
-  isPinned: boolean;
   date: Date;
 }
 
@@ -78,11 +77,6 @@ export const getFeaturedWebsites = async (props: IStore) => {
   const currentDate = new Date();
   const filterTime = subDays(currentDate, config.NUMBER_OF_DAYS_BACK);
 
-  // setup pin index
-  const pinIndex: { [url: string]: boolean } = {};
-  const pins = await props.websitePinStore.getAll();
-  pins.map((p) => (pinIndex[p.id] = true));
-
   // For documents edited by the current user that may not be associated with a meeting
   const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
   const filteredWebsites = await props.websiteVisitStore.getAll(
@@ -114,7 +108,6 @@ export const getFeaturedWebsites = async (props: IStore) => {
         text: item.title,
         date: item.time,
         websiteDatabaseId: null,
-        isPinned: pinIndex[link] ? true : false,
       } as IFeaturedWebsite;
     })
     .filter(Boolean) as IFeaturedWebsite[];
@@ -131,7 +124,6 @@ export const getFeaturedWebsites = async (props: IStore) => {
       websiteId: item.websiteId,
       url: item.url,
       date: item.visitedTime,
-      isPinned: pinIndex[item.websiteId] ? true : false,
     } as IFeaturedWebsite;
   });
 
@@ -140,13 +132,9 @@ export const getFeaturedWebsites = async (props: IStore) => {
     'websiteId',
   );
 
-  const pinned = concattedWebsitesAndDocuments
-    .filter((a) => a.isPinned)
-    .sort((a, b) => (urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1));
-  const notPinned = concattedWebsitesAndDocuments
-    .filter((a) => !a.isPinned)
-    .sort((a, b) => (urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1));
-  return pinned.concat(notPinned);
+  return concattedWebsitesAndDocuments.sort((a, b) =>
+    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
+  );
 };
 
 /**
@@ -238,6 +226,6 @@ export const getWebsitesForMeeting = async (
     'websiteId',
   );
   return concattedWebsitesAndDocuments.sort((a, b) =>
-    a.isPinned ? -1 : urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
+    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
   ) as any;
 };

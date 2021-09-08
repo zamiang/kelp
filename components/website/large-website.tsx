@@ -130,7 +130,6 @@ export const LargeWebsite = (props: {
     return () => (isSubscribed = false) as any;
   }, [props.item.websiteId]);
 
-  console.log(props.item, '<<<');
   return (
     <div className={classes.website}>
       <Link href={website?.rawUrl} underline="none">
