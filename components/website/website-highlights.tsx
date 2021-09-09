@@ -1,4 +1,7 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useTheme from '@material-ui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
@@ -7,7 +10,6 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
-import { RightArrow } from './right-arrow';
 
 const maxResult = 8;
 const maxDisplay = maxResult * 8;
@@ -53,6 +55,14 @@ const fetchData = async (
   }
 };
 
+const useStyles = makeStyles((theme) => ({
+  topSection: {
+    marginBottom: theme.spacing(1),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
+
 export const WebsiteHighlights = (props: {
   store: IStore;
   currentFilter: string;
@@ -67,6 +77,7 @@ export const WebsiteHighlights = (props: {
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
+  const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
     defaultMatches: true,
@@ -98,6 +109,27 @@ export const WebsiteHighlights = (props: {
   return (
     <div style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="space-between"
+        className={classes.topSection}
+      >
+        <Grid item>
+          <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
+        </Grid>
+        {extraItemsCount > 0 && !shouldShowAll && (
+          <Grid item>
+            <Button
+              onClick={() => {
+                setShouldShowAll(!shouldShowAll);
+              }}
+            >
+              Show all
+            </Button>
+          </Grid>
+        )}
+      </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={isMobile ? 5 : 6}>
@@ -115,18 +147,6 @@ export const WebsiteHighlights = (props: {
             ))}
           </Grid>
         </Grid>
-        {extraItemsCount > 0 && (
-          <Grid item xs={12}>
-            <RightArrow
-              isEnabled={shouldShowAll}
-              count={extraItemsCount}
-              isDarkMode={props.isDarkMode}
-              onClick={() => {
-                setShouldShowAll(!shouldShowAll);
-              }}
-            />
-          </Grid>
-        )}
       </Grid>
     </div>
   );

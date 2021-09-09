@@ -12,7 +12,6 @@ import {
   fetchWebsitesForMeetingFiltered,
 } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
-import { RightArrow } from '../website/right-arrow';
 import { WebsiteHighlights } from '../website/website-highlights';
 
 const useStyles = makeStyles((theme) => ({
@@ -93,38 +92,19 @@ const MeetingRowBelow = (props: {
         ))}
       </Grid>
       {extraItemsCount > 0 && (
-        <div style={{ marginTop: 12 }}>
-          <RightArrow
-            isEnabled={shouldShowAll}
-            isDarkMode={props.isDarkMode}
-            count={extraItemsCount}
-            onClick={() => {
-              setShouldShowAll(!shouldShowAll);
-            }}
-          />
-        </div>
+        <Button
+          onClick={() => {
+            setShouldShowAll(!shouldShowAll);
+          }}
+        >
+          Show all
+        </Button>
       )}
       {props.meetingTags.map((t) => (
         <div className={classes.section} key={t.id}>
-          <Grid
-            container
-            alignItems="center"
-            justifyContent="space-between"
-            className={classes.topSection}
-          >
-            <Grid item>
-              <Typography className={classes.title}>{t.tag}</Typography>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={() =>
-                  props.toggleMeetingTag(t.tag, props.meeting.id, props.meeting.summary || '')
-                }
-              >
-                Remove
-              </Button>
-            </Grid>
-          </Grid>
+          <div className={classes.topSection}>
+            <Typography className={classes.title}>{t.tag}</Typography>
+          </div>
           <WebsiteHighlights
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}

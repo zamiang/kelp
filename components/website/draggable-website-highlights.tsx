@@ -1,4 +1,7 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { LoadingSpinner } from '../shared/loading-spinner';
@@ -6,7 +9,6 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
-import { RightArrow } from './right-arrow';
 
 const maxResult = 8;
 const maxDisplay = maxResult * 8;
@@ -166,6 +168,14 @@ const DraggableWebsites = (props: {
   );
 };
 
+const useStyles = makeStyles((theme) => ({
+  topSection: {
+    marginBottom: theme.spacing(1),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
+
 export const DraggableWebsiteHighlights = (props: {
   store: IStore;
   currentFilter: string;
@@ -201,36 +211,42 @@ export const DraggableWebsiteHighlights = (props: {
     props.filterByTag,
   ]);
 
+  const classes = useStyles();
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
     <div style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <DraggableWebsites
-            setTopWebsites={setTopWebsites}
-            topWebsites={topWebsites}
-            store={props.store}
-            websiteTags={props.websiteTags}
-            isDarkMode={props.isDarkMode}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-            showWebsitePopup={props.showWebsitePopup}
-          />
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="space-between"
+        className={classes.topSection}
+      >
+        <Grid item>
+          <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
         </Grid>
-        {extraItemsCount > 0 && (
-          <Grid item xs={12}>
-            <RightArrow
-              isEnabled={shouldShowAll}
-              count={extraItemsCount}
-              isDarkMode={props.isDarkMode}
+        {extraItemsCount > 0 && !shouldShowAll && (
+          <Grid item>
+            <Button
               onClick={() => {
                 setShouldShowAll(!shouldShowAll);
               }}
-            />
+            >
+              Show all
+            </Button>
           </Grid>
         )}
       </Grid>
+      <DraggableWebsites
+        setTopWebsites={setTopWebsites}
+        topWebsites={topWebsites}
+        store={props.store}
+        websiteTags={props.websiteTags}
+        isDarkMode={props.isDarkMode}
+        toggleWebsiteTag={props.toggleWebsiteTag}
+        showWebsitePopup={props.showWebsitePopup}
+      />
     </div>
   );
 };
