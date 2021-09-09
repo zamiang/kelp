@@ -148,7 +148,6 @@ export const DesktopDashboard = (props: {
           toggleFilter={toggleFilter}
           currentFilter={filter}
           isDarkMode={props.isDarkMode}
-          setIsDarkMode={props.setIsDarkMode}
           websiteTags={websiteTags}
           isMicrosoftError={props.isMicrosoftError}
           toggleWebsiteTag={toggleWebsiteTagClick}
@@ -202,7 +201,11 @@ export const DesktopDashboard = (props: {
                   />
                 </Route>
                 <Route path="/settings">
-                  <Settings store={store} />
+                  <Settings
+                    store={store}
+                    isDarkMode={props.isDarkMode}
+                    setIsDarkMode={props.setIsDarkMode}
+                  />
                 </Route>
                 <Route>
                   <MeetingHighlight

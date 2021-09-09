@@ -85,7 +85,7 @@ export const WebsiteDialog = (props: {
   item?: IFeaturedWebsite;
   userTags: IWebsiteTag[];
   close: () => void;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   store: IStore;
 }) => {
   const classes = useStyles();
@@ -211,7 +211,7 @@ export const WebsiteDialog = (props: {
                 key={t}
                 selected={isTagSelected(t, props.userTags)}
                 button
-                onClick={() => props.toggleWebsiteTag(t, props.item?.websiteId || '<test')}
+                onClick={() => props.toggleWebsiteTag(t, props.item?.websiteId)}
               >
                 <ListItemText primary={t} />
                 <ListItemSecondaryAction>

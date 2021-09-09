@@ -1,27 +1,38 @@
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { sortBy } from 'lodash';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import CloseIcon from '../../public/icons/close.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTaggDialog } from './add-tag-dialog';
 
-const useStyles = makeStyles(() => ({
-  container: {},
+const useStyles = makeStyles((theme) => ({
+  container: { marginTop: theme.spacing(4) },
   tag: {
     cursor: 'pointer',
+    height: 24,
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  tagContainer: {
+    '&:hover $removeButton': {
+      display: 'block',
+    },
+  },
+  removeButton: {
+    display: 'none',
   },
 }));
 
 export const TopTags = (props: {
   websiteTags: IWebsiteTag[];
   store: IStore;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
 }) => {
   const classes = useStyles();
   const location = useLocation();
@@ -43,7 +54,7 @@ export const TopTags = (props: {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <AddTaggDialog
         userTags={props.websiteTags}
         isOpen={isDialogOpen}
@@ -51,27 +62,39 @@ export const TopTags = (props: {
         close={() => setDialogOpen(false)}
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
-      <Grid container className={classes.container} alignItems="center" spacing={2}>
-        <Grid item>
-          <Typography className={classes.tag} onClick={() => onClickTag('all')}>
-            All
+      <Grid container className={classes.container} alignItems="center" spacing={1}>
+        <Grid item xs={12}>
+          <Typography color="primary" className={classes.tag} onClick={() => setDialogOpen(true)}>
+            Add a tag
           </Typography>
         </Grid>
         {sortBy(props.websiteTags, 'tag').map((t) => (
-          <React.Fragment key={t.tag}>
-            <Grid item>
-              <Typography className={classes.tag} onClick={() => onClickTag(t.tag)}>
-                {t.tag}
-              </Typography>
+          <Grid item key={t.tag} xs={12}>
+            <Grid
+              container
+              alignItems="center"
+              justifyContent="space-between"
+              className={classes.tagContainer}
+            >
+              <Grid item zeroMinWidth xs>
+                <Typography noWrap className={classes.tag} onClick={() => onClickTag(t.tag)}>
+                  {t.tag}
+                </Typography>
+              </Grid>
+              <Grid item className={classes.removeButton}>
+                <IconButton onClick={() => props.toggleWebsiteTag(t.tag)} size="small">
+                  <CloseIcon width="18" height="18" />
+                </IconButton>
+              </Grid>
             </Grid>
-          </React.Fragment>
+          </Grid>
         ))}
-        <Grid item>
-          <Typography color="primary" className={classes.tag} onClick={() => setDialogOpen(true)}>
-            add
+        <Grid item xs={12}>
+          <Typography className={classes.tag} onClick={() => onClickTag('all')}>
+            Recent
           </Typography>
         </Grid>
       </Grid>
-    </div>
+    </React.Fragment>
   );
 };

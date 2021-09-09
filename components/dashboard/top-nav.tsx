@@ -8,31 +8,21 @@ import clsx from 'clsx';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
-import MoonIconOrange from '../../public/icons/moon-orange.svg';
-import MoonIcon from '../../public/icons/moon.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
 import SettingsIconWhite from '../../public/icons/settings-white.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import DayIconOrange from '../../public/icons/sun-orange.svg';
-import DayIconWhite from '../../public/icons/sun-white.svg';
 import SearchBar from '../nav/search-bar';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { TopTags } from './top-tags';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
+  leftSection: {
     position: 'fixed',
-    top: 0,
+    top: theme.spacing(1.5),
     left: 0,
-    overflow: 'hidden',
-    paddingTop: theme.spacing(1.5),
-    paddingBottom: theme.spacing(1.5),
-    background: theme.palette.background.default,
     transition: 'background 0.3s',
     zIndex: 10,
-  },
-  leftSection: {
     width: 228,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
@@ -48,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rightSection: {
+    position: 'fixed',
+    top: theme.spacing(1.5),
+    right: 0,
+    transition: 'background 0.3s',
     width: 228,
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(1),
@@ -77,11 +71,10 @@ const useStyles = makeStyles((theme) => ({
 export const TopNav = (props: {
   store: IStore;
   toggleFilter: (filter: string) => void;
-  currentFilter?: string;
   isDarkMode: boolean;
-  setIsDarkMode: (isDarkMode: boolean) => void;
+  currentFilter?: string;
   isMicrosoftError: boolean;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
 }) => {
   const classes = useStyles();
@@ -90,18 +83,11 @@ export const TopNav = (props: {
   const isSearch = location.pathname === '/search';
   const isMeetingsSelected = location.pathname === '/meetings';
   return (
-    <Grid
-      container
-      className={classes.container}
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Grid item className={classes.leftSection}>
+    <React.Fragment>
+      <div className={classes.leftSection}>
         <div className={classes.searchContainer}>
           <SearchBar isDarkMode={props.isDarkMode} />
         </div>
-      </Grid>
-      <Grid item xs>
         {!isSearch && (
           <Container maxWidth="lg" disableGutters>
             <Grid container justifyContent="space-between">
@@ -123,60 +109,22 @@ export const TopNav = (props: {
                   </Grid>
                 </Grid>
               )}
-              <Grid item>
-                <Typography
-                  className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    return router.push('/meetings');
-                  }}
-                >
-                  View by meetings
-                </Typography>
-              </Grid>
             </Grid>
           </Container>
         )}
-      </Grid>
-      <Grid item className={classes.rightSection}>
-        <Grid container justifyContent="flex-end">
+      </div>
+      <div className={classes.rightSection}>
+        <Grid container justifyContent="flex-end" alignItems="center">
           <Grid item>
-            <Tooltip title="Light Mode">
-              <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={(event) => {
-                  event.preventDefault();
-                  props.setIsDarkMode(false);
-                  localStorage.setItem(config.DARK_MODE, String(false));
-                }}
-              >
-                {props.isDarkMode ? (
-                  <DayIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                ) : (
-                  <DayIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                )}
-              </IconButton>
-            </Tooltip>
-          </Grid>
-          <Grid item>
-            <Tooltip title="Dark Mode">
-              <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={(event) => {
-                  event.preventDefault();
-                  props.setIsDarkMode(true);
-                  localStorage.setItem(config.DARK_MODE, String(true));
-                }}
-              >
-                {props.isDarkMode ? (
-                  <MoonIconOrange width="18" height="18" />
-                ) : (
-                  <MoonIcon width="18" height="18" />
-                )}
-              </IconButton>
-            </Tooltip>
+            <Typography
+              className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
+              onClick={(event) => {
+                event.preventDefault();
+                return router.push('/meetings');
+              }}
+            >
+              Meetings
+            </Typography>
           </Grid>
           <Grid item>
             <Tooltip title="Settings">
@@ -199,7 +147,7 @@ export const TopNav = (props: {
             </Tooltip>
           </Grid>
         </Grid>
-      </Grid>
-    </Grid>
+      </div>
+    </React.Fragment>
   );
 };

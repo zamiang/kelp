@@ -4,50 +4,60 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
 import Switch from '@material-ui/core/Switch';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
+import MoonIconOrange from '../../public/icons/moon-orange.svg';
+import MoonIcon from '../../public/icons/moon.svg';
+import DayIconOrange from '../../public/icons/sun-orange.svg';
+import DayIconWhite from '../../public/icons/sun-white.svg';
 import { LogOutButton, SignInButton, WelcomeUser } from '../shared/microsoft-login';
-import panelStyles from '../shared/panel-styles';
-import { IDomainBlocklist, IWebsiteBlocklist } from '../store/data-types';
+import { IDomainBlocklist, IPerson, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
-  textField: {
-    width: 'auto',
-  },
-  maxWidth: {},
   grid: {
     maxWidth: theme.breakpoints.values.sm,
     borderBottom: `1px solid ${theme.palette.divider}`,
     minHeight: 70,
-    paddingTop: 9,
     '&:last-child': {
       borderBottom: '0px solid',
     },
   },
+  section: { paddingBottom: theme.spacing(4), paddingTop: theme.spacing(4) },
+  panel: {},
 }));
 
-const Settings = (props: { store: IStore }) => {
-  const classes = panelStyles();
-  const formClasses = useStyles();
+const Settings = (props: {
+  store: IStore;
+  isDarkMode: boolean;
+  setIsDarkMode: (isDarkMode: boolean) => void;
+}) => {
+  const classes = useStyles();
   const [domainBlocklists, setDomainBlocklist] = useState<IDomainBlocklist[]>([]);
   const [websiteBlocklist, setWebsiteBlocklist] = useState<IWebsiteBlocklist[]>([]);
+  const [currentUser, setCurrentUser] = useState<IPerson>();
 
   const [isNotificationsEnabled, setNotificationsEnabled] = useState<boolean>(
     localStorage.getItem(config.NOTIFICATIONS_KEY) !== 'disabled' ? true : false,
   );
   const notificationPermission = window['Notification'] ? Notification.permission : undefined;
+
+  useEffect(() => {
+    const fetch = async () => {
+      const cu = await props.store.personDataStore.getSelf();
+      setCurrentUser(cu);
+    };
+    void fetch();
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -57,7 +67,7 @@ const Settings = (props: { store: IStore }) => {
       setWebsiteBlocklist(websiteBlocklistArray);
     };
     void fetch();
-  }, []);
+  }, [props.store.lastUpdated, props.store.isLoading]);
 
   const toggleChecked = (enabled: boolean) => {
     if (enabled) {
@@ -96,18 +106,88 @@ const Settings = (props: { store: IStore }) => {
   };
 
   return (
-    <div className={clsx(classes.panel, formClasses.maxWidth)}>
-      <div className={classes.section}>
-        <Typography variant="h3" color="textPrimary" style={{ marginBottom: 24 }}>
-          Settings
-        </Typography>
-      </div>
-      <Divider />
-      <div className={classes.section}>
-        <div className={formClasses.textField}>
-          <Typography variant="h4" style={{ marginBottom: 24 }}>
-            Upcoming Meeting Notifications
+    <div className={classes.panel}>
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h1" color="textPrimary" style={{ marginBottom: 22 }}>
+            Settings
           </Typography>
+          <Typography style={{ marginBottom: 22 }}>
+            Signed in as: {currentUser?.emailAddresses[0]}
+          </Typography>
+          <Typography variant="body2">
+            Note: If you sign into multiple Google Accounts (like for personal life and work), we
+            recommend using{' '}
+            <Link href="https://support.google.com/chrome/answer/2364824">
+              Google Chrome Profiles
+            </Link>
+            .
+          </Typography>
+        </Grid>
+      </Grid>
+      <Divider />
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h4">Dark mode</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Tooltip title="Light Mode">
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={(event) => {
+                event.preventDefault();
+                props.setIsDarkMode(false);
+                localStorage.setItem(config.DARK_MODE, String(false));
+              }}
+            >
+              {props.isDarkMode ? (
+                <DayIconWhite width="18" height="18" />
+              ) : (
+                <DayIconOrange width="18" height="18" />
+              )}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Dark Mode">
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={(event) => {
+                event.preventDefault();
+                props.setIsDarkMode(true);
+                localStorage.setItem(config.DARK_MODE, String(true));
+              }}
+            >
+              {props.isDarkMode ? (
+                <MoonIconOrange width="18" height="18" />
+              ) : (
+                <MoonIcon width="18" height="18" />
+              )}
+            </IconButton>
+          </Tooltip>
+        </Grid>
+      </Grid>
+      <Divider />
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h4">Upcoming Meeting Notifications</Typography>
+        </Grid>
+        <Grid item xs={6}>
           <FormGroup>
             <FormControlLabel
               control={
@@ -123,14 +203,19 @@ const Settings = (props: { store: IStore }) => {
           <Typography style={{ marginBottom: 22 }} variant="body2">
             Current browser permission status: {notificationPermission || 'not enabled'}
           </Typography>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <Divider />
-      <div className={classes.section}>
-        <div className={formClasses.textField} style={{ marginBottom: 22 }}>
-          <Typography variant="h4" style={{ marginBottom: 24, marginTop: 55 }}>
-            Sign in to Microsoft Teams
-          </Typography>
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h4">Microsoft Teams</Typography>
+        </Grid>
+        <Grid item xs={6}>
           <AuthenticatedTemplate>
             <WelcomeUser />
             <LogOutButton />
@@ -138,14 +223,19 @@ const Settings = (props: { store: IStore }) => {
           <UnauthenticatedTemplate>
             <SignInButton />
           </UnauthenticatedTemplate>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <Divider />
-      <div className={classes.section}>
-        <div className={formClasses.textField}>
-          <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
-            Hidden websites
-          </Typography>
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h4">Hidden websites</Typography>
+        </Grid>
+        <Grid item xs={6}>
           {shouldShowEmptyWebsiteBlocklist && (
             <Typography variant="h6">
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
@@ -155,9 +245,9 @@ const Settings = (props: { store: IStore }) => {
             <Grid
               key={item.id}
               container
-              alignItems="center"
+              alignItems="flex-start"
               justifyContent="space-between"
-              className={formClasses.grid}
+              className={classes.grid}
               spacing={2}
             >
               <Grid item xs={10}>
@@ -165,18 +255,25 @@ const Settings = (props: { store: IStore }) => {
               </Grid>
               <Grid item>
                 <IconButton onClick={() => removeWebsite(item.id)}>
-                  <CloseIcon width="24" height="24" />
+                  <CloseIcon width="18" height="18" />
                 </IconButton>
               </Grid>
             </Grid>
           ))}
-        </div>
-      </div>
-      <div className={classes.section}>
-        <div className={formClasses.textField}>
-          <Typography variant="h4" style={{ marginBottom: 0, marginTop: 55 }}>
-            Hidden domains (all urls under these domains are hidden)
-          </Typography>
+        </Grid>
+      </Grid>
+      <Divider />
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h4">Hidden domains</Typography>
+          <Typography variant="h6">All urls under these domains are hidden</Typography>
+        </Grid>
+        <Grid item xs={6}>
           {shouldShowEmptyDomainBlocklist && (
             <Typography variant="h6">
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
@@ -186,9 +283,9 @@ const Settings = (props: { store: IStore }) => {
             <Grid
               key={item.id}
               container
-              alignItems="center"
+              alignItems="flex-start"
               justifyContent="space-between"
-              className={formClasses.grid}
+              className={classes.grid}
               spacing={2}
             >
               <Grid item xs={10}>
@@ -196,13 +293,13 @@ const Settings = (props: { store: IStore }) => {
               </Grid>
               <Grid item>
                 <IconButton onClick={() => removeDomain(item.id)}>
-                  <CloseIcon width="24" height="24" />
+                  <CloseIcon width="18" height="18" />
                 </IconButton>
               </Grid>
             </Grid>
           ))}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
