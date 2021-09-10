@@ -79,16 +79,17 @@ const MeetingRowBelow = (props: {
     <Grid item xs={props.isFullWidth ? 12 : 11}>
       <Grid container spacing={isMobile ? 5 : 6}>
         {websites.map((item) => (
-          <LargeWebsite
-            key={item.websiteId}
-            item={item}
-            store={props.store}
-            smGridSize={4}
-            websiteTags={props.websiteTags}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-            isDarkMode={props.isDarkMode}
-            showWebsitePopup={props.showWebsitePopup}
-          />
+          <Grid item xs={3} key={item.websiteId}>
+            <LargeWebsite
+              item={item}
+              store={props.store}
+              smGridSize={4}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+              isDarkMode={props.isDarkMode}
+              showWebsitePopup={props.showWebsitePopup}
+            />
+          </Grid>
         ))}
       </Grid>
       {extraItemsCount > 0 && (
