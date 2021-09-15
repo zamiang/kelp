@@ -53,8 +53,9 @@ export const toggleWebsiteTag = async (
           (website.tags || '').replace(tag, '').trim().replace('  ', ' '),
         );
       }
+    } else {
+      return store.websiteTagStore.deleteAllForTag(tag);
     }
-    return store.websiteTagStore.deleteAllForTag(tag);
   }
   if (websiteId) {
     return store.websiteTagStore.create(tag, websiteId);

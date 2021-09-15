@@ -114,6 +114,7 @@ export const DesktopDashboard = (props: {
     await toggleWebsiteTag(tag, websiteTags, store, websiteId);
     const i = await props.store.websiteTagStore.getAll();
     setWebsiteTags(i);
+    props.store.isLoading = props.store.isLoading + 1;
   };
 
   return (
@@ -127,7 +128,10 @@ export const DesktopDashboard = (props: {
       <WebsiteDialog
         store={props.store}
         item={websitePopupItem}
-        close={() => setWebsitePopupItem(undefined)}
+        close={() => {
+          setWebsitePopupItem(undefined);
+          props.store.isLoading = props.store.isLoading + 1;
+        }}
         toggleWebsiteTag={toggleWebsiteTagClick}
         userTags={websiteTags}
       />

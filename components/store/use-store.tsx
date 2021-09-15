@@ -43,7 +43,6 @@ export interface IStore {
   readonly segmentTagStore: SegmentTagStore;
   readonly segmentDocumentStore: SegmentDocumentDataStore;
   readonly refetch: () => void;
-  readonly isLoading: boolean;
   readonly scope?: string;
   readonly loadingMessage?: string;
   readonly googleOauthToken?: string;
@@ -53,8 +52,8 @@ export interface IStore {
   readonly isDocumentsLoading: boolean;
   readonly isDriveActivityLoading: boolean;
 
-  // maybe can be updated?
-  lastUpdated: Date;
+  // maybe can be updated
+  isLoading: number;
 }
 
 export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
@@ -95,8 +94,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
     websiteImageStore,
     tfidfStore,
     segmentTagStore,
-    lastUpdated: new Date(),
-    isLoading: false,
+    isLoading: 0,
     loadingMessage: undefined,
     refetch: () => false,
     error: undefined,
@@ -117,7 +115,7 @@ const useStoreWithFetching = (
 ): IStore => {
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken, microsoftAccount, msal);
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setLoading] = useState<number>(0);
 
   const people = data.personList || [];
   const personDataStore = new PersonDataStore(db);
@@ -231,7 +229,7 @@ const useStoreWithFetching = (
 
       if (!data.isLoading) {
         setLoadingMessage(undefined);
-        setLoading(false);
+        setLoading(1);
         if (data.error) {
           ErrorTracking.logErrorInRollbar(`Fetch error ${data.error}`);
         }
@@ -258,8 +256,7 @@ const useStoreWithFetching = (
     domainFilterStore,
     segmentTagStore,
     tfidfStore,
-    lastUpdated: data.lastUpdated,
-    isLoading: data.isLoading || isLoading,
+    isLoading,
     isPeopleLoading: data.peopleLoading,
     isMeetingsLoading: data.calendarResponseLoading,
     isDocumentsLoading: data.driveResponseLoading,
