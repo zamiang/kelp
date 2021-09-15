@@ -67,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
 
 const formatAndSetWebsiteTags = async (
   item: IWebsiteItem,
-  store: IStore,
   userTags: IWebsiteTag[],
   setWebsiteTags: (t: string[]) => void,
   setHideAllSuccess: (b: boolean) => void,
@@ -75,7 +74,7 @@ const formatAndSetWebsiteTags = async (
 ) => {
   const text = item.tags || '';
 
-  const i = await getTagsForWebsite(text, store, userTags);
+  const i = await getTagsForWebsite(text, userTags);
   setWebsiteTags(i);
   setHideAllSuccess(false);
   setHideThisWebsiteSuccess(false);
@@ -119,7 +118,6 @@ export const WebsiteDialog = (props: {
       // todo update store so that it refreshes
       return await formatAndSetWebsiteTags(
         w,
-        props.store,
         props.userTags,
         setWebsiteTags,
         setHideAllSuccess,
@@ -146,7 +144,6 @@ export const WebsiteDialog = (props: {
       // todo update store so that it refreshes
       return await formatAndSetWebsiteTags(
         w,
-        props.store,
         props.userTags,
         setWebsiteTags,
         setHideAllSuccess,
@@ -164,7 +161,6 @@ export const WebsiteDialog = (props: {
         if (w) {
           await formatAndSetWebsiteTags(
             w,
-            props.store,
             props.userTags,
             setWebsiteTags,
             setHideAllSuccess,

@@ -57,7 +57,7 @@ const Settings = (props: {
       setCurrentUser(cu);
     };
     void fetch();
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.isLoading]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -67,7 +67,7 @@ const Settings = (props: {
       setWebsiteBlocklist(websiteBlocklistArray);
     };
     void fetch();
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.isLoading]);
 
   const toggleChecked = (enabled: boolean) => {
     if (enabled) {

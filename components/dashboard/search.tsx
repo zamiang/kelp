@@ -162,7 +162,7 @@ const Search = (props: {
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.isLoading]);
 
   if (!fuse) {
     return null;
@@ -259,7 +259,6 @@ const Search = (props: {
                 meeting={result.item as ISegment}
                 store={props.store}
                 showLine
-                currentFilter={'all'}
                 isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}

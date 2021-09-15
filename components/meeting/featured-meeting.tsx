@@ -117,7 +117,6 @@ export const FeaturedMeeting = (props: {
   store: IStore;
   showButton?: boolean;
   showLine?: boolean;
-  currentFilter: string;
   isDarkMode: boolean;
   happeningSoonLimit?: number;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
@@ -153,7 +152,7 @@ export const FeaturedMeeting = (props: {
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.store.lastUpdated, props.meeting.id]);
+  }, [props.store.isLoading, props.meeting.id]);
 
   const meetingSummary = props.meeting?.summary?.toLocaleLowerCase() || '';
   const relevantTags = segmentTags.filter((t) => {
@@ -256,7 +255,6 @@ export const FeaturedMeeting = (props: {
             <MeetingRowBelow
               meeting={props.meeting}
               store={props.store}
-              currentFilter={props.currentFilter}
               isDarkMode={props.isDarkMode}
               isFullWidth={false}
               websiteTags={props.websiteTags}
@@ -271,7 +269,6 @@ export const FeaturedMeeting = (props: {
           <MeetingRowBelow
             meeting={props.meeting}
             store={props.store}
-            currentFilter={props.currentFilter}
             isDarkMode={props.isDarkMode}
             isFullWidth={true}
             websiteTags={props.websiteTags}

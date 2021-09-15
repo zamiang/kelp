@@ -108,7 +108,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, meetingId]);
+  }, [props.store.isLoading, meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,7 +118,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, meetingId]);
+  }, [props.store.isLoading, meetingId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,7 +128,7 @@ const ExpandedMeeting = (props: {
       }
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading, meeting?.id]);
+  }, [props.store.isLoading, meeting?.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,7 +136,7 @@ const ExpandedMeeting = (props: {
       setSegmentTags(result);
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.meetingId]);
+  }, [props.store.isLoading, props.meetingId]);
 
   const meetingSummary = meeting?.summary?.toLocaleLowerCase() || '';
   const relevantTags = segmentTags.filter((t) => {
@@ -324,7 +324,6 @@ const ExpandedMeeting = (props: {
             {currentTag !== 'all' && (
               <WebsiteHighlights
                 store={props.store}
-                currentFilter={'all'}
                 websiteTags={props.websiteTags}
                 isDarkMode={props.isDarkMode}
                 toggleWebsiteTag={props.toggleWebsiteTag}

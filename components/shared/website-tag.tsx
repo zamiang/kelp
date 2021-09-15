@@ -1,7 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import clsx from 'clsx';
-import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -56,24 +55,22 @@ export const toggleWebsiteTag = async (
   }
 };
 
-export const getTagsForWebsite = async (
-  websiteTitle: string,
-  store: IStore,
-  userTags: IWebsiteTag[],
-) => {
-  const tfidf = await store.tfidfStore.getTfidf(store);
-  const values = uniqBy(tfidf.tfidfs(websiteTitle), (t) => t.term);
-  const sorted = values.sort((a, b) => {
-    const isASelected = isTagSelected(a.term, userTags);
-    const isBSelected = isTagSelected(b.term, userTags);
-    if (isASelected && !isBSelected) {
-      return -1;
-    } else if (isBSelected && !isASelected) {
-      return 1;
-    }
-    return a.value > b.value ? -1 : 1;
-  });
-  return sorted.map((a) => a.term);
+export const getTagsForWebsite = async (tags: string, userTags: IWebsiteTag[]) => {
+  const sorted = tags
+    .trim()
+    .split(' ')
+    .sort((a, b) => {
+      const isASelected = isTagSelected(a, userTags);
+      const isBSelected = isTagSelected(b, userTags);
+      if (isASelected && !isBSelected) {
+        return -1;
+      } else if (isBSelected && !isASelected) {
+        return 1;
+      }
+      return 0;
+    });
+  // Ensure there are no blank tags
+  return sorted.filter((t) => t.length > 2 && t.length < 15);
 };
 
 export const WebsiteTags = (props: {
@@ -90,7 +87,7 @@ export const WebsiteTags = (props: {
     const fetchData = async () => {
       const website = await props.store.websiteStore.getById(props.item.websiteId);
       if (website?.tags) {
-        const i = await getTagsForWebsite(website.tags || '', props.store, props.userTags);
+        const i = await getTagsForWebsite(website.tags || '', props.userTags);
         return isSubscribed && setWebsiteTags(i);
       } else {
         return isSubscribed && setWebsiteTags([]);

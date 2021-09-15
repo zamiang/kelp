@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 const MeetingRowBelow = (props: {
   meeting: ISegment;
   store: IStore;
-  currentFilter: string;
   isDarkMode: boolean;
   isFullWidth: boolean;
   websiteTags: IWebsiteTag[];
@@ -56,20 +55,13 @@ const MeetingRowBelow = (props: {
     void fetchWebsitesForMeetingFiltered(
       props.meeting,
       props.store,
-      props.currentFilter,
       shouldShowAll,
       setWebsites,
       setExtraItemsCount,
       isSubscribed,
     );
     return () => (isSubscribed = false) as any;
-  }, [
-    props.store.lastUpdated,
-    props.store.isLoading,
-    props.meeting.id,
-    shouldShowAll,
-    props.currentFilter,
-  ]);
+  }, [props.store.isLoading, props.meeting.id, shouldShowAll]);
 
   if (websites.length < 1 && props.meetingTags.length < 1) {
     return null;
@@ -109,7 +101,6 @@ const MeetingRowBelow = (props: {
           <WebsiteHighlights
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
-            currentFilter={props.currentFilter}
             websiteTags={props.websiteTags}
             showWebsitePopup={props.showWebsitePopup}
             isDarkMode={props.isDarkMode}

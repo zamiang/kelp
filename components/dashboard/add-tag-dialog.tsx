@@ -65,7 +65,7 @@ export const AddTaggDialog = (props: {
     };
     setTimeout(() => void fetchData(), 100);
     return () => (isSubscribed = false) as any;
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.isLoading]);
 
   return (
     <Dialog

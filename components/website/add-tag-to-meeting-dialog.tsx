@@ -85,7 +85,7 @@ export const AddTagToMeetingDialog = (props: {
       }
     };
     void fetchData();
-  }, [props.store.lastUpdated]);
+  }, [props.store.isLoading]);
 
   return (
     <Dialog

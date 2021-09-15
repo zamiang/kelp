@@ -15,7 +15,6 @@ const Meetings = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
-  currentFilter: string;
   isDarkMode: boolean;
 }) => {
   const [meetings, setMeetings] = useState<ISegment[]>([]);
@@ -30,7 +29,7 @@ const Meetings = (props: {
       setMeetings(filteredResults);
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.isLoading]);
 
   const classes = panelStyles();
   const shouldRenderLoading = props.store.isMeetingsLoading;
@@ -44,7 +43,6 @@ const Meetings = (props: {
           meeting={meeting}
           store={props.store}
           showLine
-          currentFilter={props.currentFilter}
           isDarkMode={props.isDarkMode}
           happeningSoonLimit={60 * 4}
           websiteTags={props.websiteTags}

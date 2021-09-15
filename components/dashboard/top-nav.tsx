@@ -4,10 +4,15 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import clsx from 'clsx';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
+import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
+import MeetingsIconWhite from '../../public/icons/calendar-white.svg';
+import MeetingsIcon from '../../public/icons/calendar.svg';
+import HomeIconOrange from '../../public/icons/home-orange.svg';
+import HomeIconWhite from '../../public/icons/home-white.svg';
+import HomeIcon from '../../public/icons/home.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
 import SettingsIconWhite from '../../public/icons/settings-white.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
@@ -70,9 +75,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const TopNav = (props: {
   store: IStore;
-  toggleFilter: (filter: string) => void;
   isDarkMode: boolean;
-  currentFilter?: string;
   isMicrosoftError: boolean;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
@@ -82,6 +85,8 @@ export const TopNav = (props: {
   const location = useLocation();
   const isSearch = location.pathname === '/search';
   const isMeetingsSelected = location.pathname === '/meetings';
+  const isHomeSelected = location.pathname === '/home';
+  const isSettingsSelected = location.pathname === '/settings';
   return (
     <React.Fragment>
       <div className={classes.leftSection}>
@@ -116,27 +121,49 @@ export const TopNav = (props: {
       <div className={classes.rightSection}>
         <Grid container justifyContent="flex-end" alignItems="center">
           <Grid item>
-            <Typography
-              className={clsx(classes.button, isMeetingsSelected && classes.isSelected)}
+            <IconButton
+              aria-label="home"
+              onClick={(event) => {
+                event.preventDefault();
+                return router.push('/home');
+              }}
+            >
+              {isHomeSelected ? (
+                <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              ) : props.isDarkMode ? (
+                <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              ) : (
+                <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              )}
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton
+              aria-label="meetings"
               onClick={(event) => {
                 event.preventDefault();
                 return router.push('/meetings');
               }}
             >
-              Meetings
-            </Typography>
+              {isMeetingsSelected ? (
+                <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              ) : props.isDarkMode ? (
+                <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              ) : (
+                <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              )}
+            </IconButton>
           </Grid>
           <Grid item>
             <Tooltip title="Settings">
               <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
+                aria-label="settings"
                 onClick={(event) => {
                   event.preventDefault();
                   return router.push('/settings');
                 }}
               >
-                {location.pathname === '/settings' ? (
+                {isSettingsSelected ? (
                   <SettingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
                 ) : props.isDarkMode ? (
                   <SettingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />

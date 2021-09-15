@@ -11,27 +11,22 @@ const maxDisplay = maxResult * 10;
 export const fetchWebsitesForMeetingFiltered = async (
   meeting: ISegment,
   store: IStore,
-  currentFilter: string,
   shouldShowAll: boolean,
   setWebsites?: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount?: (n: number) => void,
   isSubscribed?: boolean,
 ) => {
-  const result = await getWebsitesForMeeting(meeting, store);
-
-  const filtereredWebsites = result.filter((item) =>
-    item && currentFilter === 'all' ? true : item.websiteId.indexOf(currentFilter) > -1,
-  );
+  const filteredWebsites = await getWebsitesForMeeting(meeting, store);
 
   if (setExtraItemsCount) {
-    const extraResultLength = filtereredWebsites.length - maxResult;
+    const extraResultLength = filteredWebsites.length - maxResult;
     isSubscribed &&
       setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
   }
 
   const websites = shouldShowAll
-    ? filtereredWebsites.slice(0, maxResult * 10)
-    : filtereredWebsites.slice(0, maxResult);
+    ? filteredWebsites.slice(0, maxResult * 10)
+    : filteredWebsites.slice(0, maxResult);
   if (setWebsites) {
     isSubscribed && setWebsites(websites);
   } else {

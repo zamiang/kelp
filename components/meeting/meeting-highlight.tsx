@@ -17,7 +17,6 @@ export const MeetingHighlight = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  currentFilter: string;
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
@@ -35,7 +34,7 @@ export const MeetingHighlight = (props: {
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.isLoading]);
 
   let featuredMeeting: ISegment | undefined;
   // Assumes meetings are already sorted
@@ -58,7 +57,6 @@ export const MeetingHighlight = (props: {
       <FeaturedMeeting
         store={props.store}
         meeting={featuredMeeting}
-        currentFilter={props.currentFilter}
         showButton
         isDarkMode={props.isDarkMode}
         showWebsitePopup={props.showWebsitePopup}

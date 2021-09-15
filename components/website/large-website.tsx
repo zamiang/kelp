@@ -162,7 +162,7 @@ export const LargeWebsite = (props: {
             />
           </IconButton>
         </Grid>
-        <Grid item xs>
+        <Grid item xs zeroMinWidth>
           <WebsiteTags
             store={props.store}
             item={props.item}

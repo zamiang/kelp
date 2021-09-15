@@ -75,7 +75,6 @@ export const DesktopDashboard = (props: {
   const classes = useStyles();
   const store = props.store;
   const router = useHistory();
-  const [filter, setFilter] = useState<string>('all');
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [websitePopupItem, setWebsitePopupItem] = useState<IFeaturedWebsite | undefined>();
 
@@ -88,16 +87,6 @@ export const DesktopDashboard = (props: {
     window.location.hash = '';
     router.push(hash.replace('#', ''));
   }
-
-  const toggleFilter = (f?: string) => {
-    if (!f) {
-      return;
-    } else if (f === filter) {
-      setFilter('all');
-    } else {
-      setFilter(f);
-    }
-  };
 
   // This would be the initial time. We can get it from a hook
   // (meta.modified in your case) or for this example from a ref.
@@ -119,7 +108,7 @@ export const DesktopDashboard = (props: {
       setWebsiteTags(i);
     };
     void fetchData();
-  }, [props.store.isLoading, props.store.lastUpdated]);
+  }, [props.store.isLoading]);
 
   const toggleWebsiteTagClick = async (tag: string, websiteId?: string) => {
     await toggleWebsiteTag(tag, websiteTags, store, websiteId);
@@ -145,8 +134,6 @@ export const DesktopDashboard = (props: {
       <div className={classes.content}>
         <TopNav
           store={store}
-          toggleFilter={toggleFilter}
-          currentFilter={filter}
           isDarkMode={props.isDarkMode}
           websiteTags={websiteTags}
           isMicrosoftError={props.isMicrosoftError}
@@ -185,7 +172,6 @@ export const DesktopDashboard = (props: {
                     store={store}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     websiteTags={websiteTags}
-                    currentFilter={filter}
                     isDarkMode={props.isDarkMode}
                     showWebsitePopup={showWebsitePopup}
                   />
@@ -195,7 +181,6 @@ export const DesktopDashboard = (props: {
                     store={store}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     websiteTags={websiteTags}
-                    currentFilter={filter}
                     isDarkMode={props.isDarkMode}
                     showWebsitePopup={showWebsitePopup}
                   />
@@ -212,7 +197,6 @@ export const DesktopDashboard = (props: {
                     store={props.store}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     websiteTags={websiteTags}
-                    currentFilter={filter}
                     isDarkMode={props.isDarkMode}
                     showWebsitePopup={showWebsitePopup}
                   />
@@ -220,7 +204,6 @@ export const DesktopDashboard = (props: {
                     store={props.store}
                     toggleWebsiteTag={toggleWebsiteTagClick}
                     websiteTags={websiteTags}
-                    currentFilter={filter}
                     isDarkMode={props.isDarkMode}
                     showWebsitePopup={showWebsitePopup}
                   />
@@ -228,7 +211,6 @@ export const DesktopDashboard = (props: {
                     <WebsiteHighlights
                       store={store}
                       toggleWebsiteTag={toggleWebsiteTagClick}
-                      currentFilter={filter}
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}

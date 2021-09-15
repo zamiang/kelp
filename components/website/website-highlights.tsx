@@ -16,7 +16,6 @@ const maxDisplay = maxResult * 8;
 
 const fetchData = async (
   store: IStore,
-  currentFilter: string,
   shouldShowAll: boolean,
   setWebsites: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount: (n: number) => void,
@@ -42,7 +41,7 @@ const fetchData = async (
       const tags = website?.tags;
       return tags && tags.indexOf(filterByTag) > -1;
     }
-    return item && currentFilter === 'all';
+    return true;
   });
 
   const extraResultLength = filtereredWebsites.length - maxResult;
@@ -65,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const WebsiteHighlights = (props: {
   store: IStore;
-  currentFilter: string;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
@@ -87,7 +85,6 @@ export const WebsiteHighlights = (props: {
     let isSubscribed = true;
     void fetchData(
       props.store,
-      props.currentFilter,
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
@@ -96,13 +93,7 @@ export const WebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [
-    props.store.lastUpdated,
-    props.store.isLoading,
-    props.currentFilter,
-    shouldShowAll,
-    props.filterByTag,
-  ]);
+  }, [props.store.isLoading, shouldShowAll, props.filterByTag]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 

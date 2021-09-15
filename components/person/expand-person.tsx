@@ -38,7 +38,6 @@ const ExpandPerson = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
-  currentFilter: string;
 }) => {
   const classes = useExpandStyles();
   const buttonClasses = useButtonStyles();
@@ -85,12 +84,7 @@ const ExpandPerson = (props: {
         const websitesForMeetings = await Promise.all(
           filteredSegments.map(async (meeting) => {
             if (meeting) {
-              const result = await fetchWebsitesForMeetingFiltered(
-                meeting,
-                props.store,
-                props.currentFilter,
-                false,
-              );
+              const result = await fetchWebsitesForMeetingFiltered(meeting, props.store, false);
               return result;
             }
             return [];
@@ -110,7 +104,7 @@ const ExpandPerson = (props: {
       }
     };
     void fetchData();
-  }, [props.store.isLoading, personId, props.currentFilter]);
+  }, [props.store.isLoading, personId]);
 
   if (!person) {
     return null;
@@ -260,7 +254,6 @@ const ExpandPerson = (props: {
               segments={upcomingSegments}
               store={props.store}
               isDarkMode={props.isDarkMode}
-              currentFilter={props.currentFilter}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               showWebsitePopup={props.showWebsitePopup}
@@ -276,7 +269,6 @@ const ExpandPerson = (props: {
               segments={meetingsYouBothAttended}
               store={props.store}
               isDarkMode={props.isDarkMode}
-              currentFilter={props.currentFilter}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               showWebsitePopup={props.showWebsitePopup}

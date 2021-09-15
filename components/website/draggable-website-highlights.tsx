@@ -35,7 +35,6 @@ const reorder = (list: any[], startIndex: number, endIndex: number) => {
 
 const fetchData = async (
   store: IStore,
-  currentFilter: string,
   shouldShowAll: boolean,
   setWebsites: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount: (n: number) => void,
@@ -60,9 +59,12 @@ const fetchData = async (
       if (filterByTag) {
         const website = websiteMap[item.websiteId];
         const tags = website?.tags;
-        return tags && tags.indexOf(filterByTag) > -1;
+        if (filterByTag === 'site') {
+          console.log(tags, filterByTag, '<<<<<<<<<<<<<', tags?.includes(filterByTag));
+        }
+        return tags?.includes(filterByTag);
       }
-      return item && currentFilter === 'all';
+      return true;
     })
     .sort((a, b) => (websiteMap[a.websiteId].index > websiteMap[b.websiteId].index ? 1 : -1));
 
@@ -178,7 +180,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const DraggableWebsiteHighlights = (props: {
   store: IStore;
-  currentFilter: string;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
@@ -194,7 +195,6 @@ export const DraggableWebsiteHighlights = (props: {
     let isSubscribed = true;
     void fetchData(
       props.store,
-      props.currentFilter,
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
@@ -203,13 +203,7 @@ export const DraggableWebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [
-    props.store.lastUpdated,
-    props.store.isLoading,
-    props.currentFilter,
-    shouldShowAll,
-    props.filterByTag,
-  ]);
+  }, [props.store.isLoading, shouldShowAll, props.filterByTag]);
 
   const classes = useStyles();
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;

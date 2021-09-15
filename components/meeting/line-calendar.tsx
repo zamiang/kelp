@@ -128,7 +128,7 @@ export const LineCalendar = (props: { store: IStore }) => {
       setMeetings(result.filter((m) => m.end > startTime && m.start < endTime));
     };
     void fetchData();
-  }, [props.store.lastUpdated, props.store.isLoading]);
+  }, [props.store.isLoading]);
 
   return (
     <div className={classes.overflowContainer} ref={elementRef}>

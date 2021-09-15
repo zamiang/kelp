@@ -362,34 +362,18 @@ export const deleteDatabase = async (environment: 'production' | 'test' | 'exten
   indexedDB.deleteDatabase(dbNameHash[environment]);
 
 const setupDatabase = async (environment: 'production' | 'test' | 'extension') => {
-  /**
-   * Delete the database if it is old
-   * This helps solve contact dupe issues and old calendar events that were removed
-   * TODO: handle chrome storage
-
-  if (typeof localStorage === 'object') {
-    const lastUpdated = localStorage.getItem('kelpLastUpdated');
-    const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
-    if (!lastUpdatedDate || lastUpdatedDate < subHours(new Date(), 12)) {
-    console.log('deleting the database and starting from scratch');
-      indexedDB.deleteDatabase(dbNameHash[environment]);
-    } else if (environment === 'test') {
-      indexedDB.deleteDatabase(dbNameHash[environment]);
-    }
-    localStorage.setItem('kelpLastUpdated', new Date().toISOString());
-  }
-   */
-
   try {
     const db = await Promise.race([
       openDB<Db>(dbNameHash[environment], databaseVerson, options),
       timeout(1000),
     ]);
     if (db === 'error') {
+      console.error('ERROR: Database setup error');
       return null;
     }
     return db as IDBPDatabase<Db>;
   } catch (e) {
+    console.error('ERROR: Database setup error in try catch', e);
     return null;
   }
 };

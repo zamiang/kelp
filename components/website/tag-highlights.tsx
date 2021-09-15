@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const TagHighlights = (props: {
   store: IStore;
-  currentFilter: string;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
@@ -29,7 +28,6 @@ export const TagHighlights = (props: {
           <DraggableWebsiteHighlights
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
-            currentFilter={props.currentFilter}
             websiteTags={props.websiteTags}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
