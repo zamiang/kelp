@@ -50,7 +50,7 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-linkify": "1.0.1",
     "@types/react-onclickoutside": "6.7.4",
-    "@types/react-router-dom": "5.1.8",
+    "@types/react-router-dom": "5.1.9",
     "@types/url-regex": "5.0.0",
     "babel-plugin-styled-components": "1.13.2",
     "clsx": "1.1.1",
