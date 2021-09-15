@@ -58,11 +58,8 @@ const fetchData = async (
     .filter((item) => {
       if (filterByTag) {
         const website = websiteMap[item.websiteId];
-        const tags = website?.tags;
-        if (filterByTag === 'site') {
-          console.log(tags, filterByTag, '<<<<<<<<<<<<<', tags?.includes(filterByTag));
-        }
-        return tags?.includes(filterByTag);
+        const tags = website?.tags.trim().split(' ');
+        return tags && tags.includes(filterByTag);
       }
       return true;
     })

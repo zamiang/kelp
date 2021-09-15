@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { sortBy } from 'lodash';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
@@ -68,7 +67,7 @@ export const TopTags = (props: {
             Add a tag
           </Typography>
         </Grid>
-        {sortBy(props.websiteTags, 'tag').map((t) => (
+        {props.websiteTags.map((t) => (
           <Grid item key={t.tag} xs={12}>
             <Grid
               container

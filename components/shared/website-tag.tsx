@@ -46,7 +46,13 @@ export const toggleWebsiteTag = async (
 ) => {
   if (isTagSelected(tag, userTags)) {
     if (websiteId) {
-      return store.websiteTagStore.delete(tag, websiteId);
+      const website = await store.websiteStore.getById(websiteId);
+      if (website) {
+        return store.websiteStore.updateTags(
+          website.id,
+          (website.tags || '').replace(tag, '').trim().replace('  ', ' '),
+        );
+      }
     }
     return store.websiteTagStore.deleteAllForTag(tag);
   }
