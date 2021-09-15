@@ -98,12 +98,12 @@ export const WebsiteDialog = (props: {
   const hideDialogDomain = props.item?.websiteId ? new URL(props.item.websiteId).host : undefined;
   const hideUrl = async (url: string) => {
     await props.store.websiteBlocklistStore.addWebsite(url);
-    props.store.isLoading = props.store.isLoading + 1;
+    props.store.incrementLoading();
   };
 
   const hideDomain = async (domain: string) => {
     await props.store.domainBlocklistStore.addDomain(domain);
-    props.store.isLoading = props.store.isLoading + 1;
+    props.store.incrementLoading();
   };
 
   const removeTag = async (tag: string) => {

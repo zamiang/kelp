@@ -1,5 +1,4 @@
 import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
-import { subMinutes } from 'date-fns';
 import { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import ErrorTracking from '../error-tracking/error-tracking';
@@ -51,12 +50,14 @@ export interface IStore {
   readonly isMeetingsLoading: boolean;
   readonly isDocumentsLoading: boolean;
   readonly isDriveActivityLoading: boolean;
+  readonly isLoading: number;
 
-  // maybe can be updated
-  isLoading: number;
+  readonly incrementLoading: () => void;
 }
 
-export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
+export const useStoreNoFetch = (db: dbType | null): IStore | null => {
+  const [isLoading, setLoading] = useState<number>(0);
+
   if (!db) {
     return null;
   }
@@ -94,7 +95,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
     websiteImageStore,
     tfidfStore,
     segmentTagStore,
-    isLoading: 0,
+    isLoading,
     loadingMessage: undefined,
     refetch: () => false,
     error: undefined,
@@ -102,6 +103,7 @@ export const setupStoreNoFetch = (db: dbType | null): IStore | null => {
     isMeetingsLoading: false,
     isDocumentsLoading: false,
     isDriveActivityLoading: false,
+    incrementLoading: () => setLoading(isLoading + 1),
   };
 };
 
@@ -266,12 +268,12 @@ const useStoreWithFetching = (
     scope,
     googleOauthToken,
     error: data.error,
+    incrementLoading: () => setLoading(isLoading + 1),
   };
 };
 
-const updateThrottleMinutes = 10;
-
 const useStore = (
+  shouldFetch: boolean,
   db: dbType | null,
   googleOauthToken: string,
   googleScope: string,
@@ -282,15 +284,10 @@ const useStore = (
   if (!db) {
     return null;
   }
-  const lastUpdated = localStorage.getItem(config.LAST_UPDATED);
-  const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
+
   // Always fetch for microsoft, no real rate limit issues yet
-  if (
-    microsoftAccount ||
-    !lastUpdatedDate ||
-    lastUpdatedDate < subMinutes(new Date(), updateThrottleMinutes)
-  ) {
-    // console.log('fetching data');
+  if (microsoftAccount || shouldFetch) {
+    console.log('fetching data');
     // eslint-disable-next-line
     return useStoreWithFetching(
       db,
@@ -301,8 +298,9 @@ const useStore = (
       isMicrosoftLoadingOrError,
     );
   } else {
-    // console.log('not fetching data');
-    return setupStoreNoFetch(db);
+    console.log('not fetching data');
+    // eslint-disable-next-line
+    return useStoreNoFetch(db);
   }
 };
 

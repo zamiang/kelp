@@ -1,6 +1,6 @@
 import { cleanupUrl } from '../../components/shared/cleanup-url';
 import db from '../../components/store/db';
-import setupStore, { IStore, setupStoreNoFetch } from '../../components/store/use-store';
+import setupStore, { IStore, useStoreNoFetch } from '../../components/store/use-store';
 import config from '../../constants/config';
 
 let store: IStore;
@@ -93,7 +93,9 @@ const getOrCreateStore = async () => {
   if (!d) {
     throw new Error('Unable to connect to the database');
   }
-  const s = setupStoreNoFetch(d);
+  console.log('wtf');
+  // eslint-disable-next-line
+  const s = useStoreNoFetch(d);
   if (s) {
     store = s;
     return store;
@@ -109,7 +111,7 @@ const fetchDataAndCreateStore = async () => {
   if (!d) {
     throw new Error('unable to connect');
   }
-  const s = setupStore(d, 'oauth-token', 'scope');
+  const s = setupStore(false, d, 'oauth-token', 'scope');
   if (s) {
     store = s;
     return store;

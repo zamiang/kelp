@@ -14,6 +14,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './popup.css';
@@ -39,6 +40,21 @@ const ScrollToTop = () => {
   return null;
 };
 
+const updateThrottleMinutes = 10;
+
+const getShouldFetch = () => {
+  if ((window as any).SHOULD_FETCH) {
+    return (window as any).SHOULD_FETCH === 'true';
+  }
+  const lastUpdated = localStorage.getItem(config.LAST_UPDATED);
+  const lastUpdatedDate = lastUpdated ? new Date(lastUpdated) : undefined;
+  (window as any).SHOULD_FETCH =
+    !lastUpdatedDate || lastUpdatedDate < subMinutes(new Date(), updateThrottleMinutes)
+      ? 'true'
+      : 'false';
+  return (window as any).SHOULD_FETCH === 'true';
+};
+
 // Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();
 if (accounts.length > 0) {
@@ -60,6 +76,7 @@ const LoadingMobileDashboardContainer = (props: {
   const { instance } = useMsal();
   const currentAccount = instance.getActiveAccount();
   const store = getStore(
+    getShouldFetch(),
     props.database,
     props.accessToken,
     props.scope,
