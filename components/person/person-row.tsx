@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -11,21 +11,35 @@ import isTouchEnabled from '../shared/is-touch-enabled';
 import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/data-types';
 
-const useStyles = makeStyles((theme) => ({
-  personAccepted: {},
-  personTentative: {
+const PREFIX = 'PersonRow';
+
+const classes = {
+  personAccepted: `${PREFIX}-personAccepted`,
+  personTentative: `${PREFIX}-personTentative`,
+  personDeclined: `${PREFIX}-personDeclined`,
+  personNeedsAction: `${PREFIX}-personNeedsAction`,
+  person: `${PREFIX}-person`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.personAccepted}`]: {},
+
+  [`& .${classes.personTentative}`]: {
     opacity: 0.8,
   },
-  personDeclined: {
+
+  [`& .${classes.personDeclined}`]: {
     textDecoration: 'line-through',
     '&.MuiListItem-button:hover': {
       textDecoration: 'line-through',
     },
   },
-  personNeedsAction: {
+
+  [`& .${classes.personNeedsAction}`]: {
     opacity: 0.8,
   },
-  person: {
+
+  [`&.${classes.person}`]: {
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
     paddingTop: theme.spacing(1),
@@ -47,7 +61,6 @@ const PersonRow = (props: {
   text?: string;
   noMargin?: boolean;
 }) => {
-  const classes = useStyles();
   const isSelected = props.selectedPersonId === props.person.id;
   const rowStyles = useRowStyles();
   const buttonStyles = useButtonStyles();
@@ -64,7 +77,7 @@ const PersonRow = (props: {
   }, [!!referenceElement]);
 
   return (
-    <div
+    <Root
       onClick={(event) => {
         event.stopPropagation();
         router.push(`/people/${encodeURIComponent(props.person.id)}`);
@@ -144,7 +157,7 @@ const PersonRow = (props: {
           </Grid>
         )}
       </Grid>
-    </div>
+    </Root>
   );
 };
 

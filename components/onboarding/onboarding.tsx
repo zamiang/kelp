@@ -2,43 +2,61 @@ import Dialog from '@mui/material/Dialog';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/theme';
 import LeftArrow from '../../public/icons/left-arrow-black.svg';
 import RightArrow from '../../public/icons/right-arrow-black.svg';
 
-const maxTips = 3;
+const PREFIX = 'Onboarding';
 
-const useStyles = makeStyles((theme) => ({
-  stepOneContainer: {
+const classes = {
+  stepOneContainer: `${PREFIX}-stepOneContainer`,
+  heading: `${PREFIX}-heading`,
+  body: `${PREFIX}-body`,
+  rightAlignButton: `${PREFIX}-rightAlignButton`,
+  bold: `${PREFIX}-bold`,
+  li: `${PREFIX}-li`,
+  image: `${PREFIX}-image`,
+  button: `${PREFIX}-button`,
+  leftButton: `${PREFIX}-leftButton`,
+};
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.stepOneContainer}`]: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
     padding: 20,
     paddingBottom: 40,
   },
-  heading: { display: 'inline-block', marginLeft: theme.spacing(2) },
-  body: {
+
+  [`& .${classes.heading}`]: { display: 'inline-block', marginLeft: theme.spacing(2) },
+
+  [`& .${classes.body}`]: {
     marignBottom: theme.spacing(2),
   },
-  rightAlignButton: {
+
+  [`& .${classes.rightAlignButton}`]: {
     textAlign: 'right',
     marginTop: theme.spacing(4),
     fontSize: 16,
     display: 'block',
   },
-  bold: {
+
+  [`& .${classes.bold}`]: {
     display: 'inline-block',
     fontStyle: 'normal',
     fontFamily: mediumFontFamily,
     fontWeight: 500,
     color: theme.palette.primary.main,
   },
-  li: {
+
+  [`& .${classes.li}`]: {
     paddingBottom: theme.spacing(2),
   },
-  image: {
+
+  [`& .${classes.image}`]: {
     maxWidth: '100%',
     borderRadius: 20,
     marginBottom: 30,
@@ -47,114 +65,109 @@ const useStyles = makeStyles((theme) => ({
     height: 400,
     width: 600,
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     background: 'rgba(0, 0, 0, 0.12)',
   },
-  leftButton: {
+
+  [`& .${classes.leftButton}`]: {
     marginRight: theme.spacing(2),
   },
 }));
 
-const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => {
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <img src="https://www.kelp.nyc/animations/tag-nav.gif" className={classes.image} />
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Typography className={classes.bold} variant="h3">
-            {props.step} / {maxTips}
-          </Typography>
-          <Typography variant="h3" className={classes.heading}>
-            Meet your magical website organizer
-          </Typography>
-        </Grid>
-        <Grid item>
-          <IconButton
-            size="medium"
-            className={classes.button}
-            onClick={() => props.setStep(props.step + 1)}
-          >
-            <RightArrow height="22" width="22" />
-          </IconButton>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
-};
+const maxTips = 3;
 
-const PinAnimation = (props: { step: number; setStep: (step: number) => void }) => {
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <img src="https://www.kelp.nyc/animations/tag-group.gif" className={classes.image} />
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Typography className={classes.bold} variant="h3">
-            {props.step} / {maxTips}
-          </Typography>
-          <Typography variant="h3" className={classes.heading}>
-            Add Smart tags
-          </Typography>
-        </Grid>
-        <Grid item>
-          <IconButton
-            size="medium"
-            className={classes.leftButton}
-            onClick={() => props.setStep(props.step - 1)}
-          >
-            <LeftArrow height="22" width="22" />
-          </IconButton>
-          <IconButton
-            className={classes.button}
-            size="medium"
-            onClick={() => {
-              props.setStep(props.step + 1);
-              return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
-            }}
-          >
-            <RightArrow height="22" width="22" />
-          </IconButton>
-        </Grid>
+const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => (
+  <React.Fragment>
+    <img src="https://www.kelp.nyc/animations/tag-nav.gif" className={classes.image} />
+    <Grid container justifyContent="space-between" alignItems="center">
+      <Grid item>
+        <Typography className={classes.bold} variant="h3">
+          {props.step} / {maxTips}
+        </Typography>
+        <Typography variant="h3" className={classes.heading}>
+          Meet your magical website organizer
+        </Typography>
       </Grid>
-    </React.Fragment>
-  );
-};
+      <Grid item>
+        <IconButton
+          size="medium"
+          className={classes.button}
+          onClick={() => props.setStep(props.step + 1)}
+        >
+          <RightArrow height="22" width="22" />
+        </IconButton>
+      </Grid>
+    </Grid>
+  </React.Fragment>
+);
 
-const MeetingsAnimation = (props: { step: number; setStep: (step: number) => void }) => {
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <img src="https://www.kelp.nyc/animations/tag-meeting.gif" className={classes.image} />
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Typography className={classes.bold} variant="h3">
-            {props.step} / {maxTips}
-          </Typography>
-          <Typography variant="h3" className={classes.heading}>
-            Associate webpages with meetings
-          </Typography>
-        </Grid>
-        <Grid item>
-          <IconButton
-            size="medium"
-            className={classes.leftButton}
-            onClick={() => props.setStep(props.step - 1)}
-          >
-            <LeftArrow height="22" width="22" />
-          </IconButton>
-          <IconButton
-            size="medium"
-            className={classes.button}
-            onClick={() => props.setStep(props.step + 1)}
-          >
-            <RightArrow height="22" width="22" />
-          </IconButton>
-        </Grid>
+const PinAnimation = (props: { step: number; setStep: (step: number) => void }) => (
+  <React.Fragment>
+    <img src="https://www.kelp.nyc/animations/tag-group.gif" className={classes.image} />
+    <Grid container justifyContent="space-between" alignItems="center">
+      <Grid item>
+        <Typography className={classes.bold} variant="h3">
+          {props.step} / {maxTips}
+        </Typography>
+        <Typography variant="h3" className={classes.heading}>
+          Add Smart tags
+        </Typography>
       </Grid>
-    </React.Fragment>
-  );
-};
+      <Grid item>
+        <IconButton
+          size="medium"
+          className={classes.leftButton}
+          onClick={() => props.setStep(props.step - 1)}
+        >
+          <LeftArrow height="22" width="22" />
+        </IconButton>
+        <IconButton
+          className={classes.button}
+          size="medium"
+          onClick={() => {
+            props.setStep(props.step + 1);
+            return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
+          }}
+        >
+          <RightArrow height="22" width="22" />
+        </IconButton>
+      </Grid>
+    </Grid>
+  </React.Fragment>
+);
+
+const MeetingsAnimation = (props: { step: number; setStep: (step: number) => void }) => (
+  <React.Fragment>
+    <img src="https://www.kelp.nyc/animations/tag-meeting.gif" className={classes.image} />
+    <Grid container justifyContent="space-between" alignItems="center">
+      <Grid item>
+        <Typography className={classes.bold} variant="h3">
+          {props.step} / {maxTips}
+        </Typography>
+        <Typography variant="h3" className={classes.heading}>
+          Associate webpages with meetings
+        </Typography>
+      </Grid>
+      <Grid item>
+        <IconButton
+          size="medium"
+          className={classes.leftButton}
+          onClick={() => props.setStep(props.step - 1)}
+        >
+          <LeftArrow height="22" width="22" />
+        </IconButton>
+        <IconButton
+          size="medium"
+          className={classes.button}
+          onClick={() => props.setStep(props.step + 1)}
+        >
+          <RightArrow height="22" width="22" />
+        </IconButton>
+      </Grid>
+    </Grid>
+  </React.Fragment>
+);
 
 const OnboardingSteps = (props: { step: number; setStep: (n: number) => void }) => {
   switch (props.step) {
@@ -174,9 +187,9 @@ const OnboardingSteps = (props: { step: number; setStep: (n: number) => void }) 
 export const Onboarding = () => {
   const isOnboardingCompleted = !!localStorage.getItem(config.IS_ONBOARDING_COMPLETED);
   const [step, setStep] = useState(isOnboardingCompleted ? 0 : 1);
-  const classes = useStyles();
+
   return (
-    <Dialog
+    <StyledDialog
       maxWidth="md"
       open={step > 0 && step <= maxTips}
       onClose={(_event, reason) => {
@@ -188,6 +201,6 @@ export const Onboarding = () => {
       <div className={classes.stepOneContainer}>
         <OnboardingSteps step={step} setStep={setStep} />
       </div>
-    </Dialog>
+    </StyledDialog>
   );
 };

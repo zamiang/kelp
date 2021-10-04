@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import Fuse from 'fuse.js';
@@ -17,6 +17,61 @@ import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
+
+const PREFIX = 'Search';
+
+const classes = {
+  boxStyle: `${PREFIX}-boxStyle`,
+  heading: `${PREFIX}-heading`,
+  lineCalendarContainer: `${PREFIX}-lineCalendarContainer`,
+  topNav: `${PREFIX}-topNav`,
+  button: `${PREFIX}-button`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.boxStyle}`]: {
+    background: theme.palette.background.paper,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+
+  [`& .${classes.heading}`]: {
+    marginLeft: 0,
+  },
+
+  [`& .${classes.lineCalendarContainer}`]: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+
+  [`& .${classes.topNav}`]: {
+    position: 'fixed',
+    top: 11,
+    left: 224,
+    zIndex: 12,
+    maxWidth: 500,
+    [theme.breakpoints.down('xl')]: {
+      left: 184,
+    },
+    [theme.breakpoints.down('xl')]: {
+      left: 178,
+    },
+    [theme.breakpoints.down('lg')]: {
+      left: 138,
+    },
+  },
+
+  [`& .${classes.button}`]: {
+    borderRadius: 21,
+    background: theme.palette.background.paper,
+    padding: 10,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+}));
 
 // A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
 const minScore = 0.6;
@@ -86,47 +141,6 @@ const WebsiteResults = (props: {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  boxStyle: {
-    background: theme.palette.background.paper,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
-  heading: {
-    marginLeft: 0,
-  },
-  lineCalendarContainer: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  topNav: {
-    position: 'fixed',
-    top: 11,
-    left: 224,
-    zIndex: 12,
-    maxWidth: 500,
-    [theme.breakpoints.down('xl')]: {
-      left: 184,
-    },
-    [theme.breakpoints.down('xl')]: {
-      left: 178,
-    },
-    [theme.breakpoints.down('lg')]: {
-      left: 138,
-    },
-  },
-  button: {
-    borderRadius: 21,
-    background: theme.palette.background.paper,
-    padding: 10,
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-}));
-
 const Search = (props: {
   store: IStore;
   isDarkMode: boolean;
@@ -136,7 +150,7 @@ const Search = (props: {
 }) => {
   const rowStyles = useRowStyles();
   const expandStyles = useExpandStyles();
-  const classes = useStyles();
+
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
 
@@ -177,7 +191,7 @@ const Search = (props: {
   const filteredResults = filterSearchResults(results);
 
   return (
-    <div>
+    <Root>
       <Grid container className={classes.topNav} spacing={2}>
         {filteredResults.websites.length > 1 && (
           <Grid item>
@@ -268,7 +282,7 @@ const Search = (props: {
           </div>
         )}
       </div>
-    </div>
+    </Root>
   );
 };
 

@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
@@ -14,15 +14,25 @@ import {
 import { LargeWebsite } from '../website/large-website';
 import { WebsiteHighlights } from '../website/website-highlights';
 
-const useStyles = makeStyles((theme) => ({
-  section: {
+const PREFIX = 'MeetingRowBelow';
+
+const classes = {
+  section: `${PREFIX}-section`,
+  title: `${PREFIX}-title`,
+  topSection: `${PREFIX}-topSection`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
   },
-  title: {
+
+  [`& .${classes.title}`]: {
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize,
   },
-  topSection: {
+
+  [`& .${classes.topSection}`]: {
     marginBottom: theme.spacing(1),
     position: 'relative',
     zIndex: 5,
@@ -40,7 +50,6 @@ const MeetingRowBelow = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   toggleMeetingTag: (tag: string, meetingId: string, meetingSummary: string) => void;
 }) => {
-  const classes = useStyles();
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
@@ -68,7 +77,7 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <Grid item xs={props.isFullWidth ? 12 : 11}>
+    <StyledGrid item xs={props.isFullWidth ? 12 : 11}>
       <Grid container spacing={isMobile ? 5 : 6}>
         {websites.map((item) => (
           <Grid item xs={3} key={item.websiteId}>
@@ -108,7 +117,7 @@ const MeetingRowBelow = (props: {
           />
         </div>
       ))}
-    </Grid>
+    </StyledGrid>
   );
 };
 

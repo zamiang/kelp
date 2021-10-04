@@ -66,7 +66,8 @@ const EmailGuestsButton = (props: {
         onClick={() => window.open(link)}
         color="primary"
         className={buttonClasses.iconButton}
-        size="large">
+        size="large"
+      >
         <EmailIcon width="24" height="24" />
       </IconButton>
     </Tooltip>
@@ -210,7 +211,8 @@ const ExpandedMeeting = (props: {
                     color="primary"
                     onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
                     className={buttonClasses.iconButton}
-                    size="large">
+                    size="large"
+                  >
                     <SaveIcon width="24" height="24" />
                   </IconButton>
                 </Tooltip>

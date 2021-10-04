@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
@@ -15,8 +16,27 @@ import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = 'FeaturedMeeting';
+
+const classes = {
+  container: `${PREFIX}-container`,
+  containerLine: `${PREFIX}-containerLine`,
+  leftLine: `${PREFIX}-leftLine`,
+  containerNow: `${PREFIX}-containerNow`,
+  meetingTimeInWords: `${PREFIX}-meetingTimeInWords`,
+  heading: `${PREFIX}-heading`,
+  button: `${PREFIX}-button`,
+  topSpacing: `${PREFIX}-topSpacing`,
+  '@keyframes fadeOut': `${PREFIX}-undefined`,
+  '@keyframes fadeOut2': `${PREFIX}-undefined`,
+  outerDot: `${PREFIX}-outerDot`,
+  innerDot: `${PREFIX}-innerDot`,
+  dotNow: `${PREFIX}-dotNow`,
+  dotContainer: `${PREFIX}-dotContainer`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.container}`]: {
     padding: theme.spacing(4),
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
@@ -25,26 +45,31 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     [theme.breakpoints.down('md')]: {},
   },
-  containerLine: {
+
+  [`& .${classes.containerLine}`]: {
     paddingTop: theme.spacing(3),
     marginBottom: theme.spacing(2),
   },
-  leftLine: {
+
+  [`& .${classes.leftLine}`]: {
     width: 1,
     background: theme.palette.divider,
     height: 'calc(100% + 39px)',
     marginTop: -14,
     marginLeft: 26,
   },
-  containerNow: {
+
+  [`& .${classes.containerNow}`]: {
     borderColor: theme.palette.divider,
   },
-  meetingTimeInWords: {
+
+  [`& .${classes.meetingTimeInWords}`]: {
     display: 'inline-block',
     marginBottom: 0,
     color: theme.palette.text.hint,
   },
-  heading: {
+
+  [`& .${classes.heading}`]: {
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize,
     cursor: 'pointer',
@@ -52,15 +77,18 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     width: 'auto',
     paddingLeft: 40,
     paddingRight: 40,
   },
-  topSpacing: {
+
+  [`& .${classes.topSpacing}`]: {
     marginTop: theme.spacing(2),
   },
-  '@keyframes fadeOut': {
+
+  [`& .${classes.undefined}`]: {
     from: { opacity: 1 },
     '50%': {
       opacity: 0.4,
@@ -69,7 +97,8 @@ const useStyles = makeStyles((theme) => ({
       opacity: 1,
     },
   },
-  '@keyframes fadeOut2': {
+
+  [`& .${classes.undefined}`]: {
     from: { opacity: 0.2 },
     '50%': {
       opacity: 0.05,
@@ -78,14 +107,16 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.2,
     },
   },
-  outerDot: {
+
+  [`& .${classes.outerDot}`]: {
     width: 40,
     height: 40,
     background: '#FF4500',
     borderRadius: 20,
     animation: '$fadeOut2 5s ease infinite',
   },
-  innerDot: {
+
+  [`& .${classes.innerDot}`]: {
     width: 12,
     borderRadius: 6,
     height: 12,
@@ -95,10 +126,12 @@ const useStyles = makeStyles((theme) => ({
     background: '#FF4500',
     animation: '$fadeOut 5s ease infinite',
   },
-  dotNow: {
+
+  [`& .${classes.dotNow}`]: {
     background: theme.palette.divider,
   },
-  dotContainer: {
+
+  [`& .${classes.dotContainer}`]: {
     position: 'relative',
   },
 }));
@@ -123,7 +156,6 @@ export const FeaturedMeeting = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
-  const classes = useStyles();
   const buttonClasses = useButtonStyles();
   const router = useHistory();
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
@@ -174,7 +206,7 @@ export const FeaturedMeeting = (props: {
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
   return (
-    <div
+    <Root
       className={clsx(
         !props.showLine && classes.container,
         !isHappeningSoon && classes.containerNow,
@@ -279,6 +311,6 @@ export const FeaturedMeeting = (props: {
           />
         )}
       </Grid>
-    </div>
+    </Root>
   );
 };

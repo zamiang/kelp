@@ -1,9 +1,9 @@
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import { styled } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
@@ -27,8 +27,16 @@ import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
 import { TopNav } from './top-nav';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = 'DesktopDashboard';
+
+const classes = {
+  container: `${PREFIX}-container`,
+  footerContainer: `${PREFIX}-footerContainer`,
+  content: `${PREFIX}-content`,
+};
+
+const StyledErrorBoundaryComponent = styled(ErrorBoundaryComponent)(({ theme }) => ({
+  [`& .${classes.container}`]: {
     paddingLeft: 210,
     paddingRight: 210,
     marginTop: 62,
@@ -45,11 +53,13 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 120,
     },
   },
-  footerContainer: {
+
+  [`& .${classes.footerContainer}`]: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
   },
-  content: {
+
+  [`& .${classes.content}`]: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
     overscrollBehavior: 'contain',
@@ -72,7 +82,6 @@ export const DesktopDashboard = (props: {
   isDarkMode: boolean;
   isMicrosoftError: boolean;
 }) => {
-  const classes = useStyles();
   const store = props.store;
   const router = useHistory();
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
@@ -118,7 +127,7 @@ export const DesktopDashboard = (props: {
   };
 
   return (
-    <ErrorBoundaryComponent>
+    <StyledErrorBoundaryComponent>
       <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>Please reload the page
@@ -232,6 +241,6 @@ export const DesktopDashboard = (props: {
         <Footer />
         <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
       </div>
-    </ErrorBoundaryComponent>
+    </StyledErrorBoundaryComponent>
   );
 };

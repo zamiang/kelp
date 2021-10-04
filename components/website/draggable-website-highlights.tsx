@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { LoadingSpinner } from '../shared/loading-spinner';
@@ -9,6 +9,20 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
+
+const PREFIX = 'DraggableWebsiteHighlights';
+
+const classes = {
+  topSection: `${PREFIX}-topSection`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.topSection}`]: {
+    marginBottom: theme.spacing(1),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
 
 const getItemStyle = (draggableStyle: any) => ({
   // some basic styles to make the items look a bit nicer
@@ -166,14 +180,6 @@ const DraggableWebsites = (props: {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  topSection: {
-    marginBottom: theme.spacing(1),
-    position: 'relative',
-    zIndex: 5,
-  },
-}));
-
 export const DraggableWebsiteHighlights = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
@@ -201,11 +207,10 @@ export const DraggableWebsiteHighlights = (props: {
     return () => (isSubscribed = false) as any;
   }, [props.store.isLoading, shouldShowAll, props.filterByTag]);
 
-  const classes = useStyles();
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
-    <div style={{ position: 'relative' }}>
+    <Root style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid
         container
@@ -238,6 +243,6 @@ export const DraggableWebsiteHighlights = (props: {
         showWebsitePopup={props.showWebsitePopup}
         maxWebsites={props.maxWebsites}
       />
-    </div>
+    </Root>
   );
 };

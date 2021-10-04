@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
@@ -21,8 +21,19 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { TopTags } from './top-tags';
 
-const useStyles = makeStyles((theme) => ({
-  leftSection: {
+const PREFIX = 'TopNav';
+
+const classes = {
+  leftSection: `${PREFIX}-leftSection`,
+  rightSection: `${PREFIX}-rightSection`,
+  searchContainer: `${PREFIX}-searchContainer`,
+  button: `${PREFIX}-button`,
+  isSelected: `${PREFIX}-isSelected`,
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.leftSection}`]: {
     position: 'fixed',
     top: theme.spacing(1.5),
     left: 0,
@@ -42,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
       width: 139,
     },
   },
-  rightSection: {
+
+  [`& .${classes.rightSection}`]: {
     position: 'fixed',
     top: theme.spacing(1.5),
     right: 0,
@@ -61,14 +73,17 @@ const useStyles = makeStyles((theme) => ({
       width: 139,
     },
   },
-  searchContainer: {},
-  button: {
+
+  [`& .${classes.searchContainer}`]: {},
+
+  [`& .${classes.button}`]: {
     cursor: 'pointer',
     '&:hover': {
       textDecoration: 'underline',
     },
   },
-  isSelected: {
+
+  [`& .${classes.isSelected}`]: {
     color: theme.palette.primary.main,
   },
 }));
@@ -80,7 +95,6 @@ export const TopNav = (props: {
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
 }) => {
-  const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
   const isSearch = location.pathname === '/search';
@@ -88,7 +102,7 @@ export const TopNav = (props: {
   const isHomeSelected = location.pathname === '/home';
   const isSettingsSelected = location.pathname === '/settings';
   return (
-    <React.Fragment>
+    <Root>
       <div className={classes.leftSection}>
         <div className={classes.searchContainer}>
           <SearchBar isDarkMode={props.isDarkMode} />
@@ -127,7 +141,8 @@ export const TopNav = (props: {
                 event.preventDefault();
                 return router.push('/home');
               }}
-              size="large">
+              size="large"
+            >
               {isHomeSelected ? (
                 <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : props.isDarkMode ? (
@@ -144,7 +159,8 @@ export const TopNav = (props: {
                 event.preventDefault();
                 return router.push('/meetings');
               }}
-              size="large">
+              size="large"
+            >
               {isMeetingsSelected ? (
                 <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : props.isDarkMode ? (
@@ -162,7 +178,8 @@ export const TopNav = (props: {
                   event.preventDefault();
                   return router.push('/settings');
                 }}
-                size="large">
+                size="large"
+              >
                 {isSettingsSelected ? (
                   <SettingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
                 ) : props.isDarkMode ? (
@@ -175,6 +192,6 @@ export const TopNav = (props: {
           </Grid>
         </Grid>
       </div>
-    </React.Fragment>
+    </Root>
   );
 };

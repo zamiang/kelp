@@ -1,4 +1,4 @@
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React from 'react';
@@ -7,8 +7,14 @@ import { IStore } from '../store/use-store';
 import { DraggableWebsiteHighlights } from './draggable-website-highlights';
 import { IFeaturedWebsite } from './get-featured-websites';
 
-const useStyles = makeStyles((theme) => ({
-  section: {
+const PREFIX = 'TagHighlights';
+
+const classes = {
+  section: `${PREFIX}-section`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.section}`]: {
     marginBottom: theme.spacing(8),
   },
 }));
@@ -23,12 +29,12 @@ export const TagHighlights = (props: {
   const theme = useTheme();
 
   const orderedTags = props.websiteTags;
-  const classes = useStyles();
+
   const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
   console.log(isLarge);
   return (
-    <div>
+    <Root>
       {orderedTags.map((t) => (
         <div className={classes.section} key={t.id} id={`tag-${t.tag}`}>
           <DraggableWebsiteHighlights
@@ -42,6 +48,6 @@ export const TagHighlights = (props: {
           />
         </div>
       ))}
-    </div>
+    </Root>
   );
 };

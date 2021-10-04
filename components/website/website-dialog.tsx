@@ -9,7 +9,7 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import { cleanText } from '../shared/tfidf';
@@ -18,13 +18,25 @@ import { IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
-const useStyles = makeStyles((theme) => ({
-  dialogContent: {
+const PREFIX = 'WebsiteDialog';
+
+const classes = {
+  dialogContent: `${PREFIX}-dialogContent`,
+  button: `${PREFIX}-button`,
+  closeButton: `${PREFIX}-closeButton`,
+  columnList: `${PREFIX}-columnList`,
+  section: `${PREFIX}-section`,
+  smallButton: `${PREFIX}-smallButton`,
+};
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.dialogContent}`]: {
     padding: theme.spacing(6),
     position: 'relative',
     width: 480,
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     textDecoration: 'none',
     cursor: 'pointer',
     borderRadius: 33,
@@ -38,26 +50,30 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 12,
     marginTop: theme.spacing(2),
   },
-  closeButton: {
+
+  [`& .${classes.closeButton}`]: {
     position: 'absolute',
     top: 42,
     right: 42,
   },
-  columnList: {
+
+  [`& .${classes.columnList}`]: {
     maxHeight: 300,
     overflow: 'auto',
     border: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(1),
     borderRadius: theme.spacing(1),
   },
-  section: {
+
+  [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     '&:last-child': {
       marginBottom: 0,
     },
   },
-  smallButton: {
+
+  [`& .${classes.smallButton}`]: {
     width: 100,
     background: theme.palette.background.paper,
     color: theme.palette.primary.main,
@@ -87,7 +103,6 @@ export const WebsiteDialog = (props: {
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   store: IStore;
 }) => {
-  const classes = useStyles();
   const [didHideThisWebsiteSuccess, setHideThisWebsiteSuccess] = useState(false);
   const [didHideAllSuccess, setHideAllSuccess] = useState(false);
   const [errorText, setErrorText] = useState<string | undefined>();
@@ -177,7 +192,7 @@ export const WebsiteDialog = (props: {
   };
 
   return (
-    <Dialog
+    <StyledDialog
       maxWidth="md"
       open={!!props.item}
       onClose={(_event, reason) => {
@@ -216,7 +231,8 @@ export const WebsiteDialog = (props: {
                       event.stopPropagation();
                       return removeTag(t);
                     }}
-                    size="large">
+                    size="large"
+                  >
                     <CloseIcon width="18" height="18" />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -308,6 +324,6 @@ export const WebsiteDialog = (props: {
           </Grid>
         </div>
       </div>
-    </Dialog>
+    </StyledDialog>
   );
 };

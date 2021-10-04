@@ -8,7 +8,7 @@ import Link from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
@@ -20,11 +20,21 @@ import { LogOutButton, SignInButton, WelcomeUser } from '../shared/microsoft-log
 import { IDomainBlocklist, IPerson, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const useStyles = makeStyles((theme) => ({
-  margin: {
+const PREFIX = 'Settings';
+
+const classes = {
+  margin: `${PREFIX}-margin`,
+  grid: `${PREFIX}-grid`,
+  section: `${PREFIX}-section`,
+  panel: `${PREFIX}-panel`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.margin}`]: {
     margin: theme.spacing(1),
   },
-  grid: {
+
+  [`& .${classes.grid}`]: {
     maxWidth: theme.breakpoints.values.sm,
     borderBottom: `1px solid ${theme.palette.divider}`,
     paddingTop: theme.spacing(2),
@@ -32,8 +42,9 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: '0px solid',
     },
   },
-  section: { paddingBottom: theme.spacing(4), paddingTop: theme.spacing(4) },
-  panel: {},
+
+  [`& .${classes.section}`]: { paddingBottom: theme.spacing(4), paddingTop: theme.spacing(4) },
+  [`&.${classes.panel}`]: {},
 }));
 
 const Settings = (props: {
@@ -41,7 +52,6 @@ const Settings = (props: {
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
 }) => {
-  const classes = useStyles();
   const [domainBlocklists, setDomainBlocklist] = useState<IDomainBlocklist[]>([]);
   const [websiteBlocklist, setWebsiteBlocklist] = useState<IWebsiteBlocklist[]>([]);
   const [currentUser, setCurrentUser] = useState<IPerson>();
@@ -106,7 +116,7 @@ const Settings = (props: {
   };
 
   return (
-    <div className={classes.panel}>
+    <Root className={classes.panel}>
       <Grid
         container
         alignItems="flex-start"
@@ -150,7 +160,8 @@ const Settings = (props: {
                 props.setIsDarkMode(false);
                 localStorage.setItem(config.DARK_MODE, String(false));
               }}
-              size="large">
+              size="large"
+            >
               {props.isDarkMode ? (
                 <DayIconWhite width="18" height="18" />
               ) : (
@@ -167,7 +178,8 @@ const Settings = (props: {
                 props.setIsDarkMode(true);
                 localStorage.setItem(config.DARK_MODE, String(true));
               }}
-              size="large">
+              size="large"
+            >
               {props.isDarkMode ? (
                 <MoonIconOrange width="18" height="18" />
               ) : (
@@ -300,7 +312,7 @@ const Settings = (props: {
           ))}
         </Grid>
       </Grid>
-    </div>
+    </Root>
   );
 };
 

@@ -1,5 +1,6 @@
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { addHours, format, intervalToDuration } from 'date-fns';
@@ -8,10 +9,16 @@ import { useHistory } from 'react-router-dom';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const numberHours = 8;
+const PREFIX = 'LineCalendar';
 
-const useMeetingLineStyles = makeStyles((theme) => ({
-  line: {
+const classes = {
+  line: `${PREFIX}-line`,
+  linePast: `${PREFIX}-linePast`,
+  lineCurrent: `${PREFIX}-lineCurrent`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`&.${classes.line}`]: {
     background: theme.palette.divider,
     height: 8,
     position: 'absolute',
@@ -23,10 +30,35 @@ const useMeetingLineStyles = makeStyles((theme) => ({
       background: theme.palette.primary.light,
     },
   },
-  linePast: {
+
+  [`& .${classes.linePast}`]: {
     background: theme.palette.divider,
   },
-  lineCurrent: {
+
+  [`& .${classes.lineCurrent}`]: {
+    background: theme.palette.primary.main,
+  },
+}));
+
+const numberHours = 8;
+
+const useMeetingLineStyles = makeStyles(({ theme }) => ({
+  [`&.${classes.line}`]: {
+    background: theme.palette.divider,
+    height: 8,
+    position: 'absolute' as any,
+    top: 0,
+    cursor: 'pointer',
+    transition: 'background 0.3s',
+    borderRadius: 4,
+    '&:hover': {
+      background: theme.palette.primary.light,
+    },
+  },
+  [`& .${classes.linePast}`]: {
+    background: theme.palette.divider,
+  },
+  [`& .${classes.lineCurrent}`]: {
     background: theme.palette.primary.main,
   },
 }));
@@ -60,54 +92,16 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
         'p',
       )}`}
     >
-      <div
+      <Root
         className={clsx(classes.line, isCurrent && classes.lineCurrent, isPast && classes.linePast)}
         style={{ width, left }}
         onClick={() => router.push(`/meetings/${props.meeting.id}`)}
-      ></div>
+      ></Root>
     </Tooltip>
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    position: 'relative',
-    height: 30,
-    overflowX: 'hidden',
-  },
-  overflowContainer: {},
-  border: {
-    height: 4,
-    background: theme.palette.divider,
-    width: '100%',
-    position: 'absolute',
-    top: 2,
-    left: 0,
-  },
-  startTime: {
-    position: 'absolute',
-    left: 0,
-    top: theme.spacing(1),
-    zIndex: 2,
-    color: theme.palette.text.hint,
-    pointerEvents: 'none',
-  },
-  endTime: {
-    position: 'absolute',
-    right: 0,
-    top: theme.spacing(1),
-    zIndex: 2,
-    color: theme.palette.text.hint,
-    pointerEvents: 'none',
-  },
-  heading: {
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-}));
-
 export const LineCalendar = (props: { store: IStore }) => {
-  const classes = useStyles();
   const elementRef = useRef(null);
   const [meetings, setMeetings] = useState<ISegment[]>([]);
   const [elementWidth, setElementWidth] = useState(0);

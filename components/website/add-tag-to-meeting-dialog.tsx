@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
@@ -13,13 +13,25 @@ import { isSegmentTagSelected } from '../meeting/featured-meeting';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const useStyles = makeStyles((theme) => ({
-  dialogContent: {
+const PREFIX = 'AddTagToMeetingDialog';
+
+const classes = {
+  dialogContent: `${PREFIX}-dialogContent`,
+  button: `${PREFIX}-button`,
+  columnList: `${PREFIX}-columnList`,
+  closeButton: `${PREFIX}-closeButton`,
+  tag: `${PREFIX}-tag`,
+  tagSelected: `${PREFIX}-tagSelected`,
+};
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.dialogContent}`]: {
     padding: theme.spacing(6),
     position: 'relative',
     width: 480,
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     textDecoration: 'none',
     cursor: 'pointer',
     borderRadius: 33,
@@ -33,19 +45,22 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 12,
     marginTop: theme.spacing(2),
   },
-  columnList: {
+
+  [`& .${classes.columnList}`]: {
     maxHeight: 300,
     overflow: 'auto',
     border: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(1),
     borderRadius: theme.spacing(1),
   },
-  closeButton: {
+
+  [`& .${classes.closeButton}`]: {
     position: 'absolute',
     top: 42,
     right: 42,
   },
-  tag: {
+
+  [`& .${classes.tag}`]: {
     display: 'inline-block',
     marginRight: theme.spacing(2),
     paddingLeft: theme.spacing(0.5),
@@ -57,7 +72,8 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
-  tagSelected: {
+
+  [`& .${classes.tagSelected}`]: {
     pointerEvents: 'all',
     cursor: 'pointer',
     background: theme.palette.primary.dark,
@@ -73,7 +89,6 @@ export const AddTagToMeetingDialog = (props: {
   toggleMeetingTag: (tag: string, segmentId: string, segmentSummary: string) => void;
   store: IStore;
 }) => {
-  const classes = useStyles();
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
 
   useEffect(() => {
@@ -88,7 +103,7 @@ export const AddTagToMeetingDialog = (props: {
   }, [props.store.isLoading]);
 
   return (
-    <Dialog
+    <StyledDialog
       maxWidth="md"
       open={props.isOpen}
       onClose={(_event, reason) => {
@@ -122,6 +137,6 @@ export const AddTagToMeetingDialog = (props: {
           ))}
         </List>
       </div>
-    </Dialog>
+    </StyledDialog>
   );
 };

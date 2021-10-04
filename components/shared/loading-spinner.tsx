@@ -1,9 +1,15 @@
 import CircularProgress from '@mui/material/CircularProgress';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = 'LoadingSpinner';
+
+const classes = {
+  container: `${PREFIX}-container`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`&.${classes.container}`]: {
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: theme.spacing(2),
@@ -12,11 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const LoadingSpinner = () => {
-  const classes = useStyles();
-  return (
-    <div className={classes.container}>
-      <CircularProgress color="inherit" />
-    </div>
-  );
-};
+export const LoadingSpinner = () => (
+  <Root className={classes.container}>
+    <CircularProgress color="inherit" />
+  </Root>
+);

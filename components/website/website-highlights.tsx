@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
@@ -10,6 +11,20 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
+
+const PREFIX = 'WebsiteHighlights';
+
+const classes = {
+  topSection: `${PREFIX}-topSection`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.topSection}`]: {
+    marginBottom: theme.spacing(1),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
 
 const maxResult = 8;
 const maxDisplay = maxResult * 8;
@@ -54,14 +69,6 @@ const fetchData = async (
   }
 };
 
-const useStyles = makeStyles((theme) => ({
-  topSection: {
-    marginBottom: theme.spacing(1),
-    position: 'relative',
-    zIndex: 5,
-  },
-}));
-
 export const WebsiteHighlights = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
@@ -74,7 +81,6 @@ export const WebsiteHighlights = (props: {
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
-  const classes = useStyles();
   const theme = useTheme();
   const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
@@ -95,7 +101,7 @@ export const WebsiteHighlights = (props: {
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
-    <div style={{ position: 'relative' }}>
+    <Root style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid
         container
@@ -136,6 +142,6 @@ export const WebsiteHighlights = (props: {
           </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Root>
   );
 };

@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import DotsIcon from '../../public/icons/dots-black.svg';
 import DotsIconWhite from '../../public/icons/dots-white.svg';
@@ -13,9 +13,22 @@ import { IWebsiteImage, IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
-const useStyles = makeStyles((theme) => ({
-  website: {},
-  container: {
+const PREFIX = 'LargeWebsite';
+
+const classes = {
+  website: `${PREFIX}-website`,
+  container: `${PREFIX}-container`,
+  dots: `${PREFIX}-dots`,
+  imageContainer: `${PREFIX}-imageContainer`,
+  faviconContainer: `${PREFIX}-faviconContainer`,
+  textContainer: `${PREFIX}-textContainer`,
+  text: `${PREFIX}-text`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.website}`]: {},
+
+  [`& .${classes.container}`]: {
     background: theme.palette.background.paper,
     opacity: 1,
     transition: 'opacity 0.3s',
@@ -24,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
     },
   },
-  dots: {
+
+  [`& .${classes.dots}`]: {
     backgroundImage:
       'radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%), radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%)',
     backgroundPosition: '0 0, 5px 5px',
@@ -36,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: '100%',
   },
-  imageContainer: {
+
+  [`&.${classes.imageContainer}`]: {
     backgroundSize: 'cover',
     display: 'block',
     paddingBottom: '66%',
@@ -44,7 +59,8 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     position: 'relative',
   },
-  faviconContainer: {
+
+  [`& .${classes.faviconContainer}`]: {
     background: theme.palette.background.paper,
     display: 'flex',
     justifyContent: 'center',
@@ -53,10 +69,12 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 'calc(33% - 18px)',
     paddingBottom: 'calc(33% - 18px)',
   },
-  textContainer: {
+
+  [`& .${classes.textContainer}`]: {
     marginTop: 5,
   },
-  text: {
+
+  [`& .${classes.text}`]: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     fontFamily: theme.typography.h3.fontFamily,
@@ -70,18 +88,16 @@ const WebsiteImage = (props: {
   isDarkMode: boolean;
   ogImage?: string;
 }) => {
-  const classes = useStyles();
-
   if (props.image?.image) {
     return (
-      <div
+      <Root
         className={classes.imageContainer}
         style={{
           backgroundImage: `url('${props.ogImage || props.image.image}')`,
         }}
       >
         <div className={classes.dots}></div>
-      </div>
+      </Root>
     );
   }
   return (
@@ -90,7 +106,8 @@ const WebsiteImage = (props: {
         style={{
           backgroundColor: props.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
         }}
-        size="large">
+        size="large"
+      >
         <img src={`chrome://favicon/size/48@1x/${props.item.websiteId}`} height="16" width="16" />
       </IconButton>
     </div>
@@ -108,7 +125,6 @@ export const LargeWebsite = (props: {
 }) => {
   const [image, setImage] = useState<IWebsiteImage>();
   const [website, setWebsite] = useState<IWebsiteItem>();
-  const classes = useStyles();
 
   useEffect(() => {
     let isSubscribed = true;

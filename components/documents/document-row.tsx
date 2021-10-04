@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -13,13 +13,55 @@ import useRowStyles from '../shared/row-styles';
 import { IDocument, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
+const PREFIX = 'DocumentRow';
+
+const classes = {
+  image: `${PREFIX}-image`,
+  imageSpacing: `${PREFIX}-imageSpacing`,
+  time: `${PREFIX}-time`,
+  row: `${PREFIX}-row`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.image}`]: {
+    display: 'block',
+    maxWidth: 18,
+    margin: '0 auto',
+  },
+
+  [`& .${classes.imageSpacing}`]: {
+    width: 18,
+    marginTop: 5,
+  },
+
+  [`& .${classes.time}`]: {
+    minWidth: 160,
+    maxWidth: 180,
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
+  },
+
+  [`& .${classes.row}`]: {
+    minHeight: 48,
+    margin: 0,
+    paddingTop: 9,
+    paddingBottom: 9,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderRadius: 0,
+    '&.MuiListItem-button:hover': {
+      borderColor: theme.palette.divider,
+    },
+  },
+}));
+
 export const MissingDocumentRow = (props: {
   segmentDocument: ISegmentDocument;
   store: IStore;
   isSmall?: boolean;
 }) => {
   const rowStyles = useRowStyles();
-  const classes = useStyles();
+
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
 
   useEffect(() => {
@@ -33,7 +75,7 @@ export const MissingDocumentRow = (props: {
   }, [props.segmentDocument.segmentId, props.store.isLoading]);
 
   return (
-    <div
+    <Root
       className={clsx(!props.isSmall && rowStyles.row, props.isSmall && rowStyles.rowSmall)}
       onClick={() => {
         // TODO handle slides?
@@ -58,39 +100,9 @@ export const MissingDocumentRow = (props: {
           <Typography noWrap>Document from {meeting ? meeting.summary : 'this meeting'}</Typography>
         </Grid>
       </Grid>
-    </div>
+    </Root>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  image: {
-    display: 'block',
-    maxWidth: 18,
-    margin: '0 auto',
-  },
-  imageSpacing: {
-    width: 18,
-    marginTop: 5,
-  },
-  time: {
-    minWidth: 160,
-    maxWidth: 180,
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
-  },
-  row: {
-    minHeight: 48,
-    margin: 0,
-    paddingTop: 9,
-    paddingBottom: 9,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderRadius: 0,
-    '&.MuiListItem-button:hover': {
-      borderColor: theme.palette.divider,
-    },
-  },
-}));
 
 const ConditionalWrapper = ({ shouldWrap, wrapper, children }: any) =>
   shouldWrap ? wrapper(children) : children;
@@ -106,7 +118,7 @@ const DocumentRow = (props: {
   const isSelected = props.selectedDocumentId === props.document.id;
   const router = useHistory();
   const rowStyles = useRowStyles();
-  const classes = useStyles();
+
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
 

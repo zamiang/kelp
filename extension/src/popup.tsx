@@ -191,9 +191,9 @@ const App = () => {
               <Alert severity="error">
                 <AlertTitle>Please restart your browser</AlertTitle>
                 <Typography>
-                  Unable to connect to the database. This is an issue I do not fully understand where
-                  the database does not accept connections. If you are familar with connection issues
-                  with indexdb, please email brennan@kelp.nyc.
+                  Unable to connect to the database. This is an issue I do not fully understand
+                  where the database does not accept connections. If you are familar with connection
+                  issues with indexdb, please email brennan@kelp.nyc.
                 </Typography>
               </Alert>
             </Container>

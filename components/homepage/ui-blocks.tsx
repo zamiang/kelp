@@ -1,13 +1,33 @@
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React from 'react';
 
-export const useStyles = makeStyles((theme) => ({
-  container: {},
-  sectionImageLeft: {
+const PREFIX = 'UiBlocks';
+
+const classes = {
+  container: `${PREFIX}-container`,
+  sectionImageLeft: `${PREFIX}-sectionImageLeft`,
+  image: `${PREFIX}-image`,
+  greyContainer: `${PREFIX}-greyContainer`,
+  heading: `${PREFIX}-heading`,
+  textSection: `${PREFIX}-textSection`,
+  dot: `${PREFIX}-dot`,
+  sectionText: `${PREFIX}-sectionText`,
+  sectionImageRightTop: `${PREFIX}-sectionImageRightTop`,
+  sectionImageRightBottom: `${PREFIX}-sectionImageRightBottom`,
+  section: `${PREFIX}-section`,
+  notificationContainer: `${PREFIX}-notificationContainer`,
+  prepareTextRight: `${PREFIX}-prepareTextRight`,
+  manageWorkTextLeft: `${PREFIX}-manageWorkTextLeft`,
+};
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  [`& .${classes.container}`]: {},
+
+  [`& .${classes.sectionImageLeft}`]: {
     paddingBottom: theme.spacing(4),
     paddingLeft: theme.spacing(4),
     paddingTop: theme.spacing(4),
@@ -16,24 +36,29 @@ export const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   },
-  image: {
+
+  [`& .${classes.image}`]: {
     maxWidth: 290,
     margin: '0px auto',
     display: 'block',
   },
-  greyContainer: {
+
+  [`& .${classes.greyContainer}`]: {
     width: '100%',
   },
-  heading: {
+
+  [`& .${classes.heading}`]: {
     fontSize: 24,
     marginBottom: theme.spacing(3),
   },
-  textSection: {
+
+  [`& .${classes.textSection}`]: {
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
     textAlign: 'center',
   },
-  dot: {
+
+  [`& .${classes.dot}`]: {
     height: 12,
     width: 12,
     borderRadius: 10,
@@ -43,7 +68,8 @@ export const useStyles = makeStyles((theme) => ({
     verticalAlign: 'top',
     marginTop: 8,
   },
-  sectionText: {
+
+  [`& .${classes.sectionText}`]: {
     padding: theme.spacing(6),
     [theme.breakpoints.down('md')]: {
       paddingLeft: 0,
@@ -52,7 +78,8 @@ export const useStyles = makeStyles((theme) => ({
       paddingBottom: theme.spacing(3),
     },
   },
-  sectionImageRightTop: {
+
+  [`& .${classes.sectionImageRightTop}`]: {
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
@@ -61,7 +88,8 @@ export const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   },
-  sectionImageRightBottom: {
+
+  [`& .${classes.sectionImageRightBottom}`]: {
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
@@ -70,25 +98,29 @@ export const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   },
-  section: {
+
+  [`& .${classes.section}`]: {
     [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
     },
   },
-  notificationContainer: {
+
+  [`& .${classes.notificationContainer}`]: {
     marginRight: 28,
     [theme.breakpoints.down('md')]: {
       marginRight: 'auto',
     },
   },
-  prepareTextRight: {
+
+  [`& .${classes.prepareTextRight}`]: {
     marginLeft: 0,
     [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
     },
   },
-  manageWorkTextLeft: {
+
+  [`& .${classes.manageWorkTextLeft}`]: {
     marginRight: 0,
     [theme.breakpoints.down('md')]: {
       marginRight: 'auto',
@@ -96,31 +128,28 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UiBlocks = () => {
-  const classes = useStyles();
-  return (
-    <Container maxWidth="md">
-      <Grid container className={classes.section} alignItems="center">
-        <Grid item md={6} sm={12} className={classes.sectionText}>
-          <Typography variant="h4" className={classes.heading}>
-            <div className={classes.dot}></div>Made for humans
-          </Typography>
-          <Typography>
-            Kelp meets you where you are. It doesn’t ask you to change how you organize information
-            or collaborate.
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          md={6}
-          sm={12}
-          className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
-        >
-          <img src="images/meeting.svg" style={{ maxHeight: 212, maxWidth: '100%' }} />
-        </Grid>
+const UiBlocks = () => (
+  <StyledContainer maxWidth="md">
+    <Grid container className={classes.section} alignItems="center">
+      <Grid item md={6} sm={12} className={classes.sectionText}>
+        <Typography variant="h4" className={classes.heading}>
+          <div className={classes.dot}></div>Made for humans
+        </Typography>
+        <Typography>
+          Kelp meets you where you are. It doesn’t ask you to change how you organize information or
+          collaborate.
+        </Typography>
       </Grid>
-    </Container>
-  );
-};
+      <Grid
+        item
+        md={6}
+        sm={12}
+        className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
+      >
+        <img src="images/meeting.svg" style={{ maxHeight: 212, maxWidth: '100%' }} />
+      </Grid>
+    </Grid>
+  </StyledContainer>
+);
 
 export default UiBlocks;

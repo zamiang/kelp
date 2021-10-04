@@ -2,7 +2,7 @@ import Dialog from '@mui/material/Dialog';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -11,13 +11,24 @@ import { isTagSelected } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const useStyles = makeStyles((theme) => ({
-  dialogContent: {
+const PREFIX = 'AddTaggDialog';
+
+const classes = {
+  dialogContent: `${PREFIX}-dialogContent`,
+  tag: `${PREFIX}-tag`,
+  tagSelected: `${PREFIX}-tagSelected`,
+  closeButton: `${PREFIX}-closeButton`,
+  columnList: `${PREFIX}-columnList`,
+};
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.dialogContent}`]: {
     padding: theme.spacing(6),
     position: 'relative',
     width: 480,
   },
-  tag: {
+
+  [`& .${classes.tag}`]: {
     transition: 'borderBottom 0.3s',
     borderBottom: '1px solid transparent',
     display: 'inline-block',
@@ -26,19 +37,22 @@ const useStyles = makeStyles((theme) => ({
       borderBottomColor: theme.palette.divider,
     },
   },
-  tagSelected: {
+
+  [`& .${classes.tagSelected}`]: {
     borderBottomColor: theme.palette.primary.dark,
     '&:hover': {
       opacity: 0.8,
       borderBottomColor: theme.palette.primary.dark,
     },
   },
-  closeButton: {
+
+  [`& .${classes.closeButton}`]: {
     position: 'absolute',
     top: 42,
     right: 42,
   },
-  columnList: {
+
+  [`& .${classes.columnList}`]: {
     columnCount: 3,
   },
 }));
@@ -50,7 +64,6 @@ export const AddTaggDialog = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   store: IStore;
 }) => {
-  const classes = useStyles();
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
 
   useEffect(() => {
@@ -68,7 +81,7 @@ export const AddTaggDialog = (props: {
   }, [props.store.isLoading]);
 
   return (
-    <Dialog
+    <StyledDialog
       maxWidth="md"
       open={props.isOpen}
       onClose={(_event, reason) => {
@@ -104,6 +117,6 @@ export const AddTaggDialog = (props: {
           ))}
         </ul>
       </div>
-    </Dialog>
+    </StyledDialog>
   );
 };
