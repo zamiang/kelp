@@ -93,9 +93,8 @@ const getOrCreateStore = async () => {
   if (!d) {
     throw new Error('Unable to connect to the database');
   }
-  console.log('wtf');
   // eslint-disable-next-line
-  const s = useStoreNoFetch(d);
+  const s = useStoreNoFetch(d, true);
   if (s) {
     store = s;
     return store;

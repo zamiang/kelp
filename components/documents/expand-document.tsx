@@ -8,13 +8,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
-import PersonRow from '../person/person-row';
 import { D3Component } from '../shared/bar-chart/bar-chart';
 import useButtonStyles from '../shared/button-styles';
 import useExpandStyles from '../shared/expand-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
-import { IDocument, IFormattedDriveActivity, IPerson, ISegmentDocument } from '../store/data-types';
-import { getPeopleSortedByCount } from '../store/helpers';
+import { IDocument, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 const dateFormat = 'MM/dd/yyyy';
@@ -27,9 +25,6 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   const { slug }: any = useParams();
   const documentId = props.documentId || slug;
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
-  const [driveActivity, setDriveActivity] = useState<IFormattedDriveActivity[]>([]);
-  const [people, setPeople] = useState<IPerson[]>([]);
-  const [peopleStats, setPeopleStats] = useState<any>({});
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
   const minDate = new Date(subDays(new Date(), 12));
@@ -48,39 +43,12 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   useEffect(() => {
     const fetchData = async () => {
       if (documentId) {
-        const result = await props.store.driveActivityStore.getDriveActivityForDocument(documentId);
-        setDriveActivity(result);
-      }
-    };
-    void fetchData();
-  }, [props.store.isLoading, documentId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (documentId) {
         const result = await props.store.segmentDocumentStore.getAllForDocumentId(documentId);
         setSegmentDocuments(result.filter((r) => !!r.segmentId));
       }
     };
     void fetchData();
   }, [props.store.isLoading, documentId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (driveActivity.length > 0) {
-        const people = await getPeopleSortedByCount(
-          driveActivity.map((a) => a.actorPersonId).filter(Boolean) as any,
-          props.store.personDataStore,
-        );
-        setPeople(people.sortedPeople.slice(0, 5));
-        setPeopleStats(people.peopleStats);
-      } else {
-        setPeople([]);
-        setPeopleStats({});
-      }
-    };
-    void fetchData();
-  }, [props.store.isLoading, documentId, driveActivity.length]);
 
   if (!document) {
     return null;
@@ -150,28 +118,6 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
       </div>
       <Divider />
       <div className={classes.container}>
-        {people.length > 0 && (
-          <div className={classes.section}>
-            <Typography variant="h6" style={{ marginBottom: 0 }}>
-              Key Contributors
-            </Typography>
-            <div>
-              {people.map(
-                (person: IPerson) =>
-                  person &&
-                  peopleStats[person.id] && (
-                    <PersonRow
-                      key={person.id}
-                      selectedPersonId={null}
-                      person={person}
-                      noMargin={true}
-                      info={`${peopleStats[person.id][person.id]} events`}
-                    />
-                  ),
-              )}
-            </div>
-          </div>
-        )}
         {segmentDocuments.length > 0 && (
           <div className={classes.section}>
             <Typography variant="h6">Meetings</Typography>

@@ -5,7 +5,6 @@ import {
   IDomainBlocklist,
   IDomainFilter,
   IFormattedAttendee,
-  IFormattedDriveActivity,
   IPerson,
   ISegment,
   ISegmentDocument,
@@ -24,14 +23,6 @@ interface Db extends DBSchema {
   document: {
     value: IDocument;
     key: string;
-  };
-  driveActivity: {
-    value: IFormattedDriveActivity;
-    key: string;
-    indexes: {
-      'by-document-id': string;
-      'is-self': string;
-    };
   };
   person: {
     value: IPerson;
@@ -151,11 +142,21 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 14;
+const databaseVerson = 15;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
     console.log('upgrading from ', oldVersion, 'to', databaseVerson);
+    if (oldVersion < 15) {
+      try {
+        db.deleteObjectStore('driveActivity' as any);
+      } catch (e) {
+        console.log(e);
+      }
+      if (oldVersion === 14) {
+        return;
+      }
+    }
     if (oldVersion < 14) {
       // website canonical store
       const websiteItemStore = db.createObjectStore('websiteItem', {
@@ -228,12 +229,6 @@ const options = {
     db.createObjectStore('document', {
       keyPath: 'id',
     });
-
-    const driveActivity = db.createObjectStore('driveActivity', {
-      keyPath: 'id',
-    });
-    driveActivity.createIndex('by-document-id', 'documentId', { unique: false });
-    driveActivity.createIndex('is-self', 'isCurrentUser', { unique: false });
 
     const meetingStore = db.createObjectStore('meeting', {
       keyPath: 'id',
@@ -392,7 +387,7 @@ const deleteAllStores = (db: IDBPDatabase<Db>) => {
   }
 
   try {
-    db.deleteObjectStore('driveActivity');
+    db.deleteObjectStore('driveActivity' as any);
   } catch (e) {
     console.log(e);
   }

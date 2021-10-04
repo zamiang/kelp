@@ -1,39 +1,18 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten, orderBy, uniqBy } from 'lodash';
+import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
-import { IFormattedDriveActivity, ISegment, ISegmentDocument } from '../data-types';
+import { ISegment, ISegmentDocument } from '../data-types';
 import { dbType } from '../db';
 import AttendeeModel from './attendee-model';
-import DriveActivityModel from './drive-activity-model';
-import PersonModel from './person-model';
 import SegmentModel from './segment-model';
 
 export const formatSegmentTitle = (text?: string) =>
   text
     ? text.replace(removePunctuationRegex, '').split(' ').join('').toLocaleLowerCase()
     : undefined;
-
-const formatSegmentDocument = (
-  driveActivity: IFormattedDriveActivity,
-  segment?: ISegment,
-  isPersonAttendee?: boolean,
-  isPersonCurrentUser?: boolean,
-): ISegmentDocument => ({
-  id: driveActivity.id,
-  driveActivityId: driveActivity.id,
-  documentId: driveActivity.documentId!,
-  segmentId: segment?.id,
-  segmentTitle: formatSegmentTitle(segment?.summary),
-  category: isPersonCurrentUser ? 'self' : isPersonAttendee ? 'attendee' : 'non-attendee',
-  isPersonAttendee,
-  date: driveActivity.time,
-  reason: driveActivity.action,
-  personId: driveActivity.actorPersonId!,
-  day: getDayOfYear(driveActivity.time),
-  week: getWeek(driveActivity.time),
-});
 
 const formatSegmentDocumentFromDescription = (
   segment: ISegment,
@@ -60,47 +39,25 @@ export default class SegmentDocumentModel {
     this.db = db;
   }
 
-  async addSegmentDocumentsToStore(
-    driveActivityStore: DriveActivityModel,
-    timeStore: SegmentModel,
-    attendeeStore: AttendeeModel,
-    personStore: PersonModel,
-  ) {
-    const driveActivity = await driveActivityStore.getAll();
-    const segments = await timeStore.getAll();
-
-    // Add drive activity for meetings
-    const driveActivityToAdd = await Promise.all(
-      driveActivity.map(async (driveActivityItem) => {
-        let isActorAttendee = false;
-        let isActorCurrentUser = false;
-        const segment = segments.find(
-          (s) => s.start < driveActivityItem.time && s.end > driveActivityItem.time,
-        );
-        if (segment) {
-          const summary = segment.summary?.toLocaleLowerCase();
-          if (!summary?.includes('ooo') && !summary?.includes('out of office')) {
-            const attendees = await attendeeStore.getAllForSegmentId(segment.id);
-            const people = await personStore.getBulkByEmail(
-              attendees.map((a) => a.emailAddress).filter(Boolean) as string[],
-            );
-            isActorAttendee = !!people.find(
-              (a) =>
-                driveActivityItem.actorPersonId &&
-                a.googleIds.includes(driveActivityItem.actorPersonId),
-            );
-            isActorCurrentUser = !!attendees.find((a) => a.self);
-          }
-        }
-        const formattedDocument = formatSegmentDocument(
-          driveActivityItem,
-          segment,
-          isActorAttendee,
-          isActorCurrentUser,
-        );
-        return formattedDocument;
-      }),
+  async cleanup() {
+    const segmentDocuments = await this.getAll();
+    const segmentDocumentsToDelete = segmentDocuments.filter((a) => a.date < config.startDate);
+    const tx = this.db.transaction('segmentDocument', 'readwrite');
+    const results = await Promise.allSettled(
+      segmentDocumentsToDelete.map((item) => tx.store.delete(item.id)),
     );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
+  }
+
+  async addSegmentDocumentsToStore(timeStore: SegmentModel, attendeeStore: AttendeeModel) {
+    const segments = await timeStore.getAll();
 
     // Add drive activity in meeting descriptions
     const descriptionsToAdd = await Promise.all(
@@ -116,17 +73,17 @@ export default class SegmentDocumentModel {
       }),
     );
 
-    const flatDescriptions = flatten(flatten(descriptionsToAdd)) as any;
+    const flatDescriptions = flatten(flatten(descriptionsToAdd)) as ISegmentDocument[];
 
     const tx = this.db.transaction('segmentDocument', 'readwrite');
 
     const results = await Promise.allSettled(
-      driveActivityToAdd.concat(flatDescriptions).map((item) => item?.id && tx.store.put(item)),
+      flatDescriptions.map((item) => item?.id && tx.store.put(item)),
     );
     await tx.done;
 
     results.forEach((result) => {
-      if (result.status === 'rejected') {
+      if (result?.status === 'rejected') {
         ErrorTracking.logErrorInRollbar(result.reason);
       }
     });

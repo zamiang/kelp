@@ -1,6 +1,4 @@
-import { subDays } from 'date-fns';
 import { flatten, uniqBy } from 'lodash';
-import config from '../../constants/config';
 import { getValueForDate } from '../shared/order-by-count';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -69,43 +67,13 @@ const getWebsitesForTags = async (store: IStore, tags: string[]) => {
  * It sorts in decending order so upcoming meetings are next
  */
 export const getFeaturedWebsites = async (props: IStore) => {
-  const currentDate = new Date();
-  const filterTime = subDays(currentDate, config.NUMBER_OF_DAYS_BACK);
-
   // For documents edited by the current user that may not be associated with a meeting
-  const driveActivity = await props.driveActivityStore.getCurrentUserDriveActivity();
   const filteredWebsites = await props.websiteVisitStore.getAll(
     props.domainBlocklistStore,
     props.websiteBlocklistStore,
   );
 
-  const filteredDriveActivity = driveActivity.filter((item) => item.time > filterTime);
-
   const urlCount: { [url: string]: number } = {};
-
-  const currentUserDocuments = filteredDriveActivity
-    .map((item) => {
-      if (!item.documentId) {
-        return null;
-      }
-      const link = `${item.link}`;
-      if (urlCount[link]) {
-        urlCount[link] = urlCount[link] + getValueForDate(item.time);
-      } else {
-        urlCount[link] = getValueForDate(item.time);
-      }
-      return {
-        documentId: item.documentId,
-        meetings: [] as any,
-        nextMeetingStartsAt: undefined,
-        websiteId: link,
-        url: item.link,
-        text: item.title,
-        date: item.time,
-        websiteDatabaseId: null,
-      } as IFeaturedWebsite;
-    })
-    .filter(Boolean) as IFeaturedWebsite[];
 
   const websiteVisits = filteredWebsites.map((item) => {
     if (urlCount[item.websiteId]) {
@@ -123,7 +91,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
   });
 
   const concattedWebsitesAndDocuments = uniqBy(
-    currentUserDocuments.concat(websiteVisits).sort((a, b) => (a.date > b.date ? -1 : 1)),
+    websiteVisits.sort((a, b) => (a.date > b.date ? -1 : 1)),
     'websiteId',
   );
 

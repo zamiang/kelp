@@ -79,12 +79,12 @@ export default class WebsiteVisitModel {
     return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
   }
 
-  async cleanupWebsites() {
+  async cleanup() {
     const websites = await this.db.getAll('websiteVisit');
     const websitesToDelete = websites.filter((site) => site.visitedTime < config.startDate);
     const tx = this.db.transaction('websiteVisit', 'readwrite');
     const results = await Promise.allSettled(
-      websitesToDelete.map((item) => this.db.delete('websiteVisit', item.id)),
+      websitesToDelete.map((item) => tx.store.delete(item.id)),
     );
     await tx.done;
 

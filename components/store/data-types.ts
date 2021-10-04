@@ -29,16 +29,6 @@ export interface IFormattedAttendee {
   readonly date: Date;
 }
 
-export interface IFormattedDriveActivity {
-  readonly id: string;
-  readonly time: Date;
-  readonly action: string;
-  readonly actorPersonId?: string | null;
-  readonly title?: string | null;
-  readonly documentId?: string;
-  readonly link: string;
-}
-
 export interface IPerson {
   readonly id: string;
   readonly name: string;
@@ -106,7 +96,6 @@ export interface ISegment {
 
 export interface ISegmentDocument {
   readonly id: string;
-  readonly driveActivityId?: string;
   readonly documentId: string;
   readonly segmentId?: string;
   readonly segmentTitle?: string;

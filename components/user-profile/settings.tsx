@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   grid: {
     maxWidth: theme.breakpoints.values.sm,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    minHeight: 70,
+    paddingTop: theme.spacing(2),
     '&:last-child': {
       borderBottom: '0px solid',
     },

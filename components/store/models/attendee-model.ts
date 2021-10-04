@@ -1,5 +1,6 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten } from 'lodash';
+import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { getWeek } from '../../shared/date-helpers';
@@ -34,6 +35,23 @@ export default class AttendeeModel {
 
   constructor(db: dbType) {
     this.db = db;
+  }
+
+  async cleanup() {
+    const attendees = await this.getAll();
+    const attendeesToDelete = attendees.filter((a) => a.date < config.startDate);
+    const tx = this.db.transaction('attendee', 'readwrite');
+    const results = await Promise.allSettled(
+      attendeesToDelete.map((item) => tx.store.delete(item.id)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   // We need to make sure the current user is an attendee of all meetings

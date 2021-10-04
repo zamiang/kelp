@@ -10,7 +10,6 @@ import AttendeeStore from './models/attendee-model';
 import DocumentDataStore from './models/document-model';
 import DomainBlocklistStore from './models/domain-blocklist-model';
 import DomainFilterStore from './models/domain-filter-model';
-import DriveActivityDataStore from './models/drive-activity-model';
 import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
@@ -32,7 +31,6 @@ export interface IStore {
   readonly personDataStore: PersonDataStore;
   readonly timeDataStore: TimeDataStore;
   readonly documentDataStore: DocumentDataStore;
-  readonly driveActivityStore: DriveActivityDataStore;
   readonly tfidfStore: TfidfDataStore;
   readonly attendeeDataStore: AttendeeStore;
   readonly websiteStore: WebsiteStore;
@@ -46,25 +44,29 @@ export interface IStore {
   readonly loadingMessage?: string;
   readonly googleOauthToken?: string;
   readonly error?: Error;
-  readonly isPeopleLoading: boolean;
   readonly isMeetingsLoading: boolean;
   readonly isDocumentsLoading: boolean;
-  readonly isDriveActivityLoading: boolean;
   readonly isLoading: number;
 
   readonly incrementLoading: () => void;
 }
 
-export const useStoreNoFetch = (db: dbType | null): IStore | null => {
-  const [isLoading, setLoading] = useState<number>(0);
+export const useStoreNoFetch = (db: dbType | null, skipHook: boolean): IStore | null => {
+  let isLoading = 0;
+  let setLoading = (n: number) => console.log('setting loading', n);
 
+  if (!skipHook) {
+    // NOTE: @skipHook is need to support execution from the background worker context where hooks are not available
+    // eslint-disable-next-line
+    [isLoading, setLoading] = useState<number>(0);
+  }
   if (!db) {
     return null;
   }
+
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
-  const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
@@ -82,7 +84,6 @@ export const useStoreNoFetch = (db: dbType | null): IStore | null => {
     domainFilterStore,
     websiteBlocklistStore,
     domainBlocklistStore,
-    driveActivityStore: driveActivityDataStore,
     timeDataStore,
     websiteStore,
     websiteVisitStore,
@@ -99,10 +100,8 @@ export const useStoreNoFetch = (db: dbType | null): IStore | null => {
     loadingMessage: undefined,
     refetch: () => false,
     error: undefined,
-    isPeopleLoading: false,
     isMeetingsLoading: false,
     isDocumentsLoading: false,
-    isDriveActivityLoading: false,
     incrementLoading: () => setLoading(isLoading + 1),
   };
 };
@@ -115,16 +114,15 @@ const useStoreWithFetching = (
   msal?: IPublicClientApplication,
   isMicrosoftLoadingOrError?: boolean,
 ): IStore => {
-  const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const data = FetchAll(googleOauthToken, microsoftAccount, msal);
+
+  const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
   const [isLoading, setLoading] = useState<number>(0);
 
-  const people = data.personList || [];
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
   const documents = data.driveFiles || [];
-  const driveActivityDataStore = new DriveActivityDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
@@ -150,20 +148,6 @@ const useStoreWithFetching = (
     void addData();
   }, [data.calendarEvents.length.toString(), isMicrosoftLoadingOrError]);
 
-  // Save drive activity
-  useEffect(() => {
-    const addData = async () => {
-      if (!data.driveActivityLoading && data.currentUser?.id) {
-        setLoadingMessage('Saving Drive Activity');
-        await driveActivityDataStore.addDriveActivityToStore(
-          data.driveActivity,
-          data.currentUser.id,
-        );
-      }
-    };
-    void addData();
-  }, [data.driveActivity.length.toString(), data.currentUser?.id]);
-
   // Save documents
   useEffect(() => {
     const addData = async () => {
@@ -183,12 +167,7 @@ const useStoreWithFetching = (
       }
 
       setLoadingMessage('Saving Contacts');
-      await personDataStore.addPeopleToStore(
-        people,
-        data.currentUser,
-        data.contacts,
-        data.emailAddresses,
-      );
+      await personDataStore.addPeopleToStore(data.currentUser, data.contacts, data.emailAddresses);
 
       // Save history
       const currentWebsites = await websiteVisitStore.getAll(
@@ -213,21 +192,11 @@ const useStoreWithFetching = (
         await websiteVisitStore.addHistoryToStore(historyWebsites, timeDataStore);
       }
 
-      // Cleanup website images
-      // await websiteImageStore.cleanupWebsiteImages();
-      // Cleanup website visits
-      // await websiteVisitStore.cleanupWebsites();
-
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
 
       setLoadingMessage('Matching Documents and Meetings');
-      await segmentDocumentStore.addSegmentDocumentsToStore(
-        driveActivityDataStore,
-        timeDataStore,
-        attendeeDataStore,
-        personDataStore,
-      );
+      await segmentDocumentStore.addSegmentDocumentsToStore(timeDataStore, attendeeDataStore);
 
       if (!data.isLoading) {
         setLoadingMessage(undefined);
@@ -237,12 +206,29 @@ const useStoreWithFetching = (
         }
         localStorage.setItem(config.LAST_UPDATED, new Date().toISOString());
       }
+
+      const cleanup = async () => {
+        await Promise.all([
+          // Cleanup website images
+          websiteImageStore.cleanup(),
+          // Cleanup website visits
+          websiteVisitStore.cleanup(),
+          // Cleanup attendees
+          attendeeDataStore.cleanup(),
+          // Cleanup segment documents
+          segmentDocumentStore.cleanup(),
+          // Cleanup meetings
+          timeDataStore.cleanup(),
+        ]);
+      };
+      void cleanup();
     };
     void addData();
   }, [data.isLoading]);
 
+  console.log('Fetching:', loadingMessage, isLoading, '<<<<<<');
+
   return {
-    driveActivityStore: driveActivityDataStore,
     timeDataStore,
     personDataStore,
     documentDataStore,
@@ -258,11 +244,9 @@ const useStoreWithFetching = (
     domainFilterStore,
     segmentTagStore,
     tfidfStore,
-    isLoading,
-    isPeopleLoading: data.peopleLoading,
     isMeetingsLoading: data.calendarResponseLoading,
     isDocumentsLoading: data.driveResponseLoading,
-    isDriveActivityLoading: data.driveActivityLoading,
+    isLoading,
     loadingMessage,
     refetch: () => data.refetch(),
     scope,
@@ -300,7 +284,7 @@ const useStore = (
   } else {
     console.log('not fetching data');
     // eslint-disable-next-line
-    return useStoreNoFetch(db);
+    return useStoreNoFetch(db, false);
   }
 };
 

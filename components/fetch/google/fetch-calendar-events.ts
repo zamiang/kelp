@@ -78,7 +78,10 @@ const formatSegment = (event?: gapi.client.calendar.Event): ISegment | null => {
     description: event.description,
     attendees: (event.attendees || [])
       .filter(
-        (attendee) => attendee.email && !attendee.resource, // filter out conference rooms
+        (attendee) =>
+          attendee.email &&
+          !attendee.resource &&
+          !attendee.email.includes('@group.calendar.google.com'), // filter out conference rooms and groups
       )
       .map((a) => ({
         ...a,
