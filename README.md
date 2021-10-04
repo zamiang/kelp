@@ -28,7 +28,6 @@ First create a [Google Oauth] app and enable the APIs you want to use. Currently
 - [Google Drive API]
 - [GMail API]
 - [Google Calendar API]
-- [Google Drive Activity API]
 
 Then proceed with your node setup steps. Ensure you are using node 14 or greater
 
@@ -59,5 +58,4 @@ When starting the app in development mode
 [google drive api]: https://developers.google.com/drive
 [gmail api]: https://developers.google.com/gmail/api
 [google calendar api]: https://developers.google.com/calendar
-[google drive activity api]: https://developers.google.com/drive/activity/v2
 [.env.local]: https://nextjs.org/docs/basic-features/environment-variables

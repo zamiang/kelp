@@ -11,7 +11,6 @@ const scopes = [
   'https://www.googleapis.com/auth/userinfo.profile',
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/drive.metadata.readonly',
-  'https://www.googleapis.com/auth/drive.activity.readonly',
 ];
 
 const modifyManifest = (buffer) => {

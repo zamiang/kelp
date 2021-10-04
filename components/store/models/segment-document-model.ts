@@ -59,8 +59,8 @@ export default class SegmentDocumentModel {
   async addSegmentDocumentsToStore(timeStore: SegmentModel, attendeeStore: AttendeeModel) {
     const segments = await timeStore.getAll();
 
-    // Add drive activity in meeting descriptions
-    const descriptionsToAdd = await Promise.all(
+    // Add documents in meeting descriptions
+    const documentsToAdd = await Promise.all(
       segments.map(async (segment) => {
         const attendees = await attendeeStore.getAllForSegmentId(segment.id);
         return segment.documentIdsFromDescription.map((documentId: string) =>
@@ -73,7 +73,7 @@ export default class SegmentDocumentModel {
       }),
     );
 
-    const flatDescriptions = flatten(flatten(descriptionsToAdd)) as ISegmentDocument[];
+    const flatDescriptions = flatten(flatten(documentsToAdd)) as ISegmentDocument[];
 
     const tx = this.db.transaction('segmentDocument', 'readwrite');
 
