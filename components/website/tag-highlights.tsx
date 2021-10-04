@@ -1,4 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useTheme from '@material-ui/styles/useTheme';
 import React from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -18,9 +20,13 @@ export const TagHighlights = (props: {
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
+  const theme = useTheme();
+
   const orderedTags = props.websiteTags;
   const classes = useStyles();
+  const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
+  console.log(isLarge);
   return (
     <div>
       {orderedTags.map((t) => (
@@ -32,7 +38,7 @@ export const TagHighlights = (props: {
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
             showWebsitePopup={props.showWebsitePopup}
-            maxWebsites={4}
+            maxWebsites={isLarge ? 4 : 3}
           />
         </div>
       ))}

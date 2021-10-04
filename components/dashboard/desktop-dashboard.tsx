@@ -218,7 +218,6 @@ export const DesktopDashboard = (props: {
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
-                      maxWebsites={8}
                     />
                   </div>
                 </Route>

@@ -69,7 +69,6 @@ export const WebsiteHighlights = (props: {
   isDarkMode: boolean;
   filterByTag?: string;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
-  maxWebsites: number;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -77,9 +76,7 @@ export const WebsiteHighlights = (props: {
 
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
-    defaultMatches: true,
-  });
+  const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
   useEffect(() => {
     let isSubscribed = true;
@@ -88,7 +85,7 @@ export const WebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
-      props.maxWebsites || maxResult,
+      isLarge ? 8 : 6,
       isSubscribed,
       props.filterByTag,
     );
@@ -123,9 +120,9 @@ export const WebsiteHighlights = (props: {
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={isMobile ? 5 : 6}>
+          <Grid container spacing={6}>
             {topWebsites.map((item) => (
-              <Grid item xs={3} key={item.websiteId}>
+              <Grid item xs={isLarge ? 3 : 4} key={item.websiteId}>
                 <LargeWebsite
                   item={item}
                   store={props.store}

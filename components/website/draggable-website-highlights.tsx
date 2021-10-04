@@ -10,9 +10,6 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
 
-const maxResult = 8;
-const maxDisplay = maxResult * 8;
-
 const getItemStyle = (draggableStyle: any) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
@@ -65,9 +62,8 @@ const fetchData = async (
     })
     .sort((a, b) => (websiteMap[a.websiteId].index > websiteMap[b.websiteId].index ? 1 : -1));
 
-  const extraResultLength = filtereredWebsites.length - maxResult;
-  isSubscribed &&
-    setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+  const extraResultLength = filtereredWebsites.length - maxWebsites;
+  isSubscribed && setExtraItemsCount(extraResultLength > 0 ? extraResultLength : 0);
   if (shouldShowAll) {
     return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
   } else {
@@ -83,6 +79,7 @@ interface IWebsiteProps {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  size: number;
 }
 
 const Website = (props: IWebsiteProps) => (
@@ -90,7 +87,7 @@ const Website = (props: IWebsiteProps) => (
     {(provided) => (
       <Grid
         item
-        xs={3}
+        xs={props.size as any}
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
@@ -118,6 +115,7 @@ const DraggableWebsites = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  maxWebsites: number;
 }) => {
   const onDragEnd = (result: any) => {
     // TODO
@@ -157,6 +155,7 @@ const DraggableWebsites = (props: {
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 showWebsitePopup={props.showWebsitePopup}
+                size={props.maxWebsites > 3 ? 3 : 4}
               />
             ))}
             {provided.placeholder}
@@ -195,7 +194,7 @@ export const DraggableWebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
-      props.maxWebsites || maxResult,
+      props.maxWebsites,
       isSubscribed,
       props.filterByTag,
     );
@@ -237,6 +236,7 @@ export const DraggableWebsiteHighlights = (props: {
         isDarkMode={props.isDarkMode}
         toggleWebsiteTag={props.toggleWebsiteTag}
         showWebsitePopup={props.showWebsitePopup}
+        maxWebsites={props.maxWebsites}
       />
     </div>
   );
