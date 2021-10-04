@@ -1,15 +1,15 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import { cleanText } from '../shared/tfidf';
@@ -193,7 +193,7 @@ export const WebsiteDialog = (props: {
             <br />
           </Grid>
           <Grid item xs={2}>
-            <IconButton onClick={props.close} className={classes.closeButton}>
+            <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width="24" height="24" />
             </IconButton>
           </Grid>
@@ -216,7 +216,7 @@ export const WebsiteDialog = (props: {
                       event.stopPropagation();
                       return removeTag(t);
                     }}
-                  >
+                    size="large">
                     <CloseIcon width="18" height="18" />
                   </IconButton>
                 </ListItemSecondaryAction>

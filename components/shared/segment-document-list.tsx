@@ -1,4 +1,4 @@
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import DocumentRow, { MissingDocumentRow } from '../documents/document-row';

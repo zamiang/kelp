@@ -1,6 +1,6 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import makeStyles from '@mui/styles/makeStyles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import React from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';

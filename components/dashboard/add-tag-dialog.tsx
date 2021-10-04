@@ -1,8 +1,8 @@
-import Dialog from '@material-ui/core/Dialog';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Dialog from '@mui/material/Dialog';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -83,7 +83,7 @@ export const AddTaggDialog = (props: {
             <Typography variant="h3">Add tags </Typography>
           </Grid>
           <Grid item xs={2}>
-            <IconButton onClick={props.close} className={classes.closeButton}>
+            <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width="24" height="24" />
             </IconButton>
           </Grid>

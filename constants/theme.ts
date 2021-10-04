@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
@@ -40,7 +40,7 @@ const lightGreyColor = 'rgba(0,0,0,0.12)';
 const white = '#fff';
 const black = '#000';
 
-export const lightTheme = createTheme({
+export const lightTheme = createTheme(adaptV4Theme({
   breakpoints: {
     values: {
       xs: 0,
@@ -56,7 +56,7 @@ export const lightTheme = createTheme({
     },
   },
   palette: {
-    type: 'light',
+    mode: 'light',
     common: {
       black,
       white,
@@ -305,14 +305,14 @@ export const lightTheme = createTheme({
       },
     },
   },
-} as any);
+} as any));
 
 const darkPrimaryTextColor = 'rgba(255,255,255,0.87)';
 const darkSecondaryTextColor = 'rgba(255, 255, 255, 0.70)';
 const darkLightTextColor = 'rgba(255,255,255,0.5)';
 const darkLightGreyColor = 'rgba(255,255,255,0.12)';
 
-export const darkTheme = createTheme({
+export const darkTheme = createTheme(adaptV4Theme({
   props: {
     MuiButtonBase: {
       disableRipple: true, // No more ripple, on the whole application
@@ -328,7 +328,7 @@ export const darkTheme = createTheme({
     },
   },
   palette: {
-    type: 'dark',
+    mode: 'dark',
     background: {
       paper: '#363641',
       default: '#262736',
@@ -573,4 +573,4 @@ export const darkTheme = createTheme({
       },
     },
   },
-} as any);
+} as any));

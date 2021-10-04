@@ -1,5 +1,6 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import CssBaseline from '@mui/material/CssBaseline';
+import { StyledEngineProvider } from '@mui/material/styles';
+import ThemeProvider from '@mui/styles/ThemeProvider';
 import React, { useEffect } from 'react';
 import homepageTheme from '../constants/homepage-theme';
 
@@ -25,10 +26,12 @@ const App = (props: any) => {
     }
   }, []);
   return (
-    <ThemeProvider theme={homepageTheme}>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={homepageTheme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

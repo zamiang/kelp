@@ -1,8 +1,8 @@
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import MuiLink from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import MuiLink from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       opacity: 0.5,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: '0 auto',
     },
   },
@@ -41,20 +41,20 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       textDecoration: 'underline',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
   },
   footerItem: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: theme.spacing(1),
       padding: '0px',
     },
   },
   hideOnMobile: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },

@@ -1,7 +1,7 @@
 import { IPublicClientApplication } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 import useButtonStyles from '../shared/button-styles';
 import { ensureDataRefresh } from './ensure-refresh';

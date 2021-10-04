@@ -1,10 +1,10 @@
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import DotsIcon from '../../public/icons/dots-black.svg';
 import DotsIconWhite from '../../public/icons/dots-white.svg';
@@ -90,7 +90,7 @@ const WebsiteImage = (props: {
         style={{
           backgroundColor: props.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
         }}
-      >
+        size="large">
         <img src={`chrome://favicon/size/48@1x/${props.item.websiteId}`} height="16" width="16" />
       </IconButton>
     </div>
@@ -133,7 +133,7 @@ export const LargeWebsite = (props: {
   return (
     <div className={classes.website}>
       <Link href={website?.rawUrl} underline="none">
-        <Box boxShadow={1} borderRadius={16} className={classes.container}>
+        <Box boxShadow={1} borderRadius="16px" className={classes.container}>
           <WebsiteImage
             image={image}
             item={props.item}

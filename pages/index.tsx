@@ -1,12 +1,12 @@
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   installButtonContainer: {
     paddingBottom: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(4),
     },
   },
@@ -50,14 +50,14 @@ export const useStyles = makeStyles((theme) => ({
     margin: 0,
     marginTop: theme.spacing(4),
     color: theme.palette.text.primary,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 42,
     },
   },
   heading: {
     fontSize: 32,
     marginTop: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 32,
     },
   },
@@ -65,7 +65,7 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: 32,
     fontSize: 24,
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 16,
       marginTop: theme.spacing(4),
       marginBottom: theme.spacing(1),
@@ -82,7 +82,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(6),
     width: '100%',
     textAlign: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: theme.spacing(6),
       marginBottom: theme.spacing(10),
     },
@@ -94,7 +94,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     marginTop: 48,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
       marginRight: 'auto',
       maxWidth: 'none',
@@ -112,7 +112,7 @@ export const useStyles = makeStyles((theme) => ({
     '&:hover': {
       opacity: 0.6,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
@@ -139,7 +139,7 @@ export const useStyles = makeStyles((theme) => ({
     maxHeight: 629,
     overflow: 'hidden',
     marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       borderRadius: 15,
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(8),
@@ -153,7 +153,7 @@ export const useStyles = makeStyles((theme) => ({
   bodyCopySection: {
     paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(10),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
       maxWidth: 'none',
@@ -164,7 +164,7 @@ export const useStyles = makeStyles((theme) => ({
     fontStyle: 'italics',
   },
   loginButtonContainer: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       textAlign: 'center',
       margin: '0px auto',
     },
@@ -174,19 +174,19 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   list: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       textAlign: 'center',
       margin: '0px auto',
       maxWidth: 367,
     },
   },
   quote: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 24,
     },
   },
   largeText: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 32,
     },
   },

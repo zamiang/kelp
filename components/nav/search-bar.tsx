@@ -1,7 +1,7 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import CloseIconOrange from '../../public/icons/close-orange.svg';
@@ -13,7 +13,7 @@ import SearchIcon from '../../public/icons/search.svg';
 const useStyles = makeStyles((theme) => ({
   input: {
     marginTop: 0,
-    [theme.breakpoints.down('sm')]: {},
+    [theme.breakpoints.down('md')]: {},
   },
   container: {
     background: theme.palette.background.paper,
@@ -86,7 +86,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
               router.push('/home');
               setValue('');
             }}
-          >
+            size="large">
             {props.isDarkMode ? (
               <CloseIconOrange width="24" height="24" />
             ) : (

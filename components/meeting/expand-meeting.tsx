@@ -1,11 +1,11 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import MuiLink from '@material-ui/core/Link';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import MuiLink from '@mui/material/Link';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -66,7 +66,7 @@ const EmailGuestsButton = (props: {
         onClick={() => window.open(link)}
         color="primary"
         className={buttonClasses.iconButton}
-      >
+        size="large">
         <EmailIcon width="24" height="24" />
       </IconButton>
     </Tooltip>
@@ -96,7 +96,7 @@ const ExpandedMeeting = (props: {
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
     defaultMatches: true,
   });
 
@@ -210,7 +210,7 @@ const ExpandedMeeting = (props: {
                     color="primary"
                     onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
                     className={buttonClasses.iconButton}
-                  >
+                    size="large">
                     <SaveIcon width="24" height="24" />
                   </IconButton>
                 </Tooltip>

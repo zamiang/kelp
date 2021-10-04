@@ -1,4 +1,4 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useRef } from 'react';
 import D3BarChart, { IBarChartItem } from './d3-bar-chart';
 

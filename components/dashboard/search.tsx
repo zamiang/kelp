@@ -1,8 +1,8 @@
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import Fuse from 'fuse.js';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -107,10 +107,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xl')]: {
       left: 184,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       left: 178,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       left: 138,
     },
   },
@@ -141,7 +141,7 @@ const Search = (props: {
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
     defaultMatches: true,
   });
 

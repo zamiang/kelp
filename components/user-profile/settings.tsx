@@ -1,14 +1,14 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
-import Divider from '@material-ui/core/Divider';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Switch from '@material-ui/core/Switch';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Switch from '@mui/material/Switch';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
@@ -150,7 +150,7 @@ const Settings = (props: {
                 props.setIsDarkMode(false);
                 localStorage.setItem(config.DARK_MODE, String(false));
               }}
-            >
+              size="large">
               {props.isDarkMode ? (
                 <DayIconWhite width="18" height="18" />
               ) : (
@@ -167,7 +167,7 @@ const Settings = (props: {
                 props.setIsDarkMode(true);
                 localStorage.setItem(config.DARK_MODE, String(true));
               }}
-            >
+              size="large">
               {props.isDarkMode ? (
                 <MoonIconOrange width="18" height="18" />
               ) : (
@@ -254,7 +254,7 @@ const Settings = (props: {
                 <Typography noWrap>{item.id}</Typography>
               </Grid>
               <Grid item>
-                <IconButton onClick={() => removeWebsite(item.id)}>
+                <IconButton onClick={() => removeWebsite(item.id)} size="large">
                   <CloseIcon width="18" height="18" />
                 </IconButton>
               </Grid>
@@ -292,7 +292,7 @@ const Settings = (props: {
                 <Typography noWrap>{item.id}</Typography>
               </Grid>
               <Grid item>
-                <IconButton onClick={() => removeDomain(item.id)}>
+                <IconButton onClick={() => removeDomain(item.id)} size="large">
                   <CloseIcon width="18" height="18" />
                 </IconButton>
               </Grid>

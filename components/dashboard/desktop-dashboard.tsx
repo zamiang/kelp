@@ -1,10 +1,10 @@
-import Container from '@material-ui/core/Container';
-import Dialog from '@material-ui/core/Dialog';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import Container from '@mui/material/Container';
+import Dialog from '@mui/material/Dialog';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import ThemeProvider from '@mui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { lightTheme } from '../../constants/theme';
@@ -36,11 +36,11 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 180,
       paddingRight: 180,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       paddingLeft: 160,
       paddingRight: 160,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       paddingLeft: 120,
       paddingRight: 120,
     },
@@ -143,9 +143,11 @@ export const DesktopDashboard = (props: {
           isMicrosoftError={props.isMicrosoftError}
           toggleWebsiteTag={toggleWebsiteTagClick}
         />
-        <ThemeProvider theme={lightTheme}>
-          <Onboarding />
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={lightTheme}>
+            <Onboarding />
+          </ThemeProvider>
+        </StyledEngineProvider>
         <div className={classes.container}>
           <Container maxWidth="lg" disableGutters>
             <div>

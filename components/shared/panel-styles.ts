@@ -1,4 +1,4 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   panel: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   headingPadding: {
     paddingLeft: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingLeft: theme.spacing(1),
     },
   },

@@ -1,6 +1,6 @@
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 import useComponentSize from '@rehooks/component-size';
 import { addDays, differenceInCalendarDays, format, subDays } from 'date-fns';
 import { times } from 'lodash';

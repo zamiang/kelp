@@ -1,4 +1,4 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   topContainer: {
@@ -95,13 +95,13 @@ const useStyles = makeStyles((theme) => ({
   date: {
     textAlign: 'right',
     paddingRight: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       textAlign: 'left',
       paddingRight: 0,
     },
   },
   textPadding: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingBottom: theme.spacing(0.5),
       paddingTop: theme.spacing(0.5),
     },

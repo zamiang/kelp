@@ -1,7 +1,7 @@
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingTop: theme.spacing(4),
     paddingRight: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: 0,
     },
   },
@@ -45,7 +45,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   sectionText: {
     padding: theme.spacing(6),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingLeft: 0,
       paddingRight: 0,
       paddingTop: 0,
@@ -57,7 +57,7 @@ export const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: 0,
     },
   },
@@ -66,31 +66,31 @@ export const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: 0,
     },
   },
   section: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
     },
   },
   notificationContainer: {
     marginRight: 28,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginRight: 'auto',
     },
   },
   prepareTextRight: {
     marginLeft: 0,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
     },
   },
   manageWorkTextLeft: {
     marginRight: 0,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       marginRight: 'auto',
     },
   },

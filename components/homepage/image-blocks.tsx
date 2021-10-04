@@ -1,7 +1,7 @@
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import Image from 'next/image';
 import React from 'react';
 import tagGif from '../../public/animations/tag-group.gif';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   section: {
     marginBottom: theme.spacing(6),
     marginTop: theme.spacing(6),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
     },

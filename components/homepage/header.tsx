@@ -1,10 +1,10 @@
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import Link from 'next/link';
 import React from 'react';
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   links: {
     minWidth: 185,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       display: 'none',
     },
   },
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       opacity: 0.5,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       height: 56,
       marginRight: theme.spacing(2),
     },
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 42,
     margin: 0,
     color: theme.palette.text.primary,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 24,
     },
   },

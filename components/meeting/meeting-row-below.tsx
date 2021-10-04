@@ -1,9 +1,9 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -46,7 +46,7 @@ const MeetingRowBelow = (props: {
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
     defaultMatches: true,
   });
 

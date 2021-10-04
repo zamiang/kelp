@@ -1,10 +1,10 @@
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import { flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -53,7 +53,7 @@ const ExpandPerson = (props: {
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
     defaultMatches: true,
   });
 

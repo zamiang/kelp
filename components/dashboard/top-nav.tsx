@@ -1,9 +1,9 @@
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xl')]: {
       width: 187,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       width: 179,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: 139,
     },
   },
@@ -54,10 +54,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xl')]: {
       width: 187,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       width: 179,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: 139,
     },
   },
@@ -127,7 +127,7 @@ export const TopNav = (props: {
                 event.preventDefault();
                 return router.push('/home');
               }}
-            >
+              size="large">
               {isHomeSelected ? (
                 <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : props.isDarkMode ? (
@@ -144,7 +144,7 @@ export const TopNav = (props: {
                 event.preventDefault();
                 return router.push('/meetings');
               }}
-            >
+              size="large">
               {isMeetingsSelected ? (
                 <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : props.isDarkMode ? (
@@ -162,7 +162,7 @@ export const TopNav = (props: {
                   event.preventDefault();
                   return router.push('/settings');
                 }}
-              >
+                size="large">
                 {isSettingsSelected ? (
                   <SettingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
                 ) : props.isDarkMode ? (
