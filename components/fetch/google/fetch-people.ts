@@ -1,4 +1,4 @@
-import { chunk, flatten, uniq } from 'lodash';
+import { uniq } from 'lodash';
 import { IPerson } from '../../store/data-types';
 
 export const usedPersonFields = 'names,nicknames,emailAddresses,photos,biographies';
@@ -59,47 +59,4 @@ export const formatGmailAddress = (email: string) => {
     return `${splitEmail[0].replaceAll('.', '')}@${splitEmail[1]}`.toLocaleLowerCase();
   }
   return email.toLocaleLowerCase();
-};
-
-export const batchFetchPeople = async (peopleIds: string[], authToken: string, limit: any) => {
-  if (peopleIds.length < 1) {
-    return [];
-  }
-
-  const uniquePeopleIdsChunks = chunk(uniq(peopleIds), 49);
-
-  const results = await Promise.all(
-    uniquePeopleIdsChunks.map(async (uniquePeopleIds) => {
-      const searchParams = new URLSearchParams({
-        personFields: usedPersonFields,
-      });
-      uniquePeopleIds.forEach((id) => searchParams.append('resourceNames', id));
-
-      const personResponse = await limit(
-        async () =>
-          await fetch(
-            `https://people.googleapis.com/v1/people:batchGet?${searchParams.toString()}`,
-            {
-              headers: {
-                authorization: `Bearer ${authToken}`,
-              },
-            },
-          ),
-      );
-      const result = await personResponse.json();
-
-      return result;
-    }),
-  );
-
-  // NOTE: This returns very little unless the person is in the user's contacts
-  const flattenedPeople = flatten(results.map((r) => r.responses));
-  const formattedPeople = flattenedPeople
-    .filter(Boolean)
-    .map((personResponse) =>
-      formatPerson(personResponse.person, personResponse.requestedResourceName),
-    )
-    .filter(Boolean);
-
-  return formattedPeople as IPerson[];
 };
