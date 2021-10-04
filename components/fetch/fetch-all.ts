@@ -4,35 +4,25 @@ import { pRateLimit } from 'p-ratelimit';
 import { useState } from 'react';
 import { useAsyncAbortable } from 'react-async-hook';
 import { useThrottle } from 'react-use';
-import {
-  IDocument,
-  IFormattedDriveActivity,
-  IPerson,
-  ISegment,
-  IWebsite,
-} from '../store/data-types';
+import { IDocument, IPerson, ISegment, IWebsite } from '../store/data-types';
 import { createNewPersonFromEmail } from '../store/models/person-model';
 import fetchCalendarEvents, {
   getDocumentsFromCalendarEvents,
 } from './google/fetch-calendar-events';
 import fetchContacts from './google/fetch-contacts';
-import fetchDriveActivityForDocumentIds from './google/fetch-drive-activity';
 import fetchDriveFiles from './google/fetch-drive-files';
 import FetchMissingGoogleDocs from './google/fetch-missing-google-docs';
-import { batchFetchPeople } from './google/fetch-people';
 import { fetchSelf } from './google/fetch-self';
 import { fetchCalendar } from './microsoft/fetch-calendar';
 import { fetchMicrosoftSelf } from './microsoft/fetch-self';
 
 interface IReturnType {
-  readonly personList: IPerson[];
   readonly emailAddresses: string[];
   readonly contacts: IPerson[];
   readonly currentUser?: IPerson;
   readonly calendarEvents: ISegment[];
   readonly driveFiles: IDocument[];
   readonly websites: IWebsite[];
-  readonly driveActivity: IFormattedDriveActivity[];
   readonly isLoading: boolean;
   readonly refetch: () => void;
   readonly lastUpdated: Date;
@@ -40,9 +30,7 @@ interface IReturnType {
   readonly driveResponseLoading: boolean;
   readonly calendarResponseLoading: boolean;
   readonly contactsResponseLoading: boolean;
-  readonly driveActivityLoading: boolean;
   readonly currentUserLoading: boolean;
-  readonly peopleLoading: boolean;
 }
 
 // create a rate limiter that allows up to x API calls per second, with max concurrency of y
@@ -116,47 +104,11 @@ const FetchAll = (
     limit,
   });
 
-  /**
-   * DRIVE ACTIVITY
-   */
-  const idsForDriveActivity = uniq(
-    googleDocIds.concat(missingGoogleDocs.missingDriveFiles.map((f) => f?.id).filter(Boolean)),
-  );
-  const googleDocIdsToFetchActivity =
-    driveResponse.loading || calendarResponse.loading || missingGoogleDocs.missingGoogleDocsLoading
-      ? []
-      : (idsForDriveActivity as any);
-
-  const driveActivityResponse = useAsyncAbortable(
-    () => fetchDriveActivityForDocumentIds(googleDocIdsToFetchActivity, googleOauthToken, limit),
-    [googleDocIdsToFetchActivity.length.toString()] as any, // unsure why this type is a failure
-  );
-  const driveActivity = driveActivityResponse.result ? driveActivityResponse.result.activity : [];
-
-  /**
-   * PEOPLE
-   */
-  // Find people who are in drive activity but not in contacts and try to fetch them.
-  const contactsByPeopleId = {} as any;
-  (contactsResponse.result || []).map((c) => (contactsByPeopleId[c.id] = c));
-  const peopleIds = uniq(
-    driveActivity
-      .map((activity) => activity && activity.actorPersonId)
-      .filter((id) => id && !contactsByPeopleId[id]),
-  );
-  const peopleResponse = useAsyncAbortable(
-    () => batchFetchPeople(peopleIds as any, googleOauthToken, limit),
-    [peopleIds.length.toString()] as any,
-  );
-
   const isLoadingDebounced = useThrottle(
-    peopleResponse.loading ||
-      currentUser.loading ||
+    currentUser.loading ||
       driveResponse.loading ||
       calendarResponse.loading ||
       contactsResponse.loading ||
-      driveActivityResponse.loading ||
-      peopleResponse.loading ||
       missingGoogleDocs.missingGoogleDocsLoading,
     200,
   );
@@ -190,8 +142,6 @@ const FetchAll = (
   }
 
   return {
-    personList: peopleResponse.result ? peopleResponse.result : [],
-    driveActivity,
     calendarEvents,
     driveFiles,
     contacts: contactsResponse.result || [],
@@ -203,25 +153,19 @@ const FetchAll = (
       await currentUser.execute();
       await calendarResponse.execute();
       await driveResponse.execute();
-      await peopleResponse.execute();
       await microsoftCalendarResponse.execute();
     },
     lastUpdated: debouncedLastUpdated,
     currentUserLoading: currentUser.loading,
     driveResponseLoading: driveResponse.loading,
-    driveActivityLoading: driveActivityResponse.loading,
     calendarResponseLoading: calendarResponse.loading || microsoftCalendarResponse.loading,
     contactsResponseLoading: contactsResponse.loading || microsoftCalendarResponse.loading,
-    peopleLoading: peopleResponse.loading,
     isLoading: isLoadingDebounced,
     error:
-      peopleResponse.error ||
       currentUser.error ||
       contactsResponse.error ||
       driveResponse.error ||
       calendarResponse.error ||
-      driveActivityResponse.error ||
-      peopleResponse.error ||
       missingGoogleDocs.missingGoogleDocsError,
   };
 };

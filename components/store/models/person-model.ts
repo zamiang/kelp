@@ -14,11 +14,6 @@ export const createNewPersonFromEmail = (email: string): IPerson => ({
   dateAdded: new Date(),
 });
 
-const formatPersonForStore = (person: IPerson): IPerson => ({
-  ...person,
-  id: person.id,
-});
-
 export default class PersonModel {
   private db: dbType;
 
@@ -39,7 +34,6 @@ export default class PersonModel {
    * @returns
    */
   async addPeopleToStore(
-    people: IPerson[],
     currentUser?: IPerson,
     contacts: IPerson[] = [],
     emailAddresses: string[] = [],
@@ -86,29 +80,6 @@ export default class PersonModel {
         contactLookup[contact.id] = formattedCurrentUser;
       } else {
         contactLookup[contact.id] = contact;
-      }
-    });
-
-    // Add people first from google drive activity
-    people.forEach((person) => {
-      let contact: IPerson | null = null;
-      person.emailAddresses.forEach((emailAddress) => {
-        const formattedEmailAddress = formatGmailAddress(emailAddress);
-        const lookedUpContact = contactLookup[formattedEmailAddress];
-        if (!contact && lookedUpContact) {
-          contact = lookedUpContact;
-          emailAddressToPersonIdHash[formattedEmailAddress] = lookedUpContact.id;
-        } else {
-          emailAddressToPersonIdHash[formattedEmailAddress] = person.id;
-        }
-      });
-      if (contact) {
-        peopleToAdd.push(contact);
-        if (!(contact as any).isCurrentUser && person.id && person.id !== (contact as any).id) {
-          peopleToAdd.push(person);
-        }
-      } else if (person.id) {
-        peopleToAdd.push(formatPersonForStore(person));
       }
     });
 
