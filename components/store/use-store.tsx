@@ -51,14 +51,19 @@ export interface IStore {
   readonly incrementLoading: () => void;
 }
 
-export const useStoreNoFetch = (
-  db: dbType | null,
-  isLoading: number,
-  setLoading: (n: number) => void,
-): IStore | null => {
+export const useStoreNoFetch = (db: dbType | null, skipHook: boolean): IStore | null => {
+  let isLoading = 0;
+  let setLoading = (n: number) => console.log('setting loading', n);
+
+  if (!skipHook) {
+    // NOTE: @skipHook is need to support execution from the background worker context where hooks are not available
+    // eslint-disable-next-line
+    [isLoading, setLoading] = useState<number>(0);
+  }
   if (!db) {
     return null;
   }
+
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
@@ -103,10 +108,6 @@ export const useStoreNoFetch = (
 
 const useStoreWithFetching = (
   db: dbType,
-  isLoading: number,
-  setLoading: (n: number) => void,
-  loadingMessage: string | undefined,
-  setLoadingMessage: (s?: string) => void,
   googleOauthToken: string,
   scope: string,
   microsoftAccount?: AccountInfo,
@@ -114,6 +115,9 @@ const useStoreWithFetching = (
   isMicrosoftLoadingOrError?: boolean,
 ): IStore => {
   const data = FetchAll(googleOauthToken, microsoftAccount, msal);
+
+  const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
+  const [isLoading, setLoading] = useState<number>(0);
 
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);
@@ -188,11 +192,6 @@ const useStoreWithFetching = (
         await websiteVisitStore.addHistoryToStore(historyWebsites, timeDataStore);
       }
 
-      // Cleanup website images
-      // await websiteImageStore.cleanupWebsiteImages();
-      // Cleanup website visits
-      // await websiteVisitStore.cleanupWebsites();
-
       setLoadingMessage('Saving Meeting Attendee');
       await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
 
@@ -207,9 +206,27 @@ const useStoreWithFetching = (
         }
         localStorage.setItem(config.LAST_UPDATED, new Date().toISOString());
       }
+
+      const cleanup = async () => {
+        await Promise.all([
+          // Cleanup website images
+          websiteImageStore.cleanup(),
+          // Cleanup website visits
+          websiteVisitStore.cleanup(),
+          // Cleanup attendees
+          attendeeDataStore.cleanup(),
+          // Cleanup segment documents
+          segmentDocumentStore.cleanup(),
+          // Cleanup meetings
+          timeDataStore.cleanup(),
+        ]);
+      };
+      void cleanup();
     };
     void addData();
   }, [data.isLoading]);
+
+  console.log('Fetching:', loadingMessage, isLoading, '<<<<<<');
 
   return {
     timeDataStore,
@@ -248,9 +265,6 @@ const useStore = (
   msal?: IPublicClientApplication,
   isMicrosoftLoadingOrError?: boolean,
 ): IStore | null => {
-  const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
-  const [isLoading, setLoading] = useState<number>(0);
-
   if (!db) {
     return null;
   }
@@ -261,10 +275,6 @@ const useStore = (
     // eslint-disable-next-line
     return useStoreWithFetching(
       db,
-      isLoading,
-      setLoading,
-      loadingMessage,
-      setLoadingMessage,
       googleOauthToken,
       googleScope,
       microsoftAccount,
@@ -274,7 +284,7 @@ const useStore = (
   } else {
     console.log('not fetching data');
     // eslint-disable-next-line
-    return useStoreNoFetch(db, isLoading, setLoading);
+    return useStoreNoFetch(db, false);
   }
 };
 

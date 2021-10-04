@@ -1,5 +1,6 @@
 import { getDayOfYear } from 'date-fns';
 import { flatten, orderBy, uniqBy } from 'lodash';
+import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { getWeek } from '../../shared/date-helpers';
 import { removePunctuationRegex } from '../../shared/tfidf';
@@ -36,6 +37,23 @@ export default class SegmentDocumentModel {
 
   constructor(db: dbType) {
     this.db = db;
+  }
+
+  async cleanup() {
+    const segmentDocuments = await this.getAll();
+    const segmentDocumentsToDelete = segmentDocuments.filter((a) => a.date < config.startDate);
+    const tx = this.db.transaction('segmentDocument', 'readwrite');
+    const results = await Promise.allSettled(
+      segmentDocumentsToDelete.map((item) => tx.store.delete(item.id)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async addSegmentDocumentsToStore(timeStore: SegmentModel, attendeeStore: AttendeeModel) {

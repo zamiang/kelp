@@ -153,6 +153,9 @@ const options = {
       } catch (e) {
         console.log(e);
       }
+      if (oldVersion === 14) {
+        return;
+      }
     }
     if (oldVersion < 14) {
       // website canonical store

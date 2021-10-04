@@ -21,12 +21,12 @@ export default class WebsiteImageModel {
     return results;
   }
 
-  async cleanupWebsiteImages() {
+  async cleanup() {
     const images = await this.getAll();
     const imagesToDelete = images.filter((image) => image.date < config.startDate);
     const tx = this.db.transaction('websiteImage', 'readwrite');
     const results = await Promise.allSettled(
-      imagesToDelete.map((item) => this.db.delete('websiteImage', item.id)),
+      imagesToDelete.map((item) => tx.store.delete(item.id)),
     );
     await tx.done;
 

@@ -36,6 +36,23 @@ export default class SegmentModel {
     return;
   }
 
+  async cleanup() {
+    const segments = await this.getAll();
+    const segmentsToDelete = segments.filter((a) => a.end < config.startDate);
+    const tx = this.db.transaction('meeting', 'readwrite');
+    const results = await Promise.allSettled(
+      segmentsToDelete.map((item) => tx.store.delete(item.id)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
+  }
+
   async getById(id: string): Promise<ISegment | undefined> {
     return this.db.get('meeting', id);
   }
