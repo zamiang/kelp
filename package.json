@@ -29,7 +29,7 @@
     "typecheck": "node node_modules/.bin/tsc --project tsconfig.json --noEmit --pretty"
   },
   "dependencies": {
-    "@azure/msal-browser": "2.17.0",
+    "@azure/msal-browser": "2.18.0",
     "@azure/msal-react": "1.0.2",
     "@emotion/cache": "11.4.0",
     "@emotion/react": "11.4.1",
@@ -86,10 +86,10 @@
     "styled-components": "5.3.1",
     "typescript": "4.4.3",
     "url-regex": "5.0.0",
-    "webpack": "5.56.0",
+    "webpack": "5.56.1",
     "webpack-bundle-analyzer": "4.4.2",
     "webpack-cli": "4.8.0",
-    "webpack-dev-server": "4.3.0"
+    "webpack-dev-server": "4.3.1"
   },
   "devDependencies": {
     "@babel/core": "7.15.5",
@@ -98,9 +98,9 @@
     "@hot-loader/react-dom": "17.0.1",
     "@types/node": "16.10.2",
     "@types/react-dom": "17.0.9",
-    "@typescript-eslint/eslint-plugin": "4.32.0",
-    "@typescript-eslint/eslint-plugin-tslint": "4.32.0",
-    "@typescript-eslint/parser": "4.32.0",
+    "@typescript-eslint/eslint-plugin": "4.33.0",
+    "@typescript-eslint/eslint-plugin-tslint": "4.33.0",
+    "@typescript-eslint/parser": "4.33.0",
     "babel-loader": "8.2.2",
     "copy-webpack-plugin": "9.0.1",
     "css-loader": "6.3.0",
