@@ -8,7 +8,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
-import useRowStyles from '../shared/row-styles';
+import { Row, classes } from '../shared/row-styles';
 import { ISegment, IWebsiteTag } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
@@ -20,49 +20,50 @@ export const Meeting = (props: {
   info?: string;
   isSmall?: boolean;
 }) => {
-  const rowStyles = useRowStyles();
   const router = useHistory();
   const opacity = props.meeting.start > new Date() ? 0.5 : 0.3;
   return (
-    <Button
-      onClick={() => router.push(`/meetings/${props.meeting.id}`)}
-      className={clsx(rowStyles.row, props.isSmall && rowStyles.rowSmall)}
-    >
-      <Grid container wrap="nowrap" alignItems="center">
-        <Grid item className={rowStyles.rowLeft}>
-          <CalendarIcon
-            width="24"
-            height="24"
-            style={{ display: 'block', margin: '0 auto', opacity }}
-          />
-        </Grid>
-        <Grid item zeroMinWidth xs>
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-            className={rowStyles.rowTopPadding}
-          >
-            <Grid item xs={12}>
-              <Typography noWrap>{props.meeting.summary || '(No title)'}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2" noWrap>
-                {format(props.meeting.start, 'EEEE, MMMM d')} ⋅ {format(props.meeting.start, 'p')} –{' '}
-                {format(props.meeting.end, 'p')}
-              </Typography>
-            </Grid>
-            {props.info && (
+    <Row>
+      <Button
+        onClick={() => router.push(`/meetings/${props.meeting.id}`)}
+        className={clsx(classes.row, props.isSmall && classes.rowSmall)}
+      >
+        <Grid container wrap="nowrap" alignItems="center">
+          <Grid item className={classes.rowLeft}>
+            <CalendarIcon
+              width="24"
+              height="24"
+              style={{ display: 'block', margin: '0 auto', opacity }}
+            />
+          </Grid>
+          <Grid item zeroMinWidth xs>
+            <Grid
+              container
+              justifyContent="space-between"
+              alignItems="center"
+              className={classes.rowTopPadding}
+            >
+              <Grid item xs={12}>
+                <Typography noWrap>{props.meeting.summary || '(No title)'}</Typography>
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant="body2" noWrap>
-                  {props.info}
+                  {format(props.meeting.start, 'EEEE, MMMM d')} ⋅ {format(props.meeting.start, 'p')}{' '}
+                  – {format(props.meeting.end, 'p')}
                 </Typography>
               </Grid>
-            )}
+              {props.info && (
+                <Grid item xs={12}>
+                  <Typography variant="body2" noWrap>
+                    {props.info}
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Button>
+      </Button>
+    </Row>
   );
 };
 

@@ -32,7 +32,6 @@ export const TagHighlights = (props: {
 
   const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
-  console.log(isLarge);
   return (
     <Root>
       {orderedTags.map((t) => (

@@ -1,10 +1,10 @@
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import DocumentRow, { MissingDocumentRow } from '../documents/document-row';
 import { IDocument, IPerson, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import useExpandStyles from './expand-styles';
 import { getTooltipText } from './tooltip-text';
 
 const SegmentDocumentItem = (props: {
@@ -60,6 +60,19 @@ const SegmentDocumentItem = (props: {
   );
 };
 
+const PREFIX = 'SegmentDocumentList';
+
+const classes = {
+  showMoreButton: `${PREFIX}-showMoreButton`,
+};
+
+const SegmentDocumentContainer = styled('div')(() => ({
+  [`& .${classes.showMoreButton}`]: {
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  },
+}));
+
 const SegmentDocumentForNonAttendees = (props: {
   segmentDocumentsForNonAttendeesCount: number;
   segmentDocumentsForNonAttendees: ISegmentDocument[];
@@ -67,9 +80,8 @@ const SegmentDocumentForNonAttendees = (props: {
   isSmall?: boolean;
 }) => {
   const [shouldDisplayNonAttendees, setShouldDisplayNonAttendees] = useState<boolean>(false);
-  const classes = useExpandStyles();
   return (
-    <div>
+    <SegmentDocumentContainer>
       {props.segmentDocumentsForNonAttendeesCount > 0 && !shouldDisplayNonAttendees && (
         <div>
           <Typography
@@ -91,7 +103,7 @@ const SegmentDocumentForNonAttendees = (props: {
             isSmall={props.isSmall}
           />
         ))}
-    </div>
+    </SegmentDocumentContainer>
   );
 };
 

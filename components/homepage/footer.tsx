@@ -82,28 +82,31 @@ const Footer = () => (
   <StyledContainer maxWidth="lg" className={classes.footer}>
     <Grid container alignItems="center" justifyContent="center">
       <Grid item className={classes.footerItem}>
-        <MuiLink href="https://www.kelp.nyc/about">
+        <MuiLink href="https://www.kelp.nyc/about" underline="hover">
           <Typography variant="body2" className={classes.footerLink}>
             About
           </Typography>
         </MuiLink>
       </Grid>
       <Grid item className={classes.footerItem}>
-        <MuiLink href="https://chrome.google.com/webstore/detail/kelp-new-tab-page-for-peo/onkkkcfnlbkoialleldfbgodakajfpnl?hl=en&authuser=0">
+        <MuiLink
+          href="https://chrome.google.com/webstore/detail/kelp-new-tab-page-for-peo/onkkkcfnlbkoialleldfbgodakajfpnl?hl=en&authuser=0"
+          underline="hover"
+        >
           <Typography variant="body2" className={classes.footerLink}>
             Download
           </Typography>
         </MuiLink>
       </Grid>
       <Grid item className={classes.footerItem}>
-        <MuiLink href="https://www.kelp.nyc/privacy">
+        <MuiLink href="https://www.kelp.nyc/privacy" underline="hover">
           <Typography variant="body2" className={classes.footerLink}>
             Privacy
           </Typography>
         </MuiLink>
       </Grid>
       <Grid item className={classes.footerItem}>
-        <MuiLink href="https://www.kelp.nyc/terms">
+        <MuiLink href="https://www.kelp.nyc/terms" underline="hover">
           <Typography variant="body2" className={classes.footerLink}>
             Terms
           </Typography>

@@ -2,9 +2,32 @@ import { IPublicClientApplication } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import React from 'react';
-import useButtonStyles from '../shared/button-styles';
 import { ensureDataRefresh } from './ensure-refresh';
+
+const PREFIX = 'MicrosoftLogin';
+
+const classes = {
+  button: `${PREFIX}-button`,
+};
+
+const Root = styled('div')(() => ({
+  [`& .${classes.button}`]: {
+    width: '100%',
+    borderRadius: 30,
+    paddingTop: 6,
+    paddingBottom: 6,
+    transition: 'opacity 0.3s',
+    minHeight: 48,
+    opacity: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
+    '&:hover': {
+      opacity: 0.6,
+    },
+  },
+}));
 
 export const WelcomeUser = () => {
   const { accounts } = useMsal();
@@ -53,19 +76,20 @@ export const signInClickHandler = async (msal: IPublicClientApplication) => {
 export const SignInButton = () => {
   // useMsal hook will return the PublicClientApplication instance you provided to MsalProvider
   const { instance } = useMsal();
-  const buttonClasses = useButtonStyles();
 
   return (
-    <Button
-      className={buttonClasses.button}
-      variant="contained"
-      disableElevation
-      color="primary"
-      style={{ width: 100 }}
-      onClick={() => signInClickHandler(instance)}
-    >
-      Sign In
-    </Button>
+    <Root>
+      <Button
+        className={classes.button}
+        variant="contained"
+        disableElevation
+        color="primary"
+        style={{ width: 100 }}
+        onClick={() => signInClickHandler(instance)}
+      >
+        Sign In
+      </Button>
+    </Root>
   );
 };
 
@@ -80,18 +104,19 @@ const logOutClickHandler = (msal: IPublicClientApplication) => {
 export const LogOutButton = () => {
   // useMsal hook will return the PublicClientApplication instance you provided to MsalProvider
   const { instance } = useMsal();
-  const buttonClasses = useButtonStyles();
 
   return (
-    <Button
-      className={buttonClasses.button}
-      style={{ width: 100, marginTop: 20 }}
-      variant="contained"
-      disableElevation
-      color="primary"
-      onClick={() => logOutClickHandler(instance)}
-    >
-      Log Out
-    </Button>
+    <Root>
+      <Button
+        className={classes.button}
+        style={{ width: 100, marginTop: 20 }}
+        variant="contained"
+        disableElevation
+        color="primary"
+        onClick={() => logOutClickHandler(instance)}
+      >
+        Log Out
+      </Button>
+    </Root>
   );
 };

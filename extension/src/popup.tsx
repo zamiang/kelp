@@ -13,7 +13,7 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { StyledEngineProvider } from '@mui/material/styles';
+import { StyledEngineProvider, styled } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -22,7 +22,6 @@ import './popup.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
-import useButtonStyles from '../../components/shared/button-styles';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
@@ -30,6 +29,29 @@ import config from '../../constants/config';
 import { darkTheme, lightTheme } from '../../constants/theme';
 
 const msalInstance = new PublicClientApplication(msalConfig);
+
+const PREFIX = 'Popup';
+
+const classes = {
+  button: `${PREFIX}-button`,
+};
+
+const PopupContainer = styled('div')(() => ({
+  [`& .${classes.button}`]: {
+    width: '100%',
+    borderRadius: 30,
+    paddingTop: 6,
+    paddingBottom: 6,
+    transition: 'opacity 0.3s',
+    minHeight: 48,
+    opacity: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
+    '&:hover': {
+      opacity: 0.6,
+    },
+  },
+}));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -116,7 +138,6 @@ const LoadingMobileDashboardContainer = (props: {
 const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void }) => {
   const [token, setToken] = useState<string | null>(null);
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
-  const buttonClasses = useButtonStyles();
   const [hasGoogleAdvancedProtectionError, setHasGoogleAdvancedProtectionError] =
     useState<boolean>(false);
   const [hasDatabaseError, setHasDatabaseError] = useState<boolean>(false);
@@ -175,7 +196,7 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && (!token || !database);
 
   return (
-    <React.Fragment>
+    <PopupContainer>
       {hasDatabaseError && (
         <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
           <Alert severity="error">
@@ -197,7 +218,7 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
               <br />
               <br />
               <Button
-                className={buttonClasses.button}
+                className={classes.button}
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -232,7 +253,7 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
               <br />
               <br />
               <Button
-                className={buttonClasses.button}
+                className={classes.button}
                 variant="contained"
                 color="primary"
                 onClick={(event) => {
@@ -271,7 +292,7 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
           isMicrosoftLoading={isMicrosoftLoading}
         />
       )}
-    </React.Fragment>
+    </PopupContainer>
   );
 };
 

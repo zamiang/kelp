@@ -9,8 +9,7 @@ import { useParams } from 'react-router-dom';
 import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
 import { D3Component } from '../shared/bar-chart/bar-chart';
-import useButtonStyles from '../shared/button-styles';
-import useExpandStyles from '../shared/expand-styles';
+import { Row, classes } from '../shared/row-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
 import { IDocument, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -19,8 +18,6 @@ const dateFormat = 'MM/dd/yyyy';
 
 const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: () => void }) => {
   const ref = useRef(null);
-  const classes = useExpandStyles();
-  const buttonClasses = useButtonStyles();
   const size = useComponentSize(ref);
   const { slug }: any = useParams();
   const documentId = props.documentId || slug;
@@ -80,7 +77,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
   });
 
   return (
-    <React.Fragment>
+    <Row>
       <div className={classes.topContainer}>
         <div className={classes.headingContainer}>
           <Typography variant="h3" color="textPrimary" gutterBottom>
@@ -93,7 +90,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           )}
         </div>
         <Button
-          className={buttonClasses.button}
+          className={classes.button}
           variant="contained"
           color="primary"
           href={`${document.link}?${shareParams.toString()}`}
@@ -104,7 +101,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
         </Button>
         <div style={{ margin: '10px auto 0 ' }}>
           <Button
-            className={buttonClasses.button}
+            className={classes.button}
             variant="contained"
             disableElevation
             color="primary"
@@ -140,7 +137,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
           />
         </div>
       </div>
-    </React.Fragment>
+    </Row>
   );
 };
 

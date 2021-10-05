@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import VideoIconWhite from '../../public/icons/video-white.svg';
-import useButtonStyles from '../shared/button-styles';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
@@ -72,9 +71,18 @@ const Root = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.button}`]: {
+    borderRadius: 30,
+    paddingTop: 6,
+    paddingBottom: 6,
+    transition: 'opacity 0.3s',
+    minHeight: 48,
+    opacity: 1,
     width: 'auto',
     paddingLeft: 40,
     paddingRight: 40,
+    '&:hover': {
+      opacity: 0.6,
+    },
   },
   [`& .${classes.topSpacing}`]: {
     marginTop: theme.spacing(2),
@@ -142,7 +150,6 @@ export const FeaturedMeeting = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
-  const buttonClasses = useButtonStyles();
   const router = useHistory();
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
@@ -247,7 +254,7 @@ export const FeaturedMeeting = (props: {
             disableElevation
             color="primary"
             startIcon={<PlusIcon width="24" height="24" />}
-            className={buttonClasses.button}
+            className={classes.button}
           >
             Add Tags
           </Button>
@@ -255,7 +262,7 @@ export const FeaturedMeeting = (props: {
         {domain && isHappeningSoon && (
           <Grid item>
             <Button
-              className={clsx(buttonClasses.button, classes.button)}
+              className={classes.button}
               variant="contained"
               color={'primary'}
               startIcon={<VideoIconWhite width="24" height="24" />}

@@ -9,11 +9,9 @@ import { flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AttendeeList from '../shared/attendee-list';
-import useButtonStyles from '../shared/button-styles';
-import useExpandStyles from '../shared/expand-styles';
 import MeetingList from '../shared/meeting-list';
 import { orderByCount } from '../shared/order-by-count';
-import useRowStyles from '../shared/row-styles';
+import { Row, classes } from '../shared/row-styles';
 import SegmentDocumentList from '../shared/segment-document-list';
 import {
   IFormattedAttendee,
@@ -39,9 +37,6 @@ const ExpandPerson = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
 }) => {
-  const classes = useExpandStyles();
-  const buttonClasses = useButtonStyles();
-  const rowStyles = useRowStyles();
   const { slug }: any = useParams();
   const personId = props.personId || decodeURIComponent(slug);
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
@@ -112,7 +107,7 @@ const ExpandPerson = (props: {
   const emailAddress = person.emailAddresses[0];
   const meetingsYouBothAttended = segments.filter((s) => s.end < new Date());
   return (
-    <React.Fragment>
+    <Row>
       <Grid container className={classes.topContainer} justifyContent="space-between">
         <Grid item>
           <Grid container alignItems="center" spacing={3}>
@@ -147,7 +142,7 @@ const ExpandPerson = (props: {
           <Grid item>
             <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
-                className={buttonClasses.button}
+                className={classes.button}
                 variant="contained"
                 color="primary"
                 href={`mailto:${emailAddress}`}
@@ -166,7 +161,7 @@ const ExpandPerson = (props: {
               onClick={() =>
                 document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
               }
-              className={buttonClasses.greyButton}
+              className={classes.greyButton}
             >
               Websites
             </Typography>
@@ -178,7 +173,7 @@ const ExpandPerson = (props: {
               onClick={() =>
                 document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
               }
-              className={buttonClasses.greyButton}
+              className={classes.greyButton}
             >
               People
             </Typography>
@@ -190,7 +185,7 @@ const ExpandPerson = (props: {
               onClick={() =>
                 document.getElementById('meetings')?.scrollIntoView({ behavior: 'smooth' })
               }
-              className={buttonClasses.greyButton}
+              className={classes.greyButton}
             >
               Meetings
             </Typography>
@@ -200,7 +195,7 @@ const ExpandPerson = (props: {
       <div className={classes.container}>
         {websites.length > 0 && (
           <div className={classes.section} id="websites">
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Associated websites
             </Typography>
             <Grid container spacing={isMobile ? 5 : 6}>
@@ -221,7 +216,7 @@ const ExpandPerson = (props: {
         )}
         {segmentDocuments.length > 0 && (
           <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Documents they edited recently
             </Typography>
             <SegmentDocumentList
@@ -233,7 +228,7 @@ const ExpandPerson = (props: {
         )}
         {associates.length > 0 && (
           <div className={classes.section} id="people">
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Associates
             </Typography>
             <AttendeeList
@@ -247,7 +242,7 @@ const ExpandPerson = (props: {
         )}
         {upcomingSegments.length > 0 && (
           <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Upcoming Meetings
             </Typography>
             <MeetingList
@@ -262,7 +257,7 @@ const ExpandPerson = (props: {
         )}
         {meetingsYouBothAttended.length > 0 && (
           <div className={classes.section} id="meetings">
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Meetings you both attended
             </Typography>
             <MeetingList
@@ -276,7 +271,7 @@ const ExpandPerson = (props: {
           </div>
         )}
       </div>
-    </React.Fragment>
+    </Row>
   );
 };
 

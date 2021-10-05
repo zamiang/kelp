@@ -16,9 +16,7 @@ import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save-orange.svg';
 import VideoIcon from '../../public/icons/video-white.svg';
 import AttendeeList from '../shared/attendee-list';
-import useButtonStyles from '../shared/button-styles';
-import useExpandStyles from '../shared/expand-styles';
-import useRowStyles from '../shared/row-styles';
+import { Row, classes } from '../shared/row-styles';
 import {
   IFormattedAttendee,
   ISegment,
@@ -40,8 +38,6 @@ const EmailGuestsButton = (props: {
   websites: IFeaturedWebsite[];
   websiteStore: IStore['websiteStore'];
 }) => {
-  const buttonClasses = useButtonStyles();
-
   const [websites, setWebsites] = useState<(IWebsiteItem | undefined)[]>([]);
   const websiteIds = props.websites.map((w) => w.websiteId);
 
@@ -65,7 +61,7 @@ const EmailGuestsButton = (props: {
       <IconButton
         onClick={() => window.open(link)}
         color="primary"
-        className={buttonClasses.iconButton}
+        className={classes.button}
         size="large"
       >
         <EmailIcon width="24" height="24" />
@@ -84,9 +80,6 @@ const ExpandedMeeting = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
-  const classes = useExpandStyles();
-  const buttonClasses = useButtonStyles();
-  const rowStyles = useRowStyles();
   const { slug }: any = useParams();
   const meetingId = props.meetingId || slug;
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
@@ -177,7 +170,7 @@ const ExpandedMeeting = (props: {
     isHtml && meeting.description?.includes('<span itemscope');
   const hasWebsites = websites.length > 0 || relevantTags.length > 0;
   return (
-    <React.Fragment>
+    <Row>
       <AddTagToMeetingDialog
         meeting={meeting}
         userTags={props.websiteTags}
@@ -210,7 +203,7 @@ const ExpandedMeeting = (props: {
                   <IconButton
                     color="primary"
                     onClick={() => window.open(meeting.meetingNotesLink, '_blank')}
-                    className={buttonClasses.iconButton}
+                    className={classes.iconButton}
                     size="large"
                   >
                     <SaveIcon width="24" height="24" />
@@ -225,7 +218,7 @@ const ExpandedMeeting = (props: {
                 disableElevation
                 color="primary"
                 startIcon={<PlusIcon width="24" height="24" />}
-                className={buttonClasses.button}
+                className={classes.button}
               >
                 Add Tags
               </Button>
@@ -245,7 +238,7 @@ const ExpandedMeeting = (props: {
                   disableElevation
                   color="primary"
                   startIcon={<VideoIcon width="24" height="24" />}
-                  className={buttonClasses.button}
+                  className={classes.button}
                 >
                   Join {videoLinkDomain}
                 </Button>
@@ -261,7 +254,7 @@ const ExpandedMeeting = (props: {
               onClick={() =>
                 document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
               }
-              className={buttonClasses.greyButton}
+              className={classes.greyButton}
             >
               Websites
             </Typography>
@@ -273,7 +266,7 @@ const ExpandedMeeting = (props: {
               onClick={() =>
                 document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
               }
-              className={buttonClasses.greyButton}
+              className={classes.greyButton}
             >
               Guests
             </Typography>
@@ -285,7 +278,7 @@ const ExpandedMeeting = (props: {
           <div className={classes.section} id="websites">
             <Grid container alignItems="center" spacing={2}>
               <Grid item>
-                <Typography className={rowStyles.rowText}>Filter by:</Typography>
+                <Typography className={classes.rowText}>Filter by:</Typography>
               </Grid>
               <Grid item>
                 <Typography
@@ -337,7 +330,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasDescription && !isHtml && (
           <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Description
             </Typography>
             <Typography className={classes.description}>
@@ -347,7 +340,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasDescription && isHtml && (
           <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Description
             </Typography>
             <Typography
@@ -361,7 +354,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasAttendees && (
           <div className={classes.section} id="people">
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Guests
             </Typography>
             <AttendeeList
@@ -374,7 +367,7 @@ const ExpandedMeeting = (props: {
         )}
         {meeting.location && (
           <div className={classes.section}>
-            <Typography variant="h6" className={rowStyles.rowText}>
+            <Typography variant="h6" className={classes.rowText}>
               Location
             </Typography>
             <MuiLink
@@ -386,7 +379,7 @@ const ExpandedMeeting = (props: {
           </div>
         )}
       </div>
-    </React.Fragment>
+    </Row>
   );
 };
 
