@@ -30,11 +30,9 @@ const Root = styled('div')(({ theme }) => ({
       background: theme.palette.primary.light,
     },
   },
-
   [`& .${classes.linePast}`]: {
     background: theme.palette.divider,
   },
-
   [`& .${classes.lineCurrent}`]: {
     background: theme.palette.primary.main,
   },

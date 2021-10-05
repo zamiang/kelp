@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = () => {
+const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void }) => {
   const [token, setToken] = useState<string | null>(null);
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
   const buttonClasses = useButtonStyles();
@@ -129,9 +129,6 @@ const App = () => {
   const [database, setDatabase] = useState<any>(undefined);
   const [isMicrosoftError, setMicrosoftError] = useState(false);
   const [isMicrosoftLoading, setMicrosoftLoading] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(
-    localStorage.getItem(config.DARK_MODE) !== 'false',
-  );
   const classes = useStyles();
 
   msalInstance.addEventCallback((event: EventMessage) => {
@@ -181,107 +178,121 @@ const App = () => {
     };
     void fetchData();
   }, []);
+
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && (!token || !database);
+
+  return (
+    <React.Fragment>
+      {hasDatabaseError && (
+        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+          <Alert severity="error">
+            <AlertTitle>Please restart your browser</AlertTitle>
+            <Typography>
+              Unable to connect to the database. This is an issue I do not fully understand where
+              the database does not accept connections. If you are familar with connection issues
+              with indexdb, please email brennan@kelp.nyc.
+            </Typography>
+          </Alert>
+        </Container>
+      )}
+      {hasAuthError && (
+        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+          <Alert severity="error">
+            <AlertTitle>Authentication Error</AlertTitle>
+            <Typography>
+              Please login with Google
+              <br />
+              <br />
+              <Button
+                className={buttonClasses.button}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                <Typography noWrap variant="caption">
+                  Try again
+                </Typography>
+              </Button>
+              <br />
+              <br />
+              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
+              questions.
+            </Typography>
+          </Alert>
+        </Container>
+      )}
+      {hasGoogleAdvancedProtectionError && (
+        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
+          <Alert severity="error">
+            <AlertTitle>Authentication Error</AlertTitle>
+            <Typography>
+              It looks like your organization has the{' '}
+              <Link href="https://landing.google.com/advancedprotection/">
+                Google Advanced Protection Program
+              </Link>{' '}
+              enabled.
+              <br />
+              <br />
+              Ask your IT administrator to whitelist
+              <br />
+              <br />
+              <Button
+                className={buttonClasses.button}
+                variant="contained"
+                color="primary"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);
+                  return false;
+                }}
+              >
+                <Typography noWrap variant="caption">
+                  {GOOGLE_CLIENT_ID}
+                </Typography>
+              </Button>
+              <br />
+              <Typography variant="caption">Click to copy to your clipboard</Typography>
+              <br />
+              <br />
+              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
+              questions.
+            </Typography>
+          </Alert>
+        </Container>
+      )}
+      {(shouldShowLoading || isMicrosoftLoading) && (
+        <div className={classes.header}>
+          <Loading isOpen={!token || !database} message="Loading" />
+        </div>
+      )}
+      {!hasAuthError && token && database && (
+        <LoadingMobileDashboardContainer
+          database={database}
+          accessToken={token}
+          scope={scopes}
+          setIsDarkMode={props.setIsDarkMode}
+          isDarkMode={props.isDarkMode}
+          isMicrosoftError={isMicrosoftError}
+          isMicrosoftLoading={isMicrosoftLoading}
+        />
+      )}
+    </React.Fragment>
+  );
+};
+
+const App = () => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(
+    localStorage.getItem(config.DARK_MODE) !== 'false',
+  );
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <CssBaseline />
         <MsalProvider instance={msalInstance}>
-          <CssBaseline />
-          {hasDatabaseError && (
-            <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-              <Alert severity="error">
-                <AlertTitle>Please restart your browser</AlertTitle>
-                <Typography>
-                  Unable to connect to the database. This is an issue I do not fully understand
-                  where the database does not accept connections. If you are familar with connection
-                  issues with indexdb, please email brennan@kelp.nyc.
-                </Typography>
-              </Alert>
-            </Container>
-          )}
-          {hasAuthError && (
-            <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-              <Alert severity="error">
-                <AlertTitle>Authentication Error</AlertTitle>
-                <Typography>
-                  Please login with Google
-                  <br />
-                  <br />
-                  <Button
-                    className={buttonClasses.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      window.location.reload();
-                    }}
-                  >
-                    <Typography noWrap variant="caption">
-                      Try again
-                    </Typography>
-                  </Button>
-                  <br />
-                  <br />
-                  Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-                  questions.
-                </Typography>
-              </Alert>
-            </Container>
-          )}
-          {hasGoogleAdvancedProtectionError && (
-            <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-              <Alert severity="error">
-                <AlertTitle>Authentication Error</AlertTitle>
-                <Typography>
-                  It looks like your organization has the{' '}
-                  <Link href="https://landing.google.com/advancedprotection/">
-                    Google Advanced Protection Program
-                  </Link>{' '}
-                  enabled.
-                  <br />
-                  <br />
-                  Ask your IT administrator to whitelist
-                  <br />
-                  <br />
-                  <Button
-                    className={buttonClasses.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);
-                      return false;
-                    }}
-                  >
-                    <Typography noWrap variant="caption">
-                      {GOOGLE_CLIENT_ID}
-                    </Typography>
-                  </Button>
-                  <br />
-                  <Typography variant="caption">Click to copy to your clipboard</Typography>
-                  <br />
-                  <br />
-                  Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-                  questions.
-                </Typography>
-              </Alert>
-            </Container>
-          )}
-          {(shouldShowLoading || isMicrosoftLoading) && (
-            <div className={classes.header}>
-              <Loading isOpen={!token || !database} message="Loading" />
-            </div>
-          )}
-          {!hasAuthError && token && database && (
-            <LoadingMobileDashboardContainer
-              database={database}
-              accessToken={token}
-              scope={scopes}
-              setIsDarkMode={setIsDarkMode}
-              isDarkMode={isDarkMode}
-              isMicrosoftError={isMicrosoftError}
-              isMicrosoftLoading={isMicrosoftLoading}
-            />
-          )}
+          <Popup setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} />
         </MsalProvider>
       </ThemeProvider>
     </StyledEngineProvider>
