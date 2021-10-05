@@ -1,4 +1,4 @@
-import { Theme, adaptV4Theme, createTheme } from '@mui/material/styles';
+import { Theme, createTheme } from '@mui/material/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
@@ -13,7 +13,7 @@ export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 
 // 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
-const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
+// const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
 const basisRegular = {
   fontFamily: 'basis-grotesque',
@@ -41,193 +41,149 @@ const basisMedium = {
 const primaryTextColor = 'rgba(0,0,0,0.87)';
 const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
 const lightTextColor = 'rgba(0,0,0,0.5)';
-const lightGreyColor = 'rgba(0,0,0,0.12)';
+// const lightGreyColor = 'rgba(0,0,0,0.12)';
 const white = '#fff';
 const black = '#000';
 
-export const lightTheme = createTheme(
-  adaptV4Theme({
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 960,
-        lg: 1280,
-        xl: 1920,
-      },
+export const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+    common: {
+      black,
+      white,
     },
-    props: {
-      MuiButtonBase: {
-        disableRipple: true, // No more ripple, on the whole application
-      },
+    background: {
+      paper: '#f7f1e4',
+      default: '#FBF2DD',
     },
-    palette: {
-      mode: 'light',
-      common: {
-        black,
-        white,
-      },
-      background: {
-        paper: '#f7f1e4',
-        default: '#FBF2DD',
-      },
-      primary: {
-        light: '#DEEBFF',
-        main: '#FF4600',
-        dark: '#FF4600',
-        contrastText: white,
-      },
-      secondary: {
-        light: '#faf5eb',
-        main: '#47B7B8',
-        dark: '#47B7B8',
-        contrastText: white,
-      },
-      error: {
-        light: 'rgba(245, 98, 0, 1)',
-        main: 'rgba(194, 15, 36, 1)',
-        dark: '#d32f2f',
-        contrastText: white,
-      },
-      text: {
-        primary: primaryTextColor,
-        secondary: secondaryTextColor,
-        disabled: 'rgba(0, 0, 0, 0.38)',
-        hint: lightTextColor,
-      },
+    primary: {
+      light: '#DEEBFF',
+      main: '#FF4600',
+      dark: '#FF4600',
+      contrastText: white,
     },
-    divider: {
-      background: lightGreyColor,
+    secondary: {
+      light: '#faf5eb',
+      main: '#47B7B8',
+      dark: '#47B7B8',
+      contrastText: white,
     },
-    shadows: [
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-    ],
-    typography: {
-      fontSize: 14,
-      fontFamily: bodyFontFamily,
-      fontWeightRegular: 400,
+    error: {
+      light: 'rgba(245, 98, 0, 1)',
+      main: 'rgba(194, 15, 36, 1)',
+      dark: '#d32f2f',
+      contrastText: white,
+    },
+    text: {
+      primary: primaryTextColor,
+      secondary: secondaryTextColor,
+      disabled: 'rgba(0, 0, 0, 0.38)',
+    },
+  },
+  typography: {
+    fontSize: 14,
+    fontFamily: bodyFontFamily,
+    fontWeightRegular: 400,
+    // color: primaryTextColor,
+    h1: {
+      fontWeight: 400,
+      fontStyle: 'normal',
+      fontSize: '1.875rem',
+    },
+    h2: {
+      fontWeight: 400,
+      fontStyle: 'normal',
+      fontSize: 32,
+    },
+    h3: {
+      fontSize: 20,
+      fontStyle: 'normal',
+      fontFamily: mediumFontFamily,
+      fontWeight: 500,
       color: primaryTextColor,
-      h1: {
-        fontWeight: 400,
-        fontStyle: 'normal',
-        fontSize: '1.875rem',
-      },
-      h2: {
-        fontWeight: 400,
-        fontStyle: 'normal',
-        fontSize: 32,
-      },
-      h3: {
-        fontSize: 20,
-        fontStyle: 'normal',
-        fontFamily: mediumFontFamily,
-        fontWeight: 500,
-        color: primaryTextColor,
-      },
-      h4: {
-        fontSize: 16,
-        fontStyle: 'normal',
-        fontFamily: bodyFontFamily,
-        fontWeight: 400,
-        lineHeight: 1.35,
-        color: primaryTextColor,
-      },
-      h5: {
-        fontSize: 16,
-        fontStyle: 'normal',
-        fontFamily: bodyFontFamily,
-        color: lightTextColor,
-      },
-      h6: {
-        fontSize: 14,
-        fontStyle: 'normal',
-        fontFamily: bodyFontFamily,
-        color: lightTextColor,
-        fontWeight: 400,
-        textTransform: 'none',
-        marginBottom: 12,
-      },
-      subtitle1: {
-        fontFamily: bodyFontFamily,
-      },
-      subtitle2: {
-        fontFamily: bodyFontFamily,
-      },
-      body1: {
-        fontFamily: bodyFontFamily,
-        fontSize: '14px',
-        color: primaryTextColor,
-      },
-      body2: {
-        fontFamily: bodyFontFamily,
-        color: lightTextColor,
-        fontSize: '14px',
-      },
-      caption: {
-        fontFamily: bodyFontFamily,
-      },
-      overline: {
-        fontFamily: bodyFontFamily,
-      },
-      button: {
-        fontFamily: mediumFontFamily,
-        fontWeight: 500,
-      },
-      em: {
-        fontFamily: italicFontFamily,
-      },
-      shape: {
-        borderRadius: 16,
-      },
     },
-    overrides: {
-      MuiCssBaseline: {
-        '@global': {
-          '@font-face': [basisRegular, basisItalic, basisMedium],
-        },
-      },
-      MuiListItemIcon: {
+    h4: {
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      fontWeight: 400,
+      lineHeight: 1.35,
+      color: primaryTextColor,
+    },
+    h5: {
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      color: lightTextColor,
+    },
+    h6: {
+      fontSize: 14,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      color: lightTextColor,
+      fontWeight: 400,
+      textTransform: 'none',
+      marginBottom: 12,
+    },
+    subtitle1: {
+      fontFamily: bodyFontFamily,
+    },
+    subtitle2: {
+      fontFamily: bodyFontFamily,
+    },
+    body1: {
+      fontFamily: bodyFontFamily,
+      fontSize: '14px',
+      color: primaryTextColor,
+    },
+    body2: {
+      fontFamily: bodyFontFamily,
+      color: lightTextColor,
+      fontSize: '14px',
+    },
+    caption: {
+      fontFamily: bodyFontFamily,
+    },
+    overline: {
+      fontFamily: bodyFontFamily,
+    },
+    button: {
+      fontFamily: mediumFontFamily,
+      fontWeight: 500,
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `'@font-face': [${basisRegular}, ${basisItalic}, ${basisMedium}]`,
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
         root: {
           minWidth: 0,
         },
       },
-      MuiIconButton: {
+    },
+    MuiIconButton: {
+      styleOverrides: {
         root: {
           color: primaryTextColor,
           padding: 8,
         },
       },
-      MuiListItem: {
+    },
+    MuiListItem: {
+      styleOverrides: {
         root: {
           paddingTop: 6,
           paddingBottom: 6,
         },
       },
-      MuiButton: {
+    },
+    MuiButton: {
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
         root: {
           textTransform: 'none',
           fontWeight: 500,
@@ -237,7 +193,9 @@ export const lightTheme = createTheme(
           paddingBottom: 4,
         },
       },
-      MuiAvatar: {
+    },
+    MuiAvatar: {
+      styleOverrides: {
         root: {
           height: 40,
           width: 40,
@@ -248,13 +206,17 @@ export const lightTheme = createTheme(
           fontFamily: mediumFontFamily,
         },
       },
-      MuiAvatarGroup: {
+    },
+    MuiAvatarGroup: {
+      styleOverrides: {
         avatar: {
           borderColor: white,
           color: primaryTextColor,
         },
       },
-      MuiDialog: {
+    },
+    MuiDialog: {
+      styleOverrides: {
         paperWidthSm: {
           width: '100%',
         },
@@ -262,21 +224,9 @@ export const lightTheme = createTheme(
           borderRadius: 16,
         },
       },
-      MuiToggleButton: {
-        root: {
-          border: '0px solid',
-          textTransform: 'none',
-          lineHeight: 1.35,
-          justifyContent: 'left',
-          padding: 9,
-        },
-        label: {
-          overflow: 'hidden',
-          fontFamily: bodyFontFamily,
-          color: primaryTextColor,
-        },
-      },
-      MuiToggleButtonGroup: {
+    },
+    MuiToggleButtonGroup: {
+      styleOverrides: {
         groupedHorizontal: {
           '&:not(:last-child)': {
             borderRadius: 4,
@@ -290,7 +240,9 @@ export const lightTheme = createTheme(
           },
         },
       },
-      MuiFilledInput: {
+    },
+    MuiFilledInput: {
+      styleOverrides: {
         root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
         input: {
           padding: '10px',
@@ -311,193 +263,158 @@ export const lightTheme = createTheme(
         },
       },
     },
-  } as any),
-);
+  },
+});
 
 const darkPrimaryTextColor = 'rgba(255,255,255,0.87)';
 const darkSecondaryTextColor = 'rgba(255, 255, 255, 0.70)';
 const darkLightTextColor = 'rgba(255,255,255,0.5)';
-const darkLightGreyColor = 'rgba(255,255,255,0.12)';
+// const darkLightGreyColor = 'rgba(255,255,255,0.12)';
 
-export const darkTheme = createTheme(
-  adaptV4Theme({
-    props: {
-      MuiButtonBase: {
-        disableRipple: true, // No more ripple, on the whole application
-      },
+export const darkTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
     },
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 960,
-        lg: 1280,
-        xl: 1920,
-      },
+  },
+  palette: {
+    mode: 'dark',
+    background: {
+      paper: '#363641',
+      default: '#262736',
     },
-    palette: {
-      mode: 'dark',
-      background: {
-        paper: '#363641',
-        default: '#262736',
-      },
-      primary: {
-        light: '#DEEBFF',
-        main: '#FF4600',
-        dark: '#FF4600',
-        contrastText: white,
-      },
-      secondary: {
-        light: '#faf5eb',
-        main: '#47B7B8',
-        dark: '#47B7B8',
-        contrastText: white,
-      },
-      error: {
-        light: 'rgba(245, 98, 0, 1)',
-        main: 'rgba(194, 15, 36, 1)',
-        dark: '#d32f2f',
-        contrastText: white,
-      },
-      text: {
-        primary: darkPrimaryTextColor,
-        secondary: darkSecondaryTextColor,
-        disabled: 'rgba(255, 255, 255, 0.38)',
-        hint: darkLightTextColor,
-      },
+    primary: {
+      light: '#DEEBFF',
+      main: '#FF4600',
+      dark: '#FF4600',
+      contrastText: white,
     },
-    divider: {
-      background: darkLightGreyColor,
+    secondary: {
+      light: '#faf5eb',
+      main: '#47B7B8',
+      dark: '#47B7B8',
+      contrastText: white,
     },
-    shadows: [
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-      boxShadow,
-    ],
-    typography: {
-      fontSize: 14,
-      fontFamily: bodyFontFamily,
-      fontWeightRegular: 400,
+    error: {
+      light: 'rgba(245, 98, 0, 1)',
+      main: 'rgba(194, 15, 36, 1)',
+      dark: '#d32f2f',
+      contrastText: white,
+    },
+    text: {
+      primary: darkPrimaryTextColor,
+      secondary: darkSecondaryTextColor,
+      disabled: 'rgba(255, 255, 255, 0.38)',
+    },
+  },
+  typography: {
+    fontSize: 14,
+    fontFamily: bodyFontFamily,
+    fontWeightRegular: 400,
+    // color: darkPrimaryTextColor,
+    h1: {
+      fontWeight: 400,
+      fontStyle: 'normal',
+      fontSize: '1.875rem',
+    },
+    h2: {
+      fontWeight: 400,
+      fontSize: 32,
+      fontStyle: 'normal',
+    },
+    h3: {
+      fontSize: 20,
+      fontStyle: 'normal',
+      fontFamily: mediumFontFamily,
+      fontWeight: 500,
       color: darkPrimaryTextColor,
-      h1: {
-        fontWeight: 400,
-        fontStyle: 'normal',
-        fontSize: '1.875rem',
-      },
-      h2: {
-        fontWeight: 400,
-        fontSize: 32,
-        fontStyle: 'normal',
-      },
-      h3: {
-        fontSize: 20,
-        fontStyle: 'normal',
-        fontFamily: mediumFontFamily,
-        fontWeight: 500,
-        color: darkPrimaryTextColor,
-      },
-      h4: {
-        fontSize: 16,
-        fontStyle: 'normal',
-        fontFamily: bodyFontFamily,
-        fontWeight: 400,
-        lineHeight: 1.35,
-        color: darkPrimaryTextColor,
-      },
-      h5: {
-        fontSize: 16,
-        fontStyle: 'normal',
-        fontFamily: bodyFontFamily,
-        color: darkLightTextColor,
-      },
-      h6: {
-        fontSize: 14,
-        fontStyle: 'normal',
-        fontFamily: bodyFontFamily,
-        color: darkLightTextColor,
-        fontWeight: 400,
-        textTransform: 'none',
-        marginBottom: 12,
-      },
-      subtitle1: {
-        fontFamily: bodyFontFamily,
-      },
-      subtitle2: {
-        fontFamily: bodyFontFamily,
-      },
-      body1: {
-        fontFamily: bodyFontFamily,
-        fontSize: '14px',
-        color: darkPrimaryTextColor,
-      },
-      body2: {
-        fontFamily: bodyFontFamily,
-        color: darkLightTextColor,
-        fontSize: '14px',
-      },
-      caption: {
-        fontFamily: bodyFontFamily,
-      },
-      overline: {
-        fontFamily: bodyFontFamily,
-      },
-      button: {
-        fontFamily: mediumFontFamily,
-        fontWeight: 500,
-      },
-      em: {
-        fontFamily: italicFontFamily,
-      },
-      shape: {
-        borderRadius: 16,
-      },
     },
-    overrides: {
-      MuiCssBaseline: {
-        '@global': {
-          '@font-face': [basisRegular, basisItalic, basisMedium],
-        },
-      },
-      MuiListItemIcon: {
+    h4: {
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      fontWeight: 400,
+      lineHeight: 1.35,
+      color: darkPrimaryTextColor,
+    },
+    h5: {
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      color: darkLightTextColor,
+    },
+    h6: {
+      fontSize: 14,
+      fontStyle: 'normal',
+      fontFamily: bodyFontFamily,
+      color: darkLightTextColor,
+      fontWeight: 400,
+      textTransform: 'none',
+      marginBottom: 12,
+    },
+    subtitle1: {
+      fontFamily: bodyFontFamily,
+    },
+    subtitle2: {
+      fontFamily: bodyFontFamily,
+    },
+    body1: {
+      fontFamily: bodyFontFamily,
+      fontSize: '14px',
+      color: darkPrimaryTextColor,
+    },
+    body2: {
+      fontFamily: bodyFontFamily,
+      color: darkLightTextColor,
+      fontSize: '14px',
+    },
+    caption: {
+      fontFamily: bodyFontFamily,
+    },
+    overline: {
+      fontFamily: bodyFontFamily,
+    },
+    button: {
+      fontFamily: mediumFontFamily,
+      fontWeight: 500,
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `'@font-face': [${basisRegular}, ${basisItalic}, ${basisMedium}]`,
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
         root: {
           minWidth: 0,
         },
       },
-      MuiIconButton: {
+    },
+    MuiIconButton: {
+      styleOverrides: {
         root: {
           color: darkPrimaryTextColor,
           padding: 8,
         },
       },
-      MuiListItem: {
+    },
+    MuiListItem: {
+      styleOverrides: {
         root: {
           paddingTop: 6,
           paddingBottom: 6,
         },
       },
-      MuiButton: {
+    },
+    MuiButton: {
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
         root: {
           textTransform: 'none',
           fontWeight: 500,
@@ -507,7 +424,9 @@ export const darkTheme = createTheme(
           paddingBottom: 4,
         },
       },
-      MuiAvatar: {
+    },
+    MuiAvatar: {
+      styleOverrides: {
         root: {
           height: 40,
           width: 40,
@@ -518,13 +437,17 @@ export const darkTheme = createTheme(
           fontFamily: mediumFontFamily,
         },
       },
-      MuiAvatarGroup: {
+    },
+    MuiAvatarGroup: {
+      styleOverrides: {
         avatar: {
           borderColor: white,
           color: darkPrimaryTextColor,
         },
       },
-      MuiDialog: {
+    },
+    MuiDialog: {
+      styleOverrides: {
         paperWidthSm: {
           width: '100%',
         },
@@ -532,35 +455,9 @@ export const darkTheme = createTheme(
           borderRadius: 16,
         },
       },
-      MuiToggleButton: {
-        root: {
-          border: '0px solid',
-          textTransform: 'none',
-          lineHeight: 1.35,
-          justifyContent: 'left',
-          padding: 9,
-        },
-        label: {
-          overflow: 'hidden',
-          fontFamily: bodyFontFamily,
-          color: darkPrimaryTextColor,
-        },
-      },
-      MuiToggleButtonGroup: {
-        groupedHorizontal: {
-          '&:not(:last-child)': {
-            borderRadius: 4,
-            borderTopRightRadius: 4,
-            borderBottomRightRadius: 4,
-          },
-          '&:not(:first-child)': {
-            marginLeft: 0,
-            borderRopLeftRadius: 4,
-            borderBottomLeftRadius: 4,
-          },
-        },
-      },
-      MuiFilledInput: {
+    },
+    MuiFilledInput: {
+      styleOverrides: {
         root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
         input: {
           padding: '10px',
@@ -581,5 +478,5 @@ export const darkTheme = createTheme(
         },
       },
     },
-  } as any),
-);
+  },
+});
