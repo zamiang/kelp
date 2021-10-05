@@ -67,7 +67,7 @@ const Root = styled('div')(({ theme }) => ({
 
 const scrollBarWidth = 20;
 
-const d3Styles = makeStyles(({ theme }) => ({
+const d3Styles = makeStyles(({ theme }: any) => ({
   [`& .${classes.svg}`]: {
     fill: 'white',
     '& .background': {

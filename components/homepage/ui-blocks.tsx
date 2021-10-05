@@ -7,8 +7,7 @@ import React from 'react';
 
 const PREFIX = 'UiBlocks';
 
-const classes = {
-  container: `${PREFIX}-container`,
+export const classes = {
   sectionImageLeft: `${PREFIX}-sectionImageLeft`,
   image: `${PREFIX}-image`,
   greyContainer: `${PREFIX}-greyContainer`,
@@ -24,9 +23,7 @@ const classes = {
   manageWorkTextLeft: `${PREFIX}-manageWorkTextLeft`,
 };
 
-const StyledContainer = styled(Container)(({ theme }) => ({
-  [`& .${classes.container}`]: {},
-
+export const StyledContainer = styled(Container)(({ theme }) => ({
   [`& .${classes.sectionImageLeft}`]: {
     paddingBottom: theme.spacing(4),
     paddingLeft: theme.spacing(4),
@@ -36,28 +33,23 @@ const StyledContainer = styled(Container)(({ theme }) => ({
       padding: 0,
     },
   },
-
   [`& .${classes.image}`]: {
     maxWidth: 290,
     margin: '0px auto',
     display: 'block',
   },
-
   [`& .${classes.greyContainer}`]: {
     width: '100%',
   },
-
   [`& .${classes.heading}`]: {
     fontSize: 24,
     marginBottom: theme.spacing(3),
   },
-
   [`& .${classes.textSection}`]: {
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
     textAlign: 'center',
   },
-
   [`& .${classes.dot}`]: {
     height: 12,
     width: 12,
@@ -68,7 +60,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     verticalAlign: 'top',
     marginTop: 8,
   },
-
   [`& .${classes.sectionText}`]: {
     padding: theme.spacing(6),
     [theme.breakpoints.down('md')]: {
@@ -78,7 +69,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
       paddingBottom: theme.spacing(3),
     },
   },
-
   [`& .${classes.sectionImageRightTop}`]: {
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
@@ -88,7 +78,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
       padding: 0,
     },
   },
-
   [`& .${classes.sectionImageRightBottom}`]: {
     paddingBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
@@ -98,28 +87,24 @@ const StyledContainer = styled(Container)(({ theme }) => ({
       padding: 0,
     },
   },
-
   [`& .${classes.section}`]: {
     [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
     },
   },
-
   [`& .${classes.notificationContainer}`]: {
     marginRight: 28,
     [theme.breakpoints.down('md')]: {
       marginRight: 'auto',
     },
   },
-
   [`& .${classes.prepareTextRight}`]: {
     marginLeft: 0,
     [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
     },
   },
-
   [`& .${classes.manageWorkTextLeft}`]: {
     marginRight: 0,
     [theme.breakpoints.down('md')]: {

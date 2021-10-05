@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import DotsIcon from '../../public/icons/dots-black.svg';
 import DotsIconWhite from '../../public/icons/dots-white.svg';

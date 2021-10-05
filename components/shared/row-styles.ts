@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
   rowHint: {
-    color: theme.palette.text.hint,
+    color: theme.palette.text.secondary,
   },
   avatar: {
     backgroundColor: theme.palette.secondary.main,

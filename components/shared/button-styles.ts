@@ -73,10 +73,10 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     textDecoration: 'none',
     background: theme.palette.background.paper,
-    color: theme.palette.text.hint,
+    color: theme.palette.text.secondary,
     '&:hover': {
       background: theme.palette.background.paper,
-      color: theme.palette.text.hint,
+      color: theme.palette.text.secondary,
       opacity: 0.6,
     },
   },

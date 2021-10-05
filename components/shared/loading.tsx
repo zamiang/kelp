@@ -18,9 +18,9 @@ const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
   },
 }));
 
-const useBackdropStyles = makeStyles(({ theme }) => ({
+const useBackdropStyles = makeStyles(() => ({
   [`&.${classes.backdrop}`]: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: 10,
   },
 }));
 

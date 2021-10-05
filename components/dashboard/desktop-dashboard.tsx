@@ -3,7 +3,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import { StyledEngineProvider, styled } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';

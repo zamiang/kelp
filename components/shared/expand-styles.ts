@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   smallCaption: {
     marginTop: theme.spacing(-1),
-    color: theme.palette.text.hint,
+    color: theme.palette.text.secondary,
     display: 'block',
   },
   inlineList: {

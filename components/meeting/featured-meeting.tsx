@@ -1,8 +1,7 @@
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -45,12 +44,10 @@ const Root = styled('div')(({ theme }) => ({
     marginBottom: theme.spacing(2),
     [theme.breakpoints.down('md')]: {},
   },
-
   [`& .${classes.containerLine}`]: {
     paddingTop: theme.spacing(3),
     marginBottom: theme.spacing(2),
   },
-
   [`& .${classes.leftLine}`]: {
     width: 1,
     background: theme.palette.divider,
@@ -58,17 +55,14 @@ const Root = styled('div')(({ theme }) => ({
     marginTop: -14,
     marginLeft: 26,
   },
-
   [`& .${classes.containerNow}`]: {
     borderColor: theme.palette.divider,
   },
-
   [`& .${classes.meetingTimeInWords}`]: {
     display: 'inline-block',
     marginBottom: 0,
-    color: theme.palette.text.hint,
+    color: theme.palette.text.secondary,
   },
-
   [`& .${classes.heading}`]: {
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize,
@@ -77,17 +71,14 @@ const Root = styled('div')(({ theme }) => ({
       textDecoration: 'underline',
     },
   },
-
   [`& .${classes.button}`]: {
     width: 'auto',
     paddingLeft: 40,
     paddingRight: 40,
   },
-
   [`& .${classes.topSpacing}`]: {
     marginTop: theme.spacing(2),
   },
-
   [`& .${classes.undefined}`]: {
     from: { opacity: 1 },
     '50%': {
@@ -97,7 +88,6 @@ const Root = styled('div')(({ theme }) => ({
       opacity: 1,
     },
   },
-
   [`& .${classes.undefined}`]: {
     from: { opacity: 0.2 },
     '50%': {
@@ -107,7 +97,6 @@ const Root = styled('div')(({ theme }) => ({
       opacity: 0.2,
     },
   },
-
   [`& .${classes.outerDot}`]: {
     width: 40,
     height: 40,
@@ -115,7 +104,6 @@ const Root = styled('div')(({ theme }) => ({
     borderRadius: 20,
     animation: '$fadeOut2 5s ease infinite',
   },
-
   [`& .${classes.innerDot}`]: {
     width: 12,
     borderRadius: 6,
@@ -126,11 +114,9 @@ const Root = styled('div')(({ theme }) => ({
     background: '#FF4500',
     animation: '$fadeOut 5s ease infinite',
   },
-
   [`& .${classes.dotNow}`]: {
     background: theme.palette.divider,
   },
-
   [`& .${classes.dotContainer}`]: {
     position: 'relative',
   },
