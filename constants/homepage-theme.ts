@@ -5,37 +5,8 @@ import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
 const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
-const italicFontFamily = "'basis-grotesque-italic', sans-serif";
-
-const basisRegular = {
-  fontFamily: 'basis-grotesque',
-  fontStyle: 'normal',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueRegularWoff2}) format('woff2')`,
-};
-const basisItalic = {
-  fontFamily: 'basis-grotesque-italic',
-  fontStyle: 'italic',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueItalicWoff2}) format('woff2')`,
-};
-
-const basisMedium = {
-  fontFamily: 'basis-grotesque-medium',
-  fontStyle: 'normal',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
-};
 
 const theme = createTheme({
-  props: {
-    MuiButtonBase: {
-      disableRipple: true, // No more ripple, on the whole application
-    },
-  },
   palette: {
     common: {
       black: '#000',
@@ -68,9 +39,6 @@ const theme = createTheme({
       secondary: 'rgba(0, 0, 0, 0.70)',
       disabled: 'rgba(0, 0, 0, 0.38)',
     },
-    // primary: { main: config.BLUE_BACKGROUND, dark: '#0d2f81' },
-    // secondary: { main: '#e8eaf6', light: '#ffffff', dark: '#b6b8c3' },
-    // info: { main: '#D6F9F5' },
   },
   typography: {
     fontSize: 13,
@@ -138,53 +106,83 @@ const theme = createTheme({
       fontFamily: mediumFontFamily,
       fontWeight: 500,
     },
-    em: {
-      fontFamily: italicFontFamily,
-    },
   },
-  overrides: {
+  components: {
     MuiCssBaseline: {
-      '@global': {
-        '@font-face': [basisRegular, basisMedium, basisItalic],
-      },
+      styleOverrides: `
+      @font-face {
+        fontFamily: 'basis-grotesque',
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+        fontWeight: 400,
+        src: url(${BasisGrotesqueRegularWoff2}) format('woff2'),
+      }
+      @font-face {
+        fontFamily: 'basis-grotesque-italic',
+        fontStyle: 'italic',
+        fontDisplay: 'swap',
+        fontWeight: 400,
+        src: url(${BasisGrotesqueItalicWoff2}) format('woff2'),
+      }
+      @font-face {
+        fontFamily: 'basis-grotesque-medium',
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+        fontWeight: 400,
+        src: url(${BasisGrotesqueMediumWoff2}) format('woff2'),
+      };
+      `,
     },
     MuiListItemIcon: {
-      root: {
-        minWidth: 0,
+      styleOverrides: {
+        root: {
+          minWidth: 0,
+        },
       },
     },
     MuiListItem: {
-      root: {
-        paddingTop: 6,
-        paddingBottom: 6,
+      styleOverrides: {
+        root: {
+          paddingTop: 6,
+          paddingBottom: 6,
+        },
       },
     },
     MuiButton: {
-      root: {
-        textTransform: 'uppercase',
-        fontWeight: 500,
-        fontFamily: mediumFontFamily,
-        paddingTop: 15,
-        paddingBottom: 14,
-        paddingLeft: 40,
-        paddingRight: 40,
-        borderRadius: 40,
-        letterSpacing: '1.25px',
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          textTransform: 'uppercase',
+          fontWeight: 500,
+          fontFamily: mediumFontFamily,
+          paddingTop: 15,
+          paddingBottom: 14,
+          paddingLeft: 40,
+          paddingRight: 40,
+          borderRadius: 40,
+          letterSpacing: '1.25px',
+        },
       },
     },
     MuiAvatar: {
-      root: {
-        height: 36,
-        width: 36,
-        fontSize: '1rem',
-        textTransform: 'uppercase',
-        color: '#ffffffcf',
+      styleOverrides: {
+        root: {
+          height: 36,
+          width: 36,
+          fontSize: '1rem',
+          textTransform: 'uppercase',
+          color: '#ffffffcf',
+        },
       },
     },
     MuiAvatarGroup: {
-      avatar: {
-        borderColor: '#fff',
-        color: 'rgba(0, 0, 0, 0.87)',
+      styleOverrides: {
+        avatar: {
+          borderColor: '#fff',
+          color: 'rgba(0, 0, 0, 0.87)',
+        },
       },
     },
   },
