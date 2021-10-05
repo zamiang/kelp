@@ -113,12 +113,6 @@ const LoadingMobileDashboardContainer = (props: {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
 const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void }) => {
   const [token, setToken] = useState<string | null>(null);
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
@@ -129,7 +123,6 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
   const [database, setDatabase] = useState<any>(undefined);
   const [isMicrosoftError, setMicrosoftError] = useState(false);
   const [isMicrosoftLoading, setMicrosoftLoading] = useState(false);
-  const classes = useStyles();
 
   msalInstance.addEventCallback((event: EventMessage) => {
     if (event.eventType === EventType.ACQUIRE_TOKEN_START) {
@@ -263,7 +256,7 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
         </Container>
       )}
       {(shouldShowLoading || isMicrosoftLoading) && (
-        <div className={classes.header}>
+        <div>
           <Loading isOpen={!token || !database} message="Loading" />
         </div>
       )}
