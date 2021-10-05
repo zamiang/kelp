@@ -42,7 +42,7 @@ const Root = styled('div')(({ theme }) => ({
 
 const numberHours = 8;
 
-const useMeetingLineStyles = makeStyles(({ theme }) => ({
+const useMeetingLineStyles = makeStyles(({ theme }: any) => ({
   [`&.${classes.line}`]: {
     background: theme.palette.divider,
     height: 8,
@@ -101,7 +101,46 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
   );
 };
 
+const useLineCalendarStyles = makeStyles(({ theme }: any) => ({
+  container: {
+    position: 'relative',
+    height: 30,
+    overflowX: 'hidden',
+  },
+  overflowContainer: {},
+  border: {
+    height: 4,
+    background: theme.palette.divider,
+    width: '100%',
+    position: 'absolute',
+    top: 2,
+    left: 0,
+  },
+  startTime: {
+    position: 'absolute',
+    left: 0,
+    top: theme.spacing(1),
+    zIndex: 2,
+    color: theme.palette.text.secondary,
+    pointerEvents: 'none',
+  },
+  endTime: {
+    position: 'absolute',
+    right: 0,
+    top: theme.spacing(1),
+    zIndex: 2,
+    color: theme.palette.text.secondary,
+    pointerEvents: 'none',
+  },
+  heading: {
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+}));
+
 export const LineCalendar = (props: { store: IStore }) => {
+  const classes = useLineCalendarStyles();
+
   const elementRef = useRef(null);
   const [meetings, setMeetings] = useState<ISegment[]>([]);
   const [elementWidth, setElementWidth] = useState(0);
@@ -125,7 +164,7 @@ export const LineCalendar = (props: { store: IStore }) => {
   }, [props.store.isLoading]);
 
   return (
-    <div className={classes.overflowContainer} ref={elementRef}>
+    <div ref={elementRef}>
       <div className={classes.container} ref={elementRef}>
         <div className={classes.border}></div>
         {meetings.map((meeting) => (

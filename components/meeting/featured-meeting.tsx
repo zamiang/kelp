@@ -26,8 +26,8 @@ const classes = {
   heading: `${PREFIX}-heading`,
   button: `${PREFIX}-button`,
   topSpacing: `${PREFIX}-topSpacing`,
-  '@keyframes fadeOut': `${PREFIX}-undefined`,
-  '@keyframes fadeOut2': `${PREFIX}-undefined`,
+  '@keyframes fadeOut': `${PREFIX}-fadeout`,
+  '@keyframes fadeOut2': `${PREFIX}-fadeout2`,
   outerDot: `${PREFIX}-outerDot`,
   innerDot: `${PREFIX}-innerDot`,
   dotNow: `${PREFIX}-dotNow`,
@@ -79,7 +79,7 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.topSpacing}`]: {
     marginTop: theme.spacing(2),
   },
-  [`& .${classes.undefined}`]: {
+  [`@keyframes fadeOut`]: {
     from: { opacity: 1 },
     '50%': {
       opacity: 0.4,
@@ -88,7 +88,7 @@ const Root = styled('div')(({ theme }) => ({
       opacity: 1,
     },
   },
-  [`& .${classes.undefined}`]: {
+  [`@keyframes fadeOut2`]: {
     from: { opacity: 0.2 },
     '50%': {
       opacity: 0.05,
