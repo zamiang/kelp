@@ -6,7 +6,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
@@ -15,27 +15,59 @@ import { ImageBlocks } from '../components/homepage/image-blocks';
 import UiBlocks from '../components/homepage/ui-blocks';
 import { italicFontFamily, mediumFontFamily } from '../constants/theme';
 
-export const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = 'App';
+
+export const classes = {
+  container: `${PREFIX}-container`,
+  installButtonContainer: `${PREFIX}-installButtonContainer`,
+  colorContainer: `${PREFIX}-colorContainer`,
+  footerContainer: `${PREFIX}-footerContainer`,
+  logoImage: `${PREFIX}-logoImage`,
+  logo: `${PREFIX}-logo`,
+  heading: `${PREFIX}-heading`,
+  subheading: `${PREFIX}-subheading`,
+  loginMargin: `${PREFIX}-loginMargin`,
+  loginPaper: `${PREFIX}-loginPaper`,
+  hero: `${PREFIX}-hero`,
+  subpage: `${PREFIX}-subpage`,
+  buttonContainer: `${PREFIX}-buttonContainer`,
+  login: `${PREFIX}-login`,
+  body: `${PREFIX}-body`,
+  section: `${PREFIX}-section`,
+  hint: `${PREFIX}-hint`,
+  link: `${PREFIX}-link`,
+  meetingContainer: `${PREFIX}-meetingContainer`,
+  meetingImage: `${PREFIX}-meetingImage`,
+  bodyCopySection: `${PREFIX}-bodyCopySection`,
+  italics: `${PREFIX}-italics`,
+  loginButtonContainer: `${PREFIX}-loginButtonContainer`,
+  emojiIcon: `${PREFIX}-emojiIcon`,
+  list: `${PREFIX}-list`,
+  quote: `${PREFIX}-quote`,
+  largeText: `${PREFIX}-largeText`,
+};
+
+export const Root = styled('div')(({ theme }) => ({
+  [`&.${classes.container}`]: {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
   },
-  installButtonContainer: {
+  [`& .${classes.installButtonContainer}`]: {
     paddingBottom: theme.spacing(4),
     [theme.breakpoints.down('md')]: {
       paddingTop: theme.spacing(4),
     },
   },
-  colorContainer: {
+  [`& .${classes.colorContainer}`]: {
     width: '100%',
     backgroundColor: theme.palette.secondary.light,
   },
-  footerContainer: {
+  [`& .${classes.footerContainer}`]: {
     marginTop: theme.spacing(6),
     marginBottom: theme.spacing(10),
     textAlign: 'center',
   },
-  logoImage: {
+  [`& .${classes.logoImage}`]: {
     height: 64,
     opacity: 1,
     cursor: 'pointer',
@@ -44,7 +76,7 @@ export const useStyles = makeStyles((theme) => ({
       opacity: 0.5,
     },
   },
-  logo: {
+  [`& .${classes.logo}`]: {
     cursor: 'pointer',
     fontSize: 42,
     margin: 0,
@@ -54,14 +86,14 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: 42,
     },
   },
-  heading: {
+  [`& .${classes.heading}`]: {
     fontSize: 32,
     marginTop: theme.spacing(4),
     [theme.breakpoints.down('md')]: {
       fontSize: 32,
     },
   },
-  subheading: {
+  [`& .${classes.subheading}`]: {
     marginTop: 32,
     fontSize: 24,
     marginBottom: theme.spacing(3),
@@ -71,13 +103,13 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(1),
     },
   },
-  loginMargin: {
+  [`& .${classes.loginMargin}`]: {
     margin: theme.spacing(1),
   },
-  loginPaper: {
+  [`& .${classes.loginPaper}`]: {
     padding: theme.spacing(2),
   },
-  hero: {
+  [`& .${classes.hero}`]: {
     marginTop: theme.spacing(15),
     marginBottom: theme.spacing(6),
     width: '100%',
@@ -87,12 +119,12 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(10),
     },
   },
-  subpage: {
+  [`& .${classes.subpage}`]: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(12),
     width: '100%',
   },
-  buttonContainer: {
+  [`& .${classes.buttonContainer}`]: {
     marginTop: 48,
     [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
@@ -100,7 +132,7 @@ export const useStyles = makeStyles((theme) => ({
       maxWidth: 'none',
     },
   },
-  login: {
+  [`& .${classes.login}`]: {
     margin: 0,
     width: 260,
     padding: theme.spacing(2),
@@ -116,21 +148,25 @@ export const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
-  body: {
+
+  [`& .${classes.body}`]: {
     marginTop: theme.spacing(2),
   },
-  section: {
+
+  [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
   },
-  hint: {
+
+  [`& .${classes.hint}`]: {
     marginTop: theme.spacing(2),
     fontStyle: 'italic',
   },
-  link: {
+
+  [`& .${classes.link}`]: {
     color: theme.palette.primary.dark,
   },
-  meetingContainer: {
+  [`& .${classes.meetingContainer}`]: {
     width: '100%',
     textAlign: 'center',
     borderRadius: 30,
@@ -145,12 +181,12 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(8),
     },
   },
-  meetingImage: {
+  [`& .${classes.meetingImage}`]: {
     display: 'block',
     margin: '0px auto',
     width: '100%',
   },
-  bodyCopySection: {
+  [`& .${classes.bodyCopySection}`]: {
     paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(10),
     [theme.breakpoints.down('md')]: {
@@ -159,33 +195,33 @@ export const useStyles = makeStyles((theme) => ({
       maxWidth: 'none',
     },
   },
-  italics: {
+  [`& .${classes.italics}`]: {
     fontFamily: italicFontFamily,
     fontStyle: 'italics',
   },
-  loginButtonContainer: {
+  [`& .${classes.loginButtonContainer}`]: {
     [theme.breakpoints.down('md')]: {
       textAlign: 'center',
       margin: '0px auto',
     },
   },
-  emojiIcon: {
+  [`& .${classes.emojiIcon}`]: {
     fontSize: 26,
     marginRight: theme.spacing(2),
   },
-  list: {
+  [`& .${classes.list}`]: {
     [theme.breakpoints.down('md')]: {
       textAlign: 'center',
       margin: '0px auto',
       maxWidth: 367,
     },
   },
-  quote: {
+  [`& .${classes.quote}`]: {
     [theme.breakpoints.down('md')]: {
       fontSize: 24,
     },
   },
-  largeText: {
+  [`& .${classes.largeText}`]: {
     [theme.breakpoints.down('md')]: {
       fontSize: 32,
     },
@@ -195,161 +231,154 @@ export const useStyles = makeStyles((theme) => ({
 // <meta name="slack-app-id" content="A01E5A9263B" />
 const description = 'A newtab page that gets you what you need when you need it.';
 
-const App = () => {
-  const classes = useStyles();
-  return (
-    <div className={classes.container}>
-      <Head>
-        <title>Kelp - a magical website organizer for busy people</title>
-        <meta name="description" content={description} />
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary" key="twcard" />
-        <meta name="twitter:creator" content="kelpnyc" key="twhandle" />
+const App = () => (
+  <Root className={classes.container}>
+    <Head>
+      <title>Kelp - a magical website organizer for busy people</title>
+      <meta name="description" content={description} />
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary" key="twcard" />
+      <meta name="twitter:creator" content="kelpnyc" key="twhandle" />
 
-        {/* Open Graph */}
-        <meta property="og:url" content="https://www.kelp.nyc" key="ogurl" />
-        <meta
-          property="og:image"
-          content="https://www.kelp.nyc/images/overview.jpg"
-          key="ogimage"
-        />
-        <meta property="og:site_name" content="Kelp" key="ogsitename" />
-        <meta
-          property="og:title"
-          content="Kelp - A magical website organizer for busy people"
-          key="ogtitle"
-        />
-        <meta property="og:description" content={description} key="ogdesc" />
-      </Head>
-      <style jsx global>{`
-        html body {
-          background-color: #faf5eb;
-        }
-      `}</style>
-      <div className={classes.hero}>
-        <Container maxWidth="md">
-          <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
-          <Typography variant="h1" className={classes.heading}>
-            Kelp is a magical website organizer for busy people
-          </Typography>
-          <Typography className={classes.subheading}>
-            Install Kelp to leave tags and folders behind, and switch to an organization system that
-            adapts to the real world.
-          </Typography>
-        </Container>
-        <Container className={classes.buttonContainer}>
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.login}
-            startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
-            onClick={() => (window.location.pathname = '/install')}
-            disableElevation={true}
-          >
-            Install Kelp
-          </Button>
-        </Container>
-      </div>
-      <Container maxWidth="lg">
-        <div className={classes.meetingContainer}>
-          <img src="images/meetings-large.svg" className={classes.meetingImage} />
-        </div>
-      </Container>
-      <ImageBlocks />
-      <UiBlocks />
-      <Container maxWidth="md" className={classes.bodyCopySection}>
-        <Typography variant="h2" className={classes.largeText}>
-          Your data is your data
+      {/* Open Graph */}
+      <meta property="og:url" content="https://www.kelp.nyc" key="ogurl" />
+      <meta property="og:image" content="https://www.kelp.nyc/images/overview.jpg" key="ogimage" />
+      <meta property="og:site_name" content="Kelp" key="ogsitename" />
+      <meta
+        property="og:title"
+        content="Kelp - A magical website organizer for busy people"
+        key="ogtitle"
+      />
+      <meta property="og:description" content={description} key="ogdesc" />
+    </Head>
+    <style jsx global>{`
+      html body {
+        background-color: #faf5eb;
+      }
+    `}</style>
+    <div className={classes.hero}>
+      <Container maxWidth="md">
+        <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
+        <Typography variant="h1" className={classes.heading}>
+          Kelp is a magical website organizer for busy people
         </Typography>
-        <Container maxWidth="sm">
-          <Typography>
-            Kelp does not store your passwords or personal data. We take security seriously and
-            apply experience from e-commerce, and healthcare data security. Kelp’s security
-            practices include but are not limited to: static code analysis, static dependency
-            checking, web vulnerability scanning, end-to-end encryption, and a bug bounty program.
+        <Typography className={classes.subheading}>
+          Install Kelp to leave tags and folders behind, and switch to an organization system that
+          adapts to the real world.
+        </Typography>
+      </Container>
+      <Container className={classes.buttonContainer}>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          className={classes.login}
+          startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
+          onClick={() => (window.location.pathname = '/install')}
+          disableElevation={true}
+        >
+          Install Kelp
+        </Button>
+      </Container>
+    </div>
+    <Container maxWidth="lg">
+      <div className={classes.meetingContainer}>
+        <img src="images/meetings-large.svg" className={classes.meetingImage} />
+      </div>
+    </Container>
+    <ImageBlocks />
+    <UiBlocks />
+    <Container maxWidth="md" className={classes.bodyCopySection}>
+      <Typography variant="h2" className={classes.largeText}>
+        Your data is your data
+      </Typography>
+      <Container maxWidth="sm">
+        <Typography>
+          Kelp does not store your passwords or personal data. We take security seriously and apply
+          experience from e-commerce, and healthcare data security. Kelp’s security practices
+          include but are not limited to: static code analysis, static dependency checking, web
+          vulnerability scanning, end-to-end encryption, and a bug bounty program.
+        </Typography>
+        <br />
+        <List disablePadding className={classes.list}>
+          <ListItem disableGutters>
+            <div className={classes.emojiIcon}>💻</div>
+            <ListItemText>
+              Kelp is a chrome extension that runs entirely on your computer
+            </ListItemText>
+          </ListItem>
+          <ListItem disableGutters>
+            <div className={classes.emojiIcon}>🛑 </div>
+            <ListItemText>Kelp does not send your data to third parties</ListItemText>
+          </ListItem>
+          <ListItem disableGutters>
+            <div className={classes.emojiIcon}>🔐</div>
+            <ListItemText>Kelp does not record your email or Google Profile</ListItemText>
+          </ListItem>
+          <ListItem disableGutters>
+            <div className={classes.emojiIcon}>🛤</div>
+            <ListItemText>Kelp does not include analytics or tracking tools</ListItemText>
+          </ListItem>
+        </List>
+      </Container>
+    </Container>
+    <br />
+    <Container maxWidth="md">
+      <Grid container alignItems="center" justifyContent="center">
+        <Grid
+          sm={12}
+          md={6}
+          item
+          className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
+        >
+          <Typography variant="h4" className={classes.quote}>
+            Ready to get started?
           </Typography>
-          <br />
+          <div className={classes.buttonContainer}>
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              className={classes.login}
+              startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
+              onClick={() => (window.location.pathname = '/install')}
+              disableElevation={true}
+            >
+              Install Kelp
+            </Button>
+          </div>
+        </Grid>
+        <Grid sm={12} md={6} item>
           <List disablePadding className={classes.list}>
             <ListItem disableGutters>
-              <div className={classes.emojiIcon}>💻</div>
-              <ListItemText>
-                Kelp is a chrome extension that runs entirely on your computer
-              </ListItemText>
+              <div className={classes.emojiIcon}>🎨</div>
+              <ListItemText>Designed for people with too many meetings</ListItemText>
             </ListItem>
             <ListItem disableGutters>
-              <div className={classes.emojiIcon}>🛑 </div>
-              <ListItemText>Kelp does not send your data to third parties</ListItemText>
+              <div className={classes.emojiIcon}>🗝</div>
+              <ListItemText>Secure - Kelp does not store your data</ListItemText>
             </ListItem>
             <ListItem disableGutters>
-              <div className={classes.emojiIcon}>🔐</div>
-              <ListItemText>Kelp does not record your email or Google Profile</ListItemText>
+              <div className={classes.emojiIcon}>🪞</div>
+              <ListItemText>Active & transparent development</ListItemText>
             </ListItem>
             <ListItem disableGutters>
-              <div className={classes.emojiIcon}>🛤</div>
-              <ListItemText>Kelp does not include analytics or tracking tools</ListItemText>
+              <div className={classes.emojiIcon}>🦄</div>
+              <ListItemText>Independently bootstrapped</ListItemText>
+            </ListItem>
+            <ListItem disableGutters>
+              <div className={classes.emojiIcon}>🏎</div>
+              <ListItemText>Fast and easy to use</ListItemText>
             </ListItem>
           </List>
-        </Container>
-      </Container>
-      <br />
-      <Container maxWidth="md">
-        <Grid container alignItems="center" justifyContent="center">
-          <Grid
-            sm={12}
-            md={6}
-            item
-            className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
-          >
-            <Typography variant="h4" className={classes.quote}>
-              Ready to get started?
-            </Typography>
-            <div className={classes.buttonContainer}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.login}
-                startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
-                onClick={() => (window.location.pathname = '/install')}
-                disableElevation={true}
-              >
-                Install Kelp
-              </Button>
-            </div>
-          </Grid>
-          <Grid sm={12} md={6} item>
-            <List disablePadding className={classes.list}>
-              <ListItem disableGutters>
-                <div className={classes.emojiIcon}>🎨</div>
-                <ListItemText>Designed for people with too many meetings</ListItemText>
-              </ListItem>
-              <ListItem disableGutters>
-                <div className={classes.emojiIcon}>🗝</div>
-                <ListItemText>Secure - Kelp does not store your data</ListItemText>
-              </ListItem>
-              <ListItem disableGutters>
-                <div className={classes.emojiIcon}>🪞</div>
-                <ListItemText>Active & transparent development</ListItemText>
-              </ListItem>
-              <ListItem disableGutters>
-                <div className={classes.emojiIcon}>🦄</div>
-                <ListItemText>Independently bootstrapped</ListItemText>
-              </ListItem>
-              <ListItem disableGutters>
-                <div className={classes.emojiIcon}>🏎</div>
-                <ListItemText>Fast and easy to use</ListItemText>
-              </ListItem>
-            </List>
-          </Grid>
         </Grid>
-      </Container>
-      <br />
-      <br />
-      <Divider />
-      <Footer />
-    </div>
-  );
-};
+      </Grid>
+    </Container>
+    <br />
+    <br />
+    <Divider />
+    <Footer />
+  </Root>
+);
 
 export default App;
