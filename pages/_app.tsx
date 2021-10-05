@@ -1,26 +1,21 @@
+import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
-import React, { useEffect } from 'react';
+import React from 'react';
+import createEmotionCache from '../components/styles/create-emotion-cache';
 import homepageTheme from '../constants/homepage-theme';
 
-const App = (props: any) => {
-  const { Component, pageProps } = props;
+const clientSideEmotionCache = createEmotionCache();
 
-  useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles && jssStyles.parentElement) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-  }, []);
+const App = (props: any) => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
-    <StyledEngineProvider injectFirst>
+    <CacheProvider value={emotionCache}>
       <ThemeProvider theme={homepageTheme}>
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
-    </StyledEngineProvider>
+    </CacheProvider>
   );
 };
 
