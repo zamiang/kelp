@@ -5,6 +5,7 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
+import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
@@ -14,7 +15,6 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
-import makeStyles from '@mui/styles/makeStyles';
 import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -282,12 +282,14 @@ const App = () => {
 
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        <CssBaseline />
-        <MsalProvider instance={msalInstance}>
-          <Popup setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} />
-        </MsalProvider>
-      </ThemeProvider>
+      <EmotionThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+          <CssBaseline />
+          <MsalProvider instance={msalInstance}>
+            <Popup setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} />
+          </MsalProvider>
+        </ThemeProvider>
+      </EmotionThemeProvider>
     </StyledEngineProvider>
   );
 };

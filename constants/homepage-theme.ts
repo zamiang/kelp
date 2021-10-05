@@ -111,26 +111,28 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: `
       @font-face {
-        fontFamily: 'basis-grotesque',
-        fontStyle: 'normal',
-        fontDisplay: 'swap',
-        fontWeight: 400,
-        src: url(${BasisGrotesqueRegularWoff2}) format('woff2'),
+        font-family: "basis-grotesque";
+        font-style: "normal";
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
       }
+
       @font-face {
-        fontFamily: 'basis-grotesque-italic',
-        fontStyle: 'italic',
-        fontDisplay: 'swap',
-        fontWeight: 400,
-        src: url(${BasisGrotesqueItalicWoff2}) format('woff2'),
+        font-family: 'basis-grotesque-italic';
+        font-style: 'italic';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
       }
+
       @font-face {
-        fontFamily: 'basis-grotesque-medium',
-        fontStyle: 'normal',
-        fontDisplay: 'swap',
-        fontWeight: 400,
-        src: url(${BasisGrotesqueMediumWoff2}) format('woff2'),
-      };
+        font-family: 'basis-grotesque-medium',
+        font-style: 'normal';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
+      }
       `,
     },
     MuiListItemIcon: {

@@ -1,3 +1,4 @@
+import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
@@ -153,9 +154,11 @@ export const DesktopDashboard = (props: {
           toggleWebsiteTag={toggleWebsiteTagClick}
         />
         <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={lightTheme}>
-            <Onboarding />
-          </ThemeProvider>
+          <EmotionThemeProvider theme={lightTheme}>
+            <ThemeProvider theme={lightTheme}>
+              <Onboarding />
+            </ThemeProvider>
+          </EmotionThemeProvider>
         </StyledEngineProvider>
         <div className={classes.container}>
           <Container maxWidth="lg" disableGutters>

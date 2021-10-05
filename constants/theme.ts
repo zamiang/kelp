@@ -15,29 +15,6 @@ export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 // 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
 // const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
-const basisRegular = {
-  fontFamily: 'basis-grotesque',
-  fontStyle: 'normal',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueRegularWoff2}) format('woff2')`,
-};
-const basisItalic = {
-  fontFamily: 'basis-grotesque-italic',
-  fontStyle: 'italic',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueItalicWoff2}) format('woff2')`,
-};
-
-const basisMedium = {
-  fontFamily: 'basis-grotesque-medium',
-  fontStyle: 'normal',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
-};
-
 const primaryTextColor = 'rgba(0,0,0,0.87)';
 const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
 const lightTextColor = 'rgba(0,0,0,0.5)';
@@ -154,7 +131,31 @@ export const lightTheme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: `'@font-face': [${basisRegular}, ${basisItalic}, ${basisMedium}]`,
+      styleOverrides: `
+      @font-face {
+        font-family: "basis-grotesque";
+        font-style: "normal";
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-italic';
+        font-style: 'italic';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-medium',
+        font-style: 'normal';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
+      }
+      `,
     },
     MuiListItemIcon: {
       styleOverrides: {
@@ -385,7 +386,31 @@ export const darkTheme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: `'@font-face': [${basisRegular}, ${basisItalic}, ${basisMedium}]`,
+      styleOverrides: `
+      @font-face {
+        font-family: "basis-grotesque";
+        font-style: "normal";
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-italic';
+        font-style: 'italic';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-medium',
+        font-style: 'normal';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
+      }
+      `,
     },
     MuiListItemIcon: {
       styleOverrides: {
