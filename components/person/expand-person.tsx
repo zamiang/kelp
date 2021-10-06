@@ -79,7 +79,7 @@ const ExpandPerson = (props: {
         const websitesForMeetings = await Promise.all(
           filteredSegments.map(async (meeting) => {
             if (meeting) {
-              const result = await fetchWebsitesForMeetingFiltered(meeting, props.store, false);
+              const result = await fetchWebsitesForMeetingFiltered(meeting, props.store, false, 4);
               return result;
             }
             return [];

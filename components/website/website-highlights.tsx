@@ -96,7 +96,7 @@ export const WebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading, shouldShowAll, props.filterByTag]);
+  }, [props.store.isLoading, shouldShowAll, props.filterByTag, isLarge]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 

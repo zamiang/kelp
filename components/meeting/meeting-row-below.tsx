@@ -57,9 +57,9 @@ const MeetingRowBelow = (props: {
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
-    defaultMatches: true,
-  });
+  const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
+  const maxWebsites = isLarge ? 4 : 3;
+  console.log(isLarge, '<<<<<<<<', extraItemsCount, '<<<<<<<<<');
 
   useEffect(() => {
     let isSubscribed = true;
@@ -67,12 +67,13 @@ const MeetingRowBelow = (props: {
       props.meeting,
       props.store,
       shouldShowAll,
+      maxWebsites,
       setWebsites,
       setExtraItemsCount,
       isSubscribed,
     );
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading, props.meeting.id, shouldShowAll]);
+  }, [props.store.isLoading, props.meeting.id, shouldShowAll, isLarge]);
 
   if (websites.length < 1 && props.meetingTags.length < 1) {
     return null;
@@ -80,9 +81,9 @@ const MeetingRowBelow = (props: {
 
   return (
     <StyledGrid item xs={props.isFullWidth ? 12 : 11}>
-      <Grid container spacing={isMobile ? 5 : 6}>
+      <Grid container columnSpacing={5}>
         {websites.map((item) => (
-          <Grid item xs={3} key={item.websiteId}>
+          <Grid item xs={isLarge ? 3 : 4} key={item.websiteId}>
             <LargeWebsite
               item={item}
               store={props.store}

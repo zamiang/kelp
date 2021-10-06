@@ -27,9 +27,7 @@ export const TagHighlights = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
   const theme = useTheme();
-
   const orderedTags = props.websiteTags;
-
   const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
   return (

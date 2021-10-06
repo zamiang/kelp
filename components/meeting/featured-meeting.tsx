@@ -312,6 +312,7 @@ export const FeaturedMeeting = (props: {
               meetingTags={relevantTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               toggleMeetingTag={toggleMeetingTag}
+              shouldHideShowAll={true}
               showWebsitePopup={props.showWebsitePopup}
             />
           )}
