@@ -3,6 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -25,6 +26,15 @@ const classes = {
   rowLeft: `${PREFIX}-rowLeft`,
   rowPrimaryMain: `${PREFIX}-rowPrimaryMain`,
 };
+
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.image}`]: {

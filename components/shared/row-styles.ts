@@ -1,7 +1,17 @@
 import { styled } from '@mui/material/styles';
+import { keyframes } from '@mui/styled-engine';
 import { mediumFontFamily } from '../../constants/theme';
 
 const PREFIX = 'Row';
+
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 export const classes = {
   border: `${PREFIX}-border`,
@@ -120,7 +130,7 @@ export const Row = styled('div')(({ theme }) => ({
     cursor: 'pointer',
     textAlign: 'left',
     width: '100%',
-    animation: '$fadeInAnimation ease 0.4s',
+    animation: `${fadeInAnimation} ease 0.4s`,
     animationIterationCount: 1,
     animationFillMode: 'forwards',
     '&.MuiListItem-button:hover': {

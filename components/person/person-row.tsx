@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -27,15 +28,16 @@ const classes = {
   button: `${PREFIX}-button`,
 };
 
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const Root = styled('div')(({ theme }) => ({
-  '@keyframes fadeInAnimation': {
-    from: {
-      opacity: 0,
-    },
-    to: {
-      opacity: 1,
-    },
-  },
   [`& .${classes.personAccepted}`]: {},
   [`& .${classes.personTentative}`]: {
     opacity: 0.8,
@@ -61,7 +63,7 @@ const Root = styled('div')(({ theme }) => ({
     cursor: 'pointer',
     textAlign: 'left',
     width: '100%',
-    animation: '$fadeInAnimation ease 0.4s',
+    animation: `${fadeInAnimation} ease 0.4s`,
     animationIterationCount: 1,
     animationFillMode: 'forwards',
     '&.MuiListItem-button:hover': {
