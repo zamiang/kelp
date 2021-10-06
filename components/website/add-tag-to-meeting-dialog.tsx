@@ -51,7 +51,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     overflow: 'auto',
     border: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(1),
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
   },
 
   [`& .${classes.closeButton}`]: {

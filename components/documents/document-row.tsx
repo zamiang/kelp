@@ -36,7 +36,6 @@ const Root = styled('div')(({ theme }) => ({
     width: 18,
     marginTop: 5,
   },
-
   [`& .${classes.time}`]: {
     minWidth: 160,
     maxWidth: 180,
@@ -61,7 +60,7 @@ const Root = styled('div')(({ theme }) => ({
     cursor: 'pointer',
     textAlign: 'left',
     width: '100%',
-    animation: '$fadeInAnimation ease 0.4s',
+    animation: `${fadeInAnimation} ease 0.4s`,
     animationIterationCount: 1,
     animationFillMode: 'forwards',
     '&.MuiListItem-button:hover': {

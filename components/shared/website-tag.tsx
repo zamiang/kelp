@@ -19,11 +19,9 @@ const Root = styled('div')(({ theme }) => ({
     overflow: 'hidden',
     height: 22,
   },
-
   [`& .${classes.tag}`]: {
     display: 'inline-block',
-    marginRight: theme.spacing(1 / 2),
-    marginLeft: theme.spacing(1 / 2),
+    marginRight: theme.spacing(1),
     transition: 'borderBottom 0.3s',
     borderBottom: '1px solid transparent',
     cursor: 'pointer',
@@ -31,7 +29,6 @@ const Root = styled('div')(({ theme }) => ({
       borderBottomColor: theme.palette.divider,
     },
   },
-
   [`& .${classes.tagSelected}`]: {
     pointerEvents: 'all',
     cursor: 'pointer',

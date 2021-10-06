@@ -23,13 +23,11 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
     marginTop: 0,
     [theme.breakpoints.down('md')]: {},
   },
-
   [`&.${classes.container}`]: {
     background: theme.palette.background.paper,
-    borderRadius: 21,
+    borderRadius: theme.shape.borderRadius,
     height: 39,
   },
-
   [`& .${classes.icon}`]: {
     padding: theme.spacing(1),
   },
@@ -81,6 +79,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
           onChange={handleChange}
           name="query"
           margin="dense"
+          variant="standard"
           value={value}
           InputProps={{
             className: classes.input,

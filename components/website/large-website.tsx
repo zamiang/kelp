@@ -16,28 +16,26 @@ import { IFeaturedWebsite } from './get-featured-websites';
 const PREFIX = 'LargeWebsite';
 
 const classes = {
-  website: `${PREFIX}-website`,
   container: `${PREFIX}-container`,
   dots: `${PREFIX}-dots`,
   imageContainer: `${PREFIX}-imageContainer`,
   faviconContainer: `${PREFIX}-faviconContainer`,
   textContainer: `${PREFIX}-textContainer`,
   text: `${PREFIX}-text`,
+  icon: `${PREFIX}-icon`,
 };
 
 const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.website}`]: {},
-
   [`& .${classes.container}`]: {
     background: theme.palette.background.paper,
     opacity: 1,
-    transition: 'opacity 0.3s',
     overflow: 'hidden',
+    transition: 'opacity 0.3s',
+    borderRadius: theme.shape.borderRadius,
     '&:hover': {
       opacity: 0.8,
     },
   },
-
   [`& .${classes.dots}`]: {
     backgroundImage:
       'radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%), radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%)',
@@ -50,16 +48,15 @@ const Root = styled('div')(({ theme }) => ({
     width: '100%',
     height: '100%',
   },
-
   [`&.${classes.imageContainer}`]: {
-    backgroundSize: 'cover',
+    backgroundSize: '133%',
+    backgroundPosition: 'top',
     display: 'block',
-    paddingBottom: '66%',
+    paddingBottom: '61.8%',
     overflow: 'hidden',
     height: 0,
     position: 'relative',
   },
-
   [`& .${classes.faviconContainer}`]: {
     background: theme.palette.background.paper,
     display: 'flex',
@@ -69,14 +66,13 @@ const Root = styled('div')(({ theme }) => ({
     paddingTop: 'calc(33% - 18px)',
     paddingBottom: 'calc(33% - 18px)',
   },
-
-  [`& .${classes.textContainer}`]: {
-    marginTop: 5,
+  [`& .${classes.textContainer}`]: {},
+  [`& .${classes.icon}`]: {
+    display: 'block',
+    marginRight: theme.spacing(0.5),
   },
-
   [`& .${classes.text}`]: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(2),
     fontFamily: theme.typography.h3.fontFamily,
     fontWeight: theme.typography.h3.fontWeight,
   },
@@ -147,9 +143,9 @@ export const LargeWebsite = (props: {
   }, [props.item.websiteId]);
 
   return (
-    <div className={classes.website}>
+    <Root>
       <Link href={website?.rawUrl} underline="none">
-        <Box boxShadow={1} borderRadius="16px" className={classes.container}>
+        <Box boxShadow={1} className={classes.container}>
           <WebsiteImage
             image={image}
             item={props.item}
@@ -169,15 +165,6 @@ export const LargeWebsite = (props: {
         className={classes.textContainer}
         justifyContent="space-between"
       >
-        <Grid item>
-          <IconButton size="small">
-            <img
-              src={`chrome://favicon/size/48@1x/${props.item.websiteId}`}
-              height="16"
-              width="16"
-            />
-          </IconButton>
-        </Grid>
         <Grid item xs zeroMinWidth>
           <WebsiteTags
             store={props.store}
@@ -201,6 +188,6 @@ export const LargeWebsite = (props: {
           </IconButton>
         </Grid>
       </Grid>
-    </div>
+    </Root>
   );
 };

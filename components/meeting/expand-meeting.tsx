@@ -57,16 +57,16 @@ const EmailGuestsButton = (props: {
   }&body=${bodyText}`;
 
   return (
-    <Tooltip title="Email guests">
-      <IconButton
-        onClick={() => window.open(link)}
-        color="primary"
-        className={classes.button}
-        size="large"
-      >
-        <EmailIcon width="24" height="24" />
-      </IconButton>
-    </Tooltip>
+    <Button
+      onClick={() => window.open(link)}
+      variant="outlined"
+      disableElevation
+      color="primary"
+      className={classes.button}
+      startIcon={<EmailIcon width="24" height="24" />}
+    >
+      Email Guests
+    </Button>
   );
 };
 
@@ -158,7 +158,6 @@ const ExpandedMeeting = (props: {
   if (!meeting) {
     return null;
   }
-  const videoLinkDomain = meeting.videoLink ? new URL(meeting.videoLink).hostname : undefined;
   const shouldShowMeetingLink = !!meeting.videoLink;
   const hasAttendees = attendees.length > 0;
   const hasDescription = meeting.description && meeting.description.length > 0;
@@ -186,7 +185,7 @@ const ExpandedMeeting = (props: {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Grid item>
+        <Grid item xs={6}>
           <Typography variant="h3" gutterBottom>
             {meeting.summary || '(no title)'}
           </Typography>
@@ -195,8 +194,8 @@ const ExpandedMeeting = (props: {
             {format(meeting.end, 'p')}
           </Typography>
         </Grid>
-        <Grid item>
-          <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Grid container spacing={2} alignItems="center" justifyContent="flex-end">
             {hasMeetingNotes && (
               <Grid item>
                 <Tooltip title="Open meeting notes">
@@ -240,7 +239,7 @@ const ExpandedMeeting = (props: {
                   startIcon={<VideoIcon width="24" height="24" />}
                   className={classes.button}
                 >
-                  Join {videoLinkDomain}
+                  Join
                 </Button>
               </Grid>
             )}

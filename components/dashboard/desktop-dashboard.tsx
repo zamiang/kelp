@@ -36,7 +36,7 @@ const classes = {
   content: `${PREFIX}-content`,
 };
 
-const StyledErrorBoundaryComponent = styled(ErrorBoundaryComponent)(({ theme }) => ({
+const DesktopDashboardContainer = styled('div')(({ theme }) => ({
   [`& .${classes.container}`]: {
     paddingLeft: 210,
     paddingRight: 210,
@@ -128,122 +128,124 @@ export const DesktopDashboard = (props: {
   };
 
   return (
-    <StyledErrorBoundaryComponent>
-      <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>Please reload the page
-          <Typography>{store.error}</Typography>
-        </Alert>
-      </Dialog>
-      <WebsiteDialog
-        store={props.store}
-        item={websitePopupItem}
-        close={() => {
-          setWebsitePopupItem(undefined);
-          props.store.incrementLoading();
-        }}
-        toggleWebsiteTag={toggleWebsiteTagClick}
-        userTags={websiteTags}
-      />
-      <div className={classes.content}>
-        <TopNav
-          store={store}
-          isDarkMode={props.isDarkMode}
-          websiteTags={websiteTags}
-          isMicrosoftError={props.isMicrosoftError}
+    <ErrorBoundaryComponent>
+      <DesktopDashboardContainer>
+        <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>Please reload the page
+            <Typography>{store.error}</Typography>
+          </Alert>
+        </Dialog>
+        <WebsiteDialog
+          store={props.store}
+          item={websitePopupItem}
+          close={() => {
+            setWebsitePopupItem(undefined);
+            props.store.incrementLoading();
+          }}
           toggleWebsiteTag={toggleWebsiteTagClick}
+          userTags={websiteTags}
         />
-        <StyledEngineProvider injectFirst>
-          <EmotionThemeProvider theme={lightTheme}>
-            <ThemeProvider theme={lightTheme}>
-              <Onboarding />
-            </ThemeProvider>
-          </EmotionThemeProvider>
-        </StyledEngineProvider>
-        <div className={classes.container}>
-          <Container maxWidth="lg" disableGutters>
-            <div>
-              <Switch>
-                <Route path="/search">
-                  <Search
-                    store={store}
-                    isDarkMode={props.isDarkMode}
-                    websiteTags={websiteTags}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                    showWebsitePopup={showWebsitePopup}
-                  />
-                </Route>
-                <Route path="/meetings/:slug">
-                  <ExpandedMeeting
-                    store={store}
-                    isDarkMode={props.isDarkMode}
-                    websiteTags={websiteTags}
-                    showWebsitePopup={showWebsitePopup}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                  />
-                </Route>
-                <Route path="/documents/:slug">
-                  <ExpandedDocument store={store} />
-                </Route>
-                <Route path="/people/:slug">
-                  <ExpandPerson
-                    store={store}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                    websiteTags={websiteTags}
-                    isDarkMode={props.isDarkMode}
-                    showWebsitePopup={showWebsitePopup}
-                  />
-                </Route>
-                <Route path="/meetings">
-                  <Meetings
-                    store={store}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                    websiteTags={websiteTags}
-                    isDarkMode={props.isDarkMode}
-                    showWebsitePopup={showWebsitePopup}
-                  />
-                </Route>
-                <Route path="/settings">
-                  <Settings
-                    store={store}
-                    isDarkMode={props.isDarkMode}
-                    setIsDarkMode={props.setIsDarkMode}
-                  />
-                </Route>
-                <Route>
-                  <MeetingHighlight
-                    store={props.store}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                    websiteTags={websiteTags}
-                    isDarkMode={props.isDarkMode}
-                    showWebsitePopup={showWebsitePopup}
-                  />
-                  <TagHighlights
-                    store={props.store}
-                    toggleWebsiteTag={toggleWebsiteTagClick}
-                    websiteTags={websiteTags}
-                    isDarkMode={props.isDarkMode}
-                    showWebsitePopup={showWebsitePopup}
-                  />
-                  <div id="tag-all">
-                    <WebsiteHighlights
+        <div className={classes.content}>
+          <TopNav
+            store={store}
+            isDarkMode={props.isDarkMode}
+            websiteTags={websiteTags}
+            isMicrosoftError={props.isMicrosoftError}
+            toggleWebsiteTag={toggleWebsiteTagClick}
+          />
+          <StyledEngineProvider injectFirst>
+            <EmotionThemeProvider theme={lightTheme}>
+              <ThemeProvider theme={lightTheme}>
+                <Onboarding />
+              </ThemeProvider>
+            </EmotionThemeProvider>
+          </StyledEngineProvider>
+          <div className={classes.container}>
+            <Container maxWidth="lg" disableGutters>
+              <div>
+                <Switch>
+                  <Route path="/search">
+                    <Search
+                      store={store}
+                      isDarkMode={props.isDarkMode}
+                      websiteTags={websiteTags}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
+                      showWebsitePopup={showWebsitePopup}
+                    />
+                  </Route>
+                  <Route path="/meetings/:slug">
+                    <ExpandedMeeting
+                      store={store}
+                      isDarkMode={props.isDarkMode}
+                      websiteTags={websiteTags}
+                      showWebsitePopup={showWebsitePopup}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
+                    />
+                  </Route>
+                  <Route path="/documents/:slug">
+                    <ExpandedDocument store={store} />
+                  </Route>
+                  <Route path="/people/:slug">
+                    <ExpandPerson
                       store={store}
                       toggleWebsiteTag={toggleWebsiteTagClick}
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
                     />
-                  </div>
-                </Route>
-              </Switch>
-            </div>
-          </Container>
+                  </Route>
+                  <Route path="/meetings">
+                    <Meetings
+                      store={store}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
+                      websiteTags={websiteTags}
+                      isDarkMode={props.isDarkMode}
+                      showWebsitePopup={showWebsitePopup}
+                    />
+                  </Route>
+                  <Route path="/settings">
+                    <Settings
+                      store={store}
+                      isDarkMode={props.isDarkMode}
+                      setIsDarkMode={props.setIsDarkMode}
+                    />
+                  </Route>
+                  <Route>
+                    <MeetingHighlight
+                      store={props.store}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
+                      websiteTags={websiteTags}
+                      isDarkMode={props.isDarkMode}
+                      showWebsitePopup={showWebsitePopup}
+                    />
+                    <TagHighlights
+                      store={props.store}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
+                      websiteTags={websiteTags}
+                      isDarkMode={props.isDarkMode}
+                      showWebsitePopup={showWebsitePopup}
+                    />
+                    <div id="tag-all">
+                      <WebsiteHighlights
+                        store={store}
+                        toggleWebsiteTag={toggleWebsiteTagClick}
+                        websiteTags={websiteTags}
+                        isDarkMode={props.isDarkMode}
+                        showWebsitePopup={showWebsitePopup}
+                      />
+                    </div>
+                  </Route>
+                </Switch>
+              </div>
+            </Container>
+          </div>
         </div>
-      </div>
-      <div className={classes.footerContainer}>
-        <Footer />
-        <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
-      </div>
-    </StyledErrorBoundaryComponent>
+        <div className={classes.footerContainer}>
+          <Footer />
+          <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
+        </div>
+      </DesktopDashboardContainer>
+    </ErrorBoundaryComponent>
   );
 };

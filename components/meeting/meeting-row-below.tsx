@@ -1,10 +1,11 @@
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import {
@@ -49,6 +50,7 @@ const MeetingRowBelow = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   toggleMeetingTag: (tag: string, meetingId: string, meetingSummary: string) => void;
+  shouldHideShowAll?: boolean;
 }) => {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -93,14 +95,14 @@ const MeetingRowBelow = (props: {
           </Grid>
         ))}
       </Grid>
-      {extraItemsCount > 0 && (
-        <Button
+      {extraItemsCount > 0 && !props.shouldHideShowAll && (
+        <IconButton
           onClick={() => {
             setShouldShowAll(!shouldShowAll);
           }}
         >
-          Show all
-        </Button>
+          <PlusIcon width="24" height="24" />{' '}
+        </IconButton>
       )}
       {props.meetingTags.map((t) => (
         <div className={classes.section} key={t.id}>

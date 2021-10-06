@@ -218,6 +218,9 @@ export const lightTheme = createTheme({
     },
     MuiDialog: {
       styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
         paperWidthSm: {
           width: '100%',
         },
@@ -239,6 +242,13 @@ export const lightTheme = createTheme({
             borderRopLeftRadius: 4,
             borderBottomLeftRadius: 4,
           },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          marginTop: 5,
         },
       },
     },
@@ -478,6 +488,16 @@ export const darkTheme = createTheme({
         },
         paperScrollPaper: {
           borderRadius: 16,
+        },
+        paper: {
+          backgroundImage: 'none',
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          marginTop: 5,
         },
       },
     },

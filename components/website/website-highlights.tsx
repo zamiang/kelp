@@ -1,10 +1,11 @@
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -19,7 +20,7 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.topSection}`]: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
     position: 'relative',
     zIndex: 5,
   },
@@ -113,13 +114,13 @@ export const WebsiteHighlights = (props: {
         </Grid>
         {extraItemsCount > 0 && !shouldShowAll && (
           <Grid item>
-            <Button
+            <IconButton
               onClick={() => {
                 setShouldShowAll(!shouldShowAll);
               }}
             >
-              Show all
-            </Button>
+              <PlusIcon width="24" height="24" />{' '}
+            </IconButton>
           </Grid>
         )}
       </Grid>

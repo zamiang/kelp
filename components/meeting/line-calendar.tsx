@@ -25,7 +25,7 @@ const Root = styled('div')(({ theme }) => ({
     top: 0,
     cursor: 'pointer',
     transition: 'background 0.3s',
-    borderRadius: 4,
+    borderRadius: theme.shape.borderRadius,
     '&:hover': {
       background: theme.palette.primary.light,
     },
@@ -48,7 +48,7 @@ const useMeetingLineStyles = makeStyles(({ theme }: any) => ({
     top: 0,
     cursor: 'pointer',
     transition: 'background 0.3s',
-    borderRadius: 4,
+    borderRadius: theme.shape.borderRadius,
     '&:hover': {
       background: theme.palette.primary.light,
     },

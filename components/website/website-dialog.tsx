@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -51,18 +50,14 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     marginTop: theme.spacing(2),
   },
 
-  [`& .${classes.closeButton}`]: {
-    position: 'absolute',
-    top: 42,
-    right: 42,
-  },
+  [`& .${classes.closeButton}`]: {},
 
   [`& .${classes.columnList}`]: {
     maxHeight: 300,
     overflow: 'auto',
     border: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(1),
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
   },
 
   [`& .${classes.section}`]: {
@@ -202,18 +197,18 @@ export const WebsiteDialog = (props: {
       }}
     >
       <div className={classes.dialogContent}>
-        <Grid container justifyContent="space-between">
+        <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={10}>
-            <Typography variant="h3">{website?.title}</Typography>
-            <br />
+            <Typography variant="h3" noWrap>
+              {website?.title}
+            </Typography>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item>
             <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width="24" height="24" />
             </IconButton>
           </Grid>
         </Grid>
-        <Divider />
         <div className={classes.section}>
           <Typography variant="h4">Tags</Typography>
           <List className={classes.columnList} disablePadding>
@@ -248,6 +243,7 @@ export const WebsiteDialog = (props: {
                 onChange={handleChange}
                 name="query"
                 margin="dense"
+                variant="standard"
                 value={value}
                 InputProps={{
                   disableUnderline: true,

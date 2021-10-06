@@ -33,16 +33,15 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.margin}`]: {
     margin: theme.spacing(1),
   },
-
   [`& .${classes.grid}`]: {
     maxWidth: theme.breakpoints.values.sm,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
     '&:last-child': {
       borderBottom: '0px solid',
     },
   },
-
   [`& .${classes.section}`]: { paddingBottom: theme.spacing(4), paddingTop: theme.spacing(4) },
   [`&.${classes.panel}`]: {},
 }));
@@ -257,7 +256,7 @@ const Settings = (props: {
             <Grid
               key={item.id}
               container
-              alignItems="flex-start"
+              alignItems="center"
               justifyContent="space-between"
               className={classes.grid}
               spacing={2}
@@ -295,7 +294,7 @@ const Settings = (props: {
             <Grid
               key={item.id}
               container
-              alignItems="flex-start"
+              alignItems="center"
               justifyContent="space-between"
               className={classes.grid}
               spacing={2}

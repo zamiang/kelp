@@ -72,7 +72,7 @@ export const Row = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.border}`]: {
-    borderRadius: 4,
+    borderRadius: theme.shape.borderRadius,
     background: theme.palette.secondary.main,
     padding: '0px !important',
     transition: 'background 0.3s',
