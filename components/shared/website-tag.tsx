@@ -1,20 +1,27 @@
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 
-const useStyles = makeStyles((theme) => ({
-  tags: {
+const PREFIX = 'WebsiteTags';
+
+const classes = {
+  tags: `${PREFIX}-tags`,
+  tag: `${PREFIX}-tag`,
+  tagSelected: `${PREFIX}-tagSelected`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`&.${classes.tags}`]: {
     overflow: 'hidden',
     height: 22,
   },
-  tag: {
+  [`& .${classes.tag}`]: {
     display: 'inline-block',
-    marginRight: theme.spacing(1 / 2),
-    marginLeft: theme.spacing(1 / 2),
+    marginRight: theme.spacing(1),
     transition: 'borderBottom 0.3s',
     borderBottom: '1px solid transparent',
     cursor: 'pointer',
@@ -22,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       borderBottomColor: theme.palette.divider,
     },
   },
-  tagSelected: {
+  [`& .${classes.tagSelected}`]: {
     pointerEvents: 'all',
     cursor: 'pointer',
     borderBottomColor: theme.palette.primary.dark,
@@ -87,7 +94,6 @@ export const WebsiteTags = (props: {
   toggleWebsiteTag: (text: string, websiteId: string) => void;
 }) => {
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
-  const classes = useStyles();
 
   useEffect(() => {
     let isSubscribed = true;
@@ -105,7 +111,7 @@ export const WebsiteTags = (props: {
   }, [props.item.websiteId, props.userTags.length]);
 
   return (
-    <div className={classes.tags}>
+    <Root className={classes.tags}>
       {websiteTags.map((tag) => (
         <div
           key={`${tag}-${props.item.websiteId}`}
@@ -115,6 +121,6 @@ export const WebsiteTags = (props: {
           <Typography variant="body2">{tag}</Typography>
         </div>
       ))}
-    </div>
+    </Root>
   );
 };

@@ -1,15 +1,14 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../public/icons/close.svg';
 import { cleanText } from '../shared/tfidf';
@@ -18,13 +17,25 @@ import { IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 
-const useStyles = makeStyles((theme) => ({
-  dialogContent: {
+const PREFIX = 'WebsiteDialog';
+
+const classes = {
+  dialogContent: `${PREFIX}-dialogContent`,
+  button: `${PREFIX}-button`,
+  closeButton: `${PREFIX}-closeButton`,
+  columnList: `${PREFIX}-columnList`,
+  section: `${PREFIX}-section`,
+  smallButton: `${PREFIX}-smallButton`,
+};
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.dialogContent}`]: {
     padding: theme.spacing(6),
     position: 'relative',
     width: 480,
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     textDecoration: 'none',
     cursor: 'pointer',
     borderRadius: 33,
@@ -38,26 +49,26 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 12,
     marginTop: theme.spacing(2),
   },
-  closeButton: {
-    position: 'absolute',
-    top: 42,
-    right: 42,
-  },
-  columnList: {
+
+  [`& .${classes.closeButton}`]: {},
+
+  [`& .${classes.columnList}`]: {
     maxHeight: 300,
     overflow: 'auto',
     border: `1px solid ${theme.palette.divider}`,
     marginTop: theme.spacing(1),
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
   },
-  section: {
+
+  [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     '&:last-child': {
       marginBottom: 0,
     },
   },
-  smallButton: {
+
+  [`& .${classes.smallButton}`]: {
     width: 100,
     background: theme.palette.background.paper,
     color: theme.palette.primary.main,
@@ -87,7 +98,6 @@ export const WebsiteDialog = (props: {
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   store: IStore;
 }) => {
-  const classes = useStyles();
   const [didHideThisWebsiteSuccess, setHideThisWebsiteSuccess] = useState(false);
   const [didHideAllSuccess, setHideAllSuccess] = useState(false);
   const [errorText, setErrorText] = useState<string | undefined>();
@@ -177,7 +187,7 @@ export const WebsiteDialog = (props: {
   };
 
   return (
-    <Dialog
+    <StyledDialog
       maxWidth="md"
       open={!!props.item}
       onClose={(_event, reason) => {
@@ -187,18 +197,18 @@ export const WebsiteDialog = (props: {
       }}
     >
       <div className={classes.dialogContent}>
-        <Grid container justifyContent="space-between">
+        <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={10}>
-            <Typography variant="h3">{website?.title}</Typography>
-            <br />
+            <Typography variant="h3" noWrap>
+              {website?.title}
+            </Typography>
           </Grid>
-          <Grid item xs={2}>
-            <IconButton onClick={props.close} className={classes.closeButton}>
+          <Grid item>
+            <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width="24" height="24" />
             </IconButton>
           </Grid>
         </Grid>
-        <Divider />
         <div className={classes.section}>
           <Typography variant="h4">Tags</Typography>
           <List className={classes.columnList} disablePadding>
@@ -216,6 +226,7 @@ export const WebsiteDialog = (props: {
                       event.stopPropagation();
                       return removeTag(t);
                     }}
+                    size="large"
                   >
                     <CloseIcon width="18" height="18" />
                   </IconButton>
@@ -232,6 +243,7 @@ export const WebsiteDialog = (props: {
                 onChange={handleChange}
                 name="query"
                 margin="dense"
+                variant="standard"
                 value={value}
                 InputProps={{
                   disableUnderline: true,
@@ -308,6 +320,6 @@ export const WebsiteDialog = (props: {
           </Grid>
         </div>
       </div>
-    </Dialog>
+    </StyledDialog>
   );
 };

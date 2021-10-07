@@ -1,6 +1,5 @@
 const withPlugins = require('next-compose-plugins');
 const { createSecureHeaders } = require('next-secure-headers');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const withFonts = require('next-fonts');
 const withReactSvg = require('next-react-svg');
 const path = require('path');
@@ -10,18 +9,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   webpack5: true,
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    if (process.env.ANALYZE) {
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: 'server',
-          analyzerPort: isServer ? 8888 : 8889,
-          openAnalyzer: true,
-        }),
-      );
-    }
-    return config;
-  },
 
   async rewrites() {
     return [
@@ -45,35 +32,16 @@ const nextConfig = {
             directives: {
               defaultSrc: "'self'",
               styleSrc: ["'self'", "'unsafe-inline'"],
-              imgSrc: [
+              imgSrc: ["'self'", 'data:', 'https://www.googletagmanager.com'],
+              fontSrc: ["'self'"],
+              scriptSrc: [
                 "'self'",
-                'data:',
-                'https://placeimg.com',
-                'https://drive-thirdparty.googleusercontent.com',
-                'https://*.googleusercontent.com',
-                //'https://platform.slack-edge.com',
+                "'unsafe-eval'",
+                "'unsafe-inline'",
                 'https://www.googletagmanager.com',
               ],
-              fontSrc: ["'self'"],
-              scriptSrc: ["'self'", "'unsafe-eval'", 'https://apis.google.com'],
-              frameSrc: [
-                'https://auth.kelp.nyc',
-                'https://content.googleapis.com',
-                'https://accounts.google.com',
-                'https://content-gmail.googleapis.com',
-                'https://content-driveactivity.googleapis.com',
-                'https://content-people.googleapis.com',
-              ],
-              connectSrc: [
-                "'self'",
-                'https://auth.kelp.nyc/oauth/token',
-                'https://content.googleapis.com',
-                'https://accounts.google.com',
-                'https://content-people.googleapis.com',
-                'https://content-driveactivity.googleapis.com',
-                'https://people.googleapis.com',
-                'https://www.googleapis.com',
-              ],
+              frameSrc: [],
+              connectSrc: ["'self'", 'https://www.googleapis.com'],
             },
           },
           forceHTTPSRedirect: true,

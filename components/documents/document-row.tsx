@@ -1,25 +1,107 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import HelpIcon from '../../public/icons/help.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
-import useRowStyles from '../shared/row-styles';
 import { IDocument, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
+
+const PREFIX = 'DocumentRow';
+
+const classes = {
+  image: `${PREFIX}-image`,
+  imageSpacing: `${PREFIX}-imageSpacing`,
+  time: `${PREFIX}-time`,
+  row: `${PREFIX}-row`,
+  rowBorder: `${PREFIX}-rowBorder`,
+  rowTopPadding: `${PREFIX}-rowTopPadding`,
+  rowSmall: `${PREFIX}-rowSmall`,
+  rowLeft: `${PREFIX}-rowLeft`,
+  rowPrimaryMain: `${PREFIX}-rowPrimaryMain`,
+};
+
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.image}`]: {
+    display: 'block',
+    maxWidth: 18,
+    margin: '0 auto',
+  },
+  [`& .${classes.imageSpacing}`]: {
+    width: 18,
+    marginTop: 5,
+  },
+  [`& .${classes.time}`]: {
+    minWidth: 160,
+    maxWidth: 180,
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
+  },
+  [`& .${classes.rowBorder}`]: {
+    minHeight: 48,
+    margin: 0,
+    paddingTop: 9,
+    paddingBottom: 9,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderRadius: 0,
+    '&.MuiListItem-button:hover': {
+      borderColor: theme.palette.divider,
+    },
+  },
+  [`& .${classes.row}`]: {
+    background: 'transparent',
+    transition: 'background 0.3s, opacity 0.3s',
+    cursor: 'pointer',
+    textAlign: 'left',
+    width: '100%',
+    animation: `${fadeInAnimation} ease 0.4s`,
+    animationIterationCount: 1,
+    animationFillMode: 'forwards',
+    '&.MuiListItem-button:hover': {
+      opacity: 0.8,
+    },
+  },
+  [`& .${classes.rowTopPadding}`]: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  [`& .${classes.rowSmall}`]: {
+    padding: 0,
+  },
+  [`& .${classes.rowLeft}`]: {
+    textAlign: 'center',
+    marginRight: theme.spacing(2),
+  },
+  [`& .${classes.rowPrimaryMain}`]: {
+    background: theme.palette.divider,
+    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
+      borderColor: theme.palette.secondary.light,
+      background: theme.palette.secondary.light,
+    },
+  },
+}));
 
 export const MissingDocumentRow = (props: {
   segmentDocument: ISegmentDocument;
   store: IStore;
   isSmall?: boolean;
 }) => {
-  const rowStyles = useRowStyles();
-  const classes = useStyles();
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
 
   useEffect(() => {
@@ -33,8 +115,8 @@ export const MissingDocumentRow = (props: {
   }, [props.segmentDocument.segmentId, props.store.isLoading]);
 
   return (
-    <div
-      className={clsx(!props.isSmall && rowStyles.row, props.isSmall && rowStyles.rowSmall)}
+    <Root
+      className={clsx(!props.isSmall && classes.row, props.isSmall && classes.rowSmall)}
       onClick={() => {
         // TODO handle slides?
         window.open(
@@ -44,7 +126,7 @@ export const MissingDocumentRow = (props: {
       }}
     >
       <Grid container alignItems="center">
-        <Grid item className={rowStyles.rowLeft}>
+        <Grid item className={classes.rowLeft}>
           <IconButton size="small">
             <HelpIcon
               height="18"
@@ -58,39 +140,9 @@ export const MissingDocumentRow = (props: {
           <Typography noWrap>Document from {meeting ? meeting.summary : 'this meeting'}</Typography>
         </Grid>
       </Grid>
-    </div>
+    </Root>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  image: {
-    display: 'block',
-    maxWidth: 18,
-    margin: '0 auto',
-  },
-  imageSpacing: {
-    width: 18,
-    marginTop: 5,
-  },
-  time: {
-    minWidth: 160,
-    maxWidth: 180,
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  row: {
-    minHeight: 48,
-    margin: 0,
-    paddingTop: 9,
-    paddingBottom: 9,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderRadius: 0,
-    '&.MuiListItem-button:hover': {
-      borderColor: theme.palette.divider,
-    },
-  },
-}));
 
 const ConditionalWrapper = ({ shouldWrap, wrapper, children }: any) =>
   shouldWrap ? wrapper(children) : children;
@@ -105,8 +157,7 @@ const DocumentRow = (props: {
 }) => {
   const isSelected = props.selectedDocumentId === props.document.id;
   const router = useHistory();
-  const rowStyles = useRowStyles();
-  const classes = useStyles();
+
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
 
@@ -117,7 +168,7 @@ const DocumentRow = (props: {
   }, [!!referenceElement]);
 
   return (
-    <div
+    <Root
       onMouseEnter={() => !isTouchEnabled() && setDetailsVisible(true)}
       onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       onClick={(event) => {
@@ -129,9 +180,9 @@ const DocumentRow = (props: {
       }}
       ref={setReferenceElement as any}
       className={clsx(
-        rowStyles.row,
-        props.noMargins && rowStyles.rowSmall,
-        isSelected && rowStyles.rowPrimaryMain,
+        classes.row,
+        props.noMargins && classes.rowSmall,
+        isSelected && classes.rowPrimaryMain,
       )}
     >
       <ConditionalWrapper
@@ -139,13 +190,13 @@ const DocumentRow = (props: {
         wrapper={(children: any) => <Tooltip title={props.tooltipText!}>{children}</Tooltip>}
       >
         <Grid container alignItems="center">
-          <Grid item className={rowStyles.rowLeft}>
+          <Grid item className={classes.rowLeft}>
             <IconButton size="small">
               <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
             </IconButton>
           </Grid>
           <Grid item zeroMinWidth xs>
-            <Typography noWrap className={rowStyles.rowTopPadding}>
+            <Typography noWrap className={classes.rowTopPadding}>
               {props.document.name}
             </Typography>
           </Grid>
@@ -165,7 +216,7 @@ const DocumentRow = (props: {
           )}
         </Grid>
       </ConditionalWrapper>
-    </div>
+    </Root>
   );
 };
 

@@ -1,14 +1,14 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
-import Divider from '@material-ui/core/Divider';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Switch from '@material-ui/core/Switch';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Switch from '@mui/material/Switch';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
@@ -20,20 +20,30 @@ import { LogOutButton, SignInButton, WelcomeUser } from '../shared/microsoft-log
 import { IDomainBlocklist, IPerson, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const useStyles = makeStyles((theme) => ({
-  margin: {
+const PREFIX = 'Settings';
+
+const classes = {
+  margin: `${PREFIX}-margin`,
+  grid: `${PREFIX}-grid`,
+  section: `${PREFIX}-section`,
+  panel: `${PREFIX}-panel`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.margin}`]: {
     margin: theme.spacing(1),
   },
-  grid: {
+  [`& .${classes.grid}`]: {
     maxWidth: theme.breakpoints.values.sm,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
     '&:last-child': {
       borderBottom: '0px solid',
     },
   },
-  section: { paddingBottom: theme.spacing(4), paddingTop: theme.spacing(4) },
-  panel: {},
+  [`& .${classes.section}`]: { paddingBottom: theme.spacing(4), paddingTop: theme.spacing(4) },
+  [`&.${classes.panel}`]: {},
 }));
 
 const Settings = (props: {
@@ -41,7 +51,6 @@ const Settings = (props: {
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
 }) => {
-  const classes = useStyles();
   const [domainBlocklists, setDomainBlocklist] = useState<IDomainBlocklist[]>([]);
   const [websiteBlocklist, setWebsiteBlocklist] = useState<IWebsiteBlocklist[]>([]);
   const [currentUser, setCurrentUser] = useState<IPerson>();
@@ -106,7 +115,7 @@ const Settings = (props: {
   };
 
   return (
-    <div className={classes.panel}>
+    <Root className={classes.panel}>
       <Grid
         container
         alignItems="flex-start"
@@ -150,6 +159,7 @@ const Settings = (props: {
                 props.setIsDarkMode(false);
                 localStorage.setItem(config.DARK_MODE, String(false));
               }}
+              size="large"
             >
               {props.isDarkMode ? (
                 <DayIconWhite width="18" height="18" />
@@ -167,6 +177,7 @@ const Settings = (props: {
                 props.setIsDarkMode(true);
                 localStorage.setItem(config.DARK_MODE, String(true));
               }}
+              size="large"
             >
               {props.isDarkMode ? (
                 <MoonIconOrange width="18" height="18" />
@@ -245,7 +256,7 @@ const Settings = (props: {
             <Grid
               key={item.id}
               container
-              alignItems="flex-start"
+              alignItems="center"
               justifyContent="space-between"
               className={classes.grid}
               spacing={2}
@@ -254,7 +265,7 @@ const Settings = (props: {
                 <Typography noWrap>{item.id}</Typography>
               </Grid>
               <Grid item>
-                <IconButton onClick={() => removeWebsite(item.id)}>
+                <IconButton onClick={() => removeWebsite(item.id)} size="large">
                   <CloseIcon width="18" height="18" />
                 </IconButton>
               </Grid>
@@ -283,7 +294,7 @@ const Settings = (props: {
             <Grid
               key={item.id}
               container
-              alignItems="flex-start"
+              alignItems="center"
               justifyContent="space-between"
               className={classes.grid}
               spacing={2}
@@ -292,7 +303,7 @@ const Settings = (props: {
                 <Typography noWrap>{item.id}</Typography>
               </Grid>
               <Grid item>
-                <IconButton onClick={() => removeDomain(item.id)}>
+                <IconButton onClick={() => removeDomain(item.id)} size="large">
                   <CloseIcon width="18" height="18" />
                 </IconButton>
               </Grid>
@@ -300,7 +311,7 @@ const Settings = (props: {
           ))}
         </Grid>
       </Grid>
-    </div>
+    </Root>
   );
 };
 

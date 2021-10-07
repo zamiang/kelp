@@ -1,22 +1,87 @@
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import Fuse from 'fuse.js';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { mediumFontFamily } from '../../constants/theme';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import PersonRow from '../person/person-row';
-import useExpandStyles from '../shared/expand-styles';
-import useRowStyles from '../shared/row-styles';
 import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
+
+const PREFIX = 'Search';
+
+const classes = {
+  boxStyle: `${PREFIX}-boxStyle`,
+  heading: `${PREFIX}-heading`,
+  lineCalendarContainer: `${PREFIX}-lineCalendarContainer`,
+  topNav: `${PREFIX}-topNav`,
+  button: `${PREFIX}-button`,
+  section: `${PREFIX}-section`,
+  rowText: `${PREFIX}-rowText`,
+  container: `${PREFIX}-container`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.boxStyle}`]: {
+    background: theme.palette.background.paper,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  [`& .${classes.rowText}`]: {
+    color: '#9D9D99',
+    fontWeight: 500,
+    fontFamily: mediumFontFamily,
+  },
+  [`& .${classes.heading}`]: {
+    marginLeft: 0,
+  },
+  [`& .${classes.lineCalendarContainer}`]: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  [`& .${classes.container}`]: {
+    margin: 0,
+    width: 'auto',
+  },
+  [`& .${classes.topNav}`]: {
+    position: 'fixed',
+    top: 11,
+    left: 224,
+    zIndex: 12,
+    maxWidth: 500,
+    [theme.breakpoints.down('xl')]: {
+      left: 184,
+    },
+    [theme.breakpoints.down('xl')]: {
+      left: 178,
+    },
+    [theme.breakpoints.down('lg')]: {
+      left: 138,
+    },
+  },
+  [`$ .${classes.section}`]: {
+    marginTop: 88,
+  },
+  [`& .${classes.button}`]: {
+    borderRadius: 21,
+    background: theme.palette.background.paper,
+    padding: 10,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+}));
 
 // A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
 const minScore = 0.6;
@@ -86,47 +151,6 @@ const WebsiteResults = (props: {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  boxStyle: {
-    background: theme.palette.background.paper,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
-  heading: {
-    marginLeft: 0,
-  },
-  lineCalendarContainer: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  topNav: {
-    position: 'fixed',
-    top: 11,
-    left: 224,
-    zIndex: 12,
-    maxWidth: 500,
-    [theme.breakpoints.down('xl')]: {
-      left: 184,
-    },
-    [theme.breakpoints.down('lg')]: {
-      left: 178,
-    },
-    [theme.breakpoints.down('md')]: {
-      left: 138,
-    },
-  },
-  button: {
-    borderRadius: 21,
-    background: theme.palette.background.paper,
-    padding: 10,
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-}));
-
 const Search = (props: {
   store: IStore;
   isDarkMode: boolean;
@@ -134,14 +158,11 @@ const Search = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
-  const rowStyles = useRowStyles();
-  const expandStyles = useExpandStyles();
-  const classes = useStyles();
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
+  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
     defaultMatches: true,
   });
 
@@ -177,7 +198,7 @@ const Search = (props: {
   const filteredResults = filterSearchResults(results);
 
   return (
-    <div>
+    <Root>
       <Grid container className={classes.topNav} spacing={2}>
         {filteredResults.websites.length > 1 && (
           <Grid item>
@@ -216,10 +237,10 @@ const Search = (props: {
           </Grid>
         )}
       </Grid>
-      <div className={expandStyles.container}>
+      <div className={classes.container}>
         {filteredResults.websites.length > 0 && (
-          <div className={expandStyles.section} id="websites">
-            <Typography variant="h6" className={rowStyles.rowText}>
+          <div className={classes.section} id="websites">
+            <Typography variant="h6" className={classes.rowText}>
               Websites
             </Typography>
             <Grid container spacing={isMobile ? 5 : 6}>
@@ -235,8 +256,8 @@ const Search = (props: {
           </div>
         )}
         {filteredResults.people.length > 0 && (
-          <div className={expandStyles.section} id="people">
-            <Typography variant="h6" className={rowStyles.rowText}>
+          <div className={classes.section} id="people">
+            <Typography variant="h6" className={classes.rowText}>
               People
             </Typography>
             {filteredResults.people.slice(0, 9).map((result: any) => (
@@ -249,8 +270,8 @@ const Search = (props: {
           </div>
         )}
         {filteredResults.meetings.length > 0 && (
-          <div className={expandStyles.section} id="meetings">
-            <Typography variant="h6" className={rowStyles.rowText}>
+          <div className={classes.section} id="meetings">
+            <Typography variant="h6" className={classes.rowText}>
               Meetings
             </Typography>
             {filteredResults.meetings.slice(0, 9).map((result: any) => (
@@ -268,7 +289,7 @@ const Search = (props: {
           </div>
         )}
       </div>
-    </div>
+    </Root>
   );
 };
 

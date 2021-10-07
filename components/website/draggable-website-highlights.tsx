@@ -1,17 +1,29 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
 
-const maxResult = 8;
-const maxDisplay = maxResult * 8;
+const PREFIX = 'DraggableWebsiteHighlights';
+
+const classes = {
+  topSection: `${PREFIX}-topSection`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.topSection}`]: {
+    marginBottom: theme.spacing(2),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
 
 const getItemStyle = (draggableStyle: any) => ({
   // some basic styles to make the items look a bit nicer
@@ -65,9 +77,8 @@ const fetchData = async (
     })
     .sort((a, b) => (websiteMap[a.websiteId].index > websiteMap[b.websiteId].index ? 1 : -1));
 
-  const extraResultLength = filtereredWebsites.length - maxResult;
-  isSubscribed &&
-    setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+  const extraResultLength = filtereredWebsites.length - maxWebsites;
+  isSubscribed && setExtraItemsCount(extraResultLength > 0 ? extraResultLength : 0);
   if (shouldShowAll) {
     return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
   } else {
@@ -83,6 +94,7 @@ interface IWebsiteProps {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  size: number;
 }
 
 const Website = (props: IWebsiteProps) => (
@@ -90,7 +102,7 @@ const Website = (props: IWebsiteProps) => (
     {(provided) => (
       <Grid
         item
-        xs={3}
+        xs={props.size as any}
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
@@ -118,6 +130,7 @@ const DraggableWebsites = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  maxWebsites: number;
 }) => {
   const onDragEnd = (result: any) => {
     // TODO
@@ -157,6 +170,7 @@ const DraggableWebsites = (props: {
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 showWebsitePopup={props.showWebsitePopup}
+                size={props.maxWebsites > 3 ? 3 : 4}
               />
             ))}
             {provided.placeholder}
@@ -166,14 +180,6 @@ const DraggableWebsites = (props: {
     </DragDropContext>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  topSection: {
-    marginBottom: theme.spacing(1),
-    position: 'relative',
-    zIndex: 5,
-  },
-}));
 
 export const DraggableWebsiteHighlights = (props: {
   store: IStore;
@@ -195,18 +201,17 @@ export const DraggableWebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
-      props.maxWebsites || maxResult,
+      props.maxWebsites,
       isSubscribed,
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
   }, [props.store.isLoading, shouldShowAll, props.filterByTag]);
 
-  const classes = useStyles();
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
-    <div style={{ position: 'relative' }}>
+    <Root style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid
         container
@@ -219,13 +224,13 @@ export const DraggableWebsiteHighlights = (props: {
         </Grid>
         {extraItemsCount > 0 && !shouldShowAll && (
           <Grid item>
-            <Button
+            <IconButton
               onClick={() => {
                 setShouldShowAll(!shouldShowAll);
               }}
             >
-              Show all
-            </Button>
+              <PlusIcon width="24" height="24" />{' '}
+            </IconButton>
           </Grid>
         )}
       </Grid>
@@ -237,7 +242,8 @@ export const DraggableWebsiteHighlights = (props: {
         isDarkMode={props.isDarkMode}
         toggleWebsiteTag={props.toggleWebsiteTag}
         showWebsitePopup={props.showWebsitePopup}
+        maxWebsites={props.maxWebsites}
       />
-    </div>
+    </Root>
   );
 };

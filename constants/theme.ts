@@ -1,62 +1,30 @@
-import { createTheme } from '@material-ui/core/styles';
+import { Theme, createTheme } from '@mui/material/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line
+  interface DefaultTheme extends Theme {}
+}
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
 export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 
 // 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
-const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
-
-const basisRegular = {
-  fontFamily: 'basis-grotesque',
-  fontStyle: 'normal',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueRegularWoff2}) format('woff2')`,
-};
-const basisItalic = {
-  fontFamily: 'basis-grotesque-italic',
-  fontStyle: 'italic',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueItalicWoff2}) format('woff2')`,
-};
-
-const basisMedium = {
-  fontFamily: 'basis-grotesque-medium',
-  fontStyle: 'normal',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `url(${BasisGrotesqueMediumWoff2}) format('woff2')`,
-};
+// const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
 const primaryTextColor = 'rgba(0,0,0,0.87)';
 const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
 const lightTextColor = 'rgba(0,0,0,0.5)';
-const lightGreyColor = 'rgba(0,0,0,0.12)';
+// const lightGreyColor = 'rgba(0,0,0,0.12)';
 const white = '#fff';
 const black = '#000';
 
 export const lightTheme = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
-  },
-  props: {
-    MuiButtonBase: {
-      disableRipple: true, // No more ripple, on the whole application
-    },
-  },
   palette: {
-    type: 'light',
+    mode: 'light',
     common: {
       black,
       white,
@@ -87,44 +55,13 @@ export const lightTheme = createTheme({
       primary: primaryTextColor,
       secondary: secondaryTextColor,
       disabled: 'rgba(0, 0, 0, 0.38)',
-      hint: lightTextColor,
     },
   },
-  divider: {
-    background: lightGreyColor,
-  },
-  shadows: [
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-  ],
   typography: {
     fontSize: 14,
     fontFamily: bodyFontFamily,
     fontWeightRegular: 400,
-    color: primaryTextColor,
+    // color: primaryTextColor,
     h1: {
       fontWeight: 400,
       fontStyle: 'normal',
@@ -191,133 +128,161 @@ export const lightTheme = createTheme({
       fontFamily: mediumFontFamily,
       fontWeight: 500,
     },
-    em: {
-      fontFamily: italicFontFamily,
-    },
-    shape: {
-      borderRadius: 16,
-    },
   },
-  overrides: {
+  components: {
     MuiCssBaseline: {
-      '@global': {
-        '@font-face': [basisRegular, basisItalic, basisMedium],
-      },
+      styleOverrides: `
+      @font-face {
+        font-family: "basis-grotesque";
+        font-style: "normal";
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-italic';
+        font-style: 'italic';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-medium',
+        font-style: 'normal';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
+      }
+      `,
     },
     MuiListItemIcon: {
-      root: {
-        minWidth: 0,
+      styleOverrides: {
+        root: {
+          minWidth: 0,
+        },
       },
     },
     MuiIconButton: {
-      root: {
-        color: primaryTextColor,
-        padding: 8,
+      styleOverrides: {
+        root: {
+          color: primaryTextColor,
+          padding: 8,
+        },
       },
     },
     MuiListItem: {
-      root: {
-        paddingTop: 6,
-        paddingBottom: 6,
+      styleOverrides: {
+        root: {
+          paddingTop: 6,
+          paddingBottom: 6,
+        },
       },
     },
     MuiButton: {
-      root: {
-        textTransform: 'none',
-        fontWeight: 500,
-        fontFamily: mediumFontFamily,
-        fontSize: 14,
-        paddingTop: 4,
-        paddingBottom: 4,
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: 500,
+          fontFamily: mediumFontFamily,
+          fontSize: 14,
+          paddingTop: 4,
+          paddingBottom: 4,
+        },
       },
     },
     MuiAvatar: {
-      root: {
-        height: 40,
-        width: 40,
-        fontSize: '1rem',
-        textTransform: 'uppercase',
-        color: white,
-        fontWeight: 500,
-        fontFamily: mediumFontFamily,
+      styleOverrides: {
+        root: {
+          height: 40,
+          width: 40,
+          fontSize: '1rem',
+          textTransform: 'uppercase',
+          color: white,
+          fontWeight: 500,
+          fontFamily: mediumFontFamily,
+        },
       },
     },
     MuiAvatarGroup: {
-      avatar: {
-        borderColor: white,
-        color: primaryTextColor,
+      styleOverrides: {
+        avatar: {
+          borderColor: white,
+          color: primaryTextColor,
+        },
       },
     },
     MuiDialog: {
-      paperWidthSm: {
-        width: '100%',
-      },
-      paperScrollPaper: {
-        borderRadius: 16,
-      },
-    },
-    MuiToggleButton: {
-      root: {
-        border: '0px solid',
-        textTransform: 'none',
-        lineHeight: 1.35,
-        justifyContent: 'left',
-        padding: 9,
-      },
-      label: {
-        overflow: 'hidden',
-        fontFamily: bodyFontFamily,
-        color: primaryTextColor,
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+        paperWidthSm: {
+          width: '100%',
+        },
+        paperScrollPaper: {
+          borderRadius: 16,
+        },
       },
     },
     MuiToggleButtonGroup: {
-      groupedHorizontal: {
-        '&:not(:last-child)': {
-          borderRadius: 4,
-          borderTopRightRadius: 4,
-          borderBottomRightRadius: 4,
+      styleOverrides: {
+        groupedHorizontal: {
+          '&:not(:last-child)': {
+            borderRadius: 4,
+            borderTopRightRadius: 4,
+            borderBottomRightRadius: 4,
+          },
+          '&:not(:first-child)': {
+            marginLeft: 0,
+            borderRopLeftRadius: 4,
+            borderBottomLeftRadius: 4,
+          },
         },
-        '&:not(:first-child)': {
-          marginLeft: 0,
-          borderRopLeftRadius: 4,
-          borderBottomLeftRadius: 4,
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          marginTop: 5,
         },
       },
     },
     MuiFilledInput: {
-      root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
-      input: {
-        padding: '10px',
-        paddingTop: '​12px',
-        paddingBottom: '​12px',
-      },
-      multiline: {
-        padding: '16px 12px 16px 18px',
-        background: '#eee',
-      },
-      underline: {
-        '&:before': {
-          display: 'none',
+      styleOverrides: {
+        root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
+        input: {
+          padding: '10px',
+          paddingTop: '​12px',
+          paddingBottom: '​12px',
         },
-        '&:after': {
-          display: 'none',
+        multiline: {
+          padding: '16px 12px 16px 18px',
+          background: '#eee',
+        },
+        underline: {
+          '&:before': {
+            display: 'none',
+          },
+          '&:after': {
+            display: 'none',
+          },
         },
       },
     },
   },
-} as any);
+});
 
 const darkPrimaryTextColor = 'rgba(255,255,255,0.87)';
 const darkSecondaryTextColor = 'rgba(255, 255, 255, 0.70)';
 const darkLightTextColor = 'rgba(255,255,255,0.5)';
-const darkLightGreyColor = 'rgba(255,255,255,0.12)';
+// const darkLightGreyColor = 'rgba(255,255,255,0.12)';
 
 export const darkTheme = createTheme({
-  props: {
-    MuiButtonBase: {
-      disableRipple: true, // No more ripple, on the whole application
-    },
-  },
   breakpoints: {
     values: {
       xs: 0,
@@ -328,7 +293,7 @@ export const darkTheme = createTheme({
     },
   },
   palette: {
-    type: 'dark',
+    mode: 'dark',
     background: {
       paper: '#363641',
       default: '#262736',
@@ -355,44 +320,13 @@ export const darkTheme = createTheme({
       primary: darkPrimaryTextColor,
       secondary: darkSecondaryTextColor,
       disabled: 'rgba(255, 255, 255, 0.38)',
-      hint: darkLightTextColor,
     },
   },
-  divider: {
-    background: darkLightGreyColor,
-  },
-  shadows: [
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-    boxShadow,
-  ],
   typography: {
     fontSize: 14,
     fontFamily: bodyFontFamily,
     fontWeightRegular: 400,
-    color: darkPrimaryTextColor,
+    // color: darkPrimaryTextColor,
     h1: {
       fontWeight: 400,
       fontStyle: 'normal',
@@ -459,118 +393,135 @@ export const darkTheme = createTheme({
       fontFamily: mediumFontFamily,
       fontWeight: 500,
     },
-    em: {
-      fontFamily: italicFontFamily,
-    },
-    shape: {
-      borderRadius: 16,
-    },
   },
-  overrides: {
+  components: {
     MuiCssBaseline: {
-      '@global': {
-        '@font-face': [basisRegular, basisItalic, basisMedium],
-      },
+      styleOverrides: `
+      @font-face {
+        font-family: "basis-grotesque";
+        font-style: "normal";
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-italic';
+        font-style: 'italic';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
+      }
+
+      @font-face {
+        font-family: 'basis-grotesque-medium',
+        font-style: 'normal';
+        font-display: 'swap';
+        font-weight: 400;
+        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
+      }
+      `,
     },
     MuiListItemIcon: {
-      root: {
-        minWidth: 0,
+      styleOverrides: {
+        root: {
+          minWidth: 0,
+        },
       },
     },
     MuiIconButton: {
-      root: {
-        color: darkPrimaryTextColor,
-        padding: 8,
+      styleOverrides: {
+        root: {
+          color: darkPrimaryTextColor,
+          padding: 8,
+        },
       },
     },
     MuiListItem: {
-      root: {
-        paddingTop: 6,
-        paddingBottom: 6,
+      styleOverrides: {
+        root: {
+          paddingTop: 6,
+          paddingBottom: 6,
+        },
       },
     },
     MuiButton: {
-      root: {
-        textTransform: 'none',
-        fontWeight: 500,
-        fontFamily: mediumFontFamily,
-        fontSize: 14,
-        paddingTop: 4,
-        paddingBottom: 4,
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: 500,
+          fontFamily: mediumFontFamily,
+          fontSize: 14,
+          paddingTop: 4,
+          paddingBottom: 4,
+        },
       },
     },
     MuiAvatar: {
-      root: {
-        height: 40,
-        width: 40,
-        fontSize: '1rem',
-        textTransform: 'uppercase',
-        color: white,
-        fontWeight: 500,
-        fontFamily: mediumFontFamily,
+      styleOverrides: {
+        root: {
+          height: 40,
+          width: 40,
+          fontSize: '1rem',
+          textTransform: 'uppercase',
+          color: white,
+          fontWeight: 500,
+          fontFamily: mediumFontFamily,
+        },
       },
     },
     MuiAvatarGroup: {
-      avatar: {
-        borderColor: white,
-        color: darkPrimaryTextColor,
+      styleOverrides: {
+        avatar: {
+          borderColor: white,
+          color: darkPrimaryTextColor,
+        },
       },
     },
     MuiDialog: {
-      paperWidthSm: {
-        width: '100%',
-      },
-      paperScrollPaper: {
-        borderRadius: 16,
-      },
-    },
-    MuiToggleButton: {
-      root: {
-        border: '0px solid',
-        textTransform: 'none',
-        lineHeight: 1.35,
-        justifyContent: 'left',
-        padding: 9,
-      },
-      label: {
-        overflow: 'hidden',
-        fontFamily: bodyFontFamily,
-        color: darkPrimaryTextColor,
-      },
-    },
-    MuiToggleButtonGroup: {
-      groupedHorizontal: {
-        '&:not(:last-child)': {
-          borderRadius: 4,
-          borderTopRightRadius: 4,
-          borderBottomRightRadius: 4,
+      styleOverrides: {
+        paperWidthSm: {
+          width: '100%',
         },
-        '&:not(:first-child)': {
-          marginLeft: 0,
-          borderRopLeftRadius: 4,
-          borderBottomLeftRadius: 4,
+        paperScrollPaper: {
+          borderRadius: 16,
+        },
+        paper: {
+          backgroundImage: 'none',
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          marginTop: 5,
         },
       },
     },
     MuiFilledInput: {
-      root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
-      input: {
-        padding: '10px',
-        paddingTop: '​12px',
-        paddingBottom: '​12px',
-      },
-      multiline: {
-        padding: '16px 12px 16px 18px',
-        background: '#111',
-      },
-      underline: {
-        '&:before': {
-          display: 'none',
+      styleOverrides: {
+        root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
+        input: {
+          padding: '10px',
+          paddingTop: '​12px',
+          paddingBottom: '​12px',
         },
-        '&:after': {
-          display: 'none',
+        multiline: {
+          padding: '16px 12px 16px 18px',
+          background: '#111',
+        },
+        underline: {
+          '&:before': {
+            display: 'none',
+          },
+          '&:after': {
+            display: 'none',
+          },
         },
       },
     },
   },
-} as any);
+});

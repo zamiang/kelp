@@ -3,28 +3,24 @@ import { getValueForDate } from '../shared/order-by-count';
 import { IDocument, ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const maxResult = 3;
-const maxDisplay = maxResult * 10;
-
 export const fetchWebsitesForMeetingFiltered = async (
   meeting: ISegment,
   store: IStore,
   shouldShowAll: boolean,
+  maxWebsites: number,
   setWebsites?: (websites: IFeaturedWebsite[]) => void,
   setExtraItemsCount?: (n: number) => void,
   isSubscribed?: boolean,
 ) => {
+  const maxDisplay = maxWebsites * 10;
   const filteredWebsites = await getWebsitesForMeeting(meeting, store);
 
   if (setExtraItemsCount) {
-    const extraResultLength = filteredWebsites.length - maxResult;
-    isSubscribed &&
-      setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
+    isSubscribed && setExtraItemsCount(filteredWebsites.length - maxWebsites);
   }
-
   const websites = shouldShowAll
-    ? filteredWebsites.slice(0, maxResult * 10)
-    : filteredWebsites.slice(0, maxResult);
+    ? filteredWebsites.slice(0, maxDisplay)
+    : filteredWebsites.slice(0, maxWebsites);
   if (setWebsites) {
     isSubscribed && setWebsites(websites);
   } else {

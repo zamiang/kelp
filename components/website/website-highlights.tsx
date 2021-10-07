@@ -1,15 +1,30 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
+
+const PREFIX = 'WebsiteHighlights';
+
+const classes = {
+  topSection: `${PREFIX}-topSection`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.topSection}`]: {
+    marginBottom: theme.spacing(2),
+    position: 'relative',
+    zIndex: 5,
+  },
+}));
 
 const maxResult = 8;
 const maxDisplay = maxResult * 8;
@@ -54,14 +69,6 @@ const fetchData = async (
   }
 };
 
-const useStyles = makeStyles((theme) => ({
-  topSection: {
-    marginBottom: theme.spacing(1),
-    position: 'relative',
-    zIndex: 5,
-  },
-}));
-
 export const WebsiteHighlights = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
@@ -69,17 +76,13 @@ export const WebsiteHighlights = (props: {
   isDarkMode: boolean;
   filterByTag?: string;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
-  maxWebsites: number;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
-  const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
-    defaultMatches: true,
-  });
+  const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
   useEffect(() => {
     let isSubscribed = true;
@@ -88,17 +91,17 @@ export const WebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
-      props.maxWebsites || maxResult,
+      isLarge ? 8 : 6,
       isSubscribed,
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading, shouldShowAll, props.filterByTag]);
+  }, [props.store.isLoading, shouldShowAll, props.filterByTag, isLarge]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
-    <div style={{ position: 'relative' }}>
+    <Root style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
       <Grid
         container
@@ -111,21 +114,21 @@ export const WebsiteHighlights = (props: {
         </Grid>
         {extraItemsCount > 0 && !shouldShowAll && (
           <Grid item>
-            <Button
+            <IconButton
               onClick={() => {
                 setShouldShowAll(!shouldShowAll);
               }}
             >
-              Show all
-            </Button>
+              <PlusIcon width="24" height="24" />{' '}
+            </IconButton>
           </Grid>
         )}
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={isMobile ? 5 : 6}>
+          <Grid container spacing={6}>
             {topWebsites.map((item) => (
-              <Grid item xs={3} key={item.websiteId}>
+              <Grid item xs={isLarge ? 3 : 4} key={item.websiteId}>
                 <LargeWebsite
                   item={item}
                   store={props.store}
@@ -139,6 +142,6 @@ export const WebsiteHighlights = (props: {
           </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Root>
   );
 };

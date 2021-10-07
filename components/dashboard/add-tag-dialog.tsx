@@ -1,8 +1,8 @@
-import Dialog from '@material-ui/core/Dialog';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Dialog from '@mui/material/Dialog';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -11,13 +11,24 @@ import { isTagSelected } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
-const useStyles = makeStyles((theme) => ({
-  dialogContent: {
+const PREFIX = 'AddTaggDialog';
+
+const classes = {
+  dialogContent: `${PREFIX}-dialogContent`,
+  tag: `${PREFIX}-tag`,
+  tagSelected: `${PREFIX}-tagSelected`,
+  closeButton: `${PREFIX}-closeButton`,
+  columnList: `${PREFIX}-columnList`,
+};
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.dialogContent}`]: {
     padding: theme.spacing(6),
     position: 'relative',
     width: 480,
   },
-  tag: {
+
+  [`& .${classes.tag}`]: {
     transition: 'borderBottom 0.3s',
     borderBottom: '1px solid transparent',
     display: 'inline-block',
@@ -26,19 +37,22 @@ const useStyles = makeStyles((theme) => ({
       borderBottomColor: theme.palette.divider,
     },
   },
-  tagSelected: {
+
+  [`& .${classes.tagSelected}`]: {
     borderBottomColor: theme.palette.primary.dark,
     '&:hover': {
       opacity: 0.8,
       borderBottomColor: theme.palette.primary.dark,
     },
   },
-  closeButton: {
+
+  [`& .${classes.closeButton}`]: {
     position: 'absolute',
     top: 42,
     right: 42,
   },
-  columnList: {
+
+  [`& .${classes.columnList}`]: {
     columnCount: 3,
   },
 }));
@@ -50,12 +64,12 @@ export const AddTaggDialog = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   store: IStore;
 }) => {
-  const classes = useStyles();
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
 
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
+      await props.store.tfidfStore.getTfidf(props.store);
       const result = await props.store.tfidfStore.getCalculatedDocuments();
       if (result) {
         const tags = result;
@@ -63,12 +77,12 @@ export const AddTaggDialog = (props: {
         return isSubscribed && setWebsiteTags(uniq(formattedTags).sort() as any);
       }
     };
-    setTimeout(() => void fetchData(), 100);
+    void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading]);
+  }, [props.isOpen]);
 
   return (
-    <Dialog
+    <StyledDialog
       maxWidth="md"
       open={props.isOpen}
       onClose={(_event, reason) => {
@@ -83,7 +97,7 @@ export const AddTaggDialog = (props: {
             <Typography variant="h3">Add tags </Typography>
           </Grid>
           <Grid item xs={2}>
-            <IconButton onClick={props.close} className={classes.closeButton}>
+            <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width="24" height="24" />
             </IconButton>
           </Grid>
@@ -104,6 +118,6 @@ export const AddTaggDialog = (props: {
           ))}
         </ul>
       </div>
-    </Dialog>
+    </StyledDialog>
   );
 };

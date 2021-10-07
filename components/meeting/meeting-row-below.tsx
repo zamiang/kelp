@@ -1,10 +1,11 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useTheme from '@material-ui/styles/useTheme';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
+import PlusIcon from '../../public/icons/plus-orange.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import {
@@ -14,15 +15,25 @@ import {
 import { LargeWebsite } from '../website/large-website';
 import { WebsiteHighlights } from '../website/website-highlights';
 
-const useStyles = makeStyles((theme) => ({
-  section: {
+const PREFIX = 'MeetingRowBelow';
+
+const classes = {
+  section: `${PREFIX}-section`,
+  title: `${PREFIX}-title`,
+  topSection: `${PREFIX}-topSection`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
   },
-  title: {
+
+  [`& .${classes.title}`]: {
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize,
   },
-  topSection: {
+
+  [`& .${classes.topSection}`]: {
     marginBottom: theme.spacing(1),
     position: 'relative',
     zIndex: 5,
@@ -39,16 +50,15 @@ const MeetingRowBelow = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   toggleMeetingTag: (tag: string, meetingId: string, meetingSummary: string) => void;
+  shouldHideShowAll?: boolean;
 }) => {
-  const classes = useStyles();
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('md'), {
-    defaultMatches: true,
-  });
+  const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
+  const maxWebsites = isLarge ? 4 : 3;
 
   useEffect(() => {
     let isSubscribed = true;
@@ -56,22 +66,23 @@ const MeetingRowBelow = (props: {
       props.meeting,
       props.store,
       shouldShowAll,
+      maxWebsites,
       setWebsites,
       setExtraItemsCount,
       isSubscribed,
     );
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading, props.meeting.id, shouldShowAll]);
+  }, [props.store.isLoading, props.meeting.id, shouldShowAll, isLarge]);
 
   if (websites.length < 1 && props.meetingTags.length < 1) {
     return null;
   }
 
   return (
-    <Grid item xs={props.isFullWidth ? 12 : 11}>
-      <Grid container spacing={isMobile ? 5 : 6}>
+    <StyledGrid item xs={props.isFullWidth ? 12 : 11}>
+      <Grid container columnSpacing={5}>
         {websites.map((item) => (
-          <Grid item xs={3} key={item.websiteId}>
+          <Grid item xs={isLarge ? 3 : 4} key={item.websiteId}>
             <LargeWebsite
               item={item}
               store={props.store}
@@ -84,14 +95,14 @@ const MeetingRowBelow = (props: {
           </Grid>
         ))}
       </Grid>
-      {extraItemsCount > 0 && (
-        <Button
+      {extraItemsCount > 0 && !props.shouldHideShowAll && (
+        <IconButton
           onClick={() => {
             setShouldShowAll(!shouldShowAll);
           }}
         >
-          Show all
-        </Button>
+          <PlusIcon width="24" height="24" />{' '}
+        </IconButton>
       )}
       {props.meetingTags.map((t) => (
         <div className={classes.section} key={t.id}>
@@ -105,11 +116,10 @@ const MeetingRowBelow = (props: {
             showWebsitePopup={props.showWebsitePopup}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
-            maxWebsites={8}
           />
         </div>
       ))}
-    </Grid>
+    </StyledGrid>
   );
 };
 

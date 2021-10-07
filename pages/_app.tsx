@@ -1,34 +1,28 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import { CacheProvider, ThemeProvider as EmotionThemeProvider } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import ThemeProvider from '@mui/styles/ThemeProvider';
 import React, { useEffect } from 'react';
+import createEmotionCache from '../components/styles/create-emotion-cache';
 import homepageTheme from '../constants/homepage-theme';
 
-/*
-* Uncomment to test accessbility
-if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line
-  const ReactDOM = require('react-dom');
-  // eslint-disable-next-line
-  const axe = require('@axe-core/react');
-  axe(React, ReactDOM, 1000);
-}
-*/
+const clientSideEmotionCache = createEmotionCache();
 
 const App = (props: any) => {
-  const { Component, pageProps } = props;
-
   useEffect(() => {
-    // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles && jssStyles.parentElement) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
+    if (jssStyles && jssStyles.parentNode) jssStyles.parentNode.removeChild(jssStyles);
   }, []);
+
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
-    <ThemeProvider theme={homepageTheme}>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <CacheProvider value={emotionCache}>
+      <EmotionThemeProvider theme={homepageTheme}>
+        <ThemeProvider theme={homepageTheme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </EmotionThemeProvider>
+    </CacheProvider>
   );
 };
 

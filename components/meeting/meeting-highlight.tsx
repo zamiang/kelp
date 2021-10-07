@@ -1,4 +1,4 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { setHours, setMinutes, subDays, subMinutes } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -7,8 +7,14 @@ import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { FeaturedMeeting } from './featured-meeting';
 
-const useStyles = makeStyles((theme) => ({
-  highlight: {
+const PREFIX = 'MeetingHighlight';
+
+const classes = {
+  highlight: `${PREFIX}-highlight`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`&.${classes.highlight}`]: {
     marginBottom: theme.spacing(4),
   },
 }));
@@ -20,7 +26,6 @@ export const MeetingHighlight = (props: {
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
-  const classes = useStyles();
   const currentTime = new Date();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
 
@@ -53,7 +58,7 @@ export const MeetingHighlight = (props: {
   }
 
   return (
-    <div className={classes.highlight}>
+    <Root className={classes.highlight}>
       <FeaturedMeeting
         store={props.store}
         meeting={featuredMeeting}
@@ -63,6 +68,6 @@ export const MeetingHighlight = (props: {
         websiteTags={props.websiteTags}
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
-    </div>
+    </Root>
   );
 };

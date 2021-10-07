@@ -1,31 +1,97 @@
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import useButtonStyles from '../shared/button-styles';
 import isTouchEnabled from '../shared/is-touch-enabled';
-import useRowStyles from '../shared/row-styles';
 import { IPerson } from '../store/data-types';
 
-const useStyles = makeStyles((theme) => ({
-  personAccepted: {},
-  personTentative: {
+const PREFIX = 'PersonRow';
+
+const classes = {
+  personAccepted: `${PREFIX}-personAccepted`,
+  personTentative: `${PREFIX}-personTentative`,
+  personDeclined: `${PREFIX}-personDeclined`,
+  personNeedsAction: `${PREFIX}-personNeedsAction`,
+  person: `${PREFIX}-person`,
+  avatar: `${PREFIX}-avatar`,
+  row: `${PREFIX}-row`,
+  rowSmall: `${PREFIX}-rowSmall`,
+  rowLeft: `${PREFIX}-rowLeft`,
+  rowPrimaryMain: `${PREFIX}-rowPrimaryMain`,
+  rowTopPadding: `${PREFIX}-rowTopPadding`,
+  hoverText: `${PREFIX}-hoverText`,
+  button: `${PREFIX}-button`,
+};
+
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.personAccepted}`]: {},
+  [`& .${classes.personTentative}`]: {
     opacity: 0.8,
   },
-  personDeclined: {
+  [`& .${classes.avatar}`]: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
+  [`& .${classes.personDeclined}`]: {
     textDecoration: 'line-through',
     '&.MuiListItem-button:hover': {
       textDecoration: 'line-through',
     },
   },
-  personNeedsAction: {
+  [`& .${classes.hoverText}`]: {
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  [`& .${classes.row}`]: {
+    background: 'transparent',
+    transition: 'background 0.3s, opacity 0.3s',
+    cursor: 'pointer',
+    textAlign: 'left',
+    width: '100%',
+    animation: `${fadeInAnimation} ease 0.4s`,
+    animationIterationCount: 1,
+    animationFillMode: 'forwards',
+    '&.MuiListItem-button:hover': {
+      opacity: 0.8,
+    },
+  },
+  [`& .${classes.rowSmall}`]: {
+    padding: 0,
+  },
+  [`& .${classes.rowPrimaryMain}`]: {
+    background: theme.palette.divider,
+    '&.Mui-selected, &.Mui-selected:hover, &.MuiListItem-button:hover': {
+      borderColor: theme.palette.secondary.light,
+      background: theme.palette.secondary.light,
+    },
+  },
+  [`& .${classes.personNeedsAction}`]: {
     opacity: 0.8,
   },
-  person: {
+  [`& .${classes.rowTopPadding}`]: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  [`& .${classes.rowLeft}`]: {
+    textAlign: 'center',
+    marginRight: theme.spacing(2),
+  },
+  [`&.${classes.person}`]: {
     transition: 'background 0.3s, border-color 0.3s, opacity 0.3s',
     opacity: 1,
     paddingTop: theme.spacing(1),
@@ -35,6 +101,20 @@ const useStyles = makeStyles((theme) => ({
     },
     '&.MuiListItem-button:hover': {
       opacity: 0.8,
+    },
+  },
+  [`& .${classes.button}`]: {
+    width: '100%',
+    borderRadius: 30,
+    paddingTop: 6,
+    paddingBottom: 6,
+    transition: 'opacity 0.3s',
+    minHeight: 48,
+    opacity: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
+    '&:hover': {
+      opacity: 0.6,
     },
   },
 }));
@@ -47,10 +127,7 @@ const PersonRow = (props: {
   text?: string;
   noMargin?: boolean;
 }) => {
-  const classes = useStyles();
   const isSelected = props.selectedPersonId === props.person.id;
-  const rowStyles = useRowStyles();
-  const buttonStyles = useButtonStyles();
   const router = useHistory();
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
@@ -64,7 +141,7 @@ const PersonRow = (props: {
   }, [!!referenceElement]);
 
   return (
-    <div
+    <Root
       onClick={(event) => {
         event.stopPropagation();
         router.push(`/people/${encodeURIComponent(props.person.id)}`);
@@ -74,40 +151,40 @@ const PersonRow = (props: {
       onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       ref={setReferenceElement as any}
       className={clsx(
-        rowStyles.row,
-        props.noMargin && rowStyles.rowSmall,
+        classes.row,
+        props.noMargin && classes.rowSmall,
         classes.person,
         props.responseStatus === 'accepted' && classes.personAccepted,
         props.responseStatus === 'tentative' && classes.personTentative,
         props.responseStatus === 'declined' && classes.personDeclined,
         props.responseStatus === 'needsAction' && classes.personNeedsAction,
-        isSelected && rowStyles.rowPrimaryMain,
+        isSelected && classes.rowPrimaryMain,
       )}
     >
       <Grid container alignItems="center" wrap="nowrap">
-        <Grid item className={rowStyles.rowLeft}>
+        <Grid item className={classes.rowLeft}>
           {props.person.imageUrl ? (
             <Avatar
               alt={`Profile photo for ${
                 props.person.name || props.person.emailAddresses[0] || undefined
               }`}
-              className={rowStyles.avatar}
+              className={classes.avatar}
               src={props.person.imageUrl}
             />
           ) : (
             <Avatar
               alt={props.person.name || props.person.emailAddresses[0] || undefined}
-              className={rowStyles.avatar}
+              className={classes.avatar}
             >
               {(props.person.name || props.person.id)[0]}
             </Avatar>
           )}
         </Grid>
         <Grid item xs zeroMinWidth>
-          <div className={rowStyles.rowTopPadding}>
+          <div className={classes.rowTopPadding}>
             <Grid container>
               <Grid item xs={12} zeroMinWidth>
-                <Typography noWrap className={rowStyles.hoverText}>
+                <Typography noWrap className={classes.hoverText}>
                   {name}
                 </Typography>
               </Grid>
@@ -129,7 +206,7 @@ const PersonRow = (props: {
         {isDetailsVisible && props.person.emailAddresses[0] && (
           <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
             <Button
-              className={buttonStyles.button}
+              className={classes.button}
               variant="contained"
               color="primary"
               style={{ minHeight: 0 }}
@@ -144,7 +221,7 @@ const PersonRow = (props: {
           </Grid>
         )}
       </Grid>
-    </div>
+    </Root>
   );
 };
 

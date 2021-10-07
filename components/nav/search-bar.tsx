@@ -1,7 +1,7 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import CloseIconOrange from '../../public/icons/close-orange.svg';
@@ -10,17 +10,25 @@ import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
 
-const useStyles = makeStyles((theme) => ({
-  input: {
+const PREFIX = 'SearchBar';
+
+const classes = {
+  input: `${PREFIX}-input`,
+  container: `${PREFIX}-container`,
+  icon: `${PREFIX}-icon`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.input}`]: {
     marginTop: 0,
-    [theme.breakpoints.down('sm')]: {},
+    [theme.breakpoints.down('md')]: {},
   },
-  container: {
+  [`&.${classes.container}`]: {
     background: theme.palette.background.paper,
-    borderRadius: 21,
+    borderRadius: theme.shape.borderRadius,
     height: 39,
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     padding: theme.spacing(1),
   },
 }));
@@ -28,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 const searchInputId = 'searchInput';
 
 const SearchBar = (props: { isDarkMode: boolean }) => {
-  const classes = useStyles();
   const router = useHistory();
   const location = useLocation();
   const search = location.search;
@@ -44,7 +51,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
   };
 
   return (
-    <Grid
+    <StyledGrid
       container
       alignItems="flex-start"
       justifyContent="space-between"
@@ -72,6 +79,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
           onChange={handleChange}
           name="query"
           margin="dense"
+          variant="standard"
           value={value}
           InputProps={{
             className: classes.input,
@@ -86,6 +94,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
               router.push('/home');
               setValue('');
             }}
+            size="large"
           >
             {props.isDarkMode ? (
               <CloseIconOrange width="24" height="24" />
@@ -95,7 +104,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
           </IconButton>
         </Grid>
       )}
-    </Grid>
+    </StyledGrid>
   );
 };
 

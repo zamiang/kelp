@@ -1,50 +1,92 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import VideoIconWhite from '../../public/icons/video-white.svg';
-import useButtonStyles from '../shared/button-styles';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = 'FeaturedMeeting';
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const fadeOut2 = keyframes`
+  from {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.05;
+  }
+  to {
+    opacity: 0.2;
+  }
+`;
+
+const classes = {
+  container: `${PREFIX}-container`,
+  containerLine: `${PREFIX}-containerLine`,
+  leftLine: `${PREFIX}-leftLine`,
+  containerNow: `${PREFIX}-containerNow`,
+  meetingTimeInWords: `${PREFIX}-meetingTimeInWords`,
+  heading: `${PREFIX}-heading`,
+  button: `${PREFIX}-button`,
+  topSpacing: `${PREFIX}-topSpacing`,
+  '@keyframes fadeOut': `${PREFIX}-fadeout`,
+  '@keyframes fadeOut2': `${PREFIX}-fadeout2`,
+  outerDot: `${PREFIX}-outerDot`,
+  innerDot: `${PREFIX}-innerDot`,
+  dotNow: `${PREFIX}-dotNow`,
+  dotContainer: `${PREFIX}-dotContainer`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.container}`]: {
     padding: theme.spacing(4),
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
     border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: 16,
-    marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {},
+    borderRadius: theme.shape.borderRadius,
+    minHeight: 102,
   },
-  containerLine: {
+  [`& .${classes.containerLine}`]: {
     paddingTop: theme.spacing(3),
     marginBottom: theme.spacing(2),
   },
-  leftLine: {
+  [`& .${classes.leftLine}`]: {
     width: 1,
     background: theme.palette.divider,
     height: 'calc(100% + 39px)',
-    marginTop: -14,
-    marginLeft: 26,
+    marginTop: -16,
+    marginLeft: 19,
   },
-  containerNow: {
+  [`& .${classes.containerNow}`]: {
     borderColor: theme.palette.divider,
   },
-  meetingTimeInWords: {
+  [`& .${classes.meetingTimeInWords}`]: {
     display: 'inline-block',
     marginBottom: 0,
-    color: theme.palette.text.hint,
+    color: theme.palette.text.secondary,
   },
-  heading: {
+  [`& .${classes.heading}`]: {
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize,
     cursor: 'pointer',
@@ -52,40 +94,31 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
-  button: {
+  [`& .${classes.button}`]: {
+    borderRadius: 30,
+    paddingTop: 6,
+    paddingBottom: 6,
+    transition: 'opacity 0.3s',
+    minHeight: 48,
+    opacity: 1,
     width: 'auto',
     paddingLeft: 40,
     paddingRight: 40,
+    '&:hover': {
+      opacity: 0.6,
+    },
   },
-  topSpacing: {
+  [`& .${classes.topSpacing}`]: {
     marginTop: theme.spacing(2),
   },
-  '@keyframes fadeOut': {
-    from: { opacity: 1 },
-    '50%': {
-      opacity: 0.4,
-    },
-    to: {
-      opacity: 1,
-    },
-  },
-  '@keyframes fadeOut2': {
-    from: { opacity: 0.2 },
-    '50%': {
-      opacity: 0.05,
-    },
-    to: {
-      opacity: 0.2,
-    },
-  },
-  outerDot: {
+  [`& .${classes.outerDot}`]: {
     width: 40,
     height: 40,
     background: '#FF4500',
     borderRadius: 20,
-    animation: '$fadeOut2 5s ease infinite',
+    animation: `${fadeOut2} 5s ease infinite`,
   },
-  innerDot: {
+  [`& .${classes.innerDot}`]: {
     width: 12,
     borderRadius: 6,
     height: 12,
@@ -93,12 +126,12 @@ const useStyles = makeStyles((theme) => ({
     top: 14,
     left: 14,
     background: '#FF4500',
-    animation: '$fadeOut 5s ease infinite',
+    animation: `${fadeOut} 5s ease infinite`,
   },
-  dotNow: {
+  [`& .${classes.dotNow}`]: {
     background: theme.palette.divider,
   },
-  dotContainer: {
+  [`& .${classes.dotContainer}`]: {
     position: 'relative',
   },
 }));
@@ -123,8 +156,6 @@ export const FeaturedMeeting = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
 }) => {
-  const classes = useStyles();
-  const buttonClasses = useButtonStyles();
   const router = useHistory();
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
@@ -174,111 +205,119 @@ export const FeaturedMeeting = (props: {
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
   return (
-    <div
-      className={clsx(
-        !props.showLine && classes.container,
-        !isHappeningSoon && classes.containerNow,
-        props.showLine && classes.containerLine,
-      )}
-    >
-      <AddTagToMeetingDialog
-        meeting={props.meeting}
-        userTags={props.websiteTags}
-        isOpen={isAddTagsVisible}
-        store={props.store}
-        meetingTags={segmentTags}
-        toggleMeetingTag={toggleMeetingTag}
-        close={() => setAddTagsVisible(false)}
-      />
-      <Grid container alignItems="center" spacing={2}>
-        <Grid item>
-          <div className={classes.dotContainer}>
-            <div className={clsx(classes.outerDot, !isHappeningSoon && classes.dotNow)}></div>
-            <div className={clsx(classes.innerDot, !isHappeningSoon && classes.dotNow)}></div>
-          </div>
-        </Grid>
-        <Grid item xs>
-          {isHappeningNow && (
-            <Typography className={classes.meetingTimeInWords}>Happening Now</Typography>
-          )}
-          {isFuture && (
-            <Typography className={classes.meetingTimeInWords}>
-              In {formatDistanceToNow(props.meeting.start)}
+    <Root>
+      <div
+        className={clsx(
+          !props.showLine && classes.container,
+          !isHappeningSoon && classes.containerNow,
+          props.showLine && classes.containerLine,
+        )}
+      >
+        <AddTagToMeetingDialog
+          meeting={props.meeting}
+          userTags={props.websiteTags}
+          isOpen={isAddTagsVisible}
+          store={props.store}
+          meetingTags={segmentTags}
+          toggleMeetingTag={toggleMeetingTag}
+          close={() => setAddTagsVisible(false)}
+        />
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item>
+            <div className={classes.dotContainer}>
+              <div className={clsx(classes.outerDot, !isHappeningSoon && classes.dotNow)}></div>
+              <div className={clsx(classes.innerDot, !isHappeningSoon && classes.dotNow)}></div>
+            </div>
+          </Grid>
+          <Grid item xs>
+            {isHappeningNow && (
+              <Typography className={classes.meetingTimeInWords}>Happening Now</Typography>
+            )}
+            {isFuture && (
+              <Typography className={classes.meetingTimeInWords}>
+                In {formatDistanceToNow(props.meeting.start)}
+              </Typography>
+            )}
+            {isPast && (
+              <Typography className={classes.meetingTimeInWords}>
+                {format(props.meeting.start, 'EEEE, MMMM d')} at {format(props.meeting.start, 'p')}
+              </Typography>
+            )}
+            <Typography
+              className={classes.heading}
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                void router.push(`/meetings/${props.meeting.id}`);
+                return false;
+              }}
+            >
+              {props.meeting.summary || '(no title)'}
             </Typography>
-          )}
-          {isPast && (
-            <Typography className={classes.meetingTimeInWords}>
-              {format(props.meeting.start, 'EEEE, MMMM d')} at {format(props.meeting.start, 'p')}
-            </Typography>
-          )}
-          <Typography
-            className={classes.heading}
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              void router.push(`/meetings/${props.meeting.id}`);
-              return false;
-            }}
-          >
-            {props.meeting.summary || '(no title)'}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Button
-            onClick={() => setAddTagsVisible(true)}
-            variant="outlined"
-            disableElevation
-            color="primary"
-            startIcon={<PlusIcon width="24" height="24" />}
-            className={buttonClasses.button}
-          >
-            Add Tags
-          </Button>
-        </Grid>
-        {domain && isHappeningSoon && (
+          </Grid>
           <Grid item>
             <Button
-              className={clsx(buttonClasses.button, classes.button)}
-              variant="contained"
-              color={'primary'}
-              startIcon={<VideoIconWhite width="24" height="24" />}
-              onClick={() => window.open(props.meeting.videoLink, '_blank')}
+              onClick={() => setAddTagsVisible(true)}
+              variant="outlined"
+              disableElevation
+              color="primary"
+              startIcon={<PlusIcon width="24" height="24" />}
+              className={classes.button}
             >
-              Join
+              Add Tags
             </Button>
           </Grid>
-        )}
-        {props.showLine && (
-          <Grid container style={{ marginTop: 12 }}>
-            <Grid item style={{ width: 60, minHeight: 30 }}>
-              <div className={classes.leftLine}></div>
+          {domain && isHappeningSoon && (
+            <Grid item>
+              <Button
+                className={classes.button}
+                variant="contained"
+                color={'primary'}
+                startIcon={<VideoIconWhite width="24" height="24" />}
+                onClick={() => window.open(props.meeting.videoLink, '_blank')}
+              >
+                Join
+              </Button>
             </Grid>
+          )}
+        </Grid>
+        <Grid container alignItems="flex-start" style={{ marginTop: 12 }}>
+          {props.showLine && (
+            <Grid item>
+              <Grid container>
+                <Grid item style={{ width: 60, minHeight: 30 }}>
+                  <div className={classes.leftLine}></div>
+                </Grid>
+                <MeetingRowBelow
+                  meeting={props.meeting}
+                  store={props.store}
+                  isDarkMode={props.isDarkMode}
+                  isFullWidth={false}
+                  websiteTags={props.websiteTags}
+                  meetingTags={relevantTags}
+                  toggleWebsiteTag={props.toggleWebsiteTag}
+                  toggleMeetingTag={toggleMeetingTag}
+                  showWebsitePopup={props.showWebsitePopup}
+                  shouldHideShowAll={true}
+                />
+              </Grid>
+            </Grid>
+          )}
+          {!props.showLine && (
             <MeetingRowBelow
               meeting={props.meeting}
               store={props.store}
               isDarkMode={props.isDarkMode}
-              isFullWidth={false}
+              isFullWidth={true}
               websiteTags={props.websiteTags}
               meetingTags={relevantTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               toggleMeetingTag={toggleMeetingTag}
+              shouldHideShowAll={true}
               showWebsitePopup={props.showWebsitePopup}
             />
-          </Grid>
-        )}
-        {!props.showLine && (
-          <MeetingRowBelow
-            meeting={props.meeting}
-            store={props.store}
-            isDarkMode={props.isDarkMode}
-            isFullWidth={true}
-            websiteTags={props.websiteTags}
-            meetingTags={relevantTags}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-            toggleMeetingTag={toggleMeetingTag}
-            showWebsitePopup={props.showWebsitePopup}
-          />
-        )}
-      </Grid>
-    </div>
+          )}
+        </Grid>
+      </div>
+    </Root>
   );
 };

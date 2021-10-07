@@ -1,7 +1,7 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
@@ -9,21 +9,34 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTaggDialog } from './add-tag-dialog';
 
-const useStyles = makeStyles((theme) => ({
-  container: { marginTop: theme.spacing(4) },
-  tag: {
+const PREFIX = 'TopTags';
+
+const classes = {
+  container: `${PREFIX}-container`,
+  tag: `${PREFIX}-tag`,
+  tagContainer: `${PREFIX}-tagContainer`,
+  removeButton: `${PREFIX}-removeButton`,
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.container}`]: { marginTop: theme.spacing(4) },
+
+  [`& .${classes.tag}`]: {
     cursor: 'pointer',
     height: 24,
     '&:hover': {
       textDecoration: 'underline',
     },
   },
-  tagContainer: {
+
+  [`& .${classes.tagContainer}`]: {
     '&:hover $removeButton': {
       display: 'block',
     },
   },
-  removeButton: {
+
+  [`& .${classes.removeButton}`]: {
     display: 'none',
   },
 }));
@@ -33,7 +46,6 @@ export const TopTags = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
 }) => {
-  const classes = useStyles();
   const location = useLocation();
   const router = useHistory();
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -53,7 +65,7 @@ export const TopTags = (props: {
   };
 
   return (
-    <React.Fragment>
+    <Root>
       <AddTaggDialog
         userTags={props.websiteTags}
         isOpen={isDialogOpen}
@@ -94,6 +106,6 @@ export const TopTags = (props: {
           </Typography>
         </Grid>
       </Grid>
-    </React.Fragment>
+    </Root>
   );
 };

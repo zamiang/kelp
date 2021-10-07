@@ -1,19 +1,33 @@
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react';
 
-const useBackdropStyles = makeStyles((theme) => ({
-  backdrop: {
+const PREFIX = 'Loading';
+
+const classes = {
+  backdrop: `${PREFIX}-backdrop`,
+};
+
+const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
+  [`&.${classes.backdrop}`]: {
     zIndex: theme.zIndex.drawer + 1,
   },
 }));
+
+const useBackdropStyles = makeStyles(() => ({
+  [`&.${classes.backdrop}`]: {
+    zIndex: 10,
+  },
+}));
+
 const Loading = (props: { isOpen: boolean; message: string }) => {
   const classes = useBackdropStyles();
   return (
-    <Backdrop className={classes.backdrop} open={props.isOpen}>
+    <StyledBackdrop className={classes.backdrop} open={props.isOpen}>
       <Grid container alignItems="center" justifyContent="center">
         <Grid item style={{ width: '100%', textAlign: 'center' }}>
           <CircularProgress color="inherit" />
@@ -22,7 +36,7 @@ const Loading = (props: { isOpen: boolean; message: string }) => {
           <Typography variant="h5">{props.message}</Typography>
         </Grid>
       </Grid>
-    </Backdrop>
+    </StyledBackdrop>
   );
 };
 

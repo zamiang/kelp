@@ -1,6 +1,6 @@
-import Dialog from '@material-ui/core/Dialog';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Dialog from '@mui/material/Dialog';
 import React from 'react';
 import Catch from './catch';
 
