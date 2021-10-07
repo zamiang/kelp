@@ -59,7 +59,6 @@ const MeetingRowBelow = (props: {
   const theme = useTheme();
   const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
   const maxWebsites = isLarge ? 4 : 3;
-  console.log(isLarge, '<<<<<<<<', extraItemsCount, '<<<<<<<<<');
 
   useEffect(() => {
     let isSubscribed = true;

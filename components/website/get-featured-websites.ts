@@ -18,7 +18,6 @@ export const fetchWebsitesForMeetingFiltered = async (
   if (setExtraItemsCount) {
     isSubscribed && setExtraItemsCount(filteredWebsites.length - maxWebsites);
   }
-  console.log(maxWebsites, filteredWebsites, '<<<<<<<<<');
   const websites = shouldShowAll
     ? filteredWebsites.slice(0, maxDisplay)
     : filteredWebsites.slice(0, maxWebsites);

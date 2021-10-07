@@ -69,6 +69,7 @@ export const AddTaggDialog = (props: {
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
+      await props.store.tfidfStore.getTfidf(props.store);
       const result = await props.store.tfidfStore.getCalculatedDocuments();
       if (result) {
         const tags = result;
@@ -76,9 +77,9 @@ export const AddTaggDialog = (props: {
         return isSubscribed && setWebsiteTags(uniq(formattedTags).sort() as any);
       }
     };
-    setTimeout(() => void fetchData(), 100);
+    void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading]);
+  }, [props.isOpen]);
 
   return (
     <StyledDialog
