@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { mediumFontFamily } from '../../constants/theme';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
+import SearchBar from '../nav/search-bar';
 import PersonRow from '../person/person-row';
 import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
@@ -53,18 +54,22 @@ const Root = styled('div')(({ theme }) => ({
   },
   [`& .${classes.topNav}`]: {
     position: 'fixed',
-    top: 11,
-    left: 224,
-    zIndex: 12,
-    maxWidth: 500,
+    top: theme.spacing(1.5),
+    left: 0,
+    transition: 'background 0.3s',
+    zIndex: 11,
+    width: 228,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    flexShrink: 0,
     [theme.breakpoints.down('xl')]: {
-      left: 184,
+      width: 187,
     },
     [theme.breakpoints.down('xl')]: {
-      left: 178,
+      width: 179,
     },
     [theme.breakpoints.down('lg')]: {
-      left: 138,
+      width: 139,
     },
   },
   [`$ .${classes.section}`]: {
@@ -199,7 +204,10 @@ const Search = (props: {
 
   return (
     <Root>
-      <Grid container className={classes.topNav} spacing={2}>
+      <Grid container className={classes.topNav} spacing={2} alignItems="center">
+        <Grid item>
+          <SearchBar isDarkMode={props.isDarkMode} />
+        </Grid>
         {filteredResults.websites.length > 1 && (
           <Grid item>
             <Typography

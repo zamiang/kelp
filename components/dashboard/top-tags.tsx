@@ -18,10 +18,8 @@ const classes = {
   removeButton: `${PREFIX}-removeButton`,
 };
 
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.container}`]: { marginTop: theme.spacing(4) },
-
+const Root = styled('div')(() => ({
+  [`& .${classes.container}`]: {},
   [`& .${classes.tag}`]: {
     cursor: 'pointer',
     height: 24,
@@ -29,13 +27,11 @@ const Root = styled('div')(({ theme }) => ({
       textDecoration: 'underline',
     },
   },
-
   [`& .${classes.tagContainer}`]: {
     '&:hover $removeButton': {
       display: 'block',
     },
   },
-
   [`& .${classes.removeButton}`]: {
     display: 'none',
   },

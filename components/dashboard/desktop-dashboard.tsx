@@ -12,7 +12,6 @@ import { lightTheme } from '../../constants/theme';
 import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
-import Footer from '../homepage/footer';
 import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import { Onboarding } from '../onboarding/onboarding';
@@ -242,7 +241,6 @@ export const DesktopDashboard = (props: {
           </div>
         </div>
         <div className={classes.footerContainer}>
-          <Footer />
           <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
         </div>
       </DesktopDashboardContainer>

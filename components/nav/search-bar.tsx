@@ -58,7 +58,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
       className={classes.container}
     >
       <Grid item>
-        <div className={classes.icon}>
+        <IconButton className={classes.icon}>
           {location.pathname.indexOf('search') > -1 ? (
             <SearchIconOrange width="24" height="24" />
           ) : props.isDarkMode ? (
@@ -66,7 +66,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
           ) : (
             <SearchIcon width="24" height="24" />
           )}
-        </div>
+        </IconButton>
       </Grid>
       <Grid item xs>
         <TextField

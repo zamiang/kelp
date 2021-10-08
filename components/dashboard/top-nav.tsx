@@ -1,4 +1,3 @@
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -13,10 +12,13 @@ import MeetingsIcon from '../../public/icons/calendar.svg';
 import HomeIconOrange from '../../public/icons/home-orange.svg';
 import HomeIconWhite from '../../public/icons/home-white.svg';
 import HomeIcon from '../../public/icons/home.svg';
+import SearchIconOrange from '../../public/icons/search-orange.svg';
+import SearchIconWhite from '../../public/icons/search-white.svg';
+import SearchIcon from '../../public/icons/search.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
 import SettingsIconWhite from '../../public/icons/settings-white.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import SearchBar from '../nav/search-bar';
+import KelpIcon from '../../public/kelp-24.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { TopTags } from './top-tags';
@@ -26,9 +28,7 @@ const PREFIX = 'TopNav';
 const classes = {
   leftSection: `${PREFIX}-leftSection`,
   rightSection: `${PREFIX}-rightSection`,
-  searchContainer: `${PREFIX}-searchContainer`,
-  button: `${PREFIX}-button`,
-  isSelected: `${PREFIX}-isSelected`,
+  logo: `${PREFIX}-logo`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -52,7 +52,6 @@ const Root = styled('div')(({ theme }) => ({
       width: 139,
     },
   },
-
   [`& .${classes.rightSection}`]: {
     position: 'fixed',
     top: theme.spacing(1.5),
@@ -72,18 +71,12 @@ const Root = styled('div')(({ theme }) => ({
       width: 139,
     },
   },
-
-  [`& .${classes.searchContainer}`]: {},
-
-  [`& .${classes.button}`]: {
-    cursor: 'pointer',
+  [`& .${classes.logo}`]: {
+    opacity: 0.5,
+    transition: 'opacity 0.3s',
     '&:hover': {
-      textDecoration: 'underline',
+      opacity: 1,
     },
-  },
-
-  [`& .${classes.isSelected}`]: {
-    color: theme.palette.primary.main,
   },
 }));
 
@@ -103,33 +96,62 @@ export const TopNav = (props: {
   return (
     <Root>
       <div className={classes.leftSection}>
-        <div className={classes.searchContainer}>
-          <SearchBar isDarkMode={props.isDarkMode} />
-        </div>
-        {!isSearch && (
-          <Container maxWidth="lg" disableGutters>
-            <Grid container justifyContent="space-between">
-              <Grid item xs>
-                <TopTags
-                  websiteTags={props.websiteTags}
-                  store={props.store}
-                  toggleWebsiteTag={props.toggleWebsiteTag}
-                />
-              </Grid>
-              {props.isMicrosoftError && (
-                <Grid item>
-                  <Grid container>
-                    <Grid item>
-                      <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
-                        Error: please login to your Microsoft account
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
+        <Grid
+          container
+          justifyContent="space-between"
+          direction="column"
+          style={{ height: '97vh' }}
+        >
+          <Grid item>
+            <IconButton
+              aria-label="search"
+              onClick={(event) => {
+                event.preventDefault();
+                return router.push('/search');
+              }}
+              size="large"
+            >
+              {location.pathname.indexOf('search') > -1 ? (
+                <SearchIconOrange width="24" height="24" />
+              ) : props.isDarkMode ? (
+                <SearchIconWhite width="24" height="24" />
+              ) : (
+                <SearchIcon width="24" height="24" />
               )}
+            </IconButton>
+          </Grid>
+
+          {!isSearch && (
+            <Grid item>
+              <TopTags
+                websiteTags={props.websiteTags}
+                store={props.store}
+                toggleWebsiteTag={props.toggleWebsiteTag}
+              />
             </Grid>
-          </Container>
-        )}
+          )}
+          {props.isMicrosoftError && (
+            <Grid item>
+              <Grid container>
+                <Grid item>
+                  <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
+                    Error: please login to your Microsoft account
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          )}
+          <Grid item>
+            <IconButton
+              aria-label="Kelp Homepage"
+              size="large"
+              onClick={() => (window.location = 'https://www.kelp.nyc' as any)}
+              className={classes.logo}
+            >
+              <KelpIcon height="24" width="24" />
+            </IconButton>
+          </Grid>
+        </Grid>
       </div>
       <div className={classes.rightSection}>
         <Grid container justifyContent="flex-end" alignItems="center">
