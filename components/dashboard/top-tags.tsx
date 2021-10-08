@@ -16,24 +16,45 @@ const classes = {
   tag: `${PREFIX}-tag`,
   tagContainer: `${PREFIX}-tagContainer`,
   removeButton: `${PREFIX}-removeButton`,
+  dot: `${PREFIX}-dot`,
+  dotContainer: `${PREFIX}-dotContainer`,
 };
 
-const Root = styled('div')(() => ({
+const Root = styled('div')(({ theme }) => ({
   [`& .${classes.container}`]: {},
   [`& .${classes.tag}`]: {
     cursor: 'pointer',
     height: 24,
+    opacity: 0.5,
+    transition: 'opacity 0.6s ease-out',
     '&:hover': {
-      textDecoration: 'underline',
+      opacity: 1,
     },
   },
   [`& .${classes.tagContainer}`]: {
-    '&:hover $removeButton': {
+    [`&:hover .${classes.removeButton}`]: {
       display: 'block',
+    },
+    [`&:hover .${classes.dot}`]: {
+      width: 10,
+      height: 10,
+      background: theme.palette.text.primary,
     },
   },
   [`& .${classes.removeButton}`]: {
     display: 'none',
+  },
+  [`& .${classes.dot}`]: {
+    height: 6,
+    width: 6,
+    borderRadius: 5,
+    transition: 'all 0.6s ease-out',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    background: theme.palette.divider,
+  },
+  [`& .${classes.dotContainer}`]: {
+    width: theme.spacing(3),
   },
 }));
 
@@ -70,11 +91,6 @@ export const TopTags = (props: {
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
       <Grid container className={classes.container} alignItems="center" spacing={1}>
-        <Grid item xs={12}>
-          <Typography color="primary" className={classes.tag} onClick={() => setDialogOpen(true)}>
-            Add a tag
-          </Typography>
-        </Grid>
         {props.websiteTags.map((t) => (
           <Grid item key={t.tag} xs={12}>
             <Grid
@@ -84,12 +100,25 @@ export const TopTags = (props: {
               className={classes.tagContainer}
             >
               <Grid item zeroMinWidth xs>
-                <Typography noWrap className={classes.tag} onClick={() => onClickTag(t.tag)}>
-                  {t.tag}
-                </Typography>
+                <Grid container alignItems="center">
+                  <Grid item>
+                    <div className={classes.dotContainer}>
+                      <div className={classes.dot}></div>
+                    </div>
+                  </Grid>
+                  <Grid item zeroMinWidth xs>
+                    <Typography noWrap className={classes.tag} onClick={() => onClickTag(t.tag)}>
+                      {t.tag}
+                    </Typography>
+                  </Grid>
+                </Grid>
               </Grid>
               <Grid item className={classes.removeButton}>
-                <IconButton onClick={() => props.toggleWebsiteTag(t.tag)} size="small">
+                <IconButton
+                  onClick={() => props.toggleWebsiteTag(t.tag)}
+                  size="small"
+                  style={{ padding: 0 }}
+                >
                   <CloseIcon width="18" height="18" />
                 </IconButton>
               </Grid>
@@ -97,9 +126,36 @@ export const TopTags = (props: {
           </Grid>
         ))}
         <Grid item xs={12}>
-          <Typography className={classes.tag} onClick={() => onClickTag('all')}>
-            Recent
-          </Typography>
+          <Grid container alignItems="center" className={classes.tagContainer}>
+            <Grid item>
+              <div className={classes.dotContainer}>
+                <div className={classes.dot}></div>
+              </div>
+            </Grid>
+            <Grid item>
+              <Typography className={classes.tag} onClick={() => onClickTag('all')}>
+                Recent
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container alignItems="center" className={classes.tagContainer}>
+            <Grid item>
+              <div className={classes.dotContainer}>
+                <div className={classes.dot}></div>
+              </div>
+            </Grid>
+            <Grid item>
+              <Typography
+                color="primary"
+                className={classes.tag}
+                onClick={() => setDialogOpen(true)}
+              >
+                Add a tag
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Root>

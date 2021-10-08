@@ -229,7 +229,7 @@ export const DraggableWebsiteHighlights = (props: {
                 setShouldShowAll(!shouldShowAll);
               }}
             >
-              <PlusIcon width="24" height="24" />{' '}
+              <PlusIcon width="24" height="24" />
             </IconButton>
           </Grid>
         )}
