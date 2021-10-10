@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
 import { isTagSelected } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
@@ -27,7 +28,6 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     position: 'relative',
     width: 480,
   },
-
   [`& .${classes.tag}`]: {
     transition: 'borderBottom 0.3s',
     borderBottom: '1px solid transparent',
@@ -37,7 +37,6 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
       borderBottomColor: theme.palette.divider,
     },
   },
-
   [`& .${classes.tagSelected}`]: {
     borderBottomColor: theme.palette.primary.dark,
     '&:hover': {
@@ -45,13 +44,11 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
       borderBottomColor: theme.palette.primary.dark,
     },
   },
-
   [`& .${classes.closeButton}`]: {
     position: 'absolute',
     top: 42,
     right: 42,
   },
-
   [`& .${classes.columnList}`]: {
     columnCount: 3,
   },
@@ -110,7 +107,7 @@ export const AddTaggDialog = (props: {
                   classes.tag,
                   isTagSelected(t, props.userTags) && classes.tagSelected,
                 )}
-                onClick={() => props.toggleWebsiteTag(t, '<test>')}
+                onClick={() => props.toggleWebsiteTag(t, config.INTERNAL_WEBSITE_ID)}
               >
                 <Typography>{t}</Typography>
               </div>

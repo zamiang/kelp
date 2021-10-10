@@ -2,6 +2,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import config from '../../constants/config';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
@@ -52,7 +53,7 @@ export const toggleWebsiteTag = async (
   websiteId?: string,
 ) => {
   if (isTagSelected(tag, userTags)) {
-    if (websiteId) {
+    if (websiteId && websiteId !== config.INTERNAL_WEBSITE_ID) {
       const website = await store.websiteStore.getById(websiteId);
       if (website) {
         return store.websiteStore.updateTags(

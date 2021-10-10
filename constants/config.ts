@@ -33,6 +33,7 @@ export default {
   LAST_NOTIFICATION_KEY: 'KELP_LAST_NOTIFICATION_ID',
   LAST_UPDATED: 'KELP_LAST_UPDATED',
   LAST_UPDATED_USER_ID: 'KELP_LAST_UPDATED_USER_ID',
+  INTERNAL_WEBSITE_ID: '<test>',
   ALLOWED_DOMAINS: [
     'docs.google.com',
     'slides.google.com',

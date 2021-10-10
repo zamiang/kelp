@@ -111,19 +111,18 @@ export const DesktopDashboard = (props: {
     return () => clearInterval(interval);
   }, []);
 
+  const refetchWebsiteTags = async () => {
+    const i = await props.store.websiteTagStore.getAll();
+    setWebsiteTags(i);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const i = await props.store.websiteTagStore.getAll();
-      setWebsiteTags(i);
-    };
-    void fetchData();
+    void refetchWebsiteTags();
   }, [props.store.isLoading]);
 
   const toggleWebsiteTagClick = async (tag: string, websiteId?: string) => {
     await toggleWebsiteTag(tag, websiteTags, store, websiteId);
-    const i = await props.store.websiteTagStore.getAll();
-    setWebsiteTags(i);
-    props.store.incrementLoading();
+    return refetchWebsiteTags();
   };
 
   return (
@@ -150,6 +149,7 @@ export const DesktopDashboard = (props: {
             store={store}
             isDarkMode={props.isDarkMode}
             websiteTags={websiteTags}
+            refetchWebsiteTags={refetchWebsiteTags}
             isMicrosoftError={props.isMicrosoftError}
             toggleWebsiteTag={toggleWebsiteTagClick}
           />

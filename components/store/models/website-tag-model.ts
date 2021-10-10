@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash';
 import { dbType } from '../db';
 
 export default class WebsiteTagModel {
@@ -29,6 +30,6 @@ export default class WebsiteTagModel {
 
   async getAll() {
     const websiteTags = await this.db.getAll('websiteTag');
-    return websiteTags;
+    return uniqBy(websiteTags, 'tag');
   }
 }

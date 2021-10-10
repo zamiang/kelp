@@ -86,6 +86,7 @@ export const TopNav = (props: {
   isMicrosoftError: boolean;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
+  refetchWebsiteTags: () => void;
 }) => {
   const router = useHistory();
   const location = useLocation();
