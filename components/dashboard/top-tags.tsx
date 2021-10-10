@@ -3,6 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
 import { IWebsiteTag } from '../store/data-types';
@@ -58,10 +59,31 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
+const getItemStyle = (draggableStyle: any) => ({
+  // some basic styles to make the items look a bit nicer
+  userSelect: 'none',
+
+  // styles we need to apply on draggables
+  ...draggableStyle,
+});
+
+const getListStyle = () => ({
+  // width: itemsLength * 68.44 + 16,
+});
+
+const reorder = (list: any[], startIndex: number, endIndex: number) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
 export const TopTags = (props: {
   websiteTags: IWebsiteTag[];
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
+  setWebsiteTags: (t: IWebsiteTag[]) => void;
 }) => {
   const location = useLocation();
   const router = useHistory();
@@ -81,6 +103,21 @@ export const TopTags = (props: {
     }
   };
 
+  const onDragEnd = (result: any) => {
+    // TODO
+    if (!result.destination) {
+      return;
+    }
+
+    if (result.destination.index === result.source.index) {
+      return;
+    }
+
+    const tt = reorder(props.websiteTags, result.source.index, result.destination.index);
+
+    props.setWebsiteTags(tt);
+  };
+
   return (
     <Root>
       <AddTaggDialog
@@ -90,41 +127,74 @@ export const TopTags = (props: {
         close={() => setDialogOpen(false)}
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
-      <Grid container className={classes.container} alignItems="center" spacing={1}>
-        {props.websiteTags.map((t) => (
-          <Grid item key={t.tag} xs={12}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="top-tags" direction="vertical">
+          {(provided) => (
             <Grid
               container
+              className={classes.container}
               alignItems="center"
-              justifyContent="space-between"
-              className={classes.tagContainer}
+              spacing={1}
+              ref={provided.innerRef}
+              style={getListStyle()}
+              {...provided.droppableProps}
             >
-              <Grid item zeroMinWidth xs>
-                <Grid container alignItems="center">
-                  <Grid item>
-                    <div className={classes.dotContainer}>
-                      <div className={classes.dot}></div>
-                    </div>
-                  </Grid>
-                  <Grid item zeroMinWidth xs>
-                    <Typography noWrap className={classes.tag} onClick={() => onClickTag(t.tag)}>
-                      {t.tag}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item className={classes.removeButton}>
-                <IconButton
-                  onClick={() => props.toggleWebsiteTag(t.tag)}
-                  size="small"
-                  style={{ padding: 0 }}
-                >
-                  <CloseIcon width="18" height="18" />
-                </IconButton>
-              </Grid>
+              {props.websiteTags.map((t, index) => (
+                <Draggable draggableId={t.tag} index={index} key={t.tag}>
+                  {(provided) => (
+                    <Grid
+                      item
+                      xs={12}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={getItemStyle(provided.draggableProps.style)}
+                    >
+                      <Grid
+                        container
+                        alignItems="center"
+                        justifyContent="space-between"
+                        className={classes.tagContainer}
+                      >
+                        <Grid item zeroMinWidth xs>
+                          <Grid container alignItems="center">
+                            <Grid item>
+                              <div className={classes.dotContainer}>
+                                <div className={classes.dot}></div>
+                              </div>
+                            </Grid>
+                            <Grid item zeroMinWidth xs>
+                              <Typography
+                                noWrap
+                                className={classes.tag}
+                                onClick={() => onClickTag(t.tag)}
+                              >
+                                {t.tag}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item className={classes.removeButton}>
+                          <IconButton
+                            onClick={() => props.toggleWebsiteTag(t.tag)}
+                            size="small"
+                            style={{ padding: 0 }}
+                          >
+                            <CloseIcon width="18" height="18" />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
             </Grid>
-          </Grid>
-        ))}
+          )}
+        </Droppable>
+      </DragDropContext>
+      <br />
+      <Grid container className={classes.container} alignItems="center" spacing={1}>
         <Grid item xs={12}>
           <Grid container alignItems="center" className={classes.tagContainer}>
             <Grid item>

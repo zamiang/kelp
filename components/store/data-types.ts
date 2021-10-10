@@ -181,6 +181,7 @@ export interface IWebsiteTag {
   readonly createdAt: Date;
   readonly url: string;
   readonly tag: string;
+  order: number;
 }
 
 export interface ISegmentTag {

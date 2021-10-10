@@ -86,6 +86,7 @@ export const TopNav = (props: {
   isMicrosoftError: boolean;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
+  setWebsiteTags: (t: IWebsiteTag[]) => void;
   refetchWebsiteTags: () => void;
 }) => {
   const router = useHistory();
@@ -128,6 +129,7 @@ export const TopNav = (props: {
                 websiteTags={props.websiteTags}
                 store={props.store}
                 toggleWebsiteTag={props.toggleWebsiteTag}
+                setWebsiteTags={props.setWebsiteTags}
               />
             </Grid>
           )}

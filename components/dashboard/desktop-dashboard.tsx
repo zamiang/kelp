@@ -125,6 +125,11 @@ export const DesktopDashboard = (props: {
     return refetchWebsiteTags();
   };
 
+  const updateWebsiteTags = async (wt: IWebsiteTag[]) => {
+    setWebsiteTags(wt);
+    await props.store.websiteTagStore.updateWebsiteTags(wt);
+  };
+
   return (
     <ErrorBoundaryComponent>
       <DesktopDashboardContainer>
@@ -149,6 +154,7 @@ export const DesktopDashboard = (props: {
             store={store}
             isDarkMode={props.isDarkMode}
             websiteTags={websiteTags}
+            setWebsiteTags={updateWebsiteTags}
             refetchWebsiteTags={refetchWebsiteTags}
             isMicrosoftError={props.isMicrosoftError}
             toggleWebsiteTag={toggleWebsiteTagClick}

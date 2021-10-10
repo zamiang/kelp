@@ -1,4 +1,5 @@
-import { uniqBy } from 'lodash';
+import { orderBy, uniqBy } from 'lodash';
+import { IWebsiteTag } from '../data-types';
 import { dbType } from '../db';
 
 export default class WebsiteTagModel {
@@ -15,6 +16,7 @@ export default class WebsiteTagModel {
       tag: tag.toLocaleLowerCase(),
       url: websiteId,
       createdAt: new Date(),
+      order: 0,
     });
     return result;
   }
@@ -28,8 +30,13 @@ export default class WebsiteTagModel {
     return await Promise.all(tags.map((t) => this.db.delete('websiteTag', t.id)));
   }
 
+  async updateWebsiteTags(websiteTags: IWebsiteTag[]) {
+    websiteTags.map((t, index) => (t.order = index));
+    return await Promise.all(websiteTags.map((t) => this.db.put('websiteTag', t)));
+  }
+
   async getAll() {
     const websiteTags = await this.db.getAll('websiteTag');
-    return uniqBy(websiteTags, 'tag');
+    return orderBy(uniqBy(websiteTags, 'tag'), ['order', 'tag']);
   }
 }

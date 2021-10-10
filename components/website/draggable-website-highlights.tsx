@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import config from '../../constants/config';
+import CloseIcon from '../../public/icons/close-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
@@ -222,17 +224,32 @@ export const DraggableWebsiteHighlights = (props: {
         <Grid item>
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
         </Grid>
-        {extraItemsCount > 0 && !shouldShowAll && (
-          <Grid item>
-            <IconButton
-              onClick={() => {
-                setShouldShowAll(!shouldShowAll);
-              }}
-            >
-              <PlusIcon width="24" height="24" />
-            </IconButton>
+        <Grid item>
+          <Grid container>
+            {props.filterByTag && (
+              <Grid item>
+                <IconButton
+                  onClick={() =>
+                    props.toggleWebsiteTag(props.filterByTag!, config.INTERNAL_WEBSITE_ID)
+                  }
+                >
+                  <CloseIcon width="24" height="24" />
+                </IconButton>
+              </Grid>
+            )}
+            {extraItemsCount > 0 && !shouldShowAll && (
+              <Grid item>
+                <IconButton
+                  onClick={() => {
+                    setShouldShowAll(!shouldShowAll);
+                  }}
+                >
+                  <PlusIcon width="24" height="24" />
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
-        )}
+        </Grid>
       </Grid>
       <DraggableWebsites
         setTopWebsites={setTopWebsites}
