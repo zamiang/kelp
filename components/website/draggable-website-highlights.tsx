@@ -15,15 +15,23 @@ import { LargeWebsite } from './large-website';
 
 const PREFIX = 'DraggableWebsiteHighlights';
 
-const classes = {
+export const classes = {
   topSection: `${PREFIX}-topSection`,
+  button: `${PREFIX}-button`,
 };
 
-const Root = styled('div')(({ theme }) => ({
+export const Root = styled('div')(({ theme }) => ({
   [`& .${classes.topSection}`]: {
     marginBottom: theme.spacing(2),
     position: 'relative',
     zIndex: 5,
+  },
+  [`& .${classes.button}`]: {
+    opacity: 0.5,
+    transition: 'opacity 0.3s ease-out',
+    '&:hover': {
+      opacity: 1,
+    },
   },
 }));
 
@@ -229,6 +237,7 @@ export const DraggableWebsiteHighlights = (props: {
             {props.filterByTag && (
               <Grid item>
                 <IconButton
+                  className={classes.button}
                   onClick={() =>
                     props.toggleWebsiteTag(props.filterByTag!, config.INTERNAL_WEBSITE_ID)
                   }
@@ -240,6 +249,7 @@ export const DraggableWebsiteHighlights = (props: {
             {extraItemsCount > 0 && !shouldShowAll && (
               <Grid item>
                 <IconButton
+                  className={classes.button}
                   onClick={() => {
                     setShouldShowAll(!shouldShowAll);
                   }}

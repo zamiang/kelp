@@ -7,7 +7,6 @@ import Fuse from 'fuse.js';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { mediumFontFamily } from '../../constants/theme';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import SearchBar from '../nav/search-bar';
 import PersonRow from '../person/person-row';
@@ -21,36 +20,34 @@ import { LargeWebsite } from '../website/large-website';
 const PREFIX = 'Search';
 
 const classes = {
-  boxStyle: `${PREFIX}-boxStyle`,
-  heading: `${PREFIX}-heading`,
-  lineCalendarContainer: `${PREFIX}-lineCalendarContainer`,
   topNav: `${PREFIX}-topNav`,
   button: `${PREFIX}-button`,
-  section: `${PREFIX}-section`,
+  row: `${PREFIX}-row`,
   rowText: `${PREFIX}-rowText`,
   container: `${PREFIX}-container`,
 };
 
 const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.boxStyle}`]: {
-    background: theme.palette.background.paper,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
   [`& .${classes.rowText}`]: {
-    color: '#9D9D99',
-    fontWeight: 500,
-    fontFamily: mediumFontFamily,
+    marginBottom: theme.spacing(2),
   },
-  [`& .${classes.heading}`]: {
-    marginLeft: 0,
-  },
-  [`& .${classes.lineCalendarContainer}`]: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
+  [`& .${classes.row}`]: {
+    marginTop: theme.spacing(8),
   },
   [`& .${classes.container}`]: {
     margin: 0,
     width: 'auto',
+  },
+  [`& .${classes.button}`]: {
+    borderRadius: 21,
+    background: theme.palette.background.paper,
+    padding: 10,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   [`& .${classes.topNav}`]: {
     position: 'fixed',
@@ -70,20 +67,6 @@ const Root = styled('div')(({ theme }) => ({
     },
     [theme.breakpoints.down('lg')]: {
       width: 139,
-    },
-  },
-  [`$ .${classes.section}`]: {
-    marginTop: 88,
-  },
-  [`& .${classes.button}`]: {
-    borderRadius: 21,
-    background: theme.palette.background.paper,
-    padding: 10,
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
     },
   },
 }));
@@ -247,8 +230,8 @@ const Search = (props: {
       </Grid>
       <div className={classes.container}>
         {filteredResults.websites.length > 0 && (
-          <div className={classes.section} id="websites">
-            <Typography variant="h6" className={classes.rowText}>
+          <div className={classes.row} id="websites">
+            <Typography variant="h3" className={classes.rowText}>
               Websites
             </Typography>
             <Grid container spacing={isMobile ? 5 : 6}>
@@ -264,8 +247,8 @@ const Search = (props: {
           </div>
         )}
         {filteredResults.people.length > 0 && (
-          <div className={classes.section} id="people">
-            <Typography variant="h6" className={classes.rowText}>
+          <div className={classes.row} id="people">
+            <Typography variant="h3" className={classes.rowText}>
               People
             </Typography>
             {filteredResults.people.slice(0, 9).map((result: any) => (
@@ -278,8 +261,8 @@ const Search = (props: {
           </div>
         )}
         {filteredResults.meetings.length > 0 && (
-          <div className={classes.section} id="meetings">
-            <Typography variant="h6" className={classes.rowText}>
+          <div className={classes.row} id="meetings">
+            <Typography variant="h3" className={classes.rowText}>
               Meetings
             </Typography>
             {filteredResults.meetings.slice(0, 9).map((result: any) => (

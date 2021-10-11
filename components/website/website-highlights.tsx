@@ -1,7 +1,6 @@
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
@@ -9,22 +8,9 @@ import PlusIcon from '../../public/icons/plus-orange.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { Root, classes } from './draggable-website-highlights';
 import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
-
-const PREFIX = 'WebsiteHighlights';
-
-const classes = {
-  topSection: `${PREFIX}-topSection`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.topSection}`]: {
-    marginBottom: theme.spacing(2),
-    position: 'relative',
-    zIndex: 5,
-  },
-}));
 
 const maxResult = 8;
 const maxDisplay = maxResult * 8;
@@ -115,6 +101,7 @@ export const WebsiteHighlights = (props: {
         {extraItemsCount > 0 && !shouldShowAll && (
           <Grid item>
             <IconButton
+              className={classes.button}
               onClick={() => {
                 setShouldShowAll(!shouldShowAll);
               }}

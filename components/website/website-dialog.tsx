@@ -80,15 +80,11 @@ const formatAndSetWebsiteTags = async (
   item: IWebsiteItem,
   userTags: IWebsiteTag[],
   setWebsiteTags: (t: string[]) => void,
-  setHideAllSuccess: (b: boolean) => void,
-  setHideThisWebsiteSuccess: (b: boolean) => void,
 ) => {
   const text = item.tags || '';
 
   const i = await getTagsForWebsite(text, userTags);
   setWebsiteTags(i);
-  setHideAllSuccess(false);
-  setHideThisWebsiteSuccess(false);
 };
 
 export const WebsiteDialog = (props: {
@@ -98,7 +94,6 @@ export const WebsiteDialog = (props: {
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   store: IStore;
 }) => {
-  const [didHideThisWebsiteSuccess, setHideThisWebsiteSuccess] = useState(false);
   const [didHideAllSuccess, setHideAllSuccess] = useState(false);
   const [errorText, setErrorText] = useState<string | undefined>();
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
@@ -126,13 +121,7 @@ export const WebsiteDialog = (props: {
     if (w) {
       setWebsite(w);
       // todo update store so that it refreshes
-      return await formatAndSetWebsiteTags(
-        w,
-        props.userTags,
-        setWebsiteTags,
-        setHideAllSuccess,
-        setHideThisWebsiteSuccess,
-      );
+      return await formatAndSetWebsiteTags(w, props.userTags, setWebsiteTags);
     }
   };
 
@@ -152,13 +141,7 @@ export const WebsiteDialog = (props: {
       setWebsite(w);
       setValue('');
       // todo update store so that it refreshes
-      return await formatAndSetWebsiteTags(
-        w,
-        props.userTags,
-        setWebsiteTags,
-        setHideAllSuccess,
-        setHideThisWebsiteSuccess,
-      );
+      return await formatAndSetWebsiteTags(w, props.userTags, setWebsiteTags);
     }
   };
 
@@ -169,13 +152,7 @@ export const WebsiteDialog = (props: {
         setWebsite(w);
 
         if (w) {
-          await formatAndSetWebsiteTags(
-            w,
-            props.userTags,
-            setWebsiteTags,
-            setHideAllSuccess,
-            setHideThisWebsiteSuccess,
-          );
+          await formatAndSetWebsiteTags(w, props.userTags, setWebsiteTags);
         }
       }
     };
@@ -268,30 +245,19 @@ export const WebsiteDialog = (props: {
           </Typography>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item xs={12}>
-              {didHideThisWebsiteSuccess && (
-                <Button
-                  disableElevation={false}
-                  variant="outlined"
-                  disabled
-                  className={classes.button}
-                >
-                  This website will be hidden
-                </Button>
-              )}
-              {!didHideThisWebsiteSuccess && (
-                <Button
-                  disableElevation={false}
-                  variant="outlined"
-                  onClick={() =>
-                    props.item?.websiteId &&
-                    hideUrl(props.item?.websiteId) &&
-                    setHideThisWebsiteSuccess(true)
+              <Button
+                disableElevation={false}
+                variant="outlined"
+                onClick={() => {
+                  if (props.item?.websiteId) {
+                    void hideUrl(props.item?.websiteId);
                   }
-                  className={classes.button}
-                >
-                  Hide this website
-                </Button>
-              )}
+                  props.close();
+                }}
+                className={classes.button}
+              >
+                Hide this website
+              </Button>
             </Grid>
             <Grid item xs={12}>
               {didHideAllSuccess && (

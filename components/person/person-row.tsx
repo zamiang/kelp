@@ -53,6 +53,7 @@ const Root = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.hoverText}`]: {
+    cursor: 'pointer',
     '&:hover': {
       textDecoration: 'underline',
     },
