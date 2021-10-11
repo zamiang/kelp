@@ -282,7 +282,7 @@ export const FeaturedMeeting = (props: {
         </Grid>
         <Grid container alignItems="flex-start" style={{ marginTop: 12 }}>
           {props.showLine && (
-            <Grid item>
+            <Grid item xs={12}>
               <Grid container>
                 <Grid item style={{ width: 60, minHeight: 30 }}>
                   <div className={classes.leftLine}></div>
