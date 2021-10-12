@@ -19,6 +19,7 @@ import ExpandPerson from '../person/expand-person';
 import { toggleWebsiteTag } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { Summary } from '../summary/summary';
 import Settings from '../user-profile/settings';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
 import { TagHighlights } from '../website/tag-highlights';
@@ -208,6 +209,9 @@ export const DesktopDashboard = (props: {
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
                     />
+                  </Route>
+                  <Route path="/calendar">
+                    <Summary store={store} isDarkMode={props.isDarkMode} />
                   </Route>
                   <Route path="/settings">
                     <Settings

@@ -67,7 +67,7 @@ export const AddTaggDialog = (props: {
     let isSubscribed = true;
     const fetchData = async () => {
       await props.store.tfidfStore.getTfidf(props.store);
-      const result = await props.store.tfidfStore.getCalculatedDocuments();
+      const result = props.store.tfidfStore.getCalculatedDocuments();
       if (result) {
         const tags = result;
         const formattedTags = tags.concat(props.userTags.map((t) => t.tag));

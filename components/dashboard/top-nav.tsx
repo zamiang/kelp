@@ -6,12 +6,15 @@ import { styled } from '@mui/material/styles';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
-import MeetingsIconOrange from '../../public/icons/calendar-orange.svg';
-import MeetingsIconWhite from '../../public/icons/calendar-white.svg';
-import MeetingsIcon from '../../public/icons/calendar.svg';
+import CalendarIconOrange from '../../public/icons/calendar-orange.svg';
+import CalendarIconWhite from '../../public/icons/calendar-white.svg';
+import CalendarIcon from '../../public/icons/calendar.svg';
 import HomeIconOrange from '../../public/icons/home-orange.svg';
 import HomeIconWhite from '../../public/icons/home-white.svg';
 import HomeIcon from '../../public/icons/home.svg';
+import MeetingsIconOrange from '../../public/icons/meetings-orange.svg';
+import MeetingsIconWhite from '../../public/icons/meetings-white.svg';
+import MeetingsIcon from '../../public/icons/meetings.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
 import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
@@ -95,6 +98,7 @@ export const TopNav = (props: {
   const isMeetingsSelected = location.pathname === '/meetings';
   const isHomeSelected = location.pathname === '/home';
   const isSettingsSelected = location.pathname === '/settings';
+  const isCalendarSelected = location.pathname === '/calendar';
   return (
     <Root>
       <div className={classes.leftSection}>
@@ -191,6 +195,24 @@ export const TopNav = (props: {
                 <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : (
                 <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              )}
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton
+              aria-label="calendar"
+              onClick={(event) => {
+                event.preventDefault();
+                return router.push('/calendar');
+              }}
+              size="large"
+            >
+              {isCalendarSelected ? (
+                <CalendarIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              ) : props.isDarkMode ? (
+                <CalendarIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+              ) : (
+                <CalendarIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
               )}
             </IconButton>
           </Grid>

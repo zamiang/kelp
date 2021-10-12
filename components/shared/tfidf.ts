@@ -227,4 +227,13 @@ export default class Tfidf {
     const terms = Object.entries(documentsToSearch[0]).sort(([, a], [, b]) => b - a);
     return terms.slice(0, maxLength).map((t) => t[0]);
   }
+
+  listTermsWithValue(maxLength = 20) {
+    const documentsToSearch: IDocument[] = [];
+    this.documents.forEach((item) => {
+      documentsToSearch.push(item);
+    });
+    const terms = Object.entries(documentsToSearch[0]).sort(([, a], [, b]) => b - a);
+    return terms.slice(0, maxLength).map((t) => ({ term: t[0], tfidf: t[1] }));
+  }
 }

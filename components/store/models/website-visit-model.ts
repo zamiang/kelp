@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns';
+import { isSameDay, subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
@@ -77,6 +77,15 @@ export default class WebsiteVisitModel {
   ) {
     const websites = await this.db.getAll('websiteVisit');
     return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
+  }
+
+  async getAllForDay(
+    domainBlocklistStore: IStore['domainBlocklistStore'],
+    websiteBlocklistStore: IStore['websiteBlocklistStore'],
+    day: Date,
+  ) {
+    const websites = await this.getAll(domainBlocklistStore, websiteBlocklistStore);
+    return websites.filter((w) => isSameDay(w.visitedTime, day));
   }
 
   async cleanup() {

@@ -1,4 +1,5 @@
 import Tfidf from '../../shared/tfidf';
+import { IWebsite } from '../data-types';
 import { IStore } from '../use-store';
 
 /**
@@ -10,6 +11,11 @@ export interface ITfidfRow {
   id: string;
   key: string;
   text: string;
+}
+
+export interface ITfidfTag {
+  term: string;
+  tfidf: number;
 }
 
 export default class TfidfStore {
@@ -24,8 +30,24 @@ export default class TfidfStore {
     return tfidf;
   }
 
+  async getTfidfForDocuments(data: ITfidfRow[]) {
+    return new Tfidf(data);
+  }
+
   getCalculatedDocuments() {
-    return (window as any).tfidf?.listTerms();
+    return (window as any).tfidf?.listTerms() as string[];
+  }
+
+  getDocumentsForWebsites(websites: IWebsite[]) {
+    const websiteTitles = websites.map(
+      (website) => `${website.title || ''} ${website.description || ''}`,
+    );
+    return websiteTitles.map((item) => ({
+      id: `websites-${item}`,
+      key: item,
+      type: 'website' as any,
+      text: item,
+    }));
   }
 
   async getDocuments(store: IStore) {
@@ -35,9 +57,7 @@ export default class TfidfStore {
       store.websiteBlocklistStore,
     );
     const websiteTitles = websitesList.map(
-      (website) =>
-        // TODO: Use website description
-        website.title || '',
+      (website) => `${website.title || ''} ${website.description || ''}`,
     );
 
     // Meetings
