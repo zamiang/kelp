@@ -35,11 +35,11 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 const searchInputId = 'searchInput';
 
-const SearchBar = (props: { isDarkMode: boolean }) => {
+const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
   const router = useHistory();
   const location = useLocation();
   const search = location.search;
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(props.searchQuery);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -80,7 +80,7 @@ const SearchBar = (props: { isDarkMode: boolean }) => {
           name="query"
           margin="dense"
           variant="standard"
-          value={value}
+          value={value.length < 1 && props.searchQuery ? props.searchQuery : value}
           InputProps={{
             className: classes.input,
             disableUnderline: true,

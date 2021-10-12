@@ -189,7 +189,7 @@ const Search = (props: {
     <Root>
       <Grid container className={classes.topNav} spacing={2} alignItems="center">
         <Grid item>
-          <SearchBar isDarkMode={props.isDarkMode} />
+          <SearchBar isDarkMode={props.isDarkMode} searchQuery={searchQuery} />
         </Grid>
         {filteredResults.websites.length > 1 && (
           <Grid item>
