@@ -13,10 +13,16 @@ import { Row, classes } from '../shared/row-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
 import { IDocument, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { IWebsiteCache } from '../website/get-featured-websites';
 
 const dateFormat = 'MM/dd/yyyy';
 
-const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: () => void }) => {
+const ExpandedDocument = (props: {
+  store: IStore;
+  documentId?: string;
+  close?: () => void;
+  websiteCache: IWebsiteCache;
+}) => {
   const ref = useRef(null);
   const size = useComponentSize(ref);
   const { slug }: any = useParams();
@@ -122,6 +128,7 @@ const ExpandedDocument = (props: { store: IStore; documentId?: string; close?: (
               segmentDocuments={segmentDocuments}
               timeStore={props.store.timeDataStore}
               personStore={props.store.personDataStore}
+              websiteCache={props.websiteCache}
             />
           </div>
         )}

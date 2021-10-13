@@ -14,7 +14,7 @@ import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 
 const PREFIX = 'Search';
@@ -112,19 +112,20 @@ const WebsiteResults = (props: {
   const websites = props.websites.map((item) => {
     const website = item.item as any;
     return {
-      websiteId: website.id,
+      id: website.id,
       meetings: [],
       isPinned: false,
-      url: website.url,
-      date: new Date(),
-    };
+      rawUrl: website.url,
+      lastVisited: new Date(),
+      visitCount: 0,
+    } as IFeaturedWebsite;
   });
   const filteredWebsites = uniqBy(websites, 'websiteId');
 
   return (
     <React.Fragment>
       {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
-        <Grid item xs={3} key={website.websiteId}>
+        <Grid item xs={3} key={website.id}>
           <LargeWebsite
             store={props.store}
             item={website}
@@ -145,6 +146,7 @@ const Search = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
+  websiteCache: IWebsiteCache;
 }) => {
   const router = useLocation();
   const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
@@ -275,6 +277,7 @@ const Search = (props: {
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 showWebsitePopup={props.showWebsitePopup}
+                websiteCache={props.websiteCache}
               />
             ))}
           </div>

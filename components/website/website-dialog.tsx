@@ -100,7 +100,7 @@ export const WebsiteDialog = (props: {
   const [value, setValue] = useState('');
   const [website, setWebsite] = useState<IWebsiteItem>();
 
-  const hideDialogDomain = props.item?.websiteId ? new URL(props.item.websiteId).host : undefined;
+  const hideDialogDomain = props.item?.id ? new URL(props.item.id).host : undefined;
   const hideUrl = async (url: string) => {
     await props.store.websiteBlocklistStore.addWebsite(url);
     props.store.incrementLoading();
@@ -148,7 +148,7 @@ export const WebsiteDialog = (props: {
   useEffect(() => {
     const fetchData = async () => {
       if (props.item) {
-        const w = await props.store.websiteStore.getById(props.item.websiteId);
+        const w = await props.store.websiteStore.getById(props.item.id);
         setWebsite(w);
 
         if (w) {
@@ -157,7 +157,7 @@ export const WebsiteDialog = (props: {
       }
     };
     void fetchData();
-  }, [props.item?.websiteId]);
+  }, [props.item?.id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(cleanText(e.target.value).join(''));
@@ -194,7 +194,7 @@ export const WebsiteDialog = (props: {
                 key={t}
                 selected={isTagSelected(t, props.userTags)}
                 button
-                onClick={() => props.toggleWebsiteTag(t, props.item?.websiteId)}
+                onClick={() => props.toggleWebsiteTag(t, props.item?.id)}
               >
                 <ListItemText primary={t} />
                 <ListItemSecondaryAction>
@@ -249,8 +249,8 @@ export const WebsiteDialog = (props: {
                 disableElevation={false}
                 variant="outlined"
                 onClick={() => {
-                  if (props.item?.websiteId) {
-                    void hideUrl(props.item?.websiteId);
+                  if (props.item?.id) {
+                    void hideUrl(props.item?.id);
                   }
                   props.close();
                 }}

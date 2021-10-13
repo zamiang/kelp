@@ -103,7 +103,7 @@ const WebsiteImage = (props: {
         }}
         size="large"
       >
-        <img src={`chrome://favicon/size/48@1x/${props.item.websiteId}`} height="16" width="16" />
+        <img src={`chrome://favicon/size/48@1x/${props.item.id}`} height="16" width="16" />
       </IconButton>
     </Root>
   );
@@ -124,22 +124,22 @@ export const LargeWebsite = (props: {
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
-      const w = await props.store.websiteStore.getById(props.item.websiteId);
+      const w = await props.store.websiteStore.getById(props.item.id);
       return isSubscribed && setWebsite(w);
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.item.websiteId]);
+  }, [props.item.id]);
 
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
-      const i = await props.store.websiteImageStore.getById(props.item.websiteId);
+      const i = await props.store.websiteImageStore.getById(props.item.id);
       return isSubscribed && setImage(i);
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.item.websiteId]);
+  }, [props.item.id]);
 
   return (
     <Root>

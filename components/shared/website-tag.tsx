@@ -99,7 +99,7 @@ export const WebsiteTags = (props: {
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
-      const website = await props.store.websiteStore.getById(props.item.websiteId);
+      const website = await props.store.websiteStore.getById(props.item.id);
       if (website?.tags) {
         const i = await getTagsForWebsite(website.tags || '', props.userTags);
         return isSubscribed && setWebsiteTags(i);
@@ -109,14 +109,14 @@ export const WebsiteTags = (props: {
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
-  }, [props.item.websiteId, props.userTags.length]);
+  }, [props.item.id, props.userTags.length]);
 
   return (
     <Root className={classes.tags}>
       {websiteTags.map((tag) => (
         <div
-          key={`${tag}-${props.item.websiteId}`}
-          onClick={() => props.toggleWebsiteTag(tag, props.item.websiteId)}
+          key={`${tag}-${props.item.id}`}
+          onClick={() => props.toggleWebsiteTag(tag, props.item.id)}
           className={clsx(classes.tag, isTagSelected(tag, props.userTags) && classes.tagSelected)}
         >
           <Typography variant="body2">{tag}</Typography>

@@ -4,7 +4,7 @@ import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
 import { FeaturedMeeting } from './featured-meeting';
 
 const PREFIX = 'MeetingHighlight';
@@ -25,6 +25,7 @@ export const MeetingHighlight = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  websiteCache: IWebsiteCache;
 }) => {
   const currentTime = new Date();
   const [meetingsByDay, setMeetingsByDay] = useState<Dictionary<ISegment[]>>({});
@@ -67,6 +68,7 @@ export const MeetingHighlight = (props: {
         showWebsitePopup={props.showWebsitePopup}
         websiteTags={props.websiteTags}
         toggleWebsiteTag={props.toggleWebsiteTag}
+        websiteCache={props.websiteCache}
       />
     </Root>
   );

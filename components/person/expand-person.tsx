@@ -24,6 +24,7 @@ import { getAssociates } from '../store/helpers';
 import { IStore } from '../store/use-store';
 import {
   IFeaturedWebsite,
+  IWebsiteCache,
   fetchWebsitesForMeetingFiltered,
 } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
@@ -36,6 +37,7 @@ const ExpandPerson = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
+  websiteCache: IWebsiteCache;
 }) => {
   const { slug }: any = useParams();
   const personId = props.personId || decodeURIComponent(slug);
@@ -200,7 +202,7 @@ const ExpandPerson = (props: {
             </Typography>
             <Grid container spacing={isMobile ? 5 : 6}>
               {websites.map((item) => (
-                <Grid item xs={3} key={item.websiteId}>
+                <Grid item xs={3} key={item.id}>
                   <LargeWebsite
                     item={item}
                     store={props.store}
@@ -252,6 +254,7 @@ const ExpandPerson = (props: {
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               showWebsitePopup={props.showWebsitePopup}
+              websiteCache={props.websiteCache}
             />
           </div>
         )}
@@ -267,6 +270,7 @@ const ExpandPerson = (props: {
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               showWebsitePopup={props.showWebsitePopup}
+              websiteCache={props.websiteCache}
             />
           </div>
         )}

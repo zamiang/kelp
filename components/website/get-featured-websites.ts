@@ -1,6 +1,7 @@
 import { flatten, uniqBy } from 'lodash';
+import config from '../../constants/config';
 import { getValueForDate } from '../shared/order-by-count';
-import { IDocument, ISegment } from '../store/data-types';
+import { IDocument, ISegment, IWebsiteItem } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
 export const fetchWebsitesForMeetingFiltered = async (
@@ -30,12 +31,48 @@ export const fetchWebsitesForMeetingFiltered = async (
 
 export interface IFeaturedWebsite {
   documentId?: string;
-  websiteId: string;
-  url: string;
+  id: string;
+  rawUrl: string;
   document?: IDocument;
   meetings: ISegment[];
-  date: Date;
+  lastVisited: Date;
+  visitCount: number;
 }
+
+export interface IWebsiteCacheItem extends IWebsiteItem {
+  document?: IDocument;
+  meetings: ISegment[];
+  lastVisited: Date;
+  visitCount: number;
+}
+
+export type IWebsiteCache = { [websiteId: string]: IWebsiteCacheItem };
+
+export const getWebsitesCache = async (
+  websiteVisitStore: IStore['websiteVisitStore'],
+  websiteStore: IStore['websiteStore'],
+  domainBlocklistStore: IStore['domainBlocklistStore'],
+  websiteBlocklistStore: IStore['websiteBlocklistStore'],
+) => {
+  const websiteCache: { [websiteId: string]: IWebsiteCacheItem } = {};
+
+  const websites = await websiteStore.getAll(domainBlocklistStore, websiteBlocklistStore);
+
+  const websiteVisits = await websiteVisitStore.getAll(domainBlocklistStore, websiteBlocklistStore);
+
+  websites.forEach(
+    (w) =>
+      (websiteCache[w.id] = { ...w, meetings: [], visitCount: 0, lastVisited: config.startDate }),
+  );
+
+  websiteVisits.forEach((item) => {
+    websiteCache[item.websiteId].visitCount =
+      websiteCache[item.websiteId].visitCount + getValueForDate(item.visitedTime);
+    websiteCache[item.websiteId].lastVisited = item.visitedTime;
+    websiteCache[item.websiteId].meetings = item.segmentId ? [item.segmentId] : ([] as any);
+  });
+  return websiteCache;
+};
 
 /*
 const getWebsitesForTags = async (store: IStore, tags: string[]) => {
@@ -80,20 +117,19 @@ export const getFeaturedWebsites = async (props: IStore) => {
     return {
       meetings: item.segmentId ? [item.segmentId] : ([] as any),
       nextMeetingStartsAt: undefined,
-      websiteId: item.websiteId,
-      url: item.url,
-      date: item.visitedTime,
+      id: item.websiteId,
+      rawUrl: item.url,
+      lastVisited: item.visitedTime,
+      visitCount: urlCount[item.websiteId],
     } as IFeaturedWebsite;
   });
 
-  const concattedWebsitesAndDocuments = uniqBy(
-    websiteVisits.sort((a, b) => (a.date > b.date ? -1 : 1)),
+  const websites = uniqBy(
+    websiteVisits.sort((a, b) => (a.lastVisited > b.lastVisited ? -1 : 1)),
     'websiteId',
   );
 
-  return concattedWebsitesAndDocuments.sort((a, b) =>
-    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
-  );
+  return websites.sort((a, b) => (urlCount[a.id] > urlCount[b.id] ? -1 : 1));
 };
 
 /**
@@ -155,10 +191,11 @@ export const getWebsitesForMeeting = async (
           documentId: item.documentId,
           meetings: [meeting],
           nextMeetingStartsAt: undefined,
-          websiteId: link,
-          url: link,
-          date: item.date,
+          id: link,
+          rawUrl: link,
+          lastVisited: item.date,
           isPinned: pinIndex[link] ? true : false,
+          visitCount: urlCount[link],
         } as IFeaturedWebsite;
       }),
     )
@@ -173,18 +210,21 @@ export const getWebsitesForMeeting = async (
     return {
       meetings: [meeting],
       nextMeetingStartsAt: undefined,
-      websiteId: item.websiteId,
-      url: item.url,
-      date: item.visitedTime,
+      id: item.websiteId,
+      rawUrl: item.url,
+      lastVisited: item.visitedTime,
       isPinned: pinIndex[item.url] ? true : false,
+      visitCount: urlCount[item.url],
     } as IFeaturedWebsite;
   });
 
   const concattedWebsitesAndDocuments = uniqBy(
-    currentUserDocuments.concat(websiteVisits).sort((a, b) => (a.date > b.date ? -1 : 1)),
+    currentUserDocuments
+      .concat(websiteVisits)
+      .sort((a, b) => (a.lastVisited > b.lastVisited ? -1 : 1)),
     'websiteId',
   );
   return concattedWebsitesAndDocuments.sort((a, b) =>
-    urlCount[a.websiteId] > urlCount[b.websiteId] ? -1 : 1,
+    urlCount[a.id] > urlCount[b.id] ? -1 : 1,
   ) as any;
 };
