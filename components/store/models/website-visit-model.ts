@@ -90,7 +90,9 @@ export default class WebsiteVisitModel {
 
   async cleanup() {
     const websites = await this.db.getAll('websiteVisit');
-    const websitesToDelete = websites.filter((site) => site.visitedTime < config.startDate);
+    const websitesToDelete = websites.filter(
+      (site) => !site.visitedTime || site.visitedTime < config.startDate,
+    );
     const tx = this.db.transaction('websiteVisit', 'readwrite');
     const results = await Promise.allSettled(
       websitesToDelete.map((item) => tx.store.delete(item.id)),

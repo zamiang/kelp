@@ -1,4 +1,5 @@
 import { uniq } from 'lodash';
+import config from '../../../constants/config';
 import ErrorTracking from '../../error-tracking/error-tracking';
 import { IChromeWebsite } from '../../fetch/chrome/fetch-history';
 import { cleanupUrl } from '../../shared/cleanup-url';
@@ -35,6 +36,43 @@ export default class WebsiteItemModel {
   ) {
     const websites = await this.db.getAll('websiteItem');
     return this.filterWebsites(websites, domainBlocklistStore, websiteBlocklistStore);
+  }
+
+  async cleanup() {
+    const websites = await this.db.getAll('websiteItem');
+    const visits = await this.db.getAll('websiteVisit');
+
+    const websiteIdByLastVisited: { [websiteId: string]: Date } = {};
+    visits.forEach((v) => {
+      const currentValue = websiteIdByLastVisited[v.websiteId];
+      if (currentValue) {
+        if (v.visitedTime > currentValue) {
+          websiteIdByLastVisited[v.websiteId] = v.visitedTime;
+        }
+      } else {
+        websiteIdByLastVisited[v.websiteId] = v.visitedTime;
+      }
+    });
+    const websiteIdsToDelete = websites.filter((w) => {
+      const lastVisited = websiteIdByLastVisited[w.id];
+      if (!lastVisited || lastVisited < config.startDate) {
+        return true;
+      }
+      return false;
+    });
+
+    const tx = this.db.transaction('websiteItem', 'readwrite');
+    const results = await Promise.allSettled(
+      websiteIdsToDelete.map((website) => tx.store.delete(website.id)),
+    );
+    await tx.done;
+
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        ErrorTracking.logErrorInRollbar(result.reason);
+      }
+    });
+    return;
   }
 
   async filterWebsites(

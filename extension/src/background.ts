@@ -123,7 +123,7 @@ const captureVisibleTab = (url: string) => {
     null as any,
     {
       format: 'jpeg',
-      quality: 5,
+      quality: 1,
     },
     (image) => {
       if (url && image) {

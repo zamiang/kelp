@@ -9,7 +9,6 @@ import {
   ISegment,
   ISegmentDocument,
   ISegmentTag,
-  IWebsite,
   IWebsiteBlocklist,
   IWebsiteImage,
   IWebsiteItem,
@@ -17,7 +16,6 @@ import {
   IWebsiteTag,
   IWebsiteVisit,
 } from './data-types';
-import { ITfidfRow } from './models/tfidf-model';
 
 interface Db extends DBSchema {
   document: {
@@ -33,11 +31,6 @@ interface Db extends DBSchema {
       'by-email': string;
       'is-self': string;
     };
-  };
-  tfidf: {
-    value: ITfidfRow;
-    key: string;
-    indexes: { 'by-type': string };
   };
   meeting: {
     value: ISegment;
@@ -74,16 +67,6 @@ interface Db extends DBSchema {
       'by-segment-id': string;
       'by-day': number;
       'by-week': number;
-    };
-  };
-  website: {
-    value: IWebsite;
-    key: string;
-    indexes: {
-      'by-raw-url': string;
-      'by-domain': string;
-      'by-segment-id': string;
-      'by-segment-title': string;
     };
   };
   websiteItem: {
@@ -142,11 +125,27 @@ const dbNameHash = {
   extension: 'kelp-extension',
 };
 
-const databaseVerson = 15;
+const databaseVerson = 16;
 
 const options = {
   upgrade(db: IDBPDatabase<Db>, oldVersion: number) {
     console.log('upgrading from ', oldVersion, 'to', databaseVerson);
+    if (oldVersion < 16) {
+      try {
+        db.deleteObjectStore('website' as any);
+      } catch (e) {
+        console.log(e);
+      }
+      try {
+        db.deleteObjectStore('tfidf' as any);
+      } catch (e) {
+        console.log(e);
+      }
+
+      if (oldVersion === 15) {
+        return;
+      }
+    }
     if (oldVersion < 15) {
       try {
         db.deleteObjectStore('driveActivity' as any);
@@ -243,11 +242,6 @@ const options = {
     attendeeStore.createIndex('by-week', 'week', { unique: false });
     attendeeStore.createIndex('by-email', 'emailAddress', { unique: false });
 
-    const tfidfStore = db.createObjectStore('tfidf', {
-      keyPath: 'id',
-    });
-    tfidfStore.createIndex('by-type', 'type', { unique: false });
-
     const segmentDocumentStore = db.createObjectStore('segmentDocument', {
       keyPath: 'id',
     });
@@ -260,15 +254,6 @@ const options = {
     segmentDocumentStore.createIndex('by-week', 'week', { unique: false });
     segmentDocumentStore.createIndex('by-person-id', 'personId', { unique: false });
     segmentDocumentStore.createIndex('by-segment-title', 'segmentTitle', { unique: false });
-
-    // website store
-    const websiteStore = db.createObjectStore('website', {
-      keyPath: 'id',
-    });
-    websiteStore.createIndex('by-domain', 'domain', { unique: false });
-    websiteStore.createIndex('by-segment-id', 'meetingId', { unique: false });
-    websiteStore.createIndex('by-segment-title', 'meetingName', { unique: false });
-    websiteStore.createIndex('by-raw-url', 'rawUrl', { unique: false });
 
     // website image
     const websiteImageStore = db.createObjectStore('websiteImage', {
@@ -404,7 +389,7 @@ const deleteAllStores = (db: IDBPDatabase<Db>) => {
   }
 
   try {
-    db.deleteObjectStore('tfidf');
+    db.deleteObjectStore('tfidf' as any);
   } catch (e) {
     console.log(e);
   }
@@ -434,7 +419,7 @@ const deleteAllStores = (db: IDBPDatabase<Db>) => {
   }
 
   try {
-    db.deleteObjectStore('website');
+    db.deleteObjectStore('website' as any);
   } catch (e) {
     console.log(e);
   }

@@ -39,7 +39,7 @@ export default class AttendeeModel {
 
   async cleanup() {
     const attendees = await this.getAll();
-    const attendeesToDelete = attendees.filter((a) => a.date < config.startDate);
+    const attendeesToDelete = attendees.filter((a) => !a.date || a.date < config.startDate);
     const tx = this.db.transaction('attendee', 'readwrite');
     const results = await Promise.allSettled(
       attendeesToDelete.map((item) => tx.store.delete(item.id)),

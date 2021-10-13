@@ -8,7 +8,6 @@ export default class WebsiteImageModel {
   private db: dbType;
 
   constructor(db: dbType) {
-    // console.warn('setting up website store');
     this.db = db;
   }
 
@@ -23,7 +22,7 @@ export default class WebsiteImageModel {
 
   async cleanup() {
     const images = await this.getAll();
-    const imagesToDelete = images.filter((image) => image.date < config.startDate);
+    const imagesToDelete = images.filter((image) => !image.date || image.date < config.startDate);
     const tx = this.db.transaction('websiteImage', 'readwrite');
     const results = await Promise.allSettled(
       imagesToDelete.map((item) => tx.store.delete(item.id)),
