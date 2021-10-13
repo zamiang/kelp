@@ -62,9 +62,8 @@ const Root = styled('div')(({ theme }) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 3,
-    paddingTop: 'calc(33% - 18px)',
-    paddingBottom: 'calc(33% - 18px)',
+    paddingTop: 'calc(30.9% - 16px)',
+    paddingBottom: 'calc(30.9% - 16px)',
   },
   [`& .${classes.textContainer}`]: {},
   [`& .${classes.icon}`]: {
@@ -97,7 +96,7 @@ const WebsiteImage = (props: {
     );
   }
   return (
-    <div className={classes.faviconContainer}>
+    <Root className={classes.faviconContainer}>
       <IconButton
         style={{
           backgroundColor: props.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -106,7 +105,7 @@ const WebsiteImage = (props: {
       >
         <img src={`chrome://favicon/size/48@1x/${props.item.websiteId}`} height="16" width="16" />
       </IconButton>
-    </div>
+    </Root>
   );
 };
 
@@ -155,7 +154,7 @@ export const LargeWebsite = (props: {
         </Box>
         <Tooltip title={website?.title || ''}>
           <Typography noWrap className={classes.text}>
-            {website?.title}
+            {website ? website.title : 'loading'}
           </Typography>
         </Tooltip>
       </Link>
