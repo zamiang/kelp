@@ -21,7 +21,11 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { Summary } from '../summary/summary';
 import Settings from '../user-profile/settings';
-import { IFeaturedWebsite } from '../website/get-featured-websites';
+import {
+  IFeaturedWebsite,
+  IWebsiteCache,
+  getWebsitesCache,
+} from '../website/get-featured-websites';
 import { TagHighlights } from '../website/tag-highlights';
 import { WebsiteDialog } from '../website/website-dialog';
 import { WebsiteHighlights } from '../website/website-highlights';
@@ -87,6 +91,20 @@ export const DesktopDashboard = (props: {
   const router = useHistory();
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [websitePopupItem, setWebsitePopupItem] = useState<IFeaturedWebsite | undefined>();
+  const [websiteCache, setWebsiteCache] = useState<IWebsiteCache>({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const cache = await getWebsitesCache(
+        props.store.websiteVisitStore,
+        props.store.websiteStore,
+        props.store.domainBlocklistStore,
+        props.store.websiteBlocklistStore,
+      );
+      setWebsiteCache(cache);
+    };
+    void fetchData();
+  }, [props.store.isLoading]);
 
   const showWebsitePopup = (item: IFeaturedWebsite) => {
     setWebsitePopupItem(item);
@@ -178,6 +196,7 @@ export const DesktopDashboard = (props: {
                       websiteTags={websiteTags}
                       toggleWebsiteTag={toggleWebsiteTagClick}
                       showWebsitePopup={showWebsitePopup}
+                      websiteCache={websiteCache}
                     />
                   </Route>
                   <Route path="/meetings/:slug">
@@ -187,10 +206,11 @@ export const DesktopDashboard = (props: {
                       websiteTags={websiteTags}
                       showWebsitePopup={showWebsitePopup}
                       toggleWebsiteTag={toggleWebsiteTagClick}
+                      websiteCache={websiteCache}
                     />
                   </Route>
                   <Route path="/documents/:slug">
-                    <ExpandedDocument store={store} />
+                    <ExpandedDocument store={store} websiteCache={websiteCache} />
                   </Route>
                   <Route path="/people/:slug">
                     <ExpandPerson
@@ -199,6 +219,7 @@ export const DesktopDashboard = (props: {
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
+                      websiteCache={websiteCache}
                     />
                   </Route>
                   <Route path="/meetings">
@@ -208,6 +229,7 @@ export const DesktopDashboard = (props: {
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
+                      websiteCache={websiteCache}
                     />
                   </Route>
                   <Route path="/calendar">
@@ -227,6 +249,7 @@ export const DesktopDashboard = (props: {
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
+                      websiteCache={websiteCache}
                     />
                     <TagHighlights
                       store={props.store}
@@ -234,14 +257,16 @@ export const DesktopDashboard = (props: {
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
+                      websiteCache={websiteCache}
                     />
-                    <div id="tag-all">
+                    <div id="tag-all" style={{ marginBottom: 30 }}>
                       <WebsiteHighlights
                         store={store}
                         toggleWebsiteTag={toggleWebsiteTagClick}
                         websiteTags={websiteTags}
                         isDarkMode={props.isDarkMode}
                         showWebsitePopup={showWebsitePopup}
+                        websiteCache={websiteCache}
                       />
                     </div>
                   </Route>

@@ -8,52 +8,9 @@ import PlusIcon from '../../public/icons/plus-orange.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { Root, classes } from './draggable-website-highlights';
-import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
+import { Root, classes, fetchData } from './draggable-website-highlights';
+import { IFeaturedWebsite, IWebsiteCache } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
-
-const maxResult = 8;
-const maxDisplay = maxResult * 8;
-
-const fetchData = async (
-  store: IStore,
-  shouldShowAll: boolean,
-  setWebsites: (websites: IFeaturedWebsite[]) => void,
-  setExtraItemsCount: (n: number) => void,
-  maxWebsites: number,
-  isSubscribed: boolean,
-  filterByTag?: string,
-) => {
-  const featuredWebsites = await getFeaturedWebsites(store);
-
-  const websiteMap: any = {};
-  await Promise.all(
-    featuredWebsites.map(async (item) => {
-      const website = await store.websiteStore.getById(item.websiteId);
-      if (website) {
-        websiteMap[website.id] = website;
-      }
-    }),
-  );
-
-  const filtereredWebsites = featuredWebsites.filter((item) => {
-    if (filterByTag) {
-      const website = websiteMap[item.websiteId];
-      const tags = website?.tags;
-      return tags && tags.indexOf(filterByTag) > -1;
-    }
-    return true;
-  });
-
-  const extraResultLength = filtereredWebsites.length - maxResult;
-  isSubscribed &&
-    setExtraItemsCount(extraResultLength > maxDisplay ? maxDisplay : extraResultLength);
-  if (shouldShowAll) {
-    return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
-  } else {
-    return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites));
-  }
-};
 
 export const WebsiteHighlights = (props: {
   store: IStore;
@@ -61,6 +18,7 @@ export const WebsiteHighlights = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   filterByTag?: string;
+  websiteCache: IWebsiteCache;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
@@ -73,7 +31,7 @@ export const WebsiteHighlights = (props: {
   useEffect(() => {
     let isSubscribed = true;
     void fetchData(
-      props.store,
+      props.websiteCache,
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
@@ -82,7 +40,7 @@ export const WebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading, shouldShowAll, props.filterByTag, isLarge]);
+  }, [Object.keys(props.websiteCache).length, shouldShowAll, props.filterByTag, isLarge]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
@@ -115,7 +73,7 @@ export const WebsiteHighlights = (props: {
         <Grid item xs={12}>
           <Grid container spacing={6}>
             {topWebsites.map((item) => (
-              <Grid item xs={isLarge ? 3 : 4} key={item.websiteId}>
+              <Grid item xs={isLarge ? 3 : 4} key={item.id}>
                 <LargeWebsite
                   item={item}
                   store={props.store}

@@ -5,7 +5,7 @@ import { FeaturedMeeting } from '../meeting/featured-meeting';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
 
 const PREFIX = 'AttendeeList';
 
@@ -31,6 +31,7 @@ const Meetings = (props: {
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
+  websiteCache: IWebsiteCache;
 }) => {
   const [meetings, setMeetings] = useState<ISegment[]>([]);
 
@@ -63,6 +64,7 @@ const Meetings = (props: {
             websiteTags={props.websiteTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
             showWebsitePopup={props.showWebsitePopup}
+            websiteCache={props.websiteCache}
           />
         ))}
       </div>

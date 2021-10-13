@@ -26,7 +26,11 @@ import {
 } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
-import { IFeaturedWebsite, getWebsitesForMeeting } from '../website/get-featured-websites';
+import {
+  IFeaturedWebsite,
+  IWebsiteCache,
+  getWebsitesForMeeting,
+} from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 import { WebsiteHighlights } from '../website/website-highlights';
 import { isSegmentTagSelected } from './featured-meeting';
@@ -39,7 +43,7 @@ const EmailGuestsButton = (props: {
   websiteStore: IStore['websiteStore'];
 }) => {
   const [websites, setWebsites] = useState<(IWebsiteItem | undefined)[]>([]);
-  const websiteIds = props.websites.map((w) => w.websiteId);
+  const websiteIds = props.websites.map((w) => w.id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +83,7 @@ const ExpandedMeeting = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
+  websiteCache: IWebsiteCache;
 }) => {
   const { slug }: any = useParams();
   const meetingId = props.meetingId || slug;
@@ -302,7 +307,7 @@ const ExpandedMeeting = (props: {
             {currentTag === 'all' && (
               <Grid container spacing={isMobile ? 5 : 6}>
                 {websites.map((item) => (
-                  <Grid item xs={3} key={item.websiteId}>
+                  <Grid item xs={3} key={item.id}>
                     <LargeWebsite
                       item={item}
                       store={props.store}
@@ -323,6 +328,7 @@ const ExpandedMeeting = (props: {
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 showWebsitePopup={props.showWebsitePopup}
                 filterByTag={currentTag}
+                websiteCache={props.websiteCache}
               />
             )}
           </div>

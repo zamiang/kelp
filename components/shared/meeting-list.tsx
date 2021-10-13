@@ -12,13 +12,14 @@ import { Row, classes } from '../shared/row-styles';
 import { ISegment, IWebsiteTag } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
 
 export const Meeting = (props: {
   meeting: ISegment;
   personStore: PersonDataStore;
   info?: string;
   isSmall?: boolean;
+  websiteCache: IWebsiteCache;
 }) => {
   const router = useHistory();
   const opacity = props.meeting.start > new Date() ? 0.5 : 0.3;
@@ -77,6 +78,7 @@ const MeetingList = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
+  websiteCache: IWebsiteCache;
 }) => {
   if (props.segments.length < 1) {
     return <Typography variant="caption">None</Typography>;
@@ -100,6 +102,7 @@ const MeetingList = (props: {
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               showWebsitePopup={props.showWebsitePopup}
+              websiteCache={props.websiteCache}
             />
           ),
       )}

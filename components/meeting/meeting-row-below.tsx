@@ -10,6 +10,7 @@ import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import {
   IFeaturedWebsite,
+  IWebsiteCache,
   fetchWebsitesForMeetingFiltered,
 } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
@@ -51,6 +52,7 @@ const MeetingRowBelow = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   toggleMeetingTag: (tag: string, meetingId: string, meetingSummary: string) => void;
   shouldHideShowAll?: boolean;
+  websiteCache: IWebsiteCache;
 }) => {
   const [websites, setWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -82,7 +84,7 @@ const MeetingRowBelow = (props: {
     <StyledGrid item xs={props.isFullWidth ? 12 : 11}>
       <Grid container columnSpacing={5}>
         {websites.map((item) => (
-          <Grid item xs={isLarge ? 3 : 4} key={item.websiteId}>
+          <Grid item xs={isLarge ? 3 : 4} key={item.id}>
             <LargeWebsite
               item={item}
               store={props.store}
@@ -116,6 +118,7 @@ const MeetingRowBelow = (props: {
             showWebsitePopup={props.showWebsitePopup}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
+            websiteCache={props.websiteCache}
           />
         </div>
       ))}

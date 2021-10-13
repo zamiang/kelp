@@ -12,7 +12,7 @@ import VideoIconWhite from '../../public/icons/video-white.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
-import { IFeaturedWebsite } from '../website/get-featured-websites';
+import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
 const PREFIX = 'FeaturedMeeting';
@@ -155,6 +155,7 @@ export const FeaturedMeeting = (props: {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
+  websiteCache: IWebsiteCache;
 }) => {
   const router = useHistory();
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
@@ -298,6 +299,7 @@ export const FeaturedMeeting = (props: {
                   toggleMeetingTag={toggleMeetingTag}
                   showWebsitePopup={props.showWebsitePopup}
                   shouldHideShowAll={true}
+                  websiteCache={props.websiteCache}
                 />
               </Grid>
             </Grid>
@@ -314,6 +316,7 @@ export const FeaturedMeeting = (props: {
               toggleMeetingTag={toggleMeetingTag}
               shouldHideShowAll={true}
               showWebsitePopup={props.showWebsitePopup}
+              websiteCache={props.websiteCache}
             />
           )}
         </Grid>

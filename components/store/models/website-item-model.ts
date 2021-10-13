@@ -194,7 +194,7 @@ export default class WebsiteItemModel {
   async saveOrder(websiteItems: IFeaturedWebsite[]) {
     const results = await Promise.allSettled(
       websiteItems.map(async (featuredWebsite, index) => {
-        const existingItem = await this.getById(featuredWebsite.websiteId);
+        const existingItem = await this.getById(featuredWebsite.id);
         if (existingItem) {
           const website = { ...existingItem, index };
           await this.db.put('websiteItem', website);

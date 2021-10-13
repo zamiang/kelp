@@ -5,7 +5,7 @@ import React from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { DraggableWebsiteHighlights } from './draggable-website-highlights';
-import { IFeaturedWebsite } from './get-featured-websites';
+import { IFeaturedWebsite, IWebsiteCache } from './get-featured-websites';
 
 const PREFIX = 'TagHighlights';
 
@@ -25,6 +25,7 @@ export const TagHighlights = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  websiteCache: IWebsiteCache;
 }) => {
   const theme = useTheme();
   const orderedTags = props.websiteTags;
@@ -42,6 +43,7 @@ export const TagHighlights = (props: {
             filterByTag={t.tag}
             showWebsitePopup={props.showWebsitePopup}
             maxWebsites={isLarge ? 4 : 3}
+            websiteCache={props.websiteCache}
           />
         </div>
       ))}

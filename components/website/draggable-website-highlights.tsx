@@ -7,10 +7,9 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
-import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite, getFeaturedWebsites } from './get-featured-websites';
+import { IFeaturedWebsite, IWebsiteCache, IWebsiteCacheItem } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
 
 const PREFIX = 'DraggableWebsiteHighlights';
@@ -55,40 +54,34 @@ const reorder = (list: any[], startIndex: number, endIndex: number) => {
   return result;
 };
 
-const fetchData = async (
-  store: IStore,
+export const fetchData = async (
+  websiteCache: IWebsiteCache,
   shouldShowAll: boolean,
-  setWebsites: (websites: IFeaturedWebsite[]) => void,
+  setWebsites: (websites: IWebsiteCacheItem[]) => void,
   setExtraItemsCount: (n: number) => void,
   maxWebsites: number,
   isSubscribed: boolean,
   filterByTag?: string,
 ) => {
-  const featuredWebsites = await getFeaturedWebsites(store);
-
-  const websiteMap: any = {};
-  await Promise.all(
-    featuredWebsites.map(async (item) => {
-      const website = await store.websiteStore.getById(item.websiteId);
-      if (website) {
-        websiteMap[website.id] = website;
-      }
-    }),
-  );
-
-  const filtereredWebsites = featuredWebsites
-    .filter((item) => {
+  const websites = Object.values(websiteCache);
+  const filtereredWebsites = websites
+    .filter((website) => {
       if (filterByTag) {
-        const website = websiteMap[item.websiteId];
-        const tags = website?.tags.trim().split(' ');
+        const tags = website.tags?.trim().split(' ');
         return tags && tags.includes(filterByTag);
       }
       return true;
     })
-    .sort((a, b) => (websiteMap[a.websiteId].index > websiteMap[b.websiteId].index ? 1 : -1));
+    .sort((a, b) => (b.visitCount > a.visitCount ? 1 : -1));
+
+  if (filterByTag) {
+    filtereredWebsites.sort((a, b) => ((a.index || 0) > (b.index || 0) ? 1 : -1));
+  }
 
   const extraResultLength = filtereredWebsites.length - maxWebsites;
   isSubscribed && setExtraItemsCount(extraResultLength > 0 ? extraResultLength : 0);
+
+  // maybe need index?
   if (shouldShowAll) {
     return isSubscribed && setWebsites(filtereredWebsites.slice(0, maxWebsites * 10));
   } else {
@@ -108,7 +101,7 @@ interface IWebsiteProps {
 }
 
 const Website = (props: IWebsiteProps) => (
-  <Draggable draggableId={props.item.websiteId} index={props.index}>
+  <Draggable draggableId={props.item.id} index={props.index}>
     {(provided) => (
       <Grid
         item
@@ -119,7 +112,7 @@ const Website = (props: IWebsiteProps) => (
         style={getItemStyle(provided.draggableProps.style)}
       >
         <LargeWebsite
-          key={props.item.websiteId}
+          key={props.item.id}
           item={props.item}
           store={props.store}
           isDarkMode={props.isDarkMode}
@@ -133,8 +126,8 @@ const Website = (props: IWebsiteProps) => (
 );
 
 const DraggableWebsites = (props: {
-  topWebsites: IFeaturedWebsite[];
-  setTopWebsites: (w: IFeaturedWebsite[]) => void;
+  topWebsites: IWebsiteCacheItem[];
+  setTopWebsites: (w: IWebsiteCacheItem[]) => void;
   store: IStore;
   isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
@@ -170,9 +163,9 @@ const DraggableWebsites = (props: {
             style={getListStyle()}
             {...provided.droppableProps}
           >
-            {props.topWebsites.map((item: IFeaturedWebsite, index: number) => (
+            {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
               <Website
-                key={item.websiteId}
+                key={item.id}
                 index={index}
                 item={item}
                 store={props.store}
@@ -199,15 +192,16 @@ export const DraggableWebsiteHighlights = (props: {
   filterByTag?: string;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
   maxWebsites: number;
+  websiteCache: IWebsiteCache;
 }) => {
-  const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
+  const [topWebsites, setTopWebsites] = useState<IWebsiteCacheItem[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
   useEffect(() => {
     let isSubscribed = true;
     void fetchData(
-      props.store,
+      props.websiteCache,
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
@@ -216,13 +210,10 @@ export const DraggableWebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading, shouldShowAll, props.filterByTag]);
-
-  const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
+  }, [Object.keys(props.websiteCache).length, shouldShowAll, props.filterByTag]);
 
   return (
     <Root style={{ position: 'relative' }}>
-      {shouldRenderLoading && <LoadingSpinner />}
       <Grid
         container
         alignItems="center"

@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { Meeting } from '../../components/shared/meeting-list';
 import { IPerson, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { IWebsiteCache } from '../website/get-featured-websites';
 import { getTooltipText } from './tooltip-text';
 
 const SegmentDocumentItem = (props: {
   personStore: IStore['personDataStore'];
   timeStore: IStore['timeDataStore'];
   segmentDocument: ISegmentDocument;
+  websiteCache: IWebsiteCache;
 }) => {
   const [meeting, setMeeting] = useState<ISegment | undefined>(undefined);
   const [person, setPerson] = useState<IPerson | undefined>(undefined);
@@ -46,6 +48,7 @@ const SegmentDocumentItem = (props: {
       meeting={meeting}
       info={belowText}
       isSmall={true}
+      websiteCache={props.websiteCache}
     />
   );
 };
@@ -54,6 +57,7 @@ const SegmentMeetingList = (props: {
   segmentDocuments: ISegmentDocument[];
   personStore: IStore['personDataStore'];
   timeStore: IStore['timeDataStore'];
+  websiteCache: IWebsiteCache;
 }) => {
   const segmentDocuments = uniqBy(
     props.segmentDocuments.sort((a, b) => (a.date > b.date ? -1 : 1)),
@@ -70,6 +74,7 @@ const SegmentMeetingList = (props: {
           personStore={props.personStore}
           segmentDocument={segmentDocument}
           timeStore={props.timeStore}
+          websiteCache={props.websiteCache}
         />
       ))}
     </div>
