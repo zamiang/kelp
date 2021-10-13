@@ -30,7 +30,6 @@ export const WebsiteHighlights = (props: {
 
   useEffect(() => {
     let isSubscribed = true;
-    console.log('fetching website highlights');
     void fetchData(
       props.websiteCache,
       shouldShowAll,

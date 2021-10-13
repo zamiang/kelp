@@ -72,7 +72,11 @@ export const fetchData = async (
       }
       return true;
     })
-    .sort((a, b) => (a.visitCount > b.visitCount ? 1 : -1));
+    .sort((a, b) => (b.visitCount > a.visitCount ? 1 : -1));
+
+  if (filterByTag) {
+    filtereredWebsites.sort((a, b) => ((a.index || 0) > (b.index || 0) ? 1 : -1));
+  }
 
   const extraResultLength = filtereredWebsites.length - maxWebsites;
   isSubscribed && setExtraItemsCount(extraResultLength > 0 ? extraResultLength : 0);
@@ -196,7 +200,6 @@ export const DraggableWebsiteHighlights = (props: {
 
   useEffect(() => {
     let isSubscribed = true;
-    console.log('fethcing highlights for ', props.filterByTag);
     void fetchData(
       props.websiteCache,
       shouldShowAll,
