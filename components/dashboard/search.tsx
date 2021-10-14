@@ -120,7 +120,7 @@ const WebsiteResults = (props: {
       visitCount: 0,
     } as IFeaturedWebsite;
   });
-  const filteredWebsites = uniqBy(websites, 'websiteId');
+  const filteredWebsites = uniqBy(websites, 'id');
 
   return (
     <React.Fragment>

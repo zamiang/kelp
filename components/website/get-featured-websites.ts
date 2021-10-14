@@ -128,7 +128,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
 
   const websites = uniqBy(
     websiteVisits.sort((a, b) => (a.lastVisited > b.lastVisited ? -1 : 1)),
-    'websiteId',
+    'id',
   );
 
   return websites.sort((a, b) => (urlCount[a.id] > urlCount[b.id] ? -1 : 1));
@@ -224,7 +224,7 @@ export const getWebsitesForMeeting = async (
     currentUserDocuments
       .concat(websiteVisits)
       .sort((a, b) => (a.lastVisited > b.lastVisited ? -1 : 1)),
-    'websiteId',
+    'id',
   );
   return concattedWebsitesAndDocuments.sort((a, b) =>
     urlCount[a.id] > urlCount[b.id] ? -1 : 1,
