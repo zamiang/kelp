@@ -25,7 +25,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   },
   [`&.${classes.container}`]: {
     background: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: 20,
     height: 39,
   },
   [`& .${classes.icon}`]: {

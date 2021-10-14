@@ -259,7 +259,7 @@ export const DesktopDashboard = (props: {
                       showWebsitePopup={showWebsitePopup}
                       websiteCache={websiteCache}
                     />
-                    <div id="tag-all" style={{ marginBottom: 30 }}>
+                    <div id="tag-all" style={{ marginBottom: 80 }}>
                       <WebsiteHighlights
                         store={store}
                         toggleWebsiteTag={toggleWebsiteTagClick}

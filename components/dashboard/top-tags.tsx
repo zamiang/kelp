@@ -1,11 +1,9 @@
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
-import CloseIcon from '../../public/icons/close.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTaggDialog } from './add-tag-dialog';
@@ -33,17 +31,11 @@ const Root = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.tagContainer}`]: {
-    [`&:hover .${classes.removeButton}`]: {
-      display: 'block',
-    },
     [`&:hover .${classes.dot}`]: {
       width: 10,
       height: 10,
       background: theme.palette.text.primary,
     },
-  },
-  [`& .${classes.removeButton}`]: {
-    display: 'none',
   },
   [`& .${classes.dot}`]: {
     height: 6,
@@ -173,15 +165,6 @@ export const TopTags = (props: {
                               </Typography>
                             </Grid>
                           </Grid>
-                        </Grid>
-                        <Grid item className={classes.removeButton}>
-                          <IconButton
-                            onClick={() => props.toggleWebsiteTag(t.tag)}
-                            size="small"
-                            style={{ padding: 0 }}
-                          >
-                            <CloseIcon width="18" height="18" />
-                          </IconButton>
                         </Grid>
                       </Grid>
                     </Grid>
