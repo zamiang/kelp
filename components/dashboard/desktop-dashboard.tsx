@@ -21,6 +21,7 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { Summary } from '../summary/summary';
 import Settings from '../user-profile/settings';
+import { AddWebsiteToTagDialog } from '../website/add-website-to-tag-dialog';
 import {
   IFeaturedWebsite,
   IWebsiteCache,
@@ -92,18 +93,21 @@ export const DesktopDashboard = (props: {
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [websitePopupItem, setWebsitePopupItem] = useState<IFeaturedWebsite | undefined>();
   const [websiteCache, setWebsiteCache] = useState<IWebsiteCache>({});
+  const [tagForWebsiteToTagDialog, setTagForWebsiteToTagDialog] = useState<string>();
+
+  const updateWebsiteCache = async () => {
+    const cache = await getWebsitesCache(
+      props.store.websiteVisitStore,
+      props.store.websiteStore,
+      props.store.domainBlocklistStore,
+      props.store.websiteBlocklistStore,
+    );
+    (cache as any).LAST_UPDATED = new Date();
+    setWebsiteCache(cache);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const cache = await getWebsitesCache(
-        props.store.websiteVisitStore,
-        props.store.websiteStore,
-        props.store.domainBlocklistStore,
-        props.store.websiteBlocklistStore,
-      );
-      setWebsiteCache(cache);
-    };
-    void fetchData();
+    void updateWebsiteCache();
   }, [props.store.isLoading]);
 
   const showWebsitePopup = (item: IFeaturedWebsite) => {
@@ -161,12 +165,20 @@ export const DesktopDashboard = (props: {
         <WebsiteDialog
           store={props.store}
           item={websitePopupItem}
-          close={() => {
+          close={async () => {
+            await updateWebsiteCache();
             setWebsitePopupItem(undefined);
-            props.store.incrementLoading();
           }}
           toggleWebsiteTag={toggleWebsiteTagClick}
           userTags={websiteTags}
+        />
+        <AddWebsiteToTagDialog
+          store={props.store}
+          close={async () => {
+            await updateWebsiteCache();
+            setTagForWebsiteToTagDialog(undefined);
+          }}
+          tagForWebsiteToTagDialog={tagForWebsiteToTagDialog}
         />
         <div className={classes.content}>
           <TopNav
@@ -258,6 +270,7 @@ export const DesktopDashboard = (props: {
                       isDarkMode={props.isDarkMode}
                       showWebsitePopup={showWebsitePopup}
                       websiteCache={websiteCache}
+                      showAddWebsiteDialog={setTagForWebsiteToTagDialog}
                     />
                     <div id="tag-all" style={{ marginBottom: 80 }}>
                       <WebsiteHighlights

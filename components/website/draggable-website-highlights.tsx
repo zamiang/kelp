@@ -7,6 +7,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
+import RightArrowIcon from '../../public/icons/chevron-right-orange.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, IWebsiteCache, IWebsiteCacheItem } from './get-featured-websites';
@@ -17,6 +18,7 @@ const PREFIX = 'DraggableWebsiteHighlights';
 export const classes = {
   topSection: `${PREFIX}-topSection`,
   button: `${PREFIX}-button`,
+  sideButton: `${PREFIX}-sideButton`,
 };
 
 export const Root = styled('div')(({ theme }) => ({
@@ -28,6 +30,16 @@ export const Root = styled('div')(({ theme }) => ({
   [`& .${classes.button}`]: {
     opacity: 0.5,
     transition: 'opacity 0.3s ease-out',
+    '&:hover': {
+      opacity: 1,
+    },
+  },
+  [`& .${classes.sideButton}`]: {
+    opacity: 0.5,
+    transition: 'opacity 0.3s ease-out',
+    position: 'absolute',
+    right: -50,
+    top: 'calc(50% - 16px)',
     '&:hover': {
       opacity: 1,
     },
@@ -66,6 +78,9 @@ export const fetchData = async (
   const websites = Object.values(websiteCache);
   const filtereredWebsites = websites
     .filter((website) => {
+      if (!website.id) {
+        return false;
+      }
       if (filterByTag) {
         const tags = website.tags?.trim().split(' ');
         return tags && tags.includes(filterByTag);
@@ -191,6 +206,7 @@ export const DraggableWebsiteHighlights = (props: {
   isDarkMode: boolean;
   filterByTag?: string;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  showAddWebsiteDialog: (tag: string) => void;
   maxWebsites: number;
   websiteCache: IWebsiteCache;
 }) => {
@@ -210,7 +226,7 @@ export const DraggableWebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [Object.keys(props.websiteCache).length, shouldShowAll, props.filterByTag]);
+  }, [(props.websiteCache as any).LAST_UPDATED?.valueOf(), shouldShowAll, props.filterByTag]);
 
   return (
     <Root style={{ position: 'relative' }}>
@@ -237,12 +253,12 @@ export const DraggableWebsiteHighlights = (props: {
                 </IconButton>
               </Grid>
             )}
-            {extraItemsCount > 0 && !shouldShowAll && (
+            {props.filterByTag && (
               <Grid item>
                 <IconButton
                   className={classes.button}
                   onClick={() => {
-                    setShouldShowAll(!shouldShowAll);
+                    props.filterByTag && props.showAddWebsiteDialog(props.filterByTag);
                   }}
                 >
                   <PlusIcon width="24" height="24" />
@@ -262,6 +278,16 @@ export const DraggableWebsiteHighlights = (props: {
         showWebsitePopup={props.showWebsitePopup}
         maxWebsites={props.maxWebsites}
       />
+      {extraItemsCount > 0 && !shouldShowAll && (
+        <IconButton
+          className={classes.sideButton}
+          onClick={() => {
+            setShouldShowAll(!shouldShowAll);
+          }}
+        >
+          <RightArrowIcon width="32" height="32" />
+        </IconButton>
+      )}
     </Root>
   );
 };

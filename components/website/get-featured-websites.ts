@@ -46,7 +46,9 @@ export interface IWebsiteCacheItem extends IWebsiteItem {
   visitCount: number;
 }
 
-export type IWebsiteCache = { [websiteId: string]: IWebsiteCacheItem };
+export type IWebsiteCache = {
+  [websiteId: string]: IWebsiteCacheItem;
+};
 
 export const getWebsitesCache = async (
   websiteVisitStore: IStore['websiteVisitStore'],

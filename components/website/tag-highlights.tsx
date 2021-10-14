@@ -25,6 +25,7 @@ export const TagHighlights = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   showWebsitePopup: (item: IFeaturedWebsite) => void;
+  showAddWebsiteDialog: (tag: string) => void;
   websiteCache: IWebsiteCache;
 }) => {
   const theme = useTheme();
@@ -42,6 +43,7 @@ export const TagHighlights = (props: {
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
             showWebsitePopup={props.showWebsitePopup}
+            showAddWebsiteDialog={props.showAddWebsiteDialog}
             maxWebsites={isLarge ? 4 : 3}
             websiteCache={props.websiteCache}
           />

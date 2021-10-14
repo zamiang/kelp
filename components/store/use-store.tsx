@@ -115,7 +115,7 @@ const useStoreWithFetching = (
   const data = FetchAll(googleOauthToken, microsoftAccount, msal);
 
   const [loadingMessage, setLoadingMessage] = useState<string | undefined>('Fetching Data');
-  const [isLoading, setLoading] = useState<number>(0);
+  const [isLoading, setLoading] = useState(0);
 
   const personDataStore = new PersonDataStore(db);
   const timeDataStore = new TimeDataStore(db);

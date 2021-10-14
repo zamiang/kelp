@@ -156,7 +156,7 @@ export default class WebsiteItemModel {
     const id = cleanupUrl(website.url);
     const existingItem = await this.getById(id);
     if (existingItem?.userEdited) {
-      return this.db.put('websiteItem', {
+      const w = {
         id,
         title: website.title || '',
         description: website.description,
@@ -164,13 +164,15 @@ export default class WebsiteItemModel {
         domain: website.domain,
         tags: existingItem.tags, // don't overwrite tags
         ogImage: website.ogImage,
-      });
+      };
+      await this.db.put('websiteItem', w);
+      return w;
     } else {
       const cleanDescription = cleanText(website.description || '');
       const cleanTitle = cleanText(website.title || '');
       const tags = uniq(cleanTitle.concat(cleanDescription)).join(' ');
 
-      return this.db.put('websiteItem', {
+      const w = {
         id,
         title: website.title || '',
         description: website.description,
@@ -178,7 +180,9 @@ export default class WebsiteItemModel {
         domain: website.domain,
         tags,
         ogImage: website.ogImage,
-      });
+      };
+      await this.db.put('websiteItem', w);
+      return w;
     }
   }
 
@@ -204,5 +208,14 @@ export default class WebsiteItemModel {
     );
 
     return results;
+  }
+
+  async moveToFront(websiteId: string) {
+    const existingItem = await this.getById(websiteId);
+    if (existingItem) {
+      const website = { ...existingItem, index: 0 };
+      await this.db.put('websiteItem', website);
+      return website;
+    }
   }
 }

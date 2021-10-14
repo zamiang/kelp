@@ -40,7 +40,12 @@ export const WebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [Object.keys(props.websiteCache).length, shouldShowAll, props.filterByTag, isLarge]);
+  }, [
+    (props.websiteCache as any).LAST_UPDATED?.valueOf(),
+    shouldShowAll,
+    props.filterByTag,
+    isLarge,
+  ]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
