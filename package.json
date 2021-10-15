@@ -36,7 +36,7 @@
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.3.0",
     "@microsoft/microsoft-graph-client": "3.0.0",
-    "@mui/lab": "5.0.0-alpha.50",
+    "@mui/lab": "5.0.0-alpha.51",
     "@mui/material": "5.0.4",
     "@mui/styles": "5.0.1",
     "@rehooks/component-size": "1.0.3",
