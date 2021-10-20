@@ -41,7 +41,7 @@
     "@mui/styles": "5.0.1",
     "@rehooks/component-size": "1.0.3",
     "@types/chrome": "0.0.159",
-    "@types/d3": "7.0.0",
+    "@types/d3": "7.1.0",
     "@types/express": "4.17.13",
     "@types/gapi": "0.0.41",
     "@types/gapi.auth2": "0.0.55",
