@@ -48,7 +48,7 @@
     "@types/gapi.client.calendar": "3.0.10",
     "@types/gapi.client.drive": "3.0.13",
     "@types/gapi.client.people": "1.0.3",
-    "@types/lodash": "4.14.175",
+    "@types/lodash": "4.14.176",
     "@types/pluralize": "0.0.29",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-linkify": "1.0.1",
