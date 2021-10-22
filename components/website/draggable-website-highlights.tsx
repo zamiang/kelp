@@ -87,7 +87,7 @@ export const fetchData = async (
       }
       return true;
     })
-    .sort((a, b) => (b.visitCount > a.visitCount ? 1 : -1));
+    .sort((a, b) => (b?.visitCount > a?.visitCount ? 1 : -1));
 
   if (filterByTag) {
     filtereredWebsites.sort((a, b) => ((a.index || 0) > (b.index || 0) ? 1 : -1));
@@ -111,7 +111,6 @@ interface IWebsiteProps {
   isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   size: number;
 }
 
@@ -133,7 +132,6 @@ const Website = (props: IWebsiteProps) => (
           isDarkMode={props.isDarkMode}
           websiteTags={props.websiteTags}
           toggleWebsiteTag={props.toggleWebsiteTag}
-          showWebsitePopup={props.showWebsitePopup}
         />
       </Grid>
     )}
@@ -147,7 +145,6 @@ const DraggableWebsites = (props: {
   isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   maxWebsites: number;
 }) => {
   const onDragEnd = (result: any) => {
@@ -187,7 +184,6 @@ const DraggableWebsites = (props: {
                 isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
-                showWebsitePopup={props.showWebsitePopup}
                 size={props.maxWebsites > 3 ? 3 : 4}
               />
             ))}
@@ -205,7 +201,6 @@ export const DraggableWebsiteHighlights = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   filterByTag?: string;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   showAddWebsiteDialog: (tag: string) => void;
   maxWebsites: number;
   websiteCache: IWebsiteCache;
@@ -275,7 +270,6 @@ export const DraggableWebsiteHighlights = (props: {
         websiteTags={props.websiteTags}
         isDarkMode={props.isDarkMode}
         toggleWebsiteTag={props.toggleWebsiteTag}
-        showWebsitePopup={props.showWebsitePopup}
         maxWebsites={props.maxWebsites}
       />
       {extraItemsCount > 0 && !shouldShowAll && (

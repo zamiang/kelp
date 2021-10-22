@@ -68,10 +68,12 @@ export const getWebsitesCache = async (
   );
 
   websiteVisits.forEach((item) => {
-    websiteCache[item.websiteId].visitCount =
-      websiteCache[item.websiteId].visitCount + getValueForDate(item.visitedTime);
-    websiteCache[item.websiteId].lastVisited = item.visitedTime;
-    websiteCache[item.websiteId].meetings = item.segmentId ? [item.segmentId] : ([] as any);
+    if (websiteCache[item.websiteId]) {
+      websiteCache[item.websiteId].visitCount =
+        websiteCache[item.websiteId].visitCount + getValueForDate(item.visitedTime);
+      websiteCache[item.websiteId].lastVisited = item.visitedTime;
+      websiteCache[item.websiteId].meetings = item.segmentId ? [item.segmentId] : ([] as any);
+    }
   });
   return websiteCache;
 };

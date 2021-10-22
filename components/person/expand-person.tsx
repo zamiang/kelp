@@ -34,7 +34,6 @@ const ExpandPerson = (props: {
   personId?: string;
   close?: () => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   websiteCache: IWebsiteCache;
@@ -209,7 +208,6 @@ const ExpandPerson = (props: {
                     isDarkMode={props.isDarkMode}
                     websiteTags={props.websiteTags}
                     toggleWebsiteTag={props.toggleWebsiteTag}
-                    showWebsitePopup={props.showWebsitePopup}
                   />
                 </Grid>
               ))}
@@ -253,7 +251,6 @@ const ExpandPerson = (props: {
               isDarkMode={props.isDarkMode}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
-              showWebsitePopup={props.showWebsitePopup}
               websiteCache={props.websiteCache}
             />
           </div>
@@ -269,7 +266,6 @@ const ExpandPerson = (props: {
               isDarkMode={props.isDarkMode}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
-              showWebsitePopup={props.showWebsitePopup}
               websiteCache={props.websiteCache}
             />
           </div>

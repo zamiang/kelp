@@ -48,7 +48,6 @@ const MeetingRowBelow = (props: {
   isFullWidth: boolean;
   websiteTags: IWebsiteTag[];
   meetingTags: ISegmentTag[];
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   toggleMeetingTag: (tag: string, meetingId: string, meetingSummary: string) => void;
   shouldHideShowAll?: boolean;
@@ -92,7 +91,6 @@ const MeetingRowBelow = (props: {
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               isDarkMode={props.isDarkMode}
-              showWebsitePopup={props.showWebsitePopup}
             />
           </Grid>
         ))}
@@ -115,7 +113,6 @@ const MeetingRowBelow = (props: {
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
             websiteTags={props.websiteTags}
-            showWebsitePopup={props.showWebsitePopup}
             isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
             websiteCache={props.websiteCache}

@@ -12,7 +12,7 @@ import VideoIconWhite from '../../public/icons/video-white.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
-import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
+import { IWebsiteCache } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
 
 const PREFIX = 'FeaturedMeeting';
@@ -153,7 +153,6 @@ export const FeaturedMeeting = (props: {
   isDarkMode: boolean;
   happeningSoonLimit?: number;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   websiteCache: IWebsiteCache;
 }) => {
@@ -297,7 +296,6 @@ export const FeaturedMeeting = (props: {
                   meetingTags={relevantTags}
                   toggleWebsiteTag={props.toggleWebsiteTag}
                   toggleMeetingTag={toggleMeetingTag}
-                  showWebsitePopup={props.showWebsitePopup}
                   shouldHideShowAll={true}
                   websiteCache={props.websiteCache}
                 />
@@ -315,7 +313,6 @@ export const FeaturedMeeting = (props: {
               toggleWebsiteTag={props.toggleWebsiteTag}
               toggleMeetingTag={toggleMeetingTag}
               shouldHideShowAll={true}
-              showWebsitePopup={props.showWebsitePopup}
               websiteCache={props.websiteCache}
             />
           )}

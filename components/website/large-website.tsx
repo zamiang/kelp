@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import DotsIcon from '../../public/icons/dots-black.svg';
 import DotsIconWhite from '../../public/icons/dots-white.svg';
 import { WebsiteTags } from '../shared/website-tag';
@@ -113,11 +114,11 @@ export const LargeWebsite = (props: {
   store: IStore;
   item: IFeaturedWebsite;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   smGridSize?: number;
   isDarkMode: boolean;
   websiteTags: IWebsiteTag[];
 }) => {
+  const router = useHistory();
   const [image, setImage] = useState<IWebsiteImage>();
   const [website, setWebsite] = useState<IWebsiteItem>();
 
@@ -173,12 +174,7 @@ export const LargeWebsite = (props: {
           />
         </Grid>
         <Grid item>
-          <IconButton
-            size="small"
-            onClick={() => {
-              void props.showWebsitePopup(props.item);
-            }}
-          >
+          <IconButton size="small" onClick={() => router.push(`/websites/${props.item.id}`)}>
             {props.isDarkMode ? (
               <DotsIconWhite width="16" height="16" />
             ) : (
