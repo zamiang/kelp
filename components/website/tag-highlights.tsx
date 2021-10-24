@@ -5,7 +5,7 @@ import React from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { DraggableWebsiteHighlights } from './draggable-website-highlights';
-import { IFeaturedWebsite, IWebsiteCache } from './get-featured-websites';
+import { IWebsiteCache } from './get-featured-websites';
 
 const PREFIX = 'TagHighlights';
 

@@ -174,7 +174,10 @@ export const LargeWebsite = (props: {
           />
         </Grid>
         <Grid item>
-          <IconButton size="small" onClick={() => router.push(`/websites/${props.item.id}`)}>
+          <IconButton
+            size="small"
+            onClick={() => router.push(`/websites/${encodeURIComponent(props.item.id)}`)}
+          >
             {props.isDarkMode ? (
               <DotsIconWhite width="16" height="16" />
             ) : (

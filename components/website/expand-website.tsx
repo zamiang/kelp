@@ -2,17 +2,36 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, classes } from '../shared/row-styles';
-import { IWebsite, IWebsiteImage, IWebsiteTag } from '../store/data-types';
+import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
+import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import {
-  IFeaturedWebsite,
-  IWebsiteCache,
-  IWebsiteCacheItem,
-} from '../website/get-featured-websites';
+import { IWebsiteCache, IWebsiteCacheItem } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
+
+const PREFIX = 'WebsiteContainer';
+
+const classes = {
+  container: `${PREFIX}-container`,
+  imageContainer: `${PREFIX}-imageContainer`,
+  faviconContainer: `${PREFIX}-faviconContainer`,
+  dots: `${PREFIX}-dots`,
+  tagGroup: `${PREFIX}-tagGroup`,
+  tag: `${PREFIX}-tag`,
+  tagSelected: `${PREFIX}-tagSelected`,
+  section: `${PREFIX}-section`,
+  rowText: `${PREFIX}-rowText`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.container}`]: {
+    display: 'block',
+    margin: `${theme.spacing(1)} auto`,
+  },
+}));
 
 const LargeWebsiteImage = (props: {
   image?: IWebsiteImage;
@@ -66,7 +85,9 @@ const ExpandWebsite = (props: {
       const w = props.websiteCache[websiteId];
       setWebsite(w);
 
-      const websites = Object.values(props.websiteCache);
+      const websites = Object.values(props.websiteCache)
+        .filter((c) => c.domain === w.domain)
+        .sort((a, b) => (b?.visitCount > a?.visitCount ? 1 : -1));
       setWebsitesAtDomain(websites);
 
       const i = await props.store.websiteImageStore.getById(websiteId);
@@ -79,8 +100,10 @@ const ExpandWebsite = (props: {
     return null;
   }
 
+  const websiteTags = getTagsForWebsite(website.tags || '', props.websiteTags);
+
   return (
-    <Row>
+    <Root>
       <Grid container>
         <Grid item xs={8}>
           <Box boxShadow={1} className={classes.container}>
@@ -97,21 +120,18 @@ const ExpandWebsite = (props: {
             {website.title}
           </Typography>
           <div className={classes.tagGroup}>
-            {websiteTags.map((tag) => {
-              const foo = bar;
-              return (
-                <div
-                  key={`${tag}-${websiteId}`}
-                  onClick={() => props.toggleWebsiteTag(tag, props.item.id)}
-                  className={clsx(
-                    classes.tag,
-                    isTagSelected(tag, props.userTags) && classes.tagSelected,
-                  )}
-                >
-                  <Typography variant="body2">{tag}</Typography>
-                </div>
-              );
-            })}
+            {websiteTags.map((tag) => (
+              <div
+                key={`${tag}-${websiteId}`}
+                onClick={() => props.toggleWebsiteTag(tag, websiteId)}
+                className={clsx(
+                  classes.tag,
+                  isTagSelected(tag, props.websiteTags) && classes.tagSelected,
+                )}
+              >
+                <Typography variant="body2">{tag}</Typography>
+              </div>
+            ))}
           </div>
         </Grid>
       </Grid>
@@ -141,7 +161,7 @@ const ExpandWebsite = (props: {
           </div>
         )}
       </div>
-    </Row>
+    </Root>
   );
 };
 

@@ -12,7 +12,7 @@ import { Row, classes } from '../shared/row-styles';
 import { ISegment, IWebsiteTag } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
+import { IWebsiteCache } from '../website/get-featured-websites';
 
 export const Meeting = (props: {
   meeting: ISegment;
