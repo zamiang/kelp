@@ -105,7 +105,6 @@ const WebsiteResults = (props: {
   store: IStore;
   isDarkMode: boolean;
   websites: ISearchItem[];
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
 }) => {
@@ -132,7 +131,6 @@ const WebsiteResults = (props: {
             isDarkMode={props.isDarkMode}
             websiteTags={props.websiteTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
-            showWebsitePopup={props.showWebsitePopup}
           />
         </Grid>
       ))}
@@ -144,7 +142,6 @@ const Search = (props: {
   store: IStore;
   isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   websiteCache: IWebsiteCache;
 }) => {
@@ -243,7 +240,6 @@ const Search = (props: {
                 isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
-                showWebsitePopup={props.showWebsitePopup}
               />
             </Grid>
           </div>
@@ -276,7 +272,6 @@ const Search = (props: {
                 isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
-                showWebsitePopup={props.showWebsitePopup}
                 websiteCache={props.websiteCache}
               />
             ))}

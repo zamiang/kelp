@@ -22,13 +22,9 @@ import { IStore } from '../store/use-store';
 import { Summary } from '../summary/summary';
 import Settings from '../user-profile/settings';
 import { AddWebsiteToTagDialog } from '../website/add-website-to-tag-dialog';
-import {
-  IFeaturedWebsite,
-  IWebsiteCache,
-  getWebsitesCache,
-} from '../website/get-featured-websites';
+import ExpandWebsite from '../website/expand-website';
+import { IWebsiteCache, getWebsitesCache } from '../website/get-featured-websites';
 import { TagHighlights } from '../website/tag-highlights';
-import { WebsiteDialog } from '../website/website-dialog';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
 import { TopNav } from './top-nav';
@@ -91,7 +87,6 @@ export const DesktopDashboard = (props: {
   const store = props.store;
   const router = useHistory();
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
-  const [websitePopupItem, setWebsitePopupItem] = useState<IFeaturedWebsite | undefined>();
   const [websiteCache, setWebsiteCache] = useState<IWebsiteCache>({});
   const [tagForWebsiteToTagDialog, setTagForWebsiteToTagDialog] = useState<string>();
 
@@ -109,10 +104,6 @@ export const DesktopDashboard = (props: {
   useEffect(() => {
     void updateWebsiteCache();
   }, [props.store.isLoading]);
-
-  const showWebsitePopup = (item: IFeaturedWebsite) => {
-    setWebsitePopupItem(item);
-  };
 
   const hash = window.location.hash;
   if (hash.includes('meetings/')) {
@@ -162,16 +153,6 @@ export const DesktopDashboard = (props: {
             <Typography>{store.error}</Typography>
           </Alert>
         </Dialog>
-        <WebsiteDialog
-          store={props.store}
-          item={websitePopupItem}
-          close={async () => {
-            await updateWebsiteCache();
-            setWebsitePopupItem(undefined);
-          }}
-          toggleWebsiteTag={toggleWebsiteTagClick}
-          userTags={websiteTags}
-        />
         <AddWebsiteToTagDialog
           store={props.store}
           close={async () => {
@@ -207,7 +188,15 @@ export const DesktopDashboard = (props: {
                       isDarkMode={props.isDarkMode}
                       websiteTags={websiteTags}
                       toggleWebsiteTag={toggleWebsiteTagClick}
-                      showWebsitePopup={showWebsitePopup}
+                      websiteCache={websiteCache}
+                    />
+                  </Route>
+                  <Route path="/websites/:slug">
+                    <ExpandWebsite
+                      store={store}
+                      isDarkMode={props.isDarkMode}
+                      websiteTags={websiteTags}
+                      toggleWebsiteTag={toggleWebsiteTagClick}
                       websiteCache={websiteCache}
                     />
                   </Route>
@@ -216,7 +205,6 @@ export const DesktopDashboard = (props: {
                       store={store}
                       isDarkMode={props.isDarkMode}
                       websiteTags={websiteTags}
-                      showWebsitePopup={showWebsitePopup}
                       toggleWebsiteTag={toggleWebsiteTagClick}
                       websiteCache={websiteCache}
                     />
@@ -230,7 +218,6 @@ export const DesktopDashboard = (props: {
                       toggleWebsiteTag={toggleWebsiteTagClick}
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
-                      showWebsitePopup={showWebsitePopup}
                       websiteCache={websiteCache}
                     />
                   </Route>
@@ -240,7 +227,6 @@ export const DesktopDashboard = (props: {
                       toggleWebsiteTag={toggleWebsiteTagClick}
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
-                      showWebsitePopup={showWebsitePopup}
                       websiteCache={websiteCache}
                     />
                   </Route>
@@ -260,7 +246,6 @@ export const DesktopDashboard = (props: {
                       toggleWebsiteTag={toggleWebsiteTagClick}
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
-                      showWebsitePopup={showWebsitePopup}
                       websiteCache={websiteCache}
                     />
                     <TagHighlights
@@ -268,7 +253,6 @@ export const DesktopDashboard = (props: {
                       toggleWebsiteTag={toggleWebsiteTagClick}
                       websiteTags={websiteTags}
                       isDarkMode={props.isDarkMode}
-                      showWebsitePopup={showWebsitePopup}
                       websiteCache={websiteCache}
                       showAddWebsiteDialog={setTagForWebsiteToTagDialog}
                     />
@@ -278,7 +262,6 @@ export const DesktopDashboard = (props: {
                         toggleWebsiteTag={toggleWebsiteTagClick}
                         websiteTags={websiteTags}
                         isDarkMode={props.isDarkMode}
-                        showWebsitePopup={showWebsitePopup}
                         websiteCache={websiteCache}
                       />
                     </div>

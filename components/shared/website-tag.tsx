@@ -70,7 +70,7 @@ export const toggleWebsiteTag = async (
   }
 };
 
-export const getTagsForWebsite = async (tags: string, userTags: IWebsiteTag[]) => {
+export const getTagsForWebsite = (tags: string, userTags: IWebsiteTag[]) => {
   const sorted = tags
     .trim()
     .split(' ')
@@ -101,7 +101,7 @@ export const WebsiteTags = (props: {
     const fetchData = async () => {
       const website = await props.store.websiteStore.getById(props.item.id);
       if (website?.tags) {
-        const i = await getTagsForWebsite(website.tags || '', props.userTags);
+        const i = getTagsForWebsite(website.tags || '', props.userTags);
         return isSubscribed && setWebsiteTags(i);
       } else {
         return isSubscribed && setWebsiteTags([]);

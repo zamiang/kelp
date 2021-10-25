@@ -81,7 +81,6 @@ const ExpandedMeeting = (props: {
   isDarkMode: boolean;
   hideHeader?: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   websiteCache: IWebsiteCache;
 }) => {
@@ -314,7 +313,6 @@ const ExpandedMeeting = (props: {
                       isDarkMode={props.isDarkMode}
                       websiteTags={props.websiteTags}
                       toggleWebsiteTag={props.toggleWebsiteTag}
-                      showWebsitePopup={props.showWebsitePopup}
                     />
                   </Grid>
                 ))}
@@ -326,7 +324,6 @@ const ExpandedMeeting = (props: {
                 websiteTags={props.websiteTags}
                 isDarkMode={props.isDarkMode}
                 toggleWebsiteTag={props.toggleWebsiteTag}
-                showWebsitePopup={props.showWebsitePopup}
                 filterByTag={currentTag}
                 websiteCache={props.websiteCache}
               />

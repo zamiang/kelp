@@ -19,7 +19,6 @@ export const WebsiteHighlights = (props: {
   isDarkMode: boolean;
   filterByTag?: string;
   websiteCache: IWebsiteCache;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IFeaturedWebsite[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -85,7 +84,6 @@ export const WebsiteHighlights = (props: {
                   isDarkMode={props.isDarkMode}
                   websiteTags={props.websiteTags}
                   toggleWebsiteTag={props.toggleWebsiteTag}
-                  showWebsitePopup={props.showWebsitePopup}
                 />
               </Grid>
             ))}

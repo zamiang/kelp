@@ -5,7 +5,7 @@ import { FeaturedMeeting } from '../meeting/featured-meeting';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
+import { IWebsiteCache } from '../website/get-featured-websites';
 
 const PREFIX = 'AttendeeList';
 
@@ -28,7 +28,6 @@ const MeetingsContainer = styled('div')(() => ({
 const Meetings = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
-  showWebsitePopup: (item: IFeaturedWebsite) => void;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   websiteCache: IWebsiteCache;
@@ -63,7 +62,6 @@ const Meetings = (props: {
             happeningSoonLimit={60 * 4}
             websiteTags={props.websiteTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
-            showWebsitePopup={props.showWebsitePopup}
             websiteCache={props.websiteCache}
           />
         ))}

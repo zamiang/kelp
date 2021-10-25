@@ -1,9 +1,11 @@
+import { IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
+import LeftArrow from '../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTaggDialog } from './add-tag-dialog';
@@ -80,6 +82,7 @@ export const TopTags = (props: {
   const location = useLocation();
   const router = useHistory();
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
+  const shouldShowBack = location.pathname !== '/home';
 
   const onClickTag = (tag: string) => {
     const isHomeSelected = location.pathname === '/home';
@@ -119,6 +122,7 @@ export const TopTags = (props: {
         close={() => setDialogOpen(false)}
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
+
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="top-tags" direction="vertical">
           {(provided) => (
@@ -131,6 +135,13 @@ export const TopTags = (props: {
               style={getListStyle()}
               {...provided.droppableProps}
             >
+              {shouldShowBack && (
+                <Grid item>
+                  <IconButton onClick={() => router.push('/home')} size="small">
+                    <LeftArrow width="24" height="24" style={{ transform: 'rotate(180deg)' }} />
+                  </IconButton>
+                </Grid>
+              )}
               {props.websiteTags.map((t, index) => (
                 <Draggable draggableId={t.tag} index={index} key={t.tag}>
                   {(provided) => (
