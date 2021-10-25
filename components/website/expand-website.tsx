@@ -292,36 +292,45 @@ const ExpandWebsite = (props: {
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="h2" color="textPrimary" gutterBottom>
-            {website.title}
-          </Typography>
-          <div className={classes.tags}>
-            {websiteTags.map((tag) => (
-              <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>
-                <div
-                  onClick={() => props.toggleWebsiteTag(tag, websiteId)}
-                  className={clsx(
-                    classes.tag,
-                    isTagSelected(tag, props.websiteTags) && classes.tagSelected,
-                  )}
-                >
-                  <Typography variant="body2">{tag}</Typography>
-                </div>
-                <div onClick={() => removeTag(tag)} className={classes.close}>
-                  <CloseIcon width="18" height="18" />
-                </div>
+          <Grid
+            container
+            justifyContent="space-between"
+            flexDirection="column"
+            style={{ height: '100%' }}
+          >
+            <Grid item>
+              <Typography variant="h2" color="textPrimary" gutterBottom>
+                {website.title}
+              </Typography>
+              <div className={classes.tags}>
+                {websiteTags.map((tag) => (
+                  <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>
+                    <div
+                      onClick={() => props.toggleWebsiteTag(tag, websiteId)}
+                      className={clsx(
+                        classes.tag,
+                        isTagSelected(tag, props.websiteTags) && classes.tagSelected,
+                      )}
+                    >
+                      <Typography variant="body2">{tag}</Typography>
+                    </div>
+                    <div onClick={() => removeTag(tag)} className={classes.close}>
+                      <CloseIcon width="18" height="18" />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div>
-            <AddTagInput
-              store={props.store}
-              websiteCache={props.websiteCache}
-              website={website}
-              userTags={props.websiteTags}
-              websiteTags={websiteTags}
-            />
-          </div>
+            </Grid>
+            <Grid item style={{ width: '100%' }}>
+              <AddTagInput
+                store={props.store}
+                websiteCache={props.websiteCache}
+                website={website}
+                userTags={props.websiteTags}
+                websiteTags={websiteTags}
+              />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
       {websitesAtDomain.length > 0 && (
@@ -333,7 +342,7 @@ const ExpandWebsite = (props: {
             <Grid item xs={12}>
               <Grid container spacing={6}>
                 {websitesAtDomain.map((item) => (
-                  <Grid item xs={4} key={item.id}>
+                  <Grid item xs={3} key={item.id}>
                     <LargeWebsite
                       item={item}
                       store={props.store}
