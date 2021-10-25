@@ -1,12 +1,16 @@
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
+import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
+import { cleanText } from '../shared/tfidf';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -28,6 +32,8 @@ const classes = {
   section: `${PREFIX}-section`,
   heading: `${PREFIX}-heading`,
   close: `${PREFIX}-close`,
+  smallButton: `${PREFIX}-smallButton`,
+  tagForm: `${PREFIX}-tagForm`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -54,6 +60,7 @@ const Root = styled('div')(({ theme }) => ({
     display: 'inline-block',
     marginRight: theme.spacing(1),
   },
+  [`& .${classes.tagForm}`]: {},
   [`& .${classes.tag}`]: {
     display: 'inline-block',
     transition: 'borderBottom 0.3s',
@@ -115,6 +122,12 @@ const Root = styled('div')(({ theme }) => ({
       opacity: 0.6,
     },
   },
+  [`& .${classes.smallButton}`]: {
+    width: 100,
+    background: theme.palette.background.paper,
+    color: theme.palette.primary.main,
+    borderRadius: 16,
+  },
 }));
 
 const LargeWebsiteImage = (props: {
@@ -145,6 +158,77 @@ const LargeWebsiteImage = (props: {
       >
         <img src={`chrome://favicon/size/48@1x/${props.websiteId}`} height="16" width="16" />
       </IconButton>
+    </div>
+  );
+};
+
+const AddTagInput = (props: {
+  store: IStore;
+  userTags: IWebsiteTag[];
+  websiteTags: string[];
+  website: IWebsiteCacheItem;
+  websiteCache: IWebsiteCache;
+}) => {
+  const [errorText, setErrorText] = useState<string | undefined>();
+  const [value, setValue] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(cleanText(e.target.value).join(''));
+  };
+
+  const addTag = async () => {
+    const tag = value;
+    if (tag.length < 1) {
+      return setErrorText('please enter text');
+    }
+    setErrorText(undefined);
+
+    const t = clone(props.websiteTags);
+    t.push(tag);
+    const w = await props.store.websiteStore.updateTags(
+      props.website.id,
+      props.websiteTags.join(' '),
+    );
+    if (w) {
+      setValue('');
+      // todo update store so that it refreshes
+      (props.websiteCache[props.website.id] as any).tags = t.join(' ');
+      props.store.incrementLoading();
+    }
+  };
+
+  return (
+    <div className={classes.tagForm}>
+      <div>{errorText}</div>
+      <Grid container justifyContent="space-between">
+        <Grid item>
+          <TextField
+            type="text"
+            placeholder="Enter a custom tag…"
+            fullWidth
+            autoFocus={true}
+            onChange={handleChange}
+            name="query"
+            margin="dense"
+            variant="standard"
+            value={value}
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            size="small"
+            disableElevation={false}
+            variant="outlined"
+            className={classes.smallButton}
+            onClick={addTag}
+          >
+            Add Tag
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 };
@@ -228,6 +312,15 @@ const ExpandWebsite = (props: {
                 </div>
               </div>
             ))}
+          </div>
+          <div>
+            <AddTagInput
+              store={props.store}
+              websiteCache={props.websiteCache}
+              website={website}
+              userTags={props.websiteTags}
+              websiteTags={websiteTags}
+            />
           </div>
         </Grid>
       </Grid>

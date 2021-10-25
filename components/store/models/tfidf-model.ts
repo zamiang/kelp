@@ -7,7 +7,7 @@ import { IStore } from '../use-store';
  */
 export const uncommonPunctuation = 'æ';
 
-export interface ITfidfRow {
+interface ITfidfRow {
   id: string;
   key: string;
   text: string;

@@ -102,8 +102,8 @@ const getWebsitesForTags = async (store: IStore, tags: string[]) => {
  * Gets websites in the featured section by looking through meetings for the coming week
  * Finds meeetings documents associated with those meetings
  * It sorts in decending order so upcoming meetings are next
- */
-export const getFeaturedWebsites = async (props: IStore) => {
+
+const getFeaturedWebsites = async (props: IStore) => {
   // For documents edited by the current user that may not be associated with a meeting
   const filteredWebsites = await props.websiteVisitStore.getAll(
     props.domainBlocklistStore,
@@ -135,6 +135,7 @@ export const getFeaturedWebsites = async (props: IStore) => {
 
   return websites.sort((a, b) => (urlCount[a.id] > urlCount[b.id] ? -1 : 1));
 };
+*/
 
 /**
  * Gets websites in the meeting
