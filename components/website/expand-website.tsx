@@ -16,6 +16,7 @@ import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache, IWebsiteCacheItem } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
+import { DraggableWebsiteHighlights } from './draggable-website-highlights';
 
 const PREFIX = 'WebsiteContainer';
 
@@ -357,6 +358,19 @@ const ExpandWebsite = (props: {
           </Grid>
         </div>
       )}
+      {websiteTags.map((t) => (
+        <div className={classes.section} key={t} id={`tag-${t}`}>
+          <DraggableWebsiteHighlights
+            store={props.store}
+            toggleWebsiteTag={props.toggleWebsiteTag}
+            websiteTags={props.websiteTags}
+            isDarkMode={props.isDarkMode}
+            filterByTag={t}
+            maxWebsites={4}
+            websiteCache={props.websiteCache}
+          />
+        </div>
+      ))}
     </Root>
   );
 };

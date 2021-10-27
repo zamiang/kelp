@@ -201,7 +201,7 @@ export const DraggableWebsiteHighlights = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   filterByTag?: string;
-  showAddWebsiteDialog: (tag: string) => void;
+  showAddWebsiteDialog?: (tag: string) => void;
   maxWebsites: number;
   websiteCache: IWebsiteCache;
 }) => {
@@ -248,12 +248,16 @@ export const DraggableWebsiteHighlights = (props: {
                 </IconButton>
               </Grid>
             )}
-            {props.filterByTag && (
+            {props.filterByTag && props.showAddWebsiteDialog && (
               <Grid item>
                 <IconButton
                   className={classes.button}
                   onClick={() => {
-                    props.filterByTag && props.showAddWebsiteDialog(props.filterByTag);
+                    return (
+                      props.filterByTag &&
+                      props.showAddWebsiteDialog &&
+                      props.showAddWebsiteDialog(props.filterByTag)
+                    );
                   }}
                 >
                   <PlusIcon width="24" height="24" />
