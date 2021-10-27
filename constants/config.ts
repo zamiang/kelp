@@ -24,7 +24,6 @@ export default {
   MEETING_PREP_NOTIFICATION_EARLY_MINUTES: 10,
   ATTENDEE_MAX: 10, // for 'show more'
   ICON_SIZE: 20,
-  IS_GMAIL_ENABLED: false,
   GOOGLE_CALENDAR_FILTER: ['declined'], // Could be ['needsAction', 'declined']
   MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,
   startDate: subDays(new Date(), NUMBER_OF_DAYS_BACK),
@@ -65,12 +64,10 @@ export default {
   ],
   BLOCKED_DOMAINS: [
     'onkkkcfnlbkoialleldfbgodakajfpnl', // extension url
-    'mail.google.com',
     'www.google.com',
     'calendar.google.com',
     'chrome://',
     'meet.google.com',
-    'outlook.office365.com',
     'file:///',
     'twitter.com/home',
   ],

@@ -170,6 +170,7 @@ export const DesktopDashboard = (props: {
             refetchWebsiteTags={refetchWebsiteTags}
             isMicrosoftError={props.isMicrosoftError}
             toggleWebsiteTag={toggleWebsiteTagClick}
+            websiteCache={websiteCache}
           />
           <StyledEngineProvider injectFirst>
             <EmotionThemeProvider theme={lightTheme}>

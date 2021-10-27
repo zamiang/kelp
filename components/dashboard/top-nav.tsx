@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
 import CalendarIconOrange from '../../public/icons/calendar-orange.svg';
@@ -24,7 +24,9 @@ import SettingsIcon from '../../public/icons/settings.svg';
 import KelpIcon from '../../public/kelp-24.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { TopTags } from './top-tags';
+import { TopTags, WebsiteTags } from './top-tags';
+import { IWebsiteCache } from '../website/get-featured-websites';
+import { getTagsForWebsite } from '../shared/website-tag';
 
 const PREFIX = 'TopNav';
 
@@ -91,14 +93,31 @@ export const TopNav = (props: {
   websiteTags: IWebsiteTag[];
   setWebsiteTags: (t: IWebsiteTag[]) => void;
   refetchWebsiteTags: () => void;
+  websiteCache: IWebsiteCache;
 }) => {
   const router = useHistory();
   const location = useLocation();
+  const [tags, setTags] = useState<string[]>([]);
   const isSearch = location.pathname === '/search';
   const isMeetingsSelected = location.pathname === '/meetings';
   const isHomeSelected = location.pathname === '/home';
   const isSettingsSelected = location.pathname === '/settings';
   const isCalendarSelected = location.pathname === '/calendar';
+  const isWebsite = location.pathname.includes('/websites');
+  const slug = isWebsite ? location.pathname.replace('/websites/', '') : '';
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isWebsite && slug) {
+        const w = props.websiteCache[decodeURIComponent(slug)];
+        setTags(getTagsForWebsite(w.tags || '', props.websiteTags));
+      } else {
+        setTags([]);
+      }
+    };
+    void fetchData();
+  }, [props.store.isLoading, slug, isWebsite]);
+
   return (
     <Root>
       <div className={classes.leftSection}>
@@ -126,8 +145,7 @@ export const TopNav = (props: {
               )}
             </IconButton>
           </Grid>
-
-          {!isSearch && (
+          {!isSearch && !isWebsite && (
             <Grid item>
               <TopTags
                 websiteTags={props.websiteTags}
@@ -135,6 +153,11 @@ export const TopNav = (props: {
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 setWebsiteTags={props.setWebsiteTags}
               />
+            </Grid>
+          )}
+          {isWebsite && tags && (
+            <Grid item>
+              <WebsiteTags tags={tags} store={props.store} />
             </Grid>
           )}
           {props.isMicrosoftError && (

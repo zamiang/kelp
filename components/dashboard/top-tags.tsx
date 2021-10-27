@@ -225,3 +225,40 @@ export const TopTags = (props: {
     </Root>
   );
 };
+
+export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
+  const router = useHistory();
+
+  const onClickTag = (tag: string) => {
+    const elem = document.getElementById(`tag-${tag}`);
+    elem?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  return (
+    <Root>
+      <Grid container className={classes.container} alignItems="center" spacing={1}>
+        <Grid item>
+          <IconButton onClick={() => router.push('/home')} size="small">
+            <LeftArrow width="24" height="24" style={{ transform: 'rotate(180deg)' }} />
+          </IconButton>
+        </Grid>
+        {props.tags.map((t) => (
+          <Grid item xs={12} key={t}>
+            <Grid container alignItems="center" className={classes.tagContainer}>
+              <Grid item>
+                <div className={classes.dotContainer}>
+                  <div className={classes.dot}></div>
+                </div>
+              </Grid>
+              <Grid item zeroMinWidth xs>
+                <Typography noWrap className={classes.tag} onClick={() => onClickTag(t)}>
+                  {t}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        ))}
+      </Grid>
+    </Root>
+  );
+};

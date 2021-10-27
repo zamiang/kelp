@@ -280,7 +280,7 @@ const ExpandWebsite = (props: {
 
   return (
     <Root>
-      <Grid container spacing={2}>
+      <Grid container spacing={6}>
         <Grid item xs={6}>
           <Box boxShadow={1} className={classes.container}>
             <LargeWebsiteImage
