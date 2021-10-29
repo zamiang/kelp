@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -10,6 +11,7 @@ import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
+import SunIcon from '../../public/icons/sun-white.svg';
 import { cleanText } from '../shared/tfidf';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
@@ -35,11 +37,15 @@ const classes = {
   close: `${PREFIX}-close`,
   smallButton: `${PREFIX}-smallButton`,
   tagForm: `${PREFIX}-tagForm`,
+  hiddenWebsite: `${PREFIX}-hiddenWebsite`,
 };
 
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.heading}`]: {
     marginBottom: theme.spacing(2),
+  },
+  [`& .${classes.hiddenWebsite}`]: {
+    textDecoration: 'line-through',
   },
   [`& .${classes.section}`]: {
     marginTop: theme.spacing(8),
@@ -246,6 +252,7 @@ const ExpandWebsite = (props: {
   const { slug }: any = useParams();
   const websiteId = props.websiteId || decodeURIComponent(slug);
   const [image, setImage] = useState<IWebsiteImage>();
+  const [isHidden, setIsHidden] = useState(false);
   const [website, setWebsite] = useState<IWebsiteCacheItem | undefined>(undefined);
   const [websitesAtDomain, setWebsitesAtDomain] = useState<IWebsiteCacheItem[]>([]);
 
@@ -260,7 +267,18 @@ const ExpandWebsite = (props: {
       setWebsitesAtDomain(websites);
 
       const i = await props.store.websiteImageStore.getById(websiteId);
-      return setImage(i);
+      setImage(i);
+
+      // potentially make into a util
+      const domainBlocklistArray = await props.store.domainBlocklistStore.getAll();
+      const websiteBlocklistArray = await props.store.websiteBlocklistStore.getAll();
+      const domainBlocklist: { [id: string]: boolean } = {};
+      const websiteBlocklist: { [id: string]: boolean } = {};
+
+      domainBlocklistArray.forEach((item) => (domainBlocklist[item.id] = true));
+      websiteBlocklistArray.forEach((item) => (websiteBlocklist[item.id] = true));
+
+      setIsHidden(domainBlocklist[w.domain] || websiteBlocklist[w.id]);
     };
     void fetchData();
   }, [props.store.isLoading, websiteId]);
@@ -279,18 +297,30 @@ const ExpandWebsite = (props: {
     return props.store.incrementLoading();
   };
 
+  const hideWebsite = async (websiteId: string) => {
+    await props.store.websiteBlocklistStore.addWebsite(websiteId);
+    setIsHidden(true);
+  };
+
+  const showWebsite = async (websiteId: string) => {
+    await props.store.websiteBlocklistStore.removeWebsite(websiteId);
+    setIsHidden(false);
+  };
+
   return (
     <Root>
       <Grid container spacing={6}>
         <Grid item xs={6}>
-          <Box boxShadow={1} className={classes.container}>
-            <LargeWebsiteImage
-              image={image}
-              websiteId={websiteId}
-              isDarkMode={props.isDarkMode}
-              ogImage={website?.ogImage}
-            />
-          </Box>
+          <Link href={website?.rawUrl} underline="none">
+            <Box boxShadow={1} className={classes.container}>
+              <LargeWebsiteImage
+                image={image}
+                websiteId={websiteId}
+                isDarkMode={props.isDarkMode}
+                ogImage={website?.ogImage}
+              />
+            </Box>
+          </Link>
         </Grid>
         <Grid item xs={6}>
           <Grid
@@ -300,9 +330,32 @@ const ExpandWebsite = (props: {
             style={{ height: '100%' }}
           >
             <Grid item>
-              <Typography variant="h2" color="textPrimary" gutterBottom>
-                {website.title}
-              </Typography>
+              <Grid container>
+                <Grid item xs={10}>
+                  <Link href={website?.rawUrl} underline="none">
+                    <Typography
+                      variant="h2"
+                      color="textPrimary"
+                      gutterBottom
+                      className={isHidden ? classes.hiddenWebsite : undefined}
+                    >
+                      {website.title}
+                    </Typography>
+                  </Link>
+                </Grid>
+                <Grid item xs={2} justifyContent="center" style={{ textAlign: 'right' }}>
+                  {!isHidden && (
+                    <IconButton onClick={() => hideWebsite(websiteId)}>
+                      <CloseIcon width="24" height="24" />
+                    </IconButton>
+                  )}
+                  {isHidden && (
+                    <IconButton onClick={() => showWebsite(websiteId)}>
+                      <SunIcon width="24" height="24" />
+                    </IconButton>
+                  )}
+                </Grid>
+              </Grid>
               <div className={classes.tags}>
                 {websiteTags.map((tag) => (
                   <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>
