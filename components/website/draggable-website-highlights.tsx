@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
@@ -58,23 +58,7 @@ const getListStyle = () => ({
   // width: itemsLength * 68.44 + 16,
 });
 
-const reorder = (list: any[], startIndex: number, endIndex: number) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-export const fetchData = async (
-  websiteCache: IWebsiteCache,
-  shouldShowAll: boolean,
-  setWebsites: (websites: IWebsiteCacheItem[]) => void,
-  setExtraItemsCount: (n: number) => void,
-  maxWebsites: number,
-  isSubscribed: boolean,
-  filterByTag?: string,
-) => {
+export const getWebsitesForTag = (websiteCache: IWebsiteCache, filterByTag?: string) => {
   const websites = Object.values(websiteCache);
   const filtereredWebsites = websites
     .filter((website) => {
@@ -92,6 +76,19 @@ export const fetchData = async (
   if (filterByTag) {
     filtereredWebsites.sort((a, b) => ((a.index || 0) > (b.index || 0) ? 1 : -1));
   }
+  return filtereredWebsites;
+};
+
+export const fetchData = async (
+  websiteCache: IWebsiteCache,
+  shouldShowAll: boolean,
+  setWebsites: (websites: IWebsiteCacheItem[]) => void,
+  setExtraItemsCount: (n: number) => void,
+  maxWebsites: number,
+  isSubscribed: boolean,
+  filterByTag?: string,
+) => {
+  const filtereredWebsites = getWebsitesForTag(websiteCache, filterByTag);
 
   const extraResultLength = filtereredWebsites.length - maxWebsites;
   isSubscribed && setExtraItemsCount(extraResultLength > 0 ? extraResultLength : 0);
@@ -140,58 +137,39 @@ const Website = (props: IWebsiteProps) => (
 
 const DraggableWebsites = (props: {
   topWebsites: IWebsiteCacheItem[];
-  setTopWebsites: (w: IWebsiteCacheItem[]) => void;
   store: IStore;
   isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   maxWebsites: number;
+  filterByTag?: string;
 }) => {
-  const onDragEnd = (result: any) => {
-    // TODO
-    if (!result.destination) {
-      return;
-    }
-
-    if (result.destination.index === result.source.index) {
-      return;
-    }
-
-    const tw = reorder(props.topWebsites, result.source.index, result.destination.index);
-
-    props.setTopWebsites(tw);
-
-    void props.store.websiteStore.saveOrder(tw);
-  };
-
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="list" direction="horizontal">
-        {(provided) => (
-          <Grid
-            container
-            spacing={5}
-            ref={provided.innerRef}
-            style={getListStyle()}
-            {...provided.droppableProps}
-          >
-            {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
-              <Website
-                key={item.id}
-                index={index}
-                item={item}
-                store={props.store}
-                isDarkMode={props.isDarkMode}
-                websiteTags={props.websiteTags}
-                toggleWebsiteTag={props.toggleWebsiteTag}
-                size={props.maxWebsites > 3 ? 3 : 4}
-              />
-            ))}
-            {provided.placeholder}
-          </Grid>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <Droppable droppableId={`${props.filterByTag}-websites`} direction="horizontal">
+      {(provided) => (
+        <Grid
+          container
+          spacing={5}
+          ref={provided.innerRef}
+          style={getListStyle()}
+          {...provided.droppableProps}
+        >
+          {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
+            <Website
+              key={item.id}
+              index={index}
+              item={item}
+              store={props.store}
+              isDarkMode={props.isDarkMode}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+              size={props.maxWebsites > 3 ? 3 : 4}
+            />
+          ))}
+          {provided.placeholder}
+        </Grid>
+      )}
+    </Droppable>
   );
 };
 
@@ -268,13 +246,13 @@ export const DraggableWebsiteHighlights = (props: {
         </Grid>
       </Grid>
       <DraggableWebsites
-        setTopWebsites={setTopWebsites}
         topWebsites={topWebsites}
         store={props.store}
         websiteTags={props.websiteTags}
         isDarkMode={props.isDarkMode}
         toggleWebsiteTag={props.toggleWebsiteTag}
         maxWebsites={props.maxWebsites}
+        filterByTag={props.filterByTag}
       />
       {extraItemsCount > 0 && !shouldShowAll && (
         <IconButton
