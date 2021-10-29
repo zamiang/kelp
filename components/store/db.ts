@@ -338,7 +338,7 @@ const timeout = (ms: number) => new Promise((resolve) => setTimeout(() => resolv
 
 export type dbType = IDBPDatabase<Db>;
 
-export const deleteDatabase = async (environment: 'production' | 'test' | 'extension') =>
+export const deleteDatabase = (environment: 'production' | 'test' | 'extension') =>
   indexedDB.deleteDatabase(dbNameHash[environment]);
 
 const setupDatabase = async (environment: 'production' | 'test' | 'extension') => {

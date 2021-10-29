@@ -186,7 +186,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
         visits.map((v) => props.store.websiteStore.getById(v.websiteId)),
       )) as IWebsite[];
       const documents = props.store.tfidfStore.getDocumentsForWebsites(websites);
-      const tfidf = await props.store.tfidfStore.getTfidfForDocuments(documents);
+      const tfidf = props.store.tfidfStore.getTfidfForDocuments(documents);
       const terms = (tfidf.listTermsWithValue() || []).filter((t) => t.term !== '__key');
       setTfidfMax(terms[0]?.tfidf || 0);
       setTfidfMin(last(terms)?.tfidf || 0);

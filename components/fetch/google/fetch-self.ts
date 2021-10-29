@@ -38,7 +38,7 @@ export const fetchSelf = async (authToken: string): Promise<IPerson | null> => {
       localStorage.setItem(config.LAST_UPDATED_USER_ID, person.resourceName);
     } else if (person.resourceName && lastUpdatedUserId !== person.resourceName) {
       try {
-        await deleteDatabase('production');
+        deleteDatabase('production');
       } catch (e) {
         alert(JSON.stringify(e));
       }

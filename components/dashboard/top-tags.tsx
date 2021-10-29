@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
 import LeftArrow from '../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
@@ -65,14 +65,6 @@ const getListStyle = () => ({
   // width: itemsLength * 68.44 + 16,
 });
 
-const reorder = (list: any[], startIndex: number, endIndex: number) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
 export const TopTags = (props: {
   websiteTags: IWebsiteTag[];
   store: IStore;
@@ -98,21 +90,6 @@ export const TopTags = (props: {
     }
   };
 
-  const onDragEnd = (result: any) => {
-    // TODO
-    if (!result.destination) {
-      return;
-    }
-
-    if (result.destination.index === result.source.index) {
-      return;
-    }
-
-    const tt = reorder(props.websiteTags, result.source.index, result.destination.index);
-
-    props.setWebsiteTags(tt);
-  };
-
   return (
     <Root>
       <AddTaggDialog
@@ -123,70 +100,68 @@ export const TopTags = (props: {
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
 
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="top-tags" direction="vertical">
-          {(provided) => (
-            <Grid
-              container
-              className={classes.container}
-              alignItems="center"
-              spacing={1}
-              ref={provided.innerRef}
-              style={getListStyle()}
-              {...provided.droppableProps}
-            >
-              {shouldShowBack && (
-                <Grid item>
-                  <IconButton onClick={() => router.push('/home')} size="small">
-                    <LeftArrow width="24" height="24" style={{ transform: 'rotate(180deg)' }} />
-                  </IconButton>
-                </Grid>
-              )}
-              {props.websiteTags.map((t, index) => (
-                <Draggable draggableId={t.tag} index={index} key={t.tag}>
-                  {(provided) => (
+      <Droppable droppableId="top-tags" direction="vertical">
+        {(provided) => (
+          <Grid
+            container
+            className={classes.container}
+            alignItems="center"
+            spacing={1}
+            ref={provided.innerRef}
+            style={getListStyle()}
+            {...provided.droppableProps}
+          >
+            {shouldShowBack && (
+              <Grid item>
+                <IconButton onClick={() => router.push('/home')} size="small">
+                  <LeftArrow width="24" height="24" style={{ transform: 'rotate(180deg)' }} />
+                </IconButton>
+              </Grid>
+            )}
+            {props.websiteTags.map((t, index) => (
+              <Draggable draggableId={t.tag} index={index} key={t.tag}>
+                {(provided) => (
+                  <Grid
+                    item
+                    xs={12}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={getItemStyle(provided.draggableProps.style)}
+                  >
                     <Grid
-                      item
-                      xs={12}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(provided.draggableProps.style)}
+                      container
+                      alignItems="center"
+                      justifyContent="space-between"
+                      className={classes.tagContainer}
                     >
-                      <Grid
-                        container
-                        alignItems="center"
-                        justifyContent="space-between"
-                        className={classes.tagContainer}
-                      >
-                        <Grid item zeroMinWidth xs>
-                          <Grid container alignItems="center">
-                            <Grid item>
-                              <div className={classes.dotContainer}>
-                                <div className={classes.dot}></div>
-                              </div>
-                            </Grid>
-                            <Grid item zeroMinWidth xs>
-                              <Typography
-                                noWrap
-                                className={classes.tag}
-                                onClick={() => onClickTag(t.tag)}
-                              >
-                                {t.tag}
-                              </Typography>
-                            </Grid>
+                      <Grid item zeroMinWidth xs>
+                        <Grid container alignItems="center">
+                          <Grid item>
+                            <div className={classes.dotContainer}>
+                              <div className={classes.dot}></div>
+                            </div>
+                          </Grid>
+                          <Grid item zeroMinWidth xs>
+                            <Typography
+                              noWrap
+                              className={classes.tag}
+                              onClick={() => onClickTag(t.tag)}
+                            >
+                              {t.tag}
+                            </Typography>
                           </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </Grid>
-          )}
-        </Droppable>
-      </DragDropContext>
+                  </Grid>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </Grid>
+        )}
+      </Droppable>
       <br />
       <Grid container className={classes.container} alignItems="center" spacing={1}>
         <Grid item xs={12}>

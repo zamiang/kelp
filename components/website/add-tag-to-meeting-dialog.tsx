@@ -92,7 +92,7 @@ export const AddTagToMeetingDialog = (props: {
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
       const result = props.store.tfidfStore.getCalculatedDocuments();
       if (result) {
         const tags = result;

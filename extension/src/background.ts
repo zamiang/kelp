@@ -179,7 +179,7 @@ chrome.notifications.onClicked.addListener(
 
 const alarmListener = (alarm: chrome.alarms.Alarm) => void onAlarm(alarm);
 
-const setupTimers = async () => {
+const setupTimers = () => {
   chrome.alarms.onAlarm.removeListener(alarmListener);
   chrome.alarms.onAlarm.addListener(alarmListener);
   return setAlarm();
@@ -214,7 +214,7 @@ chrome.runtime.onSuspendCanceled.addListener(() => {
 
 chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightInfo) => {
   setTimeout(() => {
-    const checkTab = async () => {
+    const checkTab = () => {
       const queryOptions = { active: true, currentWindow: true };
       chrome.tabs.query(queryOptions, (result: chrome.tabs.Tab[]) => {
         const tab = result[0];
@@ -227,7 +227,7 @@ chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightIn
         }
       });
     };
-    void checkTab();
+    checkTab();
   }, timeToWaitBeforeTracking);
 });
 
