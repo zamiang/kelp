@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export default async (_req: Request, res: Response) => {
+export default (_req: Request, res: Response) => {
   const json = {
     associatedApplications: [
       {

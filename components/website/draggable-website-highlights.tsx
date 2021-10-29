@@ -5,9 +5,9 @@ import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
+import RightArrowIcon from '../../public/icons/chevron-right-orange.svg';
 import CloseIcon from '../../public/icons/close-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
-import RightArrowIcon from '../../public/icons/chevron-right-orange.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, IWebsiteCache, IWebsiteCacheItem } from './get-featured-websites';
@@ -79,7 +79,7 @@ export const getWebsitesForTag = (websiteCache: IWebsiteCache, filterByTag?: str
   return filtereredWebsites;
 };
 
-export const fetchData = async (
+export const fetchData = (
   websiteCache: IWebsiteCache,
   shouldShowAll: boolean,
   setWebsites: (websites: IWebsiteCacheItem[]) => void,
@@ -143,35 +143,33 @@ const DraggableWebsites = (props: {
   websiteTags: IWebsiteTag[];
   maxWebsites: number;
   filterByTag?: string;
-}) => {
-  return (
-    <Droppable droppableId={`${props.filterByTag}-websites`} direction="horizontal">
-      {(provided) => (
-        <Grid
-          container
-          spacing={5}
-          ref={provided.innerRef}
-          style={getListStyle()}
-          {...provided.droppableProps}
-        >
-          {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
-            <Website
-              key={item.id}
-              index={index}
-              item={item}
-              store={props.store}
-              isDarkMode={props.isDarkMode}
-              websiteTags={props.websiteTags}
-              toggleWebsiteTag={props.toggleWebsiteTag}
-              size={props.maxWebsites > 3 ? 3 : 4}
-            />
-          ))}
-          {provided.placeholder}
-        </Grid>
-      )}
-    </Droppable>
-  );
-};
+}) => (
+  <Droppable droppableId={`${props.filterByTag}-websites`} direction="horizontal">
+    {(provided) => (
+      <Grid
+        container
+        spacing={5}
+        ref={provided.innerRef}
+        style={getListStyle()}
+        {...provided.droppableProps}
+      >
+        {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
+          <Website
+            key={item.id}
+            index={index}
+            item={item}
+            store={props.store}
+            isDarkMode={props.isDarkMode}
+            websiteTags={props.websiteTags}
+            toggleWebsiteTag={props.toggleWebsiteTag}
+            size={props.maxWebsites > 3 ? 3 : 4}
+          />
+        ))}
+        {provided.placeholder}
+      </Grid>
+    )}
+  </Droppable>
+);
 
 export const DraggableWebsiteHighlights = (props: {
   store: IStore;
@@ -230,13 +228,11 @@ export const DraggableWebsiteHighlights = (props: {
               <Grid item>
                 <IconButton
                   className={classes.button}
-                  onClick={() => {
-                    return (
-                      props.filterByTag &&
-                      props.showAddWebsiteDialog &&
-                      props.showAddWebsiteDialog(props.filterByTag)
-                    );
-                  }}
+                  onClick={() =>
+                    props.filterByTag &&
+                    props.showAddWebsiteDialog &&
+                    props.showAddWebsiteDialog(props.filterByTag)
+                  }
                 >
                   <PlusIcon width="24" height="24" />
                 </IconButton>

@@ -101,7 +101,7 @@ export interface ISegmentDocument {
   readonly segmentTitle?: string;
   readonly date: Date;
   readonly reason: string;
-  readonly isPersonAttendee?: Boolean;
+  readonly isPersonAttendee?: boolean;
   readonly personId: string;
   readonly day: number;
   readonly week: number;

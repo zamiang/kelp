@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { StyledEngineProvider, styled } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import React, { useEffect, useState } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { lightTheme } from '../../constants/theme';
 import Meetings from '../dashboard/meetings';
@@ -22,14 +23,13 @@ import { IStore } from '../store/use-store';
 import { Summary } from '../summary/summary';
 import Settings from '../user-profile/settings';
 import { AddWebsiteToTagDialog } from '../website/add-website-to-tag-dialog';
+import { getWebsitesForTag } from '../website/draggable-website-highlights';
 import ExpandWebsite from '../website/expand-website';
 import { IWebsiteCache, getWebsitesCache } from '../website/get-featured-websites';
 import { TagHighlights } from '../website/tag-highlights';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
 import { TopNav } from './top-nav';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { getWebsitesForTag } from '../website/draggable-website-highlights';
 
 const PREFIX = 'DesktopDashboard';
 

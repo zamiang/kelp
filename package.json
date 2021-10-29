@@ -108,7 +108,6 @@
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-material-ui": "1.0.1",
     "eslint-plugin-react": "7.26.1",
-    "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-security": "1.4.0",
     "file-loader": "6.2.0",
     "prettier": "2.4.1",

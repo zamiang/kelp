@@ -30,7 +30,7 @@ export default class TfidfStore {
     return tfidf;
   }
 
-  async getTfidfForDocuments(data: ITfidfRow[]) {
+  getTfidfForDocuments(data: ITfidfRow[]) {
     return new Tfidf(data);
   }
 
