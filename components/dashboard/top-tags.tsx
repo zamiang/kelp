@@ -22,7 +22,7 @@ const classes = {
 };
 
 const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.container}`]: {},
+  [`& .${classes.container}`]: { maxHeight: '80vh', overflow: 'auto' },
   [`& .${classes.tag}`]: {
     cursor: 'pointer',
     height: 24,

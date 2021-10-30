@@ -1,6 +1,7 @@
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
+import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import { IWebsiteTag } from '../store/data-types';
@@ -85,7 +86,7 @@ export const getTagsForWebsite = (tags: string, userTags: IWebsiteTag[]) => {
       return 0;
     });
   // Ensure there are no blank tags
-  return sorted.filter((t) => t.length > 2 && t.length < 15);
+  return uniq(sorted.filter((t) => t.length > 2 && t.length < 15));
 };
 
 export const WebsiteTags = (props: {

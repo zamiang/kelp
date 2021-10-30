@@ -11,7 +11,6 @@ import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
-import { cleanText } from '../shared/tfidf';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -179,7 +178,7 @@ const AddTagInput = (props: {
   const [value, setValue] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(cleanText(e.target.value).join(''));
+    setValue(e.target.value);
   };
 
   const addTag = async () => {
@@ -191,10 +190,7 @@ const AddTagInput = (props: {
 
     const t = clone(props.websiteTags);
     t.push(tag);
-    const w = await props.store.websiteStore.updateTags(
-      props.website.id,
-      props.websiteTags.join(' '),
-    );
+    const w = await props.store.websiteStore.updateTags(props.website.id, t.join(' '));
     if (w) {
       setValue('');
       // todo update store so that it refreshes
