@@ -4,7 +4,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
 import CalendarIconOrange from '../../public/icons/calendar-orange.svg';
@@ -22,8 +21,6 @@ import SearchIcon from '../../public/icons/search.svg';
 import SettingsIconOrange from '../../public/icons/settings-orange.svg';
 import SettingsIconWhite from '../../public/icons/settings-white.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import TrashIconWhite from '../../public/icons/trash-white.svg';
-import TrashIcon from '../../public/icons/trash.svg';
 import KelpIcon from '../../public/kelp-24.svg';
 import { getTagsForWebsite } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
@@ -97,6 +94,7 @@ export const TopNav = (props: {
   setWebsiteTags: (t: IWebsiteTag[]) => void;
   refetchWebsiteTags: () => void;
   websiteCache: IWebsiteCache;
+  dragDropSource?: string;
 }) => {
   const router = useHistory();
   const location = useLocation();
@@ -155,6 +153,7 @@ export const TopNav = (props: {
                 store={props.store}
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 setWebsiteTags={props.setWebsiteTags}
+                dragDropSource={props.dragDropSource}
               />
             </Grid>
           )}
@@ -270,19 +269,6 @@ export const TopNav = (props: {
                 </Tooltip>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item alignSelf="flex-end">
-            <Droppable droppableId="delete">
-              {(provided) => (
-                <IconButton ref={provided.innerRef} {...provided.droppableProps}>
-                  {props.isDarkMode ? (
-                    <TrashIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                  ) : (
-                    <TrashIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                  )}
-                </IconButton>
-              )}
-            </Droppable>
           </Grid>
         </Grid>
       </div>

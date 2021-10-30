@@ -54,8 +54,8 @@ const getItemStyle = (draggableStyle: any) => ({
   ...draggableStyle,
 });
 
-const getListStyle = () => ({
-  // width: itemsLength * 68.44 + 16,
+const getListStyle = (isDraggingOver: boolean) => ({
+  background: isDraggingOver ? 'rgba(0,0,0, 0.15)' : 'transparent',
 });
 
 export const getWebsitesForTag = (websiteCache: IWebsiteCache, filterByTag?: string) => {
@@ -101,7 +101,7 @@ export const fetchData = (
   }
 };
 
-interface IWebsiteProps {
+const Website = (props: {
   item: IFeaturedWebsite;
   index: number;
   store: IStore;
@@ -109,10 +109,9 @@ interface IWebsiteProps {
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   size: number;
-}
-
-const Website = (props: IWebsiteProps) => (
-  <Draggable draggableId={props.item.id} index={props.index}>
+  draggableId: string;
+}) => (
+  <Draggable draggableId={props.draggableId} index={props.index}>
     {(provided) => (
       <Grid
         item
@@ -143,19 +142,25 @@ const DraggableWebsites = (props: {
   websiteTags: IWebsiteTag[];
   maxWebsites: number;
   filterByTag?: string;
+  dragDropSource?: string;
 }) => (
-  <Droppable droppableId={`${props.filterByTag}-websites`} direction="horizontal">
-    {(provided) => (
+  <Droppable
+    droppableId={`${props.filterByTag}-websites`}
+    direction="horizontal"
+    isDropDisabled={props.dragDropSource === 'top-tags'}
+  >
+    {(provided, snapshot) => (
       <Grid
         container
         spacing={5}
         ref={provided.innerRef}
-        style={getListStyle()}
+        style={getListStyle(snapshot.isDraggingOver)}
         {...provided.droppableProps}
       >
         {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
           <Website
             key={item.id}
+            draggableId={`${props.filterByTag}-${item.id}`}
             index={index}
             item={item}
             store={props.store}
@@ -180,6 +185,7 @@ export const DraggableWebsiteHighlights = (props: {
   showAddWebsiteDialog?: (tag: string) => void;
   maxWebsites: number;
   websiteCache: IWebsiteCache;
+  dragDropSource?: string;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IWebsiteCacheItem[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -197,7 +203,12 @@ export const DraggableWebsiteHighlights = (props: {
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [(props.websiteCache as any).LAST_UPDATED?.valueOf(), shouldShowAll, props.filterByTag]);
+  }, [
+    (props.websiteCache as any).LAST_UPDATED?.valueOf(),
+    shouldShowAll,
+    props.filterByTag,
+    props.maxWebsites,
+  ]);
 
   return (
     <Root style={{ position: 'relative' }}>
@@ -249,6 +260,7 @@ export const DraggableWebsiteHighlights = (props: {
         toggleWebsiteTag={props.toggleWebsiteTag}
         maxWebsites={props.maxWebsites}
         filterByTag={props.filterByTag}
+        dragDropSource={props.dragDropSource}
       />
       {extraItemsCount > 0 && !shouldShowAll && (
         <IconButton

@@ -61,8 +61,8 @@ const getItemStyle = (draggableStyle: any) => ({
   ...draggableStyle,
 });
 
-const getListStyle = () => ({
-  // width: itemsLength * 68.44 + 16,
+const getListStyle = (isDraggingOver: boolean) => ({
+  background: isDraggingOver ? 'rgba(0,0,0, 0.15)' : 'transparent',
 });
 
 export const TopTags = (props: {
@@ -70,6 +70,7 @@ export const TopTags = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   setWebsiteTags: (t: IWebsiteTag[]) => void;
+  dragDropSource?: string;
 }) => {
   const location = useLocation();
   const router = useHistory();
@@ -100,15 +101,19 @@ export const TopTags = (props: {
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
 
-      <Droppable droppableId="top-tags" direction="vertical">
-        {(provided) => (
+      <Droppable
+        droppableId="top-tags"
+        direction="vertical"
+        isDropDisabled={props.dragDropSource?.includes('-websites')}
+      >
+        {(provided, snapshot) => (
           <Grid
             container
             className={classes.container}
             alignItems="center"
             spacing={1}
             ref={provided.innerRef}
-            style={getListStyle()}
+            style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
             {shouldShowBack && (

@@ -66,15 +66,10 @@ const DesktopDashboardContainer = styled('div')(({ theme }) => ({
   [`& .${classes.content}`]: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
-    overscrollBehavior: 'contain',
-    overscrollBehaviorY: 'none',
-    overscrollBehaviorX: 'none',
-    minHeight: '100vh',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
-    overflow: 'hidden',
   },
 }));
 
@@ -98,6 +93,9 @@ export const DesktopDashboard = (props: {
   const router = useHistory();
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [websiteCache, setWebsiteCache] = useState<IWebsiteCache>({});
+  const [dragDropSource, setDragDropSource] = useState<string>();
+  const [startX, setStartX] = useState<number>(0);
+  const [startScrollX, setStartScrollX] = useState<number>(0);
   const [tagForWebsiteToTagDialog, setTagForWebsiteToTagDialog] = useState<string>();
 
   const updateWebsiteCache = async () => {
@@ -154,9 +152,18 @@ export const DesktopDashboard = (props: {
     await props.store.websiteTagStore.updateWebsiteTags(wt);
   };
 
-  const onDragEnd = async (result: DropResult) => {
-    console.log(result, '<<<<<<<<<');
+  // Go to new scroll position every time the mouse moves while dragging is activated
+  const handleMouseMove = ({ clientX }: React.MouseEvent) => {
+    // const { startX, startScrollX } = this.state;
+    const scrollX = startScrollX - clientX + startX;
+    window.scrollTo(scrollX, 0);
+    const windowScrollX = window.scrollX;
+    if (scrollX !== windowScrollX) {
+      setStartX(clientX + windowScrollX - startScrollX);
+    }
+  };
 
+  const onDragEnd = async (result: DropResult) => {
     // TODO
     if (!result.destination) {
       return;
@@ -166,160 +173,202 @@ export const DesktopDashboard = (props: {
       return;
     }
 
-    console.log(result);
     if (result.destination.droppableId !== result.source.droppableId) {
-      alert('not supported yet');
-    }
+      // add tag and sort
+      const draggableTag = result.source.droppableId.replace('-websites', '');
+      const tag = result.destination.droppableId.replace('-websites', '');
+      const websiteId = result.draggableId.replace(`${draggableTag}-`, '');
+      const newWebsite = await props.store.websiteStore.getById(websiteId);
 
-    if (result.destination.droppableId.includes('-websites')) {
+      const newTags = newWebsite?.tags?.split(' ');
+      newTags?.push(tag);
+      if (newWebsite && newTags) {
+        await props.store.websiteStore.updateTags(newWebsite?.id, newTags.join(' '));
+        console.log(newWebsite, newTags);
+      }
+
+      const websites = getWebsitesForTag(websiteCache, tag);
+      websites.splice(result.destination.index, 0, newWebsite as any);
+      await props.store.websiteStore.saveOrder(websites);
+      props.store.incrementLoading();
+    } else if (result.destination.droppableId.includes('-websites')) {
       const tag = result.destination.droppableId.replace('-websites', '');
       const websites = getWebsitesForTag(websiteCache, tag);
 
       const tw = reorder(websites, result.source.index, result.destination.index);
       await props.store.websiteStore.saveOrder(tw);
       props.store.incrementLoading();
-    }
-
-    if (result.destination.droppableId === 'top-tags') {
+    } else if (result.destination.droppableId === 'top-tags') {
       const tt = reorder(websiteTags, result.source.index, result.destination.index);
       setWebsiteTags(tt);
+    }
+    setDragDropSource(undefined);
+    window.removeEventListener('mousemove', handleMouseMove as any);
+    window.removeEventListener('mouseup', onMouseUp as any);
+    setStartX(0);
+    setStartScrollX(0);
+  };
+
+  const onDragStart = (result: DropResult) => {
+    const source = result.source.droppableId;
+    setDragDropSource(source);
+  };
+
+  const onMouseDown = (event: React.MouseEvent) => {
+    window.addEventListener('mousemove', handleMouseMove as any);
+    window.addEventListener('mouseup', onMouseUp);
+    setStartX(event.clientX);
+    setStartScrollX(window.scrollX);
+  };
+
+  const onMouseUp = () => {
+    if (startX) {
+      window.removeEventListener('mousemove', handleMouseMove as any);
+      window.removeEventListener('mouseup', onMouseUp as any);
+      setStartScrollX(0);
+      setStartX(0);
     }
   };
 
   return (
     <ErrorBoundaryComponent>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <DesktopDashboardContainer>
-          <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
-            <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>Please reload the page
-              <Typography>{store.error}</Typography>
-            </Alert>
-          </Dialog>
-          <AddWebsiteToTagDialog
-            store={props.store}
-            close={async () => {
-              await updateWebsiteCache();
-              setTagForWebsiteToTagDialog(undefined);
-            }}
-            tagForWebsiteToTagDialog={tagForWebsiteToTagDialog}
-          />
-          <div className={classes.content}>
-            <TopNav
-              store={store}
-              isDarkMode={props.isDarkMode}
-              websiteTags={websiteTags}
-              setWebsiteTags={updateWebsiteTags}
-              refetchWebsiteTags={refetchWebsiteTags}
-              isMicrosoftError={props.isMicrosoftError}
-              toggleWebsiteTag={toggleWebsiteTagClick}
-              websiteCache={websiteCache}
+      <div onMouseDown={onMouseDown}>
+        <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+          <DesktopDashboardContainer>
+            <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>Please reload the page
+                <Typography>{store.error}</Typography>
+              </Alert>
+            </Dialog>
+            <AddWebsiteToTagDialog
+              store={props.store}
+              close={async () => {
+                await updateWebsiteCache();
+                setTagForWebsiteToTagDialog(undefined);
+              }}
+              tagForWebsiteToTagDialog={tagForWebsiteToTagDialog}
             />
-            <StyledEngineProvider injectFirst>
-              <EmotionThemeProvider theme={lightTheme}>
-                <ThemeProvider theme={lightTheme}>
-                  <Onboarding />
-                </ThemeProvider>
-              </EmotionThemeProvider>
-            </StyledEngineProvider>
-            <div className={classes.container}>
-              <Container maxWidth="lg" disableGutters>
-                <div>
-                  <Switch>
-                    <Route path="/search">
-                      <Search
-                        store={store}
-                        isDarkMode={props.isDarkMode}
-                        websiteTags={websiteTags}
-                        toggleWebsiteTag={toggleWebsiteTagClick}
-                        websiteCache={websiteCache}
-                      />
-                    </Route>
-                    <Route path="/websites/:slug">
-                      <ExpandWebsite
-                        store={store}
-                        isDarkMode={props.isDarkMode}
-                        websiteTags={websiteTags}
-                        toggleWebsiteTag={toggleWebsiteTagClick}
-                        websiteCache={websiteCache}
-                      />
-                    </Route>
-                    <Route path="/meetings/:slug">
-                      <ExpandedMeeting
-                        store={store}
-                        isDarkMode={props.isDarkMode}
-                        websiteTags={websiteTags}
-                        toggleWebsiteTag={toggleWebsiteTagClick}
-                        websiteCache={websiteCache}
-                      />
-                    </Route>
-                    <Route path="/documents/:slug">
-                      <ExpandedDocument store={store} websiteCache={websiteCache} />
-                    </Route>
-                    <Route path="/people/:slug">
-                      <ExpandPerson
-                        store={store}
-                        toggleWebsiteTag={toggleWebsiteTagClick}
-                        websiteTags={websiteTags}
-                        isDarkMode={props.isDarkMode}
-                        websiteCache={websiteCache}
-                      />
-                    </Route>
-                    <Route path="/meetings">
-                      <Meetings
-                        store={store}
-                        toggleWebsiteTag={toggleWebsiteTagClick}
-                        websiteTags={websiteTags}
-                        isDarkMode={props.isDarkMode}
-                        websiteCache={websiteCache}
-                      />
-                    </Route>
-                    <Route path="/calendar">
-                      <Summary store={store} isDarkMode={props.isDarkMode} />
-                    </Route>
-                    <Route path="/settings">
-                      <Settings
-                        store={store}
-                        isDarkMode={props.isDarkMode}
-                        setIsDarkMode={props.setIsDarkMode}
-                      />
-                    </Route>
-                    <Route>
-                      <MeetingHighlight
-                        store={props.store}
-                        toggleWebsiteTag={toggleWebsiteTagClick}
-                        websiteTags={websiteTags}
-                        isDarkMode={props.isDarkMode}
-                        websiteCache={websiteCache}
-                      />
-                      <TagHighlights
-                        store={props.store}
-                        toggleWebsiteTag={toggleWebsiteTagClick}
-                        websiteTags={websiteTags}
-                        isDarkMode={props.isDarkMode}
-                        websiteCache={websiteCache}
-                        showAddWebsiteDialog={setTagForWebsiteToTagDialog}
-                      />
-                      <div id="tag-all" style={{ marginBottom: 80 }}>
-                        <WebsiteHighlights
+            <div className={classes.content}>
+              <TopNav
+                store={store}
+                isDarkMode={props.isDarkMode}
+                websiteTags={websiteTags}
+                setWebsiteTags={updateWebsiteTags}
+                refetchWebsiteTags={refetchWebsiteTags}
+                isMicrosoftError={props.isMicrosoftError}
+                toggleWebsiteTag={toggleWebsiteTagClick}
+                websiteCache={websiteCache}
+                dragDropSource={dragDropSource}
+              />
+              <StyledEngineProvider injectFirst>
+                <EmotionThemeProvider theme={lightTheme}>
+                  <ThemeProvider theme={lightTheme}>
+                    <Onboarding />
+                  </ThemeProvider>
+                </EmotionThemeProvider>
+              </StyledEngineProvider>
+              <div className={classes.container}>
+                <Container maxWidth="lg" disableGutters>
+                  <div>
+                    <Switch>
+                      <Route path="/search">
+                        <Search
+                          store={store}
+                          isDarkMode={props.isDarkMode}
+                          websiteTags={websiteTags}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteCache={websiteCache}
+                        />
+                      </Route>
+                      <Route path="/websites/:slug">
+                        <ExpandWebsite
+                          store={store}
+                          isDarkMode={props.isDarkMode}
+                          websiteTags={websiteTags}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteCache={websiteCache}
+                          dragDropSource={dragDropSource}
+                        />
+                      </Route>
+                      <Route path="/meetings/:slug">
+                        <ExpandedMeeting
+                          store={store}
+                          isDarkMode={props.isDarkMode}
+                          websiteTags={websiteTags}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteCache={websiteCache}
+                        />
+                      </Route>
+                      <Route path="/documents/:slug">
+                        <ExpandedDocument store={store} websiteCache={websiteCache} />
+                      </Route>
+                      <Route path="/people/:slug">
+                        <ExpandPerson
                           store={store}
                           toggleWebsiteTag={toggleWebsiteTagClick}
                           websiteTags={websiteTags}
                           isDarkMode={props.isDarkMode}
                           websiteCache={websiteCache}
                         />
-                      </div>
-                    </Route>
-                  </Switch>
-                </div>
-              </Container>
+                      </Route>
+                      <Route path="/meetings">
+                        <Meetings
+                          store={store}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteTags={websiteTags}
+                          isDarkMode={props.isDarkMode}
+                          websiteCache={websiteCache}
+                        />
+                      </Route>
+                      <Route path="/calendar">
+                        <Summary store={store} isDarkMode={props.isDarkMode} />
+                      </Route>
+                      <Route path="/settings">
+                        <Settings
+                          store={store}
+                          isDarkMode={props.isDarkMode}
+                          setIsDarkMode={props.setIsDarkMode}
+                        />
+                      </Route>
+                      <Route>
+                        <MeetingHighlight
+                          store={props.store}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteTags={websiteTags}
+                          isDarkMode={props.isDarkMode}
+                          websiteCache={websiteCache}
+                        />
+                        <TagHighlights
+                          store={props.store}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteTags={websiteTags}
+                          isDarkMode={props.isDarkMode}
+                          websiteCache={websiteCache}
+                          showAddWebsiteDialog={setTagForWebsiteToTagDialog}
+                          dragDropSource={dragDropSource}
+                        />
+                        <div id="tag-all" style={{ marginBottom: 80 }}>
+                          <WebsiteHighlights
+                            store={store}
+                            toggleWebsiteTag={toggleWebsiteTagClick}
+                            websiteTags={websiteTags}
+                            isDarkMode={props.isDarkMode}
+                            websiteCache={websiteCache}
+                          />
+                        </div>
+                      </Route>
+                    </Switch>
+                  </div>
+                </Container>
+              </div>
             </div>
-          </div>
-          <div className={classes.footerContainer}>
-            <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
-          </div>
-        </DesktopDashboardContainer>
-      </DragDropContext>
+            <div className={classes.footerContainer}>
+              <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
+            </div>
+          </DesktopDashboardContainer>
+        </DragDropContext>
+      </div>
     </ErrorBoundaryComponent>
   );
 };

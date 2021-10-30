@@ -243,6 +243,7 @@ const ExpandWebsite = (props: {
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   websiteCache: IWebsiteCache;
+  dragDropSource?: string;
 }) => {
   const { slug }: any = useParams();
   const websiteId = props.websiteId || decodeURIComponent(slug);
@@ -390,6 +391,7 @@ const ExpandWebsite = (props: {
             filterByTag={t}
             maxWebsites={4}
             websiteCache={props.websiteCache}
+            dragDropSource={props.dragDropSource}
           />
         </div>
       ))}
