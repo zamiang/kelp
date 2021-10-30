@@ -11,7 +11,6 @@ import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CloseIcon from '../../public/icons/close.svg';
-import SunIcon from '../../public/icons/sun-white.svg';
 import { cleanText } from '../shared/tfidf';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
@@ -297,16 +296,6 @@ const ExpandWebsite = (props: {
     return props.store.incrementLoading();
   };
 
-  const hideWebsite = async (websiteId: string) => {
-    await props.store.websiteBlocklistStore.addWebsite(websiteId);
-    setIsHidden(true);
-  };
-
-  const showWebsite = async (websiteId: string) => {
-    await props.store.websiteBlocklistStore.removeWebsite(websiteId);
-    setIsHidden(false);
-  };
-
   return (
     <Root>
       <Grid container spacing={6}>
@@ -330,32 +319,16 @@ const ExpandWebsite = (props: {
             style={{ height: '100%' }}
           >
             <Grid item>
-              <Grid container>
-                <Grid item xs={10}>
-                  <Link href={website?.rawUrl} underline="none">
-                    <Typography
-                      variant="h2"
-                      color="textPrimary"
-                      gutterBottom
-                      className={isHidden ? classes.hiddenWebsite : undefined}
-                    >
-                      {website.title}
-                    </Typography>
-                  </Link>
-                </Grid>
-                <Grid item xs={2} justifyContent="center" style={{ textAlign: 'right' }}>
-                  {!isHidden && (
-                    <IconButton onClick={() => hideWebsite(websiteId)}>
-                      <CloseIcon width="24" height="24" />
-                    </IconButton>
-                  )}
-                  {isHidden && (
-                    <IconButton onClick={() => showWebsite(websiteId)}>
-                      <SunIcon width="24" height="24" />
-                    </IconButton>
-                  )}
-                </Grid>
-              </Grid>
+              <Link href={website?.rawUrl} underline="none">
+                <Typography
+                  variant="h2"
+                  color="textPrimary"
+                  gutterBottom
+                  className={isHidden ? classes.hiddenWebsite : undefined}
+                >
+                  {website.title}
+                </Typography>
+              </Link>
               <div className={classes.tags}>
                 {websiteTags.map((tag) => (
                   <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>

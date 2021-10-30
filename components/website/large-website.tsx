@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import CloseIcon from '../../public/icons/close.svg';
 import DotsIcon from '../../public/icons/dots-black.svg';
 import DotsIconWhite from '../../public/icons/dots-white.svg';
 import { WebsiteTags } from '../shared/website-tag';
@@ -24,6 +25,7 @@ const classes = {
   textContainer: `${PREFIX}-textContainer`,
   text: `${PREFIX}-text`,
   icon: `${PREFIX}-icon`,
+  removeButton: `${PREFIX}-removeButton`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -36,6 +38,12 @@ const Root = styled('div')(({ theme }) => ({
     '&:hover': {
       opacity: 0.8,
     },
+  },
+  [`& .${classes.removeButton}`]: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 10,
   },
   [`& .${classes.dots}`]: {
     backgroundImage:
@@ -119,6 +127,7 @@ export const LargeWebsite = (props: {
   websiteTags: IWebsiteTag[];
 }) => {
   const router = useHistory();
+  const [shouldShowRemove, setShouldShowRemove] = useState(false);
   const [image, setImage] = useState<IWebsiteImage>();
   const [website, setWebsite] = useState<IWebsiteItem>();
 
@@ -142,8 +151,23 @@ export const LargeWebsite = (props: {
     return () => (isSubscribed = false) as any;
   }, [props.item.id]);
 
+  const hideWebsite = async (websiteId: string) => {
+    await props.store.websiteBlocklistStore.addWebsite(websiteId);
+    // setIsHidden(true);
+    props.store.incrementLoading();
+  };
+
   return (
-    <Root>
+    <Root
+      style={{ position: 'relative' }}
+      onMouseEnter={() => setShouldShowRemove(true)}
+      onMouseLeave={() => setShouldShowRemove(false)}
+    >
+      {shouldShowRemove && (
+        <IconButton className={classes.removeButton} onClick={() => hideWebsite(props.item.id)}>
+          <CloseIcon width="24" height="24" />
+        </IconButton>
+      )}
       <Link href={website?.rawUrl} underline="none">
         <Box boxShadow={1} className={classes.container}>
           <WebsiteImage
