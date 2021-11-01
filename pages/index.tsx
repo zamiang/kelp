@@ -273,7 +273,13 @@ const App = () => (
           size="large"
           color="primary"
           className={classes.login}
-          startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
+          startIcon={
+            <img
+              src="/icons/install-white.svg"
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+            />
+          }
           onClick={() => (window.location.pathname = '/install')}
           disableElevation={true}
         >
@@ -340,7 +346,13 @@ const App = () => (
               size="large"
               color="primary"
               className={classes.login}
-              startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
+              startIcon={
+                <img
+                  src="/icons/install-white.svg"
+                  width={config.ICON_SIZE}
+                  height={config.ICON_SIZE}
+                />
+              }
               onClick={() => (window.location.pathname = '/install')}
               disableElevation={true}
             >

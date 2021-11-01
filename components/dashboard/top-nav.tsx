@@ -138,11 +138,11 @@ export const TopNav = (props: {
               size="large"
             >
               {location.pathname.indexOf('search') > -1 ? (
-                <SearchIconOrange width="24" height="24" />
+                <SearchIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : props.isDarkMode ? (
-                <SearchIconWhite width="24" height="24" />
+                <SearchIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : (
-                <SearchIcon width="24" height="24" />
+                <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
               )}
             </IconButton>
           </Grid>
@@ -180,7 +180,7 @@ export const TopNav = (props: {
               onClick={() => (window.location = 'https://www.kelp.nyc' as any)}
               className={classes.logo}
             >
-              <KelpIcon height="24" width="24" />
+              <KelpIcon height={config.ICON_SIZE} width={config.ICON_SIZE} />
             </IconButton>
           </Grid>
         </Grid>

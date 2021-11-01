@@ -1,10 +1,11 @@
-import { IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
+import config from '../../constants/config';
 import LeftArrow from '../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -119,7 +120,11 @@ export const TopTags = (props: {
             {shouldShowBack && (
               <Grid item>
                 <IconButton onClick={() => router.push('/home')} size="small">
-                  <LeftArrow width="24" height="24" style={{ transform: 'rotate(180deg)' }} />
+                  <LeftArrow
+                    width={config.ICON_SIZE}
+                    height={config.ICON_SIZE}
+                    style={{ transform: 'rotate(180deg)' }}
+                  />
                 </IconButton>
               </Grid>
             )}
@@ -219,7 +224,11 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
       <Grid container className={classes.container} alignItems="center" spacing={1}>
         <Grid item>
           <IconButton onClick={() => router.push('/home')} size="small">
-            <LeftArrow width="24" height="24" style={{ transform: 'rotate(180deg)' }} />
+            <LeftArrow
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+              style={{ transform: 'rotate(180deg)' }}
+            />
           </IconButton>
         </Grid>
         {props.tags.map((t) => (

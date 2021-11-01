@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
@@ -161,7 +162,11 @@ const LargeWebsiteImage = (props: {
         }}
         size="large"
       >
-        <img src={`chrome://favicon/size/48@1x/${props.websiteId}`} height="16" width="16" />
+        <img
+          src={`chrome://favicon/size/48@1x/${props.websiteId}`}
+          height={config.ICON_SIZE}
+          width={config.ICON_SIZE}
+        />
       </IconButton>
     </div>
   );

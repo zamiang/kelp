@@ -95,7 +95,7 @@ export const AddTaggDialog = (props: {
           </Grid>
           <Grid item xs={2}>
             <IconButton onClick={props.close} className={classes.closeButton} size="large">
-              <CloseIcon width="24" height="24" />
+              <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
           </Grid>
         </Grid>

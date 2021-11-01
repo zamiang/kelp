@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import config from '../../constants/config';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import { Row, classes } from '../shared/row-styles';
@@ -32,8 +33,8 @@ export const Meeting = (props: {
         <Grid container wrap="nowrap" alignItems="center">
           <Grid item className={classes.rowLeft}>
             <CalendarIcon
-              width="24"
-              height="24"
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
               style={{ display: 'block', margin: '0 auto', opacity }}
             />
           </Grid>

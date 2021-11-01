@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import config from '../../constants/config';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import VideoIconWhite from '../../public/icons/video-white.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
@@ -260,7 +261,7 @@ export const FeaturedMeeting = (props: {
               variant="outlined"
               disableElevation
               color="primary"
-              startIcon={<PlusIcon width="24" height="24" />}
+              startIcon={<PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
               className={classes.button}
             >
               Add Tags
@@ -272,7 +273,7 @@ export const FeaturedMeeting = (props: {
                 className={classes.button}
                 variant="contained"
                 color={'primary'}
-                startIcon={<VideoIconWhite width="24" height="24" />}
+                startIcon={<VideoIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />}
                 onClick={() => window.open(props.meeting.videoLink, '_blank')}
               >
                 Join

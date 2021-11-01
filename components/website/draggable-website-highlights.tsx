@@ -231,7 +231,7 @@ export const DraggableWebsiteHighlights = (props: {
                     props.toggleWebsiteTag(props.filterByTag!, config.INTERNAL_WEBSITE_ID)
                   }
                 >
-                  <CloseIcon width="24" height="24" />
+                  <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
                 </IconButton>
               </Grid>
             )}
@@ -245,7 +245,7 @@ export const DraggableWebsiteHighlights = (props: {
                     props.showAddWebsiteDialog(props.filterByTag)
                   }
                 >
-                  <PlusIcon width="24" height="24" />
+                  <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
                 </IconButton>
               </Grid>
             )}

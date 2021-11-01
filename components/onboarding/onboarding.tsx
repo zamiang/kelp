@@ -95,7 +95,7 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
           className={classes.button}
           onClick={() => props.setStep(props.step + 1)}
         >
-          <RightArrow height="22" width="22" />
+          <RightArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
         </IconButton>
       </Grid>
     </Grid>
@@ -120,7 +120,7 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
           className={classes.leftButton}
           onClick={() => props.setStep(props.step - 1)}
         >
-          <LeftArrow height="22" width="22" />
+          <LeftArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
         </IconButton>
         <IconButton
           className={classes.button}
@@ -130,7 +130,7 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
             return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
           }}
         >
-          <RightArrow height="22" width="22" />
+          <RightArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
         </IconButton>
       </Grid>
     </Grid>
@@ -155,14 +155,14 @@ const MeetingsAnimation = (props: { step: number; setStep: (step: number) => voi
           className={classes.leftButton}
           onClick={() => props.setStep(props.step - 1)}
         >
-          <LeftArrow height="22" width="22" />
+          <LeftArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
         </IconButton>
         <IconButton
           size="medium"
           className={classes.button}
           onClick={() => props.setStep(props.step + 1)}
         >
-          <RightArrow height="22" width="22" />
+          <RightArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
         </IconButton>
       </Grid>
     </Grid>

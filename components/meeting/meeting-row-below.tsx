@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
+import config from '../../constants/config';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -101,7 +102,7 @@ const MeetingRowBelow = (props: {
             setShouldShowAll(!shouldShowAll);
           }}
         >
-          <PlusIcon width="24" height="24" />{' '}
+          <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />{' '}
         </IconButton>
       )}
       {props.meetingTags.map((t) => (

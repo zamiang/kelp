@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
+import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
 import { cleanupUrl } from '../shared/cleanup-url';
 import { IStore } from '../store/use-store';
@@ -132,7 +133,7 @@ export const AddWebsiteToTagDialog = (props: {
           </Grid>
           <Grid item>
             <IconButton onClick={props.close} className={classes.closeButton} size="large">
-              <CloseIcon width="24" height="24" />
+              <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
           </Grid>
         </Grid>

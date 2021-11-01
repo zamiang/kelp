@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
+import config from '../../constants/config';
 import EmailIcon from '../../public/icons/email-orange.svg';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import SaveIcon from '../../public/icons/save-orange.svg';
@@ -67,7 +68,7 @@ const EmailGuestsButton = (props: {
       disableElevation
       color="primary"
       className={classes.button}
-      startIcon={<EmailIcon width="24" height="24" />}
+      startIcon={<EmailIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
     >
       Email Guests
     </Button>
@@ -209,7 +210,7 @@ const ExpandedMeeting = (props: {
                     className={classes.iconButton}
                     size="large"
                   >
-                    <SaveIcon width="24" height="24" />
+                    <SaveIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -220,7 +221,7 @@ const ExpandedMeeting = (props: {
                 variant="outlined"
                 disableElevation
                 color="primary"
-                startIcon={<PlusIcon width="24" height="24" />}
+                startIcon={<PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
                 className={classes.button}
               >
                 Add Tags
@@ -240,7 +241,7 @@ const ExpandedMeeting = (props: {
                   variant="contained"
                   disableElevation
                   color="primary"
-                  startIcon={<VideoIcon width="24" height="24" />}
+                  startIcon={<VideoIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
                   className={classes.button}
                 >
                   Join

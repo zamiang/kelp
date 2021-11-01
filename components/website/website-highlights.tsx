@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
+import config from '../../constants/config';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
@@ -68,7 +69,7 @@ export const WebsiteHighlights = (props: {
                 setShouldShowAll(!shouldShowAll);
               }}
             >
-              <PlusIcon width="24" height="24" />{' '}
+              <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />{' '}
             </IconButton>
           </Grid>
         )}

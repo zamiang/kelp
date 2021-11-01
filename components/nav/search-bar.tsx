@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import config from '../../constants/config';
 import CloseIconOrange from '../../public/icons/close-orange.svg';
 import CloseIcon from '../../public/icons/close.svg';
 import SearchIconOrange from '../../public/icons/search-orange.svg';
@@ -60,11 +61,11 @@ const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
       <Grid item>
         <IconButton className={classes.icon}>
           {location.pathname.indexOf('search') > -1 ? (
-            <SearchIconOrange width="24" height="24" />
+            <SearchIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
           ) : props.isDarkMode ? (
-            <SearchIconWhite width="24" height="24" />
+            <SearchIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
           ) : (
-            <SearchIcon width="24" height="24" />
+            <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
           )}
         </IconButton>
       </Grid>
@@ -97,9 +98,9 @@ const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
             size="large"
           >
             {props.isDarkMode ? (
-              <CloseIconOrange width="24" height="24" />
+              <CloseIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
             ) : (
-              <CloseIcon width="24" height="24" />
+              <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             )}
           </IconButton>
         </Grid>

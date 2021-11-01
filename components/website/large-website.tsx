@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
 import DotsIcon from '../../public/icons/dots-black.svg';
 import DotsIconWhite from '../../public/icons/dots-white.svg';
@@ -112,7 +113,11 @@ const WebsiteImage = (props: {
         }}
         size="large"
       >
-        <img src={`chrome://favicon/size/48@1x/${props.item.id}`} height="16" width="16" />
+        <img
+          src={`chrome://favicon/size/48@1x/${props.item.id}`}
+          height={config.ICON_SIZE}
+          width={config.ICON_SIZE}
+        />
       </IconButton>
     </Root>
   );
@@ -165,7 +170,7 @@ export const LargeWebsite = (props: {
     >
       {shouldShowRemove && (
         <IconButton className={classes.removeButton} onClick={() => hideWebsite(props.item.id)}>
-          <CloseIcon width="24" height="24" />
+          <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
         </IconButton>
       )}
       <Link href={website?.rawUrl} underline="none">
@@ -200,12 +205,13 @@ export const LargeWebsite = (props: {
         <Grid item>
           <IconButton
             size="small"
+            disableRipple
             onClick={() => router.push(`/websites/${encodeURIComponent(props.item.id)}`)}
           >
             {props.isDarkMode ? (
-              <DotsIconWhite width="16" height="16" />
+              <DotsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
             ) : (
-              <DotsIcon width="16" height="16" />
+              <DotsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             )}
           </IconButton>
         </Grid>

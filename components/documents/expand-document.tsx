@@ -6,6 +6,7 @@ import { addDays, differenceInCalendarDays, format, subDays } from 'date-fns';
 import { times } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import config from '../../constants/config';
 import EditIcon from '../../public/icons/edit-white.svg';
 import ShareIcon from '../../public/icons/person-add-orange.svg';
 import { D3Component } from '../shared/bar-chart/bar-chart';
@@ -100,7 +101,7 @@ const ExpandedDocument = (props: {
           variant="contained"
           color="primary"
           href={`${document.link}?${shareParams.toString()}`}
-          startIcon={<ShareIcon width="24" height="24" />}
+          startIcon={<ShareIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
           target="_blank"
         >
           Share Document
@@ -111,7 +112,7 @@ const ExpandedDocument = (props: {
             variant="contained"
             disableElevation
             color="primary"
-            startIcon={<EditIcon width="24" height="24" />}
+            startIcon={<EditIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
             href={document.link!}
             target="_blank"
           >

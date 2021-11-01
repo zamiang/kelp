@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
 import { isSegmentTagSelected } from '../meeting/featured-meeting';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
@@ -118,7 +119,7 @@ export const AddTagToMeetingDialog = (props: {
             <Typography variant="h3">Add tags to {props.meeting.summary}</Typography>
             <br />
             <IconButton onClick={props.close} className={classes.closeButton} size="large">
-              <CloseIcon width="24" height="24" />
+              <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
           </Grid>
         </Grid>

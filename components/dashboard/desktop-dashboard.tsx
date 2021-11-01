@@ -26,6 +26,7 @@ import { AddWebsiteToTagDialog } from '../website/add-website-to-tag-dialog';
 import { getWebsitesForTag } from '../website/draggable-website-highlights';
 import ExpandWebsite from '../website/expand-website';
 import { IWebsiteCache, getWebsitesCache } from '../website/get-featured-websites';
+import { MostRecentTab } from '../website/most-recent-tab';
 import { TagHighlights } from '../website/tag-highlights';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
@@ -43,7 +44,6 @@ const DesktopDashboardContainer = styled('div')(({ theme }) => ({
   [`& .${classes.container}`]: {
     paddingLeft: 210,
     paddingRight: 210,
-    marginTop: 62,
     [theme.breakpoints.down('xl')]: {
       paddingLeft: 180,
       paddingRight: 180,
@@ -332,6 +332,7 @@ export const DesktopDashboard = (props: {
                         />
                       </Route>
                       <Route>
+                        <MostRecentTab isDarkMode={props.isDarkMode} />
                         <MeetingHighlight
                           store={props.store}
                           toggleWebsiteTag={toggleWebsiteTagClick}

@@ -7,6 +7,7 @@ import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import config from '../../constants/config';
 import HelpIcon from '../../public/icons/help.svg';
 import SearchIcon from '../../public/icons/search.svg';
 import isTouchEnabled from '../shared/is-touch-enabled';
@@ -210,7 +211,7 @@ const DocumentRow = (props: {
                   return false;
                 }}
               >
-                <SearchIcon width="24" height="24" />
+                <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
               </IconButton>
             </Grid>
           )}
