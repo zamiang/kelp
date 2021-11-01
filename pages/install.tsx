@@ -39,9 +39,7 @@ const App = () => (
             color="primary"
             className={classes.login}
             disableElevation={true}
-            startIcon={
-              <img src="/icons/chrome.svg" width={config.ICON_SIZE} height={config.ICON_SIZE} />
-            }
+            startIcon={<img src="/icons/chrome.svg" width="24" height="24" />}
             style={{
               marginLeft: 'auto',
               marginRight: 'auto',
@@ -70,9 +68,7 @@ const App = () => (
               color="primary"
               className={classes.login}
               disableElevation={true}
-              startIcon={
-                <img src="/icons/chrome.svg" width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              }
+              startIcon={<img src="/icons/chrome.svg" width="24" height="24" />}
               href="https://chrome.google.com/webstore/detail/kelp/onkkkcfnlbkoialleldfbgodakajfpnl"
             >
               Add to Chrome
