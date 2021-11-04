@@ -178,7 +178,7 @@ const DraggableWebsites = (props: {
 
 export const DraggableWebsiteHighlights = (props: {
   store: IStore;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   filterByTag?: string;
@@ -227,9 +227,7 @@ export const DraggableWebsiteHighlights = (props: {
               <Grid item>
                 <IconButton
                   className={classes.button}
-                  onClick={() =>
-                    props.toggleWebsiteTag(props.filterByTag!, config.INTERNAL_WEBSITE_ID)
-                  }
+                  onClick={() => props.toggleWebsiteTag(props.filterByTag!)}
                 >
                   <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
                 </IconButton>

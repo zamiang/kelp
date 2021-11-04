@@ -57,7 +57,7 @@ export const AddTaggDialog = (props: {
   userTags: IWebsiteTag[];
   close: () => void;
   isOpen: boolean;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   store: IStore;
 }) => {
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
@@ -107,7 +107,7 @@ export const AddTaggDialog = (props: {
                     classes.tag,
                     isTagSelected(t, props.userTags) && classes.tagSelected,
                   )}
-                  onClick={() => props.toggleWebsiteTag(t, config.INTERNAL_WEBSITE_ID)}
+                  onClick={() => props.toggleWebsiteTag(t)}
                   noWrap
                 >
                   {t}

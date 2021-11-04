@@ -248,7 +248,7 @@ const ExpandWebsite = (props: {
   store: IStore;
   websiteId?: string;
   close?: () => void;
-  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   isDarkMode: boolean;
   websiteCache: IWebsiteCache;

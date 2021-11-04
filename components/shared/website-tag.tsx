@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import config from '../../constants/config';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
@@ -54,21 +53,9 @@ export const toggleWebsiteTag = async (
   websiteId?: string,
 ) => {
   if (isTagSelected(tag, userTags)) {
-    if (websiteId && websiteId !== config.INTERNAL_WEBSITE_ID) {
-      const website = await store.websiteStore.getById(websiteId);
-      if (website) {
-        return store.websiteStore.updateTags(
-          website.id,
-          (website.tags || '').replace(tag, '').trim().replace('  ', ' '),
-        );
-      }
-    } else {
-      return store.websiteTagStore.deleteAllForTag(tag);
-    }
+    return store.websiteTagStore.delete(tag);
   }
-  if (websiteId) {
-    return store.websiteTagStore.create(tag, websiteId);
-  }
+  return store.websiteTagStore.create(tag, websiteId);
 };
 
 export const getTagsForWebsite = (tags: string, userTags: IWebsiteTag[]) => {

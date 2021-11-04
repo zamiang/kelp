@@ -220,6 +220,7 @@ export const DesktopDashboard = (props: {
     } else if (result.destination.droppableId === 'top-tags') {
       const tt = reorder(websiteTags, result.source.index, result.destination.index);
       setWebsiteTags(tt);
+      await props.store.websiteTagStore.updateWebsiteTags(tt);
     }
     setDragDropSource(undefined);
     window.removeEventListener('mousemove', handleMouseMove as any);

@@ -10,22 +10,18 @@ export default class WebsiteTagModel {
     this.db = db;
   }
 
-  async create(tag: string, websiteId: string) {
+  async create(tag: string, websiteId?: string) {
     const result = await this.db.put('websiteTag', {
-      id: `${websiteId}-${tag}`,
+      id: tag,
       tag: tag.toLocaleLowerCase(),
       url: websiteId,
       createdAt: new Date(),
-      order: 0,
+      order: -1,
     });
     return result;
   }
 
-  async delete(tag: string, websiteId: string) {
-    return await this.db.delete('websiteTag', `${websiteId}-${tag}`);
-  }
-
-  async deleteAllForTag(tag: string) {
+  async delete(tag: string) {
     const tags = await this.db.getAllFromIndex('websiteTag', 'by-tag', tag);
     return await Promise.all(tags.map((t) => this.db.delete('websiteTag', t.id)));
   }

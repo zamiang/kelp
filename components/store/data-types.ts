@@ -179,7 +179,7 @@ export interface IWebsitePin {
 export interface IWebsiteTag {
   readonly id: string;
   readonly createdAt: Date;
-  readonly url: string;
+  readonly url?: string;
   readonly tag: string;
   order: number;
 }
