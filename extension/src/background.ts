@@ -207,9 +207,13 @@ chrome.runtime.onInstalled.addListener(() => {
   void getOrCreateStore();
 });
 
-chrome.runtime.onSuspendCanceled.addListener(() => {
-  void setupTimers();
-  void getOrCreateStore();
+chrome.idle.onStateChanged.addListener((state) => {
+  if (state === 'active') {
+    void setupTimers();
+    void getOrCreateStore();
+  } else {
+    void chrome.alarms.clearAll();
+  }
 });
 
 chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightInfo) => {

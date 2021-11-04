@@ -70,6 +70,7 @@ const DesktopDashboardContainer = styled('div')(({ theme }) => ({
     paddingBottom: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
+    minHeight: '100vh',
   },
 }));
 
@@ -169,11 +170,26 @@ export const DesktopDashboard = (props: {
       return;
     }
 
-    if (result.destination.index === result.source.index) {
-      return;
-    }
+    // Dragging from most recent tab
+    if (result.source.droppableId === 'most-recent-tab') {
+      // add tag and sort
+      const tag = result.destination.droppableId.replace('-websites', '');
+      const websiteId = result.draggableId;
+      const newWebsite = await props.store.websiteStore.getById(websiteId);
 
-    if (result.destination.droppableId !== result.source.droppableId) {
+      const newTags = newWebsite?.tags?.split(' ');
+      newTags?.push(tag);
+      if (newWebsite && newTags) {
+        await props.store.websiteStore.updateTags(newWebsite?.id, newTags.join(' '));
+      }
+
+      const websites = getWebsitesForTag(websiteCache, tag);
+      websites.splice(result.destination.index, 0, newWebsite as any);
+      await props.store.websiteStore.saveOrder(websites);
+      props.store.incrementLoading();
+
+      // dragging between tags
+    } else if (result.destination.droppableId !== result.source.droppableId) {
       // add tag and sort
       const draggableTag = result.source.droppableId.replace('-websites', '');
       const tag = result.destination.droppableId.replace('-websites', '');
@@ -184,13 +200,14 @@ export const DesktopDashboard = (props: {
       newTags?.push(tag);
       if (newWebsite && newTags) {
         await props.store.websiteStore.updateTags(newWebsite?.id, newTags.join(' '));
-        console.log(newWebsite, newTags);
       }
 
       const websites = getWebsitesForTag(websiteCache, tag);
       websites.splice(result.destination.index, 0, newWebsite as any);
       await props.store.websiteStore.saveOrder(websites);
       props.store.incrementLoading();
+
+      // dragging
     } else if (result.destination.droppableId.includes('-websites')) {
       const tag = result.destination.droppableId.replace('-websites', '');
       const websites = getWebsitesForTag(websiteCache, tag);
@@ -198,6 +215,8 @@ export const DesktopDashboard = (props: {
       const tw = reorder(websites, result.source.index, result.destination.index);
       await props.store.websiteStore.saveOrder(tw);
       props.store.incrementLoading();
+
+      // Left tags sorting
     } else if (result.destination.droppableId === 'top-tags') {
       const tt = reorder(websiteTags, result.source.index, result.destination.index);
       setWebsiteTags(tt);

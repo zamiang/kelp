@@ -1,5 +1,6 @@
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -174,14 +175,9 @@ export const TopNav = (props: {
             </Grid>
           )}
           <Grid item>
-            <IconButton
-              aria-label="Kelp Homepage"
-              size="large"
-              onClick={() => (window.location = 'https://www.kelp.nyc' as any)}
-              className={classes.logo}
-            >
-              <KelpIcon height={config.ICON_SIZE} width={config.ICON_SIZE} />
-            </IconButton>
+            <Link href="https://www.kelp.nyc" className={classes.logo}>
+              <KelpIcon height="24" width="24" />
+            </Link>
           </Grid>
         </Grid>
       </div>

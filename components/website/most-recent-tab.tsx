@@ -7,6 +7,7 @@ import config from '../../constants/config';
 import MoveIconOrange from '../../public/icons/move-orange.svg';
 import MoveIconWhite from '../../public/icons/move-white.svg';
 import MoveIcon from '../../public/icons/move.svg';
+import { cleanupUrl } from '../shared/cleanup-url';
 
 const PREFIX = 'MostRecentTab';
 
@@ -92,7 +93,7 @@ export const MostRecentTab = (props: { isDarkMode: boolean }) => {
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
-            <Draggable draggableId="most-recent-tab" index={0}>
+            <Draggable draggableId={cleanupUrl(tab.url!)} index={0}>
               {(provided, snapshot) => (
                 <div
                   className={classes.tab}
@@ -128,6 +129,7 @@ export const MostRecentTab = (props: { isDarkMode: boolean }) => {
                 </div>
               )}
             </Draggable>
+            {provided.placeholder}
           </div>
         )}
       </Droppable>

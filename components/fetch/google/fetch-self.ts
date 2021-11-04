@@ -22,7 +22,8 @@ export const fetchSelf = async (authToken: string): Promise<IPerson | null> => {
 
     if (personResponse.status === 401) {
       // Reload if the current user fetch fails
-      window.location.pathname = '/dashboard';
+      // window.location.pathname = '/dashboard.html';
+      console.error('failed to fetch current user');
     }
   }
 

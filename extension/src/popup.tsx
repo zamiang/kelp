@@ -165,20 +165,24 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
   });
 
   useEffect(() => {
-    chrome.identity.getAuthToken({ interactive: true }, (token) => {
-      if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError);
-        if (
-          chrome.runtime.lastError.message?.includes('Service has been disabled for this account')
-        ) {
-          setHasGoogleAdvancedProtectionError(true);
+    if (chrome.identity.getAuthToken) {
+      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError);
+          if (
+            chrome.runtime.lastError.message?.includes('Service has been disabled for this account')
+          ) {
+            setHasGoogleAdvancedProtectionError(true);
+          } else {
+            setHasAuthError(true);
+          }
         } else {
-          setHasAuthError(true);
+          setToken(token);
         }
-      } else {
-        setToken(token);
-      }
-    });
+      });
+    } else {
+      setToken('invalid');
+    }
   }, []);
 
   useEffect(() => {
