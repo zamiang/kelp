@@ -95,6 +95,7 @@ export const DesktopDashboard = (props: {
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [websiteCache, setWebsiteCache] = useState<IWebsiteCache>({});
   const [dragDropSource, setDragDropSource] = useState<string>();
+  const [rowLoading, setRowLoading] = useState<string>();
   const [startX, setStartX] = useState<number>(0);
   const [startScrollX, setStartScrollX] = useState<number>(0);
   const [tagForWebsiteToTagDialog, setTagForWebsiteToTagDialog] = useState<string>();
@@ -175,9 +176,27 @@ export const DesktopDashboard = (props: {
       // add tag and sort
       const tag = result.destination.droppableId.replace('-websites', '');
       const websiteId = result.draggableId;
+
+      setRowLoading(tag);
       const newWebsite = await props.store.websiteStore.getById(websiteId);
+      if (!newWebsite) {
+        return chrome.tabs.query(
+          {
+            url: websiteId,
+          },
+          (tabs) => {
+            const addWebsite = async () => {
+              await props.store.websiteStore.trackVisitFromTab(tabs[0], tag);
+              props.store.incrementLoading();
+              setRowLoading(undefined);
+            };
+            void addWebsite();
+          },
+        );
+      }
 
       const newTags = newWebsite?.tags?.split(' ');
+
       newTags?.push(tag);
       if (newWebsite && newTags) {
         await props.store.websiteStore.updateTags(newWebsite?.id, newTags.join(' '));
@@ -187,6 +206,7 @@ export const DesktopDashboard = (props: {
       websites.splice(result.destination.index, 0, newWebsite as any);
       await props.store.websiteStore.saveOrder(websites);
       props.store.incrementLoading();
+      setRowLoading(undefined);
 
       // dragging between tags
     } else if (result.destination.droppableId !== result.source.droppableId) {
@@ -194,6 +214,8 @@ export const DesktopDashboard = (props: {
       const draggableTag = result.source.droppableId.replace('-websites', '');
       const tag = result.destination.droppableId.replace('-websites', '');
       const websiteId = result.draggableId.replace(`${draggableTag}-`, '');
+      setRowLoading(tag);
+
       const newWebsite = await props.store.websiteStore.getById(websiteId);
 
       const newTags = newWebsite?.tags?.split(' ');
@@ -206,15 +228,18 @@ export const DesktopDashboard = (props: {
       websites.splice(result.destination.index, 0, newWebsite as any);
       await props.store.websiteStore.saveOrder(websites);
       props.store.incrementLoading();
+      setRowLoading(undefined);
 
       // dragging
     } else if (result.destination.droppableId.includes('-websites')) {
       const tag = result.destination.droppableId.replace('-websites', '');
       const websites = getWebsitesForTag(websiteCache, tag);
+      setRowLoading(tag);
 
       const tw = reorder(websites, result.source.index, result.destination.index);
       await props.store.websiteStore.saveOrder(tw);
       props.store.incrementLoading();
+      setRowLoading(undefined);
 
       // Left tags sorting
     } else if (result.destination.droppableId === 'top-tags') {
@@ -368,6 +393,7 @@ export const DesktopDashboard = (props: {
                           websiteCache={websiteCache}
                           showAddWebsiteDialog={setTagForWebsiteToTagDialog}
                           dragDropSource={dragDropSource}
+                          tagRowLoading={rowLoading}
                         />
                         <div id="tag-all" style={{ marginBottom: 80 }}>
                           <WebsiteHighlights

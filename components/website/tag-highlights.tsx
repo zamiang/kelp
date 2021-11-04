@@ -27,6 +27,7 @@ export const TagHighlights = (props: {
   showAddWebsiteDialog: (tag: string) => void;
   websiteCache: IWebsiteCache;
   dragDropSource?: string;
+  tagRowLoading?: string;
 }) => {
   const theme = useTheme();
   const orderedTags = props.websiteTags;
@@ -46,6 +47,7 @@ export const TagHighlights = (props: {
             maxWebsites={isLarge ? 4 : 3}
             websiteCache={props.websiteCache}
             dragDropSource={props.dragDropSource}
+            isLoading={t.tag === props.tagRowLoading}
           />
         </div>
       ))}

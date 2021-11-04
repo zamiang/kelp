@@ -403,6 +403,7 @@ const ExpandWebsite = (props: {
               websiteCache={props.websiteCache}
               dragDropSource={props.dragDropSource}
               shouldHideCloseButton={true}
+              isLoading={false}
             />
           </div>
         ))}

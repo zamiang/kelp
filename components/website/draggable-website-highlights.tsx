@@ -2,6 +2,7 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
@@ -19,6 +20,7 @@ export const classes = {
   topSection: `${PREFIX}-topSection`,
   button: `${PREFIX}-button`,
   sideButton: `${PREFIX}-sideButton`,
+  loading: `${PREFIX}-loading`,
 };
 
 export const Root = styled('div')(({ theme }) => ({
@@ -26,6 +28,11 @@ export const Root = styled('div')(({ theme }) => ({
     marginBottom: theme.spacing(2),
     position: 'relative',
     zIndex: 5,
+    opacity: 1,
+    transition: 'opacity 0.5s',
+  },
+  [`& .${classes.loading}`]: {
+    opacity: 0.5,
   },
   [`& .${classes.button}`]: {
     opacity: 0.5,
@@ -187,6 +194,7 @@ export const DraggableWebsiteHighlights = (props: {
   websiteCache: IWebsiteCache;
   dragDropSource?: string;
   shouldHideCloseButton?: boolean;
+  isLoading: boolean;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IWebsiteCacheItem[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -217,7 +225,7 @@ export const DraggableWebsiteHighlights = (props: {
         container
         alignItems="center"
         justifyContent="space-between"
-        className={classes.topSection}
+        className={clsx(classes.topSection, props.isLoading && classes.loading)}
       >
         <Grid item>
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>

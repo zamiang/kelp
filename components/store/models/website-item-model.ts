@@ -27,7 +27,8 @@ export default class WebsiteItemModel {
   }
 
   async getById(id: string): Promise<IWebsiteItem | undefined> {
-    return this.db.get('websiteItem', id);
+    const cleanId = cleanupUrl(id);
+    return this.db.get('websiteItem', cleanId);
   }
 
   async getAll(
@@ -152,7 +153,7 @@ export default class WebsiteItemModel {
     return;
   }
 
-  async trackVisit(website: IWebsiteItemNotFormatted) {
+  async trackVisit(website: IWebsiteItemNotFormatted, tag?: string) {
     const id = cleanupUrl(website.url);
     const existingItem = await this.getById(id);
     if (existingItem?.userEdited) {
@@ -164,12 +165,19 @@ export default class WebsiteItemModel {
         rawUrl: website.url,
         ogImage: website.ogImage,
       };
+      if (tag) {
+        w.tags = `${w.tags} ${tag}`;
+      }
       await this.db.put('websiteItem', w);
       return w;
     } else {
       const cleanDescription = cleanText(website.description || '');
       const cleanTitle = cleanText(website.title || '');
-      const tags = uniq(cleanTitle.concat(cleanDescription)).join(' ');
+      let tags = uniq(cleanTitle.concat(cleanDescription)).join(' ');
+
+      if (tag) {
+        tags = `${tags} ${tag}`;
+      }
 
       const w = {
         id,
@@ -183,6 +191,20 @@ export default class WebsiteItemModel {
       await this.db.put('websiteItem', w);
       return w;
     }
+  }
+
+  async trackVisitFromTab(tab: chrome.tabs.Tab, tag: string) {
+    const urlFormat = new URL(tab.url!);
+
+    return this.trackVisit(
+      {
+        domain: urlFormat.host,
+        pathname: urlFormat.pathname,
+        url: tab.url!,
+        title: tab.title,
+      },
+      tag,
+    );
   }
 
   async updateTags(websiteId: string, tags: string) {

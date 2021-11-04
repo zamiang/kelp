@@ -7,7 +7,6 @@ import config from '../../constants/config';
 import MoveIconOrange from '../../public/icons/move-orange.svg';
 import MoveIconWhite from '../../public/icons/move-white.svg';
 import MoveIcon from '../../public/icons/move.svg';
-import { cleanupUrl } from '../shared/cleanup-url';
 
 const PREFIX = 'MostRecentTab';
 
@@ -77,9 +76,11 @@ export const MostRecentTab = (props: { isDarkMode: boolean }) => {
         active: false,
       },
       (tabs) => {
-        const tab = tabs.reduce((previous: any, current: any) =>
-          previous?.lastAccessed > current?.lastAccessed ? previous : current,
-        );
+        const tab = tabs
+          .filter((t) => t.url && !t.url.includes('chrome://'))
+          .reduce((previous: any, current: any) =>
+            previous?.lastAccessed > current?.lastAccessed ? previous : current,
+          );
         if (tab) {
           setTab(tab);
         }
@@ -99,7 +100,7 @@ export const MostRecentTab = (props: { isDarkMode: boolean }) => {
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
-            <Draggable draggableId={cleanupUrl(tab.url!)} index={0}>
+            <Draggable draggableId={tab.url!} index={0}>
               {(provided, snapshot) => (
                 <div
                   className={classes.tab}
