@@ -292,7 +292,7 @@ const ExpandWebsite = (props: {
     return null;
   }
 
-  const websiteTags = getTagsForWebsite(website.tags || '', props.websiteTags);
+  const websiteTags = getTagsForWebsite(website?.tags || '', props.websiteTags);
 
   const removeTag = async (tag: string) => {
     const updatedTags = websiteTags.filter((t) => t !== tag).join(' ');

@@ -156,13 +156,12 @@ export default class WebsiteItemModel {
     const id = cleanupUrl(website.url);
     const existingItem = await this.getById(id);
     if (existingItem?.userEdited) {
+      // only overwrite title, description, ogimage
       const w = {
-        id,
+        ...existingItem,
         title: website.title || '',
         description: website.description,
         rawUrl: website.url,
-        domain: website.domain,
-        tags: existingItem.tags, // don't overwrite tags
         ogImage: website.ogImage,
       };
       await this.db.put('websiteItem', w);
@@ -200,7 +199,7 @@ export default class WebsiteItemModel {
       websiteItems.map(async (featuredWebsite, index) => {
         const existingItem = await this.getById(featuredWebsite.id);
         if (existingItem) {
-          const website = { ...existingItem, index };
+          const website = { ...existingItem, index, userEdited: true };
           await this.db.put('websiteItem', website);
           return website;
         }
@@ -213,7 +212,7 @@ export default class WebsiteItemModel {
   async moveToFront(websiteId: string) {
     const existingItem = await this.getById(websiteId);
     if (existingItem) {
-      const website = { ...existingItem, index: 0 };
+      const website = { ...existingItem, index: 0, userEdited: true };
       await this.db.put('websiteItem', website);
       return website;
     }
