@@ -27,6 +27,7 @@ const classes = {
   text: `${PREFIX}-text`,
   icon: `${PREFIX}-icon`,
   removeButton: `${PREFIX}-removeButton`,
+  dotsButton: `${PREFIX}-dotsButton`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -76,6 +77,7 @@ const Root = styled('div')(({ theme }) => ({
     paddingBottom: 'calc(30.9% - 16px)',
   },
   [`& .${classes.textContainer}`]: {},
+  [`& .${classes.dotsButton}`]: { opacity: 0.5 },
   [`& .${classes.icon}`]: {
     display: 'block',
     marginRight: theme.spacing(0.5),
@@ -207,6 +209,7 @@ export const LargeWebsite = (props: {
             size="small"
             disableRipple
             onClick={() => router.push(`/websites/${encodeURIComponent(props.item.id)}`)}
+            className={classes.dotsButton}
           >
             {props.isDarkMode ? (
               <DotsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />

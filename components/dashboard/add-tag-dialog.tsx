@@ -17,6 +17,7 @@ const PREFIX = 'AddTaggDialog';
 const classes = {
   dialogContent: `${PREFIX}-dialogContent`,
   tag: `${PREFIX}-tag`,
+  tagContainer: `${PREFIX}-tagContainer`,
   tagSelected: `${PREFIX}-tagSelected`,
   closeButton: `${PREFIX}-closeButton`,
   columnList: `${PREFIX}-columnList`,
@@ -29,19 +30,17 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     width: 480,
   },
   [`& .${classes.tag}`]: {
-    transition: 'borderBottom 0.3s',
-    borderBottom: '1px solid transparent',
-    display: 'inline-block',
     cursor: 'pointer',
-    '&:hover': {
-      borderBottomColor: theme.palette.divider,
-    },
+  },
+  [`& .${classes.tagContainer}`]: {
+    width: 95,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   },
   [`& .${classes.tagSelected}`]: {
-    borderBottomColor: theme.palette.primary.dark,
+    color: theme.palette.primary.dark,
     '&:hover': {
       opacity: 0.8,
-      borderBottomColor: theme.palette.primary.dark,
     },
   },
   [`& .${classes.closeButton}`]: {
@@ -102,14 +101,17 @@ export const AddTaggDialog = (props: {
         <ul className={classes.columnList}>
           {websiteTags.map((t) => (
             <li key={t}>
-              <div
-                className={clsx(
-                  classes.tag,
-                  isTagSelected(t, props.userTags) && classes.tagSelected,
-                )}
-                onClick={() => props.toggleWebsiteTag(t, config.INTERNAL_WEBSITE_ID)}
-              >
-                <Typography>{t}</Typography>
+              <div className={classes.tagContainer}>
+                <Typography
+                  className={clsx(
+                    classes.tag,
+                    isTagSelected(t, props.userTags) && classes.tagSelected,
+                  )}
+                  onClick={() => props.toggleWebsiteTag(t, config.INTERNAL_WEBSITE_ID)}
+                  noWrap
+                >
+                  {t}
+                </Typography>
               </div>
             </li>
           ))}

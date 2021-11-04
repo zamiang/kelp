@@ -295,6 +295,7 @@ export const Row = styled('div')(({ theme }) => ({
 
   [`& .${classes.topContainer}`]: {
     paddingBottom: theme.spacing(4),
+    marginTop: theme.spacing(4),
   },
   [`& .${classes.container}`]: {
     margin: 0,

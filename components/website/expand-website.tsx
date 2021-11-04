@@ -37,6 +37,7 @@ const classes = {
   smallButton: `${PREFIX}-smallButton`,
   tagForm: `${PREFIX}-tagForm`,
   hiddenWebsite: `${PREFIX}-hiddenWebsite`,
+  topPadding: `${PREFIX}-topPadding`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -48,6 +49,9 @@ const Root = styled('div')(({ theme }) => ({
   },
   [`& .${classes.section}`]: {
     marginTop: theme.spacing(8),
+  },
+  [`& .${classes.topPadding}`]: {
+    marginTop: theme.spacing(4),
   },
   [`& .${classes.container}`]: {
     background: theme.palette.background.paper,
@@ -300,106 +304,108 @@ const ExpandWebsite = (props: {
 
   return (
     <Root>
-      <Grid container spacing={6}>
-        <Grid item xs={6}>
-          <Link href={website?.rawUrl} underline="none">
-            <Box boxShadow={1} className={classes.container}>
-              <LargeWebsiteImage
-                image={image}
-                websiteId={websiteId}
-                isDarkMode={props.isDarkMode}
-                ogImage={website?.ogImage}
-              />
-            </Box>
-          </Link>
-        </Grid>
-        <Grid item xs={6}>
-          <Grid
-            container
-            justifyContent="space-between"
-            flexDirection="column"
-            style={{ height: '100%' }}
-          >
-            <Grid item>
-              <Link href={website?.rawUrl} underline="none">
-                <Typography
-                  variant="h2"
-                  color="textPrimary"
-                  gutterBottom
-                  className={isHidden ? classes.hiddenWebsite : undefined}
-                >
-                  {website.title}
-                </Typography>
-              </Link>
-              <div className={classes.tags}>
-                {websiteTags.map((tag) => (
-                  <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>
-                    <div
-                      onClick={() => props.toggleWebsiteTag(tag, websiteId)}
-                      className={clsx(
-                        classes.tag,
-                        isTagSelected(tag, props.websiteTags) && classes.tagSelected,
-                      )}
-                    >
-                      <Typography variant="body2">{tag}</Typography>
-                    </div>
-                    <div onClick={() => removeTag(tag)} className={classes.close}>
-                      <CloseIcon width="18" height="18" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Grid>
-            <Grid item style={{ width: '100%' }}>
-              <AddTagInput
-                store={props.store}
-                websiteCache={props.websiteCache}
-                website={website}
-                userTags={props.websiteTags}
-                websiteTags={websiteTags}
-              />
-            </Grid>
+      <div className={classes.topPadding}>
+        <Grid container spacing={6}>
+          <Grid item xs={6}>
+            <Link href={website?.rawUrl} underline="none">
+              <Box boxShadow={1} className={classes.container}>
+                <LargeWebsiteImage
+                  image={image}
+                  websiteId={websiteId}
+                  isDarkMode={props.isDarkMode}
+                  ogImage={website?.ogImage}
+                />
+              </Box>
+            </Link>
           </Grid>
-        </Grid>
-      </Grid>
-      {websitesAtDomain.length > 0 && (
-        <div className={classes.section} id="meetings">
-          <Typography variant="h3" className={classes.heading}>
-            Related Websites
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Grid container spacing={6}>
-                {websitesAtDomain.map((item) => (
-                  <Grid item xs={3} key={item.id}>
-                    <LargeWebsite
-                      item={item}
-                      store={props.store}
-                      isDarkMode={props.isDarkMode}
-                      websiteTags={props.websiteTags}
-                      toggleWebsiteTag={props.toggleWebsiteTag}
-                    />
-                  </Grid>
-                ))}
+          <Grid item xs={6}>
+            <Grid
+              container
+              justifyContent="space-between"
+              flexDirection="column"
+              style={{ height: '100%' }}
+            >
+              <Grid item>
+                <Link href={website?.rawUrl} underline="none">
+                  <Typography
+                    variant="h2"
+                    color="textPrimary"
+                    gutterBottom
+                    className={isHidden ? classes.hiddenWebsite : undefined}
+                  >
+                    {website.title}
+                  </Typography>
+                </Link>
+                <div className={classes.tags}>
+                  {websiteTags.map((tag) => (
+                    <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>
+                      <div
+                        onClick={() => props.toggleWebsiteTag(tag, websiteId)}
+                        className={clsx(
+                          classes.tag,
+                          isTagSelected(tag, props.websiteTags) && classes.tagSelected,
+                        )}
+                      >
+                        <Typography variant="body2">{tag}</Typography>
+                      </div>
+                      <div onClick={() => removeTag(tag)} className={classes.close}>
+                        <CloseIcon width="18" height="18" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Grid>
+              <Grid item style={{ width: '100%' }}>
+                <AddTagInput
+                  store={props.store}
+                  websiteCache={props.websiteCache}
+                  website={website}
+                  userTags={props.websiteTags}
+                  websiteTags={websiteTags}
+                />
               </Grid>
             </Grid>
           </Grid>
-        </div>
-      )}
-      {websiteTags.map((t) => (
-        <div className={classes.section} key={t} id={`tag-${t}`}>
-          <DraggableWebsiteHighlights
-            store={props.store}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-            websiteTags={props.websiteTags}
-            isDarkMode={props.isDarkMode}
-            filterByTag={t}
-            maxWebsites={4}
-            websiteCache={props.websiteCache}
-            dragDropSource={props.dragDropSource}
-          />
-        </div>
-      ))}
+        </Grid>
+        {websitesAtDomain.length > 0 && (
+          <div className={classes.section} id="meetings">
+            <Typography variant="h3" className={classes.heading}>
+              Related Websites
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Grid container spacing={6}>
+                  {websitesAtDomain.map((item) => (
+                    <Grid item xs={3} key={item.id}>
+                      <LargeWebsite
+                        item={item}
+                        store={props.store}
+                        isDarkMode={props.isDarkMode}
+                        websiteTags={props.websiteTags}
+                        toggleWebsiteTag={props.toggleWebsiteTag}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
+          </div>
+        )}
+        {websiteTags.map((t) => (
+          <div className={classes.section} key={t} id={`tag-${t}`}>
+            <DraggableWebsiteHighlights
+              store={props.store}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+              websiteTags={props.websiteTags}
+              isDarkMode={props.isDarkMode}
+              filterByTag={t}
+              maxWebsites={4}
+              websiteCache={props.websiteCache}
+              dragDropSource={props.dragDropSource}
+            />
+          </div>
+        ))}
+      </div>
     </Root>
   );
 };

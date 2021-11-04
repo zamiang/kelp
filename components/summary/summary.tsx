@@ -47,10 +47,11 @@ const summaryClasses = {
 };
 
 const SummaryContainer = styled('div')(({ theme }) => ({
-  [`& .${summaryClasses.container}`]: {},
+  [`& .${summaryClasses.container}`]: {
+    marginTop: theme.spacing(4),
+  },
   [`& .${summaryClasses.weeks}`]: {},
   [`& .${summaryClasses.days}`]: {
-    // height: `calc((100vh - ${topNavHeight}px) / ${numberWeeks})`,
     width: '100%',
     overflow: 'hidden',
     borderBottom: `1px solid ${theme.palette.divider}`,
