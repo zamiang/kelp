@@ -47,7 +47,13 @@ const Root = styled('div')(({ theme }) => ({
     verticalAlign: 'top',
     marginTop: 1,
   },
-  [`& .${classes.textContainer}`]: { display: 'inline-block', verticalAlign: 'top' },
+  [`& .${classes.textContainer}`]: {
+    display: 'inline-block',
+    verticalAlign: 'top',
+    maxWidth: 140,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
 }));
 
 const getListStyle = (isDraggingOver: boolean) => ({
@@ -114,7 +120,7 @@ export const MostRecentTab = (props: { isDarkMode: boolean }) => {
                   </div>
                   <div className={classes.textContainer}>
                     <Link href={tab.url} underline="hover">
-                      <Typography>{tab.title}</Typography>
+                      <Typography noWrap>{tab.title}</Typography>
                     </Link>
                   </div>
                   <div className={classes.icon}>
