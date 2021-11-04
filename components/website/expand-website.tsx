@@ -402,6 +402,7 @@ const ExpandWebsite = (props: {
               maxWebsites={4}
               websiteCache={props.websiteCache}
               dragDropSource={props.dragDropSource}
+              shouldHideCloseButton={true}
             />
           </div>
         ))}

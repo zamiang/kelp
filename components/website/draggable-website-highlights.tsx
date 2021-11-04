@@ -186,6 +186,7 @@ export const DraggableWebsiteHighlights = (props: {
   maxWebsites: number;
   websiteCache: IWebsiteCache;
   dragDropSource?: string;
+  shouldHideCloseButton?: boolean;
 }) => {
   const [topWebsites, setTopWebsites] = useState<IWebsiteCacheItem[]>([]);
   const [shouldShowAll, setShouldShowAll] = useState(false);
@@ -223,7 +224,7 @@ export const DraggableWebsiteHighlights = (props: {
         </Grid>
         <Grid item>
           <Grid container>
-            {props.filterByTag && (
+            {props.filterByTag && !props.shouldHideCloseButton && (
               <Grid item>
                 <IconButton
                   className={classes.button}
