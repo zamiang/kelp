@@ -2,10 +2,14 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useHistory, useLocation } from 'react-router-dom';
 import config from '../../constants/config';
+import MoveIconOrange from '../../public/icons/move-orange.svg';
+import MoveIconWhite from '../../public/icons/move-white.svg';
+import MoveIcon from '../../public/icons/move.svg';
 import LeftArrow from '../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -19,6 +23,8 @@ const classes = {
   tagContainer: `${PREFIX}-tagContainer`,
   removeButton: `${PREFIX}-removeButton`,
   dot: `${PREFIX}-dot`,
+  icon: `${PREFIX}-icon`,
+  iconVisible: `${PREFIX}-iconVisible`,
   dotContainer: `${PREFIX}-dotContainer`,
 };
 
@@ -33,11 +39,21 @@ const Root = styled('div')(({ theme }) => ({
       opacity: 1,
     },
   },
+  [`& .${classes.icon}`]: {
+    opacity: 0,
+    transition: 'opacity 0.6s ease-out',
+  },
+  [`& .${classes.iconVisible}`]: {
+    opacity: 1,
+  },
   [`& .${classes.tagContainer}`]: {
     [`&:hover .${classes.dot}`]: {
       width: 10,
       height: 10,
       background: theme.palette.text.primary,
+    },
+    [`&:hover .${classes.icon}`]: {
+      opacity: 0.5,
     },
   },
   [`& .${classes.dot}`]: {
@@ -72,6 +88,7 @@ export const TopTags = (props: {
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   setWebsiteTags: (t: IWebsiteTag[]) => void;
   dragDropSource?: string;
+  isDarkMode: boolean;
 }) => {
   const location = useLocation();
   const router = useHistory();
@@ -130,7 +147,7 @@ export const TopTags = (props: {
             )}
             {props.websiteTags.map((t, index) => (
               <Draggable draggableId={t.tag} index={index} key={t.tag}>
-                {(provided) => (
+                {(provided, snapshot) => (
                   <Grid
                     item
                     xs={12}
@@ -160,6 +177,21 @@ export const TopTags = (props: {
                             >
                               {t.tag}
                             </Typography>
+                          </Grid>
+                          <Grid
+                            item
+                            className={clsx(
+                              classes.icon,
+                              snapshot.isDragging && classes.iconVisible,
+                            )}
+                          >
+                            {snapshot.isDragging ? (
+                              <MoveIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                            ) : props.isDarkMode ? (
+                              <MoveIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                            ) : (
+                              <MoveIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                            )}
                           </Grid>
                         </Grid>
                       </Grid>

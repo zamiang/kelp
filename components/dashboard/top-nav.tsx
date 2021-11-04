@@ -155,6 +155,7 @@ export const TopNav = (props: {
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 setWebsiteTags={props.setWebsiteTags}
                 dragDropSource={props.dragDropSource}
+                isDarkMode={props.isDarkMode}
               />
             </Grid>
           )}
