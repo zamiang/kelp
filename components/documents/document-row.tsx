@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import HelpIcon from '../../public/icons/help.svg';
 import SearchIcon from '../../public/icons/search.svg';
@@ -157,7 +157,7 @@ const DocumentRow = (props: {
   noMargins?: boolean;
 }) => {
   const isSelected = props.selectedDocumentId === props.document.id;
-  const router = useHistory();
+  const navigate = useNavigate();
 
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
@@ -207,7 +207,7 @@ const DocumentRow = (props: {
                 size="small"
                 onClick={(event) => {
                   event.stopPropagation();
-                  void router.push(`/documents/${props.document.id}`);
+                  void navigate(`/documents/${props.document.id}`);
                   return false;
                 }}
               >

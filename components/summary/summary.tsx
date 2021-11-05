@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { addDays, format, isSameDay, startOfWeek, subDays } from 'date-fns';
 import { last, times } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/theme';
 import { IWebsite } from '../store/data-types';
@@ -174,7 +174,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
   const [tfidfMin, setTfidfMin] = useState(0);
   const [tfidfMax, setTfidfMax] = useState(0);
   const [documents, setDocuments] = useState([] as ITfidfTag[]);
-  const router = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -206,7 +206,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
         className={summaryClasses.term}
         key={document.term}
         style={{ fontSize: result }}
-        onClick={() => router.push(`/search?query=${document.term}`)}
+        onClick={() => navigate(`/search?query=${document.term}`)}
       >
         {document.term}
       </Typography>

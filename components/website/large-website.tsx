@@ -6,7 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
 import DotsIcon from '../../public/icons/dots-black.svg';
@@ -133,7 +133,7 @@ export const LargeWebsite = (props: {
   isDarkMode: boolean;
   websiteTags: IWebsiteTag[];
 }) => {
-  const router = useHistory();
+  const navigate = useNavigate();
   const [shouldShowRemove, setShouldShowRemove] = useState(false);
   const [image, setImage] = useState<IWebsiteImage>();
   const [website, setWebsite] = useState<IWebsiteItem>();
@@ -208,7 +208,7 @@ export const LargeWebsite = (props: {
           <IconButton
             size="small"
             disableRipple
-            onClick={() => router.push(`/websites/${encodeURIComponent(props.item.id)}`)}
+            onClick={() => navigate(`/websites/${encodeURIComponent(props.item.id)}`)}
             className={classes.dotsButton}
           >
             {props.isDarkMode ? (

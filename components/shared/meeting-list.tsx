@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import { uniqBy } from 'lodash';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
@@ -22,12 +22,12 @@ export const Meeting = (props: {
   isSmall?: boolean;
   websiteCache: IWebsiteCache;
 }) => {
-  const router = useHistory();
+  const navigate = useNavigate();
   const opacity = props.meeting.start > new Date() ? 0.5 : 0.3;
   return (
     <Row>
       <Button
-        onClick={() => router.push(`/meetings/${props.meeting.id}`)}
+        onClick={() => navigate(`/meetings/${props.meeting.id}`)}
         className={clsx(classes.row, props.isSmall && classes.rowSmall)}
       >
         <Grid container wrap="nowrap" alignItems="center">

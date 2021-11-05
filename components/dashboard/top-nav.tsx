@@ -5,7 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import CalendarIconOrange from '../../public/icons/calendar-orange.svg';
 import CalendarIconWhite from '../../public/icons/calendar-white.svg';
@@ -97,7 +97,7 @@ export const TopNav = (props: {
   websiteCache: IWebsiteCache;
   dragDropSource?: string;
 }) => {
-  const router = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [tags, setTags] = useState<string[]>([]);
   const isSearch = location.pathname === '/search';
@@ -134,7 +134,7 @@ export const TopNav = (props: {
               aria-label="search"
               onClick={(event) => {
                 event.preventDefault();
-                return router.push('/search');
+                return navigate('/search');
               }}
               size="large"
             >
@@ -196,7 +196,7 @@ export const TopNav = (props: {
                   aria-label="home"
                   onClick={(event) => {
                     event.preventDefault();
-                    return router.push('/home');
+                    return navigate('/home');
                   }}
                   size="large"
                 >
@@ -214,7 +214,7 @@ export const TopNav = (props: {
                   aria-label="meetings"
                   onClick={(event) => {
                     event.preventDefault();
-                    return router.push('/meetings');
+                    return navigate('/meetings');
                   }}
                   size="large"
                 >
@@ -232,7 +232,7 @@ export const TopNav = (props: {
                   aria-label="calendar"
                   onClick={(event) => {
                     event.preventDefault();
-                    return router.push('/calendar');
+                    return navigate('/calendar');
                   }}
                   size="large"
                 >
@@ -251,7 +251,7 @@ export const TopNav = (props: {
                     aria-label="settings"
                     onClick={(event) => {
                       event.preventDefault();
-                      return router.push('/settings');
+                      return navigate('/settings');
                     }}
                     size="large"
                   >

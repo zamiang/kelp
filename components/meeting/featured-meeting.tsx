@@ -6,7 +6,7 @@ import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import PlusIcon from '../../public/icons/plus-orange.svg';
 import VideoIconWhite from '../../public/icons/video-white.svg';
@@ -157,7 +157,7 @@ export const FeaturedMeeting = (props: {
   websiteTags: IWebsiteTag[];
   websiteCache: IWebsiteCache;
 }) => {
-  const router = useHistory();
+  const navigate = useNavigate();
   const [isAddTagsVisible, setAddTagsVisible] = useState(false);
   const [segmentTags, setSegmentTags] = useState<ISegmentTag[]>([]);
 
@@ -248,7 +248,7 @@ export const FeaturedMeeting = (props: {
               className={classes.heading}
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                void router.push(`/meetings/${props.meeting.id}`);
+                void navigate(`/meetings/${props.meeting.id}`);
                 return false;
               }}
             >

@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import isTouchEnabled from '../shared/is-touch-enabled';
 import { IPerson } from '../store/data-types';
 
@@ -129,7 +129,7 @@ const PersonRow = (props: {
   noMargin?: boolean;
 }) => {
   const isSelected = props.selectedPersonId === props.person.id;
-  const router = useHistory();
+  const navigate = useNavigate();
   const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
@@ -145,7 +145,7 @@ const PersonRow = (props: {
     <Root
       onClick={(event) => {
         event.stopPropagation();
-        router.push(`/people/${encodeURIComponent(props.person.id)}`);
+        navigate(`/people/${encodeURIComponent(props.person.id)}`);
         return false;
       }}
       onMouseEnter={() => !isTouchEnabled() && setDetailsVisible(true)}

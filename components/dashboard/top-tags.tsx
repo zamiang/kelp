@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import MoveIconOrange from '../../public/icons/move-orange.svg';
 import MoveIconWhite from '../../public/icons/move-white.svg';
@@ -91,7 +91,7 @@ export const TopTags = (props: {
   isDarkMode: boolean;
 }) => {
   const location = useLocation();
-  const router = useHistory();
+  const navigate = useNavigate();
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false);
   const shouldShowBack = location.pathname !== '/home';
 
@@ -101,7 +101,7 @@ export const TopTags = (props: {
       const elem = document.getElementById(`tag-${tag}`);
       elem?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      router.push('/home');
+      navigate('/home');
       setTimeout(() => {
         const elem = document.getElementById(`tag-${tag}`);
         elem?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -136,7 +136,7 @@ export const TopTags = (props: {
           >
             {shouldShowBack && (
               <Grid item>
-                <IconButton onClick={() => router.push('/home')} size="small">
+                <IconButton onClick={() => navigate('/home')} size="small">
                   <LeftArrow
                     width={config.ICON_SIZE}
                     height={config.ICON_SIZE}
@@ -244,7 +244,7 @@ export const TopTags = (props: {
 };
 
 export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
-  const router = useHistory();
+  const navigate = useNavigate();
 
   const onClickTag = (tag: string) => {
     const elem = document.getElementById(`tag-${tag}`);
@@ -255,7 +255,7 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
     <Root>
       <Grid container className={classes.container} alignItems="center" spacing={1}>
         <Grid item>
-          <IconButton onClick={() => router.push('/home')} size="small">
+          <IconButton onClick={() => navigate('/home')} size="small">
             <LeftArrow
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}

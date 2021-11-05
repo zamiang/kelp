@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import CloseIconOrange from '../../public/icons/close-orange.svg';
 import CloseIcon from '../../public/icons/close.svg';
@@ -37,7 +37,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 const searchInputId = 'searchInput';
 
 const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
-  const router = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const search = location.search;
   const [value, setValue] = useState(props.searchQuery);
@@ -45,9 +45,9 @@ const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
     if (e.target.value.length > 0) {
-      void router.push(`/search?query=${e.target.value}`);
+      void navigate(`/search?query=${e.target.value}`);
     } else {
-      void router.push(`/home`);
+      void navigate(`/home`);
     }
   };
 
@@ -92,7 +92,7 @@ const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
         <Grid item>
           <IconButton
             onClick={() => {
-              router.push('/home');
+              navigate('/home');
               setValue('');
             }}
             size="large"
