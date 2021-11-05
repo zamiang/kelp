@@ -54,7 +54,7 @@
     "@types/react-beautiful-dnd": "13.1.2",
     "@types/react-linkify": "1.0.1",
     "@types/react-onclickoutside": "6.7.4",
-    "@types/url-regex": "4.1.0",
+    "@types/url-regex": "5.0.0",
     "babel-plugin-styled-components": "1.13.3",
     "clsx": "1.1.1",
     "d3": "7.1.1",
