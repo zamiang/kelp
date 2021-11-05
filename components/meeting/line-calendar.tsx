@@ -5,7 +5,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { addHours, format, intervalToDuration } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ISegment } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -63,7 +63,7 @@ const useMeetingLineStyles = makeStyles(({ theme }: any) => ({
 
 const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
   const classes = useMeetingLineStyles();
-  const router = useHistory();
+  const navigate = useNavigate();
 
   const duration = intervalToDuration({
     start: props.meeting.start < new Date() ? new Date() : props.meeting.start,
@@ -93,7 +93,7 @@ const MeetingLine = (props: { meeting: ISegment; pixelsPerMinute: number }) => {
       <Root
         className={clsx(classes.line, isCurrent && classes.lineCurrent, isPast && classes.linePast)}
         style={{ width, left }}
-        onClick={() => router.push(`/meetings/${props.meeting.id}`)}
+        onClick={() => navigate(`/meetings/${props.meeting.id}`)}
       ></Root>
     </Tooltip>
   );
