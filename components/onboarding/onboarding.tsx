@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import config from '../../constants/config';
-import { mediumFontFamily } from '../../constants/theme';
+import { mediumFontFamily } from '../../constants/homepage-theme';
 import LeftArrow from '../../public/icons/left-arrow-black.svg';
 import RightArrow from '../../public/icons/right-arrow-black.svg';
 

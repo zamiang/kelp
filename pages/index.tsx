@@ -13,7 +13,7 @@ import React from 'react';
 import Footer from '../components/homepage/footer';
 import { ImageBlocks } from '../components/homepage/image-blocks';
 import UiBlocks from '../components/homepage/ui-blocks';
-import { italicFontFamily, mediumFontFamily } from '../constants/theme';
+import { italicFontFamily, mediumFontFamily } from '../constants/homepage-theme';
 
 const PREFIX = 'App';
 

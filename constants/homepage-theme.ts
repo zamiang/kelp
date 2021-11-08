@@ -1,10 +1,8 @@
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
-import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
-import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
-const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
+export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
+export const italicFontFamily = "'basis-grotesque-italic', sans-serif";
 
 const theme = createTheme({
   palette: {
@@ -115,7 +113,7 @@ const theme = createTheme({
         font-style: "normal";
         font-display: 'swap';
         font-weight: 400;
-        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
+        src: url(/fonts/basis-grotesque-regular-pro.woff2) format('woff2');
       }
 
       @font-face {
@@ -123,7 +121,7 @@ const theme = createTheme({
         font-style: 'italic';
         font-display: 'swap';
         font-weight: 400;
-        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
+        src: url(/fonts/basis-grotesque-italic-pro.woff2) format('woff2');
       }
 
       @font-face {
@@ -131,7 +129,7 @@ const theme = createTheme({
         font-style: 'normal';
         font-display: 'swap';
         font-weight: 400;
-        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
+        src: url(/fonts/basis-grotesque-medium-pro.woff2) format('woff2');
       }
       `,
     },
