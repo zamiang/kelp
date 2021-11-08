@@ -124,7 +124,7 @@ const ExpandedDocument = (props: {
       <div className={classes.container}>
         {segmentDocuments.length > 0 && (
           <div className={classes.section}>
-            <Typography variant="h6">Meetings</Typography>
+            <Typography variant="h3">Meetings</Typography>
             <SegmentMeetingList
               segmentDocuments={segmentDocuments}
               timeStore={props.store.timeDataStore}

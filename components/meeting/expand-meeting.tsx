@@ -282,10 +282,13 @@ const ExpandedMeeting = (props: {
           <div className={classes.section} id="websites">
             <Grid container alignItems="center" spacing={2}>
               <Grid item>
-                <Typography className={classes.rowText}>Filter by:</Typography>
+                <Typography variant="h3" className={classes.rowText}>
+                  Filter by:
+                </Typography>
               </Grid>
               <Grid item>
                 <Typography
+                  variant="h3"
                   className={clsx(classes.tag, currentTag === 'all' && classes.tagSelected)}
                   onClick={() => setTag('all')}
                 >
@@ -295,6 +298,7 @@ const ExpandedMeeting = (props: {
               {relevantTags.map((t) => (
                 <Grid item key={t.tag}>
                   <Typography
+                    variant="h3"
                     className={clsx(classes.tag, currentTag === t.tag && classes.tagSelected)}
                     onClick={() => setTag(t.tag)}
                   >
@@ -333,7 +337,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasDescription && !isHtml && (
           <div className={classes.section}>
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Description
             </Typography>
             <Typography className={classes.description}>
@@ -343,7 +347,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasDescription && isHtml && (
           <div className={classes.section}>
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Description
             </Typography>
             <Typography
@@ -357,7 +361,7 @@ const ExpandedMeeting = (props: {
         )}
         {hasAttendees && (
           <div className={classes.section} id="people">
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Guests
             </Typography>
             <AttendeeList
@@ -370,7 +374,7 @@ const ExpandedMeeting = (props: {
         )}
         {meeting.location && (
           <div className={classes.section}>
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Location
             </Typography>
             <MuiLink

@@ -273,7 +273,12 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
                 </div>
               </Grid>
               <Grid item zeroMinWidth xs>
-                <Typography noWrap className={classes.tag} onClick={() => onClickTag(t)}>
+                <Typography
+                  noWrap
+                  variant="body2"
+                  className={classes.tag}
+                  onClick={() => onClickTag(t)}
+                >
                   {t}
                 </Typography>
               </Grid>

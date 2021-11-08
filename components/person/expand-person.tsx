@@ -196,7 +196,7 @@ const ExpandPerson = (props: {
       <div className={classes.container}>
         {websites.length > 0 && (
           <div className={classes.section} id="websites">
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Associated websites
             </Typography>
             <Grid container spacing={isMobile ? 5 : 6}>
@@ -216,7 +216,7 @@ const ExpandPerson = (props: {
         )}
         {segmentDocuments.length > 0 && (
           <div className={classes.section}>
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Documents they edited recently
             </Typography>
             <SegmentDocumentList
@@ -228,7 +228,7 @@ const ExpandPerson = (props: {
         )}
         {associates.length > 0 && (
           <div className={classes.section} id="people">
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Associates
             </Typography>
             <AttendeeList
@@ -242,7 +242,7 @@ const ExpandPerson = (props: {
         )}
         {upcomingSegments.length > 0 && (
           <div className={classes.section}>
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Upcoming Meetings
             </Typography>
             <MeetingList
@@ -257,7 +257,7 @@ const ExpandPerson = (props: {
         )}
         {meetingsYouBothAttended.length > 0 && (
           <div className={classes.section} id="meetings">
-            <Typography variant="h6" className={classes.rowText}>
+            <Typography variant="h3" className={classes.rowText}>
               Meetings you both attended
             </Typography>
             <MeetingList

@@ -143,7 +143,7 @@ const darkThemeConfig = {
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '16px',
-      lineHeight: '19px',
+      lineHeight: '140%',
     },
     body2: {
       fontFamily: bodyFontFamily,

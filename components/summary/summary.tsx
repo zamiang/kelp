@@ -90,6 +90,7 @@ const SummaryContainer = styled('div')(({ theme }) => ({
     height: 24,
     display: 'inline-block',
     marginTop: 4,
+    paddingTop: 3,
     marginBottom: 0,
     fontWeight: 500,
     fontFamily: mediumFontFamily,
@@ -117,7 +118,7 @@ const SummaryContainer = styled('div')(({ theme }) => ({
 
 const DayTitle = (props: { day: Date }) => (
   <React.Fragment>
-    <Typography variant="h6">{format(props.day, 'EEE')}</Typography>
+    <Typography variant="h3">{format(props.day, 'EEE')}</Typography>
   </React.Fragment>
 );
 
@@ -216,7 +217,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
     <Grid item className={summaryClasses.currentDayContainer}>
       <Typography
         className={clsx(summaryClasses.day, isToday && summaryClasses.currentDay)}
-        variant="h6"
+        variant="body2"
       >
         {format(props.day, 'd')}
       </Typography>

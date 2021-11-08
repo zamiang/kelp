@@ -248,7 +248,7 @@ const Settings = (props: {
         </Grid>
         <Grid item xs={6}>
           {shouldShowEmptyWebsiteBlocklist && (
-            <Typography variant="h6">
+            <Typography variant="h3">
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}
@@ -282,11 +282,11 @@ const Settings = (props: {
       >
         <Grid item xs={6}>
           <Typography variant="h4">Hidden domains</Typography>
-          <Typography variant="h6">All urls under these domains are hidden</Typography>
+          <Typography variant="h3">All urls under these domains are hidden</Typography>
         </Grid>
         <Grid item xs={6}>
           {shouldShowEmptyDomainBlocklist && (
-            <Typography variant="h6">
+            <Typography variant="h3">
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}

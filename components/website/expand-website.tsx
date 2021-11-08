@@ -134,7 +134,6 @@ const Root = styled('div')(({ theme }) => ({
   },
   [`& .${classes.smallButton}`]: {
     width: 100,
-    background: theme.palette.background.paper,
     color: theme.palette.primary.main,
     borderRadius: 16,
   },
@@ -229,13 +228,7 @@ const AddTagInput = (props: {
           />
         </Grid>
         <Grid item>
-          <Button
-            size="small"
-            disableElevation={false}
-            variant="outlined"
-            className={classes.smallButton}
-            onClick={addTag}
-          >
+          <Button size="small" variant="outlined" className={classes.smallButton} onClick={addTag}>
             Add Tag
           </Button>
         </Grid>
@@ -336,6 +329,16 @@ const ExpandWebsite = (props: {
                     {website.title}
                   </Typography>
                 </Link>
+                {website.description && (
+                  <Typography
+                    variant="body2"
+                    color="textPrimary"
+                    gutterBottom
+                    className={isHidden ? classes.hiddenWebsite : undefined}
+                  >
+                    {website.description}
+                  </Typography>
+                )}
                 <div className={classes.tags}>
                   {websiteTags.map((tag) => (
                     <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>
