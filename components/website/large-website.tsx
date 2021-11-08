@@ -86,6 +86,7 @@ const Root = styled('div')(({ theme }) => ({
     marginTop: theme.spacing(2),
     fontFamily: theme.typography.h3.fontFamily,
     fontWeight: theme.typography.h3.fontWeight,
+    color: theme.palette.text.primary,
   },
 }));
 
@@ -185,7 +186,7 @@ export const LargeWebsite = (props: {
           />
         </Box>
         <Tooltip title={website?.title || ''}>
-          <Typography noWrap className={classes.text}>
+          <Typography noWrap className={classes.text} variant="body2">
             {website ? website.title : 'loading'}
           </Typography>
         </Tooltip>

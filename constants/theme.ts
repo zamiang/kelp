@@ -1,4 +1,4 @@
-import { Theme, createTheme } from '@mui/material/styles';
+import { Theme, ThemeOptions, createTheme } from '@mui/material/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
@@ -10,279 +10,51 @@ declare module '@mui/styles/defaultTheme' {
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
 export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
-const italicFontFamily = "'basis-grotesque-italic', sans-serif";
-
-// 'linear-gradient(90deg, hsla(150, 60%, 98%, 1) 0%, hsla(40, 60%, 95%, 1) 100%)';
-// const boxShadow = 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px';
 
 const primaryTextColor = 'rgba(0,0,0,0.87)';
 const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
-const lightTextColor = 'rgba(0,0,0,0.5)';
-// const lightGreyColor = 'rgba(0,0,0,0.12)';
 const white = '#fff';
 const black = '#000';
 
-export const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-    common: {
-      black,
-      white,
-    },
-    background: {
-      paper: '#f7f1e4',
-      default: '#FBF2DD',
-    },
-    primary: {
-      light: '#DEEBFF',
-      main: '#FF4600',
-      dark: '#FF4600',
-      contrastText: white,
-    },
-    secondary: {
-      light: '#faf5eb',
-      main: '#47B7B8',
-      dark: '#47B7B8',
-      contrastText: white,
-    },
-    error: {
-      light: 'rgba(245, 98, 0, 1)',
-      main: 'rgba(194, 15, 36, 1)',
-      dark: '#d32f2f',
-      contrastText: white,
-    },
-    text: {
-      primary: primaryTextColor,
-      secondary: secondaryTextColor,
-      disabled: 'rgba(0, 0, 0, 0.38)',
-    },
+const lightThemepalette = {
+  mode: 'light',
+  common: {
+    black,
+    white,
   },
-  typography: {
-    fontSize: 14,
-    fontFamily: bodyFontFamily,
-    fontWeightRegular: 400,
-    // color: primaryTextColor,
-    h1: {
-      fontWeight: 400,
-      fontStyle: 'normal',
-      fontSize: '1.875rem',
-    },
-    h2: {
-      fontWeight: 400,
-      fontStyle: 'normal',
-      fontSize: 32,
-    },
-    h3: {
-      fontSize: 20,
-      fontStyle: 'normal',
-      fontFamily: mediumFontFamily,
-      fontWeight: 500,
-      color: primaryTextColor,
-    },
-    h4: {
-      fontSize: 16,
-      fontStyle: 'normal',
-      fontFamily: bodyFontFamily,
-      fontWeight: 400,
-      lineHeight: 1.35,
-      color: primaryTextColor,
-    },
-    h5: {
-      fontSize: 16,
-      fontStyle: 'normal',
-      fontFamily: bodyFontFamily,
-      color: lightTextColor,
-    },
-    h6: {
-      fontSize: 14,
-      fontStyle: 'normal',
-      fontFamily: bodyFontFamily,
-      color: lightTextColor,
-      fontWeight: 400,
-      textTransform: 'none',
-      marginBottom: 12,
-    },
-    subtitle1: {
-      fontFamily: bodyFontFamily,
-    },
-    subtitle2: {
-      fontFamily: bodyFontFamily,
-    },
-    body1: {
-      fontFamily: bodyFontFamily,
-      fontSize: '14px',
-      color: primaryTextColor,
-    },
-    body2: {
-      fontFamily: bodyFontFamily,
-      color: lightTextColor,
-      fontSize: '14px',
-    },
-    caption: {
-      fontFamily: bodyFontFamily,
-    },
-    overline: {
-      fontFamily: bodyFontFamily,
-    },
-    button: {
-      fontFamily: mediumFontFamily,
-      fontWeight: 500,
-    },
+  background: {
+    paper: '#f7f1e4',
+    default: '#FBF2DD',
   },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-      @font-face {
-        font-family: "basis-grotesque";
-        font-style: "normal";
-        font-display: 'swap';
-        font-weight: 400;
-        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
-      }
-
-      @font-face {
-        font-family: 'basis-grotesque-italic';
-        font-style: 'italic';
-        font-display: 'swap';
-        font-weight: 400;
-        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
-      }
-
-      @font-face {
-        font-family: 'basis-grotesque-medium',
-        font-style: 'normal';
-        font-display: 'swap';
-        font-weight: 400;
-        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
-      }
-      `,
-    },
-    MuiListItemIcon: {
-      styleOverrides: {
-        root: {
-          minWidth: 0,
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: primaryTextColor,
-          padding: 8,
-        },
-      },
-    },
-    MuiListItem: {
-      styleOverrides: {
-        root: {
-          paddingTop: 6,
-          paddingBottom: 6,
-        },
-      },
-    },
-    MuiButton: {
-      defaultProps: {
-        disableRipple: true,
-      },
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 500,
-          fontFamily: mediumFontFamily,
-          fontSize: 14,
-          paddingTop: 4,
-          paddingBottom: 4,
-        },
-      },
-    },
-    MuiAvatar: {
-      styleOverrides: {
-        root: {
-          height: 40,
-          width: 40,
-          fontSize: '1rem',
-          textTransform: 'uppercase',
-          color: white,
-          fontWeight: 500,
-          fontFamily: mediumFontFamily,
-        },
-      },
-    },
-    MuiAvatarGroup: {
-      styleOverrides: {
-        avatar: {
-          borderColor: white,
-          color: primaryTextColor,
-        },
-      },
-    },
-    MuiDialog: {
-      styleOverrides: {
-        root: {
-          backgroundImage: 'none',
-        },
-        paperWidthSm: {
-          width: '100%',
-        },
-        paperScrollPaper: {
-          borderRadius: 16,
-        },
-      },
-    },
-    MuiToggleButtonGroup: {
-      styleOverrides: {
-        groupedHorizontal: {
-          '&:not(:last-child)': {
-            borderRadius: 4,
-            borderTopRightRadius: 4,
-            borderBottomRightRadius: 4,
-          },
-          '&:not(:first-child)': {
-            marginLeft: 0,
-            borderRopLeftRadius: 4,
-            borderBottomLeftRadius: 4,
-          },
-        },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          marginTop: 5,
-        },
-      },
-    },
-    MuiFilledInput: {
-      styleOverrides: {
-        root: { borderRadius: 28, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
-        input: {
-          padding: '10px',
-          paddingTop: '​12px',
-          paddingBottom: '​12px',
-        },
-        multiline: {
-          padding: '16px 12px 16px 18px',
-          background: '#eee',
-        },
-        underline: {
-          '&:before': {
-            display: 'none',
-          },
-          '&:after': {
-            display: 'none',
-          },
-        },
-      },
-    },
+  primary: {
+    light: '#DEEBFF',
+    main: '#FF4600',
+    dark: '#FF4600',
+    contrastText: white,
   },
-});
+  secondary: {
+    light: '#faf5eb',
+    main: '#47B7B8',
+    dark: '#47B7B8',
+    contrastText: white,
+  },
+  error: {
+    light: 'rgba(245, 98, 0, 1)',
+    main: 'rgba(194, 15, 36, 1)',
+    dark: '#d32f2f',
+    contrastText: white,
+  },
+  text: {
+    primary: primaryTextColor,
+    secondary: secondaryTextColor,
+    disabled: 'rgba(0, 0, 0, 0.38)',
+  },
+};
 
 const darkPrimaryTextColor = 'rgba(255,255,255,0.87)';
-const darkSecondaryTextColor = 'rgba(255, 255, 255, 0.70)';
-const darkLightTextColor = 'rgba(255,255,255,0.5)';
-// const darkLightGreyColor = 'rgba(255,255,255,0.12)';
+const darkSecondaryTextColor = 'rgba(255, 255, 255, 0.50)';
 
-export const darkTheme = createTheme({
+const darkThemeConfig = {
   breakpoints: {
     values: {
       xs: 0,
@@ -295,7 +67,7 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      paper: '#363641',
+      paper: '#50505A',
       default: '#262736',
     },
     primary: {
@@ -321,77 +93,71 @@ export const darkTheme = createTheme({
       secondary: darkSecondaryTextColor,
       disabled: 'rgba(255, 255, 255, 0.38)',
     },
+    divider: 'rgba(255,255,255,0.2)',
   },
   typography: {
     fontSize: 14,
     fontFamily: bodyFontFamily,
     fontWeightRegular: 400,
-    // color: darkPrimaryTextColor,
     h1: {
+      fontFamily: bodyFontFamily,
       fontWeight: 400,
       fontStyle: 'normal',
-      fontSize: '1.875rem',
+      fontSize: '64px',
+      lineHeight: '76.8px',
+      letterSpacing: '-0.02em',
     },
     h2: {
-      fontWeight: 400,
-      fontSize: 32,
+      fontFamily: bodyFontFamily,
       fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '40px',
+      lineHeight: '48px',
+      letterSpacing: '-0.02em',
     },
     h3: {
-      fontSize: 20,
-      fontStyle: 'normal',
-      fontFamily: mediumFontFamily,
-      fontWeight: 500,
-      color: darkPrimaryTextColor,
-    },
-    h4: {
-      fontSize: 16,
-      fontStyle: 'normal',
       fontFamily: bodyFontFamily,
-      fontWeight: 400,
-      lineHeight: 1.35,
-      color: darkPrimaryTextColor,
-    },
-    h5: {
-      fontSize: 16,
       fontStyle: 'normal',
-      fontFamily: bodyFontFamily,
-      color: darkLightTextColor,
-    },
-    h6: {
-      fontSize: 14,
-      fontStyle: 'normal',
-      fontFamily: bodyFontFamily,
-      color: darkLightTextColor,
-      fontWeight: 400,
-      textTransform: 'none',
-      marginBottom: 12,
+      fontWeight: 'normal',
+      fontSize: '24px',
+      lineHeight: '29px',
+      letterSpacing: '-0.02em',
     },
     subtitle1: {
       fontFamily: bodyFontFamily,
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '24px',
+      lineHeight: '29px',
     },
     subtitle2: {
       fontFamily: bodyFontFamily,
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '14px',
+      lineHeight: '140%',
+      opacity: 0.5,
     },
     body1: {
       fontFamily: bodyFontFamily,
-      fontSize: '14px',
-      color: darkPrimaryTextColor,
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '16px',
+      lineHeight: '19px',
     },
     body2: {
       fontFamily: bodyFontFamily,
-      color: darkLightTextColor,
+      fontStyle: 'normal',
+      fontWeight: 'normal',
       fontSize: '14px',
-    },
-    caption: {
-      fontFamily: bodyFontFamily,
-    },
-    overline: {
-      fontFamily: bodyFontFamily,
+      lineHeight: '140%',
     },
     button: {
       fontFamily: mediumFontFamily,
-      fontWeight: 500,
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '14px',
+      textTransform: 'capitalize',
     },
   },
   components: {
@@ -432,7 +198,6 @@ export const darkTheme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: darkPrimaryTextColor,
           padding: 8,
         },
       },
@@ -473,14 +238,7 @@ export const darkTheme = createTheme({
         },
       },
     },
-    MuiAvatarGroup: {
-      styleOverrides: {
-        avatar: {
-          borderColor: white,
-          color: darkPrimaryTextColor,
-        },
-      },
-    },
+
     MuiDialog: {
       styleOverrides: {
         paperWidthSm: {
@@ -511,7 +269,6 @@ export const darkTheme = createTheme({
         },
         multiline: {
           padding: '16px 12px 16px 18px',
-          background: '#111',
         },
         underline: {
           '&:before': {
@@ -524,4 +281,7 @@ export const darkTheme = createTheme({
       },
     },
   },
-});
+} as ThemeOptions;
+
+export const darkTheme = createTheme(darkThemeConfig as any);
+export const lightTheme = createTheme(darkThemeConfig as any, { palette: lightThemepalette });

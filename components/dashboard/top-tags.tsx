@@ -174,6 +174,7 @@ export const TopTags = (props: {
                               noWrap
                               className={classes.tag}
                               onClick={() => onClickTag(t.tag)}
+                              variant="body2"
                             >
                               {t.tag}
                             </Typography>
@@ -214,7 +215,7 @@ export const TopTags = (props: {
               </div>
             </Grid>
             <Grid item>
-              <Typography className={classes.tag} onClick={() => onClickTag('all')}>
+              <Typography variant="body2" className={classes.tag} onClick={() => onClickTag('all')}>
                 Recent
               </Typography>
             </Grid>
@@ -229,7 +230,7 @@ export const TopTags = (props: {
             </Grid>
             <Grid item>
               <Typography
-                color="primary"
+                variant="body2"
                 className={classes.tag}
                 onClick={() => setDialogOpen(true)}
               >

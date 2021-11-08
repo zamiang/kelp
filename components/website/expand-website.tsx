@@ -126,10 +126,10 @@ const Root = styled('div')(({ theme }) => ({
     marginTop: 2,
     marginLeft: 3,
     cursor: 'pointer',
-    opacity: 0.8,
+    opacity: 0.5,
     transition: 'opacity 0.3s',
     '&:hover': {
-      opacity: 0.6,
+      opacity: 1,
     },
   },
   [`& .${classes.smallButton}`]: {

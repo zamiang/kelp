@@ -78,10 +78,10 @@ const Root = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.logo}`]: {
-    opacity: 0.5,
+    opacity: 1,
     transition: 'opacity 0.3s',
     '&:hover': {
-      opacity: 1,
+      opacity: 0.5,
     },
   },
 }));

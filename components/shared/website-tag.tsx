@@ -107,7 +107,7 @@ export const WebsiteTags = (props: {
           onClick={() => props.toggleWebsiteTag(tag, props.item.id)}
           className={clsx(classes.tag, isTagSelected(tag, props.userTags) && classes.tagSelected)}
         >
-          <Typography variant="body2">{tag}</Typography>
+          <Typography variant="subtitle2">{tag}</Typography>
         </div>
       ))}
     </Root>

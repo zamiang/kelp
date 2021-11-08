@@ -6,9 +6,8 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
-import RightArrowIcon from '../../public/icons/chevron-right-orange.svg';
-import CloseIcon from '../../public/icons/close-orange.svg';
-import PlusIcon from '../../public/icons/plus-orange.svg';
+import CloseIconWhite from '../../public/icons/close-white.svg';
+import CloseIcon from '../../public/icons/close.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, IWebsiteCache, IWebsiteCacheItem } from './get-featured-websites';
@@ -21,6 +20,7 @@ export const classes = {
   button: `${PREFIX}-button`,
   sideButton: `${PREFIX}-sideButton`,
   loading: `${PREFIX}-loading`,
+  rightContainer: `${PREFIX}-rightContainer`,
 };
 
 export const Root = styled('div')(({ theme }) => ({
@@ -34,21 +34,29 @@ export const Root = styled('div')(({ theme }) => ({
   [`& .${classes.loading}`]: {
     opacity: 0.5,
   },
+  [`& .${classes.rightContainer}`]: {
+    marginRight: -47,
+    width: 99,
+  },
   [`& .${classes.button}`]: {
-    opacity: 0.5,
+    opacity: 1,
     transition: 'opacity 0.3s ease-out',
     '&:hover': {
-      opacity: 1,
+      opacity: 0.5,
     },
   },
   [`& .${classes.sideButton}`]: {
-    opacity: 0.5,
+    opacity: 1,
     transition: 'opacity 0.3s ease-out',
     position: 'absolute',
     right: -50,
     top: 'calc(50% - 16px)',
+    background: theme.palette.background.paper,
+    width: 32,
+    height: 32,
+    overflow: 'hidden',
     '&:hover': {
-      opacity: 1,
+      opacity: 0.5,
     },
   },
 }));
@@ -231,28 +239,34 @@ export const DraggableWebsiteHighlights = (props: {
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
         </Grid>
         <Grid item>
-          <Grid container>
+          <Grid container alignItems="center" spacing={2} className={classes.rightContainer}>
+            {props.filterByTag && props.showAddWebsiteDialog && (
+              <Grid item>
+                <Typography
+                  variant="body1"
+                  color="primary"
+                  onClick={() =>
+                    props.filterByTag &&
+                    props.showAddWebsiteDialog &&
+                    props.showAddWebsiteDialog(props.filterByTag)
+                  }
+                  style={{ cursor: 'pointer' }}
+                >
+                  Add
+                </Typography>
+              </Grid>
+            )}
             {props.filterByTag && !props.shouldHideCloseButton && (
               <Grid item>
                 <IconButton
                   className={classes.button}
                   onClick={() => props.toggleWebsiteTag(props.filterByTag!)}
                 >
-                  <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                </IconButton>
-              </Grid>
-            )}
-            {props.filterByTag && props.showAddWebsiteDialog && (
-              <Grid item>
-                <IconButton
-                  className={classes.button}
-                  onClick={() =>
-                    props.filterByTag &&
-                    props.showAddWebsiteDialog &&
-                    props.showAddWebsiteDialog(props.filterByTag)
-                  }
-                >
-                  <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                  {props.isDarkMode ? (
+                    <CloseIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                  ) : (
+                    <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                  )}
                 </IconButton>
               </Grid>
             )}
@@ -276,7 +290,7 @@ export const DraggableWebsiteHighlights = (props: {
             setShouldShowAll(!shouldShowAll);
           }}
         >
-          <RightArrowIcon width="32" height="32" />
+          <Typography variant="body2">{extraItemsCount > 10 ? '10+' : extraItemsCount}</Typography>
         </IconButton>
       )}
     </Root>

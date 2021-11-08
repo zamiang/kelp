@@ -162,9 +162,9 @@ const Settings = (props: {
               size="large"
             >
               {props.isDarkMode ? (
-                <DayIconWhite width="18" height="18" />
+                <DayIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : (
-                <DayIconOrange width="18" height="18" />
+                <DayIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
               )}
             </IconButton>
           </Tooltip>
@@ -180,9 +180,9 @@ const Settings = (props: {
               size="large"
             >
               {props.isDarkMode ? (
-                <MoonIconOrange width="18" height="18" />
+                <MoonIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
               ) : (
-                <MoonIcon width="18" height="18" />
+                <MoonIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
               )}
             </IconButton>
           </Tooltip>

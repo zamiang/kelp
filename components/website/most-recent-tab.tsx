@@ -13,6 +13,7 @@ const PREFIX = 'MostRecentTab';
 const classes = {
   tab: `${PREFIX}-tab`,
   item: `${PREFIX}-item`,
+  text: `${PREFIX}-text`,
   icon: `${PREFIX}-icon`,
   textContainer: `${PREFIX}-textContainer`,
   imageContainer: `${PREFIX}-imageContainer`,
@@ -33,6 +34,7 @@ const Root = styled('div')(({ theme }) => ({
     '&:hover': { opacity: 0.7 },
   },
   [`& .${classes.item}`]: {},
+  [`& .${classes.text}`]: { color: theme.palette.text.primary },
   [`& .${classes.icon}`]: {
     display: 'inline-block',
     verticalAlign: 'top',
@@ -121,7 +123,9 @@ export const MostRecentTab = (props: { isDarkMode: boolean }) => {
                   </div>
                   <div className={classes.textContainer}>
                     <Link href={tab.url} underline="hover">
-                      <Typography noWrap>{tab.title}</Typography>
+                      <Typography noWrap variant="body2" className={classes.text}>
+                        {tab.title}
+                      </Typography>
                     </Link>
                   </div>
                   <div className={classes.icon}>
