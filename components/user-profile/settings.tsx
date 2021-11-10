@@ -123,13 +123,13 @@ const Settings = (props: {
         className={classes.section}
       >
         <Grid item xs={6}>
-          <Typography variant="h1" color="textPrimary" style={{ marginBottom: 22 }}>
+          <Typography variant="h1" style={{ marginBottom: 22 }}>
             Settings
           </Typography>
           <Typography style={{ marginBottom: 22 }}>
             Signed in as: {currentUser?.emailAddresses[0]}
           </Typography>
-          <Typography variant="body2">
+          <Typography>
             Note: If you sign into multiple Google Accounts (like for personal life and work), we
             recommend using{' '}
             <Link href="https://support.google.com/chrome/answer/2364824">
@@ -147,7 +147,7 @@ const Settings = (props: {
         className={classes.section}
       >
         <Grid item xs={6}>
-          <Typography variant="h4">Dark mode</Typography>
+          <Typography variant="h3">Dark mode</Typography>
         </Grid>
         <Grid item xs={6}>
           <Tooltip title="Light Mode">
@@ -196,7 +196,7 @@ const Settings = (props: {
         className={classes.section}
       >
         <Grid item xs={6}>
-          <Typography variant="h4">Upcoming Meeting Notifications</Typography>
+          <Typography variant="h3">Upcoming Meeting Notifications</Typography>
         </Grid>
         <Grid item xs={6}>
           <FormGroup>
@@ -224,7 +224,7 @@ const Settings = (props: {
         className={classes.section}
       >
         <Grid item xs={6}>
-          <Typography variant="h4">Microsoft Teams</Typography>
+          <Typography variant="h3">Microsoft Teams</Typography>
         </Grid>
         <Grid item xs={6}>
           <AuthenticatedTemplate>
@@ -244,11 +244,11 @@ const Settings = (props: {
         className={classes.section}
       >
         <Grid item xs={6}>
-          <Typography variant="h4">Hidden websites</Typography>
+          <Typography variant="h3">Hidden websites</Typography>
         </Grid>
         <Grid item xs={6}>
           {shouldShowEmptyWebsiteBlocklist && (
-            <Typography variant="h3">
+            <Typography>
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}
@@ -281,12 +281,12 @@ const Settings = (props: {
         className={classes.section}
       >
         <Grid item xs={6}>
-          <Typography variant="h4">Hidden domains</Typography>
-          <Typography variant="h3">All urls under these domains are hidden</Typography>
+          <Typography variant="h3">Hidden domains</Typography>
+          <Typography>All urls under these domains are hidden</Typography>
         </Grid>
         <Grid item xs={6}>
           {shouldShowEmptyDomainBlocklist && (
-            <Typography variant="h3">
+            <Typography>
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}
