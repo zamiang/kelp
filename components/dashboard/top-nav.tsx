@@ -322,10 +322,11 @@ export const TopNav = (props: {
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
+                    disabled={props.theme === config.THEME_LIGHT}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme('light');
-                      localStorage.setItem(config.THEME, 'light');
+                      props.setTheme(config.THEME_LIGHT);
+                      localStorage.setItem(config.THEME, config.THEME_LIGHT);
                     }}
                     size="large"
                   >
@@ -338,10 +339,11 @@ export const TopNav = (props: {
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
+                    disabled={props.theme === config.THEME_DARK}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme('dark');
-                      localStorage.setItem(config.THEME, 'dark');
+                      props.setTheme(config.THEME_DARK);
+                      localStorage.setItem(config.THEME, config.THEME_DARK);
                     }}
                     size="large"
                   >
@@ -354,10 +356,11 @@ export const TopNav = (props: {
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
+                    disabled={props.theme === config.THEME_COOL}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme('cool');
-                      localStorage.setItem(config.THEME, 'cool');
+                      props.setTheme(config.THEME_COOL);
+                      localStorage.setItem(config.THEME, config.THEME_COOL);
                     }}
                     size="large"
                   >
