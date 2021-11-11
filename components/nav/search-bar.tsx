@@ -5,10 +5,7 @@ import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
-import CloseIconOrange from '../../public/icons/close-orange.svg';
 import CloseIcon from '../../public/icons/close.svg';
-import SearchIconOrange from '../../public/icons/search-orange.svg';
-import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
 
 const PREFIX = 'SearchBar';
@@ -17,6 +14,8 @@ const classes = {
   input: `${PREFIX}-input`,
   container: `${PREFIX}-container`,
   icon: `${PREFIX}-icon`,
+  iconImage: `${PREFIX}-iconImage`,
+  iconSelected: `${PREFIX}-iconSelected`,
 };
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
@@ -32,11 +31,17 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   [`& .${classes.icon}`]: {
     padding: theme.spacing(1),
   },
+  [`& .${classes.iconImage}`]: {
+    color: theme.palette.text.primary,
+  },
+  [`& .${classes.iconSelected}`]: {
+    color: theme.palette.primary.main,
+  },
 }));
 
 const searchInputId = 'searchInput';
 
-const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
+const SearchBar = (props: { searchQuery: string }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const search = location.search;
@@ -61,11 +66,17 @@ const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
       <Grid item>
         <IconButton className={classes.icon}>
           {location.pathname.indexOf('search') > -1 ? (
-            <SearchIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-          ) : props.isDarkMode ? (
-            <SearchIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+            <SearchIcon
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+              className={classes.iconSelected}
+            />
           ) : (
-            <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+            <SearchIcon
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+              className={classes.iconImage}
+            />
           )}
         </IconButton>
       </Grid>
@@ -97,11 +108,7 @@ const SearchBar = (props: { isDarkMode: boolean; searchQuery: string }) => {
             }}
             size="large"
           >
-            {props.isDarkMode ? (
-              <CloseIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-            ) : (
-              <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-            )}
+            <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
           </IconButton>
         </Grid>
       )}

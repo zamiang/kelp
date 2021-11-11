@@ -16,7 +16,7 @@ const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
 const white = '#fff';
 const black = '#000';
 
-const lightThemepalette = {
+const lightThemePalette = {
   mode: 'light',
   common: {
     black,
@@ -49,6 +49,43 @@ const lightThemepalette = {
     secondary: secondaryTextColor,
     disabled: 'rgba(0, 0, 0, 0.38)',
   },
+  divider: 'rgba(0,0,0,0.2)',
+};
+
+const coolThemePalette = {
+  mode: 'light',
+  common: {
+    black,
+    white,
+  },
+  background: {
+    paper: '#f7f1e4',
+    default: '#FBF2DD',
+  },
+  primary: {
+    light: '#DEEBFF',
+    main: '#FF4600',
+    dark: '#FF4600',
+    contrastText: white,
+  },
+  secondary: {
+    light: '#faf5eb',
+    main: '#47B7B8',
+    dark: '#47B7B8',
+    contrastText: white,
+  },
+  error: {
+    light: 'rgba(245, 98, 0, 1)',
+    main: 'rgba(194, 15, 36, 1)',
+    dark: '#d32f2f',
+    contrastText: white,
+  },
+  text: {
+    primary: primaryTextColor,
+    secondary: secondaryTextColor,
+    disabled: 'rgba(0, 0, 0, 0.38)',
+  },
+  divider: 'rgba(0,0,0,0.2)',
 };
 
 const darkPrimaryTextColor = 'rgba(255,255,255,0.87)';
@@ -284,4 +321,5 @@ const darkThemeConfig = {
 } as ThemeOptions;
 
 export const darkTheme = createTheme(darkThemeConfig as any);
-export const lightTheme = createTheme(darkThemeConfig as any, { palette: lightThemepalette });
+export const lightTheme = createTheme(darkThemeConfig as any, { palette: lightThemePalette });
+export const coolTheme = createTheme(darkThemeConfig as any, { palette: coolThemePalette });

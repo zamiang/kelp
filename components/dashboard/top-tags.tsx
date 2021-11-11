@@ -7,8 +7,6 @@ import React, { useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
-import MoveIconOrange from '../../public/icons/move-orange.svg';
-import MoveIconWhite from '../../public/icons/move-white.svg';
 import MoveIcon from '../../public/icons/move.svg';
 import LeftArrow from '../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
@@ -26,6 +24,8 @@ const classes = {
   icon: `${PREFIX}-icon`,
   iconVisible: `${PREFIX}-iconVisible`,
   dotContainer: `${PREFIX}-dotContainer`,
+  iconImage: `${PREFIX}-iconImage`,
+  iconSelected: `${PREFIX}-iconSelected`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -68,6 +68,12 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.dotContainer}`]: {
     width: theme.spacing(3),
   },
+  [`& .${classes.iconImage}`]: {
+    color: theme.palette.text.primary,
+  },
+  [`& .${classes.iconSelected}`]: {
+    color: theme.palette.primary.main,
+  },
 }));
 
 const getItemStyle = (draggableStyle: any) => ({
@@ -88,7 +94,6 @@ export const TopTags = (props: {
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   setWebsiteTags: (t: IWebsiteTag[]) => void;
   dragDropSource?: string;
-  isDarkMode: boolean;
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -118,7 +123,6 @@ export const TopTags = (props: {
         close={() => setDialogOpen(false)}
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
-
       <Droppable
         droppableId="top-tags"
         direction="vertical"
@@ -187,11 +191,17 @@ export const TopTags = (props: {
                             )}
                           >
                             {snapshot.isDragging ? (
-                              <MoveIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                            ) : props.isDarkMode ? (
-                              <MoveIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                              <MoveIcon
+                                width={config.ICON_SIZE}
+                                height={config.ICON_SIZE}
+                                className={classes.iconSelected}
+                              />
                             ) : (
-                              <MoveIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                              <MoveIcon
+                                width={config.ICON_SIZE}
+                                height={config.ICON_SIZE}
+                                className={classes.iconImage}
+                              />
                             )}
                           </Grid>
                         </Grid>

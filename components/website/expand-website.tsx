@@ -38,6 +38,7 @@ const classes = {
   tagForm: `${PREFIX}-tagForm`,
   hiddenWebsite: `${PREFIX}-hiddenWebsite`,
   topPadding: `${PREFIX}-topPadding`,
+  iconButton: `${PREFIX}-iconButton`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -137,12 +138,14 @@ const Root = styled('div')(({ theme }) => ({
     color: theme.palette.primary.main,
     borderRadius: 16,
   },
+  [`& .${classes.iconButton}`]: {
+    backgroundColor: theme.palette.background.paper,
+  },
 }));
 
 const LargeWebsiteImage = (props: {
   image?: IWebsiteImage;
   websiteId: string;
-  isDarkMode: boolean;
   ogImage?: string;
 }) => {
   if (props.image?.image) {
@@ -159,12 +162,7 @@ const LargeWebsiteImage = (props: {
   }
   return (
     <div className={classes.faviconContainer}>
-      <IconButton
-        style={{
-          backgroundColor: props.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
-        }}
-        size="large"
-      >
+      <IconButton className={classes.iconButton} size="large">
         <img
           src={`chrome://favicon/size/48@1x/${props.websiteId}`}
           height={config.ICON_SIZE}
@@ -243,7 +241,6 @@ const ExpandWebsite = (props: {
   close?: () => void;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  isDarkMode: boolean;
   websiteCache: IWebsiteCache;
   dragDropSource?: string;
 }) => {
@@ -302,12 +299,7 @@ const ExpandWebsite = (props: {
           <Grid item xs={6}>
             <Link href={website?.rawUrl} underline="none">
               <Box boxShadow={1} className={classes.container}>
-                <LargeWebsiteImage
-                  image={image}
-                  websiteId={websiteId}
-                  isDarkMode={props.isDarkMode}
-                  ogImage={website?.ogImage}
-                />
+                <LargeWebsiteImage image={image} websiteId={websiteId} ogImage={website?.ogImage} />
               </Box>
             </Link>
           </Grid>
@@ -383,7 +375,6 @@ const ExpandWebsite = (props: {
                       <LargeWebsite
                         item={item}
                         store={props.store}
-                        isDarkMode={props.isDarkMode}
                         websiteTags={props.websiteTags}
                         toggleWebsiteTag={props.toggleWebsiteTag}
                       />
@@ -400,7 +391,6 @@ const ExpandWebsite = (props: {
               store={props.store}
               toggleWebsiteTag={props.toggleWebsiteTag}
               websiteTags={props.websiteTags}
-              isDarkMode={props.isDarkMode}
               filterByTag={t}
               maxWebsites={4}
               websiteCache={props.websiteCache}

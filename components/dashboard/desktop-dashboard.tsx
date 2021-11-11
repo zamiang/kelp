@@ -86,8 +86,8 @@ const is500Error = (error: Error) => (error as any).status === 500;
 
 export const DesktopDashboard = (props: {
   store: IStore;
-  setIsDarkMode: (isDarkMode: boolean) => void;
-  isDarkMode: boolean;
+  setTheme: (t: string) => void;
+  theme: string;
   isMicrosoftError: boolean;
 }) => {
   const store = props.store;
@@ -297,7 +297,8 @@ export const DesktopDashboard = (props: {
             <div className={classes.content}>
               <TopNav
                 store={store}
-                isDarkMode={props.isDarkMode}
+                theme={props.theme}
+                setTheme={props.setTheme}
                 websiteTags={websiteTags}
                 setWebsiteTags={updateWebsiteTags}
                 refetchWebsiteTags={refetchWebsiteTags}
@@ -322,7 +323,6 @@ export const DesktopDashboard = (props: {
                         element={
                           <Search
                             store={store}
-                            isDarkMode={props.isDarkMode}
                             websiteTags={websiteTags}
                             toggleWebsiteTag={toggleWebsiteTagClick}
                             websiteCache={websiteCache}
@@ -334,7 +334,6 @@ export const DesktopDashboard = (props: {
                         element={
                           <ExpandWebsite
                             store={store}
-                            isDarkMode={props.isDarkMode}
                             websiteTags={websiteTags}
                             toggleWebsiteTag={toggleWebsiteTagClick}
                             websiteCache={websiteCache}
@@ -347,7 +346,6 @@ export const DesktopDashboard = (props: {
                         element={
                           <ExpandedMeeting
                             store={store}
-                            isDarkMode={props.isDarkMode}
                             websiteTags={websiteTags}
                             toggleWebsiteTag={toggleWebsiteTagClick}
                             websiteCache={websiteCache}
@@ -365,7 +363,6 @@ export const DesktopDashboard = (props: {
                             store={store}
                             toggleWebsiteTag={toggleWebsiteTagClick}
                             websiteTags={websiteTags}
-                            isDarkMode={props.isDarkMode}
                             websiteCache={websiteCache}
                           />
                         }
@@ -377,42 +374,27 @@ export const DesktopDashboard = (props: {
                             store={store}
                             toggleWebsiteTag={toggleWebsiteTagClick}
                             websiteTags={websiteTags}
-                            isDarkMode={props.isDarkMode}
                             websiteCache={websiteCache}
                           />
                         }
                       />
-                      <Route
-                        path="/calendar"
-                        element={<Summary store={store} isDarkMode={props.isDarkMode} />}
-                      />
-                      <Route
-                        path="/settings"
-                        element={
-                          <Settings
-                            store={store}
-                            isDarkMode={props.isDarkMode}
-                            setIsDarkMode={props.setIsDarkMode}
-                          />
-                        }
-                      />
+                      <Route path="/calendar" element={<Summary store={store} />} />
+                      <Route path="/settings" element={<Settings store={store} />} />
                       <Route
                         path="/home"
                         element={
                           <div>
-                            <MostRecentTab isDarkMode={props.isDarkMode} />
+                            <MostRecentTab />
                             <MeetingHighlight
                               store={props.store}
                               toggleWebsiteTag={toggleWebsiteTagClick}
                               websiteTags={websiteTags}
-                              isDarkMode={props.isDarkMode}
                               websiteCache={websiteCache}
                             />
                             <TagHighlights
                               store={props.store}
                               toggleWebsiteTag={toggleWebsiteTagClick}
                               websiteTags={websiteTags}
-                              isDarkMode={props.isDarkMode}
                               websiteCache={websiteCache}
                               showAddWebsiteDialog={setTagForWebsiteToTagDialog}
                               dragDropSource={dragDropSource}
@@ -423,7 +405,6 @@ export const DesktopDashboard = (props: {
                                 store={store}
                                 toggleWebsiteTag={toggleWebsiteTagClick}
                                 websiteTags={websiteTags}
-                                isDarkMode={props.isDarkMode}
                                 websiteCache={websiteCache}
                               />
                             </div>

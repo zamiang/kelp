@@ -8,8 +8,8 @@ import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
-import PlusIcon from '../../public/icons/plus-orange.svg';
-import VideoIconWhite from '../../public/icons/video-white.svg';
+import PlusIcon from '../../public/icons/plus.svg';
+import VideoIcon from '../../public/icons/video.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
@@ -57,6 +57,8 @@ const classes = {
   innerDot: `${PREFIX}-innerDot`,
   dotNow: `${PREFIX}-dotNow`,
   dotContainer: `${PREFIX}-dotContainer`,
+  iconText: `${PREFIX}-iconText`,
+  iconPrimary: `${PREFIX}-iconPrimary`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -81,6 +83,12 @@ const Root = styled('div')(({ theme }) => ({
   },
   [`& .${classes.containerNow}`]: {
     borderColor: theme.palette.divider,
+  },
+  [`& .${classes.iconText}`]: {
+    color: theme.palette.text.primary,
+  },
+  [`& .${classes.iconPrimary}`]: {
+    borderColor: theme.palette.primary.main,
   },
   [`& .${classes.meetingTimeInWords}`]: {
     display: 'inline-block',
@@ -151,7 +159,6 @@ export const FeaturedMeeting = (props: {
   store: IStore;
   showButton?: boolean;
   showLine?: boolean;
-  isDarkMode: boolean;
   happeningSoonLimit?: number;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
@@ -261,7 +268,13 @@ export const FeaturedMeeting = (props: {
               variant="outlined"
               disableElevation
               color="primary"
-              startIcon={<PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
+              startIcon={
+                <PlusIcon
+                  width={config.ICON_SIZE}
+                  height={config.ICON_SIZE}
+                  className={classes.iconPrimary}
+                />
+              }
               className={classes.button}
             >
               Add Tags
@@ -273,7 +286,13 @@ export const FeaturedMeeting = (props: {
                 className={classes.button}
                 variant="contained"
                 color={'primary'}
-                startIcon={<VideoIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />}
+                startIcon={
+                  <VideoIcon
+                    width={config.ICON_SIZE}
+                    height={config.ICON_SIZE}
+                    className={classes.iconText}
+                  />
+                }
                 onClick={() => window.open(props.meeting.videoLink, '_blank')}
               >
                 Join
@@ -291,7 +310,6 @@ export const FeaturedMeeting = (props: {
                 <MeetingRowBelow
                   meeting={props.meeting}
                   store={props.store}
-                  isDarkMode={props.isDarkMode}
                   isFullWidth={false}
                   websiteTags={props.websiteTags}
                   meetingTags={relevantTags}
@@ -307,7 +325,6 @@ export const FeaturedMeeting = (props: {
             <MeetingRowBelow
               meeting={props.meeting}
               store={props.store}
-              isDarkMode={props.isDarkMode}
               isFullWidth={true}
               websiteTags={props.websiteTags}
               meetingTags={relevantTags}

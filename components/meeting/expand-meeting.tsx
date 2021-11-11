@@ -12,10 +12,10 @@ import React, { useEffect, useState } from 'react';
 import Linkify from 'react-linkify';
 import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
-import EmailIcon from '../../public/icons/email-orange.svg';
-import PlusIcon from '../../public/icons/plus-orange.svg';
-import SaveIcon from '../../public/icons/save-orange.svg';
-import VideoIcon from '../../public/icons/video-white.svg';
+import EmailIcon from '../../public/icons/email.svg';
+import PlusIcon from '../../public/icons/plus.svg';
+import SaveIcon from '../../public/icons/save.svg';
+import VideoIcon from '../../public/icons/video.svg';
 import AttendeeList from '../shared/attendee-list';
 import { Row, classes } from '../shared/row-styles';
 import {
@@ -68,7 +68,13 @@ const EmailGuestsButton = (props: {
       disableElevation
       color="primary"
       className={classes.button}
-      startIcon={<EmailIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
+      startIcon={
+        <EmailIcon
+          width={config.ICON_SIZE}
+          height={config.ICON_SIZE}
+          className={classes.iconText}
+        />
+      }
     >
       Email Guests
     </Button>
@@ -79,7 +85,6 @@ const ExpandedMeeting = (props: {
   store: IStore;
   meetingId?: string;
   close?: () => void;
-  isDarkMode: boolean;
   hideHeader?: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
@@ -210,7 +215,11 @@ const ExpandedMeeting = (props: {
                     className={classes.iconButton}
                     size="large"
                   >
-                    <SaveIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                    <SaveIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconPrimary}
+                    />
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -221,7 +230,13 @@ const ExpandedMeeting = (props: {
                 variant="outlined"
                 disableElevation
                 color="primary"
-                startIcon={<PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
+                startIcon={
+                  <PlusIcon
+                    width={config.ICON_SIZE}
+                    height={config.ICON_SIZE}
+                    className={classes.iconPrimary}
+                  />
+                }
                 className={classes.button}
               >
                 Add Tags
@@ -241,7 +256,13 @@ const ExpandedMeeting = (props: {
                   variant="contained"
                   disableElevation
                   color="primary"
-                  startIcon={<VideoIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
+                  startIcon={
+                    <VideoIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconPrimary}
+                    />
+                  }
                   className={classes.button}
                 >
                   Join
@@ -315,7 +336,6 @@ const ExpandedMeeting = (props: {
                     <LargeWebsite
                       item={item}
                       store={props.store}
-                      isDarkMode={props.isDarkMode}
                       websiteTags={props.websiteTags}
                       toggleWebsiteTag={props.toggleWebsiteTag}
                     />
@@ -327,7 +347,6 @@ const ExpandedMeeting = (props: {
               <WebsiteHighlights
                 store={props.store}
                 websiteTags={props.websiteTags}
-                isDarkMode={props.isDarkMode}
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 filterByTag={currentTag}
                 websiteCache={props.websiteCache}

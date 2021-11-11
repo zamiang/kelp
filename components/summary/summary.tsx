@@ -226,7 +226,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
   );
 };
 
-export const Summary = (props: { store: IStore; isDarkMode: boolean }) => {
+export const Summary = (props: { store: IStore }) => {
   const [start] = useState<Date>(
     subDays(
       startOfWeek(new Date(), { weekStartsOn: Number(config.WEEK_STARTS_ON) as any }),

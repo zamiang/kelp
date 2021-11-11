@@ -4,23 +4,14 @@ import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
-import CalendarIconOrange from '../../public/icons/calendar-orange.svg';
-import CalendarIconWhite from '../../public/icons/calendar-white.svg';
 import CalendarIcon from '../../public/icons/calendar.svg';
-import HomeIconOrange from '../../public/icons/home-orange.svg';
-import HomeIconWhite from '../../public/icons/home-white.svg';
 import HomeIcon from '../../public/icons/home.svg';
-import MeetingsIconOrange from '../../public/icons/meetings-orange.svg';
-import MeetingsIconWhite from '../../public/icons/meetings-white.svg';
 import MeetingsIcon from '../../public/icons/meetings.svg';
-import SearchIconOrange from '../../public/icons/search-orange.svg';
-import SearchIconWhite from '../../public/icons/search-white.svg';
 import SearchIcon from '../../public/icons/search.svg';
-import SettingsIconOrange from '../../public/icons/settings-orange.svg';
-import SettingsIconWhite from '../../public/icons/settings-white.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
 import KelpIcon from '../../public/kelp-24.svg';
 import { getTagsForWebsite } from '../shared/website-tag';
@@ -35,6 +26,12 @@ const classes = {
   leftSection: `${PREFIX}-leftSection`,
   rightSection: `${PREFIX}-rightSection`,
   logo: `${PREFIX}-logo`,
+  icon: `${PREFIX}-icon`,
+  iconLight: `${PREFIX}-lightIcon`,
+  iconDark: `${PREFIX}-lightDark`,
+  iconCool: `${PREFIX}-lightCool`,
+  iconImage: `${PREFIX}-iconImage`,
+  iconSelected: `${PREFIX}-iconSelected`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -84,11 +81,33 @@ const Root = styled('div')(({ theme }) => ({
       opacity: 0.5,
     },
   },
+  [`& .${classes.icon}`]: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    background: 'grey',
+  },
+  [`& .${classes.iconCool}`]: {
+    background: config.THEME_COOL,
+  },
+  [`& .${classes.iconDark}`]: {
+    background: config.THEME_DARK,
+  },
+  [`& .${classes.iconLight}`]: {
+    background: config.THEME_LIGHT,
+  },
+  [`& .${classes.iconImage}`]: {
+    color: theme.palette.text.primary,
+  },
+  [`& .${classes.iconSelected}`]: {
+    color: theme.palette.primary.main,
+  },
 }));
 
 export const TopNav = (props: {
   store: IStore;
-  isDarkMode: boolean;
+  theme: string;
+  setTheme: (s: string) => void;
   isMicrosoftError: boolean;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
@@ -139,11 +158,17 @@ export const TopNav = (props: {
               size="large"
             >
               {location.pathname.indexOf('search') > -1 ? (
-                <SearchIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              ) : props.isDarkMode ? (
-                <SearchIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                <SearchIcon
+                  width={config.ICON_SIZE}
+                  height={config.ICON_SIZE}
+                  className={classes.iconSelected}
+                />
               ) : (
-                <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                <SearchIcon
+                  width={config.ICON_SIZE}
+                  height={config.ICON_SIZE}
+                  className={classes.iconImage}
+                />
               )}
             </IconButton>
           </Grid>
@@ -155,7 +180,6 @@ export const TopNav = (props: {
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 setWebsiteTags={props.setWebsiteTags}
                 dragDropSource={props.dragDropSource}
-                isDarkMode={props.isDarkMode}
               />
             </Grid>
           )}
@@ -177,7 +201,7 @@ export const TopNav = (props: {
           )}
           <Grid item>
             <Link href="https://www.kelp.nyc" className={classes.logo}>
-              <KelpIcon height="24" width="24" />
+              <KelpIcon height="24" width="24" className={classes.iconSelected} />
             </Link>
           </Grid>
         </Grid>
@@ -201,11 +225,17 @@ export const TopNav = (props: {
                   size="large"
                 >
                   {isHomeSelected ? (
-                    <HomeIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                  ) : props.isDarkMode ? (
-                    <HomeIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                    <HomeIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconSelected}
+                    />
                   ) : (
-                    <HomeIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                    <HomeIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconImage}
+                    />
                   )}
                 </IconButton>
               </Grid>
@@ -219,11 +249,17 @@ export const TopNav = (props: {
                   size="large"
                 >
                   {isMeetingsSelected ? (
-                    <MeetingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                  ) : props.isDarkMode ? (
-                    <MeetingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                    <MeetingsIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconSelected}
+                    />
                   ) : (
-                    <MeetingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                    <MeetingsIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconImage}
+                    />
                   )}
                 </IconButton>
               </Grid>
@@ -237,11 +273,17 @@ export const TopNav = (props: {
                   size="large"
                 >
                   {isCalendarSelected ? (
-                    <CalendarIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                  ) : props.isDarkMode ? (
-                    <CalendarIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                    <CalendarIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconSelected}
+                    />
                   ) : (
-                    <CalendarIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                    <CalendarIcon
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className={classes.iconImage}
+                    />
                   )}
                 </IconButton>
               </Grid>
@@ -256,16 +298,66 @@ export const TopNav = (props: {
                     size="large"
                   >
                     {isSettingsSelected ? (
-                      <SettingsIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    ) : props.isDarkMode ? (
-                      <SettingsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      <SettingsIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconSelected}
+                      />
                     ) : (
-                      <SettingsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      <SettingsIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconImage}
+                      />
                     )}
                   </IconButton>
                 </Tooltip>
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item>
+            <Tooltip title="Light Mode">
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={(event) => {
+                  event.preventDefault();
+                  props.setTheme('light');
+                  localStorage.setItem(config.THEME, 'light');
+                }}
+                size="large"
+              >
+                <div className={clsx(classes.icon, classes.iconDark)}></div>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Dark Mode">
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={(event) => {
+                  event.preventDefault();
+                  props.setTheme('dark');
+                  localStorage.setItem(config.THEME, 'dark');
+                }}
+                size="large"
+              >
+                <div className={clsx(classes.icon, classes.iconLight)}></div>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Cool Mode">
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={(event) => {
+                  event.preventDefault();
+                  props.setTheme('cool');
+                  localStorage.setItem(config.THEME, 'cool');
+                }}
+                size="large"
+              >
+                <div className={clsx(classes.icon, classes.iconCool)}></div>
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </div>

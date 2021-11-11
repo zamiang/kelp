@@ -70,6 +70,8 @@ export const classes = {
   buttonSecton: `${PREFIX}-buttonSecton`,
   tag: `${PREFIX}-tag`,
   tagSelected: `${PREFIX}-tagSelected`,
+  iconText: `${PREFIX}-iconText`,
+  iconPrimary: `${PREFIX}-iconPrimary`,
 };
 
 export const Row = styled('div')(({ theme }) => ({
@@ -212,7 +214,6 @@ export const Row = styled('div')(({ theme }) => ({
       background: theme.palette.secondary.light,
     },
   },
-
   [`& .${classes.button}`]: {
     width: '100%',
     borderRadius: 30,
@@ -292,7 +293,6 @@ export const Row = styled('div')(({ theme }) => ({
       opacity: 0.6,
     },
   },
-
   [`& .${classes.topContainer}`]: {
     paddingBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
@@ -411,5 +411,11 @@ export const Row = styled('div')(({ theme }) => ({
   },
   [`& .${classes.tagSelected}`]: {
     textDecoration: 'underline',
+  },
+  [`& .${classes.iconText}`]: {
+    color: theme.palette.text.primary,
+  },
+  [`& .${classes.iconPrimary}`]: {
+    color: theme.palette.primary.main,
   },
 }));

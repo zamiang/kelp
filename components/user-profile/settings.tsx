@@ -6,16 +6,11 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
-import MoonIconOrange from '../../public/icons/moon-orange.svg';
-import MoonIcon from '../../public/icons/moon.svg';
-import DayIconOrange from '../../public/icons/sun-orange.svg';
-import DayIconWhite from '../../public/icons/sun-white.svg';
 import { LogOutButton, SignInButton, WelcomeUser } from '../shared/microsoft-login';
 import { IDomainBlocklist, IPerson, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -46,11 +41,7 @@ const Root = styled('div')(({ theme }) => ({
   [`&.${classes.panel}`]: {},
 }));
 
-const Settings = (props: {
-  store: IStore;
-  isDarkMode: boolean;
-  setIsDarkMode: (isDarkMode: boolean) => void;
-}) => {
+const Settings = (props: { store: IStore }) => {
   const [domainBlocklists, setDomainBlocklist] = useState<IDomainBlocklist[]>([]);
   const [websiteBlocklist, setWebsiteBlocklist] = useState<IWebsiteBlocklist[]>([]);
   const [currentUser, setCurrentUser] = useState<IPerson>();
@@ -137,55 +128,6 @@ const Settings = (props: {
             </Link>
             .
           </Typography>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Grid item xs={6}>
-          <Typography variant="h3">Dark mode</Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Tooltip title="Light Mode">
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                props.setIsDarkMode(false);
-                localStorage.setItem(config.DARK_MODE, String(false));
-              }}
-              size="large"
-            >
-              {props.isDarkMode ? (
-                <DayIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              ) : (
-                <DayIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              )}
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Dark Mode">
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={(event) => {
-                event.preventDefault();
-                props.setIsDarkMode(true);
-                localStorage.setItem(config.DARK_MODE, String(true));
-              }}
-              size="large"
-            >
-              {props.isDarkMode ? (
-                <MoonIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              ) : (
-                <MoonIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-              )}
-            </IconButton>
-          </Tooltip>
         </Grid>
       </Grid>
       <Divider />

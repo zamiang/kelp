@@ -7,8 +7,8 @@ import { times } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
-import EditIcon from '../../public/icons/edit-white.svg';
-import ShareIcon from '../../public/icons/person-add-orange.svg';
+import EditIcon from '../../public/icons/edit.svg';
+import ShareIcon from '../../public/icons/person-add.svg';
 import { D3Component } from '../shared/bar-chart/bar-chart';
 import { Row, classes } from '../shared/row-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
@@ -101,7 +101,13 @@ const ExpandedDocument = (props: {
           variant="contained"
           color="primary"
           href={`${document.link}?${shareParams.toString()}`}
-          startIcon={<ShareIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
+          startIcon={
+            <ShareIcon
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+              className={classes.iconPrimary}
+            />
+          }
           target="_blank"
         >
           Share Document
@@ -112,7 +118,13 @@ const ExpandedDocument = (props: {
             variant="contained"
             disableElevation
             color="primary"
-            startIcon={<EditIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />}
+            startIcon={
+              <EditIcon
+                width={config.ICON_SIZE}
+                height={config.ICON_SIZE}
+                className={classes.iconPrimary}
+              />
+            }
             href={document.link!}
             target="_blank"
           >

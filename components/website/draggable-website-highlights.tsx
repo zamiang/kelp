@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
-import CloseIconWhite from '../../public/icons/close-white.svg';
 import CloseIcon from '../../public/icons/close.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -21,6 +20,8 @@ export const classes = {
   sideButton: `${PREFIX}-sideButton`,
   loading: `${PREFIX}-loading`,
   rightContainer: `${PREFIX}-rightContainer`,
+  iconSelected: `${PREFIX}-iconSelected`,
+  iconText: `${PREFIX}-iconText`,
 };
 
 export const Root = styled('div')(({ theme }) => ({
@@ -34,9 +35,15 @@ export const Root = styled('div')(({ theme }) => ({
   [`& .${classes.loading}`]: {
     opacity: 0.5,
   },
+  [`& .${classes.iconText}`]: {
+    color: theme.palette.text.primary,
+  },
   [`& .${classes.rightContainer}`]: {
     marginRight: -47,
     width: 99,
+  },
+  [`& .${classes.iconSelected}`]: {
+    color: theme.palette.primary.main,
   },
   [`& .${classes.button}`]: {
     opacity: 1,
@@ -52,6 +59,7 @@ export const Root = styled('div')(({ theme }) => ({
     right: -50,
     top: 'calc(50% - 16px)',
     background: theme.palette.background.paper,
+    color: theme.palette.text.primary,
     width: 32,
     height: 32,
     overflow: 'hidden',
@@ -120,7 +128,6 @@ const Website = (props: {
   item: IFeaturedWebsite;
   index: number;
   store: IStore;
-  isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   size: number;
@@ -140,7 +147,6 @@ const Website = (props: {
           key={props.item.id}
           item={props.item}
           store={props.store}
-          isDarkMode={props.isDarkMode}
           websiteTags={props.websiteTags}
           toggleWebsiteTag={props.toggleWebsiteTag}
         />
@@ -152,7 +158,6 @@ const Website = (props: {
 const DraggableWebsites = (props: {
   topWebsites: IWebsiteCacheItem[];
   store: IStore;
-  isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   maxWebsites: number;
@@ -179,7 +184,6 @@ const DraggableWebsites = (props: {
             index={index}
             item={item}
             store={props.store}
-            isDarkMode={props.isDarkMode}
             websiteTags={props.websiteTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
             size={props.maxWebsites > 3 ? 3 : 4}
@@ -195,7 +199,6 @@ export const DraggableWebsiteHighlights = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  isDarkMode: boolean;
   filterByTag?: string;
   showAddWebsiteDialog?: (tag: string) => void;
   maxWebsites: number;
@@ -262,11 +265,11 @@ export const DraggableWebsiteHighlights = (props: {
                   className={classes.button}
                   onClick={() => props.toggleWebsiteTag(props.filterByTag!)}
                 >
-                  {props.isDarkMode ? (
-                    <CloseIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                  ) : (
-                    <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                  )}
+                  <CloseIcon
+                    width={config.ICON_SIZE}
+                    height={config.ICON_SIZE}
+                    className={classes.iconText}
+                  />
                 </IconButton>
               </Grid>
             )}
@@ -277,7 +280,6 @@ export const DraggableWebsiteHighlights = (props: {
         topWebsites={topWebsites}
         store={props.store}
         websiteTags={props.websiteTags}
-        isDarkMode={props.isDarkMode}
         toggleWebsiteTag={props.toggleWebsiteTag}
         maxWebsites={props.maxWebsites}
         filterByTag={props.filterByTag}

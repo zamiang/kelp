@@ -29,7 +29,6 @@ const Meetings = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  isDarkMode: boolean;
   websiteCache: IWebsiteCache;
 }) => {
   const [meetings, setMeetings] = useState<ISegment[]>([]);
@@ -58,7 +57,6 @@ const Meetings = (props: {
             meeting={meeting}
             store={props.store}
             showLine
-            isDarkMode={props.isDarkMode}
             happeningSoonLimit={60 * 4}
             websiteTags={props.websiteTags}
             toggleWebsiteTag={props.toggleWebsiteTag}

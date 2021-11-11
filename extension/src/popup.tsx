@@ -26,7 +26,7 @@ import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
-import { darkTheme, lightTheme } from '../../constants/theme';
+import { coolTheme, darkTheme, lightTheme } from '../../constants/theme';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -91,8 +91,8 @@ const LoadingMobileDashboardContainer = (props: {
   database: any;
   accessToken: string;
   scope: string;
-  setIsDarkMode: (isDarkMode: boolean) => void;
-  isDarkMode: boolean;
+  setTheme: (theme: string) => void;
+  theme: string;
   isMicrosoftError: boolean;
   isMicrosoftLoading: boolean;
 }) => {
@@ -125,8 +125,8 @@ const LoadingMobileDashboardContainer = (props: {
           <ScrollToTop />
           <DesktopDashboard
             store={store}
-            setIsDarkMode={props.setIsDarkMode}
-            isDarkMode={props.isDarkMode}
+            setTheme={props.setTheme}
+            theme={props.theme}
             isMicrosoftError={props.isMicrosoftError}
           />
         </Router>
@@ -135,7 +135,7 @@ const LoadingMobileDashboardContainer = (props: {
   );
 };
 
-const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void }) => {
+const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
   const [token, setToken] = useState<string | null>(null);
   const [hasAuthError, setHasAuthError] = useState<boolean>(false);
   const [hasGoogleAdvancedProtectionError, setHasGoogleAdvancedProtectionError] =
@@ -290,8 +290,8 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
           database={database}
           accessToken={token}
           scope={scopes}
-          setIsDarkMode={props.setIsDarkMode}
-          isDarkMode={props.isDarkMode}
+          setTheme={props.setTheme}
+          theme={props.theme}
           isMicrosoftError={isMicrosoftError}
           isMicrosoftLoading={isMicrosoftLoading}
         />
@@ -300,18 +300,23 @@ const Popup = (props: { isDarkMode: boolean; setIsDarkMode: (b: boolean) => void
   );
 };
 
-const App = () => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(
-    localStorage.getItem(config.DARK_MODE) !== 'false',
-  );
+const themeHash = {
+  cool: coolTheme,
+  light: lightTheme,
+  dark: darkTheme,
+} as any;
 
+const App = () => {
+  const [theme, setTheme] = useState<string>(
+    localStorage.getItem(config.THEME) ? localStorage.getItem(config.THEME)! : 'dark',
+  );
   return (
     <StyledEngineProvider injectFirst>
-      <EmotionThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <EmotionThemeProvider theme={themeHash[theme]}>
+        <ThemeProvider theme={themeHash[theme]}>
           <CssBaseline />
           <MsalProvider instance={msalInstance}>
-            <Popup setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} />
+            <Popup setTheme={setTheme} theme={theme} />
           </MsalProvider>
         </ThemeProvider>
       </EmotionThemeProvider>

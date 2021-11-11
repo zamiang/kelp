@@ -75,7 +75,6 @@ export const Meeting = (props: {
 const MeetingList = (props: {
   segments: (ISegment | undefined)[];
   store: IStore;
-  isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   websiteCache: IWebsiteCache;
@@ -98,7 +97,6 @@ const MeetingList = (props: {
               meeting={segment}
               store={props.store}
               showLine
-              isDarkMode={props.isDarkMode}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               websiteCache={props.websiteCache}

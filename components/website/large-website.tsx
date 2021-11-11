@@ -9,8 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
-import DotsIcon from '../../public/icons/dots-black.svg';
-import DotsIconWhite from '../../public/icons/dots-white.svg';
+import DotsIcon from '../../public/icons/dots.svg';
 import { WebsiteTags } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -28,9 +27,14 @@ const classes = {
   icon: `${PREFIX}-icon`,
   removeButton: `${PREFIX}-removeButton`,
   dotsButton: `${PREFIX}-dotsButton`,
+  iconButton: `${PREFIX}-iconButton`,
+  dotsIcon: `${PREFIX}-dotsIcon`,
 };
 
 const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.dotsIcon}`]: {
+    color: theme.palette.text.primary,
+  },
   [`& .${classes.container}`]: {
     background: theme.palette.background.paper,
     opacity: 1,
@@ -88,12 +92,14 @@ const Root = styled('div')(({ theme }) => ({
     fontWeight: theme.typography.h3.fontWeight,
     color: theme.palette.text.primary,
   },
+  [`& .${classes.iconButton}`]: {
+    backgroundColor: theme.palette.background.paper,
+  },
 }));
 
 const WebsiteImage = (props: {
   image?: IWebsiteImage;
   item: IFeaturedWebsite;
-  isDarkMode: boolean;
   ogImage?: string;
 }) => {
   if (props.image?.image) {
@@ -110,12 +116,7 @@ const WebsiteImage = (props: {
   }
   return (
     <Root className={classes.faviconContainer}>
-      <IconButton
-        style={{
-          backgroundColor: props.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
-        }}
-        size="large"
-      >
+      <IconButton size="large" className={classes.iconButton}>
         <img
           src={`chrome://favicon/size/48@1x/${props.item.id}`}
           height={config.ICON_SIZE}
@@ -131,7 +132,6 @@ export const LargeWebsite = (props: {
   item: IFeaturedWebsite;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   smGridSize?: number;
-  isDarkMode: boolean;
   websiteTags: IWebsiteTag[];
 }) => {
   const navigate = useNavigate();
@@ -178,12 +178,7 @@ export const LargeWebsite = (props: {
       )}
       <Link href={website?.rawUrl} underline="none">
         <Box boxShadow={1} className={classes.container}>
-          <WebsiteImage
-            image={image}
-            item={props.item}
-            isDarkMode={props.isDarkMode}
-            ogImage={website?.ogImage}
-          />
+          <WebsiteImage image={image} item={props.item} ogImage={website?.ogImage} />
         </Box>
         <Tooltip title={website?.title || ''}>
           <Typography noWrap className={classes.text} variant="body2">
@@ -212,11 +207,11 @@ export const LargeWebsite = (props: {
             onClick={() => navigate(`/websites/${encodeURIComponent(props.item.id)}`)}
             className={classes.dotsButton}
           >
-            {props.isDarkMode ? (
-              <DotsIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
-            ) : (
-              <DotsIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
-            )}
+            <DotsIcon
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+              className={classes.dotsIcon}
+            />
           </IconButton>
         </Grid>
       </Grid>

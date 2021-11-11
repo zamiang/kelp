@@ -6,7 +6,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
-import PlusIcon from '../../public/icons/plus-orange.svg';
+import PlusIcon from '../../public/icons/plus.svg';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import {
@@ -23,18 +23,20 @@ const classes = {
   section: `${PREFIX}-section`,
   title: `${PREFIX}-title`,
   topSection: `${PREFIX}-topSection`,
+  icon: `${PREFIX}-icon`,
 };
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
   },
-
+  [`& .${classes.icon}`]: {
+    color: theme.palette.text.primary,
+  },
   [`& .${classes.title}`]: {
     color: theme.palette.text.primary,
     fontSize: theme.typography.h3.fontSize,
   },
-
   [`& .${classes.topSection}`]: {
     marginBottom: theme.spacing(1),
     position: 'relative',
@@ -45,7 +47,6 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 const MeetingRowBelow = (props: {
   meeting: ISegment;
   store: IStore;
-  isDarkMode: boolean;
   isFullWidth: boolean;
   websiteTags: IWebsiteTag[];
   meetingTags: ISegmentTag[];
@@ -91,7 +92,6 @@ const MeetingRowBelow = (props: {
               smGridSize={4}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
-              isDarkMode={props.isDarkMode}
             />
           </Grid>
         ))}
@@ -102,7 +102,7 @@ const MeetingRowBelow = (props: {
             setShouldShowAll(!shouldShowAll);
           }}
         >
-          <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />{' '}
+          <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} className={classes.icon} />{' '}
         </IconButton>
       )}
       {props.meetingTags.map((t) => (
@@ -114,7 +114,6 @@ const MeetingRowBelow = (props: {
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
             websiteTags={props.websiteTags}
-            isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
             websiteCache={props.websiteCache}
           />

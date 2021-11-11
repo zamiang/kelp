@@ -6,8 +6,8 @@ import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/homepage-theme';
-import LeftArrow from '../../public/icons/left-arrow-black.svg';
-import RightArrow from '../../public/icons/right-arrow-black.svg';
+import LeftArrow from '../../public/icons/left-arrow.svg';
+import RightArrow from '../../public/icons/right-arrow.svg';
 
 const PREFIX = 'Onboarding';
 
@@ -21,6 +21,7 @@ const classes = {
   image: `${PREFIX}-image`,
   button: `${PREFIX}-button`,
   leftButton: `${PREFIX}-leftButton`,
+  icon: `${PREFIX}-leftButton`,
 };
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({

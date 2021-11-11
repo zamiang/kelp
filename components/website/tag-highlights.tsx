@@ -23,7 +23,6 @@ export const TagHighlights = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  isDarkMode: boolean;
   showAddWebsiteDialog: (tag: string) => void;
   websiteCache: IWebsiteCache;
   dragDropSource?: string;
@@ -41,7 +40,6 @@ export const TagHighlights = (props: {
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
             websiteTags={props.websiteTags}
-            isDarkMode={props.isDarkMode}
             filterByTag={t.tag}
             showAddWebsiteDialog={props.showAddWebsiteDialog}
             maxWebsites={isLarge ? 4 : 3}

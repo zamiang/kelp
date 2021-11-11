@@ -5,7 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
-import PlusIcon from '../../public/icons/plus-orange.svg';
+import PlusIcon from '../../public/icons/plus.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -17,7 +17,6 @@ export const WebsiteHighlights = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  isDarkMode: boolean;
   filterByTag?: string;
   websiteCache: IWebsiteCache;
 }) => {
@@ -69,7 +68,11 @@ export const WebsiteHighlights = (props: {
                 setShouldShowAll(!shouldShowAll);
               }}
             >
-              <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />{' '}
+              <PlusIcon
+                width={config.ICON_SIZE}
+                height={config.ICON_SIZE}
+                className={classes.iconSelected}
+              />{' '}
             </IconButton>
           </Grid>
         )}
@@ -82,7 +85,6 @@ export const WebsiteHighlights = (props: {
                 <LargeWebsite
                   item={item}
                   store={props.store}
-                  isDarkMode={props.isDarkMode}
                   websiteTags={props.websiteTags}
                   toggleWebsiteTag={props.toggleWebsiteTag}
                 />

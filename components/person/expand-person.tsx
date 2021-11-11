@@ -35,7 +35,6 @@ const ExpandPerson = (props: {
   close?: () => void;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  isDarkMode: boolean;
   websiteCache: IWebsiteCache;
 }) => {
   const { slug }: any = useParams();
@@ -205,7 +204,6 @@ const ExpandPerson = (props: {
                   <LargeWebsite
                     item={item}
                     store={props.store}
-                    isDarkMode={props.isDarkMode}
                     websiteTags={props.websiteTags}
                     toggleWebsiteTag={props.toggleWebsiteTag}
                   />
@@ -248,7 +246,6 @@ const ExpandPerson = (props: {
             <MeetingList
               segments={upcomingSegments}
               store={props.store}
-              isDarkMode={props.isDarkMode}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               websiteCache={props.websiteCache}
@@ -263,7 +260,6 @@ const ExpandPerson = (props: {
             <MeetingList
               segments={meetingsYouBothAttended}
               store={props.store}
-              isDarkMode={props.isDarkMode}
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
               websiteCache={props.websiteCache}

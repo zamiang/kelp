@@ -103,7 +103,6 @@ const maxWebsiteResults = 12;
 
 const WebsiteResults = (props: {
   store: IStore;
-  isDarkMode: boolean;
   websites: ISearchItem[];
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
@@ -128,7 +127,6 @@ const WebsiteResults = (props: {
           <LargeWebsite
             store={props.store}
             item={website}
-            isDarkMode={props.isDarkMode}
             websiteTags={props.websiteTags}
             toggleWebsiteTag={props.toggleWebsiteTag}
           />
@@ -140,7 +138,6 @@ const WebsiteResults = (props: {
 
 const Search = (props: {
   store: IStore;
-  isDarkMode: boolean;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   websiteCache: IWebsiteCache;
@@ -188,7 +185,7 @@ const Search = (props: {
     <Root>
       <Grid container className={classes.topNav} spacing={2} alignItems="center">
         <Grid item>
-          <SearchBar isDarkMode={props.isDarkMode} searchQuery={searchQuery} />
+          <SearchBar searchQuery={searchQuery} />
         </Grid>
         {filteredResults.websites.length > 1 && (
           <Grid item>
@@ -237,7 +234,6 @@ const Search = (props: {
               <WebsiteResults
                 store={props.store}
                 websites={filteredResults.websites}
-                isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
               />
@@ -269,7 +265,6 @@ const Search = (props: {
                 meeting={result.item as ISegment}
                 store={props.store}
                 showLine
-                isDarkMode={props.isDarkMode}
                 websiteTags={props.websiteTags}
                 toggleWebsiteTag={props.toggleWebsiteTag}
                 websiteCache={props.websiteCache}

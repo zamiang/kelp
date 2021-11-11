@@ -4,8 +4,6 @@ import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
-import MoveIconOrange from '../../public/icons/move-orange.svg';
-import MoveIconWhite from '../../public/icons/move-white.svg';
 import MoveIcon from '../../public/icons/move.svg';
 
 const PREFIX = 'MostRecentTab';
@@ -17,6 +15,8 @@ const classes = {
   icon: `${PREFIX}-icon`,
   textContainer: `${PREFIX}-textContainer`,
   imageContainer: `${PREFIX}-imageContainer`,
+  iconImage: `${PREFIX}-iconImage`,
+  iconSelected: `${PREFIX}-iconSelected`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -55,6 +55,12 @@ const Root = styled('div')(({ theme }) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
+  [`& .${classes.iconImage}`]: {
+    color: theme.palette.text.primary,
+  },
+  [`& .${classes.iconSelected}`]: {
+    color: theme.palette.primary.main,
+  },
 }));
 
 const getListStyle = (isDraggingOver: boolean) => ({
@@ -69,7 +75,7 @@ const getItemStyle = (draggableStyle: any) => ({
   ...draggableStyle,
 });
 
-export const MostRecentTab = (props: { isDarkMode: boolean }) => {
+export const MostRecentTab = () => {
   const [tab, setTab] = useState<chrome.tabs.Tab | undefined>();
 
   useEffect(() => {
@@ -130,11 +136,17 @@ export const MostRecentTab = (props: { isDarkMode: boolean }) => {
                   </div>
                   <div className={classes.icon}>
                     {snapshot.isDragging ? (
-                      <MoveIconOrange width={config.ICON_SIZE} height={config.ICON_SIZE} />
-                    ) : props.isDarkMode ? (
-                      <MoveIconWhite width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      <MoveIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconSelected}
+                      />
                     ) : (
-                      <MoveIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+                      <MoveIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconImage}
+                      />
                     )}
                   </div>
                 </div>

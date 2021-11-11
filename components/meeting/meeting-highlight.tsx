@@ -23,7 +23,6 @@ export const MeetingHighlight = (props: {
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  isDarkMode: boolean;
   websiteCache: IWebsiteCache;
 }) => {
   const currentTime = new Date();
@@ -63,7 +62,6 @@ export const MeetingHighlight = (props: {
         store={props.store}
         meeting={featuredMeeting}
         showButton
-        isDarkMode={props.isDarkMode}
         websiteTags={props.websiteTags}
         toggleWebsiteTag={props.toggleWebsiteTag}
         websiteCache={props.websiteCache}
