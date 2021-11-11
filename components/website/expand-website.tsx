@@ -85,10 +85,10 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.tagSelected}`]: {
     pointerEvents: 'all',
     cursor: 'pointer',
-    borderBottomColor: theme.palette.primary.dark,
+    borderBottomColor: theme.palette.primary.main,
     '&:hover': {
       opacity: 0.8,
-      borderBottomColor: theme.palette.primary.dark,
+      borderBottomColor: theme.palette.primary.main,
     },
   },
   [`& .${classes.dots}`]: {

@@ -271,6 +271,7 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
               style={{ transform: 'rotate(180deg)' }}
+              className={classes.iconImage}
             />
           </IconButton>
         </Grid>

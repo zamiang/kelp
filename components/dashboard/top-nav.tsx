@@ -82,19 +82,19 @@ const Root = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.icon}`]: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: config.ICON_SIZE,
+    height: config.ICON_SIZE,
+    borderRadius: 10,
     background: 'grey',
   },
   [`& .${classes.iconCool}`]: {
-    background: config.THEME_COOL,
+    background: config.THEME_COOL_COLOR,
   },
   [`& .${classes.iconDark}`]: {
-    background: config.THEME_DARK,
+    background: config.THEME_DARK_COLOR,
   },
   [`& .${classes.iconLight}`]: {
-    background: config.THEME_LIGHT,
+    background: config.THEME_LIGHT_COLOR,
   },
   [`& .${classes.iconImage}`]: {
     color: theme.palette.text.primary,
@@ -316,48 +316,56 @@ export const TopNav = (props: {
             </Grid>
           </Grid>
           <Grid item>
-            <Tooltip title="Light Mode">
-              <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={(event) => {
-                  event.preventDefault();
-                  props.setTheme('light');
-                  localStorage.setItem(config.THEME, 'light');
-                }}
-                size="large"
-              >
-                <div className={clsx(classes.icon, classes.iconDark)}></div>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Dark Mode">
-              <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={(event) => {
-                  event.preventDefault();
-                  props.setTheme('dark');
-                  localStorage.setItem(config.THEME, 'dark');
-                }}
-                size="large"
-              >
-                <div className={clsx(classes.icon, classes.iconLight)}></div>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Cool Mode">
-              <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={(event) => {
-                  event.preventDefault();
-                  props.setTheme('cool');
-                  localStorage.setItem(config.THEME, 'cool');
-                }}
-                size="large"
-              >
-                <div className={clsx(classes.icon, classes.iconCool)}></div>
-              </IconButton>
-            </Tooltip>
+            <Grid container justifyContent="flex-end" alignItems="center">
+              <Grid item>
+                <Tooltip title="Light Theme">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      props.setTheme('light');
+                      localStorage.setItem(config.THEME, 'light');
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconDark)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Tooltip title="Dark Theme">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      props.setTheme('dark');
+                      localStorage.setItem(config.THEME, 'dark');
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconLight)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Tooltip title="Cool Theme">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      props.setTheme('cool');
+                      localStorage.setItem(config.THEME, 'cool');
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconCool)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>

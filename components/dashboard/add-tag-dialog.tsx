@@ -38,7 +38,7 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     whiteSpace: 'nowrap',
   },
   [`& .${classes.tagSelected}`]: {
-    color: theme.palette.primary.dark,
+    color: theme.palette.primary.main,
     '&:hover': {
       opacity: 0.8,
     },

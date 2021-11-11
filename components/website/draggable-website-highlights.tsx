@@ -60,6 +60,7 @@ export const Root = styled('div')(({ theme }) => ({
     top: 'calc(50% - 16px)',
     background: theme.palette.background.paper,
     color: theme.palette.text.primary,
+    boxShadow: theme.shadows[1],
     width: 32,
     height: 32,
     overflow: 'hidden',

@@ -123,7 +123,7 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.outerDot}`]: {
     width: 40,
     height: 40,
-    background: '#FF4500',
+    background: theme.palette.primary.main,
     borderRadius: 20,
     animation: `${fadeOut2} 5s ease infinite`,
   },
@@ -134,7 +134,7 @@ const Root = styled('div')(({ theme }) => ({
     position: 'absolute',
     top: 14,
     left: 14,
-    background: '#FF4500',
+    background: theme.palette.primary.main,
     animation: `${fadeOut} 5s ease infinite`,
   },
   [`& .${classes.dotNow}`]: {

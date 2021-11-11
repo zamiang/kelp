@@ -347,13 +347,13 @@ export const Row = styled('div')(({ theme }) => ({
     fontSize: 50,
   },
   [`& .${classes.link}`]: {
-    color: theme.palette.primary.dark,
+    color: theme.palette.primary.main,
   },
   [`& .${classes.description}`]: {
     wordWrap: 'break-word',
     whiteSpace: 'pre-wrap',
     '& a': {
-      color: theme.palette.primary.dark,
+      color: theme.palette.primary.main,
       textDecoration: 'none',
       '&:hover': {
         textDecoration: 'underline',

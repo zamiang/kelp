@@ -76,7 +76,6 @@ const theme = createTheme({
     },
     h6: {
       fontSize: '0.875rem',
-      // color: theme.palette.primary.dark,
       fontWeight: 400,
       textTransform: 'none',
       fontStyle: 'normal',

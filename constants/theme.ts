@@ -27,21 +27,15 @@ const lightThemePalette = {
     default: '#FBF2DD',
   },
   primary: {
-    light: '#DEEBFF',
     main: '#FF4600',
-    dark: '#FF4600',
     contrastText: white,
   },
   secondary: {
-    light: '#faf5eb',
     main: '#47B7B8',
-    dark: '#47B7B8',
     contrastText: white,
   },
   error: {
-    light: 'rgba(245, 98, 0, 1)',
     main: 'rgba(194, 15, 36, 1)',
-    dark: '#d32f2f',
     contrastText: white,
   },
   text: {
@@ -59,25 +53,19 @@ const coolThemePalette = {
     white,
   },
   background: {
-    paper: '#f7f1e4',
-    default: '#FBF2DD',
+    paper: 'rgba(30,203,255,0.3)',
+    default: '#96DCED',
   },
   primary: {
-    light: '#DEEBFF',
-    main: '#FF4600',
-    dark: '#FF4600',
+    main: '#3D3D3D',
     contrastText: white,
   },
   secondary: {
-    light: '#faf5eb',
     main: '#47B7B8',
-    dark: '#47B7B8',
     contrastText: white,
   },
   error: {
-    light: 'rgba(245, 98, 0, 1)',
     main: 'rgba(194, 15, 36, 1)',
-    dark: '#d32f2f',
     contrastText: white,
   },
   text: {
@@ -108,21 +96,15 @@ const darkThemeConfig = {
       default: '#262736',
     },
     primary: {
-      light: '#DEEBFF',
       main: '#FF4600',
-      dark: '#FF4600',
       contrastText: white,
     },
     secondary: {
-      light: '#faf5eb',
       main: '#47B7B8',
-      dark: '#47B7B8',
       contrastText: white,
     },
     error: {
-      light: 'rgba(245, 98, 0, 1)',
       main: 'rgba(194, 15, 36, 1)',
-      dark: '#d32f2f',
       contrastText: white,
     },
     text: {

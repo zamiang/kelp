@@ -54,13 +54,11 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     marginTop: theme.spacing(1),
     borderRadius: theme.shape.borderRadius,
   },
-
   [`& .${classes.closeButton}`]: {
     position: 'absolute',
     top: 42,
     right: 42,
   },
-
   [`& .${classes.tag}`]: {
     display: 'inline-block',
     marginRight: theme.spacing(2),
@@ -73,11 +71,10 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
       textDecoration: 'underline',
     },
   },
-
   [`& .${classes.tagSelected}`]: {
     pointerEvents: 'all',
     cursor: 'pointer',
-    background: theme.palette.primary.dark,
+    background: theme.palette.primary.main,
   },
 }));
 
