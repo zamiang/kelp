@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import HelpIcon from '../../public/icons/help.svg';
 import SearchIcon from '../../public/icons/search.svg';
-import isTouchEnabled from '../shared/is-touch-enabled';
 import { IDocument, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 
@@ -160,7 +159,7 @@ const DocumentRow = (props: {
   const navigate = useNavigate();
 
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-  const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
+  const [isDetailsVisible, setDetailsVisible] = useState(false);
 
   useEffect(() => {
     if (isSelected && referenceElement) {
@@ -170,8 +169,8 @@ const DocumentRow = (props: {
 
   return (
     <Root
-      onMouseEnter={() => !isTouchEnabled() && setDetailsVisible(true)}
-      onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
+      onMouseEnter={() => setDetailsVisible(true)}
+      onMouseLeave={() => setDetailsVisible(false)}
       onClick={(event) => {
         event.stopPropagation();
         if (props.document.link) {

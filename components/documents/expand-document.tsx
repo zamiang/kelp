@@ -91,7 +91,7 @@ const ExpandedDocument = (props: {
             {document.name || '(no title)'}
           </Typography>
           {document.updatedAt && (
-            <Typography variant="h5">
+            <Typography variant="body2">
               Modified: {format(document.updatedAt, "EEEE, MMMM d yyyy 'at' p")}
             </Typography>
           )}

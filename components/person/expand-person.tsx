@@ -8,6 +8,8 @@ import useTheme from '@mui/styles/useTheme';
 import { flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import config from '../../constants/config';
+import EmailIcon from '../../public/icons/email.svg';
 import AttendeeList from '../shared/attendee-list';
 import MeetingList from '../shared/meeting-list';
 import { orderByCount } from '../shared/order-by-count';
@@ -121,11 +123,11 @@ const ExpandPerson = (props: {
               </Avatar>
             </Grid>
             <Grid item>
-              <Typography variant="h3" color="textPrimary" gutterBottom>
+              <Typography variant="h2" color="textPrimary" gutterBottom>
                 {person.name}
               </Typography>
               {emailAddress && (
-                <Typography variant="h5">
+                <Typography variant="body2">
                   {emailAddress}{' '}
                   <Link
                     style={{ cursor: 'pointer' }}
@@ -142,53 +144,22 @@ const ExpandPerson = (props: {
           <Grid item>
             <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
                 href={`mailto:${emailAddress}`}
-                target="_blank"
+                variant="outlined"
+                disableElevation
+                color="primary"
+                className={classes.button}
+                startIcon={
+                  <EmailIcon
+                    width={config.ICON_SIZE}
+                    height={config.ICON_SIZE}
+                    className={classes.iconPrimary}
+                  />
+                }
               >
                 Email Contact
               </Button>
             </div>
-          </Grid>
-        )}
-      </Grid>
-      <Grid container className={classes.buttonSecton} spacing={2}>
-        {websites.length > 0 && (
-          <Grid item>
-            <Typography
-              onClick={() =>
-                document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
-              }
-              className={classes.greyButton}
-            >
-              Websites
-            </Typography>
-          </Grid>
-        )}
-        {associates.length > 0 && (
-          <Grid item>
-            <Typography
-              onClick={() =>
-                document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
-              }
-              className={classes.greyButton}
-            >
-              People
-            </Typography>
-          </Grid>
-        )}
-        {segments.length > 0 && (
-          <Grid item>
-            <Typography
-              onClick={() =>
-                document.getElementById('meetings')?.scrollIntoView({ behavior: 'smooth' })
-              }
-              className={classes.greyButton}
-            >
-              Meetings
-            </Typography>
           </Grid>
         )}
       </Grid>

@@ -36,7 +36,7 @@ const lightThemePalette = {
     secondary: 'rgba(255,255,255,0.5)',
     disabled: 'rgba(0, 0, 0, 0.38)',
   },
-  divider: 'rgba(0,0,0,0.2)',
+  divider: 'rgba(255,255,255,0.2)',
 };
 
 const coolThemePalette = {

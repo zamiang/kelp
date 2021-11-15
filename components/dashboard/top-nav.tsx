@@ -18,7 +18,7 @@ import { getTagsForWebsite } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache } from '../website/get-featured-websites';
-import { TopTags, WebsiteTags } from './top-tags';
+import { ExpandMeetingNav, ExpandPersonNav, TopTags, WebsiteTags } from './top-tags';
 
 const PREFIX = 'TopNav';
 
@@ -104,6 +104,49 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
+const LeftNavForRoute = (props: {
+  path: string;
+  tags?: string[];
+  store: IStore;
+  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
+  setWebsiteTags: (t: IWebsiteTag[]) => void;
+  dragDropSource?: string;
+}) => {
+  if (props.path.includes('/people/')) {
+    return (
+      <Grid item>
+        <ExpandPersonNav />
+      </Grid>
+    );
+  }
+  if (props.path.includes('/meetings/')) {
+    return (
+      <Grid item>
+        <ExpandMeetingNav />
+      </Grid>
+    );
+  }
+  if (props.path.includes('/websites/') && props.tags) {
+    return (
+      <Grid item>
+        <WebsiteTags tags={props.tags} store={props.store} />
+      </Grid>
+    );
+  }
+  return (
+    <Grid item>
+      <TopTags
+        websiteTags={props.websiteTags}
+        store={props.store}
+        toggleWebsiteTag={props.toggleWebsiteTag}
+        setWebsiteTags={props.setWebsiteTags}
+        dragDropSource={props.dragDropSource}
+      />
+    </Grid>
+  );
+};
+
 export const TopNav = (props: {
   store: IStore;
   theme: string;
@@ -119,7 +162,6 @@ export const TopNav = (props: {
   const navigate = useNavigate();
   const location = useLocation();
   const [tags, setTags] = useState<string[]>([]);
-  const isSearch = location.pathname === '/search';
   const isMeetingsSelected = location.pathname === '/meetings';
   const isHomeSelected = location.pathname === '/home';
   const isSettingsSelected = location.pathname === '/settings';
@@ -172,22 +214,15 @@ export const TopNav = (props: {
               )}
             </IconButton>
           </Grid>
-          {!isSearch && !isWebsite && (
-            <Grid item>
-              <TopTags
-                websiteTags={props.websiteTags}
-                store={props.store}
-                toggleWebsiteTag={props.toggleWebsiteTag}
-                setWebsiteTags={props.setWebsiteTags}
-                dragDropSource={props.dragDropSource}
-              />
-            </Grid>
-          )}
-          {isWebsite && tags && (
-            <Grid item>
-              <WebsiteTags tags={tags} store={props.store} />
-            </Grid>
-          )}
+          <LeftNavForRoute
+            path={location.pathname}
+            store={props.store}
+            tags={tags}
+            dragDropSource={props.dragDropSource}
+            toggleWebsiteTag={props.toggleWebsiteTag}
+            setWebsiteTags={props.setWebsiteTags}
+            websiteTags={props.websiteTags}
+          />
           {props.isMicrosoftError && (
             <Grid item>
               <Grid container>

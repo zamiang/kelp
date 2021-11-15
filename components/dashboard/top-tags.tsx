@@ -302,3 +302,148 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
     </Root>
   );
 };
+
+export const ExpandMeetingNav = () => {
+  const navigate = useNavigate();
+  return (
+    <Root>
+      <Grid container className={classes.container} alignItems="center" spacing={1}>
+        <Grid item>
+          <IconButton onClick={() => navigate('/home')} size="small">
+            <LeftArrow
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+              style={{ transform: 'rotate(180deg)' }}
+              className={classes.iconImage}
+            />
+          </IconButton>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container alignItems="center" className={classes.tagContainer}>
+            <Grid item>
+              <div className={classes.dotContainer}>
+                <div className={classes.dot}></div>
+              </div>
+            </Grid>
+            <Grid item zeroMinWidth xs>
+              <Typography
+                noWrap
+                variant="body2"
+                className={classes.tag}
+                onClick={() =>
+                  document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                Websites
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container alignItems="center" className={classes.tagContainer}>
+            <Grid item>
+              <div className={classes.dotContainer}>
+                <div className={classes.dot}></div>
+              </div>
+            </Grid>
+            <Grid item zeroMinWidth xs>
+              <Typography
+                noWrap
+                variant="body2"
+                className={classes.tag}
+                onClick={() =>
+                  document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                Guests
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Root>
+  );
+};
+
+export const ExpandPersonNav = () => {
+  const navigate = useNavigate();
+  return (
+    <Root>
+      <Grid container className={classes.container} alignItems="center" spacing={1}>
+        <Grid item>
+          <IconButton onClick={() => navigate('/home')} size="small">
+            <LeftArrow
+              width={config.ICON_SIZE}
+              height={config.ICON_SIZE}
+              style={{ transform: 'rotate(180deg)' }}
+              className={classes.iconImage}
+            />
+          </IconButton>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container alignItems="center" className={classes.tagContainer}>
+            <Grid item>
+              <div className={classes.dotContainer}>
+                <div className={classes.dot}></div>
+              </div>
+            </Grid>
+            <Grid item zeroMinWidth xs>
+              <Typography
+                noWrap
+                variant="body2"
+                className={classes.tag}
+                onClick={() =>
+                  document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                Websites
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container alignItems="center" className={classes.tagContainer}>
+            <Grid item>
+              <div className={classes.dotContainer}>
+                <div className={classes.dot}></div>
+              </div>
+            </Grid>
+            <Grid item zeroMinWidth xs>
+              <Typography
+                noWrap
+                variant="body2"
+                className={classes.tag}
+                onClick={() =>
+                  document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                People
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container alignItems="center" className={classes.tagContainer}>
+            <Grid item>
+              <div className={classes.dotContainer}>
+                <div className={classes.dot}></div>
+              </div>
+            </Grid>
+            <Grid item zeroMinWidth xs>
+              <Typography
+                noWrap
+                variant="body2"
+                className={classes.tag}
+                onClick={() =>
+                  document.getElementById('meetings')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                Meetings
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Root>
+  );
+};

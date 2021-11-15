@@ -1,5 +1,4 @@
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -7,7 +6,6 @@ import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import isTouchEnabled from '../shared/is-touch-enabled';
 import { IPerson } from '../store/data-types';
 
 const PREFIX = 'PersonRow';
@@ -130,7 +128,6 @@ const PersonRow = (props: {
 }) => {
   const isSelected = props.selectedPersonId === props.person.id;
   const navigate = useNavigate();
-  const [isDetailsVisible, setDetailsVisible] = useState(isTouchEnabled());
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
   const name = props.person.name || props.person.id;
@@ -148,8 +145,6 @@ const PersonRow = (props: {
         navigate(`/people/${encodeURIComponent(props.person.id)}`);
         return false;
       }}
-      onMouseEnter={() => !isTouchEnabled() && setDetailsVisible(true)}
-      onMouseLeave={() => !isTouchEnabled() && setDetailsVisible(false)}
       ref={setReferenceElement as any}
       className={clsx(
         classes.row,
@@ -204,23 +199,6 @@ const PersonRow = (props: {
             </Grid>
           </div>
         </Grid>
-        {isDetailsVisible && props.person.emailAddresses[0] && (
-          <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              style={{ minHeight: 0 }}
-              onClick={(event) => {
-                event.stopPropagation();
-                void navigator.clipboard.writeText(props.person.emailAddresses[0]);
-                return false;
-              }}
-            >
-              Copy Email
-            </Button>
-          </Grid>
-        )}
       </Grid>
     </Root>
   );

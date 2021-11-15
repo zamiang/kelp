@@ -72,7 +72,7 @@ const EmailGuestsButton = (props: {
         <EmailIcon
           width={config.ICON_SIZE}
           height={config.ICON_SIZE}
-          className={classes.iconText}
+          className={classes.iconPrimary}
         />
       }
     >
@@ -196,10 +196,10 @@ const ExpandedMeeting = (props: {
         alignItems="center"
       >
         <Grid item xs={6}>
-          <Typography variant="h3" gutterBottom>
+          <Typography variant="h2" gutterBottom>
             {meeting.summary || '(no title)'}
           </Typography>
-          <Typography variant="h5">
+          <Typography variant="body2">
             {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
             {format(meeting.end, 'p')}
           </Typography>
@@ -271,32 +271,6 @@ const ExpandedMeeting = (props: {
             )}
           </Grid>
         </Grid>
-      </Grid>
-      <Grid container className={classes.buttonSecton} spacing={2}>
-        {hasWebsites && (
-          <Grid item>
-            <Typography
-              onClick={() =>
-                document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
-              }
-              className={classes.greyButton}
-            >
-              Websites
-            </Typography>
-          </Grid>
-        )}
-        {attendees.length > 0 && (
-          <Grid item>
-            <Typography
-              onClick={() =>
-                document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
-              }
-              className={classes.greyButton}
-            >
-              Guests
-            </Typography>
-          </Grid>
-        )}
       </Grid>
       <div className={classes.container}>
         {hasWebsites && (
