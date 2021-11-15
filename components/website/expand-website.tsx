@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
+import { cleanupUrl } from '../shared/cleanup-url';
 import { getTagsForWebsite, isTagSelected } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -253,7 +254,11 @@ const ExpandWebsite = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const w = props.websiteCache[websiteId];
+      const url = cleanupUrl(websiteId);
+      const w = props.websiteCache[url];
+      if (!w) {
+        console.error(url, 'Unable to find website for url');
+      }
       setWebsite(w);
 
       const websites = Object.values(props.websiteCache)
@@ -261,7 +266,7 @@ const ExpandWebsite = (props: {
         .sort((a, b) => (b?.visitCount > a?.visitCount ? 1 : -1));
       setWebsitesAtDomain(websites);
 
-      const i = await props.store.websiteImageStore.getById(websiteId);
+      const i = await props.store.websiteImageStore.getById(url);
       setImage(i);
 
       // potentially make into a util

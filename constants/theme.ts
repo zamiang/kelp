@@ -11,36 +11,29 @@ declare module '@mui/styles/defaultTheme' {
 const bodyFontFamily = "'basis-grotesque', sans-serif";
 export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 
-const primaryTextColor = 'rgba(0,0,0,0.87)';
-const secondaryTextColor = 'rgba(0, 0, 0, 0.70)';
-const white = '#fff';
-const black = '#000';
-
 const lightThemePalette = {
   mode: 'light',
-  common: {
-    black,
-    white,
-  },
+
   background: {
-    paper: '#f7f1e4',
-    default: '#FBF2DD',
+    paper: 'RGB(95,124,73)',
+    default: 'RGB(25,50,2)',
   },
   primary: {
-    main: '#FF4600',
-    contrastText: white,
+    main: '#EBFF02',
+    dark: 'rgb(255,255,0.1)',
+    contrastText: 'RGBA(255,255,255,0.87)',
   },
   secondary: {
-    main: '#47B7B8',
-    contrastText: white,
+    main: '#EBFF02',
+    contrastText: 'RGBA(255,255,255,0.87)',
   },
   error: {
     main: 'rgba(194, 15, 36, 1)',
-    contrastText: white,
+    contrastText: 'RGBA(255,255,255,0.87)',
   },
   text: {
-    primary: primaryTextColor,
-    secondary: secondaryTextColor,
+    primary: 'rgba(255,255,255,0.87)',
+    secondary: 'rgba(255,255,255,0.5)',
     disabled: 'rgba(0, 0, 0, 0.38)',
   },
   divider: 'rgba(0,0,0,0.2)',
@@ -48,29 +41,25 @@ const lightThemePalette = {
 
 const coolThemePalette = {
   mode: 'light',
-  common: {
-    black,
-    white,
-  },
   background: {
-    paper: 'rgba(30,203,255,0.3)',
-    default: '#96DCED',
+    paper: 'rgb(154, 201, 222)',
+    default: 'rgb(188,235,255)',
   },
   primary: {
-    main: '#3D3D3D',
-    contrastText: white,
+    main: '#0025E7',
+    contrastText: 'rgba(0,0,0,0.87)',
   },
   secondary: {
-    main: '#47B7B8',
-    contrastText: white,
+    main: '#0025E7',
+    contrastText: 'rgba(0,0,0,0.87)',
   },
   error: {
     main: 'rgba(194, 15, 36, 1)',
-    contrastText: white,
+    contrastText: 'rgba(0,0,0,0.87)',
   },
   text: {
-    primary: primaryTextColor,
-    secondary: secondaryTextColor,
+    primary: 'rgba(0,0,0,0.87)',
+    secondary: 'rgba(0,0,0,0.5)',
     disabled: 'rgba(0, 0, 0, 0.38)',
   },
   divider: 'rgba(0,0,0,0.2)',
@@ -97,15 +86,15 @@ const darkThemeConfig = {
     },
     primary: {
       main: '#FF4600',
-      contrastText: white,
+      contrastText: darkPrimaryTextColor,
     },
     secondary: {
       main: '#47B7B8',
-      contrastText: white,
+      contrastText: darkPrimaryTextColor,
     },
     error: {
       main: 'rgba(194, 15, 36, 1)',
-      contrastText: white,
+      contrastText: darkPrimaryTextColor,
     },
     text: {
       primary: darkPrimaryTextColor,
@@ -251,7 +240,7 @@ const darkThemeConfig = {
           width: 40,
           fontSize: '1rem',
           textTransform: 'uppercase',
-          color: white,
+          // color: '#fff',
           fontWeight: 500,
           fontFamily: mediumFontFamily,
         },
