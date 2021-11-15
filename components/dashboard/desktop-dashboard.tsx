@@ -1,15 +1,12 @@
-import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
-import { StyledEngineProvider, styled } from '@mui/material/styles';
-import ThemeProvider from '@mui/styles/ThemeProvider';
+import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { lightTheme } from '../../constants/theme';
 import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
@@ -307,13 +304,7 @@ export const DesktopDashboard = (props: {
                 websiteCache={websiteCache}
                 dragDropSource={dragDropSource}
               />
-              <StyledEngineProvider injectFirst>
-                <EmotionThemeProvider theme={lightTheme}>
-                  <ThemeProvider theme={lightTheme}>
-                    <Onboarding />
-                  </ThemeProvider>
-                </EmotionThemeProvider>
-              </StyledEngineProvider>
+              <Onboarding />
               <div className={classes.container}>
                 <Container maxWidth="lg" disableGutters>
                   <div>

@@ -88,13 +88,13 @@ const Root = styled('div')(({ theme }) => ({
     background: 'grey',
   },
   [`& .${classes.iconCool}`]: {
-    background: config.THEME_COOL_COLOR,
+    background: config.THEME_COOL_HIGHLIGHT_COLOR,
   },
   [`& .${classes.iconDark}`]: {
-    background: config.THEME_DARK_COLOR,
+    background: config.THEME_DARK_HIGHLIGHT_COLOR,
   },
   [`& .${classes.iconLight}`]: {
-    background: config.THEME_LIGHT_COLOR,
+    background: config.THEME_LIGHT_HIGHLIGHT_COLOR,
   },
   [`& .${classes.iconImage}`]: {
     color: theme.palette.text.primary,

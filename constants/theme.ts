@@ -19,12 +19,12 @@ const lightThemePalette = {
     default: config.THEME_LIGHT_COLOR,
   },
   primary: {
-    main: '#EBFF02',
+    main: config.THEME_LIGHT_HIGHLIGHT_COLOR,
     dark: 'rgb(255,255,0.1)',
     contrastText: 'RGBA(255,255,255,0.87)',
   },
   secondary: {
-    main: '#EBFF02',
+    main: config.THEME_LIGHT_HIGHLIGHT_COLOR,
     contrastText: 'RGBA(255,255,255,0.87)',
   },
   error: {
@@ -46,11 +46,11 @@ const coolThemePalette = {
     default: config.THEME_COOL_COLOR,
   },
   primary: {
-    main: '#0025E7',
+    main: config.THEME_COOL_HIGHLIGHT_COLOR,
     contrastText: 'rgba(0,0,0,0.87)',
   },
   secondary: {
-    main: '#0025E7',
+    main: config.THEME_COOL_HIGHLIGHT_COLOR,
     contrastText: 'rgba(0,0,0,0.87)',
   },
   error: {
@@ -85,11 +85,11 @@ const darkThemeConfig = {
       default: config.THEME_DARK_COLOR,
     },
     primary: {
-      main: '#9f79d1', // '#9be3d6',
+      main: config.THEME_DARK_HIGHLIGHT_COLOR,
       contrastText: darkPrimaryTextColor,
     },
     secondary: {
-      main: '#47B7B8',
+      main: config.THEME_DARK_HIGHLIGHT_COLOR,
       contrastText: darkPrimaryTextColor,
     },
     error: {
