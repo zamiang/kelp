@@ -21,11 +21,11 @@ const lightThemePalette = {
   primary: {
     main: config.THEME_LIGHT_HIGHLIGHT_COLOR,
     dark: 'rgb(255,255,0.1)',
-    contrastText: 'RGBA(255,255,255,0.87)',
+    contrastText: config.THEME_LIGHT_COLOR,
   },
   secondary: {
     main: config.THEME_LIGHT_HIGHLIGHT_COLOR,
-    contrastText: 'RGBA(255,255,255,0.87)',
+    contrastText: config.THEME_LIGHT_COLOR,
   },
   error: {
     main: 'rgba(194, 15, 36, 1)',
@@ -47,11 +47,11 @@ const coolThemePalette = {
   },
   primary: {
     main: config.THEME_COOL_HIGHLIGHT_COLOR,
-    contrastText: 'rgba(0,0,0,0.87)',
+    contrastText: config.THEME_COOL_COLOR,
   },
   secondary: {
     main: config.THEME_COOL_HIGHLIGHT_COLOR,
-    contrastText: 'rgba(0,0,0,0.87)',
+    contrastText: config.THEME_COOL_COLOR,
   },
   error: {
     main: 'rgba(194, 15, 36, 1)',
@@ -86,11 +86,11 @@ const darkThemeConfig = {
     },
     primary: {
       main: config.THEME_DARK_HIGHLIGHT_COLOR,
-      contrastText: darkPrimaryTextColor,
+      contrastText: 'white',
     },
     secondary: {
       main: config.THEME_DARK_HIGHLIGHT_COLOR,
-      contrastText: darkPrimaryTextColor,
+      contrastText: 'white',
     },
     error: {
       main: 'rgba(194, 15, 36, 1)',
