@@ -318,7 +318,7 @@ export const TopNav = (props: {
           <Grid item>
             <Grid container justifyContent="flex-end" alignItems="center">
               <Grid item>
-                <Tooltip title="Light Theme">
+                <Tooltip title="Vert Theme">
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
@@ -330,7 +330,7 @@ export const TopNav = (props: {
                     }}
                     size="large"
                   >
-                    <div className={clsx(classes.icon, classes.iconDark)}></div>
+                    <div className={clsx(classes.icon, classes.iconLight)}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -347,7 +347,7 @@ export const TopNav = (props: {
                     }}
                     size="large"
                   >
-                    <div className={clsx(classes.icon, classes.iconLight)}></div>
+                    <div className={clsx(classes.icon, classes.iconDark)}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>

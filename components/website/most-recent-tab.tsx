@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -111,8 +110,7 @@ export const MostRecentTab = () => {
           >
             <Draggable draggableId={tab.url!} index={0}>
               {(provided, snapshot) => (
-                <Box
-                  boxShadow={1}
+                <div
                   className={classes.tab}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
@@ -151,7 +149,7 @@ export const MostRecentTab = () => {
                       />
                     )}
                   </div>
-                </Box>
+                </div>
               )}
             </Draggable>
             {provided.placeholder}

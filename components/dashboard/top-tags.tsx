@@ -145,6 +145,7 @@ export const TopTags = (props: {
                     width={config.ICON_SIZE}
                     height={config.ICON_SIZE}
                     style={{ transform: 'rotate(180deg)' }}
+                    className={classes.iconImage}
                   />
                 </IconButton>
               </Grid>
@@ -242,6 +243,7 @@ export const TopTags = (props: {
               <Typography
                 variant="body2"
                 className={classes.tag}
+                color="primary"
                 onClick={() => setDialogOpen(true)}
               >
                 Add a tag

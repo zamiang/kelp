@@ -2,6 +2,7 @@ import { Theme, ThemeOptions, createTheme } from '@mui/material/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
+import config from './config';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line
@@ -13,10 +14,9 @@ export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 
 const lightThemePalette = {
   mode: 'light',
-
   background: {
     paper: 'RGB(95,124,73)',
-    default: 'RGB(25,50,2)',
+    default: config.THEME_LIGHT_COLOR,
   },
   primary: {
     main: '#EBFF02',
@@ -43,7 +43,7 @@ const coolThemePalette = {
   mode: 'light',
   background: {
     paper: 'rgb(154, 201, 222)',
-    default: 'rgb(188,235,255)',
+    default: config.THEME_COOL_COLOR,
   },
   primary: {
     main: '#0025E7',
@@ -82,10 +82,10 @@ const darkThemeConfig = {
     mode: 'dark',
     background: {
       paper: '#50505A',
-      default: '#262736',
+      default: config.THEME_DARK_COLOR,
     },
     primary: {
-      main: '#FF4600',
+      main: '#9f79d1', // '#9be3d6',
       contrastText: darkPrimaryTextColor,
     },
     secondary: {
@@ -240,7 +240,7 @@ const darkThemeConfig = {
           width: 40,
           fontSize: '1rem',
           textTransform: 'uppercase',
-          // color: '#fff',
+          color: '#fff',
           fontWeight: 500,
           fontFamily: mediumFontFamily,
         },
