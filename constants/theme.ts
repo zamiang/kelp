@@ -15,12 +15,12 @@ export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 const lightThemePalette = {
   mode: 'light',
   background: {
-    paper: 'RGB(95,124,73)',
+    paper: '#5f7c49',
     default: config.THEME_LIGHT_COLOR,
   },
   primary: {
     main: config.THEME_LIGHT_HIGHLIGHT_COLOR,
-    dark: 'rgb(255,255,0.1)',
+    dark: '#ffff01',
     contrastText: config.THEME_LIGHT_COLOR,
   },
   secondary: {
@@ -29,7 +29,7 @@ const lightThemePalette = {
   },
   error: {
     main: 'rgba(194, 15, 36, 1)',
-    contrastText: 'RGBA(255,255,255,0.87)',
+    contrastText: 'rgba(255,255,255,0.87)',
   },
   text: {
     primary: 'rgba(255,255,255,0.87)',
@@ -42,7 +42,7 @@ const lightThemePalette = {
 const coolThemePalette = {
   mode: 'light',
   background: {
-    paper: 'rgb(154, 201, 222)',
+    paper: '#9ac8de',
     default: config.THEME_COOL_COLOR,
   },
   primary: {
@@ -68,7 +68,33 @@ const coolThemePalette = {
 const darkPrimaryTextColor = 'rgba(255,255,255,0.87)';
 const darkSecondaryTextColor = 'rgba(255, 255, 255, 0.50)';
 
-const darkThemeConfig = {
+const darkThemePalette = {
+  mode: 'dark',
+  background: {
+    paper: '#50505A',
+    default: config.THEME_DARK_COLOR,
+  },
+  primary: {
+    main: config.THEME_DARK_HIGHLIGHT_COLOR,
+    contrastText: '#fff',
+  },
+  secondary: {
+    main: config.THEME_DARK_HIGHLIGHT_COLOR,
+    contrastText: '#fff',
+  },
+  error: {
+    main: 'rgba(194, 15, 36, 1)',
+    contrastText: darkPrimaryTextColor,
+  },
+  text: {
+    primary: darkPrimaryTextColor,
+    secondary: darkSecondaryTextColor,
+    disabled: 'rgba(255, 255, 255, 0.38)',
+  },
+  divider: 'rgba(255,255,255,0.2)',
+};
+
+const themeConfig = {
   breakpoints: {
     values: {
       xs: 0,
@@ -77,31 +103,6 @@ const darkThemeConfig = {
       lg: 1280,
       xl: 1920,
     },
-  },
-  palette: {
-    mode: 'dark',
-    background: {
-      paper: '#50505A',
-      default: config.THEME_DARK_COLOR,
-    },
-    primary: {
-      main: config.THEME_DARK_HIGHLIGHT_COLOR,
-      contrastText: 'white',
-    },
-    secondary: {
-      main: config.THEME_DARK_HIGHLIGHT_COLOR,
-      contrastText: 'white',
-    },
-    error: {
-      main: 'rgba(194, 15, 36, 1)',
-      contrastText: darkPrimaryTextColor,
-    },
-    text: {
-      primary: darkPrimaryTextColor,
-      secondary: darkSecondaryTextColor,
-      disabled: 'rgba(255, 255, 255, 0.38)',
-    },
-    divider: 'rgba(255,255,255,0.2)',
   },
   typography: {
     fontSize: 14,
@@ -291,6 +292,6 @@ const darkThemeConfig = {
   },
 } as ThemeOptions;
 
-export const darkTheme = createTheme(darkThemeConfig as any);
-export const lightTheme = createTheme(darkThemeConfig as any, { palette: lightThemePalette });
-export const coolTheme = createTheme(darkThemeConfig as any, { palette: coolThemePalette });
+export const darkTheme = createTheme(themeConfig as any, { palette: darkThemePalette });
+export const lightTheme = createTheme(themeConfig as any, { palette: lightThemePalette });
+export const coolTheme = createTheme(themeConfig as any, { palette: coolThemePalette });
