@@ -249,81 +249,87 @@ export const TopNav = (props: {
           style={{ height: '97vh' }}
         >
           <Grid item>
-            <Grid container justifyContent="flex-end" alignItems="center">
-              <Grid item>
-                <IconButton
-                  aria-label="home"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    return navigate('/home');
-                  }}
-                  size="large"
-                >
-                  {isHomeSelected ? (
-                    <HomeIcon
-                      width={config.ICON_SIZE}
-                      height={config.ICON_SIZE}
-                      className={classes.iconSelected}
-                    />
-                  ) : (
-                    <HomeIcon
-                      width={config.ICON_SIZE}
-                      height={config.ICON_SIZE}
-                      className={classes.iconImage}
-                    />
-                  )}
-                </IconButton>
+            <Grid container style={{ textAlign: 'right' }}>
+              <Grid item xs={12}>
+                <Tooltip title="Home" placement="left">
+                  <IconButton
+                    aria-label="home"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      return navigate('/home');
+                    }}
+                    size="large"
+                  >
+                    {isHomeSelected ? (
+                      <HomeIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconSelected}
+                      />
+                    ) : (
+                      <HomeIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconImage}
+                      />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </Grid>
-              <Grid item>
-                <IconButton
-                  aria-label="meetings"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    return navigate('/meetings');
-                  }}
-                  size="large"
-                >
-                  {isMeetingsSelected ? (
-                    <MeetingsIcon
-                      width={config.ICON_SIZE}
-                      height={config.ICON_SIZE}
-                      className={classes.iconSelected}
-                    />
-                  ) : (
-                    <MeetingsIcon
-                      width={config.ICON_SIZE}
-                      height={config.ICON_SIZE}
-                      className={classes.iconImage}
-                    />
-                  )}
-                </IconButton>
+              <Grid item xs={12}>
+                <Tooltip title="Meeting List" placement="left">
+                  <IconButton
+                    aria-label="meetings"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      return navigate('/meetings');
+                    }}
+                    size="large"
+                  >
+                    {isMeetingsSelected ? (
+                      <MeetingsIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconSelected}
+                      />
+                    ) : (
+                      <MeetingsIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconImage}
+                      />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </Grid>
-              <Grid item>
-                <IconButton
-                  aria-label="calendar"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    return navigate('/calendar');
-                  }}
-                  size="large"
-                >
-                  {isCalendarSelected ? (
-                    <CalendarIcon
-                      width={config.ICON_SIZE}
-                      height={config.ICON_SIZE}
-                      className={classes.iconSelected}
-                    />
-                  ) : (
-                    <CalendarIcon
-                      width={config.ICON_SIZE}
-                      height={config.ICON_SIZE}
-                      className={classes.iconImage}
-                    />
-                  )}
-                </IconButton>
+              <Grid item xs={12}>
+                <Tooltip title="Calendar Tag Cloud" placement="left">
+                  <IconButton
+                    aria-label="calendar"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      return navigate('/calendar');
+                    }}
+                    size="large"
+                  >
+                    {isCalendarSelected ? (
+                      <CalendarIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconSelected}
+                      />
+                    ) : (
+                      <CalendarIcon
+                        width={config.ICON_SIZE}
+                        height={config.ICON_SIZE}
+                        className={classes.iconImage}
+                      />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </Grid>
-              <Grid item>
-                <Tooltip title="Settings">
+              <Grid item xs={12}>
+                <Tooltip title="Settings" placement="left">
                   <IconButton
                     aria-label="settings"
                     onClick={(event) => {
@@ -351,9 +357,9 @@ export const TopNav = (props: {
             </Grid>
           </Grid>
           <Grid item>
-            <Grid container justifyContent="flex-end" alignItems="center">
-              <Grid item>
-                <Tooltip title="Vert Theme">
+            <Grid container style={{ textAlign: 'right' }}>
+              <Grid item xs={12}>
+                <Tooltip title="Vert Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
@@ -369,8 +375,8 @@ export const TopNav = (props: {
                   </IconButton>
                 </Tooltip>
               </Grid>
-              <Grid item>
-                <Tooltip title="Dark Theme">
+              <Grid item xs={12}>
+                <Tooltip title="Dark Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
@@ -386,8 +392,8 @@ export const TopNav = (props: {
                   </IconButton>
                 </Tooltip>
               </Grid>
-              <Grid item>
-                <Tooltip title="Cool Theme">
+              <Grid item xs={12}>
+                <Tooltip title="Cool Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"

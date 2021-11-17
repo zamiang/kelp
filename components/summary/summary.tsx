@@ -84,6 +84,7 @@ const SummaryContainer = styled('div')(({ theme }) => ({
   [`& .${summaryClasses.currentDay}`]: {
     borderRadius: '50%',
     background: theme.palette.primary.main,
+    color: theme.palette.getContrastText(theme.palette.primary.main),
   },
   [`& .${summaryClasses.day}`]: {
     width: 24,
