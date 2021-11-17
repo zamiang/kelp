@@ -50,6 +50,7 @@ const classes = {
   meetingTimeInWords: `${PREFIX}-meetingTimeInWords`,
   heading: `${PREFIX}-heading`,
   button: `${PREFIX}-button`,
+  buttonContained: `${PREFIX}-buttonContained`,
   topSpacing: `${PREFIX}-topSpacing`,
   '@keyframes fadeOut': `${PREFIX}-fadeout`,
   '@keyframes fadeOut2': `${PREFIX}-fadeout2`,
@@ -85,7 +86,7 @@ const Root = styled('div')(({ theme }) => ({
     borderColor: theme.palette.divider,
   },
   [`& .${classes.iconText}`]: {
-    color: theme.palette.text.primary,
+    color: theme.palette.getContrastText(theme.palette.primary.main),
   },
   [`& .${classes.iconPrimary}`]: {
     borderColor: theme.palette.primary.main,
@@ -116,6 +117,9 @@ const Root = styled('div')(({ theme }) => ({
     '&:hover': {
       opacity: 0.6,
     },
+  },
+  [`& .${classes.buttonContained}`]: {
+    color: theme.palette.getContrastText(theme.palette.primary.main),
   },
   [`& .${classes.topSpacing}`]: {
     marginTop: theme.spacing(2),
@@ -283,9 +287,8 @@ export const FeaturedMeeting = (props: {
           {domain && isHappeningSoon && (
             <Grid item>
               <Button
-                className={classes.button}
+                className={clsx(classes.button, classes.buttonContained)}
                 variant="contained"
-                color={'primary'}
                 startIcon={
                   <VideoIcon
                     width={config.ICON_SIZE}
