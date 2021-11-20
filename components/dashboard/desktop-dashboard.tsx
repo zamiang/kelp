@@ -2,6 +2,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
@@ -14,6 +15,7 @@ import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import { Onboarding } from '../onboarding/onboarding';
 import ExpandPerson from '../person/expand-person';
+import { TopPeople } from '../person/top-people';
 import { toggleWebsiteTag } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -375,7 +377,14 @@ export const DesktopDashboard = (props: {
                         path="/home"
                         element={
                           <div>
-                            <MostRecentTab />
+                            <Grid container>
+                              <Grid item xs={3}>
+                                <MostRecentTab />
+                              </Grid>
+                              <Grid item xs={9}>
+                                <TopPeople store={props.store} />
+                              </Grid>
+                            </Grid>
                             <MeetingHighlight
                               store={props.store}
                               toggleWebsiteTag={toggleWebsiteTagClick}
