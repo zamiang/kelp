@@ -61,7 +61,7 @@ const MeetingRowBelow = (props: {
 
   const theme = useTheme();
   const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
-  const maxWebsites = isLarge ? 4 : 3;
+  const maxWebsites = isLarge ? 3 : 3;
 
   useEffect(() => {
     let isSubscribed = true;
@@ -85,7 +85,7 @@ const MeetingRowBelow = (props: {
     <StyledGrid item xs={props.isFullWidth ? 12 : 11}>
       <Grid container columnSpacing={5}>
         {websites.map((item) => (
-          <Grid item xs={isLarge ? 3 : 4} key={item.id}>
+          <Grid item xs={isLarge ? 4 : 4} key={item.id}>
             <LargeWebsite
               item={item}
               store={props.store}

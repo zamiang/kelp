@@ -249,8 +249,8 @@ const useStoreWithFetching = (
 const useStore = (
   shouldFetch: boolean,
   db: dbType | null,
-  googleOauthToken: string,
   googleScope: string,
+  googleOauthToken?: string,
   microsoftAccount?: AccountInfo,
   msal?: IPublicClientApplication,
   isMicrosoftLoadingOrError?: boolean,
@@ -259,23 +259,21 @@ const useStore = (
     return null;
   }
 
-  // Always fetch for microsoft, no real rate limit issues yet
-  if (microsoftAccount || shouldFetch) {
+  if ((googleOauthToken || microsoftAccount) && shouldFetch) {
     console.log('fetching data');
     // eslint-disable-next-line
     return useStoreWithFetching(
       db,
-      googleOauthToken,
+      googleOauthToken!,
       googleScope,
       microsoftAccount,
       msal,
       isMicrosoftLoadingOrError,
     );
-  } else {
-    console.log('not fetching data');
-    // eslint-disable-next-line
-    return useStoreNoFetch(db, false);
   }
+  console.log('not fetching data');
+  // eslint-disable-next-line
+  return useStoreNoFetch(db, false);
 };
 
 export default useStore;

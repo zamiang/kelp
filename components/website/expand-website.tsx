@@ -162,17 +162,20 @@ const LargeWebsiteImage = (props: {
     );
   }
   const domain = new URL(props.websiteId).hostname;
-  return (
-    <div className={classes.faviconContainer}>
-      <IconButton className={classes.iconButton} size="large">
-        <img
-          src={`https://www.google.com/s2/favicons?domain_url=${domain}`}
-          height={config.ICON_SIZE}
-          width={config.ICON_SIZE}
-        />
-      </IconButton>
-    </div>
-  );
+  if (domain) {
+    return (
+      <div className={classes.faviconContainer}>
+        <IconButton className={classes.iconButton} size="large">
+          <img
+            src={`https://www.google.com/s2/favicons?domain_url=${domain}`}
+            height={config.ICON_SIZE}
+            width={config.ICON_SIZE}
+          />
+        </IconButton>
+      </div>
+    );
+  }
+  return null;
 };
 
 const AddTagInput = (props: {

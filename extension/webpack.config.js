@@ -3,8 +3,7 @@ const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 
 // COPIED FROM constants/config unsure why import doesn't work
-const GOOGLE_OAUTH_TOKEN =
-  '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
 const scopes = [
   'https://www.googleapis.com/auth/calendar.events.readonly',
   'https://www.googleapis.com/auth/contacts.readonly',
@@ -16,7 +15,7 @@ const scopes = [
 const modifyManifest = (buffer) => {
   const manifest = JSON.parse(buffer.toString());
   manifest.oauth2.scopes = scopes;
-  manifest.oauth2.client_id = GOOGLE_OAUTH_TOKEN;
+  manifest.oauth2.client_id = GOOGLE_CLIENT_ID;
   return JSON.stringify(manifest, null, 2);
 };
 
@@ -100,9 +99,6 @@ const getConfig = () => ({
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID': undefined,
-      'process.env.NEXT_PUBLIC_REDIRECT_URI': undefined,
-      'process.env.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN': undefined,
     }),
     new CopyPlugin({
       patterns: [

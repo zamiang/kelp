@@ -22,6 +22,7 @@ import './popup.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
+import { getGoogleClientID, launchGoogleAuthFlow } from '../../components/shared/google-login';
 import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
@@ -85,11 +86,10 @@ if (accounts.length > 0) {
 }
 
 const scopes = config.GOOGLE_SCOPES.join(' ');
-const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
 
 const LoadingMobileDashboardContainer = (props: {
   database: any;
-  accessToken: string;
+  accessToken?: string;
   scope: string;
   setTheme: (theme: string) => void;
   theme: string;
@@ -101,13 +101,12 @@ const LoadingMobileDashboardContainer = (props: {
   const store = getStore(
     getShouldFetch(),
     props.database,
-    props.accessToken,
     props.scope,
+    props.accessToken,
     currentAccount || undefined,
     instance,
     props.isMicrosoftError || props.isMicrosoftLoading,
   );
-
   return (
     <div>
       {!store && (
@@ -137,10 +136,11 @@ const LoadingMobileDashboardContainer = (props: {
 
 const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
   const [token, setToken] = useState<string | null>(null);
-  const [hasAuthError, setHasAuthError] = useState<boolean>(false);
+  const [isDoneFetchingToken, setDoneFetchingToken] = useState(false);
+  const [hasAuthError, setHasAuthError] = useState(false);
   const [hasGoogleAdvancedProtectionError, setHasGoogleAdvancedProtectionError] =
     useState<boolean>(false);
-  const [hasDatabaseError, setHasDatabaseError] = useState<boolean>(false);
+  const [hasDatabaseError, setHasDatabaseError] = useState(false);
   const [database, setDatabase] = useState<any>(undefined);
   const [isMicrosoftError, setMicrosoftError] = useState(false);
   const [isMicrosoftLoading, setMicrosoftLoading] = useState(false);
@@ -176,12 +176,19 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
           } else {
             setHasAuthError(true);
           }
-        } else {
+        } else if (token) {
           setToken(token);
+        } else {
+          console.error('no token sad times');
+          if (localStorage.getItem(config.GOOGLE_ENABLED)) {
+            launchGoogleAuthFlow(true, setToken, () => setHasAuthError(true));
+          }
         }
       });
+    } else if (localStorage.getItem(config.GOOGLE_ENABLED)) {
+      launchGoogleAuthFlow(true, setToken, () => setHasAuthError(true));
     } else {
-      setToken('invalid');
+      setDoneFetchingToken(true);
     }
   }, []);
 
@@ -197,7 +204,7 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
     void fetchData();
   }, []);
 
-  const shouldShowLoading = !hasAuthError && !hasDatabaseError && (!token || !database);
+  const shouldShowLoading = !hasAuthError && !hasDatabaseError && !database;
 
   return (
     <PopupContainer>
@@ -262,12 +269,12 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
                 color="primary"
                 onClick={(event) => {
                   event.stopPropagation();
-                  void navigator.clipboard.writeText(GOOGLE_CLIENT_ID);
+                  void navigator.clipboard.writeText(getGoogleClientID());
                   return false;
                 }}
               >
                 <Typography noWrap variant="caption">
-                  {GOOGLE_CLIENT_ID}
+                  {getGoogleClientID()}
                 </Typography>
               </Button>
               <br />
@@ -285,10 +292,10 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
           <Loading isOpen={!token || !database} message="Loading" />
         </div>
       )}
-      {!hasAuthError && token && database && (
+      {!hasAuthError && database && (isDoneFetchingToken || token) && (
         <LoadingMobileDashboardContainer
           database={database}
-          accessToken={token}
+          accessToken={token || undefined}
           scope={scopes}
           setTheme={props.setTheme}
           theme={props.theme}

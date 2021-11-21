@@ -3,6 +3,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React from 'react';
+import config from '../../constants/config';
 
 const PREFIX = 'GoogleLoginButton';
 
@@ -31,16 +32,25 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-const launchAuthFlow = (isInteractive: boolean) => {
-  const OAUTH2_CLIENT_ID = '...';
-  const OAUTH2_SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+export const getGoogleClientID = () => {
+  const location = window.location.href;
+  if (location.includes('chrome://')) {
+    return config.GOOGLE_CLIENT_ID_CHROME;
+  }
+  return config.GOOGLE_CLIENT_ID_NOT_CHROME;
+};
 
+export const launchGoogleAuthFlow = (
+  isInteractive: boolean,
+  onSuccess?: (token: string) => void,
+  onError?: () => void,
+) => {
   const authURL =
     'https://accounts.google.com/o/oauth2/auth' +
-    `?client_id=${OAUTH2_CLIENT_ID}` +
+    `?client_id=${getGoogleClientID()}` +
     '&response_type=token' +
     `&redirect_uri=${encodeURIComponent(chrome.identity.getRedirectURL())}` +
-    `&scope=${encodeURIComponent(OAUTH2_SCOPES.join(''))}`;
+    `&scope=${encodeURIComponent(config.GOOGLE_SCOPES.join(' '))}`;
 
   chrome.identity.launchWebAuthFlow(
     {
@@ -49,14 +59,20 @@ const launchAuthFlow = (isInteractive: boolean) => {
     },
     (responseUrl) => {
       if (!responseUrl) {
-        return console.error('no response url!!!');
+        onError && onError();
+        throw new Error(`Authentication failed no response url`);
       }
+
+      localStorage.setItem(config.GOOGLE_ENABLED, 'enabled');
       const params = new URLSearchParams(new URL(responseUrl).hash.slice(1));
 
       if (params.has('error')) {
+        onError && onError();
         throw new Error(`Authentication failed: ${params.get('error')}`);
       }
-      console.log(params, '<<<<<<<<<<<<<<<<<<<<<<<');
+      if (onSuccess) {
+        onSuccess(params.get('access_token')!);
+      }
       return params.get('access_token');
     },
   );
@@ -88,7 +104,7 @@ export const GoogleLoginButton = (props: { currentUser: any }) => {
         disableElevation
         color="primary"
         style={{ width: 100 }}
-        onClick={() => launchAuthFlow(true)}
+        onClick={() => launchGoogleAuthFlow(true)}
       >
         Sign In
       </Button>

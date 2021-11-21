@@ -42,7 +42,7 @@ export const TagHighlights = (props: {
             websiteTags={props.websiteTags}
             filterByTag={t.tag}
             showAddWebsiteDialog={props.showAddWebsiteDialog}
-            maxWebsites={isLarge ? 4 : 3}
+            maxWebsites={isLarge ? 3 : 3}
             websiteCache={props.websiteCache}
             dragDropSource={props.dragDropSource}
             isLoading={t.tag === props.tagRowLoading}

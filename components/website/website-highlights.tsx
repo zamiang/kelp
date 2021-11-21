@@ -34,7 +34,7 @@ export const WebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
-      isLarge ? 8 : 6,
+      isLarge ? 6 : 6,
       isSubscribed,
       props.filterByTag,
     );
@@ -81,7 +81,7 @@ export const WebsiteHighlights = (props: {
         <Grid item xs={12}>
           <Grid container spacing={6}>
             {topWebsites.map((item) => (
-              <Grid item xs={isLarge ? 3 : 4} key={item.id}>
+              <Grid item xs={isLarge ? 4 : 4} key={item.id}>
                 <LargeWebsite
                   item={item}
                   store={props.store}

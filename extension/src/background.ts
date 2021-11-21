@@ -44,15 +44,16 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
     const isDomainAllowed =
       config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
     if (currentUrl && isDomainAllowed && tab.id) {
+      // use `var` to avoid redeclaration of const error when re-running in the same tab
       const code = `
-      const metaDescription = document.querySelector("meta[name='description']");
-        const metaDescriptionContent = metaDescription?.getAttribute("content");
-        const metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
-        const metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute("content");
-        const metaOgUrl = document.querySelector("meta[name='og:url']");
-        const metaOgUrlContent = metaOgUrl?.getAttribute("content");
-        const metaOgImage = document.querySelector("meta[name='og:image']");
-        const metaOgImageContent = metaOgUrl?.getAttribute("content");
+        var metaDescription = document.querySelector("meta[name='description']");
+        var metaDescriptionContent = metaDescription?.getAttribute("content");
+        var metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
+        var metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute("content");
+        var metaOgUrl = document.querySelector("meta[name='og:url']");
+        var metaOgUrlContent = metaOgUrl?.getAttribute("content");
+        var metaOgImage = document.querySelector("meta[name='og:image']");
+        var metaOgImageContent = metaOgUrl?.getAttribute("content");
         ({
           metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent, metaOgImageContent
         });`;

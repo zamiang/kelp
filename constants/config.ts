@@ -13,7 +13,6 @@ const NUMBER_OF_DAYS_BACK = 30;
 const NUMBER_OF_DAYS_FORWARD = 14;
 
 export default {
-  REDIRECT_URI: process.env.NEXT_PUBLIC_REDIRECT_URI || 'http://localhost:3000/dashboard',
   THEME: 'THEME',
   THEME_COOL: 'cool',
   THEME_DARK: 'dark',
@@ -24,16 +23,20 @@ export default {
   THEME_COOL_HIGHLIGHT_COLOR: '#0025E7',
   THEME_DARK_HIGHLIGHT_COLOR: '#BB89FC',
   THEME_LIGHT_HIGHLIGHT_COLOR: '#EBFF02',
-  GOOGLE_SCOPES: scopes,
   IS_ONBOARDING_COMPLETED: 'IS_ONBOARDING_COMPLETED_V2',
-  GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+  GOOGLE_ENABLED: 'IS_GOOGLE_ENABLED',
+  GOOGLE_SCOPES: scopes,
+  GOOGLE_CLIENT_ID_CHROME:
+    '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com',
+  GOOGLE_CLIENT_ID_NOT_CHROME:
+    '296254551365-7bblc0lmtpghkbhqbm135h95fvj7n7sa.apps.googleusercontent.com',
+  GOOGLE_CALENDAR_FILTER: ['declined'], // Could be ['needsAction', 'declined']
   SHOULD_FILTER_OUT_NOT_ATTENDING_EVENTS: true,
   NUMBER_OF_DAYS_BACK,
   WEEK_STARTS_ON: 0,
   MEETING_PREP_NOTIFICATION_EARLY_MINUTES: 10,
   ATTENDEE_MAX: 10, // for 'show more'
   ICON_SIZE: 20,
-  GOOGLE_CALENDAR_FILTER: ['declined'], // Could be ['needsAction', 'declined']
   MAX_MEETING_ATTENDEE_TO_COUNT_AN_INTERACTION: 10,
   startDate: subDays(new Date(), NUMBER_OF_DAYS_BACK),
   endDate: addDays(new Date(), NUMBER_OF_DAYS_FORWARD),

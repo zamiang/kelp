@@ -34,34 +34,15 @@ import { TopNav } from './top-nav';
 const PREFIX = 'DesktopDashboard';
 
 const classes = {
-  container: `${PREFIX}-container`,
   footerContainer: `${PREFIX}-footerContainer`,
   content: `${PREFIX}-content`,
 };
 
 const DesktopDashboardContainer = styled('div')(({ theme }) => ({
-  [`& .${classes.container}`]: {
-    paddingLeft: 210,
-    paddingRight: 210,
-    [theme.breakpoints.down('xl')]: {
-      paddingLeft: 180,
-      paddingRight: 180,
-    },
-    [theme.breakpoints.down('xl')]: {
-      paddingLeft: 160,
-      paddingRight: 160,
-    },
-    [theme.breakpoints.down('lg')]: {
-      paddingLeft: 120,
-      paddingRight: 120,
-    },
-  },
-
   [`& .${classes.footerContainer}`]: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
   },
-
   [`& .${classes.content}`]: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
@@ -307,114 +288,112 @@ export const DesktopDashboard = (props: {
                 dragDropSource={dragDropSource}
               />
               <Onboarding />
-              <div className={classes.container}>
-                <Container maxWidth="lg" disableGutters>
-                  <div>
-                    <Routes>
-                      <Route
-                        path="/search"
-                        element={
-                          <Search
-                            store={store}
-                            websiteTags={websiteTags}
-                            toggleWebsiteTag={toggleWebsiteTagClick}
-                            websiteCache={websiteCache}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/websites/:slug"
-                        element={
-                          <ExpandWebsite
-                            store={store}
-                            websiteTags={websiteTags}
-                            toggleWebsiteTag={toggleWebsiteTagClick}
-                            websiteCache={websiteCache}
-                            dragDropSource={dragDropSource}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/meetings/:slug"
-                        element={
-                          <ExpandedMeeting
-                            store={store}
-                            websiteTags={websiteTags}
-                            toggleWebsiteTag={toggleWebsiteTagClick}
-                            websiteCache={websiteCache}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/documents/:slug"
-                        element={<ExpandedDocument store={store} websiteCache={websiteCache} />}
-                      />
-                      <Route
-                        path="/people/:slug"
-                        element={
-                          <ExpandPerson
-                            store={store}
-                            toggleWebsiteTag={toggleWebsiteTagClick}
-                            websiteTags={websiteTags}
-                            websiteCache={websiteCache}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/meetings"
-                        element={
-                          <Meetings
-                            store={store}
-                            toggleWebsiteTag={toggleWebsiteTagClick}
-                            websiteTags={websiteTags}
-                            websiteCache={websiteCache}
-                          />
-                        }
-                      />
-                      <Route path="/calendar" element={<Summary store={store} />} />
-                      <Route path="/settings" element={<Settings store={store} />} />
-                      <Route
-                        path="/home"
-                        element={
-                          <div>
-                            <Grid container>
-                              <Grid item xs={3}>
-                                <MostRecentTab />
-                              </Grid>
-                              <Grid item xs={9}>
-                                <TopPeople store={props.store} />
-                              </Grid>
+              <Container maxWidth="md">
+                <div>
+                  <Routes>
+                    <Route
+                      path="/search"
+                      element={
+                        <Search
+                          store={store}
+                          websiteTags={websiteTags}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteCache={websiteCache}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/websites/:slug"
+                      element={
+                        <ExpandWebsite
+                          store={store}
+                          websiteTags={websiteTags}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteCache={websiteCache}
+                          dragDropSource={dragDropSource}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/meetings/:slug"
+                      element={
+                        <ExpandedMeeting
+                          store={store}
+                          websiteTags={websiteTags}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteCache={websiteCache}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/documents/:slug"
+                      element={<ExpandedDocument store={store} websiteCache={websiteCache} />}
+                    />
+                    <Route
+                      path="/people/:slug"
+                      element={
+                        <ExpandPerson
+                          store={store}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteTags={websiteTags}
+                          websiteCache={websiteCache}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/meetings"
+                      element={
+                        <Meetings
+                          store={store}
+                          toggleWebsiteTag={toggleWebsiteTagClick}
+                          websiteTags={websiteTags}
+                          websiteCache={websiteCache}
+                        />
+                      }
+                    />
+                    <Route path="/calendar" element={<Summary store={store} />} />
+                    <Route path="/settings" element={<Settings store={store} />} />
+                    <Route
+                      path="/home"
+                      element={
+                        <div>
+                          <Grid container>
+                            <Grid item xs={3}>
+                              <MostRecentTab />
                             </Grid>
-                            <MeetingHighlight
-                              store={props.store}
+                            <Grid item xs={9}>
+                              <TopPeople store={props.store} />
+                            </Grid>
+                          </Grid>
+                          <MeetingHighlight
+                            store={props.store}
+                            toggleWebsiteTag={toggleWebsiteTagClick}
+                            websiteTags={websiteTags}
+                            websiteCache={websiteCache}
+                          />
+                          <TagHighlights
+                            store={props.store}
+                            toggleWebsiteTag={toggleWebsiteTagClick}
+                            websiteTags={websiteTags}
+                            websiteCache={websiteCache}
+                            showAddWebsiteDialog={setTagForWebsiteToTagDialog}
+                            dragDropSource={dragDropSource}
+                            tagRowLoading={rowLoading}
+                          />
+                          <div id="tag-all" style={{ marginBottom: 80 }}>
+                            <WebsiteHighlights
+                              store={store}
                               toggleWebsiteTag={toggleWebsiteTagClick}
                               websiteTags={websiteTags}
                               websiteCache={websiteCache}
                             />
-                            <TagHighlights
-                              store={props.store}
-                              toggleWebsiteTag={toggleWebsiteTagClick}
-                              websiteTags={websiteTags}
-                              websiteCache={websiteCache}
-                              showAddWebsiteDialog={setTagForWebsiteToTagDialog}
-                              dragDropSource={dragDropSource}
-                              tagRowLoading={rowLoading}
-                            />
-                            <div id="tag-all" style={{ marginBottom: 80 }}>
-                              <WebsiteHighlights
-                                store={store}
-                                toggleWebsiteTag={toggleWebsiteTagClick}
-                                websiteTags={websiteTags}
-                                websiteCache={websiteCache}
-                              />
-                            </div>
                           </div>
-                        }
-                      />
-                    </Routes>
-                  </div>
-                </Container>
-              </div>
+                        </div>
+                      }
+                    />
+                  </Routes>
+                </div>
+              </Container>
             </div>
             <div className={classes.footerContainer}>
               <div style={{ display: 'none' }}>Page opened {minutes} minutes ago</div>
