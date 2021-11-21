@@ -30,7 +30,6 @@
     "idle",
     "history",
     "https://calendar.google.com/*",
-    "chrome://favicon/",
     "<all_urls>"
 ],
   "chrome_url_overrides" : {

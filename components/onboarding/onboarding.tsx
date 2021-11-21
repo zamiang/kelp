@@ -6,7 +6,6 @@ import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/homepage-theme';
-import LeftArrow from '../../public/icons/left-arrow.svg';
 import RightArrow from '../../public/icons/right-arrow.svg';
 
 const PREFIX = 'Onboarding';
@@ -22,6 +21,7 @@ const classes = {
   button: `${PREFIX}-button`,
   leftButton: `${PREFIX}-leftButton`,
   icon: `${PREFIX}-leftButton`,
+  iconImage: `${PREFIX}-iconImage`,
 };
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -31,20 +31,16 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     padding: 20,
     paddingBottom: 40,
   },
-
   [`& .${classes.heading}`]: { display: 'inline-block', marginLeft: theme.spacing(2) },
-
   [`& .${classes.body}`]: {
     marignBottom: theme.spacing(2),
   },
-
   [`& .${classes.rightAlignButton}`]: {
     textAlign: 'right',
     marginTop: theme.spacing(4),
     fontSize: 16,
     display: 'block',
   },
-
   [`& .${classes.bold}`]: {
     display: 'inline-block',
     fontStyle: 'normal',
@@ -52,11 +48,9 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     fontWeight: 500,
     color: theme.palette.primary.main,
   },
-
   [`& .${classes.li}`]: {
     paddingBottom: theme.spacing(2),
   },
-
   [`& .${classes.image}`]: {
     maxWidth: '100%',
     borderRadius: 20,
@@ -66,13 +60,14 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     height: 400,
     width: 600,
   },
-
   [`& .${classes.button}`]: {
     background: 'rgba(0, 0, 0, 0.12)',
   },
-
   [`& .${classes.leftButton}`]: {
     marginRight: theme.spacing(2),
+  },
+  [`& .${classes.iconImage}`]: {
+    color: theme.palette.text.primary,
   },
 }));
 
@@ -96,7 +91,11 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
           className={classes.button}
           onClick={() => props.setStep(props.step + 1)}
         >
-          <RightArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
+          <RightArrow
+            height={config.ICON_SIZE}
+            width={config.ICON_SIZE}
+            className={classes.iconImage}
+          />
         </IconButton>
       </Grid>
     </Grid>
@@ -121,7 +120,12 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
           className={classes.leftButton}
           onClick={() => props.setStep(props.step - 1)}
         >
-          <LeftArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
+          <RightArrow
+            height={config.ICON_SIZE}
+            width={config.ICON_SIZE}
+            className={classes.iconImage}
+            style={{ transform: 'rotate(180deg)' }}
+          />
         </IconButton>
         <IconButton
           className={classes.button}
@@ -131,7 +135,11 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
             return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
           }}
         >
-          <RightArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
+          <RightArrow
+            height={config.ICON_SIZE}
+            width={config.ICON_SIZE}
+            className={classes.iconImage}
+          />
         </IconButton>
       </Grid>
     </Grid>
@@ -156,14 +164,23 @@ const MeetingsAnimation = (props: { step: number; setStep: (step: number) => voi
           className={classes.leftButton}
           onClick={() => props.setStep(props.step - 1)}
         >
-          <LeftArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
+          <RightArrow
+            height={config.ICON_SIZE}
+            width={config.ICON_SIZE}
+            className={classes.iconImage}
+            style={{ transform: 'rotate(180deg)' }}
+          />
         </IconButton>
         <IconButton
           size="medium"
           className={classes.button}
           onClick={() => props.setStep(props.step + 1)}
         >
-          <RightArrow height={config.ICON_SIZE} width={config.ICON_SIZE} />
+          <RightArrow
+            height={config.ICON_SIZE}
+            width={config.ICON_SIZE}
+            className={classes.iconImage}
+          />
         </IconButton>
       </Grid>
     </Grid>

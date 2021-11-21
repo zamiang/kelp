@@ -4,13 +4,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
+import { GoogleLoginButton } from '../shared/google-login';
 import { LogOutButton, SignInButton, WelcomeUser } from '../shared/microsoft-login';
 import { IDomainBlocklist, IPerson, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -117,17 +117,40 @@ const Settings = (props: { store: IStore }) => {
           <Typography variant="h1" style={{ marginBottom: 22 }}>
             Settings
           </Typography>
-          <Typography style={{ marginBottom: 22 }}>
-            Signed in as: {currentUser?.emailAddresses[0]}
-          </Typography>
-          <Typography>
-            Note: If you sign into multiple Google Accounts (like for personal life and work), we
-            recommend using{' '}
-            <Link href="https://support.google.com/chrome/answer/2364824">
-              Google Chrome Profiles
-            </Link>
-            .
-          </Typography>
+        </Grid>
+      </Grid>
+      <Divider />
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h3">Google</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <GoogleLoginButton currentUser={currentUser} />
+        </Grid>
+      </Grid>
+      <Divider />
+      <Grid
+        container
+        alignItems="flex-start"
+        justifyContent="space-between"
+        className={classes.section}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h3">Microsoft Teams</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <AuthenticatedTemplate>
+            <WelcomeUser />
+            <LogOutButton />
+          </AuthenticatedTemplate>
+          <UnauthenticatedTemplate>
+            <SignInButton />
+          </UnauthenticatedTemplate>
         </Grid>
       </Grid>
       <Divider />
@@ -156,26 +179,6 @@ const Settings = (props: { store: IStore }) => {
           <Typography style={{ marginBottom: 22 }} variant="body2">
             Current browser permission status: {notificationPermission || 'not enabled'}
           </Typography>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Grid item xs={6}>
-          <Typography variant="h3">Microsoft Teams</Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <AuthenticatedTemplate>
-            <WelcomeUser />
-            <LogOutButton />
-          </AuthenticatedTemplate>
-          <UnauthenticatedTemplate>
-            <SignInButton />
-          </UnauthenticatedTemplate>
         </Grid>
       </Grid>
       <Divider />

@@ -114,11 +114,12 @@ const WebsiteImage = (props: {
       </Root>
     );
   }
+  const domain = new URL(props.item.id).hostname;
   return (
     <Root className={classes.faviconContainer}>
       <IconButton size="large" className={classes.iconButton}>
         <img
-          src={`chrome://favicon/size/48@1x/${props.item.id}`}
+          src={`https://www.google.com/s2/favicons?domain_url=${domain}`}
           height={config.ICON_SIZE}
           width={config.ICON_SIZE}
         />
