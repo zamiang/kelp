@@ -18,6 +18,7 @@
     "build": "next build",
     "dev:extension": "NODE_ENV=development webpack --watch --config=extension/webpack.dev.js",
     "build-extension": "rimraf extension/dist && NODE_ENV=production webpack --config=extension/webpack.config.js",
+    "build-extension:safari": "rimraf 'extension/safari/extension Extension/Resources' && NODE_ENV=production webpack --config=extension/webpack-safari.config.js",
     "dev": "next -p ${PORT:-3000}",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
     "lint:exports": "npx ts-unused-exports tsconfig-website-and-extension.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport='pages;components/store/helpers.ts;components/store/use-store.tsx;components/meeting/line-calendar.tsx'",

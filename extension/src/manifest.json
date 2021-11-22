@@ -14,10 +14,12 @@
     "scripts": ["background.js"],
     "persistent": true
   },
-  "content_scripts": [{
-    "js": ["calendar.js"],
-    "matches": ["https://calendar.google.com/*"]
-  }],
+  "content_scripts": [
+    {
+      "js": ["calendar.js"],
+      "matches": ["https://calendar.google.com/*"]
+    }
+  ],
   "oauth2": {
     "client_id": "REPLACED IN WEBPACK CONFIG",
     "scopes": "REPLACED IN WEBPACK CONFIG"
@@ -31,8 +33,8 @@
     "history",
     "https://calendar.google.com/*",
     "<all_urls>"
-],
-  "chrome_url_overrides" : {
+  ],
+  "chrome_url_overrides": {
     "newtab": "dashboard.html"
   },
   "content_security_policy": "script-src 'self'; object-src 'self'",
