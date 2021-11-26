@@ -39,7 +39,7 @@
     "@microsoft/microsoft-graph-client": "3.0.1",
     "@mui/lab": "5.0.0-alpha.55",
     "@mui/material": "5.1.1",
-    "@mui/styles": "5.1.1",
+    "@mui/styles": "5.2.1",
     "@rehooks/component-size": "1.0.3",
     "@svgr/webpack": "5.5.0",
     "@types/chrome": "0.0.164",
