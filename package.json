@@ -41,7 +41,7 @@
     "@mui/material": "5.1.1",
     "@mui/styles": "5.1.1",
     "@rehooks/component-size": "1.0.3",
-    "@svgr/webpack": "5.5.0",
+    "@svgr/webpack": "6.0.0",
     "@types/chrome": "0.0.164",
     "@types/d3": "7.1.0",
     "@types/express": "4.17.13",
