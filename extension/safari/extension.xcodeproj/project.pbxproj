@@ -82,15 +82,15 @@
 		CF927F0E274B493500C83109 /* kelp.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kelp.svg; sourceTree = "<group>"; };
 		CF927F0F274B493500C83109 /* fb4ecc889b34f7088529727f2bf0fa51.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fb4ecc889b34f7088529727f2bf0fa51.woff2; sourceTree = "<group>"; };
 		CF927F10274B493500C83109 /* icon48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon48.png; sourceTree = "<group>"; };
-		CFED981A274B08480035867B /* extension.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = extension.app; path = /Users/brennanmoore/kelp/extension/safari/build/Debug/extension.app; sourceTree = "<absolute>"; };
 		CFED982E274B08490035867B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CFED9836274B08490035867B /* extension Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; name = "extension Extension.appex"; path = "/Users/brennanmoore/kelp/extension/safari/build/Debug/extension Extension.appex"; sourceTree = "<absolute>"; };
 		CFED983B274B08490035867B /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
 		CFED9842274B08490035867B /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
 		CFED9844274B08490035867B /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = background.js; sourceTree = "<group>"; };
 		CFED984C274B08490035867B /* popup.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = popup.js; sourceTree = "<group>"; };
 		CFED984E274B08490035867B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFED984F274B08490035867B /* extension_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = extension_Extension.entitlements; sourceTree = "<group>"; };
+		CFEDC599274B4EB000742BA0 /* extension.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = extension.app; path = /Users/brennanmoore/kelp/extension/safari/build/Debug/extension.app; sourceTree = "<absolute>"; };
+		CFEDC59A274B4EB000742BA0 /* extension Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; name = "extension Extension.appex"; path = "/Users/brennanmoore/kelp/extension/safari/build/Debug/extension Extension.appex"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,19 +111,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CF20ED90274B4A1D006696F2 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		CFED9811274B08480035867B = {
 			isa = PBXGroup;
 			children = (
 				CFED981C274B08480035867B /* extension */,
 				CFED983A274B08490035867B /* extension Extension */,
-				CF20ED90274B4A1D006696F2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -203,7 +195,7 @@
 			);
 			name = extension;
 			productName = extension;
-			productReference = CFED981A274B08480035867B /* extension.app */;
+			productReference = CFEDC599274B4EB000742BA0 /* extension.app */;
 			productType = "com.apple.product-type.application";
 		};
 		CFED9835274B08490035867B /* extension Extension */ = {
@@ -220,7 +212,7 @@
 			);
 			name = "extension Extension";
 			productName = "extension Extension";
-			productReference = CFED9836274B08490035867B /* extension Extension.appex */;
+			productReference = CFEDC59A274B4EB000742BA0 /* extension Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
