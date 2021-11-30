@@ -94,7 +94,17 @@ const Footer = () => (
           underline="hover"
         >
           <Typography variant="body2" className={classes.footerLink}>
-            Download
+            Download for Chrome
+          </Typography>
+        </MuiLink>
+      </Grid>
+      <Grid item className={classes.footerItem}>
+        <MuiLink
+          href="https://addons.mozilla.org/en-US/firefox/addon/kelp-your-website-organizer/"
+          underline="hover"
+        >
+          <Typography variant="body2" className={classes.footerLink}>
+            Download for Firefox
           </Typography>
         </MuiLink>
       </Grid>

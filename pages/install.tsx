@@ -73,6 +73,19 @@ const App = () => (
             >
               Add to Chrome
             </Button>
+            <br />
+            <br />
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              className={classes.login}
+              disableElevation={true}
+              startIcon={<img src="/icons/firefox.png" width="24" height="24" />}
+              href="https://addons.mozilla.org/en-US/firefox/addon/kelp-your-website-organizer/"
+            >
+              Add to Firefox
+            </Button>
           </div>
         </Grid>
         <Grid
@@ -85,7 +98,7 @@ const App = () => (
             <ListItem disableGutters>
               <div className={classes.emojiIcon}>💻</div>
               <ListItemText>
-                Kelp is a chrome extension that runs entirely on your computer
+                Kelp is a browser extension that runs entirely on your computer
               </ListItemText>
             </ListItem>
             <ListItem disableGutters>

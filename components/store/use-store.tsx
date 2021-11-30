@@ -174,7 +174,7 @@ const useStoreWithFetching = (
       );
 
       if (currentWebsites.length < 1) {
-        console.log('saving chrome history');
+        console.log('saving browser history');
         setLoadingMessage('Saving Websites');
         const historyWebsites = await fetchAllHistory();
         await websiteStore.addHistoryToStore(historyWebsites);

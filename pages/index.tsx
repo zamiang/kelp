@@ -14,6 +14,7 @@ import Footer from '../components/homepage/footer';
 import { ImageBlocks } from '../components/homepage/image-blocks';
 import UiBlocks from '../components/homepage/ui-blocks';
 import { italicFontFamily, mediumFontFamily } from '../constants/homepage-theme';
+import InstallSvg from '../public/icons/install.svg';
 
 const PREFIX = 'App';
 
@@ -144,6 +145,9 @@ export const Root = styled('div')(({ theme }) => ({
     '&:hover': {
       opacity: 0.6,
     },
+    svg: {
+      color: 'white',
+    },
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
@@ -273,7 +277,7 @@ const App = () => (
           size="large"
           color="primary"
           className={classes.login}
-          startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
+          startIcon={<InstallSvg width="24" height="24" />}
           onClick={() => (window.location.pathname = '/install')}
           disableElevation={true}
         >
@@ -304,7 +308,7 @@ const App = () => (
           <ListItem disableGutters>
             <div className={classes.emojiIcon}>💻</div>
             <ListItemText>
-              Kelp is a chrome extension that runs entirely on your computer
+              Kelp is a browser extension that runs entirely on your computer
             </ListItemText>
           </ListItem>
           <ListItem disableGutters>
@@ -340,7 +344,7 @@ const App = () => (
               size="large"
               color="primary"
               className={classes.login}
-              startIcon={<img src="/icons/install-white.svg" width="24" height="24" />}
+              startIcon={<InstallSvg width="24" height="24" />}
               onClick={() => (window.location.pathname = '/install')}
               disableElevation={true}
             >
