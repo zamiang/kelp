@@ -32,7 +32,7 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.container}`]: { maxHeight: '80vh', overflow: 'auto' },
   [`& .${classes.tag}`]: {
     cursor: 'pointer',
-    height: 24,
+    height: 20,
     opacity: 0.5,
     transition: 'opacity 0.6s ease-out',
     '&:hover': {
@@ -244,6 +244,7 @@ export const TopTags = (props: {
                 variant="body2"
                 className={classes.tag}
                 color="primary"
+                style={{ fontWeight: 600 }}
                 onClick={() => setDialogOpen(true)}
               >
                 Add a tag

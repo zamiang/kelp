@@ -20,6 +20,8 @@ import { IWebsiteCache, IWebsiteCacheItem } from '../website/get-featured-websit
 import { LargeWebsite } from '../website/large-website';
 import { DraggableWebsiteHighlights } from './draggable-website-highlights';
 
+const MAX_TAGS = 10;
+
 const PREFIX = 'WebsiteContainer';
 
 const classes = {
@@ -291,7 +293,7 @@ const ExpandWebsite = (props: {
     return null;
   }
 
-  const websiteTags = getTagsForWebsite(website?.tags || '', props.websiteTags);
+  const websiteTags = getTagsForWebsite(website?.tags || '', props.websiteTags).slice(0, MAX_TAGS);
 
   const removeTag = async (tag: string) => {
     const updatedTags = websiteTags.filter((t) => t !== tag).join(' ');
@@ -380,7 +382,7 @@ const ExpandWebsite = (props: {
               <Grid item xs={12}>
                 <Grid container spacing={6}>
                   {websitesAtDomain.map((item) => (
-                    <Grid item xs={3} key={item.id}>
+                    <Grid item xs={4} key={item.id}>
                       <LargeWebsite
                         item={item}
                         store={props.store}
@@ -401,7 +403,7 @@ const ExpandWebsite = (props: {
               toggleWebsiteTag={props.toggleWebsiteTag}
               websiteTags={props.websiteTags}
               filterByTag={t}
-              maxWebsites={4}
+              maxWebsites={3}
               websiteCache={props.websiteCache}
               dragDropSource={props.dragDropSource}
               shouldHideCloseButton={true}

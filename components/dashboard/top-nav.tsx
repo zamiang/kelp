@@ -27,9 +27,10 @@ const classes = {
   rightSection: `${PREFIX}-rightSection`,
   logo: `${PREFIX}-logo`,
   icon: `${PREFIX}-icon`,
-  iconLight: `${PREFIX}-lightIcon`,
-  iconDark: `${PREFIX}-lightDark`,
-  iconCool: `${PREFIX}-lightCool`,
+  iconLight: `${PREFIX}-iconLight`,
+  iconDark: `${PREFIX}-iconDark`,
+  iconNb: `${PREFIX}-iconNb`,
+  iconCool: `${PREFIX}-iconCool`,
   iconImage: `${PREFIX}-iconImage`,
   iconSelected: `${PREFIX}-iconSelected`,
 };
@@ -92,6 +93,9 @@ const Root = styled('div')(({ theme }) => ({
   },
   [`& .${classes.iconDark}`]: {
     background: config.THEME_DARK_HIGHLIGHT_COLOR,
+  },
+  [`& .${classes.iconNb}`]: {
+    background: config.THEME_NB_HIGHLIGHT_COLOR,
   },
   [`& .${classes.iconLight}`]: {
     background: config.THEME_LIGHT_HIGHLIGHT_COLOR,
@@ -376,19 +380,19 @@ export const TopNav = (props: {
                 </Tooltip>
               </Grid>
               <Grid item xs={12}>
-                <Tooltip title="Dark Theme" placement="left">
+                <Tooltip title="NB Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    disabled={props.theme === config.THEME_DARK}
+                    disabled={props.theme === config.THEME_NB}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme(config.THEME_DARK);
-                      localStorage.setItem(config.THEME, config.THEME_DARK);
+                      props.setTheme(config.THEME_NB);
+                      localStorage.setItem(config.THEME, config.THEME_NB);
                     }}
                     size="large"
                   >
-                    <div className={clsx(classes.icon, classes.iconDark)}></div>
+                    <div className={clsx(classes.icon, classes.iconNb)}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -406,6 +410,23 @@ export const TopNav = (props: {
                     size="large"
                   >
                     <div className={clsx(classes.icon, classes.iconCool)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={12}>
+                <Tooltip title="Dark Theme" placement="left">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    disabled={props.theme === config.THEME_DARK}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      props.setTheme(config.THEME_DARK);
+                      localStorage.setItem(config.THEME, config.THEME_DARK);
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconDark)}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>

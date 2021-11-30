@@ -145,6 +145,7 @@ export const DesktopDashboard = (props: {
     }
   };
 
+  // Unfortunately, react-dnd requires one global drag handler to support multiple drop areas
   const onDragEnd = async (result: DropResult) => {
     // TODO
     if (!result.destination) {

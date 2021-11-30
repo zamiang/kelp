@@ -27,7 +27,7 @@ import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
-import { coolTheme, darkTheme, lightTheme } from '../../constants/theme';
+import { coolTheme, darkTheme, lightTheme, nbTheme } from '../../constants/theme';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -308,6 +308,7 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
 };
 
 const themeHash = {
+  nb: nbTheme,
   cool: coolTheme,
   light: lightTheme,
   dark: darkTheme,

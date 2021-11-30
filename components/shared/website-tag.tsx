@@ -26,6 +26,7 @@ const Root = styled('div')(({ theme }) => ({
     transition: 'borderBottom 0.3s',
     borderBottom: '1px solid transparent',
     cursor: 'pointer',
+    height: 20,
     '&:hover': {
       borderBottomColor: theme.palette.divider,
     },

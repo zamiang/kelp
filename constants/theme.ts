@@ -39,6 +39,33 @@ const lightThemePalette = {
   divider: 'rgba(255,255,255,0.2)',
 };
 
+const nbThemePalette = {
+  mode: 'light',
+  background: {
+    paper: 'rgb(229,218,204)',
+    default: config.THEME_NB_COLOR,
+  },
+  primary: {
+    main: config.THEME_NB_HIGHLIGHT_COLOR,
+    dark: '#ffff01',
+    contrastText: config.THEME_NB_COLOR,
+  },
+  secondary: {
+    main: config.THEME_NB_HIGHLIGHT_COLOR,
+    contrastText: config.THEME_NB_COLOR,
+  },
+  error: {
+    main: 'rgba(194, 15, 36, 1)',
+    contrastText: 'rgba(255,255,255,0.87)',
+  },
+  text: {
+    primary: 'rgba(0,0,0,0.87)',
+    secondary: 'rgba(0,0,0,0.5)',
+    disabled: 'rgba(0, 0, 0, 0.38)',
+  },
+  divider: 'rgba(0,0,0,0.2)',
+};
+
 const coolThemePalette = {
   mode: 'light',
   background: {
@@ -292,6 +319,7 @@ const themeConfig = {
   },
 } as ThemeOptions;
 
+export const nbTheme = createTheme(themeConfig as any, { palette: nbThemePalette });
 export const darkTheme = createTheme(themeConfig as any, { palette: darkThemePalette });
 export const lightTheme = createTheme(themeConfig as any, { palette: lightThemePalette });
 export const coolTheme = createTheme(themeConfig as any, { palette: coolThemePalette });
