@@ -1,8 +1,6 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import useTheme from '@mui/styles/useTheme';
 import Fuse from 'fuse.js';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
 import SearchBar from '../nav/search-bar';
 import PersonRow from '../person/person-row';
+import Loading from '../shared/loading';
 import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
 import SearchIndex, { ISearchItem } from '../store/search-index';
@@ -123,7 +122,7 @@ const WebsiteResults = (props: {
   return (
     <React.Fragment>
       {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
-        <Grid item xs={3} key={website.id}>
+        <Grid item xs={4} key={website.id}>
           <LargeWebsite
             store={props.store}
             item={website}
@@ -136,56 +135,21 @@ const WebsiteResults = (props: {
   );
 };
 
-const Search = (props: {
+const SearchResults = (props: {
+  searchQuery: string;
+  fuse: Fuse<ISearchItem>;
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
   websiteCache: IWebsiteCache;
 }) => {
-  const router = useLocation();
-  const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
-    defaultMatches: true,
-  });
-
-  useEffect(() => {
-    let isSubscribed = true;
-    const fetchData = async () => {
-      const searchIndex = new SearchIndex();
-      await searchIndex.addData(props.store);
-
-      const fuse = new Fuse(searchIndex.results, {
-        includeScore: true,
-        minMatchCharLength: 2,
-        keys: ['text'],
-      });
-      if (isSubscribed) {
-        setFuse(fuse);
-      }
-    };
-    void fetchData();
-    return () => (isSubscribed = false) as any;
-  }, [props.store.isLoading]);
-
-  if (!fuse) {
-    return null;
-  }
-
-  const searchQuery = router.search
-    .replace('?query=', '')
-    .toLowerCase()
-    .replace(uncommonPunctuation, ' ');
-
-  const results = searchQuery ? fuse.search(searchQuery) : [];
+  const results = props.searchQuery ? props.fuse.search(props.searchQuery) : [];
   const filteredResults = filterSearchResults(results);
-
   return (
-    <Root>
+    <React.Fragment>
       <Grid container className={classes.topNav} spacing={2} alignItems="center">
         <Grid item>
-          <SearchBar searchQuery={searchQuery} />
+          <SearchBar searchQuery={props.searchQuery} />
         </Grid>
         {filteredResults.websites.length > 1 && (
           <Grid item>
@@ -230,7 +194,7 @@ const Search = (props: {
             <Typography variant="h3" className={classes.rowText}>
               Websites
             </Typography>
-            <Grid container spacing={isMobile ? 5 : 6}>
+            <Grid container spacing={6}>
               <WebsiteResults
                 store={props.store}
                 websites={filteredResults.websites}
@@ -273,6 +237,47 @@ const Search = (props: {
           </div>
         )}
       </div>
+    </React.Fragment>
+  );
+};
+
+const Search = (props: {
+  store: IStore;
+  toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
+  websiteTags: IWebsiteTag[];
+  websiteCache: IWebsiteCache;
+}) => {
+  const router = useLocation();
+  const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
+
+  useEffect(() => {
+    let isSubscribed = true;
+    const fetchData = async () => {
+      const searchIndex = new SearchIndex();
+      await searchIndex.addData(props.store);
+
+      const fuse = new Fuse(searchIndex.results, {
+        includeScore: true,
+        minMatchCharLength: 2,
+        keys: ['text'],
+      });
+      if (isSubscribed) {
+        setFuse(fuse);
+      }
+    };
+    void fetchData();
+    return () => (isSubscribed = false) as any;
+  }, []);
+
+  const searchQuery = router.search
+    .replace('?query=', '')
+    .toLowerCase()
+    .replace(uncommonPunctuation, ' ');
+
+  return (
+    <Root>
+      <Loading isOpen={!fuse} message={'Searching...'} />
+      {fuse && <SearchResults searchQuery={searchQuery} fuse={fuse} {...props} />}
     </Root>
   );
 };

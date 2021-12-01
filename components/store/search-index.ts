@@ -19,14 +19,22 @@ export default class SearchIndex {
   results: ISearchItem[];
 
   constructor() {
+    console.log('setting up search index');
     this.results = [];
   }
 
   async addData(store: IStore) {
     const searchIndex = [] as ISearchItem[];
+
+    const [documents, segments, people, websites] = await Promise.all([
+      store.documentDataStore.getAll(),
+      store.timeDataStore.getAll(),
+      store.personDataStore.getAll(false),
+      store.websiteStore.getAll(store.domainBlocklistStore, store.websiteBlocklistStore),
+    ]);
+
     // Docs
-    const documents = await store.documentDataStore.getAll();
-    documents?.map((document) => {
+    documents?.forEach((document) => {
       if (document?.name) {
         searchIndex.push({
           text: document.name.toLowerCase(),
@@ -37,8 +45,7 @@ export default class SearchIndex {
     });
 
     // Meetings
-    const segments = await store.timeDataStore.getAll();
-    segments.map((segment) => {
+    segments.forEach((segment) => {
       if (segment?.summary) {
         searchIndex.push({
           text: segment.summary.toLowerCase(),
@@ -49,8 +56,7 @@ export default class SearchIndex {
     });
 
     // People
-    const people = await store.personDataStore.getAll(false);
-    people.map((person) => {
+    people.forEach((person) => {
       if (person?.name?.toLowerCase().indexOf('unknown contributor') < 0) {
         searchIndex.push({
           text: person.name.toLowerCase(),
@@ -61,11 +67,7 @@ export default class SearchIndex {
     });
 
     // Websites
-    const websites = await store.websiteStore.getAll(
-      store.domainBlocklistStore,
-      store.websiteBlocklistStore,
-    );
-    websites.map((website) => {
+    websites.forEach((website) => {
       searchIndex.push({
         text: website.title.toLowerCase(),
         type: 'website',

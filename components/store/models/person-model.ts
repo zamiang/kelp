@@ -128,7 +128,10 @@ export default class PersonModel {
 
   async getAll(shouldExcludeSelf: boolean) {
     const people = await this.db.getAll('person');
-    return people.filter((person) => (shouldExcludeSelf ? !person?.isCurrentUser : true));
+    if (shouldExcludeSelf) {
+      return people.filter((person) => (shouldExcludeSelf ? !person?.isCurrentUser : true));
+    }
+    return people;
   }
 
   async getSelf(): Promise<IPerson | undefined> {
