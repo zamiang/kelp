@@ -203,11 +203,13 @@ const DayContent = (props: { store: IStore; day: Date }) => {
     // interpolation yay
     const result =
       fontMin + ((document.tfidf - tfidfMin) / (tfidfMax - tfidfMin)) * (fontMax - fontMin);
+
+    const cleanResult = result > 1 && !Number.isNaN(result) ? result : 1;
     return (
       <Typography
         className={summaryClasses.term}
         key={document.term}
-        style={{ fontSize: result }}
+        style={{ fontSize: cleanResult }}
         onClick={() => navigate(`/search?query=${document.term}`)}
       >
         {document.term}

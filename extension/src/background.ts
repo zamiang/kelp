@@ -1,7 +1,21 @@
 import { cleanupUrl } from '../../components/shared/cleanup-url';
 import db from '../../components/store/db';
-import setupStore, { IStore, useStoreNoFetch } from '../../components/store/use-store';
+import { useStoreNoFetch } from '../../components/store/helpers/use-store-no-fetching';
+import { IStore } from '../../components/store/use-store';
 import config from '../../constants/config';
+
+/*
+type IStore = any;
+const setupStore = (a: any, b: any, c: any, d: any) => {
+  console.log(a, b, c, d);
+  return null;
+};
+
+const useStoreNoFetch = (a: any, b: any) => {
+  console.log(a, b);
+  return null;
+};
+*/
 
 let store: IStore;
 const notificationAlarmName = 'notification';
@@ -45,39 +59,45 @@ const trackVisit = (store: IStore, tab: chrome.tabs.Tab) => {
       config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
     if (currentUrl && isDomainAllowed && tab.id) {
       // use `var` to avoid redeclaration of const error when re-running in the same tab
-      const code = `
-        var metaDescription = document.querySelector("meta[name='description']");
-        var metaDescriptionContent = metaDescription?.getAttribute("content");
-        var metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
-        var metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute("content");
-        var metaOgUrl = document.querySelector("meta[name='og:url']");
-        var metaOgUrlContent = metaOgUrl?.getAttribute("content");
-        var metaOgImage = document.querySelector("meta[name='og:image']");
-        var metaOgImageContent = metaOgUrl?.getAttribute("content");
-        ({
-          metaDescriptionContent, metaTwitterDescriptionContent, metaOgUrlContent, metaOgImageContent
-        });`;
-      void chrome.tabs.executeScript(
-        tab.id,
+      const getMetaInformation = () => {
+        const metaDescription = document.querySelector("meta[name='description']");
+        const metaDescriptionContent = metaDescription?.getAttribute('content');
+        const metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
+        const metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute('content');
+        const metaOgUrl = document.querySelector("meta[name='og:url']");
+        const metaOgUrlContent = metaOgUrl?.getAttribute('content');
+        const metaOgImage = document.querySelector("meta[name='og:image']");
+        const metaOgImageContent = metaOgImage?.getAttribute('content');
+        return {
+          metaDescriptionContent,
+          metaTwitterDescriptionContent,
+          metaOgUrlContent,
+          metaOgImageContent,
+        };
+      };
+      type metaInformation = ReturnType<typeof getMetaInformation>;
+      void chrome.scripting.executeScript(
         {
-          code,
+          target: { tabId: tab.id, allFrames: false },
+          func: getMetaInformation,
         },
         (results) => {
+          console.log(results, '<<<<<<<<<<<<<<< CHROME');
           if (!results) {
             console.log('error');
             // An error occurred at executing the script. You've probably not got
             // the permission to execute a content script for the current tab
             return;
           }
-          const result = results[0] || ({} as any);
+          const result = (results[0]?.result || {}) as metaInformation;
           captureVisibleTab(result.metaOgUrlContent || currentUrl);
           return void storeTrackedVisit(
             result.metaOgUrlContent || currentUrl,
             new Date(),
             store,
             tab.title,
-            result.metaTwitterDescriptionContent || result.metaDescriptionContent,
-            result.metaOgImageContent,
+            result.metaTwitterDescriptionContent || result.metaDescriptionContent || undefined,
+            result.metaOgImageContent || undefined,
           );
           // Now, do something with result.title and result.description
         },
@@ -111,7 +131,7 @@ const fetchDataAndCreateStore = async () => {
   if (!d) {
     throw new Error('unable to connect');
   }
-  const s = setupStore(false, d, 'oauth-token', 'scope');
+  const s = useStoreNoFetch(d, false);
   if (s) {
     store = s;
     return store;
@@ -120,33 +140,40 @@ const fetchDataAndCreateStore = async () => {
 };
 
 const captureVisibleTab = (url: string) => {
-  chrome.tabs.captureVisibleTab(
-    null as any,
-    {
-      format: 'jpeg',
-      quality: 1,
-    },
-    (image) => {
-      if (url && image) {
-        const saveImage = async () => {
-          const s = await getOrCreateStore();
-          if (s) {
-            await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
-          }
-        };
-        void saveImage();
-      }
-    },
-  );
+  try {
+    chrome.tabs.captureVisibleTab(
+      null as any,
+      {
+        format: 'jpeg',
+        quality: 1,
+      },
+      (image) => {
+        if (url && image) {
+          const saveImage = async () => {
+            const s = await getOrCreateStore();
+            if (s) {
+              await s.websiteImageStore.saveWebsiteImage(url, image, new Date());
+            }
+          };
+          void saveImage();
+        }
+      },
+    );
+  } catch (e) {
+    console.log(e, 'fail to capture sad times');
+  }
 };
 
 const queryAndSendNotification = async () => {
-  if (!localStorage.getItem(config.NOTIFICATIONS_KEY)) {
-    localStorage.setItem(config.NOTIFICATIONS_KEY, 'enabled');
+  const val = await chrome.storage.sync.get([config.NOTIFICATIONS_KEY]);
+  if (!val[config.NOTIFICATIONS_KEY]) {
+    const foo = {} as any;
+    foo[config.NOTIFICATIONS_KEY] = 'enabled';
+    await chrome.storage.sync.set(foo);
   }
 
-  const isEnabled = localStorage.getItem(config.NOTIFICATIONS_KEY) !== 'disabled';
-  if (!isEnabled) {
+  const currentVal = await chrome.storage.sync.get([config.NOTIFICATIONS_KEY]);
+  if (currentVal[config.NOTIFICATIONS_KEY] === 'disabled') {
     return;
   }
 
@@ -154,7 +181,10 @@ const queryAndSendNotification = async () => {
     await getOrCreateStore();
   }
 
-  const lastSentNotificationId = localStorage.getItem(config.LAST_NOTIFICATION_KEY);
+  const lastSentNotificationId = (await chrome.storage.sync.get([config.LAST_NOTIFICATION_KEY]))[
+    config.LAST_NOTIFICATION_KEY
+  ];
+  console.log(currentVal, lastSentNotificationId, '<<<<<<<<<<<<<<<<');
   const upNext = await store.timeDataStore.getUpNextSegment();
 
   if (upNext && upNext.id !== lastSentNotificationId) {
@@ -166,9 +196,11 @@ const queryAndSendNotification = async () => {
       requireInteraction: false,
       eventTime: upNext.start.valueOf(),
     });
-    localStorage.setItem(config.LAST_NOTIFICATION_KEY, upNext.id);
+    const val = {} as any;
+    val[config.LAST_NOTIFICATION_KEY] = upNext.id;
+    return chrome.storage.sync.set(val);
   } else {
-    chrome.notifications.getAll((items) => {
+    return chrome.notifications.getAll((items) => {
       if (items) for (const key in items) chrome.notifications.clear(key);
     });
   }
@@ -244,6 +276,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   }
 });
 
-chrome.browserAction.onClicked.addListener(() => {
+chrome.action.onClicked.addListener(() => {
   void chrome.tabs.create({ url: '/dashboard.html' });
 });

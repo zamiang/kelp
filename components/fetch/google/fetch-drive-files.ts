@@ -73,7 +73,7 @@ const fetchDriveFilePage = async (googleOauthToken: string, pageToken?: string) 
   const body = await driveResponse.json();
   if (!driveResponse.ok) {
     ErrorTracking.logErrorInfo(JSON.stringify(params));
-    ErrorTracking.logErrorInRollbar(driveResponse.statusText);
+    ErrorTracking.logError(driveResponse.statusText);
   }
 
   return body;
@@ -124,7 +124,7 @@ export const fetchDriveFilesById = async (ids: string[], authToken: string, limi
       );
       if (!fileResponse.ok) {
         ErrorTracking.logErrorInfo(JSON.stringify(params));
-        ErrorTracking.logErrorInRollbar(fileResponse.statusText);
+        ErrorTracking.logError(fileResponse.statusText);
       }
 
       if (fileResponse.status === 200) {

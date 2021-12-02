@@ -22,7 +22,7 @@ import {
   ISegmentDocument,
   IWebsiteTag,
 } from '../store/data-types';
-import { getAssociates } from '../store/helpers';
+import { getAssociates } from '../shared/calendar-helpers';
 import { IStore } from '../store/use-store';
 import {
   IFeaturedWebsite,

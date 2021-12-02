@@ -108,7 +108,7 @@ export default class PersonModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        ErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logError(result.reason);
       }
     });
     return;
@@ -120,7 +120,7 @@ export default class PersonModel {
       try {
         await this.db.put('person', formattedPerson);
       } catch (e) {
-        ErrorTracking.logErrorInRollbar(e);
+        ErrorTracking.logError(e);
       }
     }
     return formattedPerson;

@@ -29,7 +29,7 @@ const fetchContacts = async (authToken: string) => {
   const peopleBody = await peopleResponse.json();
   if (!peopleResponse.ok) {
     ErrorTracking.logErrorInfo(JSON.stringify(params));
-    ErrorTracking.logErrorInRollbar(peopleResponse.statusText);
+    ErrorTracking.logError(peopleResponse.statusText);
   }
 
   const results = peopleBody?.connections?.map((person: gapi.client.people.Person) =>

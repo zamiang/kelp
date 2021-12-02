@@ -315,9 +315,15 @@ const themeHash = {
 } as any;
 
 const App = () => {
-  const [theme, setTheme] = useState<string>(
-    localStorage.getItem(config.THEME) ? localStorage.getItem(config.THEME)! : 'dark',
-  );
+  const [theme, setTheme] = useState<string>('dark');
+  useEffect(() => {
+    const getTheme = async () => {
+      const t = await chrome.storage.sync.get(config.THEME);
+      setTheme(t[config.THEME] || localStorage.getItem(config.THEME) || 'dark');
+    };
+    void getTheme();
+  }, []);
+
   return (
     <StyledEngineProvider injectFirst>
       <EmotionThemeProvider theme={themeHash[theme]}>
