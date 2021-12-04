@@ -10,10 +10,11 @@ const themeHash = {
 const setBgColor = async () => {
   const t = await chrome.storage.sync.get(config.THEME);
   const theme = t[config.THEME] || localStorage.getItem(config.THEME) || 'dark';
+  // set a default
   if (!t[config.THEME]) {
-    const themeVal = {} as any;
-    themeVal[config.THEME] = localStorage.getItem(config.THEME) || 'dark';
-    await chrome.storage.sync.set(themeVal);
+    await chrome.storage.sync.set({
+      [config.THEME]: localStorage.getItem(config.THEME) || 'dark',
+    });
   }
   document.body.style.backgroundColor = (themeHash as any)[theme];
 };

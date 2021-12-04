@@ -187,9 +187,9 @@ export const TopNav = (props: {
 
   const setTheme = (theme: string) => {
     props.setTheme(theme);
-    const val = {} as any;
-    val[config.THEME] = theme;
-    return chrome.storage.sync.set(val);
+    return chrome.storage.sync.set({
+      [config.THEME]: theme,
+    });
   };
 
   return (

@@ -132,9 +132,7 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
           size="medium"
           onClick={() => {
             props.setStep(props.step + 1);
-            const val = {} as any;
-            val[config.IS_ONBOARDING_COMPLETED] = 'true';
-            return chrome.storage.sync.set(val);
+            return chrome.storage.sync.set({ [config.IS_ONBOARDING_COMPLETED]: true });
           }}
         >
           <RightArrow

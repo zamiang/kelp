@@ -34,7 +34,7 @@
     "storage",
     "activeTab"
   ],
-  "host_permissions": ["*://*/*"],
+  "host_permissions": ["*://*/*", "<all_urls>"],
   "chrome_url_overrides": {
     "newtab": "dashboard.html"
   },
