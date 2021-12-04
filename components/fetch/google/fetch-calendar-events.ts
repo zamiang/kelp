@@ -147,7 +147,7 @@ const fetchCalendarEvents = async (
   const calendarBody = await calendarResponse.json();
   if (!calendarResponse.ok) {
     ErrorTracking.logErrorInfo(JSON.stringify(params));
-    ErrorTracking.logErrorInRollbar(calendarResponse.statusText);
+    ErrorTracking.logError(calendarResponse.statusText);
   }
   const filteredCalendarEvents =
     calendarBody && calendarBody.items ? (calendarBody.items as gapi.client.calendar.Event[]) : [];

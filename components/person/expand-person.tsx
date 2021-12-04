@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
 import EmailIcon from '../../public/icons/email.svg';
 import AttendeeList from '../shared/attendee-list';
+import { getAssociates } from '../shared/calendar-helpers';
 import MeetingList from '../shared/meeting-list';
 import { orderByCount } from '../shared/order-by-count';
 import { Row, classes } from '../shared/row-styles';
@@ -22,7 +23,6 @@ import {
   ISegmentDocument,
   IWebsiteTag,
 } from '../store/data-types';
-import { getAssociates } from '../store/helpers';
 import { IStore } from '../store/use-store';
 import {
   IFeaturedWebsite,

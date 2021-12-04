@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/homepage-theme';
 import RightArrow from '../../public/icons/right-arrow.svg';
@@ -132,7 +132,7 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
           size="medium"
           onClick={() => {
             props.setStep(props.step + 1);
-            return localStorage.setItem(config.IS_ONBOARDING_COMPLETED, 'true');
+            return chrome.storage.sync.set({ [config.IS_ONBOARDING_COMPLETED]: true });
           }}
         >
           <RightArrow
@@ -203,8 +203,15 @@ const OnboardingSteps = (props: { step: number; setStep: (n: number) => void }) 
 };
 
 export const Onboarding = () => {
-  const isOnboardingCompleted = !!localStorage.getItem(config.IS_ONBOARDING_COMPLETED);
-  const [step, setStep] = useState(isOnboardingCompleted ? 0 : 1);
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const isOnboardingCompleted = await chrome.storage.sync.get(config.IS_ONBOARDING_COMPLETED);
+      setStep(isOnboardingCompleted[config.IS_ONBOARDING_COMPLETED] ? 0 : 1);
+    };
+    void fetchData();
+  }, []);
 
   return (
     <StyledDialog

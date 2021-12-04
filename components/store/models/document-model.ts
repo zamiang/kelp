@@ -44,7 +44,7 @@ export default class DocumentModel {
 
     results.forEach((result) => {
       if (result.status === 'rejected') {
-        ErrorTracking.logErrorInRollbar(result.reason);
+        ErrorTracking.logError(result.reason);
       }
     });
     return;

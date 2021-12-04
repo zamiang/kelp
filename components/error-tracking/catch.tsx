@@ -21,7 +21,7 @@ export default function Catch(component: any, errorHandler?: any) {
     componentDidCatch(error: any, info: any) {
       if (errorHandler) {
         ErrorTracking.logErrorInfo(info);
-        ErrorTracking.logErrorInRollbar(error);
+        ErrorTracking.logError(error);
         errorHandler(error, info);
       }
     }

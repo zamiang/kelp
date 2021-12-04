@@ -185,6 +185,13 @@ export const TopNav = (props: {
     void fetchData();
   }, [props.store.isLoading, slug, isWebsite]);
 
+  const setTheme = (theme: string) => {
+    props.setTheme(theme);
+    return chrome.storage.sync.set({
+      [config.THEME]: theme,
+    });
+  };
+
   return (
     <Root>
       <div className={classes.leftSection}>
@@ -367,11 +374,9 @@ export const TopNav = (props: {
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    disabled={props.theme === config.THEME_LIGHT}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme(config.THEME_LIGHT);
-                      localStorage.setItem(config.THEME, config.THEME_LIGHT);
+                      return setTheme(config.THEME_LIGHT);
                     }}
                     size="large"
                   >
@@ -384,11 +389,9 @@ export const TopNav = (props: {
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    disabled={props.theme === config.THEME_NB}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme(config.THEME_NB);
-                      localStorage.setItem(config.THEME, config.THEME_NB);
+                      return setTheme(config.THEME_NB);
                     }}
                     size="large"
                   >
@@ -401,11 +404,9 @@ export const TopNav = (props: {
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    disabled={props.theme === config.THEME_COOL}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme(config.THEME_COOL);
-                      localStorage.setItem(config.THEME, config.THEME_COOL);
+                      return setTheme(config.THEME_COOL);
                     }}
                     size="large"
                   >
@@ -418,11 +419,9 @@ export const TopNav = (props: {
                   <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    disabled={props.theme === config.THEME_DARK}
                     onClick={(event) => {
                       event.preventDefault();
-                      props.setTheme(config.THEME_DARK);
-                      localStorage.setItem(config.THEME, config.THEME_DARK);
+                      return setTheme(config.THEME_DARK);
                     }}
                     size="large"
                   >

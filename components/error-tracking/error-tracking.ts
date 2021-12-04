@@ -3,11 +3,11 @@ const ErrorTracking = (() => {
     console.info(info);
   };
 
-  const logErrorInRollbar = (error: any) => {
+  const logError = (error: any) => {
     console.error(error);
   };
 
-  return { logErrorInfo, logErrorInRollbar };
+  return { logErrorInfo, logError };
 })();
 
 export default ErrorTracking;

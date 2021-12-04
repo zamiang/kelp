@@ -18,7 +18,7 @@ export const fetchSelf = async (authToken: string): Promise<IPerson | null> => {
   );
   if (!personResponse.ok) {
     ErrorTracking.logErrorInfo(JSON.stringify(params));
-    ErrorTracking.logErrorInRollbar(personResponse.statusText);
+    ErrorTracking.logError(personResponse.statusText);
 
     if (personResponse.status === 401) {
       // Reload if the current user fetch fails

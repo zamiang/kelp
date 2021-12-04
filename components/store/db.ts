@@ -330,7 +330,7 @@ const options = {
   },
   terminated: () => {
     console.error('terminated');
-    ErrorTracking.logErrorInRollbar('db terminated');
+    ErrorTracking.logError('db terminated');
   },
 };
 

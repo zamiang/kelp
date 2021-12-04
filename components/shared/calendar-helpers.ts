@@ -1,8 +1,8 @@
 import { intervalToDuration, subWeeks } from 'date-fns';
 import config from '../../constants/config';
-import { getWeek } from '../shared/date-helpers';
-import { IFormattedAttendee, ISegment } from './data-types';
-import { IStore } from './use-store';
+import { IFormattedAttendee, ISegment } from '../store/data-types';
+import { IStore } from '../store/use-store';
+import { getWeek } from './date-helpers';
 
 export const getMeetingTime = (segments: (ISegment | undefined)[]) => {
   const currentWeek = getWeek(new Date());

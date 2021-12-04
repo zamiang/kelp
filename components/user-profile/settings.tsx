@@ -72,10 +72,10 @@ const Settings = (props: { store: IStore }) => {
   const toggleChecked = (enabled: boolean) => {
     if (enabled) {
       setNotificationsEnabled(true);
-      localStorage.setItem(config.NOTIFICATIONS_KEY, 'enabled');
+      void chrome.storage.sync.set({ [config.NOTIFICATIONS_KEY]: 'enabled' });
     } else {
       setNotificationsEnabled(false);
-      localStorage.setItem(config.NOTIFICATIONS_KEY, 'disabled');
+      void chrome.storage.sync.set({ [config.NOTIFICATIONS_KEY]: 'disabled' });
     }
     if ('Notification' in window) {
       return Notification.requestPermission();
