@@ -45,7 +45,6 @@ const trackVisit = async (store: IStore, tab: chrome.tabs.Tab) => {
     const isDomainAllowed =
       config.BLOCKED_DOMAINS.filter((d) => currentUrl.indexOf(d) > -1).length < 1;
     if (!currentUrl || !isDomainAllowed || !tab.id) {
-      console.log(currentUrl, isDomainAllowed, tab.id);
       return;
     }
     // use `var` to avoid redeclaration of const error when re-running in the same tab
