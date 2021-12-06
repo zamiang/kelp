@@ -42,7 +42,7 @@
     "@mui/styles": "5.2.2",
     "@rehooks/component-size": "1.0.3",
     "@svgr/webpack": "6.1.1",
-    "@types/chrome": "0.0.166",
+    "@types/chrome": "0.0.168",
     "@types/d3": "7.1.0",
     "@types/express": "4.17.13",
     "@types/gapi": "0.0.41",
