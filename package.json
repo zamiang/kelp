@@ -38,7 +38,7 @@
     "@emotion/styled": "11.6.0",
     "@microsoft/microsoft-graph-client": "3.0.1",
     "@mui/lab": "5.0.0-alpha.59",
-    "@mui/material": "5.2.3",
+    "@mui/material": "5.2.5",
     "@mui/styles": "5.2.3",
     "@rehooks/component-size": "1.0.3",
     "@svgr/webpack": "6.1.1",
