@@ -70,6 +70,8 @@ const getConfig = () => ({
     fallback: {
       crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
+      url: require.resolve('url/'),
+      buffer: require.resolve('buffer/'),
     },
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {

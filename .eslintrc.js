@@ -43,6 +43,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-unsafe-argument': 0,
     '@typescript-eslint/unbound-method': 1,
+    '@typescript-eslint/no-misused-promises': 1,
     'react/display-name': 1,
     'arrow-body-style': ['error', 'as-needed'],
     'import/first': 'error',
