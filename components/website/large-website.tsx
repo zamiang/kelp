@@ -176,7 +176,10 @@ export const LargeWebsite = (props: {
       onMouseLeave={() => setShouldShowRemove(false)}
     >
       {shouldShowRemove && (
-        <IconButton className={classes.removeButton} onClick={() => hideWebsite(props.item.id)}>
+        <IconButton
+          className={classes.removeButton}
+          onClick={() => void hideWebsite(props.item.id)}
+        >
           <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
         </IconButton>
       )}
