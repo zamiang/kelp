@@ -1,10 +1,10 @@
-# Kelp: Your information filtration system
+# [Kelp: Your information filtration system](https://kelp.nyc/)
 
 Kelp brings your data together in one place. Pivot your meetings by what documents the attendees have edited recently. By associating person, a time slot and documents together, Kelp makes information easier to find.
 
-- https://chrome.google.com/webstore/devconsole/54522bcf-fc90-4948-a383-4e65c5514ba3/onkkkcfnlbkoialleldfbgodakajfpnl/edit?hl=en
-- https://addons.mozilla.org/en-US/developers/addon/kelp-your-website-organizer/edit
-- https://dashboard.render.com/web/srv-bv8ngnrlc6ck61fvgl8g
+- [Chrome Store]
+- [Mozilla Store]
+- [Marketing Site Hosting]
 
 This aspires to do a few things with instant value:
 
@@ -30,7 +30,9 @@ Then proceed with your node setup steps. Ensure you are using node 14 or greater
     npm install
     npm run dev:extension
 
-Starting the website in dev mode (if needed)
+Load the dev extension into your Chrome extensions
+
+Starting the website in dev mode
 
     npm run dev
 
@@ -38,3 +40,6 @@ Starting the website in dev mode (if needed)
 [google drive api]: https://developers.google.com/drive
 [google calendar api]: https://developers.google.com/calendar
 [.env.local]: https://nextjs.org/docs/basic-features/environment-variables
+[chrome store]: https://chrome.google.com/webstore/devconsole/54522bcf-fc90-4948-a383-4e65c5514ba3/onkkkcfnlbkoialleldfbgodakajfpnl/edit?hl=en
+[mozilla store]: https://addons.mozilla.org/en-US/developers/addon/kelp-your-website-organizer/edit
+[marketing site hosting]: https://vercel.com/zamiang/kelp
