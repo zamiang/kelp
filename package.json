@@ -65,7 +65,7 @@
     "fuse.js": "6.5.3",
     "idb": "7.0.1",
     "lodash": "4.17.21",
-    "material-ui-popup-state": "2.0.0",
+    "material-ui-popup-state": "2.0.1",
     "next": "12.1.5",
     "next-compose-plugins": "2.2.1",
     "next-react-svg": "1.1.3",
