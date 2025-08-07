@@ -122,8 +122,8 @@
     "url-loader": "4.1.1"
   },
   "engines": {
-    "node": "14.x",
-    "npm": "8.x"
+    "node": "24.x",
+    "npm": "11.x"
   },
   "cacheDirectories": [
     ".next/cache"
