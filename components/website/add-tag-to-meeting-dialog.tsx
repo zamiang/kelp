@@ -1,5 +1,5 @@
 import Dialog from '@mui/material/Dialog';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -111,24 +111,31 @@ export const AddTagToMeetingDialog = (props: {
       }}
     >
       <div className={classes.dialogContent}>
-        <Grid container justifyContent="space-between">
-          <Grid item>
+        <Box display="flex" justifyContent="space-between">
+          <Box>
             <Typography variant="h3">Add tags to {props.meeting.summary}</Typography>
             <br />
             <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         <List className={classes.columnList} disablePadding>
           {websiteTags.map((t) => (
             <ListItem
               key={t}
-              selected={isSegmentTagSelected(props.meeting.id, t, props.meetingTags)}
-              button
               onClick={() =>
                 props.toggleMeetingTag(t, props.meeting.id, props.meeting.summary || '')
               }
+              sx={{
+                cursor: 'pointer',
+                backgroundColor: isSegmentTagSelected(props.meeting.id, t, props.meetingTags)
+                  ? 'action.selected'
+                  : 'transparent',
+                '&:hover': {
+                  backgroundColor: 'action.hover',
+                },
+              }}
             >
               <ListItemText primary={t} />
             </ListItem>

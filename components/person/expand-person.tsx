@@ -1,6 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -110,10 +110,10 @@ const ExpandPerson = (props: {
   const meetingsYouBothAttended = segments.filter((s) => s.end < new Date());
   return (
     <Row>
-      <Grid container className={classes.topContainer} justifyContent="space-between">
-        <Grid item>
-          <Grid container alignItems="center" spacing={3}>
-            <Grid item>
+      <Box display="flex" className={classes.topContainer} justifyContent="space-between">
+        <Box>
+          <Box display="flex" alignItems="center" gap={3}>
+            <Box>
               <Avatar
                 alt={`Profile photo for ${person.name || person.emailAddresses[0] || undefined}`}
                 className={classes.avatar}
@@ -121,8 +121,8 @@ const ExpandPerson = (props: {
               >
                 {(person.name || person.id)[0]}
               </Avatar>
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
               <Typography variant="h2" color="textPrimary" gutterBottom>
                 {person.name}
               </Typography>
@@ -137,11 +137,11 @@ const ExpandPerson = (props: {
                   </Link>
                 </Typography>
               )}
-            </Grid>
-          </Grid>
-        </Grid>
+            </Box>
+          </Box>
+        </Box>
         {emailAddress && (
-          <Grid item>
+          <Box>
             <div style={{ maxWidth: 210, margin: '10px auto 0 ' }}>
               <Button
                 href={`mailto:${emailAddress}`}
@@ -160,27 +160,27 @@ const ExpandPerson = (props: {
                 Email Contact
               </Button>
             </div>
-          </Grid>
+          </Box>
         )}
-      </Grid>
+      </Box>
       <div className={classes.container}>
         {websites.length > 0 && (
           <div className={classes.section} id="websites">
             <Typography variant="h3" className={classes.rowText}>
               Associated websites
             </Typography>
-            <Grid container spacing={isMobile ? 5 : 6}>
+            <Box display="flex" flexWrap="wrap" gap={isMobile ? 5 : 6}>
               {websites.map((item) => (
-                <Grid item xs={3} key={item.id}>
+                <Box flex="0 0 25%" key={item.id}>
                   <LargeWebsite
                     item={item}
                     store={props.store}
                     websiteTags={props.websiteTags}
                     toggleWebsiteTag={props.toggleWebsiteTag}
                   />
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
           </div>
         )}
         {segmentDocuments.length > 0 && (

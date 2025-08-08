@@ -2,7 +2,7 @@ import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-reac
 import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -107,43 +107,43 @@ const Settings = (props: { store: IStore }) => {
 
   return (
     <Root className={classes.panel}>
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="flex-start"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Grid item xs={6}>
+        <Box flex="0 0 50%">
           <Typography variant="h1" style={{ marginBottom: 22 }}>
             Settings
           </Typography>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Divider />
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="flex-start"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Grid item xs={6}>
+        <Box flex="0 0 50%">
           <Typography variant="h3">Google</Typography>
-        </Grid>
-        <Grid item xs={6}>
+        </Box>
+        <Box flex="0 0 50%">
           <GoogleLoginButton currentUser={currentUser} />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Divider />
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="flex-start"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Grid item xs={6}>
+        <Box flex="0 0 50%">
           <Typography variant="h3">Microsoft Teams</Typography>
-        </Grid>
-        <Grid item xs={6}>
+        </Box>
+        <Box flex="0 0 50%">
           <AuthenticatedTemplate>
             <WelcomeUser />
             <LogOutButton />
@@ -151,19 +151,19 @@ const Settings = (props: { store: IStore }) => {
           <UnauthenticatedTemplate>
             <SignInButton />
           </UnauthenticatedTemplate>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Divider />
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="flex-start"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Grid item xs={6}>
+        <Box flex="0 0 50%">
           <Typography variant="h3">Upcoming Meeting Notifications</Typography>
-        </Grid>
-        <Grid item xs={6}>
+        </Box>
+        <Box flex="0 0 50%">
           <FormGroup>
             <FormControlLabel
               control={
@@ -179,83 +179,83 @@ const Settings = (props: { store: IStore }) => {
           <Typography style={{ marginBottom: 22 }} variant="body2">
             Current browser permission status: {notificationPermission || 'not enabled'}
           </Typography>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Divider />
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="flex-start"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Grid item xs={6}>
+        <Box flex="0 0 50%">
           <Typography variant="h3">Hidden websites</Typography>
-        </Grid>
-        <Grid item xs={6}>
+        </Box>
+        <Box flex="0 0 50%">
           {shouldShowEmptyWebsiteBlocklist && (
             <Typography>
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}
           {websiteBlocklist.map((item) => (
-            <Grid
+            <Box
               key={item.id}
-              container
+              display="flex"
               alignItems="center"
               justifyContent="space-between"
               className={classes.grid}
-              spacing={2}
+              gap={2}
             >
-              <Grid item xs={10}>
+              <Box flex="1">
                 <Typography noWrap>{item.id}</Typography>
-              </Grid>
-              <Grid item>
+              </Box>
+              <Box>
                 <IconButton onClick={() => removeWebsite(item.id)} size="large">
                   <CloseIcon width="18" height="18" />
                 </IconButton>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           ))}
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Divider />
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="flex-start"
         justifyContent="space-between"
         className={classes.section}
       >
-        <Grid item xs={6}>
+        <Box flex="0 0 50%">
           <Typography variant="h3">Hidden domains</Typography>
           <Typography>All urls under these domains are hidden</Typography>
-        </Grid>
-        <Grid item xs={6}>
+        </Box>
+        <Box flex="0 0 50%">
           {shouldShowEmptyDomainBlocklist && (
             <Typography>
               Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
             </Typography>
           )}
           {domainBlocklists.map((item) => (
-            <Grid
+            <Box
               key={item.id}
-              container
+              display="flex"
               alignItems="center"
               justifyContent="space-between"
               className={classes.grid}
-              spacing={2}
+              gap={2}
             >
-              <Grid item xs={10}>
+              <Box flex="1">
                 <Typography noWrap>{item.id}</Typography>
-              </Grid>
-              <Grid item>
+              </Box>
+              <Box>
                 <IconButton onClick={() => removeDomain(item.id)} size="large">
                   <CloseIcon width="18" height="18" />
                 </IconButton>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           ))}
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Root>
   );
 };

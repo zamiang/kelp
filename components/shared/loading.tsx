@@ -1,6 +1,6 @@
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
@@ -28,14 +28,14 @@ const Loading = (props: { isOpen: boolean; message: string }) => {
   const classes = useBackdropStyles();
   return (
     <StyledBackdrop className={classes.backdrop} open={props.isOpen}>
-      <Grid container alignItems="center" justifyContent="center">
-        <Grid item style={{ width: '100%', textAlign: 'center' }}>
+      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+        <Box style={{ width: '100%', textAlign: 'center' }}>
           <CircularProgress color="inherit" />
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box>
           <Typography variant="h5">{props.message}</Typography>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </StyledBackdrop>
   );
 };

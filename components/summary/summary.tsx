@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
@@ -128,39 +128,39 @@ const TitleRow = (props: { start: Date }) => (
     <Typography variant="h3" className={summaryClasses.heading}>
       <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
     </Typography>
-    <Grid container alignItems="flex-start">
-      <Grid item className={summaryClasses.item}>
+    <Box display="flex" alignItems="flex-start">
+      <Box className={summaryClasses.item}>
         <DayTitle day={props.start} />
         <div className={summaryClasses.border}></div>
-      </Grid>
-      <Grid item className={summaryClasses.item}>
+      </Box>
+      <Box className={summaryClasses.item}>
         <DayTitle day={addDays(props.start, 1)} />
         <div className={summaryClasses.border}></div>
-      </Grid>
-      <Grid item className={summaryClasses.item}>
+      </Box>
+      <Box className={summaryClasses.item}>
         <DayTitle day={addDays(props.start, 2)} />
         <div className={summaryClasses.border}></div>
-      </Grid>
-      <Grid item className={summaryClasses.item}>
+      </Box>
+      <Box className={summaryClasses.item}>
         <DayTitle day={addDays(props.start, 3)} />
         <div className={summaryClasses.border}></div>
-      </Grid>
-      <Grid item className={summaryClasses.item}>
+      </Box>
+      <Box className={summaryClasses.item}>
         <DayTitle day={addDays(props.start, 4)} />
         <div className={summaryClasses.border}></div>
-      </Grid>
-      <Grid item className={summaryClasses.item}>
+      </Box>
+      <Box className={summaryClasses.item}>
         <DayTitle day={addDays(props.start, 5)} />
         <div className={summaryClasses.border}></div>
-      </Grid>
-      <Grid item className={summaryClasses.item}>
+      </Box>
+      <Box className={summaryClasses.item}>
         <DayTitle day={addDays(props.start, 6)} />
         <div className={summaryClasses.border}></div>
-      </Grid>
-      <Grid item>
+      </Box>
+      <Box>
         <div className={summaryClasses.borderRight}></div>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </div>
 );
 
@@ -217,7 +217,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
     );
   });
   return (
-    <Grid item className={summaryClasses.currentDayContainer}>
+    <Box className={summaryClasses.currentDayContainer}>
       <Typography
         className={clsx(summaryClasses.day, isToday && summaryClasses.currentDay)}
         variant="body2"
@@ -225,7 +225,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
         {format(props.day, 'd')}
       </Typography>
       <div>{terms}</div>
-    </Grid>
+    </Box>
   );
 };
 
@@ -242,9 +242,9 @@ export const Summary = (props: { store: IStore }) => {
   };
   const dayRows = times(numberWeeks).map((week) => (
     <div key={week} className={summaryClasses.week}>
-      <Grid container className={summaryClasses.days}>
+      <Box display="flex" className={summaryClasses.days}>
         {getDayColumn(week)}
-      </Grid>
+      </Box>
     </div>
   ));
   return (

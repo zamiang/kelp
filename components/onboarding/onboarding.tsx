@@ -1,5 +1,5 @@
 import Dialog from '@mui/material/Dialog';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -76,16 +76,16 @@ const maxTips = 3;
 const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
     <img src="https://www.kelp.nyc/animations/tag-nav.gif" className={classes.image} />
-    <Grid container justifyContent="space-between" alignItems="center">
-      <Grid item>
+    <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box>
         <Typography className={classes.bold} variant="h3">
           {props.step} / {maxTips}
         </Typography>
         <Typography variant="h3" className={classes.heading}>
           Meet your magical website organizer
         </Typography>
-      </Grid>
-      <Grid item>
+      </Box>
+      <Box>
         <IconButton
           size="medium"
           className={classes.button}
@@ -97,24 +97,24 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
             className={classes.iconImage}
           />
         </IconButton>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </React.Fragment>
 );
 
 const PinAnimation = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
     <img src="https://www.kelp.nyc/animations/tag-group.gif" className={classes.image} />
-    <Grid container justifyContent="space-between" alignItems="center">
-      <Grid item>
+    <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box>
         <Typography className={classes.bold} variant="h3">
           {props.step} / {maxTips}
         </Typography>
         <Typography variant="h3" className={classes.heading}>
           Add Smart tags
         </Typography>
-      </Grid>
-      <Grid item>
+      </Box>
+      <Box>
         <IconButton
           size="medium"
           className={classes.leftButton}
@@ -141,24 +141,24 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
             className={classes.iconImage}
           />
         </IconButton>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </React.Fragment>
 );
 
 const MeetingsAnimation = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
     <img src="https://www.kelp.nyc/animations/tag-meeting.gif" className={classes.image} />
-    <Grid container justifyContent="space-between" alignItems="center">
-      <Grid item>
+    <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box>
         <Typography className={classes.bold} variant="h3">
           {props.step} / {maxTips}
         </Typography>
         <Typography variant="h3" className={classes.heading}>
           Associate webpages with meetings
         </Typography>
-      </Grid>
-      <Grid item>
+      </Box>
+      <Box>
         <IconButton
           size="medium"
           className={classes.leftButton}
@@ -182,8 +182,8 @@ const MeetingsAnimation = (props: { step: number; setStep: (step: number) => voi
             className={classes.iconImage}
           />
         </IconButton>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </React.Fragment>
 );
 
