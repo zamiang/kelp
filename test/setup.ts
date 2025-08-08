@@ -75,7 +75,8 @@ const mockIDBRequest = {
   readyState: 'done',
 };
 
-const mockIDBDatabase = {
+// Mock IDB Database (available for tests that need it)
+(global as any).mockIDBDatabase = {
   close: vi.fn(),
   createObjectStore: vi.fn(),
   deleteObjectStore: vi.fn(),

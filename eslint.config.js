@@ -15,6 +15,8 @@ export default [
       '.next/',
       '*.js',
       'next-env.d.ts',
+      '.eslintrc.js',
+      'next.config.js',
     ],
   },
   {
@@ -26,7 +28,7 @@ export default [
       },
       parser: tseslint.parser,
       parserOptions: {
-        project: ['tsconfig.json', 'extension/tsconfig.json'],
+        project: ['tsconfig-all.json'],
         sourceType: 'module',
       },
     },

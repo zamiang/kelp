@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import React from 'react';
 
@@ -91,9 +91,9 @@ describe('Popup Buffer Error Reproduction', () => {
         // Import a module that uses Buffer (like Microsoft Graph SDK or crypto operations)
         require('@azure/msal-browser');
       }).toThrow(/Buffer is not defined/);
-    } catch (error) {
+    } catch {
       // The error might be thrown during module loading
-      expect(error).toBeDefined();
+      // We expect this to happen when Buffer is not defined
     } finally {
       // Restore Buffer
       global.Buffer = originalBuffer;
@@ -115,7 +115,7 @@ describe('Popup Buffer Error Reproduction', () => {
             Buffer.from('test', 'utf8');
           }
           return <div data-testid="popup">Popup loaded</div>;
-        } catch (error) {
+        } catch {
           throw new Error('Buffer is not defined');
         }
       };

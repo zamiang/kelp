@@ -19,7 +19,7 @@ todo
 
 ## 📦 Installation Notes
 
-- `npm install`
+- `npm install --legacy-peer-deps`
 
 ## ⚙️ Dev Commands
 

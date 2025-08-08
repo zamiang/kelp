@@ -104,7 +104,7 @@ export const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {
   return Object.keys(guestStats)
     .map((key) => {
       if (guestStats[key]) {
-        // eslint-disable-next-line
+         
         return `${guestStats[key as any]} ${guestStatsHash[key]}`;
       }
       return false;

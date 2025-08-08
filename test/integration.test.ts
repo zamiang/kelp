@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('Extension Error Integration Tests', () => {
   beforeEach(() => {
@@ -82,10 +82,10 @@ describe('Extension Error Integration Tests', () => {
     let store: any = undefined;
 
     // Mock the getOrCreateStore function that returns undefined when db fails
-    const getOrCreateStore = async () => {
+    const getOrCreateStore = async () => 
       // Simulate database connection failure
-      return undefined;
-    };
+       undefined
+    ;
 
     // Mock the trackVisit function from background.ts
     const trackVisit = async (store: any, tab: any) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import ErrorTracking from './error-tracking';
 
 export default function Catch(component: any, errorHandler?: any) {
-  return class extends React.Component {
+  return class CatchErrorBoundary extends React.Component {
     state: {
       error: Error | undefined;
     };
