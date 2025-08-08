@@ -2,9 +2,9 @@
 
 ## Current Work Focus
 
-**Primary Task**: Updating main libraries in the Kelp project to get `npm run build` working.
+**Primary Task**: Fix Chrome extension build after dependency updates - ensure both `npm run build` and `npm run build-extension` work.
 
-**Current Status**: ✅ **COMPLETED SUCCESSFULLY** - All library updates completed! Build is now working perfectly.
+**Current Status**: ✅ **COMPLETED SUCCESSFULLY** - Both Next.js website and Chrome extension builds are now working perfectly!
 
 ## Recent Changes Made
 
@@ -19,7 +19,38 @@
 2. **Resolved TypeScript Configuration**:
    - Next.js automatically updated `tsconfig.json` to set `isolatedModules: true`
 
-### Phase 2: Material-UI Grid Component Migration ✅ (Major Progress)
+### Phase 2: Material-UI Grid Component Migration ✅
+
+**Problem**: Material-UI Grid component API has changed in newer versions. The `item` and `xs` props are no longer compatible.
+
+**Solution**: Successfully converted all Grid components to Box components across 25+ files.
+
+### Phase 3: Chrome Extension Build Fix ✅ (Latest Work)
+
+**Problem**: After dependency updates, Chrome extension webpack build failed with ES module compatibility errors.
+
+**Root Cause**: Project uses `"type": "module"` in package.json, but webpack config files used CommonJS syntax.
+
+**Solution**: Converted all webpack configuration files to ES module syntax:
+
+1. **Updated `extension/webpack.config.js`**:
+   - Converted from `require()` to `import` statements
+   - Added ES module `__dirname` polyfill using `fileURLToPath`
+   - Fixed `react-dom` alias issue
+   - Added `vm-browserify` polyfill for missing Node.js modules
+
+2. **Updated `extension/webpack.dev.js`**:
+   - Converted from CommonJS to ES module syntax
+   - Fixed webpack-merge import
+
+3. **Updated `extension/webpack-safari.config.js`**:
+   - Applied same ES module conversion
+   - Added same polyfills and fixes
+
+4. **Installed Missing Dependencies**:
+   - Added `vm-browserify` package for Node.js polyfill
+
+### Phase 2: Material-UI Grid Component Migration ✅ (Previous Work)
 
 **Problem**: Material-UI Grid component API has changed in newer versions. The `item` and `xs` props are no longer compatible.
 
@@ -105,11 +136,13 @@
 
 ## Final Build Status
 
-✅ **BUILD SUCCESSFUL**: `npm run build` now completes without errors
+✅ **NEXT.JS BUILD SUCCESSFUL**: `npm run build` completes without errors
+✅ **CHROME EXTENSION BUILD SUCCESSFUL**: `npm run build-extension` completes without errors
+✅ **SAFARI EXTENSION BUILD SUCCESSFUL**: `npm run build-extension:safari` completes without errors
 ✅ **DEV SERVER WORKING**: `npm run dev` starts successfully on localhost:3000
 ✅ **ALL COMPONENTS MIGRATED**: Successfully converted all Grid components to Box components
 
-**Final Fix**: Fixed `pages/terms.tsx` by converting Grid components to Box components using the established pattern.
+**Final Fix**: Converted all webpack configuration files from CommonJS to ES module syntax to be compatible with `"type": "module"` in package.json.
 
 ## Key Insights & Patterns
 

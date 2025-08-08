@@ -1,6 +1,12 @@
-const path = require('path');
-const webpack = require('webpack');
-const CopyPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import webpack from 'webpack';
+import CopyPlugin from 'copy-webpack-plugin';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // COPIED FROM constants/config unsure why import doesn't work
 const GOOGLE_CLIENT_ID = '296254551365-v8olgrucl4t2b1oa22fnr1r23390umvl.apps.googleusercontent.com';
@@ -87,10 +93,11 @@ const getConfig = () => ({
       stream: require.resolve('stream-browserify'),
       url: require.resolve('url/'),
       buffer: require.resolve('buffer/'),
+      vm: require.resolve('vm-browserify'),
     },
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
-      'react-dom': '@hot-loader/react-dom',
+      'react-dom': 'react-dom',
     },
   },
   devServer: {
@@ -118,4 +125,4 @@ const getConfig = () => ({
   ],
 });
 
-module.exports = getConfig();
+export default getConfig();

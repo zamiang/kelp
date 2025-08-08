@@ -1,6 +1,12 @@
-const path = require('path');
-const webpack = require('webpack');
-const CopyPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import webpack from 'webpack';
+import CopyPlugin from 'copy-webpack-plugin';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const getConfig = () => ({
   mode: process.env.NODE_ENV,
@@ -72,10 +78,11 @@ const getConfig = () => ({
       stream: require.resolve('stream-browserify'),
       url: require.resolve('url/'),
       buffer: require.resolve('buffer/'),
+      vm: require.resolve('vm-browserify'),
     },
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
-      'react-dom': '@hot-loader/react-dom',
+      'react-dom': 'react-dom',
     },
   },
   devServer: {
@@ -100,4 +107,4 @@ const getConfig = () => ({
   ],
 });
 
-module.exports = getConfig();
+export default getConfig();
