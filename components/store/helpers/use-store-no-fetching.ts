@@ -23,7 +23,7 @@ export const useStoreNoFetch = (db: dbType | null, skipHook: boolean): IStore | 
 
   if (!skipHook) {
     // NOTE: @skipHook is need to support execution from the background worker context where hooks are not available
-     
+
     [isLoading, setLoading] = useState<number>(0);
   }
   if (!db) {

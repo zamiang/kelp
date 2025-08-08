@@ -5,7 +5,6 @@ import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-
 import config from './config';
 
 declare module '@mui/styles/defaultTheme' {
-   
   interface DefaultTheme extends Theme {}
 }
 

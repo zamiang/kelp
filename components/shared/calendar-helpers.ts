@@ -104,7 +104,6 @@ export const getFormattedGuestStats = (attendees: IFormattedAttendee[]) => {
   return Object.keys(guestStats)
     .map((key) => {
       if (guestStats[key]) {
-         
         return `${guestStats[key as any]} ${guestStatsHash[key]}`;
       }
       return false;

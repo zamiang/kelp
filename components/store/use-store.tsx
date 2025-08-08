@@ -61,7 +61,7 @@ const useStore = (
 
   if ((googleOauthToken || microsoftAccount) && shouldFetch) {
     console.log('fetching data');
-     
+
     return useStoreWithFetching(
       db,
       googleOauthToken!,
@@ -72,7 +72,7 @@ const useStore = (
     );
   }
   console.log('not fetching data');
-   
+
   return useStoreNoFetch(db, false);
 };
 
