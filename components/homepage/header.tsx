@@ -1,6 +1,6 @@
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
@@ -113,37 +113,46 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 
 const Header = () => (
   <StyledContainer maxWidth="lg">
-    <Grid container justifyContent="space-between" className={classes.header} alignItems="center">
-      <Grid item xs={6} sm={3} style={{ textAlign: 'left' }}>
-        <Grid container alignItems="center">
-          <Grid item>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      className={classes.header}
+      alignItems="center"
+    >
+      <Box
+        flex="0 0 50%"
+        sx={{ '@media (min-width: 600px)': { flex: '0 0 25%' } }}
+        style={{ textAlign: 'left' }}
+      >
+        <Box display="flex" alignItems="center">
+          <Box>
             <Link href="/">
               <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
             </Link>
-          </Grid>
-          <Grid item>
+          </Box>
+          <Box>
             <Link href="/">
               <Typography variant="h4" className={classes.logo}>
                 Kelp
               </Typography>
             </Link>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs>
-        <Grid
-          container
-          spacing={4}
+          </Box>
+        </Box>
+      </Box>
+      <Box flex={1}>
+        <Box
+          display="flex"
+          gap={4}
           alignItems="center"
           className={classes.links}
           justifyContent="center"
         >
-          <Grid item>
+          <Box>
             <Link href="/about">
               <Typography className={classes.headerLink}>About</Typography>
             </Link>
-          </Grid>
-          <Grid item>
+          </Box>
+          <Box>
             <a
               rel="noreferrer"
               href="https://updates.kelp.nyc"
@@ -152,10 +161,14 @@ const Header = () => (
             >
               <Typography className={classes.headerLink}>Updates</Typography>
             </a>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={6} sm={3} style={{ textAlign: 'right' }}>
+          </Box>
+        </Box>
+      </Box>
+      <Box
+        flex="0 0 50%"
+        sx={{ '@media (min-width: 600px)': { flex: '0 0 25%' } }}
+        style={{ textAlign: 'right' }}
+      >
         <PopupState variant="popover" popupId="demo-popup-menu">
           {(popupState) => (
             <React.Fragment>
@@ -190,8 +203,8 @@ const Header = () => (
           )}
         </PopupState>
         <LoginButton />
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </StyledContainer>
 );
 

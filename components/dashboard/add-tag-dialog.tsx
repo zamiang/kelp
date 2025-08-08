@@ -1,5 +1,5 @@
 import Dialog from '@mui/material/Dialog';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -88,16 +88,16 @@ export const AddTaggDialog = (props: {
       }}
     >
       <div className={classes.dialogContent}>
-        <Grid container justifyContent="space-between">
-          <Grid item xs={10}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box flex={1}>
             <Typography variant="h3">Add tags </Typography>
-          </Grid>
-          <Grid item xs={2}>
+          </Box>
+          <Box>
             <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         <ul className={classes.columnList}>
           {websiteTags.map((t) => (
             <li key={t}>

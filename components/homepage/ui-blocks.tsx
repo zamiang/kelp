@@ -1,5 +1,5 @@
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
@@ -115,25 +115,28 @@ export const StyledContainer = styled(Container)(({ theme }) => ({
 
 const UiBlocks = () => (
   <StyledContainer maxWidth="md">
-    <Grid container className={classes.section} alignItems="center">
-      <Grid item md={6} sm={12} className={classes.sectionText}>
+    <Box display="flex" className={classes.section} alignItems="center" flexWrap="wrap">
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
+        className={classes.sectionText}
+      >
         <Typography variant="h4" className={classes.heading}>
           <div className={classes.dot}></div>Made for humans
         </Typography>
         <Typography>
-          Kelp meets you where you are. It doesn’t ask you to change how you organize information or
+          Kelp meets you where you are. It doesn't ask you to change how you organize information or
           collaborate.
         </Typography>
-      </Grid>
-      <Grid
-        item
-        md={6}
-        sm={12}
+      </Box>
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
         className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
       >
         <img src="images/meeting.svg" style={{ maxHeight: 212, maxWidth: '100%' }} />
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </StyledContainer>
 );
 

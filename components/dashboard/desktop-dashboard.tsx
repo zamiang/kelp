@@ -2,7 +2,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
@@ -264,7 +264,7 @@ export const DesktopDashboard = (props: {
             <Dialog maxWidth="md" open={store.error && !is500Error(store.error) ? true : false}>
               <Alert severity="error">
                 <AlertTitle>Error</AlertTitle>Please reload the page
-                <Typography>{store.error}</Typography>
+                <Typography>{store.error?.message || 'An unknown error occurred'}</Typography>
               </Alert>
             </Dialog>
             <AddWebsiteToTagDialog
@@ -358,14 +358,14 @@ export const DesktopDashboard = (props: {
                       path="/home"
                       element={
                         <div>
-                          <Grid container>
-                            <Grid item xs={3}>
+                          <Box display="flex">
+                            <Box flex="0 0 25%">
                               <MostRecentTab />
-                            </Grid>
-                            <Grid item xs={9}>
+                            </Box>
+                            <Box flex="0 0 75%">
                               <TopPeople store={props.store} />
-                            </Grid>
-                          </Grid>
+                            </Box>
+                          </Box>
                           <MeetingHighlight
                             store={props.store}
                             toggleWebsiteTag={toggleWebsiteTagClick}

@@ -1,13 +1,24 @@
-const withPlugins = require('next-compose-plugins');
-const { createSecureHeaders } = require('next-secure-headers');
-const withReactSvg = require('next-react-svg');
-const path = require('path');
+import { createSecureHeaders } from 'next-secure-headers';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  webpack5: true,
+
+  webpack: (config) => {
+    // Handle SVG files
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return config;
+  },
 
   async rewrites() {
     return [
@@ -52,14 +63,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlugins(
-  [
-    [
-      withReactSvg,
-      {
-        include: path.resolve(__dirname, 'public'),
-      },
-    ],
-  ],
-  nextConfig,
-);
+export default nextConfig;

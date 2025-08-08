@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -129,17 +129,18 @@ export const TopTags = (props: {
         isDropDisabled={props.dragDropSource?.includes('-websites')}
       >
         {(provided, snapshot) => (
-          <Grid
-            container
+          <Box
             className={classes.container}
+            display="flex"
+            flexDirection="column"
             alignItems="center"
-            spacing={1}
+            gap={1}
             ref={provided.innerRef}
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
             {shouldShowBack && (
-              <Grid item>
+              <Box>
                 <IconButton onClick={() => navigate('/home')} size="small">
                   <LeftArrow
                     width={config.ICON_SIZE}
@@ -148,33 +149,32 @@ export const TopTags = (props: {
                     className={classes.iconImage}
                   />
                 </IconButton>
-              </Grid>
+              </Box>
             )}
             {props.websiteTags.map((t, index) => (
               <Draggable draggableId={t.tag} index={index} key={t.tag}>
                 {(provided, snapshot) => (
-                  <Grid
-                    item
-                    xs={12}
+                  <Box
+                    width="100%"
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     style={getItemStyle(provided.draggableProps.style)}
                   >
-                    <Grid
-                      container
+                    <Box
+                      display="flex"
                       alignItems="center"
                       justifyContent="space-between"
                       className={classes.tagContainer}
                     >
-                      <Grid item zeroMinWidth xs>
-                        <Grid container alignItems="center">
-                          <Grid item>
+                      <Box flex={1} minWidth={0}>
+                        <Box display="flex" alignItems="center">
+                          <Box>
                             <div className={classes.dotContainer}>
                               <div className={classes.dot}></div>
                             </div>
-                          </Grid>
-                          <Grid item zeroMinWidth xs>
+                          </Box>
+                          <Box flex={1} minWidth={0}>
                             <Typography
                               noWrap
                               className={classes.tag}
@@ -183,9 +183,8 @@ export const TopTags = (props: {
                             >
                               {t.tag}
                             </Typography>
-                          </Grid>
-                          <Grid
-                            item
+                          </Box>
+                          <Box
                             className={clsx(
                               classes.icon,
                               snapshot.isDragging && classes.iconVisible,
@@ -204,42 +203,48 @@ export const TopTags = (props: {
                                 className={classes.iconImage}
                               />
                             )}
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
                 )}
               </Draggable>
             ))}
             {provided.placeholder}
-          </Grid>
+          </Box>
         )}
       </Droppable>
       <br />
-      <Grid container className={classes.container} alignItems="center" spacing={1}>
-        <Grid item xs={12}>
-          <Grid container alignItems="center" className={classes.tagContainer}>
-            <Grid item>
+      <Box
+        className={classes.container}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={1}
+      >
+        <Box width="100%">
+          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box>
               <div className={classes.dotContainer}>
                 <div className={classes.dot}></div>
               </div>
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
               <Typography variant="body2" className={classes.tag} onClick={() => onClickTag('all')}>
                 Recent
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container alignItems="center" className={classes.tagContainer}>
-            <Grid item>
+            </Box>
+          </Box>
+        </Box>
+        <Box width="100%">
+          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box>
               <div className={classes.dotContainer}>
                 <div className={classes.dot}></div>
               </div>
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
               <Typography
                 variant="body2"
                 className={classes.tag}
@@ -249,10 +254,10 @@ export const TopTags = (props: {
               >
                 Add a tag
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </Root>
   );
 };
@@ -267,8 +272,14 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
 
   return (
     <Root>
-      <Grid container className={classes.container} alignItems="center" spacing={1}>
-        <Grid item>
+      <Box
+        className={classes.container}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={1}
+      >
+        <Box>
           <IconButton onClick={() => navigate('/home')} size="small">
             <LeftArrow
               width={config.ICON_SIZE}
@@ -277,16 +288,16 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
               className={classes.iconImage}
             />
           </IconButton>
-        </Grid>
+        </Box>
         {props.tags.map((t) => (
-          <Grid item xs={12} key={t}>
-            <Grid container alignItems="center" className={classes.tagContainer}>
-              <Grid item>
+          <Box width="100%" key={t}>
+            <Box display="flex" alignItems="center" className={classes.tagContainer}>
+              <Box>
                 <div className={classes.dotContainer}>
                   <div className={classes.dot}></div>
                 </div>
-              </Grid>
-              <Grid item zeroMinWidth xs>
+              </Box>
+              <Box flex={1} minWidth={0}>
                 <Typography
                   noWrap
                   variant="body2"
@@ -295,11 +306,11 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
                 >
                   {t}
                 </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
+              </Box>
+            </Box>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Root>
   );
 };
@@ -308,8 +319,14 @@ export const ExpandMeetingNav = () => {
   const navigate = useNavigate();
   return (
     <Root>
-      <Grid container className={classes.container} alignItems="center" spacing={1}>
-        <Grid item>
+      <Box
+        className={classes.container}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={1}
+      >
+        <Box>
           <IconButton onClick={() => navigate('/home')} size="small">
             <LeftArrow
               width={config.ICON_SIZE}
@@ -318,15 +335,15 @@ export const ExpandMeetingNav = () => {
               className={classes.iconImage}
             />
           </IconButton>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container alignItems="center" className={classes.tagContainer}>
-            <Grid item>
+        </Box>
+        <Box width="100%">
+          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box>
               <div className={classes.dotContainer}>
                 <div className={classes.dot}></div>
               </div>
-            </Grid>
-            <Grid item zeroMinWidth xs>
+            </Box>
+            <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
@@ -337,17 +354,17 @@ export const ExpandMeetingNav = () => {
               >
                 Websites
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container alignItems="center" className={classes.tagContainer}>
-            <Grid item>
+            </Box>
+          </Box>
+        </Box>
+        <Box width="100%">
+          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box>
               <div className={classes.dotContainer}>
                 <div className={classes.dot}></div>
               </div>
-            </Grid>
-            <Grid item zeroMinWidth xs>
+            </Box>
+            <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
@@ -358,10 +375,10 @@ export const ExpandMeetingNav = () => {
               >
                 Guests
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </Root>
   );
 };
@@ -370,8 +387,14 @@ export const ExpandPersonNav = () => {
   const navigate = useNavigate();
   return (
     <Root>
-      <Grid container className={classes.container} alignItems="center" spacing={1}>
-        <Grid item>
+      <Box
+        className={classes.container}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={1}
+      >
+        <Box>
           <IconButton onClick={() => navigate('/home')} size="small">
             <LeftArrow
               width={config.ICON_SIZE}
@@ -380,15 +403,15 @@ export const ExpandPersonNav = () => {
               className={classes.iconImage}
             />
           </IconButton>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container alignItems="center" className={classes.tagContainer}>
-            <Grid item>
+        </Box>
+        <Box width="100%">
+          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box>
               <div className={classes.dotContainer}>
                 <div className={classes.dot}></div>
               </div>
-            </Grid>
-            <Grid item zeroMinWidth xs>
+            </Box>
+            <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
@@ -399,17 +422,17 @@ export const ExpandPersonNav = () => {
               >
                 Websites
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container alignItems="center" className={classes.tagContainer}>
-            <Grid item>
+            </Box>
+          </Box>
+        </Box>
+        <Box width="100%">
+          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box>
               <div className={classes.dotContainer}>
                 <div className={classes.dot}></div>
               </div>
-            </Grid>
-            <Grid item zeroMinWidth xs>
+            </Box>
+            <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
@@ -420,17 +443,17 @@ export const ExpandPersonNav = () => {
               >
                 People
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container alignItems="center" className={classes.tagContainer}>
-            <Grid item>
+            </Box>
+          </Box>
+        </Box>
+        <Box width="100%">
+          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box>
               <div className={classes.dotContainer}>
                 <div className={classes.dot}></div>
               </div>
-            </Grid>
-            <Grid item zeroMinWidth xs>
+            </Box>
+            <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
@@ -441,10 +464,10 @@ export const ExpandPersonNav = () => {
               >
                 Meetings
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </Root>
   );
 };

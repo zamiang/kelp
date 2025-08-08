@@ -108,8 +108,9 @@ export const AddWebsiteToTagDialog = (props: {
     try {
       new URL(e.target.value);
       setErrorText(undefined);
-    } catch (_) {
+    } catch (error) {
       setErrorText('Not a valid url');
+      console.log(error);
       return false;
     }
   };
