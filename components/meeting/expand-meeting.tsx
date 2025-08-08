@@ -175,7 +175,7 @@ const ExpandedMeeting = (props: {
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const hasMeetingNotes = !!meeting.meetingNotesLink;
-  const meetingDescriptionIsMicrosoftHtml =
+  const isMeetingDescriptionIsMicrosoftHtml =
     isHtml && meeting.description?.includes('<span itemscope');
   const hasWebsites = websites.length > 0 || relevantTags.length > 0;
   return (
@@ -346,7 +346,7 @@ const ExpandedMeeting = (props: {
             <Typography
               className={clsx(
                 classes.description,
-                meetingDescriptionIsMicrosoftHtml && classes.descriptionMicrosoft,
+                isMeetingDescriptionIsMicrosoftHtml && classes.descriptionMicrosoft,
               )}
               dangerouslySetInnerHTML={{ __html: meeting.description.trim() }}
             />

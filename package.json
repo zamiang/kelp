@@ -13,6 +13,7 @@
   },
   "type": "module",
   "main": "pages/_index.tsx",
+  "sideEffects": false,
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "audit-dependencies": "npm audit --audit-level=high --production",

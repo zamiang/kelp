@@ -12,7 +12,7 @@
     "./pages/**/*.tsx",
     "./test/**/*.ts",
     "./test/**/*.tsx",
-    "@types/**.*.ts",
+    "./@types/**/*.ts",
     "./constants/config.ts",
     "./vitest.config.ts"
   ]

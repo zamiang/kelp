@@ -151,15 +151,17 @@ export default class SegmentModel {
     return Promise.all(attendees.map((attendee) => this.db.get('meeting', attendee.segmentId)));
   }
 
-  async getDriveActivityIdsForWeek(week: number) {
+  async getDriveActivityIdsForWeek(week: number): Promise<string[]> {
     const segments = await this.getAll();
-    flatten(segments.filter((segment) => getWeek(segment.start) === week).map(() => []));
-    return segments;
+    return flatten(
+      segments.filter((segment) => getWeek(segment.start) === week).map((): string[] => []),
+    );
   }
 
-  async getDriveActivityIdsForDate(date: number) {
+  async getDriveActivityIdsForDate(date: number): Promise<string[]> {
     const segments = await this.getAll();
-    flatten(segments.filter((segment) => getDate(segment.start) === date).map(() => []));
-    return segments;
+    return flatten(
+      segments.filter((segment) => getDate(segment.start) === date).map((): string[] => []),
+    );
   }
 }

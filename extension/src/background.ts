@@ -171,7 +171,7 @@ const fetchDataAndCreateStore = async () => {
 };
 
 const captureVisibleTab = async (url: string) => {
-  const image = await chrome.tabs.captureVisibleTab(null as any, {
+  const image = await chrome.tabs.captureVisibleTab({
     format: 'jpeg',
     quality: 1,
   });
@@ -223,7 +223,7 @@ const queryAndSendNotification = async () => {
       });
       return chrome.storage.sync.set({ [config.LAST_NOTIFICATION_KEY]: upNext.id });
     } else {
-      return chrome.notifications.getAll((items) => {
+      return chrome.notifications.getAll((items): void => {
         if (items) for (const key in items) chrome.notifications.clear(key);
       });
     }
@@ -233,10 +233,10 @@ const queryAndSendNotification = async () => {
 };
 
 chrome.notifications.onClicked.addListener(
-  () => void chrome.tabs.create({ url: `/dashboard.html` }),
+  (): void => void chrome.tabs.create({ url: `/dashboard.html` }),
 );
 
-const alarmListener = (alarm: chrome.alarms.Alarm) => void onAlarm(alarm);
+const alarmListener = (alarm: chrome.alarms.Alarm): void => void onAlarm(alarm);
 
 const setupTimers = () => {
   chrome.alarms.onAlarm.removeListener(alarmListener);
@@ -275,9 +275,9 @@ chrome.idle.onStateChanged.addListener((state) => {
   }
 });
 
-chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightInfo) => {
-  setTimeout(() => {
-    const checkTab = async () => {
+chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightInfo): void => {
+  setTimeout((): void => {
+    const checkTab = async (): Promise<void> => {
       const queryOptions = { active: true, currentWindow: true };
       const tabs = await chrome.tabs.query(queryOptions);
       const tab = tabs[0];
@@ -293,7 +293,7 @@ chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightIn
   }, timeToWaitBeforeTracking);
 });
 
-chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse): boolean | void => {
   if (request.meetingId) {
     void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
     sendResponse({ success: true });
@@ -301,6 +301,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   }
 });
 
-chrome.action.onClicked.addListener(() => {
+chrome.action.onClicked.addListener((): void => {
   void chrome.tabs.create({ url: '/dashboard.html' });
 });

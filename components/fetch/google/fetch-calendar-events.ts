@@ -45,7 +45,9 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
   if (event.hangoutLink) {
     return event.hangoutLink;
   }
-  const meetingDescriptionLinks = event.description ? event.description.match(urlRegex()) : [];
+  const meetingDescriptionLinks: string[] = event.description
+    ? event.description.match(urlRegex()) || []
+    : [];
   return first(
     meetingDescriptionLinks?.filter(
       (link) => link.includes('zoom.us') || link.includes('webex.com'),

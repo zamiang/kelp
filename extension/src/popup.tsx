@@ -54,7 +54,7 @@ const PopupContainer = styled('div')(() => ({
   },
 }));
 
-const ScrollToTop = () => {
+const ScrollToTop = (): null => {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const ScrollToTop = () => {
 
 const updateThrottleMinutes = 10;
 
-const getShouldFetch = () => {
+const getShouldFetch = (): boolean => {
   if ((window as any).SHOULD_FETCH) {
     return (window as any).SHOULD_FETCH === 'true';
   }
@@ -317,7 +317,7 @@ const themeHash = {
 const App = () => {
   const [theme, setTheme] = useState<string>('dark');
   useEffect(() => {
-    const getTheme = async () => {
+    const getTheme = async (): Promise<void> => {
       const t = await chrome.storage.sync.get(config.THEME);
       setTheme(t[config.THEME] || localStorage.getItem(config.THEME) || 'dark');
     };

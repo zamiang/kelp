@@ -10,9 +10,22 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
+import dynamic from 'next/dynamic';
 import Footer from '../components/homepage/footer';
-import { ImageBlocks } from '../components/homepage/image-blocks';
-import UiBlocks from '../components/homepage/ui-blocks';
+
+// Dynamic imports for heavy components
+const ImageBlocks = dynamic(
+  () => import('../components/homepage/image-blocks').then((mod) => ({ default: mod.ImageBlocks })),
+  {
+    loading: () => <div>Loading...</div>,
+    ssr: false,
+  },
+);
+
+const UiBlocks = dynamic(() => import('../components/homepage/ui-blocks'), {
+  loading: () => <div>Loading...</div>,
+  ssr: false,
+});
 import { italicFontFamily, mediumFontFamily } from '../constants/homepage-theme';
 import InstallSvg from '../public/icons/install.svg';
 
