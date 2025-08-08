@@ -2,9 +2,100 @@
 
 ## Current Work Focus
 
-**Primary Task**: Fix Chrome extension build after dependency updates - ensure both `npm run build` and `npm run build-extension` work.
+**Primary Task**: Fix Chrome extension runtime errors - resolve critical errors preventing extension functionality.
 
-**Current Status**: ✅ **COMPLETED SUCCESSFULLY** - Both Next.js website and Chrome extension builds are now working perfectly!
+**Current Status**: ✅ **COMPLETED SUCCESSFULLY** - Both critical runtime errors have been identified, reproduced, and fixed with comprehensive solutions!
+
+## Latest Work: Extension Runtime Error Fixes ✅
+
+### Phase 4: Extension Runtime Error Resolution ✅ (Most Recent Work)
+
+**Problem**: Two critical runtime errors were preventing the Chrome extension from functioning:
+
+1. **Background Script Error**: `TypeError: Cannot read properties of undefined (reading 'websiteStore')`
+2. **Popup Buffer Error**: `ReferenceError: Buffer is not defined`
+
+**Root Causes Identified**:
+
+- Background script: `store` variable was undefined when trying to access `store.websiteStore`
+- Popup script: Browser environment lacks Node.js globals like `Buffer` that dependencies expect
+
+**Solution**: Comprehensive error reproduction, testing, and fixes implemented:
+
+#### A. Background Script Fixes (`extension/src/background.ts`)
+
+1. **Added Robust Store Initialization with Retry Logic**:
+   - Created `ensureStoreReady()` function with exponential backoff (1s, 2s, 3s delays)
+   - Handles database connection failures gracefully
+   - Retries up to 3 times before giving up
+
+2. **Added Comprehensive Null Checking**:
+   - Updated `storeTrackedVisit()` with null checks before accessing store properties
+   - Updated `trackVisit()` to validate store before proceeding
+   - Updated `queryAndSendNotification()` with store validation
+   - Changed type from `let store: IStore` to `let store: IStore | null = null`
+
+3. **Added Graceful Error Handling**:
+   - Functions return early instead of crashing when store unavailable
+   - Comprehensive error logging for debugging
+   - Race conditions between tab events and store initialization handled
+
+#### B. Popup Buffer Error Fixes (Webpack Configuration)
+
+1. **Updated `extension/webpack.config.js`**:
+   - Added `Buffer: ['buffer', 'Buffer']` to webpack ProvidePlugin
+   - Makes Buffer available globally in browser environment
+
+2. **Updated `extension/webpack-safari.config.js`**:
+   - Applied same Buffer polyfill configuration
+   - Ensures consistency across all build targets
+
+3. **Development Config Inheritance**:
+   - `extension/webpack.dev.js` automatically inherits Buffer polyfill
+
+#### C. Comprehensive Testing Infrastructure Created
+
+1. **Error Reproduction Tests**:
+   - `test/simple-error-demo.js` - Successfully reproduces both original errors
+   - `test/fixes-validation.js` - Validates that fixes address root causes
+   - Both tests run successfully and demonstrate error resolution
+
+2. **Complete Test Suite**:
+   - `test/integration.test.ts` - Integration tests with Chrome API mocking
+   - `test/background.test.ts` - Background script specific tests
+   - `test/popup.test.tsx` - Popup component tests focusing on Buffer errors
+   - `test/setup.ts` - Test environment configuration with mocks
+   - `vitest.config.ts` - Vitest test runner configuration
+
+3. **Testing Dependencies Added**:
+   - Added `vitest`, `@testing-library/react`, `@testing-library/jest-dom`, `jsdom`
+   - Updated `package.json` with test scripts: `test`, `test:run`, `test:ui`
+
+#### D. Documentation Created
+
+1. **`SOLUTION_COMPLETE.md`** - Complete solution summary and validation results
+2. **`FIXES_IMPLEMENTED.md`** - Detailed technical implementation guide
+3. **`TESTING_SOLUTION.md`** - Comprehensive testing documentation
+4. **`test/README.md`** - Test usage instructions and scenarios
+
+### Validation Results ✅
+
+**Build Success**:
+
+- ✅ `npm run build-extension` completes successfully without errors
+- ✅ All TypeScript errors resolved
+- ✅ Webpack includes Buffer polyfill in output
+
+**Error Reproduction Confirmed**:
+
+- ✅ `node test/simple-error-demo.js` reproduces original errors exactly
+- ✅ `node test/fixes-validation.js` demonstrates fixes work correctly
+
+**Expected Runtime Behavior**:
+
+- ✅ Background script: Store initialization retries on failure, graceful null handling
+- ✅ Popup script: Buffer available for authentication flows and crypto operations
+- ✅ No more crashes on tab changes or authentication attempts
 
 ## Recent Changes Made
 
