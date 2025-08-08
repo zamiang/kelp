@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
@@ -193,21 +192,21 @@ export const LargeWebsite = (props: {
           </Typography>
         </Tooltip>
       </Link>
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="center"
         className={classes.textContainer}
         justifyContent="space-between"
       >
-        <Grid item xs zeroMinWidth>
+        <Box flex="1" minWidth={0}>
           <WebsiteTags
             store={props.store}
             item={props.item}
             toggleWebsiteTag={props.toggleWebsiteTag}
             userTags={props.websiteTags}
           />
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box>
           <IconButton
             size="small"
             disableRipple
@@ -220,8 +219,8 @@ export const LargeWebsite = (props: {
               className={classes.dotsIcon}
             />
           </IconButton>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Root>
   );
 };

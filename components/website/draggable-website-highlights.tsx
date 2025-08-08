@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -136,9 +136,8 @@ const Website = (props: {
 }) => (
   <Draggable draggableId={props.draggableId} index={props.index}>
     {(provided) => (
-      <Grid
-        item
-        xs={props.size as any}
+      <Box
+        flex={props.size === 3 ? '0 0 25%' : '0 0 33.33%'}
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
@@ -151,7 +150,7 @@ const Website = (props: {
           websiteTags={props.websiteTags}
           toggleWebsiteTag={props.toggleWebsiteTag}
         />
-      </Grid>
+      </Box>
     )}
   </Draggable>
 );
@@ -171,9 +170,9 @@ const DraggableWebsites = (props: {
     isDropDisabled={props.dragDropSource === 'top-tags'}
   >
     {(provided, snapshot) => (
-      <Grid
-        container
-        spacing={5}
+      <Box
+        display="flex"
+        gap={5}
         ref={provided.innerRef}
         style={getListStyle(snapshot.isDraggingOver)}
         {...provided.droppableProps}
@@ -191,7 +190,7 @@ const DraggableWebsites = (props: {
           />
         ))}
         {provided.placeholder}
-      </Grid>
+      </Box>
     )}
   </Droppable>
 );
@@ -233,19 +232,19 @@ export const DraggableWebsiteHighlights = (props: {
 
   return (
     <Root style={{ position: 'relative' }}>
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="center"
         justifyContent="space-between"
         className={clsx(classes.topSection, props.isLoading && classes.loading)}
       >
-        <Grid item>
+        <Box>
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
-        </Grid>
-        <Grid item>
-          <Grid container alignItems="center" spacing={2} className={classes.rightContainer}>
+        </Box>
+        <Box>
+          <Box display="flex" alignItems="center" gap={2} className={classes.rightContainer}>
             {props.filterByTag && props.showAddWebsiteDialog && (
-              <Grid item>
+              <Box>
                 <Typography
                   variant="body1"
                   color="primary"
@@ -258,10 +257,10 @@ export const DraggableWebsiteHighlights = (props: {
                 >
                   Add
                 </Typography>
-              </Grid>
+              </Box>
             )}
             {props.filterByTag && !props.shouldHideCloseButton && (
-              <Grid item>
+              <Box>
                 <IconButton
                   className={classes.button}
                   onClick={() => props.toggleWebsiteTag(props.filterByTag!)}
@@ -272,11 +271,11 @@ export const DraggableWebsiteHighlights = (props: {
                     className={classes.iconText}
                   />
                 </IconButton>
-              </Grid>
+              </Box>
             )}
-          </Grid>
-        </Grid>
-      </Grid>
+          </Box>
+        </Box>
+      </Box>
       <DraggableWebsites
         topWebsites={topWebsites}
         store={props.store}

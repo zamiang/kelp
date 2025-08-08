@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -255,11 +255,15 @@ const App = () => (
       />
       <meta property="og:description" content={description} key="ogdesc" />
     </Head>
-    <style jsx global>{`
-      html body {
-        background-color: #faf5eb;
-      }
-    `}</style>
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+        html body {
+          background-color: #faf5eb;
+        }
+      `,
+      }}
+    />
     <div className={classes.hero}>
       <Container maxWidth="md">
         <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
@@ -328,12 +332,15 @@ const App = () => (
     </Container>
     <br />
     <Container maxWidth="md">
-      <Grid container alignItems="center" justifyContent="center">
-        <Grid
-          sm={12}
-          md={6}
-          item
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Box
+          flex="0 0 50%"
           className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
+          sx={{
+            '@media (max-width: 900px)': {
+              flex: '1 1 100%',
+            },
+          }}
         >
           <Typography variant="h4" className={classes.quote}>
             Ready to get started?
@@ -351,8 +358,15 @@ const App = () => (
               Install Kelp
             </Button>
           </div>
-        </Grid>
-        <Grid sm={12} md={6} item>
+        </Box>
+        <Box
+          flex="0 0 50%"
+          sx={{
+            '@media (max-width: 900px)': {
+              flex: '1 1 100%',
+            },
+          }}
+        >
           <List disablePadding className={classes.list}>
             <ListItem disableGutters>
               <div className={classes.emojiIcon}>🎨</div>
@@ -375,8 +389,8 @@ const App = () => (
               <ListItemText>Fast and easy to use</ListItemText>
             </ListItem>
           </List>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Container>
     <br />
     <br />

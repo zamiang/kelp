@@ -1,5 +1,5 @@
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import MuiLink from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -20,15 +20,24 @@ const Terms = () => (
         content="Kelp does not own your data, nor do we sell it to others or use it for advertising. It’s your data, period."
       />
     </Head>
-    <style jsx global>{`
-      html body {
-        background-color: #faf5eb;
-      }
-    `}</style>
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+        html body {
+          background-color: #faf5eb;
+        }
+      `,
+      }}
+    />
     <div>
       <Header />
-      <Grid container className={clsx(classes.subpage)} alignItems="center" justifyContent="center">
-        <Grid item sm={7}>
+      <Box
+        display="flex"
+        className={clsx(classes.subpage)}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box flex="0 0 58.33%">
           <Container maxWidth="sm">
             <Typography variant="h3">Privacy Policy</Typography>
             <Typography className={classes.body}>
@@ -435,8 +444,8 @@ const Terms = () => (
               </MuiLink>
             </Typography>
           </Container>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Footer />
     </div>
   </Root>

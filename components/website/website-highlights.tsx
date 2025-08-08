@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -51,17 +51,17 @@ export const WebsiteHighlights = (props: {
   return (
     <Root style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="center"
         justifyContent="space-between"
         className={classes.topSection}
       >
-        <Grid item>
+        <Box>
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
-        </Grid>
+        </Box>
         {extraItemsCount > 0 && !shouldShowAll && (
-          <Grid item>
+          <Box>
             <IconButton
               className={classes.button}
               onClick={() => {
@@ -74,25 +74,25 @@ export const WebsiteHighlights = (props: {
                 className={classes.iconSelected}
               />{' '}
             </IconButton>
-          </Grid>
+          </Box>
         )}
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Grid container spacing={6}>
+      </Box>
+      <Box display="flex" gap={2}>
+        <Box flex="1">
+          <Box display="flex" gap={6} flexWrap="wrap">
             {topWebsites.map((item) => (
-              <Grid item xs={isLarge ? 4 : 4} key={item.id}>
+              <Box flex="0 0 33.33%" key={item.id}>
                 <LargeWebsite
                   item={item}
                   store={props.store}
                   websiteTags={props.websiteTags}
                   toggleWebsiteTag={props.toggleWebsiteTag}
                 />
-              </Grid>
+              </Box>
             ))}
-          </Grid>
-        </Grid>
-      </Grid>
+          </Box>
+        </Box>
+      </Box>
     </Root>
   );
 };
