@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -26,7 +26,7 @@ const classes = {
   icon: `${PREFIX}-icon`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
   },
@@ -82,10 +82,10 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <StyledGrid item xs={props.isFullWidth ? 12 : 11}>
-      <Grid container columnSpacing={5}>
+    <StyledBox flex={props.isFullWidth ? '1' : '0 0 91.67%'}>
+      <Box display="flex" gap={5} flexWrap="wrap">
         {websites.map((item) => (
-          <Grid item xs={isLarge ? 4 : 4} key={item.id}>
+          <Box flex={isLarge ? '0 0 33.33%' : '0 0 33.33%'} key={item.id}>
             <LargeWebsite
               item={item}
               store={props.store}
@@ -93,16 +93,20 @@ const MeetingRowBelow = (props: {
               websiteTags={props.websiteTags}
               toggleWebsiteTag={props.toggleWebsiteTag}
             />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
       {extraItemsCount > 0 && !props.shouldHideShowAll && (
         <IconButton
           onClick={() => {
             setShouldShowAll(!shouldShowAll);
           }}
         >
-          <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} className={classes.icon} />{' '}
+          <PlusIcon
+            width={config.ICON_SIZE}
+            height={config.ICON_SIZE}
+            className={classes.icon}
+          />{' '}
         </IconButton>
       )}
       {props.meetingTags.map((t) => (
@@ -119,7 +123,7 @@ const MeetingRowBelow = (props: {
           />
         </div>
       ))}
-    </StyledGrid>
+    </StyledBox>
   );
 };
 
