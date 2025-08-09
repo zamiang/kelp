@@ -1,5 +1,6 @@
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MuiLink from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
@@ -175,7 +176,7 @@ const ExpandedMeeting = (props: {
   const isHtml = meeting.description && /<\/?[a-z][\s\S]*>/i.test(meeting.description);
 
   const hasMeetingNotes = !!meeting.meetingNotesLink;
-  const meetingDescriptionIsMicrosoftHtml =
+  const isMeetingDescriptionIsMicrosoftHtml =
     isHtml && meeting.description?.includes('<span itemscope');
   const hasWebsites = websites.length > 0 || relevantTags.length > 0;
   return (
@@ -189,13 +190,13 @@ const ExpandedMeeting = (props: {
         toggleMeetingTag={toggleMeetingTag}
         close={() => setAddTagsVisible(false)}
       />
-      <Grid
-        container
+      <Box
+        display="flex"
         className={classes.topContainer}
         justifyContent="space-between"
         alignItems="center"
       >
-        <Grid item xs={6}>
+        <Box flex="0 0 50%">
           <Typography variant="h2" gutterBottom>
             {meeting.summary || '(no title)'}
           </Typography>
@@ -203,11 +204,11 @@ const ExpandedMeeting = (props: {
             {format(meeting.start, 'EEEE, MMMM d')} ⋅ {format(meeting.start, 'p')} –{' '}
             {format(meeting.end, 'p')}
           </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Grid container spacing={2} alignItems="center" justifyContent="flex-end">
+        </Box>
+        <Box flex="0 0 50%">
+          <Box display="flex" gap={2} alignItems="center" justifyContent="flex-end">
             {hasMeetingNotes && (
-              <Grid item>
+              <Box>
                 <Tooltip title="Open meeting notes">
                   <IconButton
                     color="primary"
@@ -222,9 +223,9 @@ const ExpandedMeeting = (props: {
                     />
                   </IconButton>
                 </Tooltip>
-              </Grid>
+              </Box>
             )}
-            <Grid item>
+            <Box>
               <Button
                 onClick={() => setAddTagsVisible(true)}
                 variant="outlined"
@@ -241,16 +242,16 @@ const ExpandedMeeting = (props: {
               >
                 Add Tags
               </Button>
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
               <EmailGuestsButton
                 meeting={meeting}
                 websites={websites}
                 websiteStore={props.store.websiteStore}
               />
-            </Grid>
+            </Box>
             {shouldShowMeetingLink && (
-              <Grid item>
+              <Box>
                 <Button
                   onClick={() => window.open(meeting.videoLink, '_blank')}
                   variant="contained"
@@ -267,21 +268,21 @@ const ExpandedMeeting = (props: {
                 >
                   Join
                 </Button>
-              </Grid>
+              </Box>
             )}
-          </Grid>
-        </Grid>
-      </Grid>
+          </Box>
+        </Box>
+      </Box>
       <div className={classes.container}>
         {hasWebsites && (
           <div className={classes.section} id="websites">
-            <Grid container alignItems="center" spacing={2}>
-              <Grid item>
+            <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+              <Box>
                 <Typography variant="h3" className={classes.rowText}>
                   Filter by:
                 </Typography>
-              </Grid>
-              <Grid item>
+              </Box>
+              <Box>
                 <Typography
                   variant="h3"
                   className={clsx(classes.tag, currentTag === 'all' && classes.tagSelected)}
@@ -289,9 +290,9 @@ const ExpandedMeeting = (props: {
                 >
                   All
                 </Typography>
-              </Grid>
+              </Box>
               {relevantTags.map((t) => (
-                <Grid item key={t.tag}>
+                <Box key={t.tag}>
                   <Typography
                     variant="h3"
                     className={clsx(classes.tag, currentTag === t.tag && classes.tagSelected)}
@@ -299,23 +300,25 @@ const ExpandedMeeting = (props: {
                   >
                     {t.tag}
                   </Typography>
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
             <br />
             {currentTag === 'all' && (
-              <Grid container spacing={isMobile ? 5 : 6}>
-                {websites.map((item) => (
-                  <Grid item xs={3} key={item.id}>
-                    <LargeWebsite
-                      item={item}
-                      store={props.store}
-                      websiteTags={props.websiteTags}
-                      toggleWebsiteTag={props.toggleWebsiteTag}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
+              <Box sx={{ flexGrow: 1 }} gap={isMobile ? 5 : 6}>
+                <Grid container columns={3} spacing={2}>
+                  {websites.map((item) => (
+                    <Grid size={1} key={item.id}>
+                      <LargeWebsite
+                        item={item}
+                        store={props.store}
+                        websiteTags={props.websiteTags}
+                        toggleWebsiteTag={props.toggleWebsiteTag}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
             )}
             {currentTag !== 'all' && (
               <WebsiteHighlights
@@ -346,7 +349,7 @@ const ExpandedMeeting = (props: {
             <Typography
               className={clsx(
                 classes.description,
-                meetingDescriptionIsMicrosoftHtml && classes.descriptionMicrosoft,
+                isMeetingDescriptionIsMicrosoftHtml && classes.descriptionMicrosoft,
               )}
               dangerouslySetInnerHTML={{ __html: meeting.description.trim() }}
             />

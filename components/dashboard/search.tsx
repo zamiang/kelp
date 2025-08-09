@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -120,18 +121,20 @@ const WebsiteResults = (props: {
   const filteredWebsites = uniqBy(websites, 'id');
 
   return (
-    <React.Fragment>
-      {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
-        <Grid item xs={4} key={website.id}>
-          <LargeWebsite
-            store={props.store}
-            item={website}
-            websiteTags={props.websiteTags}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-          />
-        </Grid>
-      ))}
-    </React.Fragment>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container columns={3} spacing={2}>
+        {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
+          <Grid key={website.id} size={1}>
+            <LargeWebsite
+              store={props.store}
+              item={website}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 
@@ -147,12 +150,12 @@ const SearchResults = (props: {
   const filteredResults = filterSearchResults(results);
   return (
     <React.Fragment>
-      <Grid container className={classes.topNav} spacing={2} alignItems="center">
-        <Grid item>
+      <Box className={classes.topNav} display="flex" gap={2} alignItems="center">
+        <Box>
           <SearchBar searchQuery={props.searchQuery} />
-        </Grid>
+        </Box>
         {filteredResults.websites.length > 1 && (
-          <Grid item>
+          <Box>
             <Typography
               className={classes.button}
               onClick={() =>
@@ -161,10 +164,10 @@ const SearchResults = (props: {
             >
               {filteredResults.websites.length} websites
             </Typography>
-          </Grid>
+          </Box>
         )}
         {filteredResults.people.length > 1 && (
-          <Grid item>
+          <Box>
             <Typography
               className={classes.button}
               onClick={() =>
@@ -173,10 +176,10 @@ const SearchResults = (props: {
             >
               {filteredResults.people.length} people
             </Typography>
-          </Grid>
+          </Box>
         )}
         {filteredResults.meetings.length > 1 && (
-          <Grid item>
+          <Box>
             <Typography
               className={classes.button}
               onClick={() =>
@@ -185,23 +188,21 @@ const SearchResults = (props: {
             >
               {filteredResults.meetings.length} meetings
             </Typography>
-          </Grid>
+          </Box>
         )}
-      </Grid>
+      </Box>
       <div className={classes.container}>
         {filteredResults.websites.length > 0 && (
           <div className={classes.row} id="websites">
             <Typography variant="h3" className={classes.rowText}>
               Websites
             </Typography>
-            <Grid container spacing={6}>
-              <WebsiteResults
-                store={props.store}
-                websites={filteredResults.websites}
-                websiteTags={props.websiteTags}
-                toggleWebsiteTag={props.toggleWebsiteTag}
-              />
-            </Grid>
+            <WebsiteResults
+              store={props.store}
+              websites={filteredResults.websites}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+            />
           </div>
         )}
         {filteredResults.people.length > 0 && (

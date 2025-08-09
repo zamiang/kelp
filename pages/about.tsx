@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import MuiLink from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
@@ -19,15 +19,24 @@ const About = () => (
         content="Kelp organizes your documents, events and contacts to make work make sense."
       />
     </Head>
-    <style jsx global>{`
-      html body {
-        background-color: #faf5eb;
-      }
-    `}</style>
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+        html body {
+          background-color: #faf5eb;
+        }
+      `,
+      }}
+    />
     <div>
       <Header />
-      <Grid container className={clsx(classes.subpage)} alignItems="center" justifyContent="center">
-        <Grid item sm={7}>
+      <Box
+        display="flex"
+        className={clsx(classes.subpage)}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box flex="0 0 58.33%">
           <Container maxWidth="sm">
             <Typography variant="h3">About Kelp</Typography>
             <Typography className={classes.body}>
@@ -191,8 +200,8 @@ const About = () => (
               </Typography>
             </div>
           </Container>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Footer />
     </div>
   </Root>

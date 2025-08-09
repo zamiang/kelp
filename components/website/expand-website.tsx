@@ -1,6 +1,6 @@
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
@@ -215,8 +215,8 @@ const AddTagInput = (props: {
   return (
     <div className={classes.tagForm}>
       <div>{errorText}</div>
-      <Grid container justifyContent="space-between">
-        <Grid item>
+      <Box display="flex" justifyContent="space-between">
+        <Box flex="1" marginRight={2}>
           <TextField
             type="text"
             placeholder="Enter a custom tag…"
@@ -231,13 +231,13 @@ const AddTagInput = (props: {
               disableUnderline: true,
             }}
           />
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box>
           <Button size="small" variant="outlined" className={classes.smallButton} onClick={addTag}>
             Add Tag
           </Button>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </div>
   );
 };
@@ -306,22 +306,22 @@ const ExpandWebsite = (props: {
   return (
     <Root>
       <div className={classes.topPadding}>
-        <Grid container spacing={6}>
-          <Grid item xs={6}>
+        <Box display="flex" gap={6}>
+          <Box flex="0 0 50%">
             <Link href={website?.rawUrl} underline="none">
               <Box boxShadow={1} className={classes.container}>
                 <LargeWebsiteImage image={image} websiteId={websiteId} ogImage={website?.ogImage} />
               </Box>
             </Link>
-          </Grid>
-          <Grid item xs={6}>
-            <Grid
-              container
+          </Box>
+          <Box flex="0 0 50%">
+            <Box
+              display="flex"
               justifyContent="space-between"
               flexDirection="column"
               style={{ height: '100%' }}
             >
-              <Grid item>
+              <Box>
                 <Link href={website?.rawUrl} underline="none">
                   <Typography
                     variant="h2"
@@ -360,8 +360,8 @@ const ExpandWebsite = (props: {
                     </div>
                   ))}
                 </div>
-              </Grid>
-              <Grid item style={{ width: '100%' }}>
+              </Box>
+              <Box style={{ width: '100%' }}>
                 <AddTagInput
                   store={props.store}
                   websiteCache={props.websiteCache}
@@ -369,31 +369,29 @@ const ExpandWebsite = (props: {
                   userTags={props.websiteTags}
                   websiteTags={websiteTags}
                 />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
         {websitesAtDomain.length > 0 && (
           <div className={classes.section} id="meetings">
             <Typography variant="h3" className={classes.heading}>
               Related Websites
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Grid container spacing={6}>
-                  {websitesAtDomain.map((item) => (
-                    <Grid item xs={4} key={item.id}>
-                      <LargeWebsite
-                        item={item}
-                        store={props.store}
-                        websiteTags={props.websiteTags}
-                        toggleWebsiteTag={props.toggleWebsiteTag}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container columns={3} spacing={2}>
+                {websitesAtDomain.map((item) => (
+                  <Grid size={1}>
+                    <LargeWebsite
+                      item={item}
+                      store={props.store}
+                      websiteTags={props.websiteTags}
+                      toggleWebsiteTag={props.toggleWebsiteTag}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            </Grid>
+            </Box>
           </div>
         )}
         {websiteTags.map((t) => (

@@ -1,12 +1,12 @@
 import React from 'react';
 import ErrorTracking from './error-tracking';
 
-export default function Catch(component: any, errorHandler?: any) {
-  return class extends React.Component {
-    state: {
-      error: Error | undefined;
-    };
+interface CatchState {
+  error: Error | undefined;
+}
 
+export default function Catch(component: any, errorHandler?: any) {
+  return class CatchErrorBoundary extends React.Component<any, CatchState> {
     constructor(props: any) {
       super(props);
       this.state = {

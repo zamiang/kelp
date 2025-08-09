@@ -1,4 +1,5 @@
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -26,7 +27,7 @@ const classes = {
   icon: `${PREFIX}-icon`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   [`& .${classes.section}`]: {
     marginTop: theme.spacing(4),
   },
@@ -82,27 +83,33 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <StyledGrid item xs={props.isFullWidth ? 12 : 11}>
-      <Grid container columnSpacing={5}>
-        {websites.map((item) => (
-          <Grid item xs={isLarge ? 4 : 4} key={item.id}>
-            <LargeWebsite
-              item={item}
-              store={props.store}
-              smGridSize={4}
-              websiteTags={props.websiteTags}
-              toggleWebsiteTag={props.toggleWebsiteTag}
-            />
-          </Grid>
-        ))}
-      </Grid>
+    <StyledBox flex={props.isFullWidth ? '1' : '0 0 91.67%'}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container columns={3} spacing={2}>
+          {websites.map((item) => (
+            <Grid size={1} key={item.id}>
+              <LargeWebsite
+                item={item}
+                store={props.store}
+                smGridSize={4}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
       {extraItemsCount > 0 && !props.shouldHideShowAll && (
         <IconButton
           onClick={() => {
             setShouldShowAll(!shouldShowAll);
           }}
         >
-          <PlusIcon width={config.ICON_SIZE} height={config.ICON_SIZE} className={classes.icon} />{' '}
+          <PlusIcon
+            width={config.ICON_SIZE}
+            height={config.ICON_SIZE}
+            className={classes.icon}
+          />{' '}
         </IconButton>
       )}
       {props.meetingTags.map((t) => (
@@ -119,7 +126,7 @@ const MeetingRowBelow = (props: {
           />
         </div>
       ))}
-    </StyledGrid>
+    </StyledBox>
   );
 };
 

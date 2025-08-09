@@ -5,7 +5,6 @@ import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-
 import config from './config';
 
 declare module '@mui/styles/defaultTheme' {
-  // eslint-disable-next-line
   interface DefaultTheme extends Theme {}
 }
 

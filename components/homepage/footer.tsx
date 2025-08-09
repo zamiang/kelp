@@ -1,5 +1,5 @@
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import MuiLink from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -80,15 +80,15 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 
 const Footer = () => (
   <StyledContainer maxWidth="lg" className={classes.footer}>
-    <Grid container alignItems="center" justifyContent="center">
-      <Grid item className={classes.footerItem}>
+    <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
+      <Box className={classes.footerItem}>
         <MuiLink href="https://www.kelp.nyc/about" underline="hover">
           <Typography variant="body2" className={classes.footerLink}>
             About
           </Typography>
         </MuiLink>
-      </Grid>
-      <Grid item className={classes.footerItem}>
+      </Box>
+      <Box className={classes.footerItem}>
         <MuiLink
           href="https://chrome.google.com/webstore/detail/kelp-new-tab-page-for-peo/onkkkcfnlbkoialleldfbgodakajfpnl?hl=en&authuser=0"
           underline="hover"
@@ -97,8 +97,8 @@ const Footer = () => (
             Download for Chrome
           </Typography>
         </MuiLink>
-      </Grid>
-      <Grid item className={classes.footerItem}>
+      </Box>
+      <Box className={classes.footerItem}>
         <MuiLink
           href="https://addons.mozilla.org/en-US/firefox/addon/kelp-your-website-organizer/"
           underline="hover"
@@ -107,22 +107,22 @@ const Footer = () => (
             Download for Firefox
           </Typography>
         </MuiLink>
-      </Grid>
-      <Grid item className={classes.footerItem}>
+      </Box>
+      <Box className={classes.footerItem}>
         <MuiLink href="https://www.kelp.nyc/privacy" underline="hover">
           <Typography variant="body2" className={classes.footerLink}>
             Privacy
           </Typography>
         </MuiLink>
-      </Grid>
-      <Grid item className={classes.footerItem}>
+      </Box>
+      <Box className={classes.footerItem}>
         <MuiLink href="https://www.kelp.nyc/terms" underline="hover">
           <Typography variant="body2" className={classes.footerLink}>
             Terms
           </Typography>
         </MuiLink>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
     <Typography className={classes.copyright}>
       {'Copyright © '}
       <MuiLink

@@ -1,13 +1,54 @@
-const withPlugins = require('next-compose-plugins');
-const { createSecureHeaders } = require('next-secure-headers');
-const withReactSvg = require('next-react-svg');
-const path = require('path');
+import { createSecureHeaders } from 'next-secure-headers';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  webpack5: true,
+
+  webpack: (config, { dev, isServer }) => {
+    // Handle SVG files
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    // Optimize production builds
+    if (!dev && !isServer) {
+      config.optimization = {
+        ...config.optimization,
+        usedExports: true,
+        sideEffects: false,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            vendor: {
+              name: 'vendor',
+              chunks: 'all',
+              test: /node_modules/,
+              priority: 20,
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              priority: 10,
+              reuseExistingChunk: true,
+              enforce: true,
+            },
+          },
+        },
+      };
+    }
+
+    return config;
+  },
 
   async rewrites() {
     return [
@@ -31,16 +72,11 @@ const nextConfig = {
             directives: {
               defaultSrc: "'self'",
               styleSrc: ["'self'", "'unsafe-inline'"],
-              imgSrc: ["'self'", 'data:', 'https://www.googletagmanager.com'],
+              imgSrc: ["'self'", 'data:'],
               fontSrc: ["'self'"],
-              scriptSrc: [
-                "'self'",
-                "'unsafe-eval'",
-                "'unsafe-inline'",
-                'https://www.googletagmanager.com',
-              ],
+              scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'"],
               frameSrc: [],
-              connectSrc: ["'self'", 'https://www.googleapis.com'],
+              connectSrc: ["'self'"],
             },
           },
           forceHTTPSRedirect: true,
@@ -52,14 +88,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlugins(
-  [
-    [
-      withReactSvg,
-      {
-        include: path.resolve(__dirname, 'public'),
-      },
-    ],
-  ],
-  nextConfig,
-);
+export default nextConfig;

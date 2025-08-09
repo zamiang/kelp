@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { keyframes } from '@mui/styled-engine';
@@ -157,8 +157,8 @@ const PersonRow = (props: {
         isSelected && classes.rowPrimaryMain,
       )}
     >
-      <Grid container alignItems="center" wrap="nowrap">
-        <Grid item className={classes.rowLeft}>
+      <Box display="flex" alignItems="center" flexWrap="nowrap">
+        <Box className={classes.rowLeft}>
           {props.person.imageUrl ? (
             <Avatar
               alt={`Profile photo for ${
@@ -175,31 +175,31 @@ const PersonRow = (props: {
               {(props.person.name || props.person.id)[0]}
             </Avatar>
           )}
-        </Grid>
-        <Grid item xs zeroMinWidth>
+        </Box>
+        <Box flex="1" minWidth={0}>
           <div className={classes.rowTopPadding}>
-            <Grid container>
-              <Grid item xs={12} zeroMinWidth>
+            <Box>
+              <Box minWidth={0}>
                 <Typography noWrap className={classes.hoverText}>
                   {name}
                 </Typography>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box>
                 <Typography variant="body2" noWrap>
                   {props.person.notes}
                 </Typography>
-              </Grid>
+              </Box>
               {props.info && (
-                <Grid item xs={12}>
+                <Box>
                   <Typography variant="body2" noWrap>
                     {props.info}
                   </Typography>
-                </Grid>
+                </Box>
               )}
-            </Grid>
+            </Box>
           </div>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Root>
   );
 };

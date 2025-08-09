@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -18,7 +18,7 @@ const classes = {
   iconSelected: `${PREFIX}-iconSelected`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   [`& .${classes.input}`]: {
     marginTop: 0,
     [theme.breakpoints.down('md')]: {},
@@ -57,13 +57,13 @@ const SearchBar = (props: { searchQuery: string }) => {
   };
 
   return (
-    <StyledGrid
-      container
+    <StyledBox
+      display="flex"
       alignItems="flex-start"
       justifyContent="space-between"
       className={classes.container}
     >
-      <Grid item>
+      <Box>
         <IconButton className={classes.icon}>
           {location.pathname.indexOf('search') > -1 ? (
             <SearchIcon
@@ -79,8 +79,8 @@ const SearchBar = (props: { searchQuery: string }) => {
             />
           )}
         </IconButton>
-      </Grid>
-      <Grid item xs>
+      </Box>
+      <Box flex="1">
         <TextField
           type="text"
           placeholder="Search…"
@@ -98,9 +98,9 @@ const SearchBar = (props: { searchQuery: string }) => {
             disableUnderline: true,
           }}
         />
-      </Grid>
+      </Box>
       {search && (
-        <Grid item>
+        <Box>
           <IconButton
             onClick={() => {
               navigate('/home');
@@ -110,9 +110,9 @@ const SearchBar = (props: { searchQuery: string }) => {
           >
             <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
           </IconButton>
-        </Grid>
+        </Box>
       )}
-    </StyledGrid>
+    </StyledBox>
   );
 };
 

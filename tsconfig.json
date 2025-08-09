@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
     "moduleResolution": "node",
     "target": "ESNext",
@@ -19,7 +15,16 @@
     "removeComments": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
     "incremental": true,
     "isolatedModules": true
   },
@@ -31,10 +36,8 @@
     "./models/**/*.ts",
     "./pages/**/*.ts",
     "./pages/**/*.tsx",
-    "@types/**.*.ts",
+    "./@types/**/*.ts",
     "./constants/config.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

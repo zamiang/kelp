@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -10,11 +10,24 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Head from 'next/head';
 import React from 'react';
+import dynamic from 'next/dynamic';
 import Footer from '../components/homepage/footer';
-import { ImageBlocks } from '../components/homepage/image-blocks';
-import UiBlocks from '../components/homepage/ui-blocks';
 import { italicFontFamily, mediumFontFamily } from '../constants/homepage-theme';
-import InstallSvg from '../public/icons/install.svg';
+import Image from 'next/image';
+
+// Dynamic imports for heavy components
+const ImageBlocks = dynamic(
+  () => import('../components/homepage/image-blocks').then((mod) => ({ default: mod.ImageBlocks })),
+  {
+    loading: () => <div>Loading...</div>,
+    ssr: false,
+  },
+);
+
+const UiBlocks = dynamic(() => import('../components/homepage/ui-blocks'), {
+  loading: () => <div>Loading...</div>,
+  ssr: false,
+});
 
 const PREFIX = 'App';
 
@@ -69,7 +82,6 @@ export const Root = styled('div')(({ theme }) => ({
     textAlign: 'center',
   },
   [`& .${classes.logoImage}`]: {
-    height: 64,
     opacity: 1,
     cursor: 'pointer',
     transition: 'opacity 0.3s',
@@ -255,14 +267,24 @@ const App = () => (
       />
       <meta property="og:description" content={description} key="ogdesc" />
     </Head>
-    <style jsx global>{`
-      html body {
-        background-color: #faf5eb;
-      }
-    `}</style>
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+        html body {
+          background-color: #faf5eb;
+        }
+      `,
+      }}
+    />
     <div className={classes.hero}>
       <Container maxWidth="md">
-        <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
+        <Image
+          className={classes.logoImage}
+          src="/kelp.svg"
+          alt="Kelp logo"
+          height="64"
+          width="64"
+        />
         <Typography variant="h1" className={classes.heading}>
           Kelp is a magical website organizer for busy people
         </Typography>
@@ -277,7 +299,7 @@ const App = () => (
           size="large"
           color="primary"
           className={classes.login}
-          startIcon={<InstallSvg width="24" height="24" />}
+          startIcon={<Image src="/icons/install.svg" alt="Install" width="24" height="24" />}
           onClick={() => (window.location.pathname = '/install')}
           disableElevation={true}
         >
@@ -328,12 +350,15 @@ const App = () => (
     </Container>
     <br />
     <Container maxWidth="md">
-      <Grid container alignItems="center" justifyContent="center">
-        <Grid
-          sm={12}
-          md={6}
-          item
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Box
+          flex="0 0 50%"
           className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
+          sx={{
+            '@media (max-width: 900px)': {
+              flex: '1 1 100%',
+            },
+          }}
         >
           <Typography variant="h4" className={classes.quote}>
             Ready to get started?
@@ -344,15 +369,22 @@ const App = () => (
               size="large"
               color="primary"
               className={classes.login}
-              startIcon={<InstallSvg width="24" height="24" />}
+              startIcon={<Image src="/icons/install.svg" alt="Install" width="24" height="24" />}
               onClick={() => (window.location.pathname = '/install')}
               disableElevation={true}
             >
               Install Kelp
             </Button>
           </div>
-        </Grid>
-        <Grid sm={12} md={6} item>
+        </Box>
+        <Box
+          flex="0 0 50%"
+          sx={{
+            '@media (max-width: 900px)': {
+              flex: '1 1 100%',
+            },
+          }}
+        >
           <List disablePadding className={classes.list}>
             <ListItem disableGutters>
               <div className={classes.emojiIcon}>🎨</div>
@@ -375,8 +407,8 @@ const App = () => (
               <ListItemText>Fast and easy to use</ListItemText>
             </ListItem>
           </List>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Container>
     <br />
     <br />

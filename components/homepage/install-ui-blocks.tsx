@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import React from 'react';
@@ -13,26 +13,33 @@ const InstallUiBlocks = () => (
         Your Kelp application uses these data sources
       </Typography>
     </div>
-    <Grid container className={classes.section} alignItems="center">
-      <Grid item md={6} sm={12} className={classes.sectionText}>
+    <Box display="flex" className={classes.section} alignItems="center" flexWrap="wrap">
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
+        className={classes.sectionText}
+      >
         <Typography variant="h4" className={classes.heading}>
           <div className={classes.dot}></div>Read Contacts
         </Typography>
         <Typography>
           This allows your Kelp application to associate document activity with meetings.
         </Typography>
-      </Grid>
-      <Grid
-        item
-        md={6}
-        sm={12}
+      </Box>
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
         className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
       >
         <img src="google-permissions/contacts.png" className={classes.image} />
-      </Grid>
-    </Grid>
-    <Grid container className={classes.section} alignItems="center">
-      <Grid item md={6} sm={12} className={classes.sectionText}>
+      </Box>
+    </Box>
+    <Box display="flex" className={classes.section} alignItems="center" flexWrap="wrap">
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
+        className={classes.sectionText}
+      >
         <Typography variant="h4" className={classes.heading}>
           <div className={classes.dot}></div>Read Document Metadata
         </Typography>
@@ -40,18 +47,21 @@ const InstallUiBlocks = () => (
           This allows Kelp to know the title and link your documents. Kelp cannot access the content
           of documents in you or your company Drive.
         </Typography>
-      </Grid>
-      <Grid
-        item
-        md={6}
-        sm={12}
+      </Box>
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
         className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
       >
         <img src="google-permissions/drive.png" className={classes.image} />
-      </Grid>
-    </Grid>
-    <Grid container className={classes.section} alignItems="center">
-      <Grid item md={6} sm={12} className={classes.sectionText}>
+      </Box>
+    </Box>
+    <Box display="flex" className={classes.section} alignItems="center" flexWrap="wrap">
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
+        className={classes.sectionText}
+      >
         <Typography variant="h4" className={classes.heading}>
           <div className={classes.dot}></div>Read Calendar Events
         </Typography>
@@ -59,16 +69,15 @@ const InstallUiBlocks = () => (
           This allows your Kelp application to see your upcoming meetings and then match them with
           relevant websites.
         </Typography>
-      </Grid>
-      <Grid
-        item
-        md={6}
-        sm={12}
+      </Box>
+      <Box
+        flex="1 1 50%"
+        sx={{ '@media (max-width: 900px)': { flex: '1 1 100%' } }}
         className={clsx(classes.sectionImageRightTop, classes.greyContainer)}
       >
         <img src="google-permissions/calendar.png" className={classes.image} />
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </StyledContainer>
 );
 

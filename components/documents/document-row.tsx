@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
@@ -125,8 +125,8 @@ export const MissingDocumentRow = (props: {
         );
       }}
     >
-      <Grid container alignItems="center">
-        <Grid item className={classes.rowLeft}>
+      <Box display="flex" alignItems="center">
+        <Box className={classes.rowLeft}>
           <IconButton size="small">
             <HelpIcon
               height="18"
@@ -135,11 +135,11 @@ export const MissingDocumentRow = (props: {
               className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
             />
           </IconButton>
-        </Grid>
-        <Grid item xs={8}>
+        </Box>
+        <Box flex="0 0 66.67%">
           <Typography noWrap>Document from {meeting ? meeting.summary : 'this meeting'}</Typography>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Root>
   );
 };
@@ -189,19 +189,19 @@ const DocumentRow = (props: {
         shouldWrap={!!props.tooltipText}
         wrapper={(children: any) => <Tooltip title={props.tooltipText!}>{children}</Tooltip>}
       >
-        <Grid container alignItems="center">
-          <Grid item className={classes.rowLeft}>
+        <Box display="flex" alignItems="center">
+          <Box className={classes.rowLeft}>
             <IconButton size="small">
               <img alt="Document Icon" src={props.document.iconLink} className={classes.image} />
             </IconButton>
-          </Grid>
-          <Grid item zeroMinWidth xs>
+          </Box>
+          <Box flex={1} minWidth={0}>
             <Typography noWrap className={classes.rowTopPadding}>
               {props.document.name}
             </Typography>
-          </Grid>
+          </Box>
           {isDetailsVisible && (
-            <Grid item style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
+            <Box style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
               <IconButton
                 size="small"
                 onClick={(event) => {
@@ -212,9 +212,9 @@ const DocumentRow = (props: {
               >
                 <SearchIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
               </IconButton>
-            </Grid>
+            </Box>
           )}
-        </Grid>
+        </Box>
       </ConditionalWrapper>
     </Root>
   );

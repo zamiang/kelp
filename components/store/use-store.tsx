@@ -61,7 +61,7 @@ const useStore = (
 
   if ((googleOauthToken || microsoftAccount) && shouldFetch) {
     console.log('fetching data');
-    // eslint-disable-next-line
+
     return useStoreWithFetching(
       db,
       googleOauthToken!,
@@ -72,7 +72,7 @@ const useStore = (
     );
   }
   console.log('not fetching data');
-  // eslint-disable-next-line
+
   return useStoreNoFetch(db, false);
 };
 

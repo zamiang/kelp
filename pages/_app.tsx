@@ -7,7 +7,13 @@ import homepageTheme from '../constants/homepage-theme';
 
 const clientSideEmotionCache = createEmotionCache();
 
-const App = (props: any) => {
+interface AppProps {
+  Component: React.ComponentType<any>;
+  emotionCache?: any;
+  pageProps: any;
+}
+
+const App = (props: AppProps) => {
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) jssStyles.parentNode.removeChild(jssStyles);

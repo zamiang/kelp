@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { getWeek } from 'date-fns';
@@ -105,9 +105,9 @@ export const TopPeople = (props: { store: IStore }) => {
 
   return (
     <Root>
-      <Grid container spacing={2} className={classes.container} justifyContent="flex-end">
+      <Box display="flex" gap={2} className={classes.container} justifyContent="flex-end">
         {people.map((person) => (
-          <Grid item key={person.id}>
+          <Box key={person.id}>
             <div className={classes.person}>
               <div
                 className={classes.imageContainer}
@@ -139,9 +139,9 @@ export const TopPeople = (props: { store: IStore }) => {
                 </Typography>
               </div>
             </div>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Root>
   );
 };

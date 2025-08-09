@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -18,11 +18,15 @@ const App = () => (
       <title>Kelp - How does Kelp Work?</title>
       <meta name="description" content="Guide for installing Kelp." />
     </Head>
-    <style jsx global>{`
-      html body {
-        background-color: #faf5eb;
-      }
-    `}</style>
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+        html body {
+          background-color: #faf5eb;
+        }
+      `,
+      }}
+    />
     <div className={classes.hero}>
       <Container maxWidth="md">
         <img style={{ width: 100 }} src="/kelp.svg" alt="Kelp logo" />
@@ -56,8 +60,15 @@ const App = () => (
     <InstallUiBlocks />
     <Divider />
     <Container maxWidth="md" className={classes.installButtonContainer}>
-      <Grid container alignItems="center" justifyContent="center">
-        <Grid sm={12} md={6} item>
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Box
+          flex="0 0 50%"
+          sx={{
+            '@media (max-width: 900px)': {
+              flex: '1 1 100%',
+            },
+          }}
+        >
           <Typography variant="h4" className={classes.quote}>
             Ready to get started?
           </Typography>
@@ -87,12 +98,15 @@ const App = () => (
               Add to Firefox
             </Button>
           </div>
-        </Grid>
-        <Grid
-          sm={12}
-          md={6}
-          item
+        </Box>
+        <Box
+          flex="0 0 50%"
           className={clsx(classes.bodyCopySection, classes.loginButtonContainer)}
+          sx={{
+            '@media (max-width: 900px)': {
+              flex: '1 1 100%',
+            },
+          }}
         >
           <List disablePadding className={classes.list}>
             <ListItem disableGutters>
@@ -114,8 +128,8 @@ const App = () => (
               <ListItemText>Kelp does not include analytics or tracking tools</ListItemText>
             </ListItem>
           </List>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Container>
   </Root>
 );

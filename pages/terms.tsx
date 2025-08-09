@@ -1,5 +1,5 @@
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Head from 'next/head';
 import React from 'react';
@@ -16,15 +16,19 @@ const Terms = () => (
         content="Please read these terms and conditions carefully before using Our Service."
       />
     </Head>
-    <style jsx global>{`
-      html body {
-        background-color: #faf5eb;
-      }
-    `}</style>
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+        html body {
+          background-color: #faf5eb;
+        }
+      `,
+      }}
+    />
     <div>
       <Header />
-      <Grid container className={classes.subpage} alignItems="center" justifyContent="center">
-        <Grid item sm={7}>
+      <Box display="flex" className={classes.subpage} alignItems="center" justifyContent="center">
+        <Box flex="0 0 58.33%">
           <Container maxWidth="sm">
             <Typography variant="h3">Terms And Conditions</Typography>
             <Typography className={classes.body}>Last updated: October 02, 2020</Typography>
@@ -436,8 +440,8 @@ const Terms = () => (
               <li>By email: support@kelp.nyc</li>
             </ul>
           </Container>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       <Footer />
     </div>
   </Root>

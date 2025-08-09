@@ -11,12 +11,12 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '14.16.0'
-          check-latest: true
-      - run: npm install
+          node-version: '22'
+      - run: npm install --legacy-peer-deps
       - run: npm run lint
       - run: npm run lint:exports
-      - run: npm run prettier:check
+      - run: npm run format:check
+      - run: npm run test
       - run: npm run typecheck
       - run: npm run build-extension
       - run: npm audit --audit-level=critical

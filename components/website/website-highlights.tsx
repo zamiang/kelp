@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -51,17 +52,17 @@ export const WebsiteHighlights = (props: {
   return (
     <Root style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
-      <Grid
-        container
+      <Box
+        display="flex"
         alignItems="center"
         justifyContent="space-between"
         className={classes.topSection}
       >
-        <Grid item>
+        <Box>
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
-        </Grid>
+        </Box>
         {extraItemsCount > 0 && !shouldShowAll && (
-          <Grid item>
+          <Box>
             <IconButton
               className={classes.button}
               onClick={() => {
@@ -74,25 +75,23 @@ export const WebsiteHighlights = (props: {
                 className={classes.iconSelected}
               />{' '}
             </IconButton>
-          </Grid>
+          </Box>
         )}
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Grid container spacing={6}>
-            {topWebsites.map((item) => (
-              <Grid item xs={isLarge ? 4 : 4} key={item.id}>
-                <LargeWebsite
-                  item={item}
-                  store={props.store}
-                  websiteTags={props.websiteTags}
-                  toggleWebsiteTag={props.toggleWebsiteTag}
-                />
-              </Grid>
-            ))}
-          </Grid>
+      </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container columns={3} spacing={2}>
+          {topWebsites.map((item) => (
+            <Grid size={1}>
+              <LargeWebsite
+                item={item}
+                store={props.store}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
+              />
+            </Grid>
+          ))}
         </Grid>
-      </Grid>
+      </Box>
     </Root>
   );
 };

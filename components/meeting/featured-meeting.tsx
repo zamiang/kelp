@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { keyframes } from '@mui/styled-engine';
@@ -234,14 +234,14 @@ export const FeaturedMeeting = (props: {
           toggleMeetingTag={toggleMeetingTag}
           close={() => setAddTagsVisible(false)}
         />
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item>
+        <Box display="flex" alignItems="center" gap={2}>
+          <Box>
             <div className={classes.dotContainer}>
               <div className={clsx(classes.outerDot, !isHappeningSoon && classes.dotNow)}></div>
               <div className={clsx(classes.innerDot, !isHappeningSoon && classes.dotNow)}></div>
             </div>
-          </Grid>
-          <Grid item xs>
+          </Box>
+          <Box flex="1">
             {isHappeningNow && (
               <Typography className={classes.meetingTimeInWords}>Happening Now</Typography>
             )}
@@ -265,8 +265,8 @@ export const FeaturedMeeting = (props: {
             >
               {props.meeting.summary || '(no title)'}
             </Typography>
-          </Grid>
-          <Grid item>
+          </Box>
+          <Box>
             <Button
               onClick={() => setAddTagsVisible(true)}
               variant="outlined"
@@ -283,9 +283,9 @@ export const FeaturedMeeting = (props: {
             >
               Add Tags
             </Button>
-          </Grid>
+          </Box>
           {domain && isHappeningSoon && (
-            <Grid item>
+            <Box>
               <Button
                 className={clsx(classes.button, classes.buttonContained)}
                 variant="contained"
@@ -300,16 +300,16 @@ export const FeaturedMeeting = (props: {
               >
                 Join
               </Button>
-            </Grid>
+            </Box>
           )}
-        </Grid>
-        <Grid container alignItems="flex-start" style={{ marginTop: 12 }}>
+        </Box>
+        <Box display="flex" alignItems="flex-start" style={{ marginTop: 12 }}>
           {props.showLine && (
-            <Grid item xs={12}>
-              <Grid container>
-                <Grid item style={{ width: 60, minHeight: 30 }}>
+            <Box width="100%">
+              <Box display="flex">
+                <Box style={{ width: 60, minHeight: 30 }}>
                   <div className={classes.leftLine}></div>
-                </Grid>
+                </Box>
                 <MeetingRowBelow
                   meeting={props.meeting}
                   store={props.store}
@@ -321,8 +321,8 @@ export const FeaturedMeeting = (props: {
                   shouldHideShowAll={true}
                   websiteCache={props.websiteCache}
                 />
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           )}
           {!props.showLine && (
             <MeetingRowBelow
@@ -337,7 +337,7 @@ export const FeaturedMeeting = (props: {
               websiteCache={props.websiteCache}
             />
           )}
-        </Grid>
+        </Box>
       </div>
     </Root>
   );

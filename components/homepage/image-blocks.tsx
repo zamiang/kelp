@@ -1,5 +1,5 @@
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
@@ -23,6 +23,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     display: 'block',
     borderRadius: 20,
     maxWidth: '100%',
+    height: 'auto',
   },
 
   [`& .${classes.heading}`]: {
@@ -49,8 +50,14 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 
 export const ImageBlocks = () => (
   <StyledContainer maxWidth="md">
-    <Grid container className={classes.section} alignItems="center" spacing={10}>
-      <Grid item>
+    <Box
+      display="flex"
+      flexDirection="column"
+      className={classes.section}
+      alignItems="center"
+      gap={10}
+    >
+      <Box>
         <Typography variant="h4" className={classes.heading}>
           Smart tags automatically group web pages
         </Typography>
@@ -59,8 +66,8 @@ export const ImageBlocks = () => (
           className={classes.image}
           alt="Use smart tags to automatically group web pages"
         />
-      </Grid>
-      <Grid item>
+      </Box>
+      <Box>
         <Typography variant="h4" className={classes.heading}>
           Associate web pages with meetings
         </Typography>
@@ -69,8 +76,8 @@ export const ImageBlocks = () => (
           className={classes.image}
           alt="If you view a web apge during a meeting, it will be associated with the meetings"
         />
-      </Grid>
-      <Grid item>
+      </Box>
+      <Box>
         <Typography variant="h4" className={classes.heading}>
           Easily find what you are looking for
         </Typography>
@@ -79,7 +86,7 @@ export const ImageBlocks = () => (
           className={classes.image}
           alt="Reorder webpages by clicking the pin icon"
         />
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   </StyledContainer>
 );

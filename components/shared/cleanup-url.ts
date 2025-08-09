@@ -77,7 +77,7 @@ const neatURL = (params: { url: string; includeHash: boolean }) => {
     console.error(parsed.error);
     return params.url;
   }
-  const domain = parsed.domain;
+  const domain = 'domain' in parsed ? parsed.domain : null;
   if (!domain) {
     return params.url;
   }

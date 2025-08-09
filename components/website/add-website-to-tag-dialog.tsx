@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -108,8 +108,9 @@ export const AddWebsiteToTagDialog = (props: {
     try {
       new URL(e.target.value);
       setErrorText(undefined);
-    } catch (_) {
+    } catch (error) {
       setErrorText('Not a valid url');
+      console.log(error);
       return false;
     }
   };
@@ -125,18 +126,18 @@ export const AddWebsiteToTagDialog = (props: {
       }}
     >
       <div className={classes.dialogContent}>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item xs={10}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box flex="0 0 83.33%">
             <Typography variant="h3" noWrap>
               Add website to &#8220;{props.tagForWebsiteToTagDialog}&#8221;
             </Typography>
-          </Grid>
-          <Grid item>
+          </Box>
+          <Box>
             <IconButton onClick={props.close} className={classes.closeButton} size="large">
               <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         <div className={classes.section}>
           <TextField
             type="text"
@@ -154,8 +155,8 @@ export const AddWebsiteToTagDialog = (props: {
           />
         </div>
         <div className={classes.section}>
-          <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item xs={12}>
+          <Box display="flex" alignItems="center" justifyContent="space-between">
+            <Box flex="1">
               <Button
                 disableElevation={false}
                 variant="outlined"
@@ -164,8 +165,8 @@ export const AddWebsiteToTagDialog = (props: {
               >
                 Add website to &#8220;{props.tagForWebsiteToTagDialog}&#8221;
               </Button>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </div>
       </div>
     </StyledDialog>

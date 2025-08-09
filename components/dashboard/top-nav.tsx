@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
@@ -119,27 +119,27 @@ const LeftNavForRoute = (props: {
 }) => {
   if (props.path.includes('/people/')) {
     return (
-      <Grid item>
+      <Box>
         <ExpandPersonNav />
-      </Grid>
+      </Box>
     );
   }
   if (props.path.includes('/meetings/')) {
     return (
-      <Grid item>
+      <Box>
         <ExpandMeetingNav />
-      </Grid>
+      </Box>
     );
   }
   if (props.path.includes('/websites/') && props.tags) {
     return (
-      <Grid item>
+      <Box>
         <WebsiteTags tags={props.tags} store={props.store} />
-      </Grid>
+      </Box>
     );
   }
   return (
-    <Grid item>
+    <Box>
       <TopTags
         websiteTags={props.websiteTags}
         store={props.store}
@@ -147,7 +147,7 @@ const LeftNavForRoute = (props: {
         setWebsiteTags={props.setWebsiteTags}
         dragDropSource={props.dragDropSource}
       />
-    </Grid>
+    </Box>
   );
 };
 
@@ -195,13 +195,13 @@ export const TopNav = (props: {
   return (
     <Root>
       <div className={classes.leftSection}>
-        <Grid
-          container
+        <Box
+          display="flex"
           justifyContent="space-between"
-          direction="column"
+          flexDirection="column"
           style={{ height: '97vh' }}
         >
-          <Grid item>
+          <Box>
             <IconButton
               aria-label="search"
               onClick={(event) => {
@@ -224,7 +224,7 @@ export const TopNav = (props: {
                 />
               )}
             </IconButton>
-          </Grid>
+          </Box>
           <LeftNavForRoute
             path={location.pathname}
             store={props.store}
@@ -235,33 +235,31 @@ export const TopNav = (props: {
             websiteTags={props.websiteTags}
           />
           {props.isMicrosoftError && (
-            <Grid item>
-              <Grid container>
-                <Grid item>
-                  <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
-                    Error: please login to your Microsoft account
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
+            <Box>
+              <Box>
+                <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
+                  Error: please login to your Microsoft account
+                </Typography>
+              </Box>
+            </Box>
           )}
-          <Grid item>
+          <Box>
             <Link href="https://www.kelp.nyc" className={classes.logo}>
               <KelpIcon height="24" width="24" className={classes.iconSelected} />
             </Link>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </div>
       <div className={classes.rightSection}>
-        <Grid
-          container
+        <Box
+          display="flex"
           justifyContent="space-between"
-          direction="column"
+          flexDirection="column"
           style={{ height: '97vh' }}
         >
-          <Grid item>
-            <Grid container style={{ textAlign: 'right' }}>
-              <Grid item xs={12}>
+          <Box>
+            <Box style={{ textAlign: 'right' }}>
+              <Box>
                 <Tooltip title="Home" placement="left">
                   <IconButton
                     aria-label="home"
@@ -286,8 +284,8 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box>
                 <Tooltip title="Meeting List" placement="left">
                   <IconButton
                     aria-label="meetings"
@@ -312,8 +310,8 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box>
                 <Tooltip title="Calendar Tag Cloud" placement="left">
                   <IconButton
                     aria-label="calendar"
@@ -338,8 +336,8 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box>
                 <Tooltip title="Settings" placement="left">
                   <IconButton
                     aria-label="settings"
@@ -364,12 +362,12 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Grid container style={{ textAlign: 'right' }}>
-              <Grid item xs={12}>
+              </Box>
+            </Box>
+          </Box>
+          <Box>
+            <Box style={{ textAlign: 'right' }}>
+              <Box>
                 <Tooltip title="Vert Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
@@ -383,8 +381,8 @@ export const TopNav = (props: {
                     <div className={clsx(classes.icon, classes.iconLight)}></div>
                   </IconButton>
                 </Tooltip>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box>
                 <Tooltip title="NB Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
@@ -398,8 +396,8 @@ export const TopNav = (props: {
                     <div className={clsx(classes.icon, classes.iconNb)}></div>
                   </IconButton>
                 </Tooltip>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box>
                 <Tooltip title="Cool Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
@@ -413,8 +411,8 @@ export const TopNav = (props: {
                     <div className={clsx(classes.icon, classes.iconCool)}></div>
                   </IconButton>
                 </Tooltip>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box>
                 <Tooltip title="Dark Theme" placement="left">
                   <IconButton
                     aria-controls="simple-menu"
@@ -428,10 +426,10 @@ export const TopNav = (props: {
                     <div className={clsx(classes.icon, classes.iconDark)}></div>
                   </IconButton>
                 </Tooltip>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       </div>
     </Root>
   );

@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -30,40 +30,41 @@ export const Meeting = (props: {
         onClick={() => navigate(`/meetings/${props.meeting.id}`)}
         className={clsx(classes.row, props.isSmall && classes.rowSmall)}
       >
-        <Grid container wrap="nowrap" alignItems="center">
-          <Grid item className={classes.rowLeft}>
+        <Box display="flex" flexWrap="nowrap" alignItems="center">
+          <Box className={classes.rowLeft}>
             <CalendarIcon
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
               style={{ display: 'block', margin: '0 auto', opacity }}
             />
-          </Grid>
-          <Grid item zeroMinWidth xs>
-            <Grid
-              container
+          </Box>
+          <Box flex="1" minWidth={0}>
+            <Box
+              display="flex"
+              flexDirection="column"
               justifyContent="space-between"
-              alignItems="center"
+              alignItems="flex-start"
               className={classes.rowTopPadding}
             >
-              <Grid item xs={12}>
+              <Box width="100%">
                 <Typography noWrap>{props.meeting.summary || '(No title)'}</Typography>
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box width="100%">
                 <Typography variant="body2" noWrap>
                   {format(props.meeting.start, 'EEEE, MMMM d')} ⋅ {format(props.meeting.start, 'p')}{' '}
                   – {format(props.meeting.end, 'p')}
                 </Typography>
-              </Grid>
+              </Box>
               {props.info && (
-                <Grid item xs={12}>
+                <Box width="100%">
                   <Typography variant="body2" noWrap>
                     {props.info}
                   </Typography>
-                </Grid>
+                </Box>
               )}
-            </Grid>
-          </Grid>
-        </Grid>
+            </Box>
+          </Box>
+        </Box>
       </Button>
     </Row>
   );
