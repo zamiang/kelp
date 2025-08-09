@@ -114,7 +114,7 @@
     "copy-webpack-plugin": "10.2.4",
     "crypto-browserify": "3.12.0",
     "css-loader": "6.7.1",
-    "eslint": "9.32.0",
+    "eslint": "9.33.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-security": "1.5.0",
