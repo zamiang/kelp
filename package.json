@@ -84,7 +84,7 @@
     "react-dom": "18.2.0",
     "react-linkify": "1.0.0-alpha",
     "react-router-dom": "6.3.0",
-    "react-use": "17.5.0",
+    "react-use": "17.6.0",
     "rimraf": "3.0.2",
     "sitemap": "7.1.1",
     "stream-browserify": "3.0.0",
