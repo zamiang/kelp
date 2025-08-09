@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import Fuse from 'fuse.js';
@@ -120,17 +121,19 @@ const WebsiteResults = (props: {
   const filteredWebsites = uniqBy(websites, 'id');
 
   return (
-    <Box display="flex" flexWrap="wrap" gap={2}>
-      {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
-        <Box key={website.id} flex="0 0 calc(33.333% - 16px)">
-          <LargeWebsite
-            store={props.store}
-            item={website}
-            websiteTags={props.websiteTags}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-          />
-        </Box>
-      ))}
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container columns={3} spacing={2}>
+        {filteredWebsites.slice(0, maxWebsiteResults).map((website: IFeaturedWebsite) => (
+          <Grid key={website.id} size={1}>
+            <LargeWebsite
+              store={props.store}
+              item={website}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+            />
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 };

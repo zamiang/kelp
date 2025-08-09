@@ -1,3 +1,4 @@
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -377,21 +378,19 @@ const ExpandWebsite = (props: {
             <Typography variant="h3" className={classes.heading}>
               Related Websites
             </Typography>
-            <Box display="flex" gap={2}>
-              <Box flex="1">
-                <Box display="flex" gap={6} flexWrap="wrap">
-                  {websitesAtDomain.map((item) => (
-                    <Box flex="0 0 33.33%" key={item.id}>
-                      <LargeWebsite
-                        item={item}
-                        store={props.store}
-                        websiteTags={props.websiteTags}
-                        toggleWebsiteTag={props.toggleWebsiteTag}
-                      />
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container columns={3} spacing={2}>
+                {websitesAtDomain.map((item) => (
+                  <Grid size={1}>
+                    <LargeWebsite
+                      item={item}
+                      store={props.store}
+                      websiteTags={props.websiteTags}
+                      toggleWebsiteTag={props.toggleWebsiteTag}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
             </Box>
           </div>
         )}

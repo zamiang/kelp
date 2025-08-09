@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -77,21 +78,19 @@ export const WebsiteHighlights = (props: {
           </Box>
         )}
       </Box>
-      <Box display="flex" gap={2}>
-        <Box flex="1">
-          <Box display="flex" gap={6} flexWrap="wrap">
-            {topWebsites.map((item) => (
-              <Box flex="0 0 33.33%" key={item.id}>
-                <LargeWebsite
-                  item={item}
-                  store={props.store}
-                  websiteTags={props.websiteTags}
-                  toggleWebsiteTag={props.toggleWebsiteTag}
-                />
-              </Box>
-            ))}
-          </Box>
-        </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container columns={3} spacing={2}>
+          {topWebsites.map((item) => (
+            <Grid size={1}>
+              <LargeWebsite
+                item={item}
+                store={props.store}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </Box>
     </Root>
   );

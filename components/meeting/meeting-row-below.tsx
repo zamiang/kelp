@@ -1,3 +1,4 @@
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -83,18 +84,20 @@ const MeetingRowBelow = (props: {
 
   return (
     <StyledBox flex={props.isFullWidth ? '1' : '0 0 91.67%'}>
-      <Box display="flex" gap={5} flexWrap="wrap">
-        {websites.map((item) => (
-          <Box flex={isLarge ? '0 0 33.33%' : '0 0 33.33%'} key={item.id}>
-            <LargeWebsite
-              item={item}
-              store={props.store}
-              smGridSize={4}
-              websiteTags={props.websiteTags}
-              toggleWebsiteTag={props.toggleWebsiteTag}
-            />
-          </Box>
-        ))}
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container columns={3} spacing={2}>
+          {websites.map((item) => (
+            <Grid size={1} key={item.id}>
+              <LargeWebsite
+                item={item}
+                store={props.store}
+                smGridSize={4}
+                websiteTags={props.websiteTags}
+                toggleWebsiteTag={props.toggleWebsiteTag}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </Box>
       {extraItemsCount > 0 && !props.shouldHideShowAll && (
         <IconButton

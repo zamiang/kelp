@@ -1,10 +1,9 @@
+import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import useTheme from '@mui/styles/useTheme';
 import { flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -48,11 +47,6 @@ const ExpandPerson = (props: {
   const [associates, setAssociates] = useState<IFormattedAttendee[]>([]);
   const [associatesStats, setAssociatesStats] = useState<any>({});
   const [segmentDocuments, setSegmentDocuments] = useState<ISegmentDocument[]>([]);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery((theme as any).breakpoints.down('lg'), {
-    defaultMatches: true,
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -169,17 +163,19 @@ const ExpandPerson = (props: {
             <Typography variant="h3" className={classes.rowText}>
               Associated websites
             </Typography>
-            <Box display="flex" flexWrap="wrap" gap={isMobile ? 5 : 6}>
-              {websites.map((item) => (
-                <Box flex="0 0 25%" key={item.id}>
-                  <LargeWebsite
-                    item={item}
-                    store={props.store}
-                    websiteTags={props.websiteTags}
-                    toggleWebsiteTag={props.toggleWebsiteTag}
-                  />
-                </Box>
-              ))}
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container columns={3} spacing={2}>
+                {websites.map((item) => (
+                  <Grid size={1}>
+                    <LargeWebsite
+                      item={item}
+                      store={props.store}
+                      websiteTags={props.websiteTags}
+                      toggleWebsiteTag={props.toggleWebsiteTag}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
             </Box>
           </div>
         )}

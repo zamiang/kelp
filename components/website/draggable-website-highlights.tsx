@@ -1,3 +1,4 @@
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -170,27 +171,29 @@ const DraggableWebsites = (props: {
     isDropDisabled={props.dragDropSource === 'top-tags'}
   >
     {(provided, snapshot) => (
-      <Box
-        display="flex"
-        gap={5}
+      <Grid
+        container
+        columns={3}
+        spacing={2}
         ref={provided.innerRef}
         style={getListStyle(snapshot.isDraggingOver)}
         {...provided.droppableProps}
       >
         {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
-          <Website
-            key={item.id}
-            draggableId={`${props.filterByTag}-${item.id}`}
-            index={index}
-            item={item}
-            store={props.store}
-            websiteTags={props.websiteTags}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-            size={props.maxWebsites > 3 ? 3 : 4}
-          />
+          <Grid size={1} key={item.id}>
+            <Website
+              draggableId={`${props.filterByTag}-${item.id}`}
+              index={index}
+              item={item}
+              store={props.store}
+              websiteTags={props.websiteTags}
+              toggleWebsiteTag={props.toggleWebsiteTag}
+              size={props.maxWebsites > 3 ? 3 : 4}
+            />
+          </Grid>
         ))}
         {provided.placeholder}
-      </Box>
+      </Grid>
     )}
   </Droppable>
 );

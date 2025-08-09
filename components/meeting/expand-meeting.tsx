@@ -1,3 +1,4 @@
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -304,17 +305,19 @@ const ExpandedMeeting = (props: {
             </Box>
             <br />
             {currentTag === 'all' && (
-              <Box display="flex" flexWrap="wrap" gap={isMobile ? 5 : 6}>
-                {websites.map((item) => (
-                  <Box flex="0 0 25%" key={item.id}>
-                    <LargeWebsite
-                      item={item}
-                      store={props.store}
-                      websiteTags={props.websiteTags}
-                      toggleWebsiteTag={props.toggleWebsiteTag}
-                    />
-                  </Box>
-                ))}
+              <Box sx={{ flexGrow: 1 }} gap={isMobile ? 5 : 6}>
+                <Grid container columns={3} spacing={2}>
+                  {websites.map((item) => (
+                    <Grid size={1} key={item.id}>
+                      <LargeWebsite
+                        item={item}
+                        store={props.store}
+                        websiteTags={props.websiteTags}
+                        toggleWebsiteTag={props.toggleWebsiteTag}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
               </Box>
             )}
             {currentTag !== 'all' && (
