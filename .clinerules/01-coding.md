@@ -172,7 +172,7 @@ kelp/
 
 ## 📦 Installation Notes
 
-- `npm install --legacy-peer-deps`
+- `npm install`
 
 ## ⚙️ Dev Commands
 
