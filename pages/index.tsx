@@ -12,6 +12,8 @@ import Head from 'next/head';
 import React from 'react';
 import dynamic from 'next/dynamic';
 import Footer from '../components/homepage/footer';
+import { italicFontFamily, mediumFontFamily } from '../constants/homepage-theme';
+import Image from 'next/image';
 
 // Dynamic imports for heavy components
 const ImageBlocks = dynamic(
@@ -26,8 +28,6 @@ const UiBlocks = dynamic(() => import('../components/homepage/ui-blocks'), {
   loading: () => <div>Loading...</div>,
   ssr: false,
 });
-import { italicFontFamily, mediumFontFamily } from '../constants/homepage-theme';
-import InstallSvg from '../public/icons/install.svg';
 
 const PREFIX = 'App';
 
@@ -82,7 +82,6 @@ export const Root = styled('div')(({ theme }) => ({
     textAlign: 'center',
   },
   [`& .${classes.logoImage}`]: {
-    height: 64,
     opacity: 1,
     cursor: 'pointer',
     transition: 'opacity 0.3s',
@@ -279,7 +278,13 @@ const App = () => (
     />
     <div className={classes.hero}>
       <Container maxWidth="md">
-        <img className={classes.logoImage} src="/kelp.svg" alt="Kelp logo" />
+        <Image
+          className={classes.logoImage}
+          src="/kelp.svg"
+          alt="Kelp logo"
+          height="64"
+          width="64"
+        />
         <Typography variant="h1" className={classes.heading}>
           Kelp is a magical website organizer for busy people
         </Typography>
@@ -294,7 +299,7 @@ const App = () => (
           size="large"
           color="primary"
           className={classes.login}
-          startIcon={<InstallSvg width="24" height="24" />}
+          startIcon={<Image src="/icons/install.svg" alt="Install" width="24" height="24" />}
           onClick={() => (window.location.pathname = '/install')}
           disableElevation={true}
         >
@@ -364,7 +369,7 @@ const App = () => (
               size="large"
               color="primary"
               className={classes.login}
-              startIcon={<InstallSvg width="24" height="24" />}
+              startIcon={<Image src="/icons/install.svg" alt="Install" width="24" height="24" />}
               onClick={() => (window.location.pathname = '/install')}
               disableElevation={true}
             >

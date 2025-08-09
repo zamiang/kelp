@@ -23,6 +23,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     display: 'block',
     borderRadius: 20,
     maxWidth: '100%',
+    height: 'auto',
   },
 
   [`& .${classes.heading}`]: {

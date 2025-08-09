@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __dirname = path.dirname(__filename);
 
 const nextConfig = {
   eslint: {
@@ -72,16 +72,11 @@ const nextConfig = {
             directives: {
               defaultSrc: "'self'",
               styleSrc: ["'self'", "'unsafe-inline'"],
-              imgSrc: ["'self'", 'data:', 'https://www.googletagmanager.com'],
+              imgSrc: ["'self'", 'data:'],
               fontSrc: ["'self'"],
-              scriptSrc: [
-                "'self'",
-                "'unsafe-eval'",
-                "'unsafe-inline'",
-                'https://www.googletagmanager.com',
-              ],
+              scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'"],
               frameSrc: [],
-              connectSrc: ["'self'", 'https://www.googleapis.com'],
+              connectSrc: ["'self'"],
             },
           },
           forceHTTPSRedirect: true,
