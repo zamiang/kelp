@@ -54,7 +54,7 @@
     "@types/gapi.auth2": "0.0.56",
     "@types/gapi.client.calendar": "3.0.10",
     "@types/gapi.client.drive": "3.0.13",
-    "@types/gapi.client.people": "1.0.3",
+    "@types/gapi.client.people": "1.0.5",
     "@types/lodash": "4.14.182",
     "@types/pluralize": "0.0.29",
     "@types/psl": "1.1.0",
