@@ -82,11 +82,9 @@ describe('Extension Error Integration Tests', () => {
     let store: any = undefined;
 
     // Mock the getOrCreateStore function that returns undefined when db fails
-    const getOrCreateStore = async () => 
+    const getOrCreateStore = async () =>
       // Simulate database connection failure
-       undefined
-    ;
-
+      undefined;
     // Mock the trackVisit function from background.ts
     const trackVisit = async (store: any, tab: any) => {
       if (tab) {
@@ -129,7 +127,7 @@ describe('Extension Error Integration Tests', () => {
   it('should demonstrate webpack polyfill issues causing Buffer error', () => {
     // Test the specific scenario where webpack doesn't provide Node.js polyfills
     const testWebpackPolyfills = () => {
-      const missingPolyfills = [];
+      const missingPolyfills: string[] = [];
 
       // Check for common Node.js globals that should be polyfilled
       if (typeof Buffer === 'undefined') {
@@ -146,13 +144,13 @@ describe('Extension Error Integration Tests', () => {
     };
 
     // Temporarily remove these globals to simulate webpack polyfill failure
-    const originalBuffer = global.Buffer;
-    const originalProcess = global.process;
-    const originalGlobal = (global as any).global;
+    const originalBuffer = globalThis.Buffer;
+    const originalProcess = globalThis.process;
+    const originalGlobal = (globalThis as any).global;
 
-    delete (global as any).Buffer;
-    delete (global as any).process;
-    delete (global as any).global;
+    delete (globalThis as any).Buffer;
+    delete (globalThis as any).process;
+    delete (globalThis as any).global;
 
     try {
       const missing = testWebpackPolyfills();
@@ -161,9 +159,9 @@ describe('Extension Error Integration Tests', () => {
       expect(missing).toContain('global');
     } finally {
       // Restore globals
-      global.Buffer = originalBuffer;
-      global.process = originalProcess;
-      (global as any).global = originalGlobal;
+      globalThis.Buffer = originalBuffer;
+      globalThis.process = originalProcess;
+      (globalThis as any).global = originalGlobal;
     }
   });
 
