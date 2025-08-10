@@ -6,11 +6,8 @@ import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
 
-
 function isAllowedHost(host: string, allowedDomains: string[]): boolean {
-  return allowedDomains.some(domain =>
-    host === domain || host.endsWith('.' + domain)
-  );
+  return allowedDomains.some((domain) => host === domain || host.endsWith('.' + domain));
 }
 
 const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
@@ -42,6 +39,7 @@ export const getDocumentsFromCalendarEvents = (event: {
         documentUrls.push(url);
       }
     } catch (e) {
+      console.log('ignore error', e);
       // Ignore invalid URLs
     }
   });
@@ -61,19 +59,16 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
     ? event.description.match(urlRegex()) || []
     : [];
   return first(
-    meetingDescriptionLinks?.filter(
-      (link) => {
-        try {
-          const urlObj = new URL(link);
-          return (
-            isAllowedHost(urlObj.host, ['zoom.us', 'webex.com'])
-          );
-        } catch (e) {
-          // If URL parsing fails, skip this link
-          return false;
-        }
-      },
-    ),
+    meetingDescriptionLinks?.filter((link) => {
+      try {
+        const urlObj = new URL(link);
+        return isAllowedHost(urlObj.host, ['zoom.us', 'webex.com']);
+      } catch (e) {
+        // If URL parsing fails, skip this link
+        console.log('Ignore error getting video link url', e);
+        return false;
+      }
+    }),
   );
 };
 
