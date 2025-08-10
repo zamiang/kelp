@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import Fuse from 'fuse.js';
+import Fuse, { FuseResult } from 'fuse.js';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -74,7 +74,7 @@ const Root = styled('div')(({ theme }) => ({
 // A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
 const minScore = 0.6;
 
-const filterSearchResults = (searchResults: Fuse.FuseResult<ISearchItem>[]) => {
+const filterSearchResults = (searchResults: FuseResult<ISearchItem>[]) => {
   const people: ISearchItem[] = [];
   const meetings: ISearchItem[] = [];
   const websites: ISearchItem[] = [];
