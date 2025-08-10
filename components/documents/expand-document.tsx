@@ -1,10 +1,9 @@
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import useComponentSize from '@rehooks/component-size';
 import { addDays, differenceInCalendarDays, format, subDays } from 'date-fns';
 import { times } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
 import EditIcon from '../../public/icons/edit.svg';
@@ -23,8 +22,6 @@ const ExpandedDocument = (props: {
   close?: () => void;
   websiteCache: IWebsiteCache;
 }) => {
-  const ref = useRef(null);
-  const size = useComponentSize(ref);
   const { slug }: any = useParams();
   const documentId = props.documentId || slug;
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
