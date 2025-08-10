@@ -12,6 +12,7 @@ export default [
       '.vscode/',
       'node_modules/',
       'public/',
+      'extension/dist',
       '.next/',
       '*.js',
       'next-env.d.ts',
