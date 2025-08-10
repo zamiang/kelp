@@ -27,10 +27,15 @@ export const getDocumentsFromCalendarEvents = (event: {
   const documentUrls: string[] = [];
   const urls = event.description ? uniq(event.description.match(urlRegex())) : [];
   (urls || []).forEach((url) => {
-    if (url.includes('https://docs.google.com')) {
-      const link = getIdFromLink(url);
-      documentIds.push(link);
-      documentUrls.push(url);
+    try {
+      const parsedUrl = new URL(url);
+      if (parsedUrl.host === 'docs.google.com') {
+        const link = getIdFromLink(url);
+        documentIds.push(link);
+        documentUrls.push(url);
+      }
+    } catch (e) {
+      // Ignore invalid URLs
     }
   });
   (event.attachments || []).map((attachment: gapi.client.calendar.EventAttachment) => {
