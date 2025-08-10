@@ -38,7 +38,6 @@ npm run analyze
 
 - `@azure/msal-browser` (authentication)
 - `@microsoft/microsoft-graph-client`
-- `d3` (data visualization)
 - `@mui/material` components
 - `lodash` (utility library)
 - `react-beautiful-dnd` (drag and drop)

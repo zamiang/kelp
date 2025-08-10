@@ -1,15 +1,13 @@
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import useComponentSize from '@rehooks/component-size';
 import { addDays, differenceInCalendarDays, format, subDays } from 'date-fns';
 import { times } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import config from '../../constants/config';
 import EditIcon from '../../public/icons/edit.svg';
 import ShareIcon from '../../public/icons/person-add.svg';
-import { D3Component } from '../shared/bar-chart/bar-chart';
 import { Row, classes } from '../shared/row-styles';
 import SegmentMeetingList from '../shared/segment-meeting-list';
 import { IDocument, ISegmentDocument } from '../store/data-types';
@@ -24,8 +22,6 @@ const ExpandedDocument = (props: {
   close?: () => void;
   websiteCache: IWebsiteCache;
 }) => {
-  const ref = useRef(null);
-  const size = useComponentSize(ref);
   const { slug }: any = useParams();
   const documentId = props.documentId || slug;
   const [document, setDocument] = useState<IDocument | undefined>(undefined);
@@ -145,17 +141,6 @@ const ExpandedDocument = (props: {
             />
           </div>
         )}
-        <div className={classes.section} ref={ref}>
-          <D3Component
-            data={Object.values(chartData)}
-            width={size.width < 300 ? 300 : size.width}
-            height={300}
-            minDate={minDate}
-            maxDate={maxDate}
-            label={'Activity Graph'}
-            smallLabel={'for this document'}
-          />
-        </div>
       </div>
     </Row>
   );
