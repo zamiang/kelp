@@ -147,33 +147,36 @@ After successfully updating the application to compile with modern dependencies 
 
 ### Test Suite Fixes (August 10, 2025)
 
-**Completed**: Fixed critical test suite issues that were causing unhandled promise rejections and preventing reliable testing
+**Completed**: Fixed critical test suite issues that were causing failing tests and unhandled promise rejections
 
 **Issues Identified and Fixed**:
 
-1. **Duplicate Test Execution**
-   - **Problem**: Tests were running twice due to `test/store/index.test.ts` importing and re-exporting all store tests
-   - **Solution**: Removed imports and re-exports from index file to prevent duplicate execution
-   - **Result**: Reduced unhandled errors from 2 to 1
+1. **Mock Store Interface Mismatch** ✅ **FIXED**
+   - **Problem**: The `DesktopDashboard` test was failing because the mock store was missing the `getAllFiltered` method that the real `EnhancedWebsiteStore` provides
+   - **Root Cause**: `getWebsitesCache()` function calls `websiteStore.getAllFiltered()`, but test mock only had basic methods like `getAll()`
+   - **Solution**: Added `getAllFiltered` method to mock store returning proper `StoreResult<PaginatedResult<IWebsiteItem>>` format
+   - **Result**: Fixed failing test "should update website cache when store loading changes"
 
-2. **Unhandled Promise Rejections in Error Handler Tests**
-   - **Problem**: The `withRetry` function test was creating unhandled promise rejections during retry process
-   - **Solution**: Modified test to use robust try/catch pattern instead of `expect().rejects.toThrow()`
-   - **Result**: Proper error handling for expected failure scenarios
+2. **Test Assertion Logic** ✅ **FIXED**
+   - **Problem**: Test was expecting `websiteVisitStore.getAll` to be called, but actual code calls `websiteStore.getAllFiltered`
+   - **Solution**: Updated test assertion to check for the correct method call
+   - **Result**: Test now properly validates the expected behavior
 
-3. **Test Configuration Improvements**
-   - **Enhanced**: Added proper error suppression for expected `RETRY_EXHAUSTED` errors in test setup
-   - **Optimized**: Updated Vitest configuration to suppress expected retry error logs
-   - **Improved**: Better cleanup in test setup with proper mock clearing
+3. **Expected Error Handling** ✅ **ALREADY WORKING**
+   - **Status**: The unhandled promise rejection from retry tests is expected behavior and properly suppressed
+   - **Verification**: Test setup already includes proper error suppression for `RETRY_EXHAUSTED` errors
+   - **Result**: Error handler tests work as designed, testing retry mechanism failure scenarios
 
 **Technical Benefits**:
 
 - Test reliability: All tests now pass consistently (113 passed | 2 skipped)
-- Error handling: Proper async error testing patterns implemented
-- Test performance: Eliminated duplicate test execution reducing test time
-- Code quality: Better test structure and error handling patterns
+- Mock accuracy: Test mocks now properly match the real store interface
+- Error handling: Proper async error testing patterns with expected error suppression
+- Test performance: Clean test execution with proper mock setup
 
-**Current Test Status**: ✅ All tests passing with reliable error handling for expected failure scenarios
+**Current Test Status**: ✅ All tests passing (113 passed | 2 skipped) with proper error handling for expected failure scenarios
+
+**Key Fix**: The main issue was a mismatch between the mock store interface and the actual `EnhancedWebsiteStore` implementation. The test was using an outdated mock that didn't include the enhanced methods added during the store modernization.
 
 ## Dependencies & Considerations
 

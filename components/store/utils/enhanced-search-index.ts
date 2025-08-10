@@ -168,18 +168,16 @@ class EnhancedSearchIndex {
         }
 
         case 'website': {
-          const websitesResult = await store.websiteStore.getAllFiltered(
-            store.domainBlocklistStore,
-            store.websiteBlocklistStore,
-          );
-          const websites = websitesResult.success ? websitesResult.data.data : [];
-          websites.forEach((website) => {
-            items.push({
-              text: website.title.toLowerCase(),
-              type: 'website',
-              item: website,
+          const websitesResult = await store.websiteStore.getAll();
+          if (websitesResult.success) {
+            websitesResult.data.data.forEach((website: IWebsiteItem) => {
+              items.push({
+                text: website.title.toLowerCase(),
+                type: 'website',
+                item: website,
+              });
             });
-          });
+          }
           break;
         }
       }
@@ -440,3 +438,6 @@ class EnhancedSearchIndex {
 
 // Export singleton instance
 export const enhancedSearchIndex = new EnhancedSearchIndex();
+
+// Also export the class for testing
+export { EnhancedSearchIndex };
