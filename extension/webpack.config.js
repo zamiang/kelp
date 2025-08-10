@@ -98,6 +98,7 @@ const getConfig = () => ({
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
       'react-dom': 'react-dom',
+      'process/browser': require.resolve('process/browser'),
     },
   },
   devServer: {
