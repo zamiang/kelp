@@ -166,7 +166,7 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
 
   useEffect(() => {
     if (chrome.identity.getAuthToken) {
-      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+      chrome.identity.getAuthToken({ interactive: true }, (result) => {
         if (chrome.runtime.lastError) {
           console.error(chrome.runtime.lastError);
           if (
@@ -176,7 +176,8 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
           } else {
             setHasAuthError(true);
           }
-        } else if (token) {
+        } else if (result) {
+          const token = typeof result === 'string' ? result : result.token;
           setToken(token);
         } else {
           console.error('no token sad times');

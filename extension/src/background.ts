@@ -275,7 +275,7 @@ chrome.idle.onStateChanged.addListener((state) => {
   }
 });
 
-chrome.tabs.onHighlighted.addListener((highlightInfo: chrome.tabs.TabHighlightInfo): void => {
+chrome.tabs.onHighlighted.addListener((highlightInfo): void => {
   setTimeout((): void => {
     const checkTab = async (): Promise<void> => {
       const queryOptions = { active: true, currentWindow: true };

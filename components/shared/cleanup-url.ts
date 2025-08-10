@@ -1,5 +1,5 @@
 import url from 'url';
-import psl from 'psl';
+import * as psl from 'psl';
 import qs from 'qs';
 
 // https://github.com/Yup-io/neat-url
@@ -73,11 +73,11 @@ const neatURL = (params: { url: string; includeHash: boolean }) => {
 
   // Get domain without subdomain.
   const parsed = psl.parse(urlObj.hostname);
-  if (parsed.error) {
-    console.error(parsed.error);
+  if (!parsed || typeof parsed === 'string' || !('domain' in parsed)) {
+    console.error('Failed to parse domain:', urlObj.hostname);
     return params.url;
   }
-  const domain = 'domain' in parsed ? parsed.domain : null;
+  const domain = parsed.domain;
   if (!domain) {
     return params.url;
   }
