@@ -263,7 +263,7 @@ const ExpandWebsite = (props: {
       const url = cleanupUrl(websiteId);
       const w = props.websiteCache[url];
       if (!w) {
-        console.error(url, 'Unable to find website for url');
+        console.error('Unable to find website for url: %s', url);
       }
       setWebsite(w);
 
