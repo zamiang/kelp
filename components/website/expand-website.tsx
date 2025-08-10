@@ -299,6 +299,14 @@ const ExpandWebsite = (props: {
     const updatedTags = websiteTags.filter((t) => t !== tag).join(' ');
     await props.store.websiteStore.updateTags(website.id, updatedTags);
 
+    // Prevent prototype pollution
+    if (
+      websiteId === '__proto__' ||
+      websiteId === 'constructor' ||
+      websiteId === 'prototype'
+    ) {
+      throw new Error('Invalid websiteId');
+    }
     (props.websiteCache[websiteId] as any).tags = updatedTags;
     return props.store.incrementLoading();
   };
