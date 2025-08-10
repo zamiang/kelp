@@ -6,6 +6,13 @@ import { formatGmailAddress } from '../../fetch/google/fetch-people';
 import { ISegment, attendee, responseStatus, segmentState } from '../../store/data-types';
 import { getIdFromLink } from '../../store/models/document-model';
 
+
+function isAllowedHost(host: string, allowedDomains: string[]): boolean {
+  return allowedDomains.some(domain =>
+    host === domain || host.endsWith('.' + domain)
+  );
+}
+
 const getStateForMeeting = (event: gapi.client.calendar.Event): segmentState => {
   const currentTime = new Date();
   if (!event.end || !event.start) {
@@ -55,7 +62,17 @@ const getVideoLinkFromCalendarEvent = (event: gapi.client.calendar.Event) => {
     : [];
   return first(
     meetingDescriptionLinks?.filter(
-      (link) => link.includes('zoom.us') || link.includes('webex.com'),
+      (link) => {
+        try {
+          const urlObj = new URL(link);
+          return (
+            isAllowedHost(urlObj.host, ['zoom.us', 'webex.com'])
+          );
+        } catch (e) {
+          // If URL parsing fails, skip this link
+          return false;
+        }
+      },
     ),
   );
 };
