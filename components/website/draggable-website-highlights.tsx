@@ -70,7 +70,7 @@ export const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export const getWebsitesForTag = (websiteCache: IWebsiteCache, filterByTag?: string) => {
+const getWebsitesForTag = (websiteCache: IWebsiteCache, filterByTag?: string) => {
   const websites = Object.values(websiteCache);
   const filtereredWebsites = websites
     .filter((website) => {
