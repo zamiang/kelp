@@ -106,7 +106,7 @@
     "@types/react-dom": "18.3.7",
     "@typescript-eslint/eslint-plugin": "8.39.0",
     "@typescript-eslint/parser": "8.39.0",
-    "babel-loader": "8.4.1",
+    "babel-loader": "10.0.0",
     "copy-webpack-plugin": "10.2.4",
     "crypto-browserify": "3.12.1",
     "css-loader": "6.11.0",
