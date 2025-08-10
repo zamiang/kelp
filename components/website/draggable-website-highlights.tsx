@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
 import config from '../../constants/config';
 import CloseIcon from '../../public/icons/close.svg';
 import { IWebsiteTag } from '../store/data-types';
@@ -71,18 +70,6 @@ export const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-const getItemStyle = (draggableStyle: any) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? 'rgba(0,0,0, 0.15)' : 'transparent',
-});
-
 export const getWebsitesForTag = (websiteCache: IWebsiteCache, filterByTag?: string) => {
   const websites = Object.values(websiteCache);
   const filtereredWebsites = websites
@@ -128,74 +115,37 @@ export const fetchData = (
 
 const Website = (props: {
   item: IFeaturedWebsite;
-  index: number;
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  size: number;
-  draggableId: string;
 }) => (
-  <Draggable draggableId={props.draggableId} index={props.index}>
-    {(provided) => (
-      <Box
-        flex={props.size === 3 ? '0 0 25%' : '0 0 33.33%'}
-        ref={provided.innerRef}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        style={getItemStyle(provided.draggableProps.style)}
-      >
-        <LargeWebsite
-          key={props.item.id}
-          item={props.item}
-          store={props.store}
-          websiteTags={props.websiteTags}
-          toggleWebsiteTag={props.toggleWebsiteTag}
-        />
-      </Box>
-    )}
-  </Draggable>
+  <LargeWebsite
+    key={props.item.id}
+    item={props.item}
+    store={props.store}
+    websiteTags={props.websiteTags}
+    toggleWebsiteTag={props.toggleWebsiteTag}
+  />
 );
 
-const DraggableWebsites = (props: {
+const WebsiteGrid = (props: {
   topWebsites: IWebsiteCacheItem[];
   store: IStore;
   toggleWebsiteTag: (tag: string, websiteId: string) => Promise<void>;
   websiteTags: IWebsiteTag[];
-  maxWebsites: number;
-  filterByTag?: string;
-  dragDropSource?: string;
 }) => (
-  <Droppable
-    droppableId={`${props.filterByTag}-websites`}
-    direction="horizontal"
-    isDropDisabled={props.dragDropSource === 'top-tags'}
-  >
-    {(provided, snapshot) => (
-      <Grid
-        container
-        columns={3}
-        spacing={2}
-        ref={provided.innerRef}
-        style={getListStyle(snapshot.isDraggingOver)}
-        {...provided.droppableProps}
-      >
-        {props.topWebsites.map((item: IWebsiteCacheItem, index: number) => (
-          <Grid size={1} key={item.id}>
-            <Website
-              draggableId={`${props.filterByTag}-${item.id}`}
-              index={index}
-              item={item}
-              store={props.store}
-              websiteTags={props.websiteTags}
-              toggleWebsiteTag={props.toggleWebsiteTag}
-              size={props.maxWebsites > 3 ? 3 : 4}
-            />
-          </Grid>
-        ))}
-        {provided.placeholder}
+  <Grid container columns={3} spacing={2}>
+    {props.topWebsites.map((item: IWebsiteCacheItem) => (
+      <Grid size={1} key={item.id}>
+        <Website
+          item={item}
+          store={props.store}
+          websiteTags={props.websiteTags}
+          toggleWebsiteTag={props.toggleWebsiteTag}
+        />
       </Grid>
-    )}
-  </Droppable>
+    ))}
+  </Grid>
 );
 
 export const DraggableWebsiteHighlights = (props: {
@@ -279,14 +229,11 @@ export const DraggableWebsiteHighlights = (props: {
           </Box>
         </Box>
       </Box>
-      <DraggableWebsites
+      <WebsiteGrid
         topWebsites={topWebsites}
         store={props.store}
         websiteTags={props.websiteTags}
         toggleWebsiteTag={props.toggleWebsiteTag}
-        maxWebsites={props.maxWebsites}
-        filterByTag={props.filterByTag}
-        dragDropSource={props.dragDropSource}
       />
       {extraItemsCount > 0 && !shouldShowAll && (
         <IconButton
