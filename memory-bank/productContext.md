@@ -14,11 +14,12 @@ Privacy-Focused: The application runs locally on your computer. It does not stor
 
 Target Audience: It is specifically designed for people who have a lot of meetings and need an efficient way to manage the links and pages they use.
 
-In essence, Kelp offers a more automated and context-aware way to organize your Web Browser, particularly in a professional setting. It is available as an extension for both Chrome and Firefox.
+In essence, Kelp offers a more automated and context-aware way to organize your Web Browser, particularly in a professional setting. It is available as an extension for both Chrome and Safari.
 
 **User Experience Goals**
 
 - **Seamless Integration**: Kelp should feel like a natural extension of the person's existing tools (their browser), requiring minimal setup and configuration.
 - **Minimal Intrusion**: The tool should not disrupt their workflow with unnecessary alerts or prompts.
-- **Customizability**: Users should have control over focus intervals, blocked sites, and task management preferences.
+- **Privacy-First Design**: All data processing happens locally on the user's device with no server-side storage or analytics.
+- **Calendar Integration**: Seamless connection with Google Calendar and Microsoft Graph APIs for meeting association.
 - **Cross-Platform Compatibility**: Kelp must work consistently across Windows, macOS, and Linux environments.
