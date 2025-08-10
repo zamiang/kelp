@@ -21,7 +21,7 @@ const Root = styled('div')(({ theme }) => ({
     borderRadius: 50,
     background: theme.palette.background.paper,
     marginBottom: theme.spacing(6),
-    display: 'inline-block',
+    display: 'flex',
     opacity: 1,
     transition: 'opacity 0.3s',
     '&:hover': { opacity: 0.7 },

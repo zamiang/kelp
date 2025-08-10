@@ -17,7 +17,7 @@ import { StyledEngineProvider, styled } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './popup.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
@@ -340,4 +340,7 @@ const App = () => {
 };
 
 const mountNode = document.getElementById('popup');
-ReactDOM.render(<App />, mountNode);
+if (mountNode) {
+  const root = createRoot(mountNode);
+  root.render(<App />);
+}

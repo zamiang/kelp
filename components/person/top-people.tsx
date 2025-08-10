@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
+import { MostRecentTab } from '../website/most-recent-tab';
 
 const PREFIX = 'TopPeople';
 
@@ -33,11 +34,11 @@ const Root = styled('div')(({ theme }) => ({
     borderRadius: 50,
     background: theme.palette.background.paper,
     marginBottom: theme.spacing(6),
-    display: 'inline-block',
     opacity: 1,
     transition: 'opacity 0.3s',
     cursor: 'pointer',
     height: 38,
+    display: 'flex',
     '&:hover': { opacity: 0.7 },
   },
   [`& .${classes.container}`]: {
@@ -105,7 +106,10 @@ export const TopPeople = (props: { store: IStore }) => {
 
   return (
     <Root>
-      <Box display="flex" gap={2} className={classes.container} justifyContent="flex-end">
+      <Box display="flex" gap={2} className={classes.container}>
+        <Box>
+          <MostRecentTab />
+        </Box>
         {people.map((person) => (
           <Box key={person.id}>
             <div className={classes.person}>

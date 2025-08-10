@@ -81,7 +81,7 @@ export const WebsiteHighlights = (props: {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container columns={3} spacing={2}>
           {topWebsites.map((item) => (
-            <Grid size={1}>
+            <Grid size={1} key={item.id}>
               <LargeWebsite
                 item={item}
                 store={props.store}

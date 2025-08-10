@@ -1,3 +1,5 @@
+import { TopPeople } from '../person/top-people';
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
@@ -33,6 +35,7 @@ const classes = {
   iconCool: `${PREFIX}-iconCool`,
   iconImage: `${PREFIX}-iconImage`,
   iconSelected: `${PREFIX}-iconSelected`,
+  centerSection: `${PREFIX}-centerSection`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -73,6 +76,22 @@ const Root = styled('div')(({ theme }) => ({
     },
     [theme.breakpoints.down('lg')]: {
       width: 139,
+    },
+  },
+  [`& .${classes.centerSection}`]: {
+    paddingLeft: 228,
+    paddingRight: 228,
+    [theme.breakpoints.down('xl')]: {
+      paddingLeft: 187,
+      paddingRight: 187,
+    },
+    [theme.breakpoints.down('xl')]: {
+      paddingLeft: 179,
+      paddingRight: 179,
+    },
+    [theme.breakpoints.down('lg')]: {
+      paddingLeft: 139,
+      paddingRight: 139,
     },
   },
   [`& .${classes.logo}`]: {
@@ -249,6 +268,13 @@ export const TopNav = (props: {
             </Link>
           </Box>
         </Box>
+      </div>
+      <div className={classes.centerSection}>
+        <Grid container spacing={2}>
+          <Grid>
+            <TopPeople store={props.store} />
+          </Grid>
+        </Grid>
       </div>
       <div className={classes.rightSection}>
         <Box

@@ -2,7 +2,6 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
@@ -14,7 +13,6 @@ import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import { Onboarding } from '../onboarding/onboarding';
 import ExpandPerson from '../person/expand-person';
-import { TopPeople } from '../person/top-people';
 import { toggleWebsiteTag } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -23,7 +21,6 @@ import Settings from '../user-profile/settings';
 import { AddWebsiteToTagDialog } from '../website/add-website-to-tag-dialog';
 import ExpandWebsite from '../website/expand-website';
 import { IWebsiteCache, getWebsitesCache } from '../website/get-featured-websites';
-import { MostRecentTab } from '../website/most-recent-tab';
 import { TagHighlights } from '../website/tag-highlights';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
@@ -218,14 +215,6 @@ export const DesktopDashboard = (props: {
                   path="/home"
                   element={
                     <div>
-                      <Box display="flex">
-                        <Box flex="0 0 25%">
-                          <MostRecentTab />
-                        </Box>
-                        <Box flex="0 0 75%">
-                          <TopPeople store={props.store} />
-                        </Box>
-                      </Box>
                       <MeetingHighlight
                         store={props.store}
                         toggleWebsiteTag={toggleWebsiteTagClick}
