@@ -6,11 +6,11 @@
 
 **Current Status**: Phase 1 implementation in progress; 75% complete with significant achievements.
 
-## Latest Work: react-beautiful-dnd Removal & Phase 1 Progress (August 9, 2025)
+## Latest Work: Test Suite Fixes & Phase 1 Progress (August 10, 2025)
 
 ### Context
 
-After successfully updating the application to compile with modern dependencies (Next.js 15.4.6, Material-UI v7, TypeScript 5.9), we've implemented Phase 1 of the modernization roadmap. Most recently, we completed a major cleanup by removing the deprecated react-beautiful-dnd library and all associated drag-and-drop functionality.
+After successfully updating the application to compile with modern dependencies (Next.js 15.4.6, Material-UI v7, TypeScript 5.9), we've implemented Phase 1 of the modernization roadmap. Most recently, we completed a major cleanup by removing the deprecated react-beautiful-dnd library and fixed critical test suite issues that were preventing reliable testing.
 
 ### Phase 1 Achievements
 
@@ -144,6 +144,36 @@ After successfully updating the application to compile with modern dependencies 
 - Performance improvement: Removed drag event listeners and complex drag calculations
 
 **User Impact**: All core functionality (website tagging, organization, navigation) remains intact through existing UI patterns. Users lose manual reordering capabilities but gain simplified, more reliable interactions.
+
+### Test Suite Fixes (August 10, 2025)
+
+**Completed**: Fixed critical test suite issues that were causing unhandled promise rejections and preventing reliable testing
+
+**Issues Identified and Fixed**:
+
+1. **Duplicate Test Execution**
+   - **Problem**: Tests were running twice due to `test/store/index.test.ts` importing and re-exporting all store tests
+   - **Solution**: Removed imports and re-exports from index file to prevent duplicate execution
+   - **Result**: Reduced unhandled errors from 2 to 1
+
+2. **Unhandled Promise Rejections in Error Handler Tests**
+   - **Problem**: The `withRetry` function test was creating unhandled promise rejections during retry process
+   - **Solution**: Modified test to use robust try/catch pattern instead of `expect().rejects.toThrow()`
+   - **Result**: Proper error handling for expected failure scenarios
+
+3. **Test Configuration Improvements**
+   - **Enhanced**: Added proper error suppression for expected `RETRY_EXHAUSTED` errors in test setup
+   - **Optimized**: Updated Vitest configuration to suppress expected retry error logs
+   - **Improved**: Better cleanup in test setup with proper mock clearing
+
+**Technical Benefits**:
+
+- Test reliability: All tests now pass consistently (113 passed | 2 skipped)
+- Error handling: Proper async error testing patterns implemented
+- Test performance: Eliminated duplicate test execution reducing test time
+- Code quality: Better test structure and error handling patterns
+
+**Current Test Status**: ✅ All tests passing with reliable error handling for expected failure scenarios
 
 ## Dependencies & Considerations
 
