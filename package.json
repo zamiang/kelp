@@ -70,7 +70,7 @@
     "material-ui-popup-state": "5.3.6",
     "next": "15.4.6",
     "next-compose-plugins": "2.2.1",
-    "next-react-svg": "1.0.0",
+    "next-react-svg": "1.2.0",
     "next-secure-headers": "2.2.0",
     "p-ratelimit": "1.0.1",
     "pluralize": "8.0.0",
