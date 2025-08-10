@@ -16,6 +16,7 @@ import {
   IWebsiteTag,
   IWebsiteVisit,
 } from './data-types';
+import { StoreError, handleDatabaseCorruption, withRetry } from './utils/error-handler';
 
 interface Db extends DBSchema {
   document: {
@@ -334,28 +335,131 @@ const options = {
   },
 };
 
-const timeout = (ms: number) => new Promise((resolve) => setTimeout(() => resolve('error'), ms));
-
 export type dbType = IDBPDatabase<Db>;
 
 export const deleteDatabase = (environment: 'production' | 'test' | 'extension') =>
   indexedDB.deleteDatabase(dbNameHash[environment]);
 
-const setupDatabase = async (environment: 'production' | 'test' | 'extension') => {
-  try {
-    const db = await Promise.race([
-      openDB<Db>(dbNameHash[environment], databaseVerson, options),
-      timeout(1000),
-    ]);
-    if (db === 'error') {
-      console.error('ERROR: Database setup error');
-      return null;
-    }
-    return db as IDBPDatabase<Db>;
-  } catch (e) {
-    console.error('ERROR: Database setup error in try catch', e);
+/**
+ * Enhanced database setup with better error handling and recovery
+ */
+const setupDatabase = async (
+  environment: 'production' | 'test' | 'extension',
+): Promise<IDBPDatabase<Db> | null> => {
+  const dbName = dbNameHash[environment];
+
+  return withRetry(
+    async () => {
+      try {
+        // Increase timeout to 5 seconds for better reliability
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(
+            () =>
+              reject(
+                new StoreError('Database setup timeout', {
+                  code: 'SETUP_TIMEOUT',
+                  severity: 'high',
+                  context: { environment, dbName, timeout: 5000 },
+                  retryable: true,
+                }),
+              ),
+            5000,
+          ),
+        );
+
+        const db = await Promise.race([
+          openDB<Db>(dbName, databaseVerson, {
+            ...options,
+            blocked() {
+              console.warn('Database upgrade blocked - another connection may be open');
+              throw new StoreError('Database upgrade blocked', {
+                code: 'UPGRADE_BLOCKED',
+                severity: 'medium',
+                context: { environment, dbName },
+                retryable: true,
+              });
+            },
+            blocking() {
+              console.warn('Database blocking other connections');
+            },
+            terminated() {
+              console.error('Database connection terminated unexpectedly');
+              ErrorTracking.logError('Database connection terminated');
+              throw new StoreError('Database connection terminated', {
+                code: 'CONNECTION_TERMINATED',
+                severity: 'high',
+                context: { environment, dbName },
+                retryable: true,
+              });
+            },
+          }),
+          timeoutPromise,
+        ]);
+
+        console.log(`Successfully connected to database: ${dbName}`);
+        return db;
+      } catch (error) {
+        // Handle specific database corruption scenarios
+        if (error instanceof Error) {
+          const errorMessage = error.message.toLowerCase();
+
+          if (
+            errorMessage.includes('corrupt') ||
+            errorMessage.includes('damaged') ||
+            errorMessage.includes('invalid') ||
+            error.name === 'InvalidStateError'
+          ) {
+            console.warn('Database corruption detected, attempting recovery...');
+
+            try {
+              await handleDatabaseCorruption(dbName, databaseVerson, async () => {
+                console.log('Database recovery completed, will retry setup');
+              });
+
+              // After recovery, retry the setup (this will be handled by withRetry)
+              throw new StoreError('Database corrupted, recovery attempted', {
+                code: 'DATABASE_CORRUPTED',
+                severity: 'high',
+                context: { environment, dbName, originalError: error.message },
+                retryable: true,
+              });
+            } catch (recoveryError) {
+              throw new StoreError('Database corruption recovery failed', {
+                code: 'RECOVERY_FAILED',
+                severity: 'critical',
+                context: { environment, dbName, originalError: error.message },
+                retryable: false,
+                cause: recoveryError as Error,
+              });
+            }
+          }
+        }
+
+        // Re-throw as StoreError for consistent handling
+        throw error instanceof StoreError
+          ? error
+          : new StoreError('Database setup failed', {
+              code: 'SETUP_FAILED',
+              severity: 'high',
+              context: { environment, dbName },
+              retryable: true,
+              cause: error as Error,
+            });
+      }
+    },
+    {
+      maxAttempts: 3,
+      baseDelay: 500,
+      maxDelay: 2000,
+      backoffMultiplier: 2,
+    },
+    `setupDatabase-${environment}`,
+  ).catch((error): null => {
+    // Final fallback - log the error and return null
+    console.error(`Failed to setup database after all retry attempts: ${dbName}`, error);
+    ErrorTracking.logError(error);
     return null;
-  }
+  });
 };
 
 const deleteAllStores = (db: IDBPDatabase<Db>) => {
