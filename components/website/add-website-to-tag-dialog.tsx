@@ -78,24 +78,26 @@ export const AddWebsiteToTagDialog = (props: {
       return;
     }
     const cleanUrl = cleanupUrl(value);
-    const existingWebsite = await props.store.websiteStore.getById(cleanUrl);
-    if (existingWebsite) {
+    const existingWebsiteResult = await props.store.websiteStore.getById(cleanUrl);
+    if (existingWebsiteResult.success && existingWebsiteResult.data) {
+      const existingWebsite = existingWebsiteResult.data;
       const newTags = `${props.tagForWebsiteToTagDialog} ${existingWebsite.tags}`.trim();
-      const item = await props.store.websiteStore.updateTags(existingWebsite.id, newTags);
-      if (item) {
-        await props.store.websiteStore.moveToFront(item.id);
+      await props.store.websiteStore.updateTags(existingWebsite.id, newTags);
+      const itemResult = await props.store.websiteStore.getById(existingWebsite.id);
+      if (itemResult.success && itemResult.data) {
+        await props.store.websiteStore.moveToFront(itemResult.data.id);
       }
     } else {
       const urlObject = new URL(value);
-      const item = await props.store.websiteStore.trackVisit({
+      const itemResult = await props.store.websiteStore.trackVisit({
         url: value,
         domain: urlObject.host,
         pathname: urlObject.pathname,
         title: value,
         description: '',
       });
-      if (item) {
-        await props.store.websiteStore.moveToFront(item.id);
+      if (itemResult.success && itemResult.data) {
+        await props.store.websiteStore.moveToFront(itemResult.data.id);
       }
     }
 

@@ -12,7 +12,7 @@ import PersonRow from '../person/person-row';
 import Loading from '../shared/loading';
 import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
 import { uncommonPunctuation } from '../store/models/tfidf-model';
-import SearchIndex, { ISearchItem } from '../store/search-index';
+import { ISearchItem, enhancedSearchIndex } from '../store/utils/enhanced-search-index';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
@@ -249,35 +249,51 @@ const Search = (props: {
   websiteCache: IWebsiteCache;
 }) => {
   const router = useLocation();
-  const [fuse, setFuse] = useState<Fuse<ISearchItem> | undefined>(undefined);
+  const [searchItems, setSearchItems] = useState<ISearchItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
-      const searchIndex = new SearchIndex();
-      await searchIndex.addData(props.store);
+      try {
+        // Use enhanced search index to get all items for Fuse.js
+        const result = await enhancedSearchIndex.search('', props.store, {
+          limit: 10000, // Get all items for local Fuse.js search
+        });
 
-      const fuse = new Fuse(searchIndex.results, {
-        includeScore: true,
-        minMatchCharLength: 2,
-        keys: ['text'],
-      });
-      if (isSubscribed) {
-        setFuse(fuse);
+        if (isSubscribed && result.success) {
+          setSearchItems(result.data.items);
+        }
+      } catch (error) {
+        console.error('Failed to load search data:', error);
+      } finally {
+        if (isSubscribed) {
+          setIsLoading(false);
+        }
       }
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
-  }, []);
+  }, [props.store]);
 
   const searchQuery = router.search
     .replace('?query=', '')
     .toLowerCase()
     .replace(uncommonPunctuation, ' ');
 
+  // Create Fuse instance with loaded search items
+  const fuse =
+    searchItems.length > 0
+      ? new Fuse(searchItems, {
+          includeScore: true,
+          minMatchCharLength: 2,
+          keys: ['text'],
+        })
+      : undefined;
+
   return (
     <Root>
-      <Loading isOpen={!fuse} message={'Searching...'} />
+      <Loading isOpen={isLoading} message={'Searching...'} />
       {fuse && <SearchResults searchQuery={searchQuery} fuse={fuse} {...props} />}
     </Root>
   );

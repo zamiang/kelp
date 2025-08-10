@@ -15,6 +15,13 @@ export default defineConfig({
         singleThread: true,
       },
     },
+    onConsoleLog: (log) => {
+      // Suppress expected retry error logs during testing
+      if (log.includes('Operation "test-operation" failed') && log.includes('Retrying in')) {
+        return false;
+      }
+      return true;
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],

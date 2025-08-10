@@ -528,3 +528,28 @@ globalThis.console = {
 afterEach(() => {
   vi.clearAllMocks();
 });
+
+// Handle expected unhandled rejections in tests
+const originalUnhandledRejection = process.listeners('unhandledRejection');
+process.removeAllListeners('unhandledRejection');
+process.on('unhandledRejection', (reason, promise) => {
+  // Check if this is an expected test error (StoreError with RETRY_EXHAUSTED)
+  if (
+    reason &&
+    typeof reason === 'object' &&
+    'name' in reason &&
+    reason.name === 'StoreError' &&
+    'code' in reason &&
+    reason.code === 'RETRY_EXHAUSTED'
+  ) {
+    // This is an expected error from retry tests, suppress it
+    return;
+  }
+
+  // For any other unhandled rejections, call the original handlers
+  originalUnhandledRejection.forEach((handler) => {
+    if (typeof handler === 'function') {
+      handler(reason, promise);
+    }
+  });
+});

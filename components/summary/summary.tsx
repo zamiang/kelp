@@ -185,9 +185,15 @@ const DayContent = (props: { store: IStore; day: Date }) => {
         props.store.websiteBlocklistStore,
         props.day,
       );
-      const websites = (await Promise.all(
+      const websiteResults = await Promise.all(
         visits.map((v) => props.store.websiteStore.getById(v.websiteId)),
-      )) as IWebsite[];
+      );
+      const websites = websiteResults
+        .filter((result) => result.success && result.data)
+        .map((result) => (result.success ? result.data! : null))
+        .filter(
+          (website): website is NonNullable<typeof website> => website !== null,
+        ) as IWebsite[];
       const documents = props.store.tfidfStore.getDocumentsForWebsites(websites);
       const tfidf = props.store.tfidfStore.getTfidfForDocuments(documents);
       const terms = (tfidf.listTermsWithValue() || []).filter((t) => t.term !== '__key');

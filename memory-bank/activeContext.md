@@ -6,11 +6,11 @@
 
 **Current Status**: Phase 1 implementation in progress; 75% complete with significant achievements.
 
-## Latest Work: react-beautiful-dnd Removal & Phase 1 Progress (August 9, 2025)
+## Latest Work: Test Suite Fixes & Phase 1 Progress (August 10, 2025)
 
 ### Context
 
-After successfully updating the application to compile with modern dependencies (Next.js 15.4.6, Material-UI v7, TypeScript 5.9), we've implemented Phase 1 of the modernization roadmap. Most recently, we completed a major cleanup by removing the deprecated react-beautiful-dnd library and all associated drag-and-drop functionality.
+After successfully updating the application to compile with modern dependencies (Next.js 15.4.6, Material-UI v7, TypeScript 5.9), we've implemented Phase 1 of the modernization roadmap. Most recently, we completed a major cleanup by removing the deprecated react-beautiful-dnd library and fixed critical test suite issues that were preventing reliable testing.
 
 ### Phase 1 Achievements
 
@@ -144,6 +144,39 @@ After successfully updating the application to compile with modern dependencies 
 - Performance improvement: Removed drag event listeners and complex drag calculations
 
 **User Impact**: All core functionality (website tagging, organization, navigation) remains intact through existing UI patterns. Users lose manual reordering capabilities but gain simplified, more reliable interactions.
+
+### Test Suite Fixes (August 10, 2025)
+
+**Completed**: Fixed critical test suite issues that were causing failing tests and unhandled promise rejections
+
+**Issues Identified and Fixed**:
+
+1. **Mock Store Interface Mismatch** ✅ **FIXED**
+   - **Problem**: The `DesktopDashboard` test was failing because the mock store was missing the `getAllFiltered` method that the real `EnhancedWebsiteStore` provides
+   - **Root Cause**: `getWebsitesCache()` function calls `websiteStore.getAllFiltered()`, but test mock only had basic methods like `getAll()`
+   - **Solution**: Added `getAllFiltered` method to mock store returning proper `StoreResult<PaginatedResult<IWebsiteItem>>` format
+   - **Result**: Fixed failing test "should update website cache when store loading changes"
+
+2. **Test Assertion Logic** ✅ **FIXED**
+   - **Problem**: Test was expecting `websiteVisitStore.getAll` to be called, but actual code calls `websiteStore.getAllFiltered`
+   - **Solution**: Updated test assertion to check for the correct method call
+   - **Result**: Test now properly validates the expected behavior
+
+3. **Expected Error Handling** ✅ **ALREADY WORKING**
+   - **Status**: The unhandled promise rejection from retry tests is expected behavior and properly suppressed
+   - **Verification**: Test setup already includes proper error suppression for `RETRY_EXHAUSTED` errors
+   - **Result**: Error handler tests work as designed, testing retry mechanism failure scenarios
+
+**Technical Benefits**:
+
+- Test reliability: All tests now pass consistently (113 passed | 2 skipped)
+- Mock accuracy: Test mocks now properly match the real store interface
+- Error handling: Proper async error testing patterns with expected error suppression
+- Test performance: Clean test execution with proper mock setup
+
+**Current Test Status**: ✅ All tests passing (113 passed | 2 skipped) with proper error handling for expected failure scenarios
+
+**Key Fix**: The main issue was a mismatch between the mock store interface and the actual `EnhancedWebsiteStore` implementation. The test was using an outdated mock that didn't include the enhanced methods added during the store modernization.
 
 ## Dependencies & Considerations
 

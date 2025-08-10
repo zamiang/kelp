@@ -88,9 +88,9 @@ export const WebsiteTags = (props: {
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
-      const website = await props.store.websiteStore.getById(props.item.id);
-      if (website?.tags) {
-        const i = getTagsForWebsite(website.tags || '', props.userTags);
+      const result = await props.store.websiteStore.getById(props.item.id);
+      if (result.success && result.data?.tags) {
+        const i = getTagsForWebsite(result.data.tags || '', props.userTags);
         return isSubscribed && setWebsiteTags(i);
       } else {
         return isSubscribed && setWebsiteTags([]);

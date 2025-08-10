@@ -13,6 +13,16 @@ const mockStore = {
   },
   websiteStore: {
     getAll: vi.fn().mockResolvedValue([]),
+    getAllFiltered: vi.fn().mockResolvedValue({
+      success: true,
+      data: {
+        data: [],
+        totalCount: 0,
+        hasMore: false,
+        offset: 0,
+        limit: 50,
+      },
+    }),
     getById: vi.fn(),
     trackVisitFromTab: vi.fn(),
     updateTags: vi.fn(),
@@ -87,7 +97,7 @@ describe('DesktopDashboard Component', () => {
     );
 
     await waitFor(() => {
-      expect(mockStore.websiteVisitStore.getAll).toHaveBeenCalled();
+      expect(mockStore.websiteStore.getAllFiltered).toHaveBeenCalled();
     });
   });
 

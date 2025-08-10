@@ -145,8 +145,10 @@ export const LargeWebsite = (props: {
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
-      const w = await props.store.websiteStore.getById(props.item.id);
-      return isSubscribed && setWebsite(w);
+      const result = await props.store.websiteStore.getById(props.item.id);
+      if (result.success && result.data) {
+        return isSubscribed && setWebsite(result.data);
+      }
     };
     void fetchData();
     return () => (isSubscribed = false) as any;
