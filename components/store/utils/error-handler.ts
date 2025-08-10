@@ -34,7 +34,7 @@ export class StoreError extends Error implements DatabaseError {
   }
 }
 
-export const DEFAULT_RETRY_CONFIG: RetryConfig = {
+const DEFAULT_RETRY_CONFIG: RetryConfig = {
   maxAttempts: 3,
   baseDelay: 100,
   maxDelay: 5000,
@@ -129,57 +129,57 @@ export async function safeOperation<T>(
   }
 }
 
-/**
- * Database health checker
- */
-export async function checkDatabaseHealth(db: IDBDatabase): Promise<{
-  isHealthy: boolean;
-  issues: string[];
-  performance: { avgQueryTime: number; slowQueries: number };
-}> {
-  const issues: string[] = [];
-  const performanceMetrics = { avgQueryTime: 0, slowQueries: 0 };
+// /**
+//  * Database health checker
+//  */
+// export async function checkDatabaseHealth(db: IDBDatabase): Promise<{
+//   isHealthy: boolean;
+//   issues: string[];
+//   performance: { avgQueryTime: number; slowQueries: number };
+// }> {
+//   const issues: string[] = [];
+//   const performanceMetrics = { avgQueryTime: 0, slowQueries: 0 };
 
-  try {
-    // Test basic connectivity
-    const startTime = performance.now();
-    const transaction = db.transaction(db.objectStoreNames[0], 'readonly');
-    const store = transaction.objectStore(db.objectStoreNames[0]);
+//   try {
+//     // Test basic connectivity
+//     const startTime = performance.now();
+//     const transaction = db.transaction(db.objectStoreNames[0], 'readonly');
+//     const store = transaction.objectStore(db.objectStoreNames[0]);
 
-    // Test a simple count operation
-    await new Promise((resolve, reject) => {
-      const request = store.count();
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+//     // Test a simple count operation
+//     await new Promise((resolve, reject) => {
+//       const request = store.count();
+//       request.onsuccess = () => resolve(request.result);
+//       request.onerror = () => reject(request.error);
+//     });
 
-    const queryTime = performance.now() - startTime;
-    performanceMetrics.avgQueryTime = queryTime;
+//     const queryTime = performance.now() - startTime;
+//     performanceMetrics.avgQueryTime = queryTime;
 
-    if (queryTime > 1000) {
-      issues.push('Slow database response time');
-      performanceMetrics.slowQueries = 1;
-    }
+//     if (queryTime > 1000) {
+//       issues.push('Slow database response time');
+//       performanceMetrics.slowQueries = 1;
+//     }
 
-    // Check for quota issues
-    if (navigator.storage && navigator.storage.estimate) {
-      const estimate = await navigator.storage.estimate();
-      const usageRatio = (estimate.usage || 0) / (estimate.quota || 1);
+//     // Check for quota issues
+//     if (navigator.storage && navigator.storage.estimate) {
+//       const estimate = await navigator.storage.estimate();
+//       const usageRatio = (estimate.usage || 0) / (estimate.quota || 1);
 
-      if (usageRatio > 0.9) {
-        issues.push('Storage quota nearly exceeded');
-      }
-    }
-  } catch (error) {
-    issues.push(`Database connectivity test failed: ${(error as Error).message}`);
-  }
+//       if (usageRatio > 0.9) {
+//         issues.push('Storage quota nearly exceeded');
+//       }
+//     }
+//   } catch (error) {
+//     issues.push(`Database connectivity test failed: ${(error as Error).message}`);
+//   }
 
-  return {
-    isHealthy: issues.length === 0,
-    issues,
-    performance: performanceMetrics,
-  };
-}
+//   return {
+//     isHealthy: issues.length === 0,
+//     issues,
+//     performance: performanceMetrics,
+//   };
+// }
 
 /**
  * Graceful database corruption recovery

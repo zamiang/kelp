@@ -41,21 +41,6 @@ export interface StoreHealth {
   };
 }
 
-export interface TransactionContext {
-  id: string;
-  startTime: Date;
-  operations: string[];
-  rollbackHandlers: (() => Promise<void>)[];
-}
-
-// Enhanced loading states
-export interface LoadingState {
-  isLoading: boolean;
-  operation?: string;
-  progress?: number;
-  estimatedTimeRemaining?: number;
-}
-
 // Store operation results
 export type StoreResult<T> =
   | {

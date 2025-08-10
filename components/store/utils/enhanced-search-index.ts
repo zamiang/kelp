@@ -9,14 +9,14 @@ export interface ISearchItem {
   score?: number;
 }
 
-export interface SearchOptions {
+interface SearchOptions {
   limit?: number;
   offset?: number;
   types?: Array<'segment' | 'document' | 'person' | 'website'>;
   minScore?: number;
 }
 
-export interface SearchResult {
+interface SearchResult {
   items: ISearchItem[];
   total: number;
   hasMore: boolean;
@@ -26,7 +26,7 @@ export interface SearchResult {
 /**
  * Enhanced search index with lazy loading, caching, and better performance
  */
-export class EnhancedSearchIndex {
+class EnhancedSearchIndex {
   private searchCache = new Map<string, SearchResult>();
   private indexCache = new Map<string, ISearchItem[]>();
   private lastIndexUpdate = new Map<string, number>();

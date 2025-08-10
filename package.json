@@ -23,7 +23,7 @@
     "build-extension:safari": "rimraf 'extension/safari/extension Extension/Resources' && NODE_ENV=production webpack --config=extension/webpack-safari.config.js",
     "dev": "next -p ${PORT:-3000}",
     "lint": "npx eslint './**/*.{js,ts,tsx}'",
-    "lint:exports": "npx ts-unused-exports tsconfig-website-and-extension.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport='pages;components/store/helpers.ts;components/store/use-store.tsx;components/shared/calendar-helpers.ts;components/meeting/line-calendar.tsx'",
+    "lint:exports": "npx ts-unused-exports tsconfig-website-and-extension.json --exitWithCount --searchNamespaces --showLineNumber --excludePathsFromReport='pages;components/store/helpers.ts;components/store/use-store.tsx;components/shared/calendar-helpers.ts;components/store/examples/*'",
     "lint:fix": "npx eslint --fix './**/*.{js,ts,tsx}'",
     "format": "prettier --write \"{pages,components,constants,extension}/**/*.{ts,tsx,js}\"",
     "format:check": "prettier --list-different \"{pages,components,constants}/**/*.{ts,tsx,js}\"",
