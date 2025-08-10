@@ -11,7 +11,7 @@ import SegmentTagStore from '../models/segment-tag-model';
 import TfidfDataStore from '../models/tfidf-model';
 import WebsiteBlocklistStore from '../models/website-blocklist-model';
 import WebsiteImageStore from '../models/website-image-model';
-import WebsiteStore from '../models/website-item-model';
+import WebsiteStore from '../models/enhanced-website-store';
 import WebsitePinStore from '../models/website-pin-model';
 import WebsiteTagStore from '../models/website-tag-model';
 import WebsiteVisitStore from '../models/website-visit-model';

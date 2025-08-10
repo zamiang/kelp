@@ -52,10 +52,11 @@ export default class TfidfStore {
 
   async getDocuments(store: IStore) {
     // Websites
-    const websitesList = await store.websiteStore.getAll(
+    const websitesResult = await store.websiteStore.getAllFiltered(
       store.domainBlocklistStore,
       store.websiteBlocklistStore,
     );
+    const websitesList = websitesResult.success ? websitesResult.data.data : [];
     const websiteTitles = websitesList.map(
       (website) => `${website.title || ''} ${website.description || ''}`,
     );

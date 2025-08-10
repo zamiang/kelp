@@ -49,8 +49,14 @@ const EmailGuestsButton = (props: {
 
   useEffect(() => {
     const fetchData = async () => {
-      const w = await Promise.all(websiteIds.map(async (id) => props.websiteStore.getById(id)));
-      setWebsites(w);
+      const results = await Promise.all(
+        websiteIds.map(async (id) => props.websiteStore.getById(id)),
+      );
+      const websites = results
+        .filter((result) => result.success)
+        .map((result) => (result.success ? result.data : undefined))
+        .filter((website): website is IWebsiteItem => website !== undefined);
+      setWebsites(websites);
     };
     void fetchData();
   }, [websiteIds.join('')]);

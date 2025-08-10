@@ -168,10 +168,11 @@ export class EnhancedSearchIndex {
         }
 
         case 'website': {
-          const websites = await store.websiteStore.getAll(
+          const websitesResult = await store.websiteStore.getAllFiltered(
             store.domainBlocklistStore,
             store.websiteBlocklistStore,
           );
+          const websites = websitesResult.success ? websitesResult.data.data : [];
           websites.forEach((website) => {
             items.push({
               text: website.title.toLowerCase(),

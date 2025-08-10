@@ -58,7 +58,11 @@ export const getWebsitesCache = async (
 ) => {
   const websiteCache: { [websiteId: string]: IWebsiteCacheItem } = {};
 
-  const websites = await websiteStore.getAll(domainBlocklistStore, websiteBlocklistStore);
+  const websitesResult = await websiteStore.getAllFiltered(
+    domainBlocklistStore,
+    websiteBlocklistStore,
+  );
+  const websites = websitesResult.success ? websitesResult.data.data : [];
 
   const websiteVisits = await websiteVisitStore.getAll(domainBlocklistStore, websiteBlocklistStore);
 

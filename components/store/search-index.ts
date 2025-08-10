@@ -26,12 +26,14 @@ export default class SearchIndex {
   async addData(store: IStore) {
     const searchIndex = [] as ISearchItem[];
 
-    const [documents, segments, people, websites] = await Promise.all([
+    const [documents, segments, people, websitesResult] = await Promise.all([
       store.documentDataStore.getAll(),
       store.timeDataStore.getAll(),
       store.personDataStore.getAll(false),
-      store.websiteStore.getAll(store.domainBlocklistStore, store.websiteBlocklistStore),
+      store.websiteStore.getAllFiltered(store.domainBlocklistStore, store.websiteBlocklistStore),
     ]);
+
+    const websites = websitesResult.success ? websitesResult.data.data : [];
 
     // Docs
     documents?.forEach((document) => {
