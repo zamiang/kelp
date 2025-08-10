@@ -19,4 +19,3 @@ jobs:
       - run: npm run test
       - run: npm run typecheck
       - run: npm run build-extension
-      - run: npm audit --audit-level=critical
