@@ -54,7 +54,8 @@ export async function withRetry<T>(
 
   for (let attempt = 1; attempt <= finalConfig.maxAttempts; attempt++) {
     try {
-      return await operation();
+      const result = await operation();
+      return result;
     } catch (error) {
       lastError = error as Error;
 
@@ -79,7 +80,10 @@ export async function withRetry<T>(
         error,
       );
 
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      // Use a properly handled delay promise
+      await new Promise<void>((resolve) => {
+        setTimeout(() => resolve(), delay);
+      });
     }
   }
 

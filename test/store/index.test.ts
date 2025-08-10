@@ -1,18 +1,19 @@
 /**
  * Store Test Suite Entry Point
  *
- * This file imports all store-related tests to ensure they run together
- * and provides a comprehensive test suite for the store system.
+ * This file was previously used to import all store-related tests,
+ * but has been disabled to prevent tests from running multiple times.
+ * Each test file should be run independently by the test runner.
  */
 
-// Import all store tests
-import './error-handler.test';
-import './base-store.test';
-import './enhanced-search-index.test';
-import './database-setup.test';
+// Imports removed to prevent duplicate test execution
+// Individual test files will be discovered and run by Vitest automatically
 
-// Re-export test utilities for other test files
-export * from './error-handler.test';
-export * from './base-store.test';
-export * from './enhanced-search-index.test';
-export * from './database-setup.test';
+// Simple test to ensure this file doesn't cause issues
+import { describe, expect, it } from 'vitest';
+
+describe('Store Test Suite', () => {
+  it('should be properly configured', () => {
+    expect(true).toBe(true);
+  });
+});

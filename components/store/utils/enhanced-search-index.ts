@@ -227,64 +227,137 @@ export class EnhancedSearchIndex {
    * Calculate relevance score for a text against query terms
    */
   private calculateScore(text: string, queryTerms: string[]): number {
-    let score = 0;
+    let totalScore = 0;
     const textLength = text.length;
+    const fullQuery = queryTerms.join(' ');
 
-    for (const term of queryTerms) {
-      // Exact match bonus
-      if (text === term) {
-        score += 1.0;
-        continue;
-      }
-
-      // Starts with bonus
-      if (text.startsWith(term)) {
-        score += 0.8;
-        continue;
-      }
-
-      // Contains term
-      const index = text.indexOf(term);
-      if (index !== -1) {
-        // Earlier matches score higher
-        const positionScore = 1 - index / textLength;
-        // Longer matches score higher
-        const lengthScore = term.length / textLength;
-        score += 0.5 * positionScore * lengthScore;
-      }
-
-      // Fuzzy matching for typos (simple implementation)
-      if (term.length > 3 && this.fuzzyMatch(text, term)) {
-        score += 0.3;
-      }
+    // Check for exact match of full query first
+    if (text === fullQuery) {
+      return 1.0;
     }
 
-    // Normalize score by number of query terms
-    return score / queryTerms.length;
+    // Check if text contains the full query as a phrase
+    if (text.includes(fullQuery)) {
+      totalScore += 0.9;
+    }
+
+    // Score individual terms
+    for (const term of queryTerms) {
+      let termScore = 0;
+
+      // Exact match bonus (only if the entire text matches the term exactly)
+      if (text === term) {
+        termScore = 1.0;
+      }
+      // Starts with bonus (but not exact match)
+      else if (text.startsWith(term) && text !== term) {
+        termScore = 0.8;
+      }
+      // Contains term (but not exact match or starts with)
+      else if (text.includes(term) && !text.startsWith(term) && text !== term) {
+        const index = text.indexOf(term);
+        // Earlier matches score higher
+        const positionScore = 1 - index / textLength;
+        // Longer matches score higher relative to text length
+        const lengthScore = Math.min(term.length / textLength, 1);
+        termScore = 0.6 * positionScore * (0.5 + 0.5 * lengthScore);
+      }
+      // Fuzzy matching for typos
+      else if (term.length > 3 && this.fuzzyMatch(text, term)) {
+        termScore = 0.3;
+      }
+
+      totalScore += termScore;
+    }
+
+    // Average the score across all terms, but give bonus for matching more terms
+    const averageScore = totalScore / queryTerms.length;
+    const matchedTerms = queryTerms.filter(
+      (term) => text.includes(term) || (term.length > 3 && this.fuzzyMatch(text, term)),
+    ).length;
+    const completenessBonus = matchedTerms / queryTerms.length;
+
+    // Ensure partial matches never get a perfect score
+    const finalScore = averageScore * (0.7 + 0.3 * completenessBonus);
+
+    // If it's not an exact match of the full query or any individual term, cap at 0.95
+    const isExactMatch = text === fullQuery || queryTerms.some((term) => text === term);
+    if (!isExactMatch) {
+      return Math.min(finalScore, 0.95);
+    }
+
+    return Math.min(finalScore, 1.0);
   }
 
   /**
    * Simple fuzzy matching for typos
    */
   private fuzzyMatch(text: string, term: string): boolean {
-    // Allow one character difference for terms longer than 3 characters
-    if (Math.abs(text.length - term.length) > 1) {
+    // For short terms, require exact match
+    if (term.length <= 3) {
       return false;
     }
 
-    let differences = 0;
-    const maxLength = Math.max(text.length, term.length);
+    // Split text into words and check each word
+    const words = text.split(/\s+/);
 
-    for (let i = 0; i < maxLength; i++) {
-      if (text[i] !== term[i]) {
-        differences++;
-        if (differences > 1) {
-          return false;
+    for (const word of words) {
+      // Check if this word is similar to the term
+      if (this.editDistance(word, term) <= 1) {
+        return true;
+      }
+    }
+
+    // Also check if the term could match with one character insertion/deletion in the whole text
+    if (Math.abs(text.length - term.length) <= 1) {
+      return this.editDistance(text, term) <= 1;
+    }
+
+    // Try to find the term within the text allowing for one edit
+    for (let i = 0; i <= text.length - term.length + 1; i++) {
+      const substring = text.substring(i, i + term.length);
+      if (this.editDistance(substring, term) <= 1) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Calculate edit distance (Levenshtein distance) between two strings
+   */
+  private editDistance(str1: string, str2: string): number {
+    const m = str1.length;
+    const n = str2.length;
+
+    // Create a matrix to store distances
+    const dp: number[][] = Array(m + 1)
+      .fill(null)
+      .map(() => Array(n + 1).fill(0));
+
+    // Initialize base cases
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+    // Fill the matrix
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        if (str1[i - 1] === str2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1];
+        } else {
+          dp[i][j] =
+            1 +
+            Math.min(
+              dp[i - 1][j], // deletion
+              dp[i][j - 1], // insertion
+              dp[i - 1][j - 1], // substitution
+            );
         }
       }
     }
 
-    return differences <= 1;
+    return dp[m][n];
   }
 
   /**

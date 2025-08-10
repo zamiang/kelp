@@ -48,6 +48,7 @@ describe('withRetry', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   it('should succeed on first attempt', async () => {
@@ -88,14 +89,30 @@ describe('withRetry', () => {
   it('should throw after max attempts exceeded', async () => {
     const operation = vi.fn().mockRejectedValue(new Error('Persistent failure'));
 
-    const retryPromise = withRetry(operation, { maxAttempts: 2 }, 'test-operation');
+    // Create a promise that we'll handle completely
+    let caughtError: any = null;
 
-    // Fast-forward through retry delays
-    await vi.runAllTimersAsync();
+    try {
+      const retryPromise = withRetry(operation, { maxAttempts: 2 }, 'test-operation');
 
-    await expect(retryPromise).rejects.toThrow(
-      'Operation "test-operation" failed after 2 attempts',
-    );
+      // Fast-forward through retry delays
+      await vi.runAllTimersAsync();
+
+      // This should throw, so we await it in the try block
+      await retryPromise;
+
+      // If we get here, the test should fail
+      expect.fail('Expected withRetry to throw an error');
+    } catch (error) {
+      caughtError = error;
+    }
+
+    // Verify the error properties
+    expect(caughtError).toBeInstanceOf(StoreError);
+    expect(caughtError.message).toContain('Operation "test-operation" failed after 2 attempts');
+    expect(caughtError.code).toBe('RETRY_EXHAUSTED');
+    expect(caughtError.severity).toBe('high');
+    expect(caughtError.retryable).toBe(false);
     expect(operation).toHaveBeenCalledTimes(2);
   });
 
