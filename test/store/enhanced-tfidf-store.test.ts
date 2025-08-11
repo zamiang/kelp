@@ -149,17 +149,12 @@ describe('EnhancedTfidfStore', () => {
         },
       });
 
-      mockStore.timeDataStore.getAll.mockResolvedValue({
-        success: true,
-        data: {
-          data: [
-            {
-              id: 'meeting1',
-              summary: 'Test meeting summary',
-            },
-          ],
+      mockStore.timeDataStore.getAll.mockResolvedValue([
+        {
+          id: 'meeting1',
+          summary: 'Test meeting summary',
         },
-      });
+      ]);
 
       const result = await store.getDocuments(mockStore);
 
@@ -183,16 +178,13 @@ describe('EnhancedTfidfStore', () => {
         error: new Error('Website store error'),
       });
 
-      mockStore.timeDataStore.getAll.mockResolvedValue({
-        success: true,
-        data: { data: [] },
-      });
+      mockStore.timeDataStore.getAll.mockResolvedValue([]);
 
       const result = await store.getDocuments(mockStore);
 
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toHaveLength(0);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toBeDefined();
       }
     });
   });

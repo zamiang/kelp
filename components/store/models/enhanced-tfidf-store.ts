@@ -192,12 +192,13 @@ export default class EnhancedTfidfStore extends BaseStoreImpl<ITfidfRow> {
           store.domainBlocklistStore,
           store.websiteBlocklistStore,
         );
-
-        const websitesList = websitesResult.success ? websitesResult.data.data : [];
+        if (isFailure(websitesResult)) {
+          throw websitesResult.error;
+        }
+        const websitesList = websitesResult.data.data;
 
         // Get meetings with proper error handling
-        const segmentsResult = await store.timeDataStore.getAll();
-        const segments = segmentsResult.success ? segmentsResult.data.data : [];
+        const segments = await store.timeDataStore.getAll();
 
         // Format website documents
         const websiteDocuments = websitesList.map((website) => {
