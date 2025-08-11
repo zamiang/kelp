@@ -34,7 +34,14 @@ export const MeetingHighlight = (props: {
       const result = await props.store.timeDataStore.getSegmentsByDay(
         subDays(setMinutes(setHours(new Date(), 0), 0), 0),
       );
-      return isSubscribed && setMeetingsByDay(result);
+      if (isSubscribed) {
+        if (result.success) {
+          setMeetingsByDay(result.data);
+        } else {
+          console.error('Failed to fetch meetings by day:', (result as any).error);
+          setMeetingsByDay({});
+        }
+      }
     };
     void fetchData();
     return () => (isSubscribed = false) as any;

@@ -115,7 +115,12 @@ const ExpandedMeeting = (props: {
     const fetchData = async () => {
       if (meetingId) {
         const result = await props.store.timeDataStore.getById(meetingId);
-        setMeeting(result);
+        if (result.success) {
+          setMeeting(result.data);
+        } else {
+          console.error('Failed to fetch meeting:', (result as any).error);
+          setMeeting(undefined);
+        }
       }
     };
     void fetchData();

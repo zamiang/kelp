@@ -62,7 +62,8 @@ export default class TfidfStore {
     );
 
     // Meetings
-    const segments = await store.timeDataStore.getAll();
+    const segmentsResult = await store.timeDataStore.getAll();
+    const segments = segmentsResult.success ? segmentsResult.data.data : [];
     const meetingTitles = segments.map((segment) => segment.summary);
 
     // Formatting

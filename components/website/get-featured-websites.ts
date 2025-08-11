@@ -234,7 +234,8 @@ export const getWebsitesForMeeting = async (
   meeting: ISegment,
   store: IStore,
 ): Promise<IFeaturedWebsite[]> => {
-  const similarMeetings = await store.timeDataStore.getSegmentsForName(meeting.summary || '');
+  const similarMeetingsResult = await store.timeDataStore.getSegmentsForName(meeting.summary || '');
+  const similarMeetings = similarMeetingsResult.success ? similarMeetingsResult.data : [];
 
   const segmentDocumentsForMeeting = flatten(
     await Promise.all(
@@ -299,7 +300,7 @@ export const getWebsitesForMeeting = async (
     )
   ).filter(Boolean) as IFeaturedWebsite[];
 
-  const websiteVisits = filteredWebsites.map((item) => {
+  const websiteVisits = filteredWebsites.map((item: any) => {
     if (urlCount[item.url]) {
       urlCount[item.url] = urlCount[item.url] + getValueForDate(item.visitedTime);
     } else {

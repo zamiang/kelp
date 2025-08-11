@@ -108,7 +108,15 @@ export const MissingDocumentRow = (props: {
     const fetchData = async () => {
       if (props.segmentDocument.segmentId) {
         const result = await props.store.timeDataStore.getById(props.segmentDocument.segmentId);
-        setMeeting(result);
+        if (result.success) {
+          setMeeting(result.data);
+        } else {
+          console.error(
+            'Failed to fetch segment:',
+            (result as { success: false; error: any }).error,
+          );
+          setMeeting(undefined);
+        }
       }
     };
     void fetchData();

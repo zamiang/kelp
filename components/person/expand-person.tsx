@@ -53,27 +53,31 @@ const ExpandPerson = (props: {
       const p = await props.store.personDataStore.getByIdOrEmail(personId);
       setPerson(p);
 
-      const s =
+      const segmentResults =
         p &&
-        flatten(
-          await Promise.all(
-            p.emailAddresses.map((e) => props.store.timeDataStore.getSegmentsForEmail(e)),
-          ),
-        );
-      if (s) {
-        const filteredSegments = s.filter(Boolean) as ISegment[];
-        setSegments(filteredSegments);
+        (await Promise.all(
+          p.emailAddresses.map((e) => props.store.timeDataStore.getSegmentsForEmail(e)),
+        ));
+
+      if (segmentResults) {
+        const allSegments = flatten(
+          segmentResults
+            .filter((result) => result.success)
+            .map((result) => (result.success ? result.data : [])),
+        ).filter(Boolean) as ISegment[];
+
+        setSegments(allSegments);
 
         const currentDay = new Date();
-        const upcommingSegments = s.filter((s) => s && s.start && s.start > currentDay);
-        setUpcomingSegments(upcommingSegments as any);
+        const upcommingSegments = allSegments.filter((s) => s && s.start && s.start > currentDay);
+        setUpcomingSegments(upcommingSegments);
 
-        const a = await getAssociates(personId, filteredSegments, props.store.attendeeDataStore);
+        const a = await getAssociates(personId, allSegments, props.store.attendeeDataStore);
         setAssociates(a.attendees.slice(0, 5));
         setAssociatesStats(a.attendeeStats);
 
         const websitesForMeetings = await Promise.all(
-          filteredSegments.map(async (meeting) => {
+          allSegments.map(async (meeting: ISegment) => {
             if (meeting) {
               const result = await fetchWebsitesForMeetingFiltered(meeting, props.store, false, 4);
               return result;

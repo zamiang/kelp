@@ -20,7 +20,12 @@ const SegmentDocumentItem = (props: {
     const fetchData = async () => {
       if (props.segmentDocument.segmentId) {
         const result = await props.timeStore.getById(props.segmentDocument.segmentId);
-        setMeeting(result);
+        if (result.success) {
+          setMeeting(result.data);
+        } else {
+          console.error('Failed to fetch meeting:', (result as any).error);
+          setMeeting(undefined);
+        }
       }
     };
     void fetchData();

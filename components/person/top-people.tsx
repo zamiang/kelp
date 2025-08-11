@@ -88,10 +88,13 @@ export const TopPeople = (props: { store: IStore }) => {
       const currentWeek = getWeek(new Date());
       const nextWeek = getWeek(new Date());
 
-      const segments = (await props.store.timeDataStore.getAll()).filter((s) => {
-        const w = getWeek(s.start);
-        return w === currentWeek || w === nextWeek;
-      });
+      const segmentsResult = await props.store.timeDataStore.getAll();
+      const segments = segmentsResult.success
+        ? segmentsResult.data.data.filter((s) => {
+            const w = getWeek(s.start);
+            return w === currentWeek || w === nextWeek;
+          })
+        : [];
       const emails: string[] = [];
       segments.forEach((s) => s.attendees.forEach((a) => a.email && emails.push(a.email)));
       const counts = countBy(emails);

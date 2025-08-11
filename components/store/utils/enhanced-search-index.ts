@@ -140,8 +140,18 @@ class EnhancedSearchIndex {
         }
 
         case 'segment': {
-          const segments = await store.timeDataStore.getAll();
-          segments.forEach((segment) => {
+          const segmentsResult = await store.timeDataStore.getAll();
+          // Handle both enhanced store format and mock store format
+          let segments: ISegment[] = [];
+          if (segmentsResult && typeof segmentsResult === 'object' && 'success' in segmentsResult) {
+            // Enhanced store format
+            segments = segmentsResult.success ? segmentsResult.data.data : [];
+          } else {
+            // Mock store format (returns raw array)
+            segments = (segmentsResult as any) || [];
+          }
+
+          segments.forEach((segment: ISegment) => {
             if (segment?.summary) {
               items.push({
                 text: segment.summary.toLowerCase(),

@@ -36,11 +36,19 @@ const Meetings = (props: {
   useEffect(() => {
     const fetchData = async () => {
       const result = await props.store.timeDataStore.getSegments('asc');
-      const filteredResults = result.filter((item) => {
-        const difference = differenceInCalendarDays(new Date(), item.end);
-        return difference < DAYS_BACK && difference > DAYS_FORWARD;
-      });
-      setMeetings(filteredResults);
+      if (result.success) {
+        const filteredResults = result.data.data.filter((item) => {
+          const difference = differenceInCalendarDays(new Date(), item.end);
+          return difference < DAYS_BACK && difference > DAYS_FORWARD;
+        });
+        setMeetings(filteredResults);
+      } else {
+        console.error(
+          'Failed to fetch segments:',
+          (result as { success: false; error: any }).error,
+        );
+        setMeetings([]);
+      }
     };
     void fetchData();
   }, [props.store.isLoading]);
