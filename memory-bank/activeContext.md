@@ -174,9 +174,63 @@ After successfully updating the application to compile with modern dependencies 
 - Error handling: Proper async error testing patterns with expected error suppression
 - Test performance: Clean test execution with proper mock setup
 
-**Current Test Status**: ✅ All tests passing (113 passed | 2 skipped) with proper error handling for expected failure scenarios
+**Current Test Status**: ✅ All tests passing (117 passed | 3 skipped) with proper error handling for expected failure scenarios
 
 **Key Fix**: The main issue was a mismatch between the mock store interface and the actual `EnhancedWebsiteStore` implementation. The test was using an outdated mock that didn't include the enhanced methods added during the store modernization.
+
+### Website Cache Algorithm Improvement (August 10, 2025)
+
+**Completed**: Major improvement to `getWebsitesCache` function in `components/website/get-featured-websites.ts` to fix ineffective website highlighting
+
+**Problem Identified**:
+
+- Visit count accumulation was incorrect (overwriting instead of aggregating)
+- `lastVisited` was being overwritten with each visit instead of keeping most recent
+- `meetings` array was being overwritten instead of accumulating all meetings
+- No deduplication of visits for same website on same day
+- Poor application of decay function (applied to individual visits vs daily aggregates)
+
+**Solution Implemented**:
+
+1. **Proper Visit Aggregation**:
+   - Group visits by website ID and date to avoid double-counting
+   - Accumulate daily visit counts instead of individual visit records
+   - Track unique meetings per day and aggregate across all days
+   - Maintain actual most recent visit timestamp
+
+2. **Enhanced Scoring Algorithm**:
+   - Apply exponential decay (0.95^days) to daily visit counts rather than individual visits
+   - Add consistency bonus for websites visited on multiple days: `Math.log(visitDays) * 0.1`
+   - Add recency bonus for very recent visits (within 3 days): up to 15% bonus
+   - Round final scores to 2 decimal places for consistency
+
+3. **Performance Optimizations**:
+   - Use Map/Set data structures for faster lookups and deduplication
+   - Batch process visits by website to reduce iterations
+   - Eliminate redundant data processing
+
+4. **Better Data Structure**:
+   - Changed `meetings` from `ISegment[]` to `string[]` to store meeting IDs
+   - Proper aggregation of meeting associations across all visits
+   - Maintained backward compatibility with existing interfaces
+
+**Technical Benefits**:
+
+- More accurate visit frequency calculation
+- Better highlighting of consistently visited websites
+- Proper recency weighting for recent activity
+- Improved performance through optimized data processing
+- Enhanced test coverage with comprehensive unit tests
+
+**Test Coverage**: Added comprehensive test suite (`test/components/website/get-featured-websites.test.ts`) covering:
+
+- Visit aggregation by date
+- Consistency bonus calculation
+- Recency bonus application
+- Edge cases (no visits, unknown websites)
+- Meeting association tracking
+
+**Result**: Website cache now effectively highlights frequently and recently visited websites, providing much better user experience for website discovery and organization.
 
 ## Dependencies & Considerations
 

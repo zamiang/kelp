@@ -10,6 +10,15 @@ const mockStore = {
   error: null,
   websiteVisitStore: {
     getAll: vi.fn().mockResolvedValue([]),
+    getAllFiltered: vi.fn().mockResolvedValue({
+      success: true,
+      data: {
+        data: [],
+        total: 0,
+        hasMore: false,
+        nextOffset: undefined,
+      },
+    }),
   },
   websiteStore: {
     getAll: vi.fn().mockResolvedValue([]),
