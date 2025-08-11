@@ -14,7 +14,7 @@ import WebsiteImageStore from '../models/website-image-model';
 import WebsiteStore from '../models/enhanced-website-store';
 import WebsitePinStore from '../models/website-pin-model';
 import WebsiteTagStore from '../models/website-tag-model';
-import WebsiteVisitStore from '../models/website-visit-model';
+import EnhancedWebsiteVisitStore from '../models/enhanced-website-visit-store';
 import { IStore } from '../use-store';
 
 export const useStoreNoFetch = (db: dbType | null, skipHook: boolean): IStore | null => {
@@ -37,7 +37,7 @@ export const useStoreNoFetch = (db: dbType | null, skipHook: boolean): IStore | 
   const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websiteStore = new WebsiteStore(db);
-  const websiteVisitStore = new WebsiteVisitStore(db);
+  const websiteVisitStore = new EnhancedWebsiteVisitStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
   const websiteBlocklistStore = new WebsiteBlocklistStore(db);
   const websitePinStore = new WebsitePinStore(db);

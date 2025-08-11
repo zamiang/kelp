@@ -180,11 +180,19 @@ const DayContent = (props: { store: IStore; day: Date }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const visits = await props.store.websiteVisitStore.getAllForDay(
+      const visitsResult = await props.store.websiteVisitStore.getAllForDay(
         props.store.domainBlocklistStore,
         props.store.websiteBlocklistStore,
         props.day,
       );
+
+      if (!visitsResult.success) {
+        console.error('Failed to get visits for day:', (visitsResult as any).error);
+        setDocuments([]);
+        return;
+      }
+
+      const visits = visitsResult.data.data;
       const websiteResults = await Promise.all(
         visits.map((v) => props.store.websiteStore.getById(v.websiteId)),
       );

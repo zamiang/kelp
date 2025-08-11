@@ -2,8 +2,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
 import config from '../../constants/config';
 import PlusIcon from '../../public/icons/plus.svg';
@@ -25,9 +23,6 @@ export const WebsiteHighlights = (props: {
   const [shouldShowAll, setShouldShowAll] = useState(false);
   const [extraItemsCount, setExtraItemsCount] = useState(0);
 
-  const theme = useTheme();
-  const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
-
   useEffect(() => {
     let isSubscribed = true;
     void fetchData(
@@ -35,17 +30,12 @@ export const WebsiteHighlights = (props: {
       shouldShowAll,
       setTopWebsites,
       setExtraItemsCount,
-      isLarge ? 6 : 6,
+      6,
       isSubscribed,
       props.filterByTag,
     );
     return () => (isSubscribed = false) as any;
-  }, [
-    (props.websiteCache as any).LAST_UPDATED?.valueOf(),
-    shouldShowAll,
-    props.filterByTag,
-    isLarge,
-  ]);
+  }, [(props.websiteCache as any).LAST_UPDATED?.valueOf(), shouldShowAll, props.filterByTag, true]);
 
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 

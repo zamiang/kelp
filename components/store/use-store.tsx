@@ -16,7 +16,7 @@ import WebsiteImageStore from './models/website-image-model';
 import WebsiteStore from './models/enhanced-website-store';
 import WebsitePinStore from './models/website-pin-model';
 import WebsiteTagStore from './models/website-tag-model';
-import WebsiteVisitStore from './models/website-visit-model';
+import EnhancedWebsiteVisitStore from './models/enhanced-website-visit-store';
 
 export interface IStore {
   readonly domainFilterStore: DomainFilterStore;
@@ -29,7 +29,7 @@ export interface IStore {
   readonly tfidfStore: TfidfDataStore;
   readonly attendeeDataStore: AttendeeStore;
   readonly websiteStore: WebsiteStore;
-  readonly websiteVisitStore: WebsiteVisitStore;
+  readonly websiteVisitStore: EnhancedWebsiteVisitStore;
   readonly websiteImageStore: WebsiteImageStore;
   readonly websitePinStore: WebsitePinStore;
   readonly segmentTagStore: SegmentTagStore;

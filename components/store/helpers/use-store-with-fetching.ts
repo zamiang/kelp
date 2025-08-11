@@ -19,7 +19,7 @@ import WebsiteImageStore from '../models/website-image-model';
 import WebsiteStore from '../models/enhanced-website-store';
 import WebsitePinStore from '../models/website-pin-model';
 import WebsiteTagStore from '../models/website-tag-model';
-import WebsiteVisitStore from '../models/website-visit-model';
+import EnhancedWebsiteVisitStore from '../models/enhanced-website-visit-store';
 import { IStore } from '../use-store';
 
 export const useStoreWithFetching = (
@@ -43,7 +43,7 @@ export const useStoreWithFetching = (
   const tfidfStore = new TfidfDataStore();
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websiteStore = new WebsiteStore(db);
-  const websiteVisitStore = new WebsiteVisitStore(db);
+  const websiteVisitStore = new EnhancedWebsiteVisitStore(db);
   const websiteImageStore = new WebsiteImageStore(db);
   const websiteBlocklistStore = new WebsiteBlocklistStore(db);
   const domainBlocklistStore = new DomainBlocklistStore(db);
@@ -86,12 +86,16 @@ export const useStoreWithFetching = (
       await personDataStore.addPeopleToStore(data.currentUser, data.contacts, data.emailAddresses);
 
       // Save history
-      const currentWebsites = await websiteVisitStore.getAll(
+      const currentWebsitesResult = await websiteVisitStore.getAllFiltered(
         domainBlocklistStore,
         websiteBlocklistStore,
       );
 
-      if (currentWebsites.length < 1) {
+      const currentWebsitesCount = currentWebsitesResult.success
+        ? currentWebsitesResult.data.total
+        : 0;
+
+      if (currentWebsitesCount < 1) {
         console.log('saving browser history');
         setLoadingMessage('Saving Websites');
         const historyWebsites = await fetchAllHistory();
@@ -99,7 +103,16 @@ export const useStoreWithFetching = (
         if (addHistoryResult.success === false) {
           console.error('Failed to add history to website store:', addHistoryResult.error);
         }
-        await websiteVisitStore.addHistoryToStore(historyWebsites, timeDataStore);
+        const addVisitHistoryResult = await websiteVisitStore.addHistoryToStore(
+          historyWebsites,
+          timeDataStore,
+        );
+        if (addVisitHistoryResult.success === false) {
+          console.error(
+            'Failed to add history to website visit store:',
+            addVisitHistoryResult.error,
+          );
+        }
       }
 
       setLoadingMessage('Saving Meeting Attendee');
@@ -119,7 +132,7 @@ export const useStoreWithFetching = (
 
       const cleanup = async () => {
         console.log('running cleanup');
-        await Promise.all([
+        const cleanupResults = await Promise.allSettled([
           // Cleanup website images
           websiteImageStore.cleanup(),
           // Cleanup website visits
@@ -133,6 +146,13 @@ export const useStoreWithFetching = (
           // Cleanup websites
           websiteStore.cleanup(),
         ]);
+
+        // Log any cleanup failures
+        cleanupResults.forEach((result, index) => {
+          if (result.status === 'rejected') {
+            console.error(`Cleanup failed for store ${index}:`, result.reason);
+          }
+        });
       };
       setTimeout(() => void cleanup(), 5000);
     };
