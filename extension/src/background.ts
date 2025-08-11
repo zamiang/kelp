@@ -5,9 +5,8 @@ import { IStore } from '../../components/store/use-store';
 import config from '../../constants/config';
 
 let store: IStore | null = null;
-const notificationAlarmName = 'notification';
 const refreshAlarmName = 'refresh';
-const timeToWaitBeforeTracking = 20 * 1000;
+const timeToWaitBeforeTracking = 12 * 1000;
 
 const ensureStoreReady = async (maxRetries = 3): Promise<IStore | null> => {
   for (let i = 0; i < maxRetries; i++) {
@@ -89,52 +88,13 @@ const trackVisit = async (storeInstance: IStore | null, tab: chrome.tabs.Tab) =>
     return;
   }
 
-  // use `var` to avoid redeclaration of const error when re-running in the same tab
-  const getMetaInformation = () => {
-    const metaDescription = document.querySelector("meta[name='description']");
-    const metaDescriptionContent = metaDescription?.getAttribute('content');
-    const metaTwitterDescription = document.querySelector("meta[name='twitter:description']");
-    const metaTwitterDescriptionContent = metaTwitterDescription?.getAttribute('content');
-    const metaOgUrl = document.querySelector("meta[name='og:url']");
-    const metaOgUrlContent = metaOgUrl?.getAttribute('content');
-    const metaOgImage = document.querySelector("meta[name='og:image']");
-    const metaOgImageContent = metaOgImage?.getAttribute('content');
-    return {
-      metaDescriptionContent,
-      metaTwitterDescriptionContent,
-      metaOgUrlContent,
-      metaOgImageContent,
-    };
-  };
-
-  type metaInformation = ReturnType<typeof getMetaInformation>;
-  const results = await chrome.scripting.executeScript({
-    target: { tabId: tab.id, allFrames: false },
-    func: getMetaInformation,
-  });
-
-  if (!results) {
-    console.log('error');
-    // An error occurred at executing the script. You've probably not got
-    // the permission to execute a content script for the current tab
-    return;
-  }
-
-  const result = (results[0]?.result || {}) as metaInformation;
   try {
-    await captureVisibleTab(result.metaOgUrlContent || currentUrl);
+    await captureVisibleTab(currentUrl);
   } catch (e) {
     console.log(e, 'failure to capture tab');
   }
 
-  return storeTrackedVisit(
-    result.metaOgUrlContent || currentUrl,
-    new Date(),
-    validStore,
-    tab.title,
-    result.metaTwitterDescriptionContent || result.metaDescriptionContent || undefined,
-    result.metaOgImageContent || undefined,
-  );
+  return storeTrackedVisit(currentUrl, new Date(), validStore, tab.title);
 };
 
 const getOrCreateStore = async () => {
@@ -187,55 +147,6 @@ const captureVisibleTab = async (url: string) => {
   }
 };
 
-const queryAndSendNotification = async () => {
-  const val = await chrome.storage.sync.get([config.NOTIFICATIONS_KEY]);
-  if (!val[config.NOTIFICATIONS_KEY]) {
-    await chrome.storage.sync.set({ [config.NOTIFICATIONS_KEY]: 'enabled' });
-  }
-
-  const currentVal = await chrome.storage.sync.get([config.NOTIFICATIONS_KEY]);
-  if (currentVal[config.NOTIFICATIONS_KEY] === 'disabled') {
-    return;
-  }
-
-  // Ensure we have a valid store before proceeding
-  const validStore = store || (await ensureStoreReady());
-  if (!validStore || !validStore.timeDataStore) {
-    console.error('Unable to get valid store for notifications');
-    return;
-  }
-
-  const lastSentNotificationId = (await chrome.storage.sync.get([config.LAST_NOTIFICATION_KEY]))[
-    config.LAST_NOTIFICATION_KEY
-  ];
-
-  try {
-    const upNext = await validStore.timeDataStore.getUpNextSegment();
-
-    if (upNext && upNext.id !== lastSentNotificationId) {
-      chrome.notifications.create(upNext.id, {
-        title: `${upNext.summary || 'Meeting notification'}`,
-        message: 'Click to see documents for this meeting and suggestions',
-        iconUrl: '/icon128.png',
-        type: 'basic',
-        requireInteraction: false,
-        eventTime: upNext.start.valueOf(),
-      });
-      return chrome.storage.sync.set({ [config.LAST_NOTIFICATION_KEY]: upNext.id });
-    } else {
-      return chrome.notifications.getAll((items): void => {
-        if (items) for (const key in items) chrome.notifications.clear(key);
-      });
-    }
-  } catch (error) {
-    console.error('Error in notification query:', error);
-  }
-};
-
-chrome.notifications.onClicked.addListener(
-  (): void => void chrome.tabs.create({ url: `/dashboard.html` }),
-);
-
 const alarmListener = (alarm: chrome.alarms.Alarm): void => void onAlarm(alarm);
 
 const setupTimers = () => {
@@ -246,15 +157,11 @@ const setupTimers = () => {
 
 const setAlarm = () => {
   void chrome.alarms.clearAll();
-  chrome.alarms.create(notificationAlarmName, { periodInMinutes: 1 });
   chrome.alarms.create(refreshAlarmName, { periodInMinutes: 60 });
 };
 
 const onAlarm = (alarm: chrome.alarms.Alarm) => {
   switch (alarm.name) {
-    case notificationAlarmName: {
-      return queryAndSendNotification();
-    }
     case refreshAlarmName: {
       return fetchDataAndCreateStore();
     }
@@ -291,14 +198,6 @@ chrome.tabs.onHighlighted.addListener((highlightInfo): void => {
     };
     void checkTab();
   }, timeToWaitBeforeTracking);
-});
-
-chrome.runtime.onMessage.addListener((request, _sender, sendResponse): boolean | void => {
-  if (request.meetingId) {
-    void chrome.tabs.create({ url: `/dashboard.html#/meetings/${request.meetingId}` });
-    sendResponse({ success: true });
-    return true;
-  }
 });
 
 chrome.action.onClicked.addListener((): void => {
