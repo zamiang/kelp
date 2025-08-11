@@ -276,7 +276,6 @@ export default class EnhancedWebsiteStore extends BaseStoreImpl<IWebsiteItem> {
             ogImage: website.ogImage,
           };
         }
-
         const addResult = await this.add(websiteItem);
         if (isFailure(addResult)) {
           throw addResult.error;
