@@ -1,13 +1,13 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "strict": true,
     "outDir": "./dist/",
-    "sourceMap": true,
     "module": "es6",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "isolatedModules": false,
     "noEmit": false,
-    "target": "es5",
+    "target": "es6",
     "jsx": "react"
   },
   "include": ["../@types", "./src/**/*", "src/custom.d.ts"],
