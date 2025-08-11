@@ -308,9 +308,12 @@ export default class EnhancedWebsiteVisitStore extends BaseStoreImpl<IWebsiteVis
       try {
         const formattedWebsites = await Promise.allSettled(
           websites.map(async (website): Promise<IWebsiteVisit> => {
-            const currentMeeting = await timeStore.getCurrentSegmentForWebsites(
+            const currentMeetingResult = await timeStore.getCurrentSegmentForWebsites(
               website.visitedTime || new Date(),
             );
+            const currentMeeting = currentMeetingResult.success
+              ? currentMeetingResult.data
+              : undefined;
             return {
               id: `${website.id}-${website.visitedTime.toDateString()}`,
               websiteId: website.id,
@@ -393,9 +396,10 @@ export default class EnhancedWebsiteVisitStore extends BaseStoreImpl<IWebsiteVis
       const startTime = performance.now();
 
       try {
-        const currentMeeting = await timeStore.getCurrentSegmentForWebsites(
+        const currentMeetingResult = await timeStore.getCurrentSegmentForWebsites(
           website.startAt || new Date(),
         );
+        const currentMeeting = currentMeetingResult.success ? currentMeetingResult.data : undefined;
         const websiteId = cleanupUrl(website.url);
 
         const websiteVisit: IWebsiteVisit = {

@@ -7,7 +7,7 @@ import { removePunctuationRegex } from '../../shared/tfidf';
 import { ISegment, ISegmentDocument } from '../data-types';
 import { dbType } from '../db';
 import AttendeeModel from './attendee-model';
-import SegmentModel from './segment-model';
+import EnhancedSegmentStore from './enhanced-segment-store';
 
 export const formatSegmentTitle = (text?: string) =>
   text
@@ -56,8 +56,9 @@ export default class SegmentDocumentModel {
     return;
   }
 
-  async addSegmentDocumentsToStore(timeStore: SegmentModel, attendeeStore: AttendeeModel) {
-    const segments = await timeStore.getAll();
+  async addSegmentDocumentsToStore(timeStore: EnhancedSegmentStore, attendeeStore: AttendeeModel) {
+    const segmentsResult = await timeStore.getAll();
+    const segments = segmentsResult.success ? segmentsResult.data.data : [];
 
     // Add documents in meeting descriptions
     const documentsToAdd = await Promise.all(

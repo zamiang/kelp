@@ -8,7 +8,7 @@ import DomainBlocklistStore from './models/domain-blocklist-model';
 import DomainFilterStore from './models/domain-filter-model';
 import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
-import TimeDataStore from './models/segment-model';
+import EnhancedSegmentStore from './models/enhanced-segment-store';
 import SegmentTagStore from './models/segment-tag-model';
 import TfidfDataStore from './models/tfidf-model';
 import WebsiteBlocklistStore from './models/website-blocklist-model';
@@ -24,7 +24,7 @@ export interface IStore {
   readonly websiteTagStore: WebsiteTagStore;
   readonly domainBlocklistStore: DomainBlocklistStore;
   readonly personDataStore: PersonDataStore;
-  readonly timeDataStore: TimeDataStore;
+  readonly timeDataStore: EnhancedSegmentStore;
   readonly documentDataStore: DocumentDataStore;
   readonly tfidfStore: TfidfDataStore;
   readonly attendeeDataStore: AttendeeStore;

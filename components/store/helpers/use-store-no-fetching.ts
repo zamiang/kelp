@@ -6,7 +6,7 @@ import DomainBlocklistStore from '../models/domain-blocklist-model';
 import DomainFilterStore from '../models/domain-filter-model';
 import PersonDataStore from '../models/person-model';
 import SegmentDocumentDataStore from '../models/segment-document-model';
-import TimeDataStore from '../models/segment-model';
+import EnhancedSegmentStore from '../models/enhanced-segment-store';
 import SegmentTagStore from '../models/segment-tag-model';
 import TfidfDataStore from '../models/tfidf-model';
 import WebsiteBlocklistStore from '../models/website-blocklist-model';
@@ -31,7 +31,7 @@ export const useStoreNoFetch = (db: dbType | null, skipHook: boolean): IStore | 
   }
 
   const personDataStore = new PersonDataStore(db);
-  const timeDataStore = new TimeDataStore(db);
+  const timeDataStore = new EnhancedSegmentStore(db);
   const documentDataStore = new DocumentDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
   const tfidfStore = new TfidfDataStore();

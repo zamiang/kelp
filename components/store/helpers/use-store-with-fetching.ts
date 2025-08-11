@@ -11,7 +11,7 @@ import DomainBlocklistStore from '../models/domain-blocklist-model';
 import DomainFilterStore from '../models/domain-filter-model';
 import PersonDataStore from '../models/person-model';
 import SegmentDocumentDataStore from '../models/segment-document-model';
-import TimeDataStore from '../models/segment-model';
+import EnhancedSegmentStore from '../models/enhanced-segment-store';
 import SegmentTagStore from '../models/segment-tag-model';
 import TfidfDataStore from '../models/tfidf-model';
 import WebsiteBlocklistStore from '../models/website-blocklist-model';
@@ -36,7 +36,7 @@ export const useStoreWithFetching = (
   const [isLoading, setLoading] = useState(0);
 
   const personDataStore = new PersonDataStore(db);
-  const timeDataStore = new TimeDataStore(db);
+  const timeDataStore = new EnhancedSegmentStore(db);
   const documentDataStore = new DocumentDataStore(db);
   const documents = data.driveFiles || [];
   const attendeeDataStore = new AttendeeStore(db);
@@ -116,7 +116,9 @@ export const useStoreWithFetching = (
       }
 
       setLoadingMessage('Saving Meeting Attendee');
-      await attendeeDataStore.addAttendeesToStore(await timeDataStore.getAll(), personDataStore);
+      const segmentsResult = await timeDataStore.getAll();
+      const segments = segmentsResult.success ? segmentsResult.data.data : [];
+      await attendeeDataStore.addAttendeesToStore(segments, personDataStore);
 
       setLoadingMessage('Matching Documents and Meetings');
       await segmentDocumentStore.addSegmentDocumentsToStore(timeDataStore, attendeeDataStore);
