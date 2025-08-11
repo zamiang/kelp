@@ -10,7 +10,7 @@ import PersonDataStore from './models/person-model';
 import SegmentDocumentDataStore from './models/segment-document-model';
 import TimeDataStore from './models/segment-model';
 import SegmentTagStore from './models/segment-tag-model';
-import TfidfDataStore from './models/tfidf-model';
+import EnhancedTfidfStore from './models/enhanced-tfidf-store';
 import WebsiteBlocklistStore from './models/website-blocklist-model';
 import WebsiteImageStore from './models/website-image-model';
 import WebsiteStore from './models/enhanced-website-store';
@@ -26,7 +26,7 @@ export interface IStore {
   readonly personDataStore: PersonDataStore;
   readonly timeDataStore: TimeDataStore;
   readonly documentDataStore: DocumentDataStore;
-  readonly tfidfStore: TfidfDataStore;
+  readonly tfidfStore: EnhancedTfidfStore;
   readonly attendeeDataStore: AttendeeStore;
   readonly websiteStore: WebsiteStore;
   readonly websiteVisitStore: EnhancedWebsiteVisitStore;

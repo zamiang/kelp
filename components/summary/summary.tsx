@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../constants/config';
 import { mediumFontFamily } from '../../constants/theme';
 import { IWebsite } from '../store/data-types';
-import { ITfidfTag } from '../store/models/tfidf-model';
+import { ITfidfTag } from '../store/models/enhanced-tfidf-store';
 import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
@@ -202,9 +202,25 @@ const DayContent = (props: { store: IStore; day: Date }) => {
         .filter(
           (website): website is NonNullable<typeof website> => website !== null,
         ) as IWebsite[];
-      const documents = props.store.tfidfStore.getDocumentsForWebsites(websites);
-      const tfidf = props.store.tfidfStore.getTfidfForDocuments(documents);
-      const terms = (tfidf.listTermsWithValue() || []).filter((t) => t.term !== '__key');
+
+      // Get documents for websites
+      const documentsResult = await props.store.tfidfStore.getDocumentsForWebsites(websites);
+      if (!documentsResult.success) {
+        console.error('Failed to get documents for websites:', (documentsResult as any).error);
+        setDocuments([]);
+        return;
+      }
+
+      // Get TF-IDF for documents
+      const tfidfResult = await props.store.tfidfStore.getTfidfForDocuments(documentsResult.data);
+      if (!tfidfResult.success) {
+        console.error('Failed to get TF-IDF for documents:', (tfidfResult as any).error);
+        setDocuments([]);
+        return;
+      }
+
+      const tfidf = tfidfResult.data;
+      const terms = (tfidf.listTermsWithValue() || []).filter((t: ITfidfTag) => t.term !== '__key');
       setTfidfMax(terms[0]?.tfidf || 0);
       setTfidfMin(last(terms)?.tfidf || 0);
 

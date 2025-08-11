@@ -8,7 +8,7 @@ import PersonDataStore from '../models/person-model';
 import SegmentDocumentDataStore from '../models/segment-document-model';
 import TimeDataStore from '../models/segment-model';
 import SegmentTagStore from '../models/segment-tag-model';
-import TfidfDataStore from '../models/tfidf-model';
+import EnhancedTfidfStore from '../models/enhanced-tfidf-store';
 import WebsiteBlocklistStore from '../models/website-blocklist-model';
 import WebsiteImageStore from '../models/website-image-model';
 import WebsiteStore from '../models/enhanced-website-store';
@@ -34,7 +34,7 @@ export const useStoreNoFetch = (db: dbType | null, skipHook: boolean): IStore | 
   const timeDataStore = new TimeDataStore(db);
   const documentDataStore = new DocumentDataStore(db);
   const attendeeDataStore = new AttendeeStore(db);
-  const tfidfStore = new TfidfDataStore();
+  const tfidfStore = new EnhancedTfidfStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websiteStore = new WebsiteStore(db);
   const websiteVisitStore = new EnhancedWebsiteVisitStore(db);
