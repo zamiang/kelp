@@ -11,7 +11,7 @@ import SearchBar from '../nav/search-bar';
 import PersonRow from '../person/person-row';
 import Loading from '../shared/loading';
 import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
-import { uncommonPunctuation } from '../store/models/tfidf-model';
+import { uncommonPunctuation } from '../store/models/enhanced-tfidf-store';
 import { ISearchItem, enhancedSearchIndex } from '../store/utils/enhanced-search-index';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';

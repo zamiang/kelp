@@ -90,10 +90,10 @@ export const AddTagToMeetingDialog = (props: {
   const [websiteTags, setWebsiteTags] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchData = () => {
-      const result = props.store.tfidfStore.getCalculatedDocuments();
-      if (result) {
-        const tags = result;
+    const fetchData = async () => {
+      const result = await props.store.tfidfStore.getCalculatedDocuments();
+      if (result.success) {
+        const tags = result.data;
         setWebsiteTags(uniq(tags.concat(props.userTags.map((t) => t.tag))).sort() as any);
       }
     };

@@ -13,7 +13,7 @@ import PersonDataStore from '../models/person-model';
 import SegmentDocumentDataStore from '../models/segment-document-model';
 import TimeDataStore from '../models/segment-model';
 import SegmentTagStore from '../models/segment-tag-model';
-import TfidfDataStore from '../models/tfidf-model';
+import EnhancedTfidfStore from '../models/enhanced-tfidf-store';
 import WebsiteBlocklistStore from '../models/website-blocklist-model';
 import WebsiteImageStore from '../models/website-image-model';
 import WebsiteStore from '../models/enhanced-website-store';
@@ -40,7 +40,7 @@ export const useStoreWithFetching = (
   const documentDataStore = new DocumentDataStore(db);
   const documents = data.driveFiles || [];
   const attendeeDataStore = new AttendeeStore(db);
-  const tfidfStore = new TfidfDataStore();
+  const tfidfStore = new EnhancedTfidfStore(db);
   const segmentDocumentStore = new SegmentDocumentDataStore(db);
   const websiteStore = new WebsiteStore(db);
   const websiteVisitStore = new EnhancedWebsiteVisitStore(db);
@@ -145,6 +145,12 @@ export const useStoreWithFetching = (
           timeDataStore.cleanup(),
           // Cleanup websites
           websiteStore.cleanup(),
+          // Cleanup TF-IDF cache
+          tfidfStore.cleanup().then((result) => {
+            if (!result.success) {
+              throw (result as any).error;
+            }
+          }),
         ]);
 
         // Log any cleanup failures

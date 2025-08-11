@@ -65,12 +65,17 @@ export const AddTaggDialog = (props: {
   useEffect(() => {
     let isSubscribed = true;
     const fetchData = async () => {
-      await props.store.tfidfStore.getTfidf(props.store);
-      const result = props.store.tfidfStore.getCalculatedDocuments();
-      if (result) {
-        const tags = result;
+      const tfidfResult = await props.store.tfidfStore.getTfidf(props.store);
+      if (!tfidfResult.success) {
+        console.error('Failed to get TF-IDF:', (tfidfResult as any).error);
+        return;
+      }
+
+      const result = await props.store.tfidfStore.getCalculatedDocuments();
+      if (result.success && isSubscribed) {
+        const tags = result.data;
         const formattedTags = tags.concat(props.userTags.map((t) => t.tag));
-        return isSubscribed && setWebsiteTags(uniq(formattedTags).sort() as any);
+        setWebsiteTags(uniq(formattedTags).sort() as any);
       }
     };
     void fetchData();
