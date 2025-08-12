@@ -122,7 +122,7 @@
     "style-loader": "4.0.0",
     "ts-loader": "9.5.2",
     "ts-unused-exports": "11.0.1",
-    "typescript-eslint": "8.39.0",
+    "typescript-eslint": "8.39.1",
     "url-loader": "4.1.1",
     "vitest": "3.2.4"
   },
