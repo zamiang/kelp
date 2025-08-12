@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
-import '../../styles/components/shared/website-tag.css';
 
 export const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
   const existingTagText = userTags.map((t) => t.tag);

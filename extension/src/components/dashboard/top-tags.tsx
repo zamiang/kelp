@@ -9,7 +9,6 @@ import LeftArrow from '../../../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTaggDialog } from './add-tag-dialog';
-import '../../styles/components/dashboard/top-tags.css';
 
 const PREFIX = 'TopTags';
 

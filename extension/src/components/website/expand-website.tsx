@@ -16,7 +16,6 @@ import { IStore } from '../store/use-store';
 import { IWebsiteCache, IWebsiteCacheItem } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 import { DraggableWebsiteHighlights } from './draggable-website-highlights';
-import '../../styles/components/website/expand-website.css';
 
 const MAX_TAGS = 10;
 

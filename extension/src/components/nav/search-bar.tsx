@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../../../constants/config';
 import CloseIcon from '../../../../public/icons/close.svg';
 import SearchIcon from '../../../../public/icons/search.svg';
-import '../../styles/components/nav/search-bar.css';
 
 const searchInputId = 'searchInput';
 

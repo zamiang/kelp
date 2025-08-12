@@ -13,7 +13,6 @@ import { WebsiteTags } from '../shared/website-tag';
 import { IWebsiteImage, IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
-import '../../styles/components/website/large-website.css';
 
 const PREFIX = 'LargeWebsite';
 

@@ -18,7 +18,6 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache } from '../website/get-featured-websites';
 import { ExpandMeetingNav, ExpandPersonNav, TopTags, WebsiteTags } from './top-tags';
-import '../../styles/components/dashboard/top-nav.css';
 
 const PREFIX = 'TopNav';
 

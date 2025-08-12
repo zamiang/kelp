@@ -8,7 +8,6 @@ import PersonRow from '../person/person-row';
 import { IFormattedAttendee, IPerson } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
-import '../../styles/components/shared/attendee-list.css';
 
 const PREFIX = 'AttendeeList';
 

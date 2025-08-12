@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IPerson } from '../store/data-types';
-import '../../styles/components/person/person-row.css';
 
 const PersonRow = (props: {
   selectedPersonId: string | null;

@@ -14,7 +14,6 @@ import { ISegment, IWebsiteTag } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache } from '../website/get-featured-websites';
-import '../../styles/components/shared/meeting-list.css';
 
 export const Meeting = (props: {
   meeting: ISegment;

@@ -11,7 +11,6 @@ import { IStore } from '../store/use-store';
 import { MostRecentTab } from '../website/most-recent-tab';
 import Link from '@mui/material/Link';
 import KelpIcon from '../../../../public/kelp-24.svg';
-import '../../styles/components/person/top-people.css';
 
 const PREFIX = 'TopPeople';
 

@@ -12,7 +12,6 @@ import HelpIcon from '../../../../public/icons/help.svg';
 import SearchIcon from '../../../../public/icons/search.svg';
 import { IDocument, ISegment, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import '../../styles/components/documents/document-row.css';
 
 const PREFIX = 'DocumentRow';
 
