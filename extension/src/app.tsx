@@ -6,10 +6,6 @@ import {
 } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import { subMinutes } from 'date-fns';
@@ -87,14 +83,16 @@ const LoadingMobileDashboardContainer = (props: {
   return (
     <div>
       {!store && (
-        <Alert severity="error">
-          <AlertTitle>Authentication Error</AlertTitle>
-          <Typography style={{ width: 315 }}>
-            Unable to connect to the database. Please restart your browser This is an issue I do not
-            fully understand where the database does not accept connections. If you are familar with
-            connection issues with indexdb, please email brennan@kelp.nyc.
-          </Typography>
-        </Alert>
+        <div className="app-error">
+          <div className="alert">
+            <div className="alert-title">Authentication Error</div>
+            <div className="alert-content">
+              Unable to connect to the database. Please restart your browser This is an issue I do
+              not fully understand where the database does not accept connections. If you are
+              familar with connection issues with indexdb, please email brennan@kelp.nyc.
+            </div>
+          </div>
+        </div>
       )}
       {store && (
         <Router initialEntries={['/home', '/meetings', '/settings']} initialIndex={0}>
@@ -370,7 +368,6 @@ const App = () => {
     <StyledEngineProvider injectFirst>
       <EmotionThemeProvider theme={materialUITheme}>
         <ThemeProvider theme={materialUITheme}>
-          <CssBaseline />
           <MsalProvider instance={msalInstance}>
             <MainContent setTheme={handleThemeChange} theme={theme} />
           </MsalProvider>
