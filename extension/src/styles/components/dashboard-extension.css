@@ -15,9 +15,9 @@
   --mui-success-color: var(--color-success);
 
   /* Extension-specific layout constraints */
-  max-inline-size: var(--popup-width);
-  min-block-size: var(--popup-min-height);
-  max-block-size: var(--popup-max-height);
+  max-inline-size: var(--app-width);
+  min-block-size: var(--app-min-height);
+  max-block-size: var(--app-max-height);
 
   /* Container query context for dashboard */
   container-type: inline-size;

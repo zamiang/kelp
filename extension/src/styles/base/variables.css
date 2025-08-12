@@ -63,11 +63,6 @@
   --transition-normal: 250ms ease-in-out;
   --transition-slow: 350ms ease-in-out;
 
-  /* Layout - Responsive with min/max functions */
-  --popup-width: clamp(320px, 90vw, 450px);
-  --popup-max-height: min(600px, 90vh);
-  --popup-min-height: max(300px, 40vh);
-
   /* Container Sizes */
   --container-xs: min(100%, 320px);
   --container-sm: min(100%, 480px);

@@ -131,12 +131,6 @@
   --transition-fast: var(--shared-transition-fast);
   --transition-medium: var(--shared-transition-medium);
   --transition-slow: var(--shared-transition-slow);
-
-  /* Extension-specific constraints */
-  --popup-min-width: var(--shared-max-width-xs);
-  --popup-max-width: var(--shared-max-width-lg);
-  --popup-min-height: 300px;
-  --popup-max-height: 600px;
 }
 
 /* Main app context token mappings */

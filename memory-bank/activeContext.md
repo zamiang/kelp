@@ -264,30 +264,25 @@ new CssMinimizerPlugin({
 --spacing-xs: clamp(3px, 1vw, 4px);
 --spacing-sm: clamp(6px, 2vw, 8px);
 --spacing-md: clamp(12px, 4vw, 16px);
-
-/* Responsive Layout */
---popup-width: clamp(320px, 90vw, 450px);
---popup-max-height: min(600px, 90vh);
---popup-min-height: max(300px, 40vh);
 ```
 
 **CSS Containment Implementation**:
 
 ```css
-.popup-container {
+.app-container {
   /* CSS Containment for performance */
   contain: layout style paint;
 
   /* Content visibility for off-screen optimization */
   content-visibility: auto;
-  contain-intrinsic-size: var(--popup-min-height);
+  contain-intrinsic-size: 100%;
 }
 ```
 
 **CSS Logical Properties**:
 
 ```css
-.popup-button {
+.app-button {
   inline-size: 100%;
   padding-block: var(--spacing-sm);
   padding-inline: var(--spacing-lg);

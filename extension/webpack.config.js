@@ -3,8 +3,8 @@ import webpack from 'webpack';
 import CopyPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
-import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
-import glob from 'glob-all';
+// import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
+// import glob from 'glob-all';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
@@ -40,6 +40,7 @@ const getConfig = () => {
       background: path.join(__dirname, 'src/background.ts'),
       color: path.join(__dirname, 'src/background-color.ts'),
       'content-script': path.join(__dirname, 'src/content-script.ts'),
+      styles: path.join(__dirname, 'src/styles.js'),
     },
     output: { path: path.join(__dirname, 'dist'), filename: '[name].js' },
     module: {
@@ -62,6 +63,7 @@ const getConfig = () => {
             },
           ],
           exclude: /\.module\.css$/,
+          sideEffects: true,
         },
         {
           test: /\.ts(x)?$/,
@@ -80,6 +82,7 @@ const getConfig = () => {
               },
             },
           ],
+          sideEffects: true,
         },
         {
           test: /\.svg$/,
@@ -110,7 +113,7 @@ const getConfig = () => {
         buffer: require.resolve('buffer/'),
         vm: require.resolve('vm-browserify'),
       },
-      extensions: ['.js', '.jsx', '.tsx', '.ts'],
+      extensions: ['.js', '.jsx', '.tsx', '.ts', '.css'],
       alias: {
         'react-dom': 'react-dom',
         'process/browser': require.resolve('process/browser'),
@@ -160,14 +163,16 @@ const getConfig = () => {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       }),
       new MiniCssExtractPlugin({
-        filename: 'styles.css',
+        filename: (pathData) => {
+          return pathData.chunk.name === 'styles' ? 'styles.css' : '[name].css';
+        },
+        chunkFilename: '[id].css',
+        ignoreOrder: true,
       }),
       new CopyPlugin({
         patterns: [
           { from: path.join(__dirname, 'public'), to: '.' },
           { from: path.join(__dirname, '../public/fonts'), to: 'fonts' },
-          { from: path.join(__dirname, 'src/styles'), to: 'styles' },
-          { from: path.join(__dirname, 'src/app.css'), to: 'app.css' },
           {
             from: path.join(__dirname, 'src/manifest.json'),
             to: 'manifest.json',
