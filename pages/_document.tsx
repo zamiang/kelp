@@ -2,6 +2,7 @@ import createEmotionServer from '@emotion/server/create-instance';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 import createEmotionCache from '../components/styles/create-emotion-cache';
+import { Analytics } from '@vercel/analytics/next';
 
 export default class MyDocument extends Document {
   render() {
@@ -15,6 +16,7 @@ export default class MyDocument extends Document {
         <body style={{ overscrollBehaviorY: 'none' }}>
           <Main />
           <NextScript />
+          <Analytics />
         </body>
       </Html>
     );
