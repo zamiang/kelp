@@ -23,6 +23,8 @@
 @import './components/dashboard-extension.css';
 
 @import './components/dashboard/desktop-dashboard.css';
+@import './components/meeting/featured-meeting.css';
+@import './components/onboarding/onboarding.css';
 
 /* Global Styles */
 html {

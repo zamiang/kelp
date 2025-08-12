@@ -1,0 +1,181 @@
+/* Onboarding Component Styles */
+
+/* Dialog Container */
+.onboarding-dialog {
+  /* Use CSS custom properties for consistent theming */
+}
+
+.onboarding-step-container {
+  background: var(--color-background);
+  transition: background var(--transition-normal);
+  padding: var(--spacing-lg);
+  padding-bottom: var(--spacing-2xl);
+}
+
+/* Typography */
+.onboarding-heading {
+  display: inline-block;
+  margin-left: var(--spacing-sm);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+.onboarding-body {
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text-primary);
+}
+
+.onboarding-step-counter {
+  display: inline-block;
+  font-style: normal;
+  font-family: var(--font-family-medium);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+}
+
+/* Layout */
+.onboarding-right-align {
+  text-align: right;
+  margin-top: var(--spacing-xl);
+  font-size: var(--font-size-md);
+  display: block;
+}
+
+.onboarding-list-item {
+  padding-bottom: var(--spacing-sm);
+}
+
+/* Animation Image */
+.onboarding-image {
+  max-width: 100%;
+  border-radius: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  margin-left: auto;
+  margin-right: auto;
+  height: 400px;
+  width: 600px;
+  object-fit: cover;
+}
+
+/* Buttons */
+.onboarding-button {
+  background: var(--color-hover-overlay);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-sm);
+  transition: background var(--transition-fast);
+  min-height: 48px;
+  min-width: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.onboarding-button:hover {
+  background: var(--color-focus-overlay);
+}
+
+.onboarding-button:active {
+  background: var(--color-pressed-overlay);
+}
+
+.onboarding-left-button {
+  margin-right: var(--spacing-sm);
+}
+
+.onboarding-icon {
+  color: var(--color-text-primary);
+  width: 24px;
+  height: 24px;
+}
+
+/* Navigation Controls */
+.onboarding-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-md);
+}
+
+.onboarding-content {
+  flex: 1;
+}
+
+.onboarding-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* Responsive Design */
+@container onboarding (max-width: 600px) {
+  .onboarding-image {
+    height: 300px;
+    width: 100%;
+  }
+
+  .onboarding-step-container {
+    padding: var(--spacing-md);
+    padding-bottom: var(--spacing-xl);
+  }
+}
+
+@container onboarding (max-width: 400px) {
+  .onboarding-image {
+    height: 200px;
+  }
+
+  .onboarding-navigation {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+
+  .onboarding-controls {
+    justify-content: center;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-step-container {
+    transition: none;
+  }
+
+  .onboarding-button {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .onboarding-button {
+    border: 1px solid var(--color-border);
+  }
+
+  .onboarding-step-container {
+    border: 1px solid var(--color-border);
+  }
+}
+
+/* Focus management */
+.onboarding-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Animation states */
+.onboarding-step-container[data-step='entering'] {
+  opacity: 0;
+  transform: translateY(var(--spacing-md));
+  animation: onboarding-enter var(--transition-normal) ease-out forwards;
+}
+
+@keyframes onboarding-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

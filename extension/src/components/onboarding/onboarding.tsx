@@ -1,134 +1,68 @@
 import Dialog from '@mui/material/Dialog';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
-import { mediumFontFamily } from '../../../../constants/homepage-theme';
 import RightArrow from '../../../../public/icons/right-arrow.svg';
-
-const PREFIX = 'Onboarding';
-
-const classes = {
-  stepOneContainer: `${PREFIX}-stepOneContainer`,
-  heading: `${PREFIX}-heading`,
-  body: `${PREFIX}-body`,
-  rightAlignButton: `${PREFIX}-rightAlignButton`,
-  bold: `${PREFIX}-bold`,
-  li: `${PREFIX}-li`,
-  image: `${PREFIX}-image`,
-  button: `${PREFIX}-button`,
-  leftButton: `${PREFIX}-leftButton`,
-  icon: `${PREFIX}-leftButton`,
-  iconImage: `${PREFIX}-iconImage`,
-};
-
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-  [`& .${classes.stepOneContainer}`]: {
-    background: theme.palette.background.default,
-    transition: 'background 0.3s',
-    padding: 20,
-    paddingBottom: 40,
-  },
-  [`& .${classes.heading}`]: { display: 'inline-block', marginLeft: theme.spacing(2) },
-  [`& .${classes.body}`]: {
-    marignBottom: theme.spacing(2),
-  },
-  [`& .${classes.rightAlignButton}`]: {
-    textAlign: 'right',
-    marginTop: theme.spacing(4),
-    fontSize: 16,
-    display: 'block',
-  },
-  [`& .${classes.bold}`]: {
-    display: 'inline-block',
-    fontStyle: 'normal',
-    fontFamily: mediumFontFamily,
-    fontWeight: 500,
-    color: theme.palette.primary.main,
-  },
-  [`& .${classes.li}`]: {
-    paddingBottom: theme.spacing(2),
-  },
-  [`& .${classes.image}`]: {
-    maxWidth: '100%',
-    borderRadius: 20,
-    marginBottom: 30,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    height: 400,
-    width: 600,
-  },
-  [`& .${classes.button}`]: {
-    background: 'rgba(0, 0, 0, 0.12)',
-  },
-  [`& .${classes.leftButton}`]: {
-    marginRight: theme.spacing(2),
-  },
-  [`& .${classes.iconImage}`]: {
-    color: theme.palette.text.primary,
-  },
-}));
 
 const maxTips = 3;
 
 const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
-    <img src="https://www.kelp.nyc/animations/tag-nav.gif" className={classes.image} />
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Box>
-        <Typography className={classes.bold} variant="h3">
+    <img src="https://www.kelp.nyc/animations/tag-nav.gif" className="onboarding-image" />
+    <div className="onboarding-navigation">
+      <div className="onboarding-content">
+        <Typography className="onboarding-step-counter" variant="h3">
           {props.step} / {maxTips}
         </Typography>
-        <Typography variant="h3" className={classes.heading}>
+        <Typography variant="h3" className="onboarding-heading">
           Meet your magical website organizer
         </Typography>
-      </Box>
-      <Box>
+      </div>
+      <div className="onboarding-controls">
         <IconButton
           size="medium"
-          className={classes.button}
+          className="onboarding-button"
           onClick={() => props.setStep(props.step + 1)}
         >
           <RightArrow
             height={config.ICON_SIZE}
             width={config.ICON_SIZE}
-            className={classes.iconImage}
+            className="onboarding-icon"
           />
         </IconButton>
-      </Box>
-    </Box>
+      </div>
+    </div>
   </React.Fragment>
 );
 
 const PinAnimation = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
-    <img src="https://www.kelp.nyc/animations/tag-group.gif" className={classes.image} />
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Box>
-        <Typography className={classes.bold} variant="h3">
+    <img src="https://www.kelp.nyc/animations/tag-group.gif" className="onboarding-image" />
+    <div className="onboarding-navigation">
+      <div className="onboarding-content">
+        <Typography className="onboarding-step-counter" variant="h3">
           {props.step} / {maxTips}
         </Typography>
-        <Typography variant="h3" className={classes.heading}>
+        <Typography variant="h3" className="onboarding-heading">
           Add Smart tags
         </Typography>
-      </Box>
-      <Box>
+      </div>
+      <div className="onboarding-controls">
         <IconButton
           size="medium"
-          className={classes.leftButton}
+          className="onboarding-button onboarding-left-button"
           onClick={() => props.setStep(props.step - 1)}
         >
           <RightArrow
             height={config.ICON_SIZE}
             width={config.ICON_SIZE}
-            className={classes.iconImage}
+            className="onboarding-icon"
             style={{ transform: 'rotate(180deg)' }}
           />
         </IconButton>
         <IconButton
-          className={classes.button}
+          className="onboarding-button"
           size="medium"
           onClick={() => {
             props.setStep(props.step + 1);
@@ -138,52 +72,52 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
           <RightArrow
             height={config.ICON_SIZE}
             width={config.ICON_SIZE}
-            className={classes.iconImage}
+            className="onboarding-icon"
           />
         </IconButton>
-      </Box>
-    </Box>
+      </div>
+    </div>
   </React.Fragment>
 );
 
 const MeetingsAnimation = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
-    <img src="https://www.kelp.nyc/animations/tag-meeting.gif" className={classes.image} />
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Box>
-        <Typography className={classes.bold} variant="h3">
+    <img src="https://www.kelp.nyc/animations/tag-meeting.gif" className="onboarding-image" />
+    <div className="onboarding-navigation">
+      <div className="onboarding-content">
+        <Typography className="onboarding-step-counter" variant="h3">
           {props.step} / {maxTips}
         </Typography>
-        <Typography variant="h3" className={classes.heading}>
+        <Typography variant="h3" className="onboarding-heading">
           Associate webpages with meetings
         </Typography>
-      </Box>
-      <Box>
+      </div>
+      <div className="onboarding-controls">
         <IconButton
           size="medium"
-          className={classes.leftButton}
+          className="onboarding-button onboarding-left-button"
           onClick={() => props.setStep(props.step - 1)}
         >
           <RightArrow
             height={config.ICON_SIZE}
             width={config.ICON_SIZE}
-            className={classes.iconImage}
+            className="onboarding-icon"
             style={{ transform: 'rotate(180deg)' }}
           />
         </IconButton>
         <IconButton
           size="medium"
-          className={classes.button}
+          className="onboarding-button"
           onClick={() => props.setStep(props.step + 1)}
         >
           <RightArrow
             height={config.ICON_SIZE}
             width={config.ICON_SIZE}
-            className={classes.iconImage}
+            className="onboarding-icon"
           />
         </IconButton>
-      </Box>
-    </Box>
+      </div>
+    </div>
   </React.Fragment>
 );
 
@@ -214,18 +148,21 @@ export const Onboarding = () => {
   }, []);
 
   return (
-    <StyledDialog
+    <Dialog
       maxWidth="md"
       open={step > 0 && step <= maxTips}
-      onClose={(_event, reason) => {
+      onClose={(_event: any, reason: string) => {
         if (reason === 'backdropClick') {
           setStep(0);
         }
       }}
+      className="onboarding-dialog"
+      container-type="inline-size"
+      container-name="onboarding"
     >
-      <div className={classes.stepOneContainer}>
+      <div className="onboarding-step-container">
         <OnboardingSteps step={step} setStep={setStep} />
       </div>
-    </StyledDialog>
+    </Dialog>
   );
 };
