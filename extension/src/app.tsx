@@ -15,7 +15,7 @@ import ThemeProvider from '@mui/styles/ThemeProvider';
 import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import './popup.css';
+import './app.css';
 import './styles/index.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { type ThemeName, initializeTheme, switchTheme } from './styles/theme-switcher';
@@ -111,7 +111,7 @@ const LoadingMobileDashboardContainer = (props: {
   );
 };
 
-const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
+const MainContent = (props: { theme: string; setTheme: (t: string) => void }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isDoneFetchingToken, setDoneFetchingToken] = useState(false);
   const [hasAuthError, setHasAuthError] = useState(false);
@@ -185,55 +185,47 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && !database;
 
   return (
-    <div className="popup-container popup-responsive-container extension-context">
+    <div className="main-content-container main-content-responsive-container extension-context">
       {hasDatabaseError && (
-        <div className="popup-error popup-auth-container">
-          <div className="popup-auth-header">
-            <h2 className="popup-auth-title">Please restart your browser</h2>
-          </div>
-          <div className="popup-auth-content">
-            <div className="popup-auth-error">
-              <div className="popup-auth-error-title">Database Connection Error</div>
-              <div className="popup-auth-error-message">
-                Unable to connect to the database. This is an issue I do not fully understand where
-                the database does not accept connections. If you are familiar with connection issues
-                with indexdb, please email brennan@kelp.nyc.
-              </div>
+        <div className="popup-error">
+          <div className="alert">
+            <div className="alert-title">Please restart your browser</div>
+            <div className="alert-content">
+              Unable to connect to the database. This is an issue I do not fully understand where
+              the database does not accept connections. If you are familiar with connection issues
+              with indexdb, please email brennan@kelp.nyc.
             </div>
           </div>
         </div>
       )}
       {hasAuthError && (
-        <div className="popup-error popup-auth-container">
-          <div className="popup-auth-header">
-            <h2 className="popup-auth-title">Authentication Error</h2>
-            <p className="popup-auth-subtitle">Please login with Google</p>
-          </div>
-          <div className="popup-auth-content">
-            <div className="popup-auth-actions">
+        <div className="popup-error">
+          <div className="alert">
+            <div className="alert-title">Authentication Error</div>
+            <div className="alert-content">
+              Please login with Google
+              <br />
+              <br />
               <button
-                className="popup-auth-button popup-auth-button--primary popup-auth-button--full-width"
+                className="popup-button"
                 onClick={() => {
                   window.location.reload();
                 }}
               >
                 Try again
               </button>
-            </div>
-            <div className="popup-auth-error-message">
+              <br />
+              <br />
               Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
             </div>
           </div>
         </div>
       )}
       {hasGoogleAdvancedProtectionError && (
-        <div className="popup-error popup-auth-container">
-          <div className="popup-auth-header">
-            <h2 className="popup-auth-title">Authentication Error</h2>
-            <p className="popup-auth-subtitle">Google Advanced Protection Program detected</p>
-          </div>
-          <div className="popup-auth-content">
-            <div className="popup-auth-error-message">
+        <div className="popup-error">
+          <div className="alert">
+            <div className="alert-title">Authentication Error</div>
+            <div className="alert-content">
               It looks like your organization has the{' '}
               <a
                 href="https://landing.google.com/advancedprotection/"
@@ -242,11 +234,14 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
               >
                 Google Advanced Protection Program
               </a>{' '}
-              enabled. Ask your IT administrator to whitelist:
-            </div>
-            <div className="popup-auth-actions">
+              enabled.
+              <br />
+              <br />
+              Ask your IT administrator to whitelist:
+              <br />
+              <br />
               <button
-                className="popup-auth-button popup-auth-button--secondary popup-auth-button--full-width"
+                className="popup-button"
                 onClick={(event) => {
                   event.stopPropagation();
                   void navigator.clipboard.writeText(getGoogleClientID());
@@ -255,16 +250,17 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
               >
                 {getGoogleClientID()}
               </button>
-              <div className="popup-auth-error-message">Click to copy to your clipboard</div>
-            </div>
-            <div className="popup-auth-error-message">
+              <br />
+              <small>Click to copy to your clipboard</small>
+              <br />
+              <br />
               Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
             </div>
           </div>
         </div>
       )}
       {(shouldShowLoading || isMicrosoftLoading) && (
-        <div className="popup-loading-container popup-loading--initial">
+        <div className="popup-loading">
           <div className="popup-loading-content">
             <div
               className="popup-loading-spinner popup-loading-spinner--large"
@@ -280,7 +276,7 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
           </div>
         </div>
       )}
-      {!hasAuthError && database && (isDoneFetchingToken || token) && (
+      {!hasAuthError && !hasDatabaseError && database && (isDoneFetchingToken || token) && (
         <div className="extension-dashboard">
           <LoadingMobileDashboardContainer
             database={database}
@@ -356,7 +352,7 @@ const App = () => {
         <ThemeProvider theme={materialUITheme}>
           <CssBaseline />
           <MsalProvider instance={msalInstance}>
-            <Popup setTheme={handleThemeChange} theme={theme} />
+            <MainContent setTheme={handleThemeChange} theme={theme} />
           </MsalProvider>
         </ThemeProvider>
       </EmotionThemeProvider>

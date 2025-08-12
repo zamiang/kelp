@@ -130,7 +130,7 @@ npm run dev
 ### Extension Architecture
 
 - **Service Worker**: `extension/src/background.ts`
-- **Popup**: `extension/src/popup.tsx`
+- **App**: `extension/src/app.tsx`
 - **Calendar Integration**: `extension/src/calendar.ts`
 - **Styling**: `extension/src/popup.css`
 

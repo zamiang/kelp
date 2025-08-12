@@ -631,8 +631,8 @@ extension/src/styles/
 **Modified Files**:
 
 - `extension/public/dashboard.html` - Removed inline styles, added CSS link
-- `extension/src/popup.css` - Now imports complete CSS architecture
-- `extension/src/popup.tsx` - Integrated theme switching system
+- `extension/src/app.css` - Now imports complete CSS architecture
+- `extension/src/app.tsx` - Integrated theme switching system
 - `extension/webpack.config.js` - Added CSS optimization and extraction
 
 ### Success Metrics Achieved

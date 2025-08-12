@@ -15,10 +15,10 @@
 @import './themes/nb.css';
 
 /* Component styles - Enhanced Phase 4 */
-@import './components/popup.css';
-@import './components/popup-auth.css';
-@import './components/popup-loading.css';
-@import './components/popup-responsive.css';
+@import './components/app.css';
+@import './components/app-auth.css';
+@import './components/app-loading.css';
+@import './components/app-responsive.css';
 @import './components/dashboard.css';
 @import './components/dashboard-extension.css';
 

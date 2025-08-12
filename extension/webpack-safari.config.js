@@ -12,7 +12,7 @@ const getConfig = () => ({
   mode: process.env.NODE_ENV,
   devtool: false,
   entry: {
-    popup: path.join(__dirname, 'src/popup.tsx'),
+    app: path.join(__dirname, 'src/app.tsx'),
     background: path.join(__dirname, 'src/background.ts'),
     calendar: path.join(__dirname, 'src/calendar.ts'),
   },
