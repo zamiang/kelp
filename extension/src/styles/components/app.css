@@ -95,20 +95,17 @@
   opacity: 0.6;
 }
 
-/* Loading states */
-.app-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--app-min-height);
-  background-color: var(--color-background);
-}
-
 /* Error states */
 .app-error {
-  padding-inline: var(--spacing-lg);
-  padding-block: var(--spacing-lg);
-  background-color: var(--color-background);
+  position: fixed;
+  top: 30vh;
+  width: 90vw;
+  max-width: 400px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  z-index: 1000;
 }
 
 .app-error .alert {

@@ -121,7 +121,7 @@ const ErrorPopups = (props: {
 }) => (
   <React.Fragment>
     {props.hasDatabaseError && (
-      <div className="popup-error">
+      <div className="app-error">
         <div className="alert">
           <div className="alert-title">Please restart your browser</div>
           <div className="alert-content">
@@ -133,7 +133,7 @@ const ErrorPopups = (props: {
       </div>
     )}
     {props.hasAuthError && (
-      <div className="popup-error">
+      <div className="app-error">
         <div className="alert">
           <div className="alert-title">Authentication Error</div>
           <div className="alert-content">
@@ -141,7 +141,7 @@ const ErrorPopups = (props: {
             <br />
             <br />
             <button
-              className="popup-button"
+              className="app-button"
               onClick={() => {
                 window.location.reload();
               }}
@@ -156,7 +156,7 @@ const ErrorPopups = (props: {
       </div>
     )}
     {props.hasGoogleAdvancedProtectionError && (
-      <div className="popup-error">
+      <div className="app-error">
         <div className="alert">
           <div className="alert-title">Authentication Error</div>
           <div className="alert-content">
@@ -175,7 +175,7 @@ const ErrorPopups = (props: {
             <br />
             <br />
             <button
-              className="popup-button"
+              className="app-button"
               onClick={(event) => {
                 event.stopPropagation();
                 void navigator.clipboard.writeText(getGoogleClientID());
@@ -194,15 +194,15 @@ const ErrorPopups = (props: {
       </div>
     )}
     {(props.shouldShowLoading || props.isMicrosoftLoading) && (
-      <div className="popup-loading">
-        <div className="popup-loading-content">
+      <div className="app-loading">
+        <div className="app-loading-content">
           <div
-            className="popup-loading-spinner popup-loading-spinner--large"
+            className="app-loading-spinner app-loading-spinner--large"
             role="progressbar"
             aria-label="Loading"
           ></div>
-          <div className="popup-loading-title">Loading</div>
-          <div className="popup-loading-message">
+          <div className="app-loading-title">Loading</div>
+          <div className="app-loading-message">
             {props.isMicrosoftLoading
               ? 'Authenticating with Microsoft...'
               : 'Initializing application...'}
