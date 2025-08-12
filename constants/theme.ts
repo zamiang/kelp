@@ -1,12 +1,14 @@
-import { Theme, ThemeOptions, createTheme } from '@mui/material/styles';
+import { ThemeOptions, createTheme } from '@mui/material/styles';
 import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
 import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
 import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 import config from './config';
 
+/*
 declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme {}
 }
+  */
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
 export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";

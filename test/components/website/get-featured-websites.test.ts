@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getWebsitesCache } from '../../../components/website/get-featured-websites';
-import { IWebsiteItem, IWebsiteVisit } from '../../../components/store/data-types';
+import { getWebsitesCache } from '../../../extension/src/components/website/get-featured-websites';
+import { IWebsiteItem, IWebsiteVisit } from '../../../extension/src/components/store/data-types';
 import config from '../../../constants/config';
 
 // Mock the order-by-count module

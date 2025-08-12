@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import EnhancedTfidfStore, { ITfidfRow } from '../../components/store/models/enhanced-tfidf-store';
+import EnhancedTfidfStore, {
+  ITfidfRow,
+} from '../../extension/src/components/store/models/enhanced-tfidf-store';
 
 // Mock the database
 const mockDb = {

@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import setupDatabase, { deleteDatabase } from '../../components/store/db';
-import { StoreError } from '../../components/store/utils/error-handler';
+import setupDatabase, { deleteDatabase } from '../../extension/src/components/store/db';
+import { StoreError } from '../../extension/src/components/store/utils/error-handler';
 
 // Mock the error handler utilities
-vi.mock('../../components/store/utils/error-handler', async () => {
-  const actual = await vi.importActual('../../components/store/utils/error-handler');
+vi.mock('../../extension/src/components/store/utils/error-handler', async () => {
+  const actual = await vi.importActual('../../extension/src/components/store/utils/error-handler');
   return {
     ...actual,
     withRetry: vi.fn().mockImplementation(async (operation, config) => {
