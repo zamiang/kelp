@@ -1,6 +1,6 @@
-/* Popup Component Styles */
+/* Enhanced Popup Component Styles */
 
-/* Main popup container */
+/* Main popup container with modern CSS features */
 .popup-container {
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -11,7 +11,10 @@
   color: var(--color-text-primary);
   font-family: var(--font-family-base);
   overflow: hidden;
+
+  /* Enhanced container query support */
   container-type: inline-size;
+  container-name: popup-main;
 
   /* CSS Containment for performance */
   contain: layout style paint;
@@ -19,6 +22,15 @@
   /* Content visibility for off-screen optimization */
   content-visibility: auto;
   contain-intrinsic-size: var(--popup-min-height);
+
+  /* CSS Subgrid support for better alignment */
+  display: grid;
+  grid-template-rows: subgrid;
+
+  /* Modern aspect ratio constraints */
+  aspect-ratio: 3 / 4;
+  max-aspect-ratio: 1 / 1;
+  min-aspect-ratio: 2 / 3;
 }
 
 /* Popup content area */
@@ -128,21 +140,83 @@
   margin-block-start: 0;
 }
 
-/* Container responsive styles */
-@container (max-width: 350px) {
+/* Enhanced responsive container styles with multi-breakpoint system */
+@container popup-main (width < 280px) {
+  .popup-container {
+    --popup-width: 280px;
+    --layout-density: 'ultra-compact';
+  }
+
+  .popup-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    min-block-size: 40px;
+  }
+
+  .popup-content {
+    padding-inline: var(--spacing-xs);
+    gap: var(--spacing-sm);
+  }
+}
+
+@container popup-main (width >= 280px) and (width < 350px) {
   .popup-container {
     --popup-width: 320px;
+    --layout-density: 'compact';
   }
 
   .popup-button {
     padding: var(--spacing-xs) var(--spacing-md);
     font-size: var(--font-size-xs);
+    min-block-size: 44px;
+  }
+
+  .popup-content {
+    padding-inline: var(--spacing-sm);
+    gap: var(--spacing-md);
   }
 }
 
-@container (min-width: 450px) {
+@container popup-main (width >= 350px) and (width < 450px) {
+  .popup-container {
+    --popup-width: 400px;
+    --layout-density: 'standard';
+  }
+
+  .popup-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    min-block-size: 48px;
+  }
+
+  .popup-content {
+    padding-inline: var(--spacing-md);
+    gap: var(--spacing-lg);
+  }
+}
+
+@container popup-main (width >= 450px) {
   .popup-container {
     --popup-width: 450px;
+    --layout-density: 'comfortable';
+  }
+
+  .popup-button {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-md);
+    min-block-size: 52px;
+  }
+
+  .popup-content {
+    padding-inline: var(--spacing-lg);
+    gap: var(--spacing-xl);
+  }
+
+  /* Enhanced layout for wide popups */
+  .popup-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-lg);
   }
 }
 
@@ -173,11 +247,102 @@
   outline: none;
 }
 
+/* Enhanced component integration */
+.popup-container--auth {
+  /* Apply authentication-specific styling */
+  @import 'popup-auth.css';
+}
+
+.popup-container--loading {
+  /* Apply loading-specific styling */
+  @import 'popup-loading.css';
+}
+
+.popup-container--responsive {
+  /* Apply advanced responsive styling */
+  @import 'popup-responsive.css';
+}
+
+/* Modern CSS Grid enhancements */
+.popup-content-grid {
+  display: grid;
+  grid-template-areas:
+    'header header'
+    'main sidebar'
+    'footer footer';
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--spacing-md);
+  min-block-size: 100%;
+}
+
+@container popup-main (width < 400px) {
+  .popup-content-grid {
+    grid-template-areas:
+      'header'
+      'main'
+      'sidebar'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+}
+
+.popup-header {
+  grid-area: header;
+}
+
+.popup-main {
+  grid-area: main;
+}
+
+.popup-sidebar {
+  grid-area: sidebar;
+}
+
+.popup-footer {
+  grid-area: footer;
+}
+
+/* Enhanced Material-UI integration */
+.popup-mui-container {
+  /* Ensure CSS custom properties work with Material-UI components */
+  --mui-palette-primary-main: var(--color-primary);
+  --mui-palette-background-default: var(--color-background);
+  --mui-palette-background-paper: var(--color-surface);
+  --mui-palette-text-primary: var(--color-text-primary);
+  --mui-palette-text-secondary: var(--color-text-secondary);
+  --mui-palette-divider: var(--color-divider);
+  --mui-palette-error-main: var(--color-error);
+  --mui-palette-warning-main: var(--color-warning);
+  --mui-palette-success-main: var(--color-success);
+}
+
+/* Performance optimizations */
+.popup-container,
+.popup-content,
+.popup-actions {
+  /* Optimize rendering performance */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 /* Print styles */
 @media print {
   .popup-container {
     background: white;
     color: black;
     box-shadow: none;
+    aspect-ratio: auto;
+    width: 100%;
+    height: auto;
+  }
+
+  .popup-content-grid {
+    grid-template-areas:
+      'header'
+      'main'
+      'sidebar'
+      'footer';
+    grid-template-columns: 1fr;
   }
 }

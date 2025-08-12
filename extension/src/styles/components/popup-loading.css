@@ -1,0 +1,301 @@
+/* Loading-Specific Popup Styles */
+
+/* Loading container */
+.popup-loading-container {
+  display: grid;
+  place-items: center;
+  min-block-size: var(--popup-min-height);
+  padding-inline: var(--spacing-lg);
+  padding-block: var(--spacing-xl);
+  background-color: var(--color-background);
+
+  /* CSS containment for performance */
+  contain: layout style paint;
+}
+
+/* Loading content wrapper */
+.popup-loading-content {
+  display: grid;
+  place-items: center;
+  gap: var(--spacing-lg);
+  text-align: center;
+  max-inline-size: 280px;
+}
+
+/* Loading spinner variants */
+.popup-loading-spinner {
+  inline-size: clamp(32px, 8cqw, 48px);
+  block-size: clamp(32px, 8cqw, 48px);
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: popup-loading-spin 1s linear infinite;
+}
+
+.popup-loading-spinner--large {
+  inline-size: clamp(48px, 12cqw, 64px);
+  block-size: clamp(48px, 12cqw, 64px);
+  border-width: 4px;
+}
+
+.popup-loading-spinner--small {
+  inline-size: clamp(24px, 6cqw, 32px);
+  block-size: clamp(24px, 6cqw, 32px);
+  border-width: 2px;
+}
+
+@keyframes popup-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading text */
+.popup-loading-title {
+  font-size: clamp(var(--font-size-md), 3.5cqw, var(--font-size-lg));
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-block-end: var(--spacing-xs);
+  line-height: var(--line-height-tight);
+}
+
+.popup-loading-message {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-block-start: 0;
+}
+
+.popup-loading-details {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  line-height: var(--line-height-relaxed);
+  margin-block-start: var(--spacing-sm);
+}
+
+/* Loading progress indicator */
+.popup-loading-progress {
+  inline-size: 100%;
+  max-inline-size: 200px;
+  block-size: 4px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.popup-loading-progress-bar {
+  block-size: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  animation: popup-loading-progress 2s ease-in-out infinite;
+  transform-origin: left center;
+}
+
+@keyframes popup-loading-progress {
+  0% {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(0.7);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Loading skeleton placeholders */
+.popup-loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-border) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: popup-loading-skeleton 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes popup-loading-skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.popup-loading-skeleton--text {
+  block-size: 1em;
+  inline-size: 100%;
+}
+
+.popup-loading-skeleton--title {
+  block-size: 1.2em;
+  inline-size: 60%;
+  margin-block-end: var(--spacing-sm);
+}
+
+.popup-loading-skeleton--button {
+  block-size: 48px;
+  inline-size: 100%;
+  border-radius: var(--radius-xl);
+}
+
+/* Loading states for different contexts */
+.popup-loading--auth {
+  gap: var(--spacing-xl);
+}
+
+.popup-loading--data {
+  gap: var(--spacing-md);
+}
+
+.popup-loading--initial {
+  min-block-size: calc(var(--popup-min-height) * 0.8);
+}
+
+/* Loading timeout state */
+.popup-loading--timeout {
+  gap: var(--spacing-lg);
+}
+
+.popup-loading-timeout-message {
+  color: var(--color-warning);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding-inline: var(--spacing-md);
+}
+
+.popup-loading-retry-button {
+  inline-size: auto;
+  min-inline-size: 120px;
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--spacing-lg);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.popup-loading-retry-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.popup-loading-retry-button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.popup-loading-retry-button:active {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+/* Responsive loading layouts */
+@container (width < 300px) {
+  .popup-loading-container {
+    padding-inline: var(--spacing-md);
+    padding-block: var(--spacing-lg);
+  }
+
+  .popup-loading-content {
+    gap: var(--spacing-md);
+    max-inline-size: 240px;
+  }
+
+  .popup-loading-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .popup-loading-message {
+    font-size: var(--font-size-xs);
+  }
+}
+
+@container (width >= 400px) {
+  .popup-loading-container {
+    padding-inline: var(--spacing-xl);
+    padding-block: var(--spacing-xxl);
+  }
+
+  .popup-loading-content {
+    gap: var(--spacing-xl);
+    max-inline-size: 320px;
+  }
+}
+
+/* Loading animation performance optimizations */
+.popup-loading-spinner,
+.popup-loading-progress-bar,
+.popup-loading-skeleton {
+  will-change: transform;
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .popup-loading-spinner {
+    border-width: 4px;
+    border-color: var(--color-text-primary);
+    border-top-color: var(--color-primary);
+  }
+
+  .popup-loading-progress {
+    border: 1px solid var(--color-text-primary);
+  }
+}
+
+/* Reduced motion adjustments */
+@media (prefers-reduced-motion: reduce) {
+  .popup-loading-spinner {
+    animation: none;
+    border-top-color: var(--color-primary);
+  }
+
+  .popup-loading-progress-bar {
+    animation: none;
+    transform: scaleX(0.5);
+  }
+
+  .popup-loading-skeleton {
+    animation: none;
+    background: var(--color-border);
+  }
+
+  .popup-loading-retry-button:hover,
+  .popup-loading-retry-button:active {
+    transform: none;
+  }
+}
+
+/* Loading accessibility */
+.popup-loading-container[aria-live='polite'] {
+  /* Ensure screen readers announce loading state changes */
+}
+
+.popup-loading-spinner[role='progressbar'] {
+  /* Provide semantic meaning for assistive technology */
+}
+
+/* Print styles */
+@media print {
+  .popup-loading-container {
+    background: white;
+    color: black;
+  }
+
+  .popup-loading-spinner {
+    display: none;
+  }
+
+  .popup-loading-content::before {
+    content: 'Loading...';
+    font-weight: bold;
+  }
+}

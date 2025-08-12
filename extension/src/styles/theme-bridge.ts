@@ -96,6 +96,19 @@ export const updateCSSCustomProperties = (theme: ThemeName): void => {
   root.style.setProperty('--color-border', themeColors.border);
   root.style.setProperty('--color-divider', themeColors.divider);
 
+  // Update additional semantic colors for Phase 4 components
+  root.style.setProperty('--color-text-tertiary', themeColors.text.disabled);
+  root.style.setProperty('--color-error', 'rgba(194, 15, 36, 1)');
+  root.style.setProperty('--color-warning', theme === 'dark' ? '#ff9800' : '#ed6c02');
+  root.style.setProperty('--color-success', theme === 'dark' ? '#4caf50' : '#2e7d32');
+  root.style.setProperty('--color-info', theme === 'dark' ? '#2196f3' : '#0288d1');
+
+  // Update error surface colors for better component integration
+  root.style.setProperty(
+    '--color-error-surface',
+    theme === 'dark' ? 'rgba(194, 15, 36, 0.1)' : 'rgba(194, 15, 36, 0.05)',
+  );
+
   // Update theme-specific shadows for dark theme
   if (theme === 'dark') {
     root.style.setProperty('--shadow-sm', '0 1px 2px 0 rgba(0, 0, 0, 0.3)');

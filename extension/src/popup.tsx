@@ -8,12 +8,9 @@ import { MsalProvider, useMsal } from '@azure/msal-react';
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { StyledEngineProvider, styled } from '@mui/material/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -27,36 +24,12 @@ import { createTheme } from '@mui/material/styles';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import { getGoogleClientID, launchGoogleAuthFlow } from '../../components/shared/google-login';
-import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import { coolTheme, darkTheme, lightTheme, nbTheme } from '../../constants/theme';
 
 const msalInstance = new PublicClientApplication(msalConfig);
-
-const PREFIX = 'Popup';
-
-const classes = {
-  button: `${PREFIX}-button`,
-};
-
-const PopupContainer = styled('div')(() => ({
-  [`& .${classes.button}`]: {
-    width: '100%',
-    borderRadius: 30,
-    paddingTop: 6,
-    paddingBottom: 6,
-    transition: 'opacity 0.3s',
-    minHeight: 48,
-    opacity: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
-    '&:hover': {
-      opacity: 0.6,
-    },
-  },
-}));
 
 const ScrollToTop = (): null => {
   const { pathname } = useLocation();
@@ -212,103 +185,115 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && !database;
 
   return (
-    <PopupContainer>
+    <div className="popup-container popup-responsive-container extension-context">
       {hasDatabaseError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Please restart your browser</AlertTitle>
-            <Typography>
-              Unable to connect to the database. This is an issue I do not fully understand where
-              the database does not accept connections. If you are familar with connection issues
-              with indexdb, please email brennan@kelp.nyc.
-            </Typography>
-          </Alert>
-        </Container>
+        <div className="popup-error popup-auth-container">
+          <div className="popup-auth-header">
+            <h2 className="popup-auth-title">Please restart your browser</h2>
+          </div>
+          <div className="popup-auth-content">
+            <div className="popup-auth-error">
+              <div className="popup-auth-error-title">Database Connection Error</div>
+              <div className="popup-auth-error-message">
+                Unable to connect to the database. This is an issue I do not fully understand where
+                the database does not accept connections. If you are familiar with connection issues
+                with indexdb, please email brennan@kelp.nyc.
+              </div>
+            </div>
+          </div>
+        </div>
       )}
       {hasAuthError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Authentication Error</AlertTitle>
-            <Typography>
-              Please login with Google
-              <br />
-              <br />
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
+        <div className="popup-error popup-auth-container">
+          <div className="popup-auth-header">
+            <h2 className="popup-auth-title">Authentication Error</h2>
+            <p className="popup-auth-subtitle">Please login with Google</p>
+          </div>
+          <div className="popup-auth-content">
+            <div className="popup-auth-actions">
+              <button
+                className="popup-auth-button popup-auth-button--primary popup-auth-button--full-width"
                 onClick={() => {
                   window.location.reload();
                 }}
               >
-                <Typography noWrap variant="caption">
-                  Try again
-                </Typography>
-              </Button>
-              <br />
-              <br />
-              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-              questions.
-            </Typography>
-          </Alert>
-        </Container>
+                Try again
+              </button>
+            </div>
+            <div className="popup-auth-error-message">
+              Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
+            </div>
+          </div>
+        </div>
       )}
       {hasGoogleAdvancedProtectionError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Authentication Error</AlertTitle>
-            <Typography>
+        <div className="popup-error popup-auth-container">
+          <div className="popup-auth-header">
+            <h2 className="popup-auth-title">Authentication Error</h2>
+            <p className="popup-auth-subtitle">Google Advanced Protection Program detected</p>
+          </div>
+          <div className="popup-auth-content">
+            <div className="popup-auth-error-message">
               It looks like your organization has the{' '}
-              <Link href="https://landing.google.com/advancedprotection/">
+              <a
+                href="https://landing.google.com/advancedprotection/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Google Advanced Protection Program
-              </Link>{' '}
-              enabled.
-              <br />
-              <br />
-              Ask your IT administrator to whitelist
-              <br />
-              <br />
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
+              </a>{' '}
+              enabled. Ask your IT administrator to whitelist:
+            </div>
+            <div className="popup-auth-actions">
+              <button
+                className="popup-auth-button popup-auth-button--secondary popup-auth-button--full-width"
                 onClick={(event) => {
                   event.stopPropagation();
                   void navigator.clipboard.writeText(getGoogleClientID());
                   return false;
                 }}
               >
-                <Typography noWrap variant="caption">
-                  {getGoogleClientID()}
-                </Typography>
-              </Button>
-              <br />
-              <Typography variant="caption">Click to copy to your clipboard</Typography>
-              <br />
-              <br />
-              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-              questions.
-            </Typography>
-          </Alert>
-        </Container>
+                {getGoogleClientID()}
+              </button>
+              <div className="popup-auth-error-message">Click to copy to your clipboard</div>
+            </div>
+            <div className="popup-auth-error-message">
+              Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
+            </div>
+          </div>
+        </div>
       )}
       {(shouldShowLoading || isMicrosoftLoading) && (
-        <div>
-          <Loading isOpen={!token || !database} message="Loading" />
+        <div className="popup-loading-container popup-loading--initial">
+          <div className="popup-loading-content">
+            <div
+              className="popup-loading-spinner popup-loading-spinner--large"
+              role="progressbar"
+              aria-label="Loading"
+            ></div>
+            <div className="popup-loading-title">Loading</div>
+            <div className="popup-loading-message">
+              {isMicrosoftLoading
+                ? 'Authenticating with Microsoft...'
+                : 'Initializing application...'}
+            </div>
+          </div>
         </div>
       )}
       {!hasAuthError && database && (isDoneFetchingToken || token) && (
-        <LoadingMobileDashboardContainer
-          database={database}
-          accessToken={token || undefined}
-          scope={scopes}
-          setTheme={props.setTheme}
-          theme={props.theme}
-          isMicrosoftError={isMicrosoftError}
-          isMicrosoftLoading={isMicrosoftLoading}
-        />
+        <div className="extension-dashboard">
+          <LoadingMobileDashboardContainer
+            database={database}
+            accessToken={token || undefined}
+            scope={scopes}
+            setTheme={props.setTheme}
+            theme={props.theme}
+            isMicrosoftError={isMicrosoftError}
+            isMicrosoftLoading={isMicrosoftLoading}
+          />
+        </div>
       )}
-    </PopupContainer>
+    </div>
   );
 };
 
