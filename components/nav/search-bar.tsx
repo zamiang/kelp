@@ -25,11 +25,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
   },
   [`&.${classes.container}`]: {
     background: theme.palette.background.paper,
+    marginBottom: theme.spacing(4),
     borderRadius: 20,
-    height: 39,
   },
   [`& .${classes.icon}`]: {
-    padding: theme.spacing(1),
+    padding: 10,
   },
   [`& .${classes.iconImage}`]: {
     color: theme.palette.text.primary,

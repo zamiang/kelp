@@ -196,7 +196,7 @@ class EnhancedSearchIndex {
     const normalizedQuery = query.toLowerCase().trim();
 
     if (!normalizedQuery) {
-      return [];
+      return items.map((item) => ({ ...item, score: 1 }));
     }
 
     const queryTerms = normalizedQuery.split(/\s+/);

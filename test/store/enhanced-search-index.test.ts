@@ -108,13 +108,13 @@ describe('EnhancedSearchIndex', () => {
   });
 
   describe('search', () => {
-    it('should return empty results for empty query', async () => {
+    it('should return all results for empty query', async () => {
       const result = await searchIndex.search('', mockStore);
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.items).toHaveLength(0);
-        expect(result.data.total).toBe(0);
+        expect(result.data.items).toHaveLength(6);
+        expect(result.data.total).toBe(6);
         expect(result.data.hasMore).toBe(false);
       }
     });

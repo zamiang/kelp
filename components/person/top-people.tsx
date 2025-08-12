@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { getWeek } from 'date-fns';
@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { IPerson } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { MostRecentTab } from '../website/most-recent-tab';
+import Link from '@mui/material/Link';
+import KelpIcon from '../../public/kelp-24.svg';
 
 const PREFIX = 'TopPeople';
 
@@ -18,6 +20,7 @@ const classes = {
   avatar: `${PREFIX}-avatar`,
   item: `${PREFIX}-item`,
   text: `${PREFIX}-text`,
+  logo: `${PREFIX}-logo`,
   icon: `${PREFIX}-icon`,
   textContainer: `${PREFIX}-textContainer`,
   imageContainer: `${PREFIX}-imageContainer`,
@@ -27,22 +30,14 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.person}`]: {
-    padding: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    paddingBottom: theme.spacing(0.5),
-    borderRadius: 50,
-    background: theme.palette.background.paper,
-    marginBottom: theme.spacing(6),
     opacity: 1,
     transition: 'opacity 0.3s',
     cursor: 'pointer',
-    height: 38,
     display: 'flex',
     '&:hover': { opacity: 0.7 },
   },
   [`& .${classes.container}`]: {
-    height: 54,
+    height: 38,
     overflow: 'hidden',
   },
   [`& .${classes.item}`]: {},
@@ -70,6 +65,13 @@ const Root = styled('div')(({ theme }) => ({
     maxWidth: 140,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+  },
+  [`& .${classes.logo}`]: {
+    opacity: 1,
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      opacity: 0.5,
+    },
   },
   [`& .${classes.iconImage}`]: {
     color: theme.palette.text.primary,
@@ -106,12 +108,17 @@ export const TopPeople = (props: { store: IStore }) => {
 
   return (
     <Root>
-      <Box display="flex" gap={2} className={classes.container}>
-        <Box>
+      <Grid container spacing={2} className={classes.container} alignItems="center">
+        <Grid style={{ height: 24, marginRight: 8 }}>
+          <Link href="https://www.kelp.nyc" className={classes.logo}>
+            <KelpIcon height="24" width="24" className={classes.iconSelected} />
+          </Link>
+        </Grid>
+        <Grid>
           <MostRecentTab />
-        </Box>
+        </Grid>
         {people.map((person) => (
-          <Box key={person.id}>
+          <Grid key={person.id}>
             <div className={classes.person}>
               <div
                 className={classes.imageContainer}
@@ -143,9 +150,9 @@ export const TopPeople = (props: { store: IStore }) => {
                 </Typography>
               </div>
             </div>
-          </Box>
+          </Grid>
         ))}
-      </Box>
+      </Grid>
     </Root>
   );
 };
