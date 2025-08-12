@@ -131,8 +131,11 @@ export const MissingDocumentRow = (props: {
             <HelpIcon
               height="18"
               width="18"
-              style={{ margin: '0 auto' }}
-              className={clsx(classes.image, props.isSmall && classes.imageSpacing)}
+              className={clsx(
+                classes.image,
+                props.isSmall && classes.imageSpacing,
+                'u-margin-auto',
+              )}
             />
           </IconButton>
         </Box>
@@ -201,7 +204,7 @@ const DocumentRow = (props: {
             </Typography>
           </Box>
           {isDetailsVisible && (
-            <Box style={{ marginLeft: 'auto', paddingTop: 0, paddingBottom: 0 }}>
+            <Box className="document-row__actions">
               <IconButton
                 size="small"
                 onClick={(event) => {

@@ -98,6 +98,10 @@
   --color-hover-overlay: rgba(0, 0, 0, 0.04);
   --color-focus-overlay: rgba(0, 0, 0, 0.12);
   --color-pressed-overlay: rgba(0, 0, 0, 0.16);
+
+  /* Pattern Colors */
+  --pattern-dots-light: rgba(250, 250, 250, 0.5);
+  --pattern-dots-dark: rgba(100, 100, 100, 0.3);
 }
 
 /* High contrast mode support */

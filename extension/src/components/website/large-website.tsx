@@ -51,8 +51,7 @@ const Root = styled('div')(({ theme }) => ({
     zIndex: 10,
   },
   [`& .${classes.dots}`]: {
-    backgroundImage:
-      'radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%), radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%)',
+    backgroundImage: 'var(--pattern-dots-light), var(--pattern-dots-light)',
     backgroundPosition: '0 0, 5px 5px',
     backgroundSize: '3px 3px',
     backgroundRepeat: 'repeat',
@@ -172,7 +171,7 @@ export const LargeWebsite = (props: {
 
   return (
     <Root
-      style={{ position: 'relative' }}
+      className="u-position-relative"
       onMouseEnter={() => setShouldShowRemove(true)}
       onMouseLeave={() => setShouldShowRemove(false)}
     >

@@ -5,7 +5,6 @@ import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import '../../styles/components/dashboard/desktop-dashboard.css';
 import Meetings from '../dashboard/meetings';
 import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';

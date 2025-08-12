@@ -1,0 +1,15 @@
+/* Onboarding Component Styles */
+
+.onboarding {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Onboarding specific utilities */
+.onboarding__icon--rotated {
+  transform: rotate(180deg);
+}

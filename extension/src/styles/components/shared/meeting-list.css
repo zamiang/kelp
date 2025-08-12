@@ -1,0 +1,25 @@
+/* Meeting List Component Styles */
+
+.meeting-list {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-display-block {
+  display: block;
+}
+
+.u-margin-auto {
+  margin: 0 auto;
+}
+
+/* Meeting list specific utilities */
+.meeting-list__icon {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Dynamic opacity utility - will be applied via JavaScript */
+.meeting-list__icon--opacity {
+  /* Opacity will be set dynamically via the opacity variable */
+}

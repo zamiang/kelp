@@ -1,8 +1,5 @@
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
-import { keyframes } from '@mui/styled-engine';
 import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -15,139 +12,6 @@ import { IStore } from '../store/use-store';
 import { AddTagToMeetingDialog } from '../website/add-tag-to-meeting-dialog';
 import { IWebsiteCache } from '../website/get-featured-websites';
 import MeetingRowBelow from './meeting-row-below';
-
-const PREFIX = 'FeaturedMeeting';
-
-const fadeOut = keyframes`
-  from {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const fadeOut2 = keyframes`
-  from {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.05;
-  }
-  to {
-    opacity: 0.2;
-  }
-`;
-
-const classes = {
-  container: `${PREFIX}-container`,
-  containerLine: `${PREFIX}-containerLine`,
-  leftLine: `${PREFIX}-leftLine`,
-  containerNow: `${PREFIX}-containerNow`,
-  meetingTimeInWords: `${PREFIX}-meetingTimeInWords`,
-  heading: `${PREFIX}-heading`,
-  button: `${PREFIX}-button`,
-  buttonContained: `${PREFIX}-buttonContained`,
-  topSpacing: `${PREFIX}-topSpacing`,
-  '@keyframes fadeOut': `${PREFIX}-fadeout`,
-  '@keyframes fadeOut2': `${PREFIX}-fadeout2`,
-  outerDot: `${PREFIX}-outerDot`,
-  innerDot: `${PREFIX}-innerDot`,
-  dotNow: `${PREFIX}-dotNow`,
-  dotContainer: `${PREFIX}-dotContainer`,
-  iconText: `${PREFIX}-iconText`,
-  iconPrimary: `${PREFIX}-iconPrimary`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.container}`]: {
-    padding: theme.spacing(4),
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: theme.shape.borderRadius,
-    minHeight: 102,
-  },
-  [`& .${classes.containerLine}`]: {
-    paddingTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
-  },
-  [`& .${classes.leftLine}`]: {
-    width: 1,
-    background: theme.palette.divider,
-    height: 'calc(100% + 39px)',
-    marginTop: -16,
-    marginLeft: 19,
-  },
-  [`& .${classes.containerNow}`]: {
-    borderColor: theme.palette.divider,
-  },
-  [`& .${classes.iconText}`]: {
-    color: theme.palette.getContrastText(theme.palette.primary.main),
-  },
-  [`& .${classes.iconPrimary}`]: {
-    borderColor: theme.palette.primary.main,
-  },
-  [`& .${classes.meetingTimeInWords}`]: {
-    display: 'inline-block',
-    marginBottom: 0,
-    color: theme.palette.text.secondary,
-  },
-  [`& .${classes.heading}`]: {
-    color: theme.palette.text.primary,
-    fontSize: theme.typography.h3.fontSize,
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  [`& .${classes.button}`]: {
-    borderRadius: 30,
-    paddingTop: 6,
-    paddingBottom: 6,
-    transition: 'opacity 0.3s',
-    minHeight: 48,
-    opacity: 1,
-    width: 'auto',
-    paddingLeft: 40,
-    paddingRight: 40,
-    '&:hover': {
-      opacity: 0.6,
-    },
-  },
-  [`& .${classes.buttonContained}`]: {
-    color: theme.palette.getContrastText(theme.palette.primary.main),
-  },
-  [`& .${classes.topSpacing}`]: {
-    marginTop: theme.spacing(2),
-  },
-  [`& .${classes.outerDot}`]: {
-    width: 40,
-    height: 40,
-    background: theme.palette.primary.main,
-    borderRadius: 20,
-    animation: `${fadeOut2} 5s ease infinite`,
-  },
-  [`& .${classes.innerDot}`]: {
-    width: 12,
-    borderRadius: 6,
-    height: 12,
-    position: 'absolute',
-    top: 14,
-    left: 14,
-    background: theme.palette.primary.main,
-    animation: `${fadeOut} 5s ease infinite`,
-  },
-  [`& .${classes.dotNow}`]: {
-    background: theme.palette.divider,
-  },
-  [`& .${classes.dotContainer}`]: {
-    position: 'relative',
-  },
-}));
 
 export const isSegmentTagSelected = (
   segmentId: string,
@@ -217,12 +81,12 @@ export const FeaturedMeeting = (props: {
 
   const domain = props.meeting.videoLink ? new URL(props.meeting.videoLink) : null;
   return (
-    <Root>
+    <div className="featured-meeting-root">
       <div
         className={clsx(
-          !props.showLine && classes.container,
-          !isHappeningSoon && classes.containerNow,
-          props.showLine && classes.containerLine,
+          !props.showLine && 'featured-meeting-container',
+          !isHappeningSoon && 'featured-meeting-container-now',
+          props.showLine && 'featured-meeting-container-line',
         )}
       >
         <AddTagToMeetingDialog
@@ -234,30 +98,39 @@ export const FeaturedMeeting = (props: {
           toggleMeetingTag={toggleMeetingTag}
           close={() => setAddTagsVisible(false)}
         />
-        <Box display="flex" alignItems="center" gap={2}>
-          <Box>
-            <div className={classes.dotContainer}>
-              <div className={clsx(classes.outerDot, !isHappeningSoon && classes.dotNow)}></div>
-              <div className={clsx(classes.innerDot, !isHappeningSoon && classes.dotNow)}></div>
+        <div className="featured-meeting-main-content">
+          <div>
+            <div className="featured-meeting-dot-container">
+              <div
+                className={clsx(
+                  'featured-meeting-outer-dot',
+                  !isHappeningSoon && 'featured-meeting-dot-now',
+                )}
+              ></div>
+              <div
+                className={clsx(
+                  'featured-meeting-inner-dot',
+                  !isHappeningSoon && 'featured-meeting-dot-now',
+                )}
+              ></div>
             </div>
-          </Box>
-          <Box flex="1">
+          </div>
+          <div className="featured-meeting-content-section">
             {isHappeningNow && (
-              <Typography className={classes.meetingTimeInWords}>Happening Now</Typography>
+              <Typography className="featured-meeting-time-words">Happening Now</Typography>
             )}
             {isFuture && (
-              <Typography className={classes.meetingTimeInWords}>
+              <Typography className="featured-meeting-time-words">
                 In {formatDistanceToNow(props.meeting.start)}
               </Typography>
             )}
             {isPast && (
-              <Typography className={classes.meetingTimeInWords}>
+              <Typography className="featured-meeting-time-words">
                 {format(props.meeting.start, 'EEEE, MMMM d')} at {format(props.meeting.start, 'p')}
               </Typography>
             )}
             <Typography
-              className={classes.heading}
-              style={{ cursor: 'pointer' }}
+              className="featured-meeting-heading"
               onClick={() => {
                 void navigate(`/meetings/${props.meeting.id}`);
                 return false;
@@ -265,8 +138,8 @@ export const FeaturedMeeting = (props: {
             >
               {props.meeting.summary || '(no title)'}
             </Typography>
-          </Box>
-          <Box>
+          </div>
+          <div className="featured-meeting-actions">
             <Button
               onClick={() => setAddTagsVisible(true)}
               variant="outlined"
@@ -276,40 +149,38 @@ export const FeaturedMeeting = (props: {
                 <PlusIcon
                   width={config.ICON_SIZE}
                   height={config.ICON_SIZE}
-                  className={classes.iconPrimary}
+                  className="featured-meeting-icon-primary"
                 />
               }
-              className={classes.button}
+              className="featured-meeting-button"
             >
               Add Tags
             </Button>
-          </Box>
-          {domain && isHappeningSoon && (
-            <Box>
+            {domain && isHappeningSoon && (
               <Button
-                className={clsx(classes.button, classes.buttonContained)}
+                className="featured-meeting-button featured-meeting-button-contained"
                 variant="contained"
                 startIcon={
                   <VideoIcon
                     width={config.ICON_SIZE}
                     height={config.ICON_SIZE}
-                    className={classes.iconText}
+                    className="featured-meeting-icon-text"
                   />
                 }
                 onClick={() => window.open(props.meeting.videoLink, '_blank')}
               >
                 Join
               </Button>
-            </Box>
-          )}
-        </Box>
-        <Box display="flex" alignItems="flex-start" style={{ marginTop: 12 }}>
+            )}
+          </div>
+        </div>
+        <div className="featured-meeting-below-content">
           {props.showLine && (
-            <Box width="100%">
-              <Box display="flex">
-                <Box style={{ width: 60, minHeight: 30 }}>
-                  <div className={classes.leftLine}></div>
-                </Box>
+            <div className="featured-meeting-line-section">
+              <div className="featured-meeting-line-container">
+                <div className="featured-meeting-line-spacer">
+                  <div className="featured-meeting-left-line"></div>
+                </div>
                 <MeetingRowBelow
                   meeting={props.meeting}
                   store={props.store}
@@ -321,8 +192,8 @@ export const FeaturedMeeting = (props: {
                   shouldHideShowAll={true}
                   websiteCache={props.websiteCache}
                 />
-              </Box>
-            </Box>
+              </div>
+            </div>
           )}
           {!props.showLine && (
             <MeetingRowBelow
@@ -337,8 +208,8 @@ export const FeaturedMeeting = (props: {
               websiteCache={props.websiteCache}
             />
           )}
-        </Box>
+        </div>
       </div>
-    </Root>
+    </div>
   );
 };

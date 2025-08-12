@@ -109,7 +109,7 @@ export const TopPeople = (props: { store: IStore }) => {
   return (
     <Root>
       <Grid container spacing={2} className={classes.container} alignItems="center">
-        <Grid style={{ height: 24, marginRight: 8 }}>
+        <Grid className="top-people__kelp-icon">
           <Link href="https://www.kelp.nyc" className={classes.logo}>
             <KelpIcon height="24" width="24" className={classes.iconSelected} />
           </Link>

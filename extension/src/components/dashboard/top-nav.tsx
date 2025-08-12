@@ -180,7 +180,7 @@ export const TopNav = (props: {
           display="flex"
           justifyContent="space-between"
           flexDirection="column"
-          style={{ height: '97vh' }}
+          className="top-nav__full-height"
         >
           <LeftNavForRoute
             path={location.pathname}
@@ -194,7 +194,7 @@ export const TopNav = (props: {
           {props.isMicrosoftError && (
             <Box>
               <Box>
-                <Typography color="error" style={{ marginLeft: 10, marginTop: 7 }}>
+                <Typography color="error" className="top-nav__error-text">
                   Error: please login to your Microsoft account
                 </Typography>
               </Box>

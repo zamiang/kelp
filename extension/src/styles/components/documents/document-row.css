@@ -1,0 +1,30 @@
+/* Document Row Component Styles */
+
+.document-row {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-margin-auto {
+  margin: 0 auto;
+}
+
+.u-margin-left-auto {
+  margin-left: auto;
+}
+
+.u-padding-zero {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Document row specific utilities */
+.document-row__icon--centered {
+  margin: 0 auto;
+}
+
+.document-row__actions {
+  margin-left: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+}

@@ -1,0 +1,111 @@
+/* Search Bar Component Styles */
+
+.search-bar {
+  background: var(--color-background-paper);
+  margin-block-end: var(--spacing-xl);
+  border-radius: 20px;
+}
+
+.search-bar__input {
+  margin-block-start: 0;
+}
+
+.search-bar__icon {
+  padding: 10px;
+}
+
+.search-bar__icon-image {
+  color: var(--color-text-primary);
+}
+
+.search-bar__icon--selected {
+  color: var(--color-primary);
+}
+
+/* Responsive Design */
+@container search-bar (width < 400px) {
+  .search-bar {
+    border-radius: 16px;
+    margin-block-end: var(--spacing-lg);
+  }
+
+  .search-bar__icon {
+    padding: 8px;
+  }
+}
+
+@container search-bar (width < 300px) {
+  .search-bar {
+    border-radius: 12px;
+    margin-block-end: var(--spacing-md);
+  }
+
+  .search-bar__icon {
+    padding: 6px;
+  }
+}
+
+/* Focus States */
+.search-bar:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .search-bar__icon {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .search-bar {
+    border: 2px solid var(--color-divider);
+  }
+
+  .search-bar__icon--selected {
+    filter: contrast(1.5);
+  }
+}
+
+/* Container Queries for Layout */
+.search-bar {
+  container-type: inline-size;
+  container-name: search-bar;
+}
+
+/* Interactive States */
+.search-bar__icon:hover .search-bar__icon-image {
+  color: var(--color-primary);
+  transition: color 0.2s ease;
+}
+
+/* Input Styling */
+.search-bar .MuiTextField-root {
+  margin: 0;
+}
+
+.search-bar .MuiInputBase-root {
+  padding-block: var(--spacing-sm);
+}
+
+.search-bar .MuiInputBase-input {
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+}
+
+.search-bar .MuiInputBase-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+/* Close Button Styling */
+.search-bar__close-button {
+  padding: var(--spacing-sm);
+}
+
+.search-bar__close-button:hover {
+  background-color: var(--color-action-hover);
+  border-radius: 50%;
+}

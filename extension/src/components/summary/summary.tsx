@@ -1,21 +1,19 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { addDays, format, isSameDay, startOfWeek, subDays } from 'date-fns';
 import { last, times } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import config from '../../../../constants/config';
-import { mediumFontFamily } from '../../../../constants/theme';
 import { IWebsite } from '../store/data-types';
 import { ITfidfTag } from '../store/models/enhanced-tfidf-store';
 import { IStore } from '../store/use-store';
 
 const numberWeeks = 4;
 const daysInWeek = 7;
-const topNavHeight = 78;
-const margin = 200;
+// const topNavHeight = 78;
+// const margin = 200;
 const fontMin = 12;
 const fontMax = 22;
 
@@ -28,95 +26,6 @@ const fontMax = 22;
  *                       event  |
  */
 
-const SUMMARY_PREFIX = 'summary';
-
-const summaryClasses = {
-  container: `${SUMMARY_PREFIX}-container`,
-  weeks: `${SUMMARY_PREFIX}-weeks`,
-  days: `${SUMMARY_PREFIX}-days`,
-  week: `${SUMMARY_PREFIX}-week`,
-  titleContainer: `${SUMMARY_PREFIX}-title-container`,
-  border: `${SUMMARY_PREFIX}-border`,
-  borderRight: `${SUMMARY_PREFIX}-border-right`,
-  item: `${SUMMARY_PREFIX}-item`,
-  heading: `${SUMMARY_PREFIX}-heading`,
-  currentDay: `${SUMMARY_PREFIX}-currentDay`,
-  day: `${SUMMARY_PREFIX}-day`,
-  currentDayContainer: `${SUMMARY_PREFIX}-current-day-container`,
-  term: `${SUMMARY_PREFIX}-term`,
-};
-
-const SummaryContainer = styled('div')(({ theme }) => ({
-  [`& .${summaryClasses.container}`]: {
-    marginTop: theme.spacing(4),
-  },
-  [`& .${summaryClasses.weeks}`]: {},
-  [`& .${summaryClasses.days}`]: {
-    width: '100%',
-    overflow: 'hidden',
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  [`& .${summaryClasses.week}`]: {
-    flex: 1,
-    position: 'relative',
-  },
-  [`& .${summaryClasses.titleContainer}`]: {
-    height: topNavHeight,
-  },
-  [`& .${summaryClasses.border}`]: {
-    width: 1,
-    height: 19,
-    background: theme.palette.divider,
-    marginTop: -15,
-  },
-  [`& .${summaryClasses.borderRight}`]: {
-    width: 1,
-    height: 19,
-    background: theme.palette.divider,
-    marginTop: 20,
-  },
-  [`& .${summaryClasses.item}`]: {
-    flex: 1,
-    textAlign: 'center',
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  [`& .${summaryClasses.heading}`]: { marginBottom: theme.spacing(2) },
-  [`& .${summaryClasses.currentDay}`]: {
-    borderRadius: '50%',
-    background: theme.palette.primary.main,
-    color: theme.palette.getContrastText(theme.palette.primary.main),
-  },
-  [`& .${summaryClasses.day}`]: {
-    width: 24,
-    height: 24,
-    display: 'inline-block',
-    marginTop: 4,
-    paddingTop: 3,
-    marginBottom: 0,
-    fontWeight: 500,
-    fontFamily: mediumFontFamily,
-  },
-  [`& .${summaryClasses.currentDayContainer}`]: {
-    flex: 1,
-    textAlign: 'center',
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    height: `calc((100vh - ${topNavHeight + margin}px) / ${numberWeeks})`,
-    overflow: 'hidden',
-    '&:last-child': {
-      borderRight: `1px solid ${theme.palette.divider}`,
-    },
-  },
-  [`& .${summaryClasses.term}`]: {
-    display: 'inline-block',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-}));
-
 const DayTitle = (props: { day: Date }) => (
   <React.Fragment>
     <Typography variant="h3">{format(props.day, 'EEE')}</Typography>
@@ -124,41 +33,41 @@ const DayTitle = (props: { day: Date }) => (
 );
 
 const TitleRow = (props: { start: Date }) => (
-  <div className={summaryClasses.titleContainer}>
-    <Typography variant="h3" className={summaryClasses.heading}>
+  <div className="summary-title-container">
+    <Typography variant="h3" className="summary-heading">
       <b>{format(props.start, 'LLLL')}</b> {format(props.start, 'uuuu')}
     </Typography>
     <Box display="flex" alignItems="flex-start">
-      <Box className={summaryClasses.item}>
+      <Box className="summary-item">
         <DayTitle day={props.start} />
-        <div className={summaryClasses.border}></div>
+        <div className="summary-border"></div>
       </Box>
-      <Box className={summaryClasses.item}>
+      <Box className="summary-item">
         <DayTitle day={addDays(props.start, 1)} />
-        <div className={summaryClasses.border}></div>
+        <div className="summary-border"></div>
       </Box>
-      <Box className={summaryClasses.item}>
+      <Box className="summary-item">
         <DayTitle day={addDays(props.start, 2)} />
-        <div className={summaryClasses.border}></div>
+        <div className="summary-border"></div>
       </Box>
-      <Box className={summaryClasses.item}>
+      <Box className="summary-item">
         <DayTitle day={addDays(props.start, 3)} />
-        <div className={summaryClasses.border}></div>
+        <div className="summary-border"></div>
       </Box>
-      <Box className={summaryClasses.item}>
+      <Box className="summary-item">
         <DayTitle day={addDays(props.start, 4)} />
-        <div className={summaryClasses.border}></div>
+        <div className="summary-border"></div>
       </Box>
-      <Box className={summaryClasses.item}>
+      <Box className="summary-item">
         <DayTitle day={addDays(props.start, 5)} />
-        <div className={summaryClasses.border}></div>
+        <div className="summary-border"></div>
       </Box>
-      <Box className={summaryClasses.item}>
+      <Box className="summary-item">
         <DayTitle day={addDays(props.start, 6)} />
-        <div className={summaryClasses.border}></div>
+        <div className="summary-border"></div>
       </Box>
       <Box>
-        <div className={summaryClasses.borderRight}></div>
+        <div className="summary-border-right"></div>
       </Box>
     </Box>
   </div>
@@ -237,7 +146,7 @@ const DayContent = (props: { store: IStore; day: Date }) => {
     const cleanResult = result > 1 && !Number.isNaN(result) ? result : 1;
     return (
       <Typography
-        className={summaryClasses.term}
+        className="summary-term"
         key={document.term}
         style={{ fontSize: cleanResult }}
         onClick={() => navigate(`/search?query=${document.term}`)}
@@ -247,11 +156,8 @@ const DayContent = (props: { store: IStore; day: Date }) => {
     );
   });
   return (
-    <Box className={summaryClasses.currentDayContainer}>
-      <Typography
-        className={clsx(summaryClasses.day, isToday && summaryClasses.currentDay)}
-        variant="body2"
-      >
+    <Box className="summary-current-day-container">
+      <Typography className={clsx('summary-day', isToday && 'summary-current-day')} variant="body2">
         {format(props.day, 'd')}
       </Typography>
       <div>{terms}</div>
@@ -271,18 +177,16 @@ export const Summary = (props: { store: IStore }) => {
     return days.map((day) => <DayContent store={props.store} day={day} key={day.toISOString()} />);
   };
   const dayRows = times(numberWeeks).map((week) => (
-    <div key={week} className={summaryClasses.week}>
-      <Box display="flex" className={summaryClasses.days}>
+    <div key={week} className="summary-week">
+      <Box display="flex" className="summary-days">
         {getDayColumn(week)}
       </Box>
     </div>
   ));
   return (
-    <SummaryContainer>
-      <div className={summaryClasses.container}>
-        <TitleRow start={start} />
-        <div className={summaryClasses.weeks}>{dayRows}</div>
-      </div>
-    </SummaryContainer>
+    <div className="summary-container">
+      <TitleRow start={start} />
+      <div className="summary-weeks">{dayRows}</div>
+    </div>
   );
 };

@@ -1,0 +1,54 @@
+/* Large Website Component Styles */
+
+.large-website {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-position-relative {
+  position: relative;
+}
+
+/* Large website specific utilities */
+.large-website__container {
+  position: relative;
+}
+
+.large-website__background-image {
+  /* Background image will be set dynamically via style attribute */
+  background-size: 105%;
+  background-position: top;
+  display: block;
+  padding-bottom: 61.8%;
+  overflow: hidden;
+  height: 0;
+  position: relative;
+}
+
+/* CSS custom properties for pattern colors - to be used with theme system */
+:root {
+  --pattern-dots-light: radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%);
+  --pattern-dots-dark: radial-gradient(rgba(100, 100, 100, 0.3) 20%, transparent 20%);
+}
+
+/* Theme-aware pattern dots */
+.large-website__dots {
+  background-image: var(--pattern-dots-light), var(--pattern-dots-light);
+  background-position:
+    0 0,
+    5px 5px;
+  background-size: 3px 3px;
+  background-repeat: repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Dark theme pattern override */
+[data-theme='dark'] .large-website__dots,
+[data-theme='cool'] .large-website__dots,
+[data-theme='nb'] .large-website__dots {
+  background-image: var(--pattern-dots-dark), var(--pattern-dots-dark);
+}

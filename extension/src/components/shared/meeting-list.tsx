@@ -35,7 +35,8 @@ export const Meeting = (props: {
             <CalendarIcon
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              style={{ display: 'block', margin: '0 auto', opacity }}
+              className="meeting-list__icon"
+              style={{ opacity }}
             />
           </Box>
           <Box flex="1" minWidth={0}>
