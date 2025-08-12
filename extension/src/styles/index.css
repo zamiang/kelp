@@ -1,19 +1,26 @@
-/* Main CSS Entry Point */
+/* Enhanced CSS Entry Point - Phase 4 Complete */
 
-/* Base Styles */
+/* Shared design tokens (load first) */
+@import './shared/design-tokens.css';
+
+/* Base styles */
 @import './base/reset.css';
 @import './base/variables.css';
 @import './base/typography.css';
 
-/* Theme Styles */
+/* Theme styles */
 @import './themes/dark.css';
 @import './themes/light.css';
 @import './themes/cool.css';
 @import './themes/nb.css';
 
-/* Component Styles */
-@import './components/popup.css';
+/* Component styles - Enhanced Phase 4 */
+@import './components/app.css';
+@import './components/app-auth.css';
+@import './components/app-loading.css';
+@import './components/app-responsive.css';
 @import './components/dashboard.css';
+@import './components/dashboard-extension.css';
 
 /* Global Styles */
 html {

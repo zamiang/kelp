@@ -1,0 +1,345 @@
+/* Enhanced app Component Styles */
+
+/* Main app container with modern CSS features */
+.app-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: var(--app-min-height);
+  max-height: var(--app-max-height);
+  width: var(--app-width);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  overflow: hidden;
+
+  /* Enhanced container query support */
+  container-type: inline-size;
+  container-name: app-main;
+
+  /* CSS Containment for performance */
+  contain: layout style paint;
+
+  /* Content visibility for off-screen optimization */
+  content-visibility: auto;
+  contain-intrinsic-size: var(--app-min-height);
+
+  /* CSS Subgrid support for better alignment */
+  display: grid;
+  grid-template-rows: subgrid;
+
+  /* Modern aspect ratio constraints */
+  aspect-ratio: 3 / 4;
+  max-aspect-ratio: 1 / 1;
+  min-aspect-ratio: 2 / 3;
+}
+
+/* app content area */
+#app {
+  overflow-y: auto;
+  height: 100vh;
+  background-color: var(--color-background);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+#app::-webkit-scrollbar {
+  width: 6px;
+}
+
+#app::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#app::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+#app::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-secondary);
+}
+
+/* Button styles */
+.app-button {
+  inline-size: 100%;
+  border-radius: var(--radius-xl);
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--spacing-lg);
+  transition: opacity var(--transition-fast);
+  min-block-size: 48px;
+  opacity: 1;
+  font-family: var(--font-family-medium);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: white;
+
+  /* Modern CSS features */
+  display: grid;
+  place-items: center;
+  gap: var(--spacing-xs);
+}
+
+.app-button:hover {
+  opacity: 0.8;
+}
+
+.app-button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.app-button:active {
+  opacity: 0.6;
+}
+
+/* Error states */
+.app-error {
+  position: fixed;
+  top: 30vh;
+  width: 90vw;
+  max-width: 400px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  z-index: 1000;
+}
+
+.app-error .alert {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-md);
+
+  /* Modern CSS Grid for alert layout */
+  display: grid;
+  gap: var(--spacing-sm);
+  grid-template-areas:
+    'title'
+    'content';
+}
+
+.app-error .alert-title {
+  grid-area: title;
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+  margin-block-end: 0;
+}
+
+.app-error .alert-content {
+  grid-area: content;
+  color: var(--color-text-primary);
+  line-height: var(--line-height-relaxed);
+  margin-block-start: 0;
+}
+
+/* Enhanced responsive container styles with multi-breakpoint system */
+@container app-main (width < 280px) {
+  .app-container {
+    --app-width: 280px;
+    --layout-density: 'ultra-compact';
+  }
+
+  .app-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    min-block-size: 40px;
+  }
+
+  .app-content {
+    padding-inline: var(--spacing-xs);
+    gap: var(--spacing-sm);
+  }
+}
+
+@container app-main (width >= 280px) and (width < 350px) {
+  .app-container {
+    --app-width: 320px;
+    --layout-density: 'compact';
+  }
+
+  .app-button {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-xs);
+    min-block-size: 44px;
+  }
+
+  .app-content {
+    padding-inline: var(--spacing-sm);
+    gap: var(--spacing-md);
+  }
+}
+
+@container app-main (width >= 350px) and (width < 450px) {
+  .app-container {
+    --app-width: 400px;
+    --layout-density: 'standard';
+  }
+
+  .app-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    min-block-size: 48px;
+  }
+
+  .app-content {
+    padding-inline: var(--spacing-md);
+    gap: var(--spacing-lg);
+  }
+}
+
+@container app-main (width >= 450px) {
+  .app-container {
+    --app-width: 450px;
+    --layout-density: 'comfortable';
+  }
+
+  .app-button {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-md);
+    min-block-size: 52px;
+  }
+
+  .app-content {
+    padding-inline: var(--spacing-lg);
+    gap: var(--spacing-xl);
+  }
+
+  /* Enhanced layout for wide apps */
+  .app-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-lg);
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .app-button {
+    border: 2px solid var(--color-text-primary);
+  }
+
+  .app-error .alert {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion adjustments */
+@media (prefers-reduced-motion: reduce) {
+  .app-button {
+    transition: none;
+  }
+
+  #app {
+    scroll-behavior: auto;
+  }
+}
+
+/* Focus management */
+.app-container:focus-within {
+  outline: none;
+}
+
+/* Enhanced component integration */
+.app-container--auth {
+  /* Apply authentication-specific styling */
+  @import 'app-auth.css';
+}
+
+.app-container--loading {
+  /* Apply loading-specific styling */
+  @import 'app-loading.css';
+}
+
+.app-container--responsive {
+  /* Apply advanced responsive styling */
+  @import 'app-responsive.css';
+}
+
+/* Modern CSS Grid enhancements */
+.app-content-grid {
+  display: grid;
+  grid-template-areas:
+    'header header'
+    'main sidebar'
+    'footer footer';
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--spacing-md);
+  min-block-size: 100%;
+}
+
+@container app-main (width < 400px) {
+  .app-content-grid {
+    grid-template-areas:
+      'header'
+      'main'
+      'sidebar'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+}
+
+.app-header {
+  grid-area: header;
+}
+
+.app-main {
+  grid-area: main;
+}
+
+.app-sidebar {
+  grid-area: sidebar;
+}
+
+.app-footer {
+  grid-area: footer;
+}
+
+/* Enhanced Material-UI integration */
+.app-mui-container {
+  /* Ensure CSS custom properties work with Material-UI components */
+  --mui-palette-primary-main: var(--color-primary);
+  --mui-palette-background-default: var(--color-background);
+  --mui-palette-background-paper: var(--color-surface);
+  --mui-palette-text-primary: var(--color-text-primary);
+  --mui-palette-text-secondary: var(--color-text-secondary);
+  --mui-palette-divider: var(--color-divider);
+  --mui-palette-error-main: var(--color-error);
+  --mui-palette-warning-main: var(--color-warning);
+  --mui-palette-success-main: var(--color-success);
+}
+
+/* Performance optimizations */
+.app-container,
+.app-content,
+.app-actions {
+  /* Optimize rendering performance */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Print styles */
+@media print {
+  .app-container {
+    background: white;
+    color: black;
+    box-shadow: none;
+    aspect-ratio: auto;
+    width: 100%;
+    height: auto;
+  }
+
+  .app-content-grid {
+    grid-template-areas:
+      'header'
+      'main'
+      'sidebar'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+}

@@ -36,10 +36,11 @@ const getConfig = () => {
     mode: process.env.NODE_ENV,
     devtool: false,
     entry: {
-      popup: path.join(__dirname, 'src/popup.tsx'),
+      app: path.join(__dirname, 'src/app.tsx'),
       background: path.join(__dirname, 'src/background.ts'),
       color: path.join(__dirname, 'src/background-color.ts'),
       'content-script': path.join(__dirname, 'src/content-script.ts'),
+      styles: path.join(__dirname, 'src/styles.js'),
     },
     output: { path: path.join(__dirname, 'dist'), filename: '[name].js' },
     module: {
@@ -52,15 +53,17 @@ const getConfig = () => {
         {
           test: /\.css$/,
           use: [
-            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            MiniCssExtractPlugin.loader,
             {
               loader: 'css-loader',
               options: {
                 importLoaders: 1,
+                modules: false,
               },
             },
           ],
           exclude: /\.module\.css$/,
+          sideEffects: true,
         },
         {
           test: /\.ts(x)?$/,
@@ -68,9 +71,9 @@ const getConfig = () => {
           exclude: /node_modules/,
         },
         {
-          test: /\.css$/,
+          test: /\.module\.css$/,
           use: [
-            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            MiniCssExtractPlugin.loader,
             {
               loader: 'css-loader',
               options: {
@@ -79,7 +82,7 @@ const getConfig = () => {
               },
             },
           ],
-          include: /\.module\.css$/,
+          sideEffects: true,
         },
         {
           test: /\.svg$/,
@@ -110,7 +113,7 @@ const getConfig = () => {
         buffer: require.resolve('buffer/'),
         vm: require.resolve('vm-browserify'),
       },
-      extensions: ['.js', '.jsx', '.tsx', '.ts'],
+      extensions: ['.js', '.jsx', '.tsx', '.ts', '.css'],
       alias: {
         'react-dom': 'react-dom',
         'process/browser': require.resolve('process/browser'),
@@ -162,7 +165,9 @@ const getConfig = () => {
       ...(isProduction
         ? [
             new MiniCssExtractPlugin({
-              filename: 'styles.css',
+              filename: '[name].css',
+              chunkFilename: '[id].css',
+              ignoreOrder: true,
             }),
             new PurgeCSSPlugin({
               paths: glob.sync([
@@ -216,7 +221,13 @@ const getConfig = () => {
               keyframes: true,
             }),
           ]
-        : []),
+        : [
+            new MiniCssExtractPlugin({
+              filename: '[name].css',
+              chunkFilename: '[id].css',
+              ignoreOrder: true,
+            }),
+          ]),
       new CopyPlugin({
         patterns: [
           { from: path.join(__dirname, 'public'), to: '.' },

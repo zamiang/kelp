@@ -109,7 +109,7 @@ kelp/
 │   │   └── extension.xcodeproj/
 │   ├── src/                        # Extension source code
 │   │   ├── background.ts           # Service worker
-│   │   ├── popup.tsx               # Extension popup
+│   │   ├── app.tsx               # Extension app
 │   │   ├── calendar.ts             # Calendar integration
 │   │   ├── manifest.json           # Chrome manifest
 │   │   └── manifest-safari.json    # Safari manifest
@@ -151,7 +151,7 @@ kelp/
 ├── test/                           # Test files
 │   ├── background.test.ts          # Extension background tests
 │   ├── integration.test.ts         # Integration tests
-│   ├── popup.test.tsx              # Extension popup tests
+│   ├── app.test.tsx              # Extension app tests
 │   ├── setup.ts                    # Test setup
 │   └── README.md                   # Testing documentation
 ├── calendar-add-on/                # Google Calendar Add-on

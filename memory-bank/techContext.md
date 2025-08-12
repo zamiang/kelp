@@ -130,9 +130,9 @@ npm run dev
 ### Extension Architecture
 
 - **Service Worker**: `extension/src/background.ts`
-- **Popup**: `extension/src/popup.tsx`
+- **App**: `extension/src/app.tsx`
 - **Calendar Integration**: `extension/src/calendar.ts`
-- **Styling**: `extension/src/popup.css`
+- **Styling**: `extension/src/app.css`
 
 ### Safari Extension
 
@@ -165,7 +165,7 @@ test/
 ├── setup.ts                    # Global test configuration
 ├── vitest-environment-jsdom.ts # Custom jsdom environment
 ├── background.test.ts          # Extension background script tests
-├── popup.test.tsx             # Extension popup tests
+├── app.test.tsx             # Extension app tests
 ├── integration.test.ts        # Integration tests
 ├── components/                # Component-specific tests
 └── README.md                  # Testing documentation

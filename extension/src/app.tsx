@@ -6,19 +6,12 @@ import {
 } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import { StyledEngineProvider, styled } from '@mui/material/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/styles/ThemeProvider';
 import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import './popup.css';
+import './app.css';
 import './styles/index.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { type ThemeName, initializeTheme, switchTheme } from './styles/theme-switcher';
@@ -27,36 +20,12 @@ import { createTheme } from '@mui/material/styles';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import { getGoogleClientID, launchGoogleAuthFlow } from '../../components/shared/google-login';
-import Loading from '../../components/shared/loading';
 import db from '../../components/store/db';
 import getStore from '../../components/store/use-store';
 import config from '../../constants/config';
 import { coolTheme, darkTheme, lightTheme, nbTheme } from '../../constants/theme';
 
 const msalInstance = new PublicClientApplication(msalConfig);
-
-const PREFIX = 'Popup';
-
-const classes = {
-  button: `${PREFIX}-button`,
-};
-
-const PopupContainer = styled('div')(() => ({
-  [`& .${classes.button}`]: {
-    width: '100%',
-    borderRadius: 30,
-    paddingTop: 6,
-    paddingBottom: 6,
-    transition: 'opacity 0.3s',
-    minHeight: 48,
-    opacity: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
-    '&:hover': {
-      opacity: 0.6,
-    },
-  },
-}));
 
 const ScrollToTop = (): null => {
   const { pathname } = useLocation();
@@ -114,14 +83,16 @@ const LoadingMobileDashboardContainer = (props: {
   return (
     <div>
       {!store && (
-        <Alert severity="error">
-          <AlertTitle>Authentication Error</AlertTitle>
-          <Typography style={{ width: 315 }}>
-            Unable to connect to the database. Please restart your browser This is an issue I do not
-            fully understand where the database does not accept connections. If you are familar with
-            connection issues with indexdb, please email brennan@kelp.nyc.
-          </Typography>
-        </Alert>
+        <div className="app-error">
+          <div className="alert">
+            <div className="alert-title">Authentication Error</div>
+            <div className="alert-content">
+              Unable to connect to the database. Please restart your browser This is an issue I do
+              not fully understand where the database does not accept connections. If you are
+              familar with connection issues with indexdb, please email brennan@kelp.nyc.
+            </div>
+          </div>
+        </div>
       )}
       {store && (
         <Router initialEntries={['/home', '/meetings', '/settings']} initialIndex={0}>
@@ -138,7 +109,109 @@ const LoadingMobileDashboardContainer = (props: {
   );
 };
 
-const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
+const ErrorPopups = (props: {
+  shouldShowLoading: boolean;
+  hasDatabaseError: boolean;
+  hasAuthError: boolean;
+  hasGoogleAdvancedProtectionError: boolean;
+  isMicrosoftError: boolean;
+  isMicrosoftLoading: boolean;
+}) => (
+  <React.Fragment>
+    {props.hasDatabaseError && (
+      <div className="app-error">
+        <div className="alert">
+          <div className="alert-title">Please restart your browser</div>
+          <div className="alert-content">
+            Unable to connect to the database. This is an issue I do not fully understand where the
+            database does not accept connections. If you are familiar with connection issues with
+            indexdb, please email brennan@kelp.nyc.
+          </div>
+        </div>
+      </div>
+    )}
+    {props.hasAuthError && (
+      <div className="app-error">
+        <div className="alert">
+          <div className="alert-title">Authentication Error</div>
+          <div className="alert-content">
+            Please login with Google
+            <br />
+            <br />
+            <button
+              className="app-button"
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Try again
+            </button>
+            <br />
+            <br />
+            Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
+          </div>
+        </div>
+      </div>
+    )}
+    {props.hasGoogleAdvancedProtectionError && (
+      <div className="app-error">
+        <div className="alert">
+          <div className="alert-title">Authentication Error</div>
+          <div className="alert-content">
+            It looks like your organization has the{' '}
+            <a
+              href="https://landing.google.com/advancedprotection/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Advanced Protection Program
+            </a>{' '}
+            enabled.
+            <br />
+            <br />
+            Ask your IT administrator to whitelist:
+            <br />
+            <br />
+            <button
+              className="app-button"
+              onClick={(event) => {
+                event.stopPropagation();
+                void navigator.clipboard.writeText(getGoogleClientID());
+                return false;
+              }}
+            >
+              {getGoogleClientID()}
+            </button>
+            <br />
+            <small>Click to copy to your clipboard</small>
+            <br />
+            <br />
+            Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
+          </div>
+        </div>
+      </div>
+    )}
+    {(props.shouldShowLoading || props.isMicrosoftLoading) && (
+      <div className="app-loading">
+        <div className="app-loading-content">
+          <div
+            className="app-loading-spinner app-loading-spinner--large"
+            role="progressbar"
+            aria-label="Loading"
+          ></div>
+          <div className="app-loading-title">Loading</div>
+          <div className="app-loading-message">
+            {props.isMicrosoftLoading
+              ? 'Authenticating with Microsoft...'
+              : 'Initializing application...'}
+          </div>
+        </div>
+      </div>
+    )}
+  </React.Fragment>
+);
+
+const MainContent = (props: { theme: string; setTheme: (t: string) => void }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isDoneFetchingToken, setDoneFetchingToken] = useState(false);
   const [hasAuthError, setHasAuthError] = useState(false);
@@ -212,103 +285,29 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && !database;
 
   return (
-    <PopupContainer>
-      {hasDatabaseError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Please restart your browser</AlertTitle>
-            <Typography>
-              Unable to connect to the database. This is an issue I do not fully understand where
-              the database does not accept connections. If you are familar with connection issues
-              with indexdb, please email brennan@kelp.nyc.
-            </Typography>
-          </Alert>
-        </Container>
-      )}
-      {hasAuthError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Authentication Error</AlertTitle>
-            <Typography>
-              Please login with Google
-              <br />
-              <br />
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  window.location.reload();
-                }}
-              >
-                <Typography noWrap variant="caption">
-                  Try again
-                </Typography>
-              </Button>
-              <br />
-              <br />
-              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-              questions.
-            </Typography>
-          </Alert>
-        </Container>
-      )}
-      {hasGoogleAdvancedProtectionError && (
-        <Container maxWidth="sm" style={{ marginTop: '40vh' }}>
-          <Alert severity="error">
-            <AlertTitle>Authentication Error</AlertTitle>
-            <Typography>
-              It looks like your organization has the{' '}
-              <Link href="https://landing.google.com/advancedprotection/">
-                Google Advanced Protection Program
-              </Link>{' '}
-              enabled.
-              <br />
-              <br />
-              Ask your IT administrator to whitelist
-              <br />
-              <br />
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  void navigator.clipboard.writeText(getGoogleClientID());
-                  return false;
-                }}
-              >
-                <Typography noWrap variant="caption">
-                  {getGoogleClientID()}
-                </Typography>
-              </Button>
-              <br />
-              <Typography variant="caption">Click to copy to your clipboard</Typography>
-              <br />
-              <br />
-              Please email <Link href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</Link> with
-              questions.
-            </Typography>
-          </Alert>
-        </Container>
-      )}
-      {(shouldShowLoading || isMicrosoftLoading) && (
-        <div>
-          <Loading isOpen={!token || !database} message="Loading" />
+    <div className="main-content-container main-content-responsive-container extension-context">
+      <ErrorPopups
+        shouldShowLoading={shouldShowLoading}
+        isMicrosoftLoading={isMicrosoftLoading}
+        isMicrosoftError={isMicrosoftError}
+        hasDatabaseError={hasDatabaseError}
+        hasAuthError={hasAuthError}
+        hasGoogleAdvancedProtectionError={hasGoogleAdvancedProtectionError}
+      />
+      {!hasAuthError && !hasDatabaseError && database && (isDoneFetchingToken || token) && (
+        <div className="extension-dashboard">
+          <LoadingMobileDashboardContainer
+            database={database}
+            accessToken={token || undefined}
+            scope={scopes}
+            setTheme={props.setTheme}
+            theme={props.theme}
+            isMicrosoftError={isMicrosoftError}
+            isMicrosoftLoading={isMicrosoftLoading}
+          />
         </div>
       )}
-      {!hasAuthError && database && (isDoneFetchingToken || token) && (
-        <LoadingMobileDashboardContainer
-          database={database}
-          accessToken={token || undefined}
-          scope={scopes}
-          setTheme={props.setTheme}
-          theme={props.theme}
-          isMicrosoftError={isMicrosoftError}
-          isMicrosoftLoading={isMicrosoftLoading}
-        />
-      )}
-    </PopupContainer>
+    </div>
   );
 };
 
@@ -369,9 +368,8 @@ const App = () => {
     <StyledEngineProvider injectFirst>
       <EmotionThemeProvider theme={materialUITheme}>
         <ThemeProvider theme={materialUITheme}>
-          <CssBaseline />
           <MsalProvider instance={msalInstance}>
-            <Popup setTheme={handleThemeChange} theme={theme} />
+            <MainContent setTheme={handleThemeChange} theme={theme} />
           </MsalProvider>
         </ThemeProvider>
       </EmotionThemeProvider>
@@ -379,7 +377,7 @@ const App = () => {
   );
 };
 
-const mountNode = document.getElementById('popup');
+const mountNode = document.getElementById('app');
 if (mountNode) {
   const root = createRoot(mountNode);
   root.render(<App />);

@@ -1,4 +1,3 @@
-import { merge } from 'webpack-merge';
 import common from './webpack.config.js';
 
 const config = common;

@@ -1,0 +1,367 @@
+/* Shared Design Tokens */
+/* These tokens ensure consistency between extension and main application */
+
+:root {
+  /* Shared spacing system - consistent across all contexts */
+  --shared-spacing-xs: 4px;
+  --shared-spacing-sm: 8px;
+  --shared-spacing-md: 16px;
+  --shared-spacing-lg: 24px;
+  --shared-spacing-xl: 32px;
+  --shared-spacing-xxl: 48px;
+  --shared-spacing-xxxl: 64px;
+
+  /* Shared typography scale */
+  --shared-font-size-xs: 12px;
+  --shared-font-size-sm: 14px;
+  --shared-font-size-md: 16px;
+  --shared-font-size-lg: 18px;
+  --shared-font-size-xl: 24px;
+  --shared-font-size-xxl: 32px;
+
+  /* Shared font weights */
+  --shared-font-weight-normal: 400;
+  --shared-font-weight-medium: 500;
+  --shared-font-weight-semibold: 600;
+  --shared-font-weight-bold: 700;
+
+  /* Shared line heights */
+  --shared-line-height-tight: 1.2;
+  --shared-line-height-snug: 1.375;
+  --shared-line-height-normal: 1.5;
+  --shared-line-height-relaxed: 1.625;
+  --shared-line-height-loose: 2;
+
+  /* Shared border radius scale */
+  --shared-radius-none: 0;
+  --shared-radius-sm: 4px;
+  --shared-radius-md: 8px;
+  --shared-radius-lg: 12px;
+  --shared-radius-xl: 16px;
+  --shared-radius-xxl: 24px;
+  --shared-radius-full: 9999px;
+
+  /* Shared shadow system */
+  --shared-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shared-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shared-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shared-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Shared transition durations */
+  --shared-transition-fast: 150ms;
+  --shared-transition-medium: 300ms;
+  --shared-transition-slow: 500ms;
+
+  /* Shared transition timing functions */
+  --shared-ease-linear: linear;
+  --shared-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --shared-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --shared-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Shared z-index scale */
+  --shared-z-dropdown: 1000;
+  --shared-z-sticky: 1020;
+  --shared-z-fixed: 1030;
+  --shared-z-modal-backdrop: 1040;
+  --shared-z-modal: 1050;
+  --shared-z-popover: 1060;
+  --shared-z-tooltip: 1070;
+  --shared-z-toast: 1080;
+
+  /* Shared layout constraints */
+  --shared-max-width-xs: 320px;
+  --shared-max-width-sm: 384px;
+  --shared-max-width-md: 448px;
+  --shared-max-width-lg: 512px;
+  --shared-max-width-xl: 576px;
+  --shared-max-width-2xl: 672px;
+
+  /* Shared component dimensions */
+  --shared-button-height-sm: 32px;
+  --shared-button-height-md: 40px;
+  --shared-button-height-lg: 48px;
+  --shared-input-height-sm: 32px;
+  --shared-input-height-md: 40px;
+  --shared-input-height-lg: 48px;
+
+  /* Shared breakpoints (for container queries) */
+  --shared-breakpoint-xs: 320px;
+  --shared-breakpoint-sm: 384px;
+  --shared-breakpoint-md: 448px;
+  --shared-breakpoint-lg: 512px;
+  --shared-breakpoint-xl: 576px;
+}
+
+/* Extension-specific token mappings */
+.extension-context {
+  /* Map shared tokens to extension-specific variables */
+  --spacing-xs: var(--shared-spacing-xs);
+  --spacing-sm: var(--shared-spacing-sm);
+  --spacing-md: var(--shared-spacing-md);
+  --spacing-lg: var(--shared-spacing-lg);
+  --spacing-xl: var(--shared-spacing-xl);
+  --spacing-xxl: var(--shared-spacing-xxl);
+
+  --font-size-xs: var(--shared-font-size-xs);
+  --font-size-sm: var(--shared-font-size-sm);
+  --font-size-md: var(--shared-font-size-md);
+  --font-size-lg: var(--shared-font-size-lg);
+  --font-size-xl: var(--shared-font-size-xl);
+
+  --font-weight-normal: var(--shared-font-weight-normal);
+  --font-weight-medium: var(--shared-font-weight-medium);
+  --font-weight-semibold: var(--shared-font-weight-semibold);
+  --font-weight-bold: var(--shared-font-weight-bold);
+
+  --line-height-tight: var(--shared-line-height-tight);
+  --line-height-snug: var(--shared-line-height-snug);
+  --line-height-normal: var(--shared-line-height-normal);
+  --line-height-relaxed: var(--shared-line-height-relaxed);
+
+  --radius-sm: var(--shared-radius-sm);
+  --radius-md: var(--shared-radius-md);
+  --radius-lg: var(--shared-radius-lg);
+  --radius-xl: var(--shared-radius-xl);
+  --radius-full: var(--shared-radius-full);
+
+  --shadow-sm: var(--shared-shadow-sm);
+  --shadow-md: var(--shared-shadow-md);
+  --shadow-lg: var(--shared-shadow-lg);
+
+  --transition-fast: var(--shared-transition-fast);
+  --transition-medium: var(--shared-transition-medium);
+  --transition-slow: var(--shared-transition-slow);
+}
+
+/* Main app context token mappings */
+.main-app-context {
+  /* Map shared tokens to main app variables */
+  --mui-spacing-xs: var(--shared-spacing-xs);
+  --mui-spacing-sm: var(--shared-spacing-sm);
+  --mui-spacing-md: var(--shared-spacing-md);
+  --mui-spacing-lg: var(--shared-spacing-lg);
+  --mui-spacing-xl: var(--shared-spacing-xl);
+
+  --mui-font-size-xs: var(--shared-font-size-xs);
+  --mui-font-size-sm: var(--shared-font-size-sm);
+  --mui-font-size-md: var(--shared-font-size-md);
+  --mui-font-size-lg: var(--shared-font-size-lg);
+  --mui-font-size-xl: var(--shared-font-size-xl);
+
+  --mui-border-radius-sm: var(--shared-radius-sm);
+  --mui-border-radius-md: var(--shared-radius-md);
+  --mui-border-radius-lg: var(--shared-radius-lg);
+
+  --mui-shadow-sm: var(--shared-shadow-sm);
+  --mui-shadow-md: var(--shared-shadow-md);
+  --mui-shadow-lg: var(--shared-shadow-lg);
+
+  --mui-transition-duration-short: var(--shared-transition-fast);
+  --mui-transition-duration-standard: var(--shared-transition-medium);
+  --mui-transition-duration-complex: var(--shared-transition-slow);
+}
+
+/* Responsive design tokens */
+@media (max-width: 320px) {
+  :root {
+    --shared-spacing-scale: 0.75;
+    --shared-font-scale: 0.875;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --shared-spacing-scale: 1.125;
+    --shared-font-scale: 1.125;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --shared-spacing-scale: 1.25;
+    --shared-font-scale: 1.25;
+  }
+}
+
+/* Semantic color tokens (theme-agnostic structure) */
+:root {
+  /* Primary colors */
+  --shared-color-primary-50: var(--color-primary-50, #f0f9ff);
+  --shared-color-primary-100: var(--color-primary-100, #e0f2fe);
+  --shared-color-primary-500: var(--color-primary-500, #0ea5e9);
+  --shared-color-primary-600: var(--color-primary-600, #0284c7);
+  --shared-color-primary-900: var(--color-primary-900, #0c4a6e);
+
+  /* Neutral colors */
+  --shared-color-neutral-50: var(--color-neutral-50, #fafafa);
+  --shared-color-neutral-100: var(--color-neutral-100, #f5f5f5);
+  --shared-color-neutral-200: var(--color-neutral-200, #e5e5e5);
+  --shared-color-neutral-300: var(--color-neutral-300, #d4d4d4);
+  --shared-color-neutral-400: var(--color-neutral-400, #a3a3a3);
+  --shared-color-neutral-500: var(--color-neutral-500, #737373);
+  --shared-color-neutral-600: var(--color-neutral-600, #525252);
+  --shared-color-neutral-700: var(--color-neutral-700, #404040);
+  --shared-color-neutral-800: var(--color-neutral-800, #262626);
+  --shared-color-neutral-900: var(--color-neutral-900, #171717);
+
+  /* Semantic color mappings */
+  --shared-color-background: var(--color-background);
+  --shared-color-surface: var(--color-surface);
+  --shared-color-primary: var(--color-primary);
+  --shared-color-secondary: var(--color-secondary);
+  --shared-color-text-primary: var(--color-text-primary);
+  --shared-color-text-secondary: var(--color-text-secondary);
+  --shared-color-text-tertiary: var(--color-text-tertiary);
+  --shared-color-border: var(--color-border);
+  --shared-color-divider: var(--color-divider);
+  --shared-color-error: var(--color-error);
+  --shared-color-warning: var(--color-warning);
+  --shared-color-success: var(--color-success);
+  --shared-color-info: var(--color-info);
+}
+
+/* Component-specific token collections */
+.shared-button-tokens {
+  --button-padding-x: var(--shared-spacing-md);
+  --button-padding-y: var(--shared-spacing-sm);
+  --button-border-radius: var(--shared-radius-md);
+  --button-font-size: var(--shared-font-size-sm);
+  --button-font-weight: var(--shared-font-weight-medium);
+  --button-line-height: var(--shared-line-height-tight);
+  --button-transition: all var(--shared-transition-fast) var(--shared-ease-in-out);
+  --button-min-height: var(--shared-button-height-md);
+}
+
+.shared-input-tokens {
+  --input-padding-x: var(--shared-spacing-md);
+  --input-padding-y: var(--shared-spacing-sm);
+  --input-border-radius: var(--shared-radius-md);
+  --input-font-size: var(--shared-font-size-sm);
+  --input-line-height: var(--shared-line-height-normal);
+  --input-min-height: var(--shared-input-height-md);
+  --input-border-width: 1px;
+  --input-transition: border-color var(--shared-transition-fast) var(--shared-ease-in-out);
+}
+
+.shared-card-tokens {
+  --card-padding: var(--shared-spacing-lg);
+  --card-border-radius: var(--shared-radius-lg);
+  --card-border-width: 1px;
+  --card-shadow: var(--shared-shadow-sm);
+  --card-shadow-hover: var(--shared-shadow-md);
+  --card-transition: all var(--shared-transition-fast) var(--shared-ease-in-out);
+}
+
+/* Utility classes for shared tokens */
+.shared-spacing-xs {
+  gap: var(--shared-spacing-xs);
+}
+.shared-spacing-sm {
+  gap: var(--shared-spacing-sm);
+}
+.shared-spacing-md {
+  gap: var(--shared-spacing-md);
+}
+.shared-spacing-lg {
+  gap: var(--shared-spacing-lg);
+}
+.shared-spacing-xl {
+  gap: var(--shared-spacing-xl);
+}
+
+.shared-text-xs {
+  font-size: var(--shared-font-size-xs);
+}
+.shared-text-sm {
+  font-size: var(--shared-font-size-sm);
+}
+.shared-text-md {
+  font-size: var(--shared-font-size-md);
+}
+.shared-text-lg {
+  font-size: var(--shared-font-size-lg);
+}
+.shared-text-xl {
+  font-size: var(--shared-font-size-xl);
+}
+
+.shared-font-normal {
+  font-weight: var(--shared-font-weight-normal);
+}
+.shared-font-medium {
+  font-weight: var(--shared-font-weight-medium);
+}
+.shared-font-semibold {
+  font-weight: var(--shared-font-weight-semibold);
+}
+.shared-font-bold {
+  font-weight: var(--shared-font-weight-bold);
+}
+
+.shared-rounded-sm {
+  border-radius: var(--shared-radius-sm);
+}
+.shared-rounded-md {
+  border-radius: var(--shared-radius-md);
+}
+.shared-rounded-lg {
+  border-radius: var(--shared-radius-lg);
+}
+.shared-rounded-xl {
+  border-radius: var(--shared-radius-xl);
+}
+.shared-rounded-full {
+  border-radius: var(--shared-radius-full);
+}
+
+.shared-shadow-sm {
+  box-shadow: var(--shared-shadow-sm);
+}
+.shared-shadow-md {
+  box-shadow: var(--shared-shadow-md);
+}
+.shared-shadow-lg {
+  box-shadow: var(--shared-shadow-lg);
+}
+
+/* Accessibility tokens */
+:root {
+  --shared-focus-ring-width: 2px;
+  --shared-focus-ring-offset: 2px;
+  --shared-focus-ring-color: var(--shared-color-primary);
+  --shared-focus-ring-style: solid;
+  --shared-focus-ring: var(--shared-focus-ring-width) var(--shared-focus-ring-style)
+    var(--shared-focus-ring-color);
+}
+
+.shared-focus-ring:focus {
+  outline: var(--shared-focus-ring);
+  outline-offset: var(--shared-focus-ring-offset);
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  :root {
+    --shared-focus-ring-width: 3px;
+    --shared-border-width-default: 2px;
+  }
+}
+
+/* Reduced motion adjustments */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --shared-transition-fast: 0ms;
+    --shared-transition-medium: 0ms;
+    --shared-transition-slow: 0ms;
+  }
+}
+
+/* Print adjustments */
+@media print {
+  :root {
+    --shared-shadow-sm: none;
+    --shared-shadow-md: none;
+    --shared-shadow-lg: none;
+    --shared-shadow-xl: none;
+  }
+}
