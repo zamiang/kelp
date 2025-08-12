@@ -1,11 +1,8 @@
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -22,130 +19,6 @@ import { DraggableWebsiteHighlights } from './draggable-website-highlights';
 
 const MAX_TAGS = 10;
 
-const PREFIX = 'WebsiteContainer';
-
-const classes = {
-  container: `${PREFIX}-container`,
-  imageContainer: `${PREFIX}-imageContainer`,
-  faviconContainer: `${PREFIX}-faviconContainer`,
-  dots: `${PREFIX}-dots`,
-  tags: `${PREFIX}-tags`,
-  tag: `${PREFIX}-tag`,
-  tagText: `${PREFIX}-tagText`,
-  tagSelected: `${PREFIX}-tagSelected`,
-  tagContainer: `${PREFIX}-tagContainer`,
-  section: `${PREFIX}-section`,
-  heading: `${PREFIX}-heading`,
-  close: `${PREFIX}-close`,
-  smallButton: `${PREFIX}-smallButton`,
-  tagForm: `${PREFIX}-tagForm`,
-  hiddenWebsite: `${PREFIX}-hiddenWebsite`,
-  topPadding: `${PREFIX}-topPadding`,
-  iconButton: `${PREFIX}-iconButton`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.heading}`]: {
-    marginBottom: theme.spacing(2),
-  },
-  [`& .${classes.hiddenWebsite}`]: {
-    textDecoration: 'line-through',
-  },
-  [`& .${classes.section}`]: {
-    marginTop: theme.spacing(8),
-  },
-  [`& .${classes.topPadding}`]: {
-    marginTop: theme.spacing(4),
-  },
-  [`& .${classes.container}`]: {
-    background: theme.palette.background.paper,
-    opacity: 1,
-    overflow: 'hidden',
-    transition: 'opacity 0.3s',
-    borderRadius: theme.shape.borderRadius,
-    width: '100%',
-    position: 'relative',
-    '&:hover': {
-      opacity: 0.8,
-    },
-  },
-  [`& .${classes.tags}`]: { marginTop: theme.spacing(2) },
-  [`& .${classes.tagContainer}`]: {
-    display: 'inline-block',
-    marginRight: theme.spacing(1),
-  },
-  [`& .${classes.tagForm}`]: {},
-  [`& .${classes.tag}`]: {
-    display: 'inline-block',
-    transition: 'borderBottom 0.3s',
-    borderBottom: '1px solid transparent',
-    cursor: 'pointer',
-    verticalAlign: 'top',
-    '&:hover': {
-      borderBottomColor: theme.palette.divider,
-    },
-  },
-  [`& .${classes.tagSelected}`]: {
-    pointerEvents: 'all',
-    cursor: 'pointer',
-    borderBottomColor: theme.palette.primary.main,
-    '&:hover': {
-      opacity: 0.8,
-      borderBottomColor: theme.palette.primary.main,
-    },
-  },
-  [`& .${classes.dots}`]: {
-    backgroundImage:
-      'radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%), radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%)',
-    backgroundPosition: '0 0, 5px 5px',
-    backgroundSize: '3px 3px',
-    backgroundRepeat: 'repeat',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-  },
-  [`& .${classes.imageContainer}`]: {
-    backgroundSize: '105%',
-    backgroundPosition: 'top',
-    display: 'block',
-    paddingBottom: '61.8%',
-    overflow: 'hidden',
-    height: 0,
-    position: 'relative',
-  },
-  [`& .${classes.faviconContainer}`]: {
-    background: theme.palette.background.paper,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 'calc(30.9% - 16px)',
-    paddingBottom: 'calc(30.9% - 16px)',
-  },
-  [`& .${classes.close}`]: {
-    padding: 0,
-    display: 'inline-block',
-    verticalAlign: 'top',
-    marginTop: 2,
-    marginLeft: 3,
-    cursor: 'pointer',
-    opacity: 0.5,
-    transition: 'opacity 0.3s',
-    '&:hover': {
-      opacity: 1,
-    },
-  },
-  [`& .${classes.smallButton}`]: {
-    width: 100,
-    color: theme.palette.primary.main,
-    borderRadius: 16,
-  },
-  [`& .${classes.iconButton}`]: {
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
 const LargeWebsiteImage = (props: {
   image?: IWebsiteImage;
   websiteId: string;
@@ -154,20 +27,20 @@ const LargeWebsiteImage = (props: {
   if (props.image?.image) {
     return (
       <div
-        className={classes.imageContainer}
+        className="expand-website-image-container"
         style={{
           backgroundImage: `url('${props.ogImage || props.image.image}')`,
         }}
       >
-        <div className={classes.dots}></div>
+        <div className="expand-website-dots"></div>
       </div>
     );
   }
   const domain = new URL(props.websiteId).hostname;
   if (domain) {
     return (
-      <div className={classes.faviconContainer}>
-        <IconButton className={classes.iconButton} size="large">
+      <div className="expand-website-favicon-container">
+        <IconButton className="expand-website-icon-button" size="large">
           <img
             src={`https://www.google.com/s2/favicons?domain_url=${domain}`}
             height={config.ICON_SIZE}
@@ -213,10 +86,10 @@ const AddTagInput = (props: {
   };
 
   return (
-    <div className={classes.tagForm}>
-      <div>{errorText}</div>
-      <Box display="flex" justifyContent="space-between">
-        <Box flex="1" marginRight={2}>
+    <div className="expand-website-tag-form">
+      {errorText && <div className="expand-website-error-text">{errorText}</div>}
+      <div className="expand-website-tag-form-layout">
+        <div className="expand-website-tag-input-container">
           <TextField
             type="text"
             placeholder="Enter a custom tag…"
@@ -231,13 +104,18 @@ const AddTagInput = (props: {
               disableUnderline: true,
             }}
           />
-        </Box>
-        <Box>
-          <Button size="small" variant="outlined" className={classes.smallButton} onClick={addTag}>
+        </div>
+        <div className="expand-website-tag-button-container">
+          <Button
+            size="small"
+            variant="outlined"
+            className="expand-website-small-button"
+            onClick={addTag}
+          >
             Add Tag
           </Button>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </div>
   );
 };
@@ -308,98 +186,94 @@ const ExpandWebsite = (props: {
   };
 
   return (
-    <Root>
-      <div className={classes.topPadding}>
-        <Box display="flex" gap={6}>
-          <Box flex="0 0 50%">
-            <Link href={website?.rawUrl} underline="none">
-              <Box boxShadow={1} className={classes.container}>
+    <div className="expand-website-root">
+      <div className="expand-website-top-padding">
+        <div className="expand-website-main-layout">
+          <div className="expand-website-image-section">
+            <Link href={website?.rawUrl} underline="none" className="expand-website-link">
+              <div className="expand-website-container">
                 <LargeWebsiteImage image={image} websiteId={websiteId} ogImage={website?.ogImage} />
-              </Box>
+              </div>
             </Link>
-          </Box>
-          <Box flex="0 0 50%">
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              flexDirection="column"
-              style={{ height: '100%' }}
-            >
-              <Box>
-                <Link href={website?.rawUrl} underline="none">
-                  <Typography
-                    variant="h2"
-                    color="textPrimary"
-                    gutterBottom
-                    className={isHidden ? classes.hiddenWebsite : undefined}
-                  >
-                    {website.title}
-                  </Typography>
-                </Link>
-                {website.description && (
-                  <Typography
-                    variant="body2"
-                    color="textPrimary"
-                    gutterBottom
-                    className={isHidden ? classes.hiddenWebsite : undefined}
-                  >
-                    {website.description}
-                  </Typography>
-                )}
-                <div className={classes.tags}>
-                  {websiteTags.map((tag) => (
-                    <div className={classes.tagContainer} key={`${tag}-${websiteId}`}>
-                      <div
-                        onClick={() => props.toggleWebsiteTag(tag, websiteId)}
-                        className={clsx(
-                          classes.tag,
-                          isTagSelected(tag, props.websiteTags) && classes.tagSelected,
-                        )}
-                      >
-                        <Typography variant="body2">{tag}</Typography>
-                      </div>
-                      <div onClick={() => removeTag(tag)} className={classes.close}>
-                        <CloseIcon width="18" height="18" />
-                      </div>
+          </div>
+          <div className="expand-website-content-section">
+            <div className="expand-website-content-top">
+              <Link href={website?.rawUrl} underline="none" className="expand-website-link">
+                <Typography
+                  variant="h2"
+                  color="textPrimary"
+                  className={clsx('expand-website-title', isHidden && 'expand-website-hidden')}
+                >
+                  {website.title}
+                </Typography>
+              </Link>
+              {website.description && (
+                <Typography
+                  variant="body2"
+                  color="textPrimary"
+                  className={clsx(
+                    'expand-website-description',
+                    isHidden && 'expand-website-hidden',
+                  )}
+                >
+                  {website.description}
+                </Typography>
+              )}
+              <div className="expand-website-tags">
+                {websiteTags.map((tag) => (
+                  <div className="expand-website-tag-container" key={`${tag}-${websiteId}`}>
+                    <div
+                      onClick={() => props.toggleWebsiteTag(tag, websiteId)}
+                      className={clsx(
+                        'expand-website-tag',
+                        isTagSelected(tag, props.websiteTags) && 'expand-website-tag-selected',
+                      )}
+                    >
+                      <Typography variant="body2" className="expand-website-tag-text">
+                        {tag}
+                      </Typography>
                     </div>
-                  ))}
-                </div>
-              </Box>
-              <Box style={{ width: '100%' }}>
-                <AddTagInput
-                  store={props.store}
-                  websiteCache={props.websiteCache}
-                  website={website}
-                  userTags={props.websiteTags}
-                  websiteTags={websiteTags}
-                />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+                    <button onClick={() => removeTag(tag)} className="expand-website-tag-close">
+                      <CloseIcon width="18" height="18" className="expand-website-close-icon" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="expand-website-content-bottom">
+              <AddTagInput
+                store={props.store}
+                websiteCache={props.websiteCache}
+                website={website}
+                userTags={props.websiteTags}
+                websiteTags={websiteTags}
+              />
+            </div>
+          </div>
+        </div>
         {websitesAtDomain.length > 0 && (
-          <div className={classes.section} id="meetings">
-            <Typography variant="h3" className={classes.heading}>
+          <div className="expand-website-section" id="meetings">
+            <Typography variant="h3" className="expand-website-section-heading">
               Related Websites
             </Typography>
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container columns={3} spacing={2}>
+            <div className="expand-website-grid-container">
+              <div className="expand-website-grid">
                 {websitesAtDomain.map((item) => (
-                  <Grid size={1} key={item.id}>
+                  <div className="expand-website-grid-item" key={item.id}>
                     <LargeWebsite
                       item={item}
                       store={props.store}
                       websiteTags={props.websiteTags}
                       toggleWebsiteTag={props.toggleWebsiteTag}
                     />
-                  </Grid>
+                  </div>
                 ))}
-              </Grid>
-            </Box>
+              </div>
+            </div>
           </div>
         )}
         {websiteTags.map((t) => (
-          <div className={classes.section} key={t} id={`tag-${t}`}>
+          <div className="expand-website-section" key={t} id={`tag-${t}`}>
             <DraggableWebsiteHighlights
               store={props.store}
               toggleWebsiteTag={props.toggleWebsiteTag}
@@ -414,7 +288,7 @@ const ExpandWebsite = (props: {
           </div>
         ))}
       </div>
-    </Root>
+    </div>
   );
 };
 

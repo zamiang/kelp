@@ -2,11 +2,9 @@ import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-reac
 import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
 import CloseIcon from '../../../../public/icons/close.svg';
@@ -14,32 +12,6 @@ import { GoogleLoginButton } from '../shared/google-login';
 import { LogOutButton, SignInButton, WelcomeUser } from '../shared/microsoft-login';
 import { IDomainBlocklist, IPerson, IWebsiteBlocklist } from '../store/data-types';
 import { IStore } from '../store/use-store';
-
-const PREFIX = 'Settings';
-
-const classes = {
-  margin: `${PREFIX}-margin`,
-  grid: `${PREFIX}-grid`,
-  section: `${PREFIX}-section`,
-  panel: `${PREFIX}-panel`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.margin}`]: {
-    margin: theme.spacing(1),
-  },
-  [`& .${classes.grid}`]: {
-    maxWidth: theme.breakpoints.values.sm,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    '&:last-child': {
-      borderBottom: '0px solid',
-    },
-  },
-  [`& .${classes.section}`]: { paddingBottom: theme.spacing(4), paddingTop: theme.spacing(4) },
-  [`&.${classes.panel}`]: {},
-}));
 
 const Settings = (props: { store: IStore }) => {
   const [domainBlocklists, setDomainBlocklist] = useState<IDomainBlocklist[]>([]);
@@ -106,157 +78,148 @@ const Settings = (props: { store: IStore }) => {
   };
 
   return (
-    <Root className={classes.panel}>
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Box flex="0 0 50%">
-          <Typography variant="h1" style={{ marginBottom: 22 }}>
-            Settings
-          </Typography>
-        </Box>
-      </Box>
-      <Divider />
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Box flex="0 0 50%">
-          <Typography variant="h3">Google</Typography>
-        </Box>
-        <Box flex="0 0 50%">
-          <GoogleLoginButton currentUser={currentUser} />
-        </Box>
-      </Box>
-      <Divider />
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Box flex="0 0 50%">
-          <Typography variant="h3">Microsoft Teams</Typography>
-        </Box>
-        <Box flex="0 0 50%">
-          <AuthenticatedTemplate>
-            <WelcomeUser />
-            <LogOutButton />
-          </AuthenticatedTemplate>
-          <UnauthenticatedTemplate>
-            <SignInButton />
-          </UnauthenticatedTemplate>
-        </Box>
-      </Box>
-      <Divider />
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Box flex="0 0 50%">
-          <Typography variant="h3">Upcoming Meeting Notifications</Typography>
-        </Box>
-        <Box flex="0 0 50%">
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  color="primary"
-                  checked={isNotificationsEnabled}
-                  onChange={() => toggleChecked(!isNotificationsEnabled)}
-                />
-              }
-              label="Meeting prep notifications"
-            />
-          </FormGroup>
-          <Typography style={{ marginBottom: 22 }} variant="body2">
-            Current browser permission status: {notificationPermission || 'not enabled'}
-          </Typography>
-        </Box>
-      </Box>
-      <Divider />
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Box flex="0 0 50%">
-          <Typography variant="h3">Hidden websites</Typography>
-        </Box>
-        <Box flex="0 0 50%">
-          {shouldShowEmptyWebsiteBlocklist && (
-            <Typography>
-              Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+    <div className="settings-root">
+      <div className="settings-panel">
+        <div className="settings-section">
+          <div className="settings-section-left">
+            <Typography variant="h1" className="settings-title">
+              Settings
             </Typography>
-          )}
-          {websiteBlocklist.map((item) => (
-            <Box
-              key={item.id}
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              className={classes.grid}
-              gap={2}
-            >
-              <Box flex="1">
-                <Typography noWrap>{item.id}</Typography>
-              </Box>
-              <Box>
-                <IconButton onClick={() => removeWebsite(item.id)} size="large">
-                  <CloseIcon width="18" height="18" />
-                </IconButton>
-              </Box>
-            </Box>
-          ))}
-        </Box>
-      </Box>
-      <Divider />
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        className={classes.section}
-      >
-        <Box flex="0 0 50%">
-          <Typography variant="h3">Hidden domains</Typography>
-          <Typography>All urls under these domains are hidden</Typography>
-        </Box>
-        <Box flex="0 0 50%">
-          {shouldShowEmptyDomainBlocklist && (
-            <Typography>
-              Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+          </div>
+        </div>
+
+        <Divider className="settings-divider" />
+
+        <div className="settings-section">
+          <div className="settings-section-left">
+            <Typography variant="h3" className="settings-section-title">
+              Google
             </Typography>
-          )}
-          {domainBlocklists.map((item) => (
-            <Box
-              key={item.id}
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              className={classes.grid}
-              gap={2}
-            >
-              <Box flex="1">
-                <Typography noWrap>{item.id}</Typography>
-              </Box>
-              <Box>
-                <IconButton onClick={() => removeDomain(item.id)} size="large">
-                  <CloseIcon width="18" height="18" />
-                </IconButton>
-              </Box>
-            </Box>
-          ))}
-        </Box>
-      </Box>
-    </Root>
+          </div>
+          <div className="settings-section-right">
+            <GoogleLoginButton currentUser={currentUser} />
+          </div>
+        </div>
+
+        <Divider className="settings-divider" />
+
+        <div className="settings-section">
+          <div className="settings-section-left">
+            <Typography variant="h3" className="settings-section-title">
+              Microsoft Teams
+            </Typography>
+          </div>
+          <div className="settings-section-right">
+            <div className="settings-auth-section">
+              <AuthenticatedTemplate>
+                <WelcomeUser />
+                <LogOutButton />
+              </AuthenticatedTemplate>
+              <UnauthenticatedTemplate>
+                <SignInButton />
+              </UnauthenticatedTemplate>
+            </div>
+          </div>
+        </div>
+
+        <Divider className="settings-divider" />
+
+        <div className="settings-section">
+          <div className="settings-section-left">
+            <Typography variant="h3" className="settings-section-title">
+              Upcoming Meeting Notifications
+            </Typography>
+          </div>
+          <div className="settings-section-right">
+            <FormGroup className="settings-form-group">
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={isNotificationsEnabled}
+                    onChange={() => toggleChecked(!isNotificationsEnabled)}
+                  />
+                }
+                label="Meeting prep notifications"
+                className="settings-form-label"
+              />
+            </FormGroup>
+            <Typography className="settings-permission-status" variant="body2">
+              Current browser permission status: {notificationPermission || 'not enabled'}
+            </Typography>
+          </div>
+        </div>
+
+        <Divider className="settings-divider" />
+
+        <div className="settings-section">
+          <div className="settings-section-left">
+            <Typography variant="h3" className="settings-section-title">
+              Hidden websites
+            </Typography>
+          </div>
+          <div className="settings-section-right">
+            {shouldShowEmptyWebsiteBlocklist && (
+              <Typography className="settings-empty-state">
+                Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+              </Typography>
+            )}
+            {websiteBlocklist.map((item) => (
+              <div key={item.id} className="settings-grid-item">
+                <div className="settings-grid-item-content">
+                  <Typography className="settings-list-item-text">{item.id}</Typography>
+                </div>
+                <div className="settings-grid-item-actions">
+                  <IconButton
+                    onClick={() => removeWebsite(item.id)}
+                    size="large"
+                    className="settings-icon-button"
+                  >
+                    <CloseIcon width="18" height="18" className="settings-close-icon" />
+                  </IconButton>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <Divider className="settings-divider" />
+
+        <div className="settings-section">
+          <div className="settings-section-left">
+            <Typography variant="h3" className="settings-section-title">
+              Hidden domains
+            </Typography>
+            <Typography className="settings-description">
+              All urls under these domains are hidden
+            </Typography>
+          </div>
+          <div className="settings-section-right">
+            {shouldShowEmptyDomainBlocklist && (
+              <Typography className="settings-empty-state">
+                Edit this list by hovering over a website and clicking the &lsquo;x&rsquo; icon
+              </Typography>
+            )}
+            {domainBlocklists.map((item) => (
+              <div key={item.id} className="settings-grid-item">
+                <div className="settings-grid-item-content">
+                  <Typography className="settings-list-item-text">{item.id}</Typography>
+                </div>
+                <div className="settings-grid-item-actions">
+                  <IconButton
+                    onClick={() => removeDomain(item.id)}
+                    size="large"
+                    className="settings-icon-button"
+                  >
+                    <CloseIcon width="18" height="18" className="settings-close-icon" />
+                  </IconButton>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

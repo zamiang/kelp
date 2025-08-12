@@ -1,0 +1,284 @@
+/* Settings Component Styles */
+
+/* Root Container */
+.settings-root {
+  container-type: inline-size;
+  container-name: settings;
+}
+
+.settings-panel {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+
+/* Section Layout */
+.settings-section {
+  padding-bottom: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+}
+
+.settings-section-left {
+  flex: 0 0 50%;
+  min-width: 0; /* Allow text truncation */
+}
+
+.settings-section-right {
+  flex: 0 0 50%;
+  min-width: 0; /* Allow text truncation */
+}
+
+/* Typography */
+.settings-title {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.settings-section-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  margin-bottom: var(--spacing-sm);
+}
+
+.settings-description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Grid Items for Lists */
+.settings-grid-item {
+  max-width: 480px; /* sm breakpoint equivalent */
+  border-bottom: 1px solid var(--color-divider);
+  padding-top: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.settings-grid-item:last-child {
+  border-bottom: none;
+}
+
+.settings-grid-item-content {
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
+}
+
+.settings-grid-item-actions {
+  flex-shrink: 0;
+}
+
+/* Form Controls */
+.settings-form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.settings-form-label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.settings-permission-status {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Buttons */
+.settings-icon-button {
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-icon-button:hover {
+  background-color: var(--color-hover-overlay);
+}
+
+.settings-icon-button:active {
+  background-color: var(--color-pressed-overlay);
+}
+
+.settings-icon-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.settings-close-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-secondary);
+}
+
+/* Dividers */
+.settings-divider {
+  border: none;
+  height: 1px;
+  background-color: var(--color-divider);
+  margin: 0;
+}
+
+/* Empty State */
+.settings-empty-state {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  font-style: italic;
+}
+
+/* Responsive Design */
+@container settings (max-width: 768px) {
+  .settings-section {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .settings-section-left,
+  .settings-section-right {
+    flex: 1 1 100%;
+  }
+
+  .settings-panel {
+    padding: var(--spacing-sm);
+  }
+
+  .settings-section {
+    padding-bottom: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+  }
+}
+
+@container settings (max-width: 480px) {
+  .settings-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .settings-section-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .settings-grid-item {
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+  }
+
+  .settings-panel {
+    padding: var(--spacing-xs);
+  }
+}
+
+/* Authentication Section Specific */
+.settings-auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.settings-auth-button {
+  align-self: flex-start;
+}
+
+/* Switch Control Styling */
+.settings-switch-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* List Items */
+.settings-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-divider);
+  gap: var(--spacing-sm);
+}
+
+.settings-list-item:last-child {
+  border-bottom: none;
+}
+
+.settings-list-item-text {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .settings-icon-button {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .settings-divider {
+    background-color: var(--color-border);
+    height: 2px;
+  }
+
+  .settings-grid-item {
+    border-bottom-width: 2px;
+  }
+
+  .settings-icon-button {
+    border: 1px solid var(--color-border);
+  }
+}
+
+/* Focus management */
+.settings-section:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* Theme-specific adjustments */
+[data-theme='dark'] .settings-panel {
+  background-color: var(--color-surface);
+}
+
+[data-theme='light'] .settings-panel {
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Print styles */
+@media print {
+  .settings-icon-button {
+    display: none;
+  }
+
+  .settings-auth-section {
+    display: none;
+  }
+}

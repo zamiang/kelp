@@ -24,7 +24,10 @@
 
 @import './components/dashboard/desktop-dashboard.css';
 @import './components/meeting/featured-meeting.css';
+@import './components/website/large-website.css';
+@import './components/website/expand-website.css';
 @import './components/onboarding/onboarding.css';
+@import './components/user-profile/settings.css';
 
 /* Global Styles */
 html {
