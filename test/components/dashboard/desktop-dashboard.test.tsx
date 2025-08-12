@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { DesktopDashboard } from '../../../components/dashboard/desktop-dashboard';
+import { DesktopDashboard } from '../../../extension/src/components/dashboard/desktop-dashboard';
 
 // Mock the store
 const mockStore = {

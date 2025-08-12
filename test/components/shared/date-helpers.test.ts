@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getWeek } from '../../../components/shared/date-helpers';
+import { getWeek } from '../../../extension/src/components/shared/date-helpers';
 
 describe('Date Helpers', () => {
   // Mock the current date for consistent testing
