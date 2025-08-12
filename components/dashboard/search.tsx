@@ -282,19 +282,16 @@ const Search = (props: {
     .replace(uncommonPunctuation, ' ');
 
   // Create Fuse instance with loaded search items
-  const fuse =
-    searchItems.length > 0
-      ? new Fuse(searchItems, {
-          includeScore: true,
-          minMatchCharLength: 2,
-          keys: ['text'],
-        })
-      : undefined;
+  const fuse = new Fuse(searchItems, {
+    includeScore: true,
+    minMatchCharLength: 2,
+    keys: ['text'],
+  });
 
   return (
     <Root>
       <Loading isOpen={isLoading} message={'Searching...'} />
-      {fuse && <SearchResults searchQuery={searchQuery} fuse={fuse} {...props} />}
+      <SearchResults searchQuery={searchQuery} fuse={fuse} {...props} />
     </Root>
   );
 };

@@ -2,7 +2,6 @@ import { TopPeople } from '../person/top-people';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -13,9 +12,7 @@ import config from '../../constants/config';
 import CalendarIcon from '../../public/icons/calendar.svg';
 import HomeIcon from '../../public/icons/home.svg';
 import MeetingsIcon from '../../public/icons/meetings.svg';
-import SearchIcon from '../../public/icons/search.svg';
 import SettingsIcon from '../../public/icons/settings.svg';
-import KelpIcon from '../../public/kelp-24.svg';
 import { getTagsForWebsite } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
@@ -26,8 +23,6 @@ const PREFIX = 'TopNav';
 
 const classes = {
   leftSection: `${PREFIX}-leftSection`,
-  rightSection: `${PREFIX}-rightSection`,
-  logo: `${PREFIX}-logo`,
   icon: `${PREFIX}-icon`,
   iconLight: `${PREFIX}-iconLight`,
   iconDark: `${PREFIX}-iconDark`,
@@ -41,7 +36,7 @@ const classes = {
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.leftSection}`]: {
     position: 'fixed',
-    top: theme.spacing(1.5),
+    top: '47vh',
     left: 0,
     transition: 'background 0.3s',
     zIndex: 10,
@@ -59,47 +54,13 @@ const Root = styled('div')(({ theme }) => ({
       width: 139,
     },
   },
-  [`& .${classes.rightSection}`]: {
-    position: 'fixed',
-    top: theme.spacing(1.5),
-    right: 0,
-    transition: 'background 0.3s',
-    width: 228,
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(1),
-    flexShrink: 0,
-    [theme.breakpoints.down('xl')]: {
-      width: 187,
-    },
-    [theme.breakpoints.down('xl')]: {
-      width: 179,
-    },
-    [theme.breakpoints.down('lg')]: {
-      width: 139,
-    },
-  },
   [`& .${classes.centerSection}`]: {
-    paddingLeft: 228,
-    paddingRight: 228,
-    [theme.breakpoints.down('xl')]: {
-      paddingLeft: 187,
-      paddingRight: 187,
-    },
-    [theme.breakpoints.down('xl')]: {
-      paddingLeft: 179,
-      paddingRight: 179,
-    },
-    [theme.breakpoints.down('lg')]: {
-      paddingLeft: 139,
-      paddingRight: 139,
-    },
-  },
-  [`& .${classes.logo}`]: {
-    opacity: 1,
-    transition: 'opacity 0.3s',
-    '&:hover': {
-      opacity: 0.5,
-    },
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    padding: theme.spacing(2),
+    width: '100%',
+    zIndex: 10,
   },
   [`& .${classes.icon}`]: {
     width: config.ICON_SIZE,
@@ -220,30 +181,6 @@ export const TopNav = (props: {
           flexDirection="column"
           style={{ height: '97vh' }}
         >
-          <Box>
-            <IconButton
-              aria-label="search"
-              onClick={(event) => {
-                event.preventDefault();
-                return navigate('/search');
-              }}
-              size="large"
-            >
-              {location.pathname.indexOf('search') > -1 ? (
-                <SearchIcon
-                  width={config.ICON_SIZE}
-                  height={config.ICON_SIZE}
-                  className={classes.iconSelected}
-                />
-              ) : (
-                <SearchIcon
-                  width={config.ICON_SIZE}
-                  height={config.ICON_SIZE}
-                  className={classes.iconImage}
-                />
-              )}
-            </IconButton>
-          </Box>
           <LeftNavForRoute
             path={location.pathname}
             store={props.store}
@@ -262,31 +199,77 @@ export const TopNav = (props: {
               </Box>
             </Box>
           )}
-          <Box>
-            <Link href="https://www.kelp.nyc" className={classes.logo}>
-              <KelpIcon height="24" width="24" className={classes.iconSelected} />
-            </Link>
-          </Box>
         </Box>
       </div>
       <div className={classes.centerSection}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="space-between" alignItems="center">
           <Grid>
             <TopPeople store={props.store} />
           </Grid>
-        </Grid>
-      </div>
-      <div className={classes.rightSection}>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          flexDirection="column"
-          style={{ height: '97vh' }}
-        >
-          <Box>
-            <Box style={{ textAlign: 'right' }}>
-              <Box>
-                <Tooltip title="Home" placement="left">
+          <Grid>
+            <Grid container spacing={2} alignItems="center">
+              <Grid>
+                <Tooltip title="Vert Theme" placement="bottom">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      return setTheme(config.THEME_LIGHT);
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconLight)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid>
+                <Tooltip title="NB Theme" placement="bottom">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      return setTheme(config.THEME_NB);
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconNb)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid>
+                <Tooltip title="Cool Theme" placement="bottom">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      return setTheme(config.THEME_COOL);
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconCool)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid>
+                <Tooltip title="Dark Theme" placement="bottom">
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      return setTheme(config.THEME_DARK);
+                    }}
+                    size="large"
+                  >
+                    <div className={clsx(classes.icon, classes.iconDark)}></div>
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid>
+                <Tooltip title="Home" placement="bottom">
                   <IconButton
                     aria-label="home"
                     onClick={(event) => {
@@ -310,9 +293,9 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Box>
-              <Box>
-                <Tooltip title="Meeting List" placement="left">
+              </Grid>
+              <Grid>
+                <Tooltip title="Meeting List" placement="bottom">
                   <IconButton
                     aria-label="meetings"
                     onClick={(event) => {
@@ -336,9 +319,9 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Box>
-              <Box>
-                <Tooltip title="Calendar Tag Cloud" placement="left">
+              </Grid>
+              <Grid>
+                <Tooltip title="Calendar Tag Cloud" placement="bottom">
                   <IconButton
                     aria-label="calendar"
                     onClick={(event) => {
@@ -362,9 +345,9 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Box>
-              <Box>
-                <Tooltip title="Settings" placement="left">
+              </Grid>
+              <Grid>
+                <Tooltip title="Settings" placement="bottom">
                   <IconButton
                     aria-label="settings"
                     onClick={(event) => {
@@ -388,74 +371,10 @@ export const TopNav = (props: {
                     )}
                   </IconButton>
                 </Tooltip>
-              </Box>
-            </Box>
-          </Box>
-          <Box>
-            <Box style={{ textAlign: 'right' }}>
-              <Box>
-                <Tooltip title="Vert Theme" placement="left">
-                  <IconButton
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      return setTheme(config.THEME_LIGHT);
-                    }}
-                    size="large"
-                  >
-                    <div className={clsx(classes.icon, classes.iconLight)}></div>
-                  </IconButton>
-                </Tooltip>
-              </Box>
-              <Box>
-                <Tooltip title="NB Theme" placement="left">
-                  <IconButton
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      return setTheme(config.THEME_NB);
-                    }}
-                    size="large"
-                  >
-                    <div className={clsx(classes.icon, classes.iconNb)}></div>
-                  </IconButton>
-                </Tooltip>
-              </Box>
-              <Box>
-                <Tooltip title="Cool Theme" placement="left">
-                  <IconButton
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      return setTheme(config.THEME_COOL);
-                    }}
-                    size="large"
-                  >
-                    <div className={clsx(classes.icon, classes.iconCool)}></div>
-                  </IconButton>
-                </Tooltip>
-              </Box>
-              <Box>
-                <Tooltip title="Dark Theme" placement="left">
-                  <IconButton
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      return setTheme(config.THEME_DARK);
-                    }}
-                    size="large"
-                  >
-                    <div className={clsx(classes.icon, classes.iconDark)}></div>
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     </Root>
   );
