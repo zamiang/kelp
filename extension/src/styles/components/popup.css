@@ -12,6 +12,13 @@
   font-family: var(--font-family-base);
   overflow: hidden;
   container-type: inline-size;
+
+  /* CSS Containment for performance */
+  contain: layout style paint;
+
+  /* Content visibility for off-screen optimization */
+  content-visibility: auto;
+  contain-intrinsic-size: var(--popup-min-height);
 }
 
 /* Popup content area */
@@ -42,11 +49,12 @@
 
 /* Button styles */
 .popup-button {
-  width: 100%;
+  inline-size: 100%;
   border-radius: var(--radius-xl);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--spacing-lg);
   transition: opacity var(--transition-fast);
-  min-height: 48px;
+  min-block-size: 48px;
   opacity: 1;
   font-family: var(--font-family-medium);
   font-size: var(--font-size-sm);
@@ -55,6 +63,11 @@
   cursor: pointer;
   background-color: var(--color-primary);
   color: white;
+
+  /* Modern CSS features */
+  display: grid;
+  place-items: center;
+  gap: var(--spacing-xs);
 }
 
 .popup-button:hover {
@@ -81,7 +94,8 @@
 
 /* Error states */
 .popup-error {
-  padding: var(--spacing-lg);
+  padding-inline: var(--spacing-lg);
+  padding-block: var(--spacing-lg);
   background-color: var(--color-background);
 }
 
@@ -89,18 +103,29 @@
   background-color: var(--color-surface);
   border: 1px solid var(--color-error);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-md);
+
+  /* Modern CSS Grid for alert layout */
+  display: grid;
+  gap: var(--spacing-sm);
+  grid-template-areas:
+    'title'
+    'content';
 }
 
 .popup-error .alert-title {
+  grid-area: title;
   color: var(--color-error);
   font-weight: var(--font-weight-medium);
-  margin-bottom: var(--spacing-sm);
+  margin-block-end: 0;
 }
 
 .popup-error .alert-content {
+  grid-area: content;
   color: var(--color-text-primary);
   line-height: var(--line-height-relaxed);
+  margin-block-start: 0;
 }
 
 /* Container responsive styles */

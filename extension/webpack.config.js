@@ -2,6 +2,9 @@ import path from 'path';
 import webpack from 'webpack';
 import CopyPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
+import glob from 'glob-all';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
@@ -113,6 +116,38 @@ const getConfig = () => {
         'process/browser': require.resolve('process/browser'),
       },
     },
+    optimization: {
+      minimizer: [
+        '...',
+        ...(isProduction
+          ? [
+              new CssMinimizerPlugin({
+                minimizerOptions: {
+                  preset: [
+                    'default',
+                    {
+                      discardComments: { removeAll: true },
+                      normalizeWhitespace: true,
+                      colormin: true,
+                      convertValues: true,
+                      discardDuplicates: true,
+                      discardEmpty: true,
+                      mergeRules: true,
+                      minifyFontValues: true,
+                      minifyGradients: true,
+                      minifyParams: true,
+                      minifySelectors: true,
+                      reduceIdents: false, // Keep CSS custom properties
+                      reduceTransforms: true,
+                      svgo: true,
+                    },
+                  ],
+                },
+              }),
+            ]
+          : []),
+      ],
+    },
     devServer: {
       contentBase: './dist',
     },
@@ -129,14 +164,65 @@ const getConfig = () => {
             new MiniCssExtractPlugin({
               filename: 'styles.css',
             }),
+            new PurgeCSSPlugin({
+              paths: glob.sync([
+                path.join(__dirname, 'src/**/*.{ts,tsx,js,jsx}'),
+                path.join(__dirname, 'public/**/*.html'),
+                path.join(__dirname, '../components/**/*.{ts,tsx,js,jsx}'),
+              ]),
+              safelist: {
+                // Preserve theme-related classes and CSS custom properties
+                standard: [
+                  /^theme-/,
+                  /^data-theme/,
+                  /^--color-/,
+                  /^--spacing-/,
+                  /^--font-/,
+                  /^--radius-/,
+                  /^--shadow-/,
+                  /^--transition-/,
+                  /^fade-in/,
+                  /^slide-in/,
+                  /^loading-spinner/,
+                  /^sr-only/,
+                  /^visually-hidden/,
+                  /^theme-changing/,
+                ],
+                // Preserve dynamic classes that might be added via JavaScript
+                deep: [
+                  /MuiButton/,
+                  /MuiDialog/,
+                  /MuiTextField/,
+                  /MuiTypography/,
+                  /MuiBox/,
+                  /MuiPaper/,
+                  /MuiCard/,
+                  /MuiList/,
+                  /MuiMenuItem/,
+                  /MuiIconButton/,
+                  /MuiChip/,
+                  /MuiAvatar/,
+                  /MuiDivider/,
+                  /MuiTooltip/,
+                  /MuiPopover/,
+                  /MuiMenu/,
+                ],
+                // Preserve keyframe animations
+                keyframes: ['spin', 'fadeIn', 'slideIn'],
+              },
+              // Don't remove CSS custom properties
+              variables: true,
+              // Keep CSS custom properties and theme variables
+              keyframes: true,
+            }),
           ]
         : []),
       new CopyPlugin({
         patterns: [
-          { from: 'public', to: '.' },
-          { from: '../public/fonts', to: 'fonts' },
+          { from: path.join(__dirname, 'public'), to: '.' },
+          { from: path.join(__dirname, '../public/fonts'), to: 'fonts' },
           {
-            from: 'src/manifest.json',
+            from: path.join(__dirname, 'src/manifest.json'),
             to: 'manifest.json',
             transform(content) {
               return modifyManifest(content);

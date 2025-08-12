@@ -1,22 +1,22 @@
 /* CSS Custom Properties - Design System */
 :root {
-  /* Spacing System */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 40px;
-  --spacing-3xl: 48px;
+  /* Spacing System - Fluid Spacing with clamp() */
+  --spacing-xs: clamp(3px, 1vw, 4px);
+  --spacing-sm: clamp(6px, 2vw, 8px);
+  --spacing-md: clamp(12px, 4vw, 16px);
+  --spacing-lg: clamp(18px, 6vw, 24px);
+  --spacing-xl: clamp(24px, 8vw, 32px);
+  --spacing-2xl: clamp(32px, 10vw, 40px);
+  --spacing-3xl: clamp(40px, 12vw, 48px);
 
-  /* Typography Scale */
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 24px;
-  --font-size-2xl: 40px;
-  --font-size-3xl: 64px;
+  /* Typography Scale - Fluid Typography with clamp() */
+  --font-size-xs: clamp(11px, 2.5vw, 12px);
+  --font-size-sm: clamp(13px, 3vw, 14px);
+  --font-size-md: clamp(15px, 3.5vw, 16px);
+  --font-size-lg: clamp(17px, 4vw, 18px);
+  --font-size-xl: clamp(20px, 5vw, 24px);
+  --font-size-2xl: clamp(32px, 8vw, 40px);
+  --font-size-3xl: clamp(48px, 12vw, 64px);
 
   /* Line Heights */
   --line-height-tight: 1.2;
@@ -63,10 +63,20 @@
   --transition-normal: 250ms ease-in-out;
   --transition-slow: 350ms ease-in-out;
 
-  /* Layout */
-  --popup-width: 400px;
-  --popup-max-height: 600px;
-  --popup-min-height: 300px;
+  /* Layout - Responsive with min/max functions */
+  --popup-width: clamp(320px, 90vw, 450px);
+  --popup-max-height: min(600px, 90vh);
+  --popup-min-height: max(300px, 40vh);
+
+  /* Container Sizes */
+  --container-xs: min(100%, 320px);
+  --container-sm: min(100%, 480px);
+  --container-md: min(100%, 768px);
+  --container-lg: min(100%, 1024px);
+
+  /* Fluid Grid */
+  --grid-gap: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+  --grid-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
 
   /* Default Theme Colors (will be overridden by theme-specific files) */
   --color-background: #fbf2dd;
