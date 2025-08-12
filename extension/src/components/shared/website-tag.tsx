@@ -1,46 +1,11 @@
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';
-
-const PREFIX = 'WebsiteTags';
-
-const classes = {
-  tags: `${PREFIX}-tags`,
-  tag: `${PREFIX}-tag`,
-  tagSelected: `${PREFIX}-tagSelected`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`&.${classes.tags}`]: {
-    overflow: 'hidden',
-    height: 22,
-  },
-  [`& .${classes.tag}`]: {
-    display: 'inline-block',
-    marginRight: theme.spacing(1),
-    transition: 'borderBottom 0.3s',
-    borderBottom: '1px solid transparent',
-    cursor: 'pointer',
-    height: 20,
-    '&:hover': {
-      borderBottomColor: theme.palette.divider,
-    },
-  },
-  [`& .${classes.tagSelected}`]: {
-    pointerEvents: 'all',
-    cursor: 'pointer',
-    borderBottomColor: theme.palette.primary.main,
-    '&:hover': {
-      opacity: 0.8,
-      borderBottomColor: theme.palette.primary.main,
-    },
-  },
-}));
+import '../../styles/components/shared/website-tag.css';
 
 export const isTagSelected = (text: string, userTags: IWebsiteTag[]) => {
   const existingTagText = userTags.map((t) => t.tag);
@@ -101,16 +66,19 @@ export const WebsiteTags = (props: {
   }, [props.item.id, props.userTags.length]);
 
   return (
-    <Root className={classes.tags}>
+    <div className="website-tags">
       {websiteTags.map((tag) => (
         <div
           key={`${tag}-${props.item.id}`}
           onClick={() => props.toggleWebsiteTag(tag, props.item.id)}
-          className={clsx(classes.tag, isTagSelected(tag, props.userTags) && classes.tagSelected)}
+          className={clsx(
+            'website-tag',
+            isTagSelected(tag, props.userTags) && 'website-tag--selected',
+          )}
         >
           <Typography variant="subtitle2">{tag}</Typography>
         </div>
       ))}
-    </Root>
+    </div>
   );
 };

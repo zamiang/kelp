@@ -1,0 +1,157 @@
+/* Person Row Component Styles */
+
+.person-row {
+  transition:
+    background 0.3s,
+    border-color 0.3s,
+    opacity 0.3s;
+  opacity: 1;
+  padding-block: var(--spacing-sm);
+  border-bottom: unset;
+}
+
+.person-row:hover {
+  opacity: 0.8;
+}
+
+.person-row__container {
+  background: transparent;
+  transition:
+    background 0.3s,
+    opacity 0.3s;
+  cursor: pointer;
+  text-align: start;
+  inline-size: 100%;
+  animation: fadeIn ease 0.4s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.person-row__container:hover {
+  opacity: 0.8;
+}
+
+.person-row__container--small {
+  padding: 0;
+}
+
+.person-row__container--selected {
+  background: var(--color-divider);
+  border-color: var(--color-secondary-light);
+  background: var(--color-secondary-light);
+}
+
+.person-row__left {
+  text-align: center;
+  margin-inline-end: var(--spacing-md);
+}
+
+.person-row__content {
+  padding-block: var(--spacing-sm);
+}
+
+.person-row__avatar {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-contrast);
+}
+
+.person-row__name {
+  cursor: pointer;
+}
+
+.person-row__name:hover {
+  text-decoration: underline;
+}
+
+.person-row__button {
+  inline-size: 100%;
+  border-radius: 30px;
+  padding-block: 6px;
+  padding-inline: 20px;
+  transition: opacity 0.3s;
+  min-block-size: 48px;
+  opacity: 1;
+}
+
+.person-row__button:hover {
+  opacity: 0.6;
+}
+
+/* Response Status Variants */
+.person-row--accepted {
+  /* Default styling - no additional styles needed */
+}
+
+.person-row--tentative {
+  opacity: 0.8;
+}
+
+.person-row--declined {
+  text-decoration: line-through;
+}
+
+.person-row--declined:hover {
+  text-decoration: line-through;
+}
+
+.person-row--needs-action {
+  opacity: 0.8;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@container person-row (width < 300px) {
+  .person-row__left {
+    margin-inline-end: var(--spacing-sm);
+  }
+
+  .person-row__content {
+    padding-block: var(--spacing-xs);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .person-row__container {
+    animation: none;
+  }
+
+  .person-row,
+  .person-row__container,
+  .person-row__button {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .person-row__container--selected {
+    border: 2px solid var(--color-secondary);
+  }
+
+  .person-row--declined {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Focus Management */
+.person-row__container:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Container Queries for Layout */
+.person-row {
+  container-type: inline-size;
+  container-name: person-row;
+}

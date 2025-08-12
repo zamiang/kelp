@@ -1,43 +1,12 @@
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../../../constants/config';
 import CloseIcon from '../../../../public/icons/close.svg';
 import SearchIcon from '../../../../public/icons/search.svg';
-
-const PREFIX = 'SearchBar';
-
-const classes = {
-  input: `${PREFIX}-input`,
-  container: `${PREFIX}-container`,
-  icon: `${PREFIX}-icon`,
-  iconImage: `${PREFIX}-iconImage`,
-  iconSelected: `${PREFIX}-iconSelected`,
-};
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  [`& .${classes.input}`]: {
-    marginTop: 0,
-    [theme.breakpoints.down('md')]: {},
-  },
-  [`&.${classes.container}`]: {
-    background: theme.palette.background.paper,
-    marginBottom: theme.spacing(4),
-    borderRadius: 20,
-  },
-  [`& .${classes.icon}`]: {
-    padding: 10,
-  },
-  [`& .${classes.iconImage}`]: {
-    color: theme.palette.text.primary,
-  },
-  [`& .${classes.iconSelected}`]: {
-    color: theme.palette.primary.main,
-  },
-}));
+import '../../styles/components/nav/search-bar.css';
 
 const searchInputId = 'searchInput';
 
@@ -57,25 +26,25 @@ const SearchBar = (props: { searchQuery: string }) => {
   };
 
   return (
-    <StyledBox
+    <Box
       display="flex"
       alignItems="flex-start"
       justifyContent="space-between"
-      className={classes.container}
+      className="search-bar"
     >
       <Box>
-        <IconButton className={classes.icon}>
+        <IconButton className="search-bar__icon">
           {location.pathname.indexOf('search') > -1 ? (
             <SearchIcon
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              className={classes.iconSelected}
+              className="search-bar__icon--selected"
             />
           ) : (
             <SearchIcon
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              className={classes.iconImage}
+              className="search-bar__icon-image"
             />
           )}
         </IconButton>
@@ -94,7 +63,7 @@ const SearchBar = (props: { searchQuery: string }) => {
           variant="standard"
           value={value.length < 1 && props.searchQuery ? props.searchQuery : value}
           InputProps={{
-            className: classes.input,
+            className: 'search-bar__input',
             disableUnderline: true,
           }}
         />
@@ -107,12 +76,13 @@ const SearchBar = (props: { searchQuery: string }) => {
               setValue('');
             }}
             size="large"
+            className="search-bar__close-button"
           >
             <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
           </IconButton>
         </Box>
       )}
-    </StyledBox>
+    </Box>
   );
 };
 

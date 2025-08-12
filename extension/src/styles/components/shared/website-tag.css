@@ -1,0 +1,79 @@
+/* Website Tag Component Styles */
+
+.website-tags {
+  overflow: hidden;
+  block-size: 22px;
+}
+
+.website-tag {
+  display: inline-block;
+  margin-inline-end: var(--spacing-sm);
+  transition: border-bottom-color 0.3s;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  block-size: 20px;
+}
+
+.website-tag:hover {
+  border-bottom-color: var(--color-divider);
+}
+
+.website-tag--selected {
+  pointer-events: all;
+  cursor: pointer;
+  border-bottom-color: var(--color-primary);
+}
+
+.website-tag--selected:hover {
+  opacity: 0.8;
+  border-bottom-color: var(--color-primary);
+}
+
+/* Responsive Design */
+@container website-tags (width < 200px) {
+  .website-tag {
+    margin-inline-end: var(--spacing-xs);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .website-tag {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .website-tag {
+    border-bottom-width: 2px;
+  }
+
+  .website-tag--selected {
+    border-bottom-width: 3px;
+  }
+}
+
+/* Focus Management */
+.website-tag:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Container Queries for Layout */
+.website-tags {
+  container-type: inline-size;
+  container-name: website-tags;
+}
+
+/* Interactive States */
+.website-tag:active {
+  transform: translateY(1px);
+}
+
+/* Typography Enhancement */
+.website-tag .MuiTypography-root {
+  line-height: 1.2;
+  font-weight: 500;
+}
