@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './popup.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
+import { type ThemeName, initializeTheme, switchTheme } from './styles/theme-switcher';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import { getGoogleClientID, launchGoogleAuthFlow } from '../../components/shared/google-login';
@@ -317,13 +318,25 @@ const themeHash = {
 
 const App = () => {
   const [theme, setTheme] = useState<string>('dark');
+
   useEffect(() => {
-    const getTheme = async (): Promise<void> => {
+    const initTheme = async (): Promise<void> => {
+      // Initialize our CSS custom properties theme system
+      await initializeTheme('dark' as ThemeName);
+
+      // Get theme for Material-UI compatibility
       const t = await chrome.storage.sync.get(config.THEME);
-      setTheme(t[config.THEME] || localStorage.getItem(config.THEME) || 'dark');
+      const currentTheme = t[config.THEME] || localStorage.getItem(config.THEME) || 'dark';
+      setTheme(currentTheme);
     };
-    void getTheme();
+    void initTheme();
   }, []);
+
+  const handleThemeChange = async (newTheme: string): Promise<void> => {
+    // Update both our CSS custom properties system and Material-UI
+    await switchTheme(newTheme as ThemeName);
+    setTheme(newTheme);
+  };
 
   return (
     <StyledEngineProvider injectFirst>
@@ -331,7 +344,7 @@ const App = () => {
         <ThemeProvider theme={themeHash[theme]}>
           <CssBaseline />
           <MsalProvider instance={msalInstance}>
-            <Popup setTheme={setTheme} theme={theme} />
+            <Popup setTheme={handleThemeChange} theme={theme} />
           </MsalProvider>
         </ThemeProvider>
       </EmotionThemeProvider>

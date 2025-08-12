@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import CopyPlugin from 'copy-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
@@ -25,106 +26,126 @@ const modifyManifest = (buffer) => {
   return JSON.stringify(manifest, null, 2);
 };
 
-const getConfig = () => ({
-  mode: process.env.NODE_ENV,
-  devtool: false,
-  entry: {
-    popup: path.join(__dirname, 'src/popup.tsx'),
-    background: path.join(__dirname, 'src/background.ts'),
-    color: path.join(__dirname, 'src/background-color.ts'),
-    'content-script': path.join(__dirname, 'src/content-script.ts'),
-  },
-  output: { path: path.join(__dirname, 'dist'), filename: '[name].js' },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-        exclude: /\.module\.css$/,
-      },
-      {
-        test: /\.ts(x)?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true,
-            },
-          },
-        ],
-        include: /\.module\.css$/,
-      },
-      {
-        test: /\.svg$/,
-        use: ['@svgr/webpack'],
-      },
-      {
-        test: /\.(woff2)$/,
-        use: 'file-loader',
-      },
-      {
-        test: /\.png$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              mimetype: 'image/png',
-            },
-          },
-        ],
-      },
-    ],
-  },
-  resolve: {
-    fallback: {
-      crypto: require.resolve('crypto-browserify'),
-      stream: require.resolve('stream-browserify'),
-      url: require.resolve('url/'),
-      buffer: require.resolve('buffer/'),
-      vm: require.resolve('vm-browserify'),
+const getConfig = () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  return {
+    mode: process.env.NODE_ENV,
+    devtool: false,
+    entry: {
+      popup: path.join(__dirname, 'src/popup.tsx'),
+      background: path.join(__dirname, 'src/background.ts'),
+      color: path.join(__dirname, 'src/background-color.ts'),
+      'content-script': path.join(__dirname, 'src/content-script.ts'),
     },
-    extensions: ['.js', '.jsx', '.tsx', '.ts'],
-    alias: {
-      'react-dom': 'react-dom',
-      'process/browser': require.resolve('process/browser'),
-    },
-  },
-  devServer: {
-    contentBase: './dist',
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-      process: 'process/browser',
-      Buffer: ['buffer', 'Buffer'],
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    }),
-    new CopyPlugin({
-      patterns: [
-        { from: 'extension/public', to: '.' },
+    output: { path: path.join(__dirname, 'dist'), filename: '[name].js' },
+    module: {
+      rules: [
         {
-          from: 'extension/src/manifest.json',
-          to: 'manifest.json',
-          transform(content) {
-            return modifyManifest(content);
-          },
+          test: /\.(js|jsx)$/,
+          use: 'babel-loader',
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/,
+          use: [
+            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+              },
+            },
+          ],
+          exclude: /\.module\.css$/,
+        },
+        {
+          test: /\.ts(x)?$/,
+          loader: 'ts-loader',
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/,
+          use: [
+            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                modules: true,
+              },
+            },
+          ],
+          include: /\.module\.css$/,
+        },
+        {
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
+        },
+        {
+          test: /\.(woff2)$/,
+          use: 'file-loader',
+        },
+        {
+          test: /\.png$/,
+          use: [
+            {
+              loader: 'url-loader',
+              options: {
+                mimetype: 'image/png',
+              },
+            },
+          ],
         },
       ],
-    }),
-  ],
-});
+    },
+    resolve: {
+      fallback: {
+        crypto: require.resolve('crypto-browserify'),
+        stream: require.resolve('stream-browserify'),
+        url: require.resolve('url/'),
+        buffer: require.resolve('buffer/'),
+        vm: require.resolve('vm-browserify'),
+      },
+      extensions: ['.js', '.jsx', '.tsx', '.ts'],
+      alias: {
+        'react-dom': 'react-dom',
+        'process/browser': require.resolve('process/browser'),
+      },
+    },
+    devServer: {
+      contentBase: './dist',
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+        Buffer: ['buffer', 'Buffer'],
+      }),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      }),
+      ...(isProduction
+        ? [
+            new MiniCssExtractPlugin({
+              filename: 'styles.css',
+            }),
+          ]
+        : []),
+      new CopyPlugin({
+        patterns: [
+          { from: 'extension/public', to: '.' },
+          { from: 'public/fonts', to: 'fonts' },
+          {
+            from: 'extension/src/manifest.json',
+            to: 'manifest.json',
+            transform(content) {
+              return modifyManifest(content);
+            },
+          },
+        ],
+      }),
+    ],
+  };
+};
 
 export default getConfig();

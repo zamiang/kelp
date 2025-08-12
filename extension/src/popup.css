@@ -1,5 +1,2 @@
-html {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* Import the complete CSS architecture */
+@import './styles/index.css';

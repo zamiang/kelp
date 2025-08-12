@@ -1,0 +1,64 @@
+/* NB Theme */
+[data-theme='nb'] {
+  /* Background Colors */
+  --color-background: #fbf2dd;
+  --color-surface: #e5dacc;
+
+  /* Primary Colors */
+  --color-primary: #8b4513;
+  --color-secondary: #8b4513;
+
+  /* Status Colors */
+  --color-error: #c20f24;
+  --color-warning: #ff9800;
+  --color-success: #4caf50;
+  --color-info: #2196f3;
+
+  /* Text Colors */
+  --color-text-primary: rgba(0, 0, 0, 0.87);
+  --color-text-secondary: rgba(0, 0, 0, 0.6);
+  --color-text-disabled: rgba(0, 0, 0, 0.38);
+
+  /* Border Colors */
+  --color-border: rgba(0, 0, 0, 0.12);
+  --color-divider: rgba(0, 0, 0, 0.12);
+
+  /* Interactive States */
+  --color-hover-overlay: rgba(0, 0, 0, 0.04);
+  --color-focus-overlay: rgba(0, 0, 0, 0.12);
+  --color-pressed-overlay: rgba(0, 0, 0, 0.16);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* NB theme specific styles */
+[data-theme='nb'] body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+[data-theme='nb'] #popup {
+  background-color: var(--color-background);
+}
+
+/* NB theme Material-UI compatibility */
+[data-theme='nb'] .MuiPaper-root {
+  background-color: var(--color-surface);
+}
+
+[data-theme='nb'] .MuiButton-root {
+  color: var(--color-text-primary);
+}
+
+[data-theme='nb'] .MuiButton-contained {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+[data-theme='nb'] .MuiAlert-root {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+}
