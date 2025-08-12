@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
 import RightArrow from '../../../../public/icons/right-arrow.svg';
+import '../../styles/components/onboarding/onboarding.css';
 
 const maxTips = 3;
 
@@ -57,8 +58,7 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
           <RightArrow
             height={config.ICON_SIZE}
             width={config.ICON_SIZE}
-            className="onboarding-icon"
-            style={{ transform: 'rotate(180deg)' }}
+            className="onboarding-icon u-rotate-180"
           />
         </IconButton>
         <IconButton
@@ -101,8 +101,7 @@ const MeetingsAnimation = (props: { step: number; setStep: (step: number) => voi
           <RightArrow
             height={config.ICON_SIZE}
             width={config.ICON_SIZE}
-            className="onboarding-icon"
-            style={{ transform: 'rotate(180deg)' }}
+            className="onboarding-icon u-rotate-180"
           />
         </IconButton>
         <IconButton

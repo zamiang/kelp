@@ -1,0 +1,28 @@
+/* Top Nav Component Styles */
+
+.top-nav {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-height-97vh {
+  height: 97vh;
+}
+
+.u-margin-left-10 {
+  margin-left: 10px;
+}
+
+.u-margin-top-7 {
+  margin-top: 7px;
+}
+
+/* Top nav specific utilities */
+.top-nav__full-height {
+  height: 97vh;
+}
+
+.top-nav__error-text {
+  margin-left: 10px;
+  margin-top: 7px;
+}

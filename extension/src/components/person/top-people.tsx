@@ -11,6 +11,7 @@ import { IStore } from '../store/use-store';
 import { MostRecentTab } from '../website/most-recent-tab';
 import Link from '@mui/material/Link';
 import KelpIcon from '../../../../public/kelp-24.svg';
+import '../../styles/components/person/top-people.css';
 
 const PREFIX = 'TopPeople';
 
@@ -109,7 +110,7 @@ export const TopPeople = (props: { store: IStore }) => {
   return (
     <Root>
       <Grid container spacing={2} className={classes.container} alignItems="center">
-        <Grid style={{ height: 24, marginRight: 8 }}>
+        <Grid className="top-people__kelp-icon">
           <Link href="https://www.kelp.nyc" className={classes.logo}>
             <KelpIcon height="24" width="24" className={classes.iconSelected} />
           </Link>

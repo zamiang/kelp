@@ -1,0 +1,20 @@
+/* Top People Component Styles */
+
+.top-people {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-height-24 {
+  height: 24px;
+}
+
+.u-margin-right-8 {
+  margin-right: 8px;
+}
+
+/* Top people specific utilities */
+.top-people__kelp-icon {
+  height: 24px;
+  margin-right: 8px;
+}

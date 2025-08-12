@@ -1,0 +1,24 @@
+/* Top Tags Component Styles */
+
+.top-tags {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-rotate-180 {
+  transform: rotate(180deg);
+}
+
+.u-font-weight-600 {
+  font-weight: 600;
+}
+
+/* Icon rotation utility */
+.top-tags__icon--rotated {
+  transform: rotate(180deg);
+}
+
+/* Typography weight utilities */
+.top-tags__text--bold {
+  font-weight: 600;
+}

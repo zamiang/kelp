@@ -9,6 +9,7 @@ import LeftArrow from '../../../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTaggDialog } from './add-tag-dialog';
+import '../../styles/components/dashboard/top-tags.css';
 
 const PREFIX = 'TopTags';
 
@@ -104,8 +105,7 @@ export const TopTags = (props: {
               <LeftArrow
                 width={config.ICON_SIZE}
                 height={config.ICON_SIZE}
-                style={{ transform: 'rotate(180deg)' }}
-                className={classes.iconImage}
+                className={`${classes.iconImage} u-rotate-180`}
               />
             </IconButton>
           </Box>
@@ -173,9 +173,8 @@ export const TopTags = (props: {
             <Box>
               <Typography
                 variant="body2"
-                className={classes.tag}
+                className={`${classes.tag} u-font-weight-600`}
                 color="primary"
-                style={{ fontWeight: 600 }}
                 onClick={() => setDialogOpen(true)}
               >
                 Add a tag
@@ -210,8 +209,7 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
             <LeftArrow
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              style={{ transform: 'rotate(180deg)' }}
-              className={classes.iconImage}
+              className={`${classes.iconImage} u-rotate-180`}
             />
           </IconButton>
         </Box>
@@ -257,8 +255,7 @@ export const ExpandMeetingNav = () => {
             <LeftArrow
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              style={{ transform: 'rotate(180deg)' }}
-              className={classes.iconImage}
+              className={`${classes.iconImage} u-rotate-180`}
             />
           </IconButton>
         </Box>
@@ -325,8 +322,7 @@ export const ExpandPersonNav = () => {
             <LeftArrow
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              style={{ transform: 'rotate(180deg)' }}
-              className={classes.iconImage}
+              className={`${classes.iconImage} u-rotate-180`}
             />
           </IconButton>
         </Box>

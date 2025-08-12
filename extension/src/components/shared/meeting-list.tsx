@@ -14,6 +14,7 @@ import { ISegment, IWebsiteTag } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache } from '../website/get-featured-websites';
+import '../../styles/components/shared/meeting-list.css';
 
 export const Meeting = (props: {
   meeting: ISegment;
@@ -35,7 +36,8 @@ export const Meeting = (props: {
             <CalendarIcon
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              style={{ display: 'block', margin: '0 auto', opacity }}
+              className="meeting-list__icon"
+              style={{ opacity }}
             />
           </Box>
           <Box flex="1" minWidth={0}>

@@ -262,13 +262,7 @@
   border-radius: var(--radius-sm);
 }
 
-/* Theme-specific adjustments */
-[data-theme='dark'] .settings-panel {
-  background-color: var(--color-surface);
-}
-
 [data-theme='light'] .settings-panel {
-  background-color: var(--color-background);
   box-shadow: var(--shadow-sm);
 }
 

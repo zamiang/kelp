@@ -3,8 +3,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
 import React from 'react';
+import '../../styles/components/shared/loading.css';
 
 const PREFIX = 'Loading';
 
@@ -18,26 +18,17 @@ const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
   },
 }));
 
-const useBackdropStyles = makeStyles(() => ({
-  [`&.${classes.backdrop}`]: {
-    zIndex: 10,
-  },
-}));
-
-const Loading = (props: { isOpen: boolean; message: string }) => {
-  const classes = useBackdropStyles();
-  return (
-    <StyledBackdrop className={classes.backdrop} open={props.isOpen}>
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-        <Box style={{ width: '100%', textAlign: 'center' }}>
-          <CircularProgress color="inherit" />
-        </Box>
-        <Box>
-          <Typography variant="h5">{props.message}</Typography>
-        </Box>
+const Loading = (props: { isOpen: boolean; message: string }) => (
+  <StyledBackdrop className={`${classes.backdrop} loading__backdrop`} open={props.isOpen}>
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+      <Box className="loading__progress-container">
+        <CircularProgress color="inherit" />
       </Box>
-    </StyledBackdrop>
-  );
-};
+      <Box>
+        <Typography variant="h5">{props.message}</Typography>
+      </Box>
+    </Box>
+  </StyledBackdrop>
+);
 
 export default Loading;

@@ -1,6 +1,5 @@
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +8,7 @@ import PersonRow from '../person/person-row';
 import { IFormattedAttendee, IPerson } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
+import '../../styles/components/shared/attendee-list.css';
 
 const PREFIX = 'AttendeeList';
 
@@ -78,15 +78,7 @@ const AttendeeRows = (props: IProps) => {
   );
 };
 
-const useAttendeeStyles = makeStyles(() => ({
-  [`& .${classes.expand}`]: {
-    textDecoration: 'underline',
-    cursor: 'pointer',
-  },
-}));
-
 const AttendeeList = (props: IProps) => {
-  const classes = useAttendeeStyles();
   const [isExpanded, setExpand] = useState<boolean>(
     props.showAll || props.attendees.length < config.ATTENDEE_MAX,
   );
@@ -99,7 +91,7 @@ const AttendeeList = (props: IProps) => {
       {!isExpanded && (
         <Typography
           variant="subtitle2"
-          className={clsx(classes.expand, 'ignore-react-onclickoutside')}
+          className={clsx('attendee-list__expand', 'ignore-react-onclickoutside')}
           onClick={() => setExpand(true)}
         >
           Show Full List

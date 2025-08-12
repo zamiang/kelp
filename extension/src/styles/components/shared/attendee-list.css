@@ -1,0 +1,11 @@
+/* Attendee List Component Styles */
+
+.attendee-list {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Attendee list specific utilities */
+.attendee-list__expand {
+  text-decoration: underline;
+  cursor: pointer;
+}

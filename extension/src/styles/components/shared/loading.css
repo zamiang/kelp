@@ -1,0 +1,25 @@
+/* Loading Component Styles */
+
+.loading {
+  /* Component root styles handled by Material-UI styled component */
+}
+
+/* Utility classes for inline style replacements */
+.u-width-full {
+  width: 100%;
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+/* Loading specific utilities */
+.loading__progress-container {
+  width: 100%;
+  text-align: center;
+}
+
+/* Backdrop styles to replace makeStyles */
+.loading__backdrop {
+  z-index: 10;
+}
