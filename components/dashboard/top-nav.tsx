@@ -55,12 +55,13 @@ const Root = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.centerSection}`]: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     width: '100%',
     zIndex: 10,
+    borderBottom: '1px solid',
+    borderColor: theme.palette.divider,
   },
   [`& .${classes.icon}`]: {
     width: config.ICON_SIZE,

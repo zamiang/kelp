@@ -25,11 +25,13 @@ import { TagHighlights } from '../website/tag-highlights';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
 import { TopNav } from './top-nav';
+import SearchBar from '../nav/search-bar';
 
 const PREFIX = 'DesktopDashboard';
 
 const classes = {
   footerContainer: `${PREFIX}-footerContainer`,
+  topMarginContent: `${PREFIX}-topMarginContent`,
   content: `${PREFIX}-content`,
 };
 
@@ -41,11 +43,9 @@ const DesktopDashboardContainer = styled('div')(({ theme }) => ({
   [`& .${classes.content}`]: {
     background: theme.palette.background.default,
     transition: 'background 0.3s',
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    minHeight: '100vh',
+  },
+  [`& .${classes.topMarginContent}`]: {
+    marginTop: theme.spacing(3),
   },
 }));
 
@@ -153,12 +153,15 @@ export const DesktopDashboard = (props: {
                 <Route
                   path="/search"
                   element={
-                    <Search
-                      store={store}
-                      websiteTags={websiteTags}
-                      toggleWebsiteTag={toggleWebsiteTagClick}
-                      websiteCache={websiteCache}
-                    />
+                    <div className={classes.topMarginContent}>
+                      <SearchBar searchQuery={''} />
+                      <Search
+                        store={store}
+                        websiteTags={websiteTags}
+                        toggleWebsiteTag={toggleWebsiteTagClick}
+                        websiteCache={websiteCache}
+                      />
+                    </div>
                   }
                 />
                 <Route
@@ -214,7 +217,8 @@ export const DesktopDashboard = (props: {
                 <Route
                   path="/home"
                   element={
-                    <div>
+                    <div className={classes.topMarginContent}>
+                      <SearchBar searchQuery={''} />
                       <MeetingHighlight
                         store={props.store}
                         toggleWebsiteTag={toggleWebsiteTagClick}

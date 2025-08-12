@@ -7,7 +7,6 @@ import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
-import SearchBar from '../nav/search-bar';
 import PersonRow from '../person/person-row';
 import Loading from '../shared/loading';
 import { IPerson, ISegment, IWebsiteTag } from '../store/data-types';
@@ -20,7 +19,6 @@ import { LargeWebsite } from '../website/large-website';
 const PREFIX = 'Search';
 
 const classes = {
-  topNav: `${PREFIX}-topNav`,
   button: `${PREFIX}-button`,
   row: `${PREFIX}-row`,
   rowText: `${PREFIX}-rowText`,
@@ -47,26 +45,6 @@ const Root = styled('div')(({ theme }) => ({
     cursor: 'pointer',
     '&:hover': {
       textDecoration: 'underline',
-    },
-  },
-  [`& .${classes.topNav}`]: {
-    position: 'fixed',
-    top: theme.spacing(1.5),
-    left: 0,
-    transition: 'background 0.3s',
-    zIndex: 11,
-    width: 228,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-    flexShrink: 0,
-    [theme.breakpoints.down('xl')]: {
-      width: 187,
-    },
-    [theme.breakpoints.down('xl')]: {
-      width: 179,
-    },
-    [theme.breakpoints.down('lg')]: {
-      width: 139,
     },
   },
 }));
@@ -150,47 +128,6 @@ const SearchResults = (props: {
   const filteredResults = filterSearchResults(results);
   return (
     <React.Fragment>
-      <Box className={classes.topNav} display="flex" gap={2} alignItems="center">
-        <Box>
-          <SearchBar searchQuery={props.searchQuery} />
-        </Box>
-        {filteredResults.websites.length > 1 && (
-          <Box>
-            <Typography
-              className={classes.button}
-              onClick={() =>
-                document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
-              }
-            >
-              {filteredResults.websites.length} websites
-            </Typography>
-          </Box>
-        )}
-        {filteredResults.people.length > 1 && (
-          <Box>
-            <Typography
-              className={classes.button}
-              onClick={() =>
-                document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
-              }
-            >
-              {filteredResults.people.length} people
-            </Typography>
-          </Box>
-        )}
-        {filteredResults.meetings.length > 1 && (
-          <Box>
-            <Typography
-              className={classes.button}
-              onClick={() =>
-                document.getElementById('meetings')?.scrollIntoView({ behavior: 'smooth' })
-              }
-            >
-              {filteredResults.meetings.length} meetings
-            </Typography>
-          </Box>
-        )}
-      </Box>
       <div className={classes.container}>
         {filteredResults.websites.length > 0 && (
           <div className={classes.row} id="websites">

@@ -14,12 +14,6 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.tab}`]: {
-    padding: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    paddingBottom: theme.spacing(1),
-    borderRadius: 50,
-    background: theme.palette.background.paper,
     display: 'flex',
     opacity: 1,
     transition: 'opacity 0.3s',

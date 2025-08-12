@@ -30,11 +30,6 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.person}`]: {
-    padding: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    borderRadius: 50,
-    background: theme.palette.background.paper,
     opacity: 1,
     transition: 'opacity 0.3s',
     cursor: 'pointer',
@@ -114,7 +109,7 @@ export const TopPeople = (props: { store: IStore }) => {
   return (
     <Root>
       <Grid container spacing={2} className={classes.container} alignItems="center">
-        <Grid style={{ height: 24 }}>
+        <Grid style={{ height: 24, marginRight: 8 }}>
           <Link href="https://www.kelp.nyc" className={classes.logo}>
             <KelpIcon height="24" width="24" className={classes.iconSelected} />
           </Link>
