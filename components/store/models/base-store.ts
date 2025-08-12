@@ -37,7 +37,7 @@ export abstract class BaseStoreImpl<T extends { id: string }> implements BaseSto
       const startTime = performance.now();
 
       try {
-        const { limit = 100, offset = 0, orderBy, orderDirection = 'asc' } = options;
+        const { limit = 10000, offset = 0, orderBy, orderDirection = 'asc' } = options;
 
         // Get all items from the store
         const allItems = await withRetry(
