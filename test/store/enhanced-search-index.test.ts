@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { EnhancedSearchIndex } from '../../components/store/utils/enhanced-search-index';
-import { IDocument, IPerson, ISegment, IWebsiteItem } from '../../components/store/data-types';
+import { EnhancedSearchIndex } from '../../extension/src/components/store/utils/enhanced-search-index';
+import {
+  IDocument,
+  IPerson,
+  ISegment,
+  IWebsiteItem,
+} from '../../extension/src/components/store/data-types';
 
 describe('EnhancedSearchIndex', () => {
   let searchIndex: EnhancedSearchIndex;

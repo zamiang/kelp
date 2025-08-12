@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { BaseStoreImpl } from '../../components/store/models/base-store';
-import { StoreError } from '../../components/store/utils/error-handler';
+import { BaseStoreImpl } from '../../extension/src/components/store/models/base-store';
+import { StoreError } from '../../extension/src/components/store/utils/error-handler';
 
 // Create a concrete implementation for testing
 class TestStore extends BaseStoreImpl<{ id: string; name: string; createdAt: Date }> {

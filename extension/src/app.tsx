@@ -17,11 +17,11 @@ import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { type ThemeName, initializeTheme, switchTheme } from './styles/theme-switcher';
 import { createMaterialUIThemeConfig } from './styles/theme-bridge';
 import { createTheme } from '@mui/material/styles';
-import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
-import { msalConfig } from '../../components/fetch/microsoft/auth-config';
-import { getGoogleClientID, launchGoogleAuthFlow } from '../../components/shared/google-login';
-import db from '../../components/store/db';
-import getStore from '../../components/store/use-store';
+import { DesktopDashboard } from './components/dashboard/desktop-dashboard';
+import { msalConfig } from './components/fetch/microsoft/auth-config';
+import { getGoogleClientID, launchGoogleAuthFlow } from './components/shared/google-login';
+import db from './components/store/db';
+import getStore from './components/store/use-store';
 import config from '../../constants/config';
 import { coolTheme, darkTheme, lightTheme, nbTheme } from '../../constants/theme';
 

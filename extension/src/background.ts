@@ -1,7 +1,7 @@
-import { cleanupUrl } from '../../components/shared/cleanup-url';
-import db from '../../components/store/db';
-import { useStoreNoFetch } from '../../components/store/helpers/use-store-no-fetching';
-import { IStore } from '../../components/store/use-store';
+import { cleanupUrl } from './components/shared/cleanup-url';
+import db from './components/store/db';
+import { useStoreNoFetch } from './components/store/helpers/use-store-no-fetching';
+import { IStore } from './components/store/use-store';
 import config from '../../constants/config';
 
 let store: IStore | null = null;

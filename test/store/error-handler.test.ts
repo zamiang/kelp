@@ -6,7 +6,7 @@ import {
   handleDatabaseCorruption,
   safeOperation,
   withRetry,
-} from '../../components/store/utils/error-handler';
+} from '../../extension/src/components/store/utils/error-handler';
 
 describe('StoreError', () => {
   it('should create a StoreError with default values', () => {

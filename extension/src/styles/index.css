@@ -22,6 +22,8 @@
 @import './components/dashboard.css';
 @import './components/dashboard-extension.css';
 
+@import './components/dashboard/desktop-dashboard.css';
+
 /* Global Styles */
 html {
   /* Ensure CSS custom properties are available */
