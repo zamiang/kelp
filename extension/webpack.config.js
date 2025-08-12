@@ -3,8 +3,8 @@ import webpack from 'webpack';
 import CopyPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
-// import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
-// import glob from 'glob-all';
+import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
+import glob from 'glob-all';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
@@ -162,13 +162,72 @@ const getConfig = () => {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       }),
-      new MiniCssExtractPlugin({
-        filename: (pathData) => {
-          return pathData.chunk.name === 'styles' ? 'styles.css' : '[name].css';
-        },
-        chunkFilename: '[id].css',
-        ignoreOrder: true,
-      }),
+      ...(isProduction
+        ? [
+            new MiniCssExtractPlugin({
+              filename: '[name].css',
+              chunkFilename: '[id].css',
+              ignoreOrder: true,
+            }),
+            new PurgeCSSPlugin({
+              paths: glob.sync([
+                path.join(__dirname, 'src/**/*.{ts,tsx,js,jsx}'),
+                path.join(__dirname, 'public/**/*.html'),
+                path.join(__dirname, '../components/**/*.{ts,tsx,js,jsx}'),
+              ]),
+              safelist: {
+                // Preserve theme-related classes and CSS custom properties
+                standard: [
+                  /^theme-/,
+                  /^data-theme/,
+                  /^--color-/,
+                  /^--spacing-/,
+                  /^--font-/,
+                  /^--radius-/,
+                  /^--shadow-/,
+                  /^--transition-/,
+                  /^fade-in/,
+                  /^slide-in/,
+                  /^loading-spinner/,
+                  /^sr-only/,
+                  /^visually-hidden/,
+                  /^theme-changing/,
+                ],
+                // Preserve dynamic classes that might be added via JavaScript
+                deep: [
+                  /MuiButton/,
+                  /MuiDialog/,
+                  /MuiTextField/,
+                  /MuiTypography/,
+                  /MuiBox/,
+                  /MuiPaper/,
+                  /MuiCard/,
+                  /MuiList/,
+                  /MuiMenuItem/,
+                  /MuiIconButton/,
+                  /MuiChip/,
+                  /MuiAvatar/,
+                  /MuiDivider/,
+                  /MuiTooltip/,
+                  /MuiPopover/,
+                  /MuiMenu/,
+                ],
+                // Preserve keyframe animations
+                keyframes: ['spin', 'fadeIn', 'slideIn'],
+              },
+              // Don't remove CSS custom properties
+              variables: true,
+              // Keep CSS custom properties and theme variables
+              keyframes: true,
+            }),
+          ]
+        : [
+            new MiniCssExtractPlugin({
+              filename: '[name].css',
+              chunkFilename: '[id].css',
+              ignoreOrder: true,
+            }),
+          ]),
       new CopyPlugin({
         patterns: [
           { from: path.join(__dirname, 'public'), to: '.' },

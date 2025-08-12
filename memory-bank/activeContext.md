@@ -2,11 +2,168 @@
 
 ## Current Work Focus
 
-**Primary Task**: Webpack CSS Extraction Fix Complete (August 12, 2025)
+**Primary Task**: Components CSS Modernization Migration Plan (August 12, 2025)
 
-**Current Status**: Successfully resolved webpack configuration issue preventing `styles.css` generation. Extension build now properly extracts CSS files for production deployment.
+**Current Status**: Comprehensive migration plan created to modernize all components in the `components/` directory from Material-UI styled-components to the modern CSS approach used in the extension. Plan includes 42 components prioritized across 5 phases over 5 weeks.
 
-## Latest Work: Webpack CSS Extraction Fix Complete (August 12, 2025)
+## Latest Work: Components CSS Modernization Migration Plan (August 12, 2025)
+
+### Context
+
+Created a comprehensive migration plan to modernize all components in the `components/` directory from the current Material-UI styled-components approach to the modern CSS architecture successfully implemented in the extension. This migration will bring consistency, performance improvements, and modern CSS features to the entire application.
+
+### Current State Analysis
+
+**Extension (Modern CSS Approach)**:
+
+- Pure CSS with CSS Custom Properties using modern features like container queries, CSS Grid, logical properties
+- Comprehensive design system with CSS variables for spacing, typography, colors, shadows
+- CSS-based theme switching with data attributes and theme bridge system
+- Performance optimizations including CSS containment, content-visibility, optimized rendering
+- Responsive design using container queries and fluid typography with `clamp()`
+- Structured CSS modules organized in base, themes, and components directories
+
+**Main Components (Current Approach)**:
+
+- Material-UI styled-components using `styled()` from `@mui/material/styles`
+- CSS-in-JS with styles defined in JavaScript with theme access
+- Some components using direct style props
+- Heavy dependency on Material-UI theme object
+
+### Migration Plan Created
+
+**5-Phase Implementation Strategy**:
+
+1. **🔴 Priority 1: Core Dashboard Components (Week 1)**
+   - `desktop-dashboard.tsx`, `top-nav.tsx`, `meetings.tsx`, `search.tsx`, `top-tags.tsx`, `add-tag-dialog.tsx`
+   - 6 components that form the foundation of the application
+
+2. **🟡 Priority 2: Homepage & Navigation (Week 2)**
+   - `homepage/` components and `nav/search-bar.tsx`
+   - 7 components for public-facing and navigation functionality
+
+3. **🟢 Priority 3: Feature Components (Week 3)**
+   - `meeting/`, `website/` core feature components
+   - 11 components that users interact with regularly
+
+4. **🔵 Priority 4: Person & Document Components (Week 4)**
+   - `person/`, `documents/` supporting features
+   - 5 components with moderate usage
+
+5. **⚪ Priority 5: Utility & Supporting Components (Week 5)**
+   - `shared/`, `user-profile/`, `summary/`, `onboarding/`, `error-tracking/` components
+   - 13 components for utilities and supporting functionality
+
+### Migration Architecture Plan
+
+**CSS Architecture Setup**:
+
+```
+styles/
+├── base/
+│   ├── reset.css
+│   ├── variables.css
+│   └── typography.css
+├── themes/
+│   ├── dark.css
+│   ├── light.css
+│   ├── cool.css
+│   └── nb.css
+├── components/
+│   ├── dashboard/
+│   ├── documents/
+│   ├── homepage/
+│   └── [other component folders]
+└── index.css
+```
+
+**Standard Migration Process**:
+
+1. Create CSS file in appropriate directory
+2. Extract styles from styled-components
+3. Convert to CSS with custom properties
+4. Update component to use className
+5. Test functionality and theming
+6. Remove styled-components code
+7. Update imports in parent components
+
+### Migration Benefits Identified
+
+1. **Performance**
+   - Smaller bundle size (no CSS-in-JS runtime)
+   - Better caching (CSS files cached separately)
+   - Faster rendering (no style computation in JS)
+
+2. **Developer Experience**
+   - Consistent with extension architecture
+   - Better separation of concerns
+   - Easier debugging with DevTools
+
+3. **Maintainability**
+   - Single source of truth for styles
+   - Reusable design tokens
+   - Clear file organization
+
+4. **Modern Features**
+   - Container queries for true component responsiveness
+   - Native CSS features without polyfills
+   - Better browser optimization
+
+### Technical Implementation Strategy
+
+**Component Migration Pattern**:
+
+```tsx
+// Before (Material-UI styled):
+const StyledDiv = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
+  backgroundColor: theme.palette.background.default,
+}));
+
+// After (Modern CSS):
+// CSS file:
+.component-name {
+  padding: var(--spacing-md);
+  background-color: var(--color-background);
+}
+
+// Component:
+import './component-name.css';
+<div className="component-name">
+```
+
+**Theme Bridge Enhancement**:
+
+- Extend existing theme-bridge system from extension
+- Map Material-UI theme values to CSS custom properties
+- Ensure bidirectional synchronization
+
+**Material-UI Integration Strategy**:
+
+- Keep Material-UI components initially
+- Apply CSS custom properties to Material-UI components via `sx` prop
+- Gradually replace with native HTML + CSS where appropriate
+
+### Success Metrics Defined
+
+- ✅ Each component maintains full functionality
+- ✅ Theme switching works correctly
+- ✅ Responsive behavior preserved or improved
+- ✅ Performance metrics improved (measure bundle size reduction)
+- ✅ Visual regression tests pass
+
+### Risk Mitigation Strategy
+
+1. **Gradual Migration**: Migrate component by component, not all at once
+2. **Backward Compatibility**: Keep both systems working during transition
+3. **Testing**: Comprehensive visual regression testing
+4. **Rollback Plan**: Git branches for each component migration
+
+### Next Steps
+
+Ready to begin implementation starting with Priority 1 components. The plan provides clear guidance for migrating all 42 components across 5 weeks, with each phase building upon the previous one to ensure a smooth transition to the modern CSS architecture.
+
+## Previous Work: Webpack CSS Extraction Fix Complete (August 12, 2025)
 
 ### Context
 
