@@ -1,7 +1,7 @@
-/* Advanced Responsive Popup Styles */
+/* Advanced Responsive app Styles */
 
 /* Base responsive container */
-.popup-responsive-container {
+.app-responsive-container {
   /* Dynamic sizing based on container queries */
   inline-size: clamp(280px, 100cqw, 500px);
   block-size: clamp(300px, 100cqh, 600px);
@@ -18,39 +18,39 @@
 
   /* Container query context */
   container-type: inline-size;
-  container-name: popup;
+  container-name: app;
 }
 
 /* Ultra-narrow layout (< 280px) */
-@container popup (width < 280px) {
-  .popup-responsive-container {
+@container app (width < 280px) {
+  .app-responsive-container {
     --layout-mode: 'ultra-narrow';
     --content-padding: var(--spacing-xs);
     --button-size: 'compact';
     --font-scale: 0.85;
   }
 
-  .popup-responsive-header {
+  .app-responsive-header {
     padding-block: var(--spacing-sm);
     text-align: center;
   }
 
-  .popup-responsive-title {
+  .app-responsive-title {
     font-size: calc(var(--font-size-sm) * var(--font-scale));
     line-height: var(--line-height-tight);
   }
 
-  .popup-responsive-content {
+  .app-responsive-content {
     padding-inline: var(--spacing-xs);
     gap: var(--spacing-sm);
   }
 
-  .popup-responsive-actions {
+  .app-responsive-actions {
     grid-template-columns: 1fr;
     gap: var(--spacing-xs);
   }
 
-  .popup-responsive-button {
+  .app-responsive-button {
     min-block-size: 40px;
     padding-block: var(--spacing-xs);
     padding-inline: var(--spacing-sm);
@@ -59,34 +59,34 @@
 }
 
 /* Narrow layout (280px - 350px) */
-@container popup (width >= 280px) and (width < 350px) {
-  .popup-responsive-container {
+@container app (width >= 280px) and (width < 350px) {
+  .app-responsive-container {
     --layout-mode: 'narrow';
     --content-padding: var(--spacing-sm);
     --button-size: 'small';
     --font-scale: 0.9;
   }
 
-  .popup-responsive-header {
+  .app-responsive-header {
     padding-block: var(--spacing-md);
   }
 
-  .popup-responsive-title {
+  .app-responsive-title {
     font-size: calc(var(--font-size-md) * var(--font-scale));
     line-height: var(--line-height-snug);
   }
 
-  .popup-responsive-content {
+  .app-responsive-content {
     padding-inline: var(--spacing-sm);
     gap: var(--spacing-md);
   }
 
-  .popup-responsive-actions {
+  .app-responsive-actions {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
   }
 
-  .popup-responsive-button {
+  .app-responsive-button {
     min-block-size: 44px;
     padding-block: var(--spacing-sm);
     padding-inline: var(--spacing-md);
@@ -95,64 +95,64 @@
 }
 
 /* Standard layout (350px - 450px) */
-@container popup (width >= 350px) and (width < 450px) {
-  .popup-responsive-container {
+@container app (width >= 350px) and (width < 450px) {
+  .app-responsive-container {
     --layout-mode: 'standard';
     --content-padding: var(--spacing-md);
     --button-size: 'medium';
     --font-scale: 1;
   }
 
-  .popup-responsive-header {
+  .app-responsive-header {
     padding-block: var(--spacing-lg);
   }
 
-  .popup-responsive-title {
+  .app-responsive-title {
     font-size: var(--font-size-lg);
     line-height: var(--line-height-snug);
   }
 
-  .popup-responsive-content {
+  .app-responsive-content {
     padding-inline: var(--spacing-md);
     gap: var(--spacing-lg);
   }
 
-  .popup-responsive-actions {
+  .app-responsive-actions {
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-md);
   }
 
-  .popup-responsive-button {
+  .app-responsive-button {
     min-block-size: 48px;
     padding-block: var(--spacing-md);
     padding-inline: var(--spacing-lg);
     font-size: var(--font-size-sm);
   }
 
-  .popup-responsive-button--full-width {
+  .app-responsive-button--full-width {
     grid-column: 1 / -1;
   }
 }
 
 /* Wide layout (>= 450px) */
-@container popup (width >= 450px) {
-  .popup-responsive-container {
+@container app (width >= 450px) {
+  .app-responsive-container {
     --layout-mode: 'wide';
     --content-padding: var(--spacing-lg);
     --button-size: 'large';
     --font-scale: 1.1;
   }
 
-  .popup-responsive-header {
+  .app-responsive-header {
     padding-block: var(--spacing-xl);
   }
 
-  .popup-responsive-title {
+  .app-responsive-title {
     font-size: calc(var(--font-size-xl) * var(--font-scale));
     line-height: var(--line-height-snug);
   }
 
-  .popup-responsive-content {
+  .app-responsive-content {
     padding-inline: var(--spacing-lg);
     gap: var(--spacing-xl);
 
@@ -162,12 +162,12 @@
     align-items: start;
   }
 
-  .popup-responsive-actions {
+  .app-responsive-actions {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: var(--spacing-lg);
   }
 
-  .popup-responsive-button {
+  .app-responsive-button {
     min-block-size: 52px;
     padding-block: var(--spacing-lg);
     padding-inline: var(--spacing-xl);
@@ -176,7 +176,7 @@
 }
 
 /* Dynamic typography scaling */
-.popup-responsive-title {
+.app-responsive-title {
   font-size: clamp(
     calc(var(--font-size-sm) * var(--font-scale, 1)),
     calc(var(--font-size-md) + 2cqw),
@@ -187,7 +187,7 @@
   margin-block-end: var(--spacing-sm);
 }
 
-.popup-responsive-subtitle {
+.app-responsive-subtitle {
   font-size: clamp(
     calc(var(--font-size-xs) * var(--font-scale, 1)),
     calc(var(--font-size-sm) + 1cqw),
@@ -197,7 +197,7 @@
   line-height: var(--line-height-relaxed);
 }
 
-.popup-responsive-body {
+.app-responsive-body {
   font-size: clamp(
     calc(var(--font-size-xs) * var(--font-scale, 1)),
     calc(var(--font-size-xs) + 1cqw),
@@ -208,83 +208,83 @@
 }
 
 /* Responsive navigation patterns */
-.popup-responsive-nav {
+.app-responsive-nav {
   display: grid;
   gap: var(--spacing-sm);
 }
 
-@container popup (width < 350px) {
-  .popup-responsive-nav {
+@container app (width < 350px) {
+  .app-responsive-nav {
     grid-template-columns: 1fr;
   }
 
-  .popup-responsive-nav-item {
+  .app-responsive-nav-item {
     text-align: center;
     padding-block: var(--spacing-sm);
   }
 }
 
-@container popup (width >= 350px) {
-  .popup-responsive-nav {
+@container app (width >= 350px) {
+  .app-responsive-nav {
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   }
 
-  .popup-responsive-nav-item {
+  .app-responsive-nav-item {
     text-align: center;
     padding-block: var(--spacing-md);
   }
 }
 
 /* Responsive form layouts */
-.popup-responsive-form {
+.app-responsive-form {
   display: grid;
   gap: var(--spacing-md);
 }
 
-@container popup (width < 350px) {
-  .popup-responsive-form {
+@container app (width < 350px) {
+  .app-responsive-form {
     grid-template-columns: 1fr;
   }
 
-  .popup-responsive-form-group {
+  .app-responsive-form-group {
     display: grid;
     gap: var(--spacing-xs);
   }
 
-  .popup-responsive-form-label {
+  .app-responsive-form-label {
     font-size: var(--font-size-xs);
   }
 
-  .popup-responsive-form-input {
+  .app-responsive-form-input {
     min-block-size: 40px;
     padding-inline: var(--spacing-sm);
     font-size: var(--font-size-sm);
   }
 }
 
-@container popup (width >= 350px) {
-  .popup-responsive-form {
+@container app (width >= 350px) {
+  .app-responsive-form {
     grid-template-columns: 1fr;
   }
 
-  .popup-responsive-form-group {
+  .app-responsive-form-group {
     display: grid;
     gap: var(--spacing-sm);
   }
 
-  .popup-responsive-form-label {
+  .app-responsive-form-label {
     font-size: var(--font-size-sm);
   }
 
-  .popup-responsive-form-input {
+  .app-responsive-form-input {
     min-block-size: 48px;
     padding-inline: var(--spacing-md);
     font-size: var(--font-size-sm);
   }
 }
 
-@container popup (width >= 450px) {
-  .popup-responsive-form-group--inline {
+@container app (width >= 450px) {
+  .app-responsive-form-group--inline {
     grid-template-columns: 1fr 2fr;
     align-items: center;
     gap: var(--spacing-md);
@@ -292,146 +292,146 @@
 }
 
 /* Responsive content sections */
-.popup-responsive-section {
+.app-responsive-section {
   display: grid;
   gap: var(--spacing-md);
   padding-block: var(--spacing-md);
   border-block-end: 1px solid var(--color-divider);
 }
 
-.popup-responsive-section:last-child {
+.app-responsive-section:last-child {
   border-block-end: none;
 }
 
-@container popup (width < 350px) {
-  .popup-responsive-section {
+@container app (width < 350px) {
+  .app-responsive-section {
     gap: var(--spacing-sm);
     padding-block: var(--spacing-sm);
   }
 }
 
-@container popup (width >= 450px) {
-  .popup-responsive-section {
+@container app (width >= 450px) {
+  .app-responsive-section {
     gap: var(--spacing-lg);
     padding-block: var(--spacing-lg);
   }
 
-  .popup-responsive-section--two-column {
+  .app-responsive-section--two-column {
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
 }
 
 /* Responsive collapsible sections */
-.popup-responsive-collapsible {
+.app-responsive-collapsible {
   display: grid;
   grid-template-rows: auto 0fr;
   transition: grid-template-rows var(--transition-medium);
 }
 
-.popup-responsive-collapsible--expanded {
+.app-responsive-collapsible--expanded {
   grid-template-rows: auto 1fr;
 }
 
-.popup-responsive-collapsible-content {
+.app-responsive-collapsible-content {
   overflow: hidden;
 }
 
-@container popup (width >= 400px) {
-  .popup-responsive-collapsible {
+@container app (width >= 400px) {
+  .app-responsive-collapsible {
     /* Always expanded on wider screens */
     grid-template-rows: auto 1fr;
   }
 }
 
 /* Responsive spacing utilities */
-.popup-responsive-spacing--compact {
+.app-responsive-spacing--compact {
   gap: var(--spacing-xs);
   padding-inline: var(--spacing-xs);
   padding-block: var(--spacing-sm);
 }
 
-.popup-responsive-spacing--comfortable {
+.app-responsive-spacing--comfortable {
   gap: var(--spacing-md);
   padding-inline: var(--spacing-md);
   padding-block: var(--spacing-lg);
 }
 
-.popup-responsive-spacing--spacious {
+.app-responsive-spacing--spacious {
   gap: var(--spacing-lg);
   padding-inline: var(--spacing-lg);
   padding-block: var(--spacing-xl);
 }
 
 /* Apply spacing based on container size */
-@container popup (width < 300px) {
-  .popup-responsive-auto-spacing {
-    @extend .popup-responsive-spacing--compact;
+@container app (width < 300px) {
+  .app-responsive-auto-spacing {
+    @extend .app-responsive-spacing--compact;
   }
 }
 
-@container popup (width >= 300px) and (width < 400px) {
-  .popup-responsive-auto-spacing {
-    @extend .popup-responsive-spacing--comfortable;
+@container app (width >= 300px) and (width < 400px) {
+  .app-responsive-auto-spacing {
+    @extend .app-responsive-spacing--comfortable;
   }
 }
 
-@container popup (width >= 400px) {
-  .popup-responsive-auto-spacing {
-    @extend .popup-responsive-spacing--spacious;
+@container app (width >= 400px) {
+  .app-responsive-auto-spacing {
+    @extend .app-responsive-spacing--spacious;
   }
 }
 
 /* Responsive visibility utilities */
-@container popup (width < 350px) {
-  .popup-responsive-hide-narrow {
+@container app (width < 350px) {
+  .app-responsive-hide-narrow {
     display: none;
   }
 }
 
-@container popup (width >= 450px) {
-  .popup-responsive-show-wide {
+@container app (width >= 450px) {
+  .app-responsive-show-wide {
     display: block;
   }
 }
 
-.popup-responsive-show-wide {
+.app-responsive-show-wide {
   display: none;
 }
 
 /* Performance optimizations for responsive elements */
-.popup-responsive-container,
-.popup-responsive-content,
-.popup-responsive-actions {
+.app-responsive-container,
+.app-responsive-content,
+.app-responsive-actions {
   contain: layout style;
 }
 
 /* Accessibility improvements for responsive design */
 @media (prefers-reduced-motion: reduce) {
-  .popup-responsive-collapsible {
+  .app-responsive-collapsible {
     transition: none;
   }
 }
 
 @media (prefers-contrast: high) {
-  .popup-responsive-section {
+  .app-responsive-section {
     border-block-end-width: 2px;
   }
 }
 
 /* Print styles for responsive layout */
 @media print {
-  .popup-responsive-container {
+  .app-responsive-container {
     aspect-ratio: auto;
     inline-size: 100%;
     block-size: auto;
   }
 
-  .popup-responsive-content {
+  .app-responsive-content {
     grid-template-columns: 1fr;
   }
 
-  .popup-responsive-actions {
+  .app-responsive-actions {
     grid-template-columns: 1fr;
   }
 }

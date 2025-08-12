@@ -1,7 +1,7 @@
-/* Authentication-Specific Popup Styles */
+/* Authentication-Specific app Styles */
 
 /* Authentication container */
-.popup-auth-container {
+.app-auth-container {
   display: grid;
   grid-template-areas:
     'header'
@@ -11,18 +11,18 @@
   gap: var(--spacing-lg);
   padding-inline: var(--spacing-lg);
   padding-block: var(--spacing-xl);
-  min-block-size: var(--popup-min-height);
+  min-block-size: var(--app-min-height);
   place-items: center;
 }
 
 /* Authentication header */
-.popup-auth-header {
+.app-auth-header {
   grid-area: header;
   text-align: center;
   inline-size: 100%;
 }
 
-.popup-auth-title {
+.app-auth-title {
   font-size: clamp(var(--font-size-lg), 4cqw, var(--font-size-xl));
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
@@ -30,7 +30,7 @@
   line-height: var(--line-height-tight);
 }
 
-.popup-auth-subtitle {
+.app-auth-subtitle {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: var(--line-height-relaxed);
@@ -38,7 +38,7 @@
 }
 
 /* Authentication content */
-.popup-auth-content {
+.app-auth-content {
   grid-area: content;
   inline-size: 100%;
   display: grid;
@@ -47,7 +47,7 @@
 }
 
 /* Authentication actions */
-.popup-auth-actions {
+.app-auth-actions {
   grid-area: actions;
   inline-size: 100%;
   display: grid;
@@ -55,7 +55,7 @@
 }
 
 /* Authentication button variants */
-.popup-auth-button {
+.app-auth-button {
   inline-size: 100%;
   min-block-size: 48px;
   border-radius: var(--radius-xl);
@@ -75,46 +75,46 @@
   grid-template-columns: auto 1fr auto;
 }
 
-.popup-auth-button--primary {
+.app-auth-button--primary {
   background-color: var(--color-primary);
   color: white;
 }
 
-.popup-auth-button--secondary {
+.app-auth-button--secondary {
   background-color: var(--color-surface);
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
 }
 
-.popup-auth-button--danger {
+.app-auth-button--danger {
   background-color: var(--color-error);
   color: white;
 }
 
 /* Button states */
-.popup-auth-button:hover {
+.app-auth-button:hover {
   opacity: 0.9;
   transform: translateY(-1px);
 }
 
-.popup-auth-button:focus {
+.app-auth-button:focus {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-.popup-auth-button:active {
+.app-auth-button:active {
   opacity: 0.8;
   transform: translateY(0);
 }
 
-.popup-auth-button:disabled {
+.app-auth-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
 /* Authentication error states */
-.popup-auth-error {
+.app-auth-error {
   background-color: var(--color-error-surface);
   border: 1px solid var(--color-error);
   border-radius: var(--radius-md);
@@ -123,14 +123,14 @@
   margin-block: var(--spacing-sm);
 }
 
-.popup-auth-error-title {
+.app-auth-error-title {
   color: var(--color-error);
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-sm);
   margin-block-end: var(--spacing-xs);
 }
 
-.popup-auth-error-message {
+.app-auth-error-message {
   color: var(--color-text-primary);
   font-size: var(--font-size-xs);
   line-height: var(--line-height-relaxed);
@@ -138,29 +138,29 @@
 }
 
 /* Authentication loading states */
-.popup-auth-loading {
+.app-auth-loading {
   display: grid;
   place-items: center;
   gap: var(--spacing-md);
   padding-block: var(--spacing-xl);
 }
 
-.popup-auth-spinner {
+.app-auth-spinner {
   inline-size: 32px;
   block-size: 32px;
   border: 3px solid var(--color-border);
   border-top-color: var(--color-primary);
   border-radius: 50%;
-  animation: popup-auth-spin 1s linear infinite;
+  animation: app-auth-spin 1s linear infinite;
 }
 
-@keyframes popup-auth-spin {
+@keyframes app-auth-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-.popup-auth-loading-text {
+.app-auth-loading-text {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   text-align: center;
@@ -168,17 +168,17 @@
 
 /* Responsive authentication layouts */
 @container (width < 300px) {
-  .popup-auth-container {
+  .app-auth-container {
     padding-inline: var(--spacing-md);
     padding-block: var(--spacing-lg);
     gap: var(--spacing-md);
   }
 
-  .popup-auth-title {
+  .app-auth-title {
     font-size: var(--font-size-md);
   }
 
-  .popup-auth-button {
+  .app-auth-button {
     padding-block: var(--spacing-sm);
     padding-inline: var(--spacing-md);
     font-size: var(--font-size-xs);
@@ -187,62 +187,62 @@
 }
 
 @container (width >= 400px) {
-  .popup-auth-container {
+  .app-auth-container {
     padding-inline: var(--spacing-xl);
     padding-block: var(--spacing-xxl);
   }
 
-  .popup-auth-actions {
+  .app-auth-actions {
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-md);
   }
 
-  .popup-auth-button--full-width {
+  .app-auth-button--full-width {
     grid-column: 1 / -1;
   }
 }
 
 /* High contrast mode adjustments */
 @media (prefers-contrast: high) {
-  .popup-auth-button {
+  .app-auth-button {
     border: 2px solid currentColor;
   }
 
-  .popup-auth-error {
+  .app-auth-error {
     border-width: 2px;
   }
 }
 
 /* Reduced motion adjustments */
 @media (prefers-reduced-motion: reduce) {
-  .popup-auth-button {
+  .app-auth-button {
     transition: none;
     transform: none;
   }
 
-  .popup-auth-button:hover,
-  .popup-auth-button:active {
+  .app-auth-button:hover,
+  .app-auth-button:active {
     transform: none;
   }
 
-  .popup-auth-spinner {
+  .app-auth-spinner {
     animation: none;
   }
 }
 
 /* Focus management for authentication flow */
-.popup-auth-container:focus-within .popup-auth-button:focus {
+.app-auth-container:focus-within .app-auth-button:focus {
   z-index: 1;
 }
 
 /* Print styles */
 @media print {
-  .popup-auth-container {
+  .app-auth-container {
     background: white;
     color: black;
   }
 
-  .popup-auth-button {
+  .app-auth-button {
     border: 1px solid black;
     background: white;
     color: black;

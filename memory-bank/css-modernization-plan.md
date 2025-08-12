@@ -44,7 +44,7 @@ extension/src/styles/
 │   ├── typography.css
 │   └── variables.css
 ├── components/
-│   ├── popup.css
+│   ├── app.css
 │   └── dashboard.css
 ├── themes/
 │   ├── light.css

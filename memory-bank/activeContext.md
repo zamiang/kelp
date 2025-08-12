@@ -137,7 +137,6 @@ extension/src/styles/components/
 
 **New Files**:
 
-- `extension/src/styles/components/popup-auth.css` - Authentication-specific styling
 - `extension/src/styles/components/popup-loading.css` - Loading states and animations
 - `extension/src/styles/components/popup-responsive.css` - Advanced responsive features
 - `extension/src/styles/components/dashboard-extension.css` - Dashboard integration

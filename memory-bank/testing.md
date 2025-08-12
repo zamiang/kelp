@@ -17,7 +17,7 @@ test/
 ├── setup.ts                    # Global test configuration
 ├── vitest-environment-jsdom.ts # Custom jsdom environment
 ├── background.test.ts          # Extension background script tests
-├── popup.test.tsx             # Extension popup tests
+├── app.test.tsx             # Extension popup tests
 ├── integration.test.ts        # Integration tests
 ├── components/                # Component-specific tests
 └── README.md                  # Testing documentation

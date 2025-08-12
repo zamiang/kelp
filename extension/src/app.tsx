@@ -111,6 +111,108 @@ const LoadingMobileDashboardContainer = (props: {
   );
 };
 
+const ErrorPopups = (props: {
+  shouldShowLoading: boolean;
+  hasDatabaseError: boolean;
+  hasAuthError: boolean;
+  hasGoogleAdvancedProtectionError: boolean;
+  isMicrosoftError: boolean;
+  isMicrosoftLoading: boolean;
+}) => (
+  <React.Fragment>
+    {props.hasDatabaseError && (
+      <div className="popup-error">
+        <div className="alert">
+          <div className="alert-title">Please restart your browser</div>
+          <div className="alert-content">
+            Unable to connect to the database. This is an issue I do not fully understand where the
+            database does not accept connections. If you are familiar with connection issues with
+            indexdb, please email brennan@kelp.nyc.
+          </div>
+        </div>
+      </div>
+    )}
+    {props.hasAuthError && (
+      <div className="popup-error">
+        <div className="alert">
+          <div className="alert-title">Authentication Error</div>
+          <div className="alert-content">
+            Please login with Google
+            <br />
+            <br />
+            <button
+              className="popup-button"
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Try again
+            </button>
+            <br />
+            <br />
+            Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
+          </div>
+        </div>
+      </div>
+    )}
+    {props.hasGoogleAdvancedProtectionError && (
+      <div className="popup-error">
+        <div className="alert">
+          <div className="alert-title">Authentication Error</div>
+          <div className="alert-content">
+            It looks like your organization has the{' '}
+            <a
+              href="https://landing.google.com/advancedprotection/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Advanced Protection Program
+            </a>{' '}
+            enabled.
+            <br />
+            <br />
+            Ask your IT administrator to whitelist:
+            <br />
+            <br />
+            <button
+              className="popup-button"
+              onClick={(event) => {
+                event.stopPropagation();
+                void navigator.clipboard.writeText(getGoogleClientID());
+                return false;
+              }}
+            >
+              {getGoogleClientID()}
+            </button>
+            <br />
+            <small>Click to copy to your clipboard</small>
+            <br />
+            <br />
+            Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
+          </div>
+        </div>
+      </div>
+    )}
+    {(props.shouldShowLoading || props.isMicrosoftLoading) && (
+      <div className="popup-loading">
+        <div className="popup-loading-content">
+          <div
+            className="popup-loading-spinner popup-loading-spinner--large"
+            role="progressbar"
+            aria-label="Loading"
+          ></div>
+          <div className="popup-loading-title">Loading</div>
+          <div className="popup-loading-message">
+            {props.isMicrosoftLoading
+              ? 'Authenticating with Microsoft...'
+              : 'Initializing application...'}
+          </div>
+        </div>
+      </div>
+    )}
+  </React.Fragment>
+);
+
 const MainContent = (props: { theme: string; setTheme: (t: string) => void }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isDoneFetchingToken, setDoneFetchingToken] = useState(false);
@@ -186,96 +288,14 @@ const MainContent = (props: { theme: string; setTheme: (t: string) => void }) =>
 
   return (
     <div className="main-content-container main-content-responsive-container extension-context">
-      {hasDatabaseError && (
-        <div className="popup-error">
-          <div className="alert">
-            <div className="alert-title">Please restart your browser</div>
-            <div className="alert-content">
-              Unable to connect to the database. This is an issue I do not fully understand where
-              the database does not accept connections. If you are familiar with connection issues
-              with indexdb, please email brennan@kelp.nyc.
-            </div>
-          </div>
-        </div>
-      )}
-      {hasAuthError && (
-        <div className="popup-error">
-          <div className="alert">
-            <div className="alert-title">Authentication Error</div>
-            <div className="alert-content">
-              Please login with Google
-              <br />
-              <br />
-              <button
-                className="popup-button"
-                onClick={() => {
-                  window.location.reload();
-                }}
-              >
-                Try again
-              </button>
-              <br />
-              <br />
-              Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
-            </div>
-          </div>
-        </div>
-      )}
-      {hasGoogleAdvancedProtectionError && (
-        <div className="popup-error">
-          <div className="alert">
-            <div className="alert-title">Authentication Error</div>
-            <div className="alert-content">
-              It looks like your organization has the{' '}
-              <a
-                href="https://landing.google.com/advancedprotection/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Google Advanced Protection Program
-              </a>{' '}
-              enabled.
-              <br />
-              <br />
-              Ask your IT administrator to whitelist:
-              <br />
-              <br />
-              <button
-                className="popup-button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  void navigator.clipboard.writeText(getGoogleClientID());
-                  return false;
-                }}
-              >
-                {getGoogleClientID()}
-              </button>
-              <br />
-              <small>Click to copy to your clipboard</small>
-              <br />
-              <br />
-              Please email <a href="mailto:brennan@kelp.nyc">brennan@kelp.nyc</a> with questions.
-            </div>
-          </div>
-        </div>
-      )}
-      {(shouldShowLoading || isMicrosoftLoading) && (
-        <div className="popup-loading">
-          <div className="popup-loading-content">
-            <div
-              className="popup-loading-spinner popup-loading-spinner--large"
-              role="progressbar"
-              aria-label="Loading"
-            ></div>
-            <div className="popup-loading-title">Loading</div>
-            <div className="popup-loading-message">
-              {isMicrosoftLoading
-                ? 'Authenticating with Microsoft...'
-                : 'Initializing application...'}
-            </div>
-          </div>
-        </div>
-      )}
+      <ErrorPopups
+        shouldShowLoading={shouldShowLoading}
+        isMicrosoftLoading={isMicrosoftLoading}
+        isMicrosoftError={isMicrosoftError}
+        hasDatabaseError={hasDatabaseError}
+        hasAuthError={hasAuthError}
+        hasGoogleAdvancedProtectionError={hasGoogleAdvancedProtectionError}
+      />
       {!hasAuthError && !hasDatabaseError && database && (isDoneFetchingToken || token) && (
         <div className="extension-dashboard">
           <LoadingMobileDashboardContainer
@@ -360,7 +380,7 @@ const App = () => {
   );
 };
 
-const mountNode = document.getElementById('popup');
+const mountNode = document.getElementById('app');
 if (mountNode) {
   const root = createRoot(mountNode);
   root.render(<App />);
