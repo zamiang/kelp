@@ -63,7 +63,7 @@ const Root = styled('div')(({ theme }) => ({
     height: '100%',
   },
   [`&.${classes.imageContainer}`]: {
-    backgroundSize: '133%',
+    backgroundSize: '105%',
     backgroundPosition: 'top',
     display: 'block',
     paddingBottom: '61.8%',

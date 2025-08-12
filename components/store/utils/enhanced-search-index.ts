@@ -31,7 +31,7 @@ class EnhancedSearchIndex {
   private indexCache = new Map<string, ISearchItem[]>();
   private lastIndexUpdate = new Map<string, number>();
   private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-  private readonly MAX_CACHE_SIZE = 100;
+  private readonly MAX_CACHE_SIZE = 10000;
 
   constructor() {
     console.log('Enhanced search index initialized');
@@ -47,7 +47,7 @@ class EnhancedSearchIndex {
   ): Promise<{ success: true; data: SearchResult } | { success: false; error: Error }> {
     return safeOperation(async () => {
       const {
-        limit = 50,
+        limit = 5000,
         offset = 0,
         types = ['segment', 'document', 'person', 'website'],
         minScore = 0.1,
