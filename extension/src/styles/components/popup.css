@@ -1,0 +1,183 @@
+/* Popup Component Styles */
+
+/* Main popup container */
+.popup-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: var(--popup-min-height);
+  max-height: var(--popup-max-height);
+  width: var(--popup-width);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  overflow: hidden;
+  container-type: inline-size;
+
+  /* CSS Containment for performance */
+  contain: layout style paint;
+
+  /* Content visibility for off-screen optimization */
+  content-visibility: auto;
+  contain-intrinsic-size: var(--popup-min-height);
+}
+
+/* Popup content area */
+#popup {
+  overflow-y: auto;
+  height: 100vh;
+  background-color: var(--color-background);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+#popup::-webkit-scrollbar {
+  width: 6px;
+}
+
+#popup::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#popup::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+#popup::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-secondary);
+}
+
+/* Button styles */
+.popup-button {
+  inline-size: 100%;
+  border-radius: var(--radius-xl);
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--spacing-lg);
+  transition: opacity var(--transition-fast);
+  min-block-size: 48px;
+  opacity: 1;
+  font-family: var(--font-family-medium);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: white;
+
+  /* Modern CSS features */
+  display: grid;
+  place-items: center;
+  gap: var(--spacing-xs);
+}
+
+.popup-button:hover {
+  opacity: 0.8;
+}
+
+.popup-button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.popup-button:active {
+  opacity: 0.6;
+}
+
+/* Loading states */
+.popup-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--popup-min-height);
+  background-color: var(--color-background);
+}
+
+/* Error states */
+.popup-error {
+  padding-inline: var(--spacing-lg);
+  padding-block: var(--spacing-lg);
+  background-color: var(--color-background);
+}
+
+.popup-error .alert {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-md);
+
+  /* Modern CSS Grid for alert layout */
+  display: grid;
+  gap: var(--spacing-sm);
+  grid-template-areas:
+    'title'
+    'content';
+}
+
+.popup-error .alert-title {
+  grid-area: title;
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+  margin-block-end: 0;
+}
+
+.popup-error .alert-content {
+  grid-area: content;
+  color: var(--color-text-primary);
+  line-height: var(--line-height-relaxed);
+  margin-block-start: 0;
+}
+
+/* Container responsive styles */
+@container (max-width: 350px) {
+  .popup-container {
+    --popup-width: 320px;
+  }
+
+  .popup-button {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+}
+
+@container (min-width: 450px) {
+  .popup-container {
+    --popup-width: 450px;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .popup-button {
+    border: 2px solid var(--color-text-primary);
+  }
+
+  .popup-error .alert {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion adjustments */
+@media (prefers-reduced-motion: reduce) {
+  .popup-button {
+    transition: none;
+  }
+
+  #popup {
+    scroll-behavior: auto;
+  }
+}
+
+/* Focus management */
+.popup-container:focus-within {
+  outline: none;
+}
+
+/* Print styles */
+@media print {
+  .popup-container {
+    background: white;
+    color: black;
+    box-shadow: none;
+  }
+}

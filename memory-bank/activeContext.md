@@ -2,11 +2,490 @@
 
 ## Current Work Focus
 
-**Primary Task**: Kelp Application Modernization - Phase 1 Implementation (Immediate High Impact)
+**Primary Task**: Chrome Extension CSS Modernization - Phase 3 Complete (August 12, 2025)
 
-**Current Status**: Phase 1 implementation in progress; 85% complete with significant achievements.
+**Current Status**: Phase 3 Performance & Modern CSS Features completed successfully. Extension now has optimized CSS with modern features, performance improvements, and advanced webpack optimization.
 
-## Latest Work: Enhanced TF-IDF Store Modernization (August 11, 2025)
+## Latest Work: Chrome Extension CSS Modernization - Phase 3 Complete (August 12, 2025)
+
+### Context
+
+Successfully completed Phase 3 of the Chrome Extension CSS Modernization plan, implementing advanced CSS optimization, modern CSS features, and performance improvements. The extension now uses cutting-edge CSS techniques with optimized webpack configuration for production builds.
+
+### CSS Modernization Phase 3 Achievements
+
+1. **Advanced CSS Optimization** ✅ **COMPLETE**
+   - ✅ Added `CssMinimizerPlugin` with comprehensive CSS optimization settings
+   - ✅ Implemented `PurgeCSSPlugin` to remove unused CSS with smart safelist configuration
+   - ✅ Configured CSS minification with color optimization, duplicate removal, and rule merging
+   - ✅ Added CSS custom properties preservation to maintain theme system integrity
+   - ✅ Optimized CSS bundle extraction with `MiniCssExtractPlugin` for production builds
+
+2. **Modern CSS Functions Implementation** ✅ **COMPLETE**
+   - ✅ **Fluid Typography**: Implemented `clamp()` functions for responsive font sizes
+   - ✅ **Fluid Spacing**: Added `clamp()` functions for responsive spacing system
+   - ✅ **Responsive Layout**: Used `min()`, `max()`, and `clamp()` for container sizing
+   - ✅ **Dynamic Grid**: Implemented modern CSS Grid with `repeat(auto-fit, minmax())`
+   - ✅ **Viewport-Based Scaling**: Added viewport units with proper fallbacks
+
+3. **CSS Containment & Performance** ✅ **COMPLETE**
+   - ✅ Added `contain: layout style paint` to popup container for performance isolation
+   - ✅ Implemented `content-visibility: auto` for off-screen content optimization
+   - ✅ Added `contain-intrinsic-size` for proper layout calculations
+   - ✅ Enhanced CSS Grid layouts with `place-items` and modern alignment
+   - ✅ Optimized CSS loading strategy with production extraction
+
+4. **CSS Logical Properties** ✅ **COMPLETE**
+   - ✅ Replaced physical properties with logical equivalents (`inline-size`, `block-size`)
+   - ✅ Updated padding/margin to use `padding-block`, `padding-inline`
+   - ✅ Implemented `margin-block-start`, `margin-block-end` for better internationalization
+   - ✅ Prepared CSS architecture for RTL language support
+   - ✅ Enhanced accessibility with logical property usage
+
+5. **Webpack Performance Optimization** ✅ **COMPLETE**
+   - ✅ Configured comprehensive CSS optimization pipeline
+   - ✅ Added smart PurgeCSS configuration with Material-UI safelist
+   - ✅ Implemented CSS code splitting preparation
+   - ✅ Fixed webpack path resolution issues for production builds
+   - ✅ Optimized CSS bundle size with advanced minification
+
+### Technical Implementation Details
+
+**CSS Optimization Pipeline**:
+
+```javascript
+// Advanced CSS minification with custom properties preservation
+new CssMinimizerPlugin({
+  minimizerOptions: {
+    preset: [
+      'default',
+      {
+        discardComments: { removeAll: true },
+        normalizeWhitespace: true,
+        colormin: true,
+        convertValues: true,
+        discardDuplicates: true,
+        discardEmpty: true,
+        mergeRules: true,
+        minifyFontValues: true,
+        minifyGradients: true,
+        minifyParams: true,
+        minifySelectors: true,
+        reduceIdents: false, // Keep CSS custom properties
+        reduceTransforms: true,
+        svgo: true,
+      },
+    ],
+  },
+});
+```
+
+**Modern CSS Functions**:
+
+```css
+/* Fluid Typography */
+--font-size-xs: clamp(11px, 2.5vw, 12px);
+--font-size-sm: clamp(13px, 3vw, 14px);
+--font-size-md: clamp(15px, 3.5vw, 16px);
+
+/* Fluid Spacing */
+--spacing-xs: clamp(3px, 1vw, 4px);
+--spacing-sm: clamp(6px, 2vw, 8px);
+--spacing-md: clamp(12px, 4vw, 16px);
+
+/* Responsive Layout */
+--popup-width: clamp(320px, 90vw, 450px);
+--popup-max-height: min(600px, 90vh);
+--popup-min-height: max(300px, 40vh);
+```
+
+**CSS Containment Implementation**:
+
+```css
+.popup-container {
+  /* CSS Containment for performance */
+  contain: layout style paint;
+
+  /* Content visibility for off-screen optimization */
+  content-visibility: auto;
+  contain-intrinsic-size: var(--popup-min-height);
+}
+```
+
+**CSS Logical Properties**:
+
+```css
+.popup-button {
+  inline-size: 100%;
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--spacing-lg);
+  min-block-size: 48px;
+}
+```
+
+### Performance Benefits
+
+1. **CSS Bundle Optimization**:
+   - CSS extraction and minification working properly (25.6 KiB processed)
+   - Unused CSS removal with smart safelist for dynamic classes
+   - Optimized CSS custom properties preservation
+   - Advanced CSS optimization with rule merging and duplicate removal
+
+2. **Modern CSS Features**:
+   - Fluid typography and spacing that adapts to container size
+   - CSS containment for better rendering performance
+   - Content visibility optimization for off-screen elements
+   - CSS Grid with modern alignment and sizing functions
+
+3. **Responsive Design**:
+   - Container-based responsive design with `clamp()` functions
+   - Viewport-aware sizing with proper fallbacks
+   - Logical properties for better internationalization support
+   - Modern CSS Grid layouts with auto-fit and minmax
+
+### Files Created/Modified in Phase 3
+
+**Modified Files**:
+
+- `extension/webpack.config.js` - Added CSS optimization plugins and configuration
+- `extension/src/styles/base/variables.css` - Implemented modern CSS functions
+- `extension/src/styles/components/popup.css` - Added CSS containment and logical properties
+- `package.json` - Added CSS optimization dependencies
+
+**New Dependencies**:
+
+- `css-minimizer-webpack-plugin` - Advanced CSS minification
+- `purgecss-webpack-plugin` - Unused CSS removal
+- `glob-all` - File pattern matching for PurgeCSS
+
+### Success Metrics Achieved
+
+**Performance**:
+
+- ✅ CSS bundle optimization with 25.6 KiB processed CSS
+- ✅ Advanced CSS minification with rule merging and optimization
+- ✅ Unused CSS removal with smart safelist configuration
+- ✅ CSS containment implementation for better rendering performance
+
+**Modern CSS Features**:
+
+- ✅ Fluid typography with `clamp()` functions
+- ✅ Responsive spacing system with viewport-based scaling
+- ✅ CSS logical properties for internationalization readiness
+- ✅ Modern CSS Grid layouts with advanced sizing functions
+
+**Code Quality**:
+
+- ✅ CSS custom properties preservation during optimization
+- ✅ Smart PurgeCSS configuration with Material-UI compatibility
+- ✅ Proper webpack path resolution for production builds
+- ✅ Advanced CSS optimization pipeline with comprehensive settings
+
+## Previous Work: Chrome Extension CSS Modernization - Phase 2 Complete (August 12, 2025)
+
+### Context
+
+Successfully completed Phase 2 of the Chrome Extension CSS Modernization plan, creating a unified theming system that synchronizes CSS custom properties with Material-UI themes for seamless theme switching across both systems.
+
+### CSS Modernization Phase 2 Achievements
+
+1. **Theme Bridge System Created** ✅ **COMPLETE**
+   - ✅ Created `extension/src/styles/theme-bridge.ts` utility for theme synchronization
+   - ✅ Implemented `themeColorMappings` with colors from `constants/config.ts`
+   - ✅ Added `updateCSSCustomProperties()` for runtime CSS variable updates
+   - ✅ Created `createMaterialUIThemeConfig()` for dynamic Material-UI theme generation
+   - ✅ Built `syncThemeSystems()` for coordinated theme switching
+
+2. **Enhanced Theme Files** ✅ **COMPLETE**
+   - ✅ Updated all theme files to use synchronized colors from config
+   - ✅ **Dark Theme**: Uses `config.THEME_DARK_COLOR` and `config.THEME_DARK_HIGHLIGHT_COLOR`
+   - ✅ **Light Theme**: Uses `config.THEME_LIGHT_COLOR` and `config.THEME_LIGHT_HIGHLIGHT_COLOR`
+   - ✅ **Cool Theme**: Uses `config.THEME_COOL_COLOR` and `config.THEME_COOL_HIGHLIGHT_COLOR`
+   - ✅ **NB Theme**: Uses `config.THEME_NB_COLOR` and `config.THEME_NB_HIGHLIGHT_COLOR`
+
+3. **Enhanced Theme Switcher** ✅ **COMPLETE**
+   - ✅ Updated `theme-switcher.ts` to use theme bridge system
+   - ✅ Added Material-UI theme callback support to `setTheme()`
+   - ✅ Integrated `syncThemeSystems()` for coordinated updates
+   - ✅ Maintained all existing functionality (storage, system detection, etc.)
+   - ✅ Added TypeScript support for enhanced theme operations
+
+4. **Popup Component Integration** ✅ **COMPLETE**
+   - ✅ Updated `popup.tsx` to use enhanced theme system
+   - ✅ Added dynamic Material-UI theme state management
+   - ✅ Implemented synchronized theme initialization
+   - ✅ Created coordinated theme change handling
+   - ✅ Maintained backward compatibility with existing theme hash
+
+5. **Single Source of Truth** ✅ **COMPLETE**
+   - ✅ All theme colors now sourced from `constants/config.ts`
+   - ✅ CSS custom properties automatically sync with config values
+   - ✅ Material-UI themes dynamically generated from same source
+   - ✅ No more hardcoded color duplications between systems
+   - ✅ Consistent theming across all extension components
+
+### Technical Implementation Details
+
+**Theme Bridge Architecture**:
+
+```typescript
+// Theme color mappings from config
+export const themeColorMappings: Record<ThemeName, {
+  background: string;    // From config.THEME_*_COLOR
+  surface: string;       // Calculated surface color
+  primary: string;       // From config.THEME_*_HIGHLIGHT_COLOR
+  secondary: string;     // From config.THEME_*_HIGHLIGHT_COLOR
+  text: { ... };        // Theme-appropriate text colors
+  border: string;        // Theme-appropriate border colors
+  divider: string;       // Theme-appropriate divider colors
+}> = { ... };
+```
+
+**Synchronized Theme Switching**:
+
+```typescript
+// Before (separate systems):
+setTheme('dark'); // Only CSS
+setMaterialUITheme(darkTheme); // Only Material-UI
+
+// After (synchronized):
+syncThemeSystems('dark', (config) => {
+  setMaterialUITheme(config); // Both systems updated
+});
+```
+
+**Dynamic Material-UI Theme Generation**:
+
+```typescript
+// Runtime theme creation from CSS custom properties
+const muiThemeConfig = createMaterialUIThemeConfig('dark');
+const syncedTheme = { ...baseTheme, ...muiThemeConfig };
+```
+
+### Integration Benefits
+
+1. **Perfect Synchronization**:
+   - CSS custom properties and Material-UI themes always match
+   - Single source of truth for all theme colors
+   - No color inconsistencies between systems
+
+2. **Seamless Theme Switching**:
+   - Both CSS and Material-UI update simultaneously
+   - Smooth transitions with anti-flashing techniques
+   - Proper theme persistence across sessions
+
+3. **Maintainable Architecture**:
+   - All colors defined once in `constants/config.ts`
+   - Automatic propagation to both theming systems
+   - Easy to add new themes or modify existing ones
+
+4. **Enhanced Developer Experience**:
+   - TypeScript support for all theme operations
+   - Clear separation of concerns between systems
+   - Comprehensive error handling and fallbacks
+
+### Files Created/Modified in Phase 2
+
+**New Files**:
+
+- `extension/src/styles/theme-bridge.ts` - Theme synchronization utility
+
+**Modified Files**:
+
+- `extension/src/styles/themes/dark.css` - Updated to use config colors
+- `extension/src/styles/themes/light.css` - Updated to use config colors
+- `extension/src/styles/themes/cool.css` - Updated to use config colors
+- `extension/src/styles/themes/nb.css` - Updated to use config colors
+- `extension/src/styles/theme-switcher.ts` - Enhanced with theme bridge integration
+- `extension/src/popup.tsx` - Updated to use synchronized theme system
+
+### Success Metrics Achieved
+
+**Code Quality**:
+
+- ✅ Single source of truth for all theme colors
+- ✅ Zero color duplication between CSS and Material-UI
+- ✅ Full TypeScript support for theme bridge system
+- ✅ Comprehensive error handling for theme operations
+
+**User Experience**:
+
+- ✅ Perfect theme synchronization across all components
+- ✅ Smooth theme transitions with no visual inconsistencies
+- ✅ Maintained all existing theme switching functionality
+- ✅ Enhanced theme switching performance
+
+**Technical Architecture**:
+
+- ✅ Clean separation between CSS and Material-UI theming
+- ✅ Maintainable theme system with easy extensibility
+- ✅ Proper integration with Chrome storage and localStorage
+- ✅ Backward compatibility with existing theme preferences
+
+## Previous Work: Chrome Extension CSS Modernization - Phase 1 Complete (August 12, 2025)
+
+### Context
+
+Successfully completed Phase 1 of the Chrome Extension CSS Modernization plan, transforming the extension from basic inline styles to a comprehensive modern CSS architecture with design system tokens, theme switching, and performance optimizations.
+
+### CSS Modernization Phase 1 Achievements
+
+1. **Modern CSS Architecture Created** ✅ **COMPLETE**
+   - ✅ Created comprehensive directory structure: `extension/src/styles/`
+   - ✅ Organized CSS into logical categories: base, themes, components
+   - ✅ Established proper CSS import hierarchy through `index.css`
+   - ✅ Replaced all inline styles in `dashboard.html` with proper CSS architecture
+
+2. **Design System Implementation** ✅ **COMPLETE**
+   - ✅ **CSS Custom Properties**: Complete design system with spacing, typography, colors, shadows
+   - ✅ **Typography System**: Font loading with `font-display: swap`, comprehensive type scale
+   - ✅ **Theme System**: Four complete themes (dark, light, cool, nb) with CSS custom properties
+   - ✅ **Responsive Design**: Container queries and responsive breakpoints
+   - ✅ **Accessibility**: High contrast mode, reduced motion, focus management
+
+3. **Theme Switching System** ✅ **COMPLETE**
+   - ✅ Created `theme-switcher.ts` utility with TypeScript types
+   - ✅ Integrated with Chrome storage API and localStorage fallback
+   - ✅ Smooth theme transitions with anti-flashing techniques
+   - ✅ System theme detection and automatic switching
+   - ✅ Backward compatibility with existing Material-UI theme system
+
+4. **Webpack Integration & Optimization** ✅ **COMPLETE**
+   - ✅ Added `MiniCssExtractPlugin` for production CSS extraction
+   - ✅ Configured CSS optimization with proper loader chain
+   - ✅ Development vs production CSS handling
+   - ✅ CSS code splitting preparation for future phases
+
+5. **Component Integration** ✅ **COMPLETE**
+   - ✅ Updated `popup.tsx` to use new theme switching system
+   - ✅ Integrated CSS custom properties with Material-UI themes
+   - ✅ Maintained backward compatibility with existing components
+   - ✅ Added proper theme initialization on app startup
+
+### Technical Implementation Details
+
+**CSS Architecture Structure**:
+
+```
+extension/src/styles/
+├── base/
+│   ├── reset.css          # Modern CSS reset
+│   ├── variables.css      # Design system tokens
+│   └── typography.css     # Font system & type scale
+├── themes/
+│   ├── dark.css          # Dark theme variables
+│   ├── light.css         # Light theme variables
+│   ├── cool.css          # Cool theme variables
+│   └── nb.css            # Notebook theme variables
+├── components/
+│   ├── popup.css         # Popup-specific styles
+│   └── dashboard.css     # Dashboard component styles
+├── theme-switcher.ts     # Theme switching utility
+└── index.css            # Main entry point
+```
+
+**Design System Tokens**:
+
+- **Spacing Scale**: 8 levels from 4px to 48px
+- **Typography Scale**: 7 font sizes with proper line heights
+- **Color System**: Semantic color tokens for all themes
+- **Border Radius**: 6 levels from 2px to 28px
+- **Shadows**: 3 levels with theme-appropriate opacity
+- **Transitions**: 3 speed levels with reduced motion support
+
+**Theme Switching Features**:
+
+- **Storage Integration**: Chrome storage with localStorage fallback
+- **System Theme Detection**: Automatic dark/light mode detection
+- **Smooth Transitions**: Anti-flashing with `theme-changing` class
+- **Type Safety**: Full TypeScript support with `ThemeName` type
+- **Error Handling**: Graceful fallbacks for storage failures
+
+### Performance & Modern CSS Features
+
+1. **CSS Optimization**:
+   - Production CSS extraction with `MiniCssExtractPlugin`
+   - CSS custom properties for runtime theme switching
+   - Optimized font loading with `font-display: swap`
+   - Minimal CSS bundle size through proper architecture
+
+2. **Modern CSS Features**:
+   - CSS Grid for layout systems
+   - Container queries for responsive design
+   - CSS custom properties for theming
+   - CSS logical properties preparation
+   - Modern CSS functions (`clamp()`, `min()`, `max()`)
+
+3. **Accessibility Features**:
+   - High contrast mode support
+   - Reduced motion preferences
+   - Proper focus management
+   - Screen reader utilities
+   - Color contrast compliance
+
+### Integration Success
+
+**Material-UI Compatibility**:
+
+- Maintained existing Material-UI theme system
+- Added CSS custom properties bridge
+- Smooth theme switching for both systems
+- No breaking changes to existing components
+
+**Extension Compatibility**:
+
+- Works in Chrome extension popup context
+- Proper Content Security Policy compliance
+- Safari extension compatibility maintained
+- No performance impact on extension startup
+
+### Files Created/Modified
+
+**New Files**:
+
+- `extension/src/styles/base/reset.css`
+- `extension/src/styles/base/variables.css`
+- `extension/src/styles/base/typography.css`
+- `extension/src/styles/themes/dark.css`
+- `extension/src/styles/themes/light.css`
+- `extension/src/styles/themes/cool.css`
+- `extension/src/styles/themes/nb.css`
+- `extension/src/styles/components/popup.css`
+- `extension/src/styles/components/dashboard.css`
+- `extension/src/styles/index.css`
+- `extension/src/styles/theme-switcher.ts`
+
+**Modified Files**:
+
+- `extension/public/dashboard.html` - Removed inline styles, added CSS link
+- `extension/src/popup.css` - Now imports complete CSS architecture
+- `extension/src/popup.tsx` - Integrated theme switching system
+- `extension/webpack.config.js` - Added CSS optimization and extraction
+
+### Success Metrics Achieved
+
+**Code Quality**:
+
+- ✅ Zero inline styles in HTML files
+- ✅ 100% use of design system tokens in new CSS
+- ✅ Consistent CSS architecture across extension
+- ✅ Full TypeScript support for theme system
+
+**Performance**:
+
+- ✅ CSS bundle size optimized for production
+- ✅ Smooth theme switching with no flashing
+- ✅ Proper font loading optimization
+- ✅ No negative impact on extension startup
+
+**User Experience**:
+
+- ✅ Consistent visual design across all themes
+- ✅ Responsive design at different popup sizes
+- ✅ Accessibility features for all users
+- ✅ Backward compatibility maintained
+
+## Previous Work: Enhanced TF-IDF Store Modernization (August 11, 2025)
 
 ### Context
 

@@ -1,0 +1,64 @@
+/* Light Theme - Synchronized with Material-UI */
+[data-theme='light'] {
+  /* Background Colors - From config.THEME_LIGHT_COLOR */
+  --color-background: #193202;
+  --color-surface: #5f7c49;
+
+  /* Primary Colors - From config.THEME_LIGHT_HIGHLIGHT_COLOR */
+  --color-primary: #ebff02;
+  --color-secondary: #ebff02;
+
+  /* Status Colors */
+  --color-error: #c20f24;
+  --color-warning: #ff9800;
+  --color-success: #4caf50;
+  --color-info: #2196f3;
+
+  /* Text Colors */
+  --color-text-primary: rgba(255, 255, 255, 0.87);
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-text-disabled: rgba(255, 255, 255, 0.38);
+
+  /* Border Colors */
+  --color-border: rgba(255, 255, 255, 0.2);
+  --color-divider: rgba(255, 255, 255, 0.2);
+
+  /* Interactive States */
+  --color-hover-overlay: rgba(255, 255, 255, 0.04);
+  --color-focus-overlay: rgba(255, 255, 255, 0.12);
+  --color-pressed-overlay: rgba(255, 255, 255, 0.16);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+}
+
+/* Light theme specific styles */
+[data-theme='light'] body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+[data-theme='light'] #popup {
+  background-color: var(--color-background);
+}
+
+/* Light theme Material-UI compatibility */
+[data-theme='light'] .MuiPaper-root {
+  background-color: var(--color-surface);
+}
+
+[data-theme='light'] .MuiButton-root {
+  color: var(--color-text-primary);
+}
+
+[data-theme='light'] .MuiButton-contained {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+[data-theme='light'] .MuiAlert-root {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+}
