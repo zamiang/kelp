@@ -133,10 +133,10 @@ const getConfig = () => {
         : []),
       new CopyPlugin({
         patterns: [
-          { from: 'extension/public', to: '.' },
-          { from: 'public/fonts', to: 'fonts' },
+          { from: 'public', to: '.' },
+          { from: '../public/fonts', to: 'fonts' },
           {
-            from: 'extension/src/manifest.json',
+            from: 'src/manifest.json',
             to: 'manifest.json',
             transform(content) {
               return modifyManifest(content);

@@ -2,11 +2,152 @@
 
 ## Current Work Focus
 
-**Primary Task**: Chrome Extension CSS Modernization - Phase 1 Complete (August 12, 2025)
+**Primary Task**: Chrome Extension CSS Modernization - Phase 2 Complete (August 12, 2025)
 
-**Current Status**: Phase 1 CSS Architecture Foundation completed successfully. Extension now has modern CSS architecture with design system tokens and theme switching.
+**Current Status**: Phase 2 Enhanced Theming System completed successfully. Extension now has synchronized CSS custom properties and Material-UI theme system with seamless theme switching.
 
-## Latest Work: Chrome Extension CSS Modernization - Phase 1 Complete (August 12, 2025)
+## Latest Work: Chrome Extension CSS Modernization - Phase 2 Complete (August 12, 2025)
+
+### Context
+
+Successfully completed Phase 2 of the Chrome Extension CSS Modernization plan, creating a unified theming system that synchronizes CSS custom properties with Material-UI themes for seamless theme switching across both systems.
+
+### CSS Modernization Phase 2 Achievements
+
+1. **Theme Bridge System Created** ✅ **COMPLETE**
+   - ✅ Created `extension/src/styles/theme-bridge.ts` utility for theme synchronization
+   - ✅ Implemented `themeColorMappings` with colors from `constants/config.ts`
+   - ✅ Added `updateCSSCustomProperties()` for runtime CSS variable updates
+   - ✅ Created `createMaterialUIThemeConfig()` for dynamic Material-UI theme generation
+   - ✅ Built `syncThemeSystems()` for coordinated theme switching
+
+2. **Enhanced Theme Files** ✅ **COMPLETE**
+   - ✅ Updated all theme files to use synchronized colors from config
+   - ✅ **Dark Theme**: Uses `config.THEME_DARK_COLOR` and `config.THEME_DARK_HIGHLIGHT_COLOR`
+   - ✅ **Light Theme**: Uses `config.THEME_LIGHT_COLOR` and `config.THEME_LIGHT_HIGHLIGHT_COLOR`
+   - ✅ **Cool Theme**: Uses `config.THEME_COOL_COLOR` and `config.THEME_COOL_HIGHLIGHT_COLOR`
+   - ✅ **NB Theme**: Uses `config.THEME_NB_COLOR` and `config.THEME_NB_HIGHLIGHT_COLOR`
+
+3. **Enhanced Theme Switcher** ✅ **COMPLETE**
+   - ✅ Updated `theme-switcher.ts` to use theme bridge system
+   - ✅ Added Material-UI theme callback support to `setTheme()`
+   - ✅ Integrated `syncThemeSystems()` for coordinated updates
+   - ✅ Maintained all existing functionality (storage, system detection, etc.)
+   - ✅ Added TypeScript support for enhanced theme operations
+
+4. **Popup Component Integration** ✅ **COMPLETE**
+   - ✅ Updated `popup.tsx` to use enhanced theme system
+   - ✅ Added dynamic Material-UI theme state management
+   - ✅ Implemented synchronized theme initialization
+   - ✅ Created coordinated theme change handling
+   - ✅ Maintained backward compatibility with existing theme hash
+
+5. **Single Source of Truth** ✅ **COMPLETE**
+   - ✅ All theme colors now sourced from `constants/config.ts`
+   - ✅ CSS custom properties automatically sync with config values
+   - ✅ Material-UI themes dynamically generated from same source
+   - ✅ No more hardcoded color duplications between systems
+   - ✅ Consistent theming across all extension components
+
+### Technical Implementation Details
+
+**Theme Bridge Architecture**:
+
+```typescript
+// Theme color mappings from config
+export const themeColorMappings: Record<ThemeName, {
+  background: string;    // From config.THEME_*_COLOR
+  surface: string;       // Calculated surface color
+  primary: string;       // From config.THEME_*_HIGHLIGHT_COLOR
+  secondary: string;     // From config.THEME_*_HIGHLIGHT_COLOR
+  text: { ... };        // Theme-appropriate text colors
+  border: string;        // Theme-appropriate border colors
+  divider: string;       // Theme-appropriate divider colors
+}> = { ... };
+```
+
+**Synchronized Theme Switching**:
+
+```typescript
+// Before (separate systems):
+setTheme('dark'); // Only CSS
+setMaterialUITheme(darkTheme); // Only Material-UI
+
+// After (synchronized):
+syncThemeSystems('dark', (config) => {
+  setMaterialUITheme(config); // Both systems updated
+});
+```
+
+**Dynamic Material-UI Theme Generation**:
+
+```typescript
+// Runtime theme creation from CSS custom properties
+const muiThemeConfig = createMaterialUIThemeConfig('dark');
+const syncedTheme = { ...baseTheme, ...muiThemeConfig };
+```
+
+### Integration Benefits
+
+1. **Perfect Synchronization**:
+   - CSS custom properties and Material-UI themes always match
+   - Single source of truth for all theme colors
+   - No color inconsistencies between systems
+
+2. **Seamless Theme Switching**:
+   - Both CSS and Material-UI update simultaneously
+   - Smooth transitions with anti-flashing techniques
+   - Proper theme persistence across sessions
+
+3. **Maintainable Architecture**:
+   - All colors defined once in `constants/config.ts`
+   - Automatic propagation to both theming systems
+   - Easy to add new themes or modify existing ones
+
+4. **Enhanced Developer Experience**:
+   - TypeScript support for all theme operations
+   - Clear separation of concerns between systems
+   - Comprehensive error handling and fallbacks
+
+### Files Created/Modified in Phase 2
+
+**New Files**:
+
+- `extension/src/styles/theme-bridge.ts` - Theme synchronization utility
+
+**Modified Files**:
+
+- `extension/src/styles/themes/dark.css` - Updated to use config colors
+- `extension/src/styles/themes/light.css` - Updated to use config colors
+- `extension/src/styles/themes/cool.css` - Updated to use config colors
+- `extension/src/styles/themes/nb.css` - Updated to use config colors
+- `extension/src/styles/theme-switcher.ts` - Enhanced with theme bridge integration
+- `extension/src/popup.tsx` - Updated to use synchronized theme system
+
+### Success Metrics Achieved
+
+**Code Quality**:
+
+- ✅ Single source of truth for all theme colors
+- ✅ Zero color duplication between CSS and Material-UI
+- ✅ Full TypeScript support for theme bridge system
+- ✅ Comprehensive error handling for theme operations
+
+**User Experience**:
+
+- ✅ Perfect theme synchronization across all components
+- ✅ Smooth theme transitions with no visual inconsistencies
+- ✅ Maintained all existing theme switching functionality
+- ✅ Enhanced theme switching performance
+
+**Technical Architecture**:
+
+- ✅ Clean separation between CSS and Material-UI theming
+- ✅ Maintainable theme system with easy extensibility
+- ✅ Proper integration with Chrome storage and localStorage
+- ✅ Backward compatibility with existing theme preferences
+
+## Previous Work: Chrome Extension CSS Modernization - Phase 1 Complete (August 12, 2025)
 
 ### Context
 

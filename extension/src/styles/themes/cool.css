@@ -1,12 +1,12 @@
-/* Cool Theme */
+/* Cool Theme - Synchronized with Material-UI */
 [data-theme='cool'] {
-  /* Background Colors */
-  --color-background: #9ac8de;
-  --color-surface: #ffffff;
+  /* Background Colors - From config.THEME_COOL_COLOR */
+  --color-background: #bcebff;
+  --color-surface: #9ac8de;
 
-  /* Primary Colors */
-  --color-primary: #0066cc;
-  --color-secondary: #0066cc;
+  /* Primary Colors - From config.THEME_COOL_HIGHLIGHT_COLOR */
+  --color-primary: #0025e7;
+  --color-secondary: #0025e7;
 
   /* Status Colors */
   --color-error: #c20f24;

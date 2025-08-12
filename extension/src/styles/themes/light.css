@@ -1,12 +1,12 @@
-/* Light Theme */
+/* Light Theme - Synchronized with Material-UI */
 [data-theme='light'] {
-  /* Background Colors */
-  --color-background: #5f7c49;
-  --color-surface: #fbf2dd;
+  /* Background Colors - From config.THEME_LIGHT_COLOR */
+  --color-background: #193202;
+  --color-surface: #5f7c49;
 
-  /* Primary Colors */
-  --color-primary: #ffff01;
-  --color-secondary: #ffff01;
+  /* Primary Colors - From config.THEME_LIGHT_HIGHLIGHT_COLOR */
+  --color-primary: #ebff02;
+  --color-secondary: #ebff02;
 
   /* Status Colors */
   --color-error: #c20f24;

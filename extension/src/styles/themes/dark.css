@@ -1,12 +1,12 @@
-/* Dark Theme */
+/* Dark Theme - Synchronized with Material-UI */
 [data-theme='dark'] {
-  /* Background Colors */
+  /* Background Colors - From config.THEME_DARK_COLOR */
   --color-background: #262736;
   --color-surface: #50505a;
 
-  /* Primary Colors */
-  --color-primary: #7c4dff;
-  --color-secondary: #03dac6;
+  /* Primary Colors - From config.THEME_DARK_HIGHLIGHT_COLOR */
+  --color-primary: #bb89fc;
+  --color-secondary: #bb89fc;
 
   /* Status Colors */
   --color-error: #c20f24;

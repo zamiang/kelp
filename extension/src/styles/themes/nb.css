@@ -1,12 +1,12 @@
-/* NB Theme */
+/* NB Theme - Synchronized with Material-UI */
 [data-theme='nb'] {
-  /* Background Colors */
-  --color-background: #fbf2dd;
-  --color-surface: #e5dacc;
+  /* Background Colors - From config.THEME_NB_COLOR */
+  --color-background: rgb(233, 224, 209);
+  --color-surface: rgb(229, 218, 204);
 
-  /* Primary Colors */
-  --color-primary: #8b4513;
-  --color-secondary: #8b4513;
+  /* Primary Colors - From config.THEME_NB_HIGHLIGHT_COLOR */
+  --color-primary: rgb(84, 198, 183);
+  --color-secondary: rgb(84, 198, 183);
 
   /* Status Colors */
   --color-error: #c20f24;

@@ -19,8 +19,11 @@ import { subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './popup.css';
+import './styles/index.css';
 import { MemoryRouter as Router, useLocation } from 'react-router-dom';
 import { type ThemeName, initializeTheme, switchTheme } from './styles/theme-switcher';
+import { createMaterialUIThemeConfig } from './styles/theme-bridge';
+import { createTheme } from '@mui/material/styles';
 import { DesktopDashboard } from '../../components/dashboard/desktop-dashboard';
 import { msalConfig } from '../../components/fetch/microsoft/auth-config';
 import { getGoogleClientID, launchGoogleAuthFlow } from '../../components/shared/google-login';
@@ -309,39 +312,63 @@ const Popup = (props: { theme: string; setTheme: (t: string) => void }) => {
   );
 };
 
-const themeHash = {
-  nb: nbTheme,
-  cool: coolTheme,
-  light: lightTheme,
-  dark: darkTheme,
-} as any;
-
 const App = () => {
   const [theme, setTheme] = useState<string>('dark');
+  const [materialUITheme, setMaterialUITheme] = useState<any>(darkTheme);
 
   useEffect(() => {
     const initTheme = async (): Promise<void> => {
-      // Initialize our CSS custom properties theme system
-      await initializeTheme('dark' as ThemeName);
-
-      // Get theme for Material-UI compatibility
+      // Get stored theme
       const t = await chrome.storage.sync.get(config.THEME);
       const currentTheme = t[config.THEME] || localStorage.getItem(config.THEME) || 'dark';
+
+      // Initialize CSS custom properties theme system with Material-UI sync
+      await initializeTheme(currentTheme as ThemeName);
+
+      // Create synchronized Material-UI theme
+      const baseTheme =
+        currentTheme === 'dark'
+          ? darkTheme
+          : currentTheme === 'light'
+            ? lightTheme
+            : currentTheme === 'cool'
+              ? coolTheme
+              : nbTheme;
+
+      const muiThemeConfig = createMaterialUIThemeConfig(currentTheme as ThemeName);
+      const syncedTheme = createTheme(baseTheme, muiThemeConfig);
+
       setTheme(currentTheme);
+      setMaterialUITheme(syncedTheme);
     };
     void initTheme();
   }, []);
 
   const handleThemeChange = async (newTheme: string): Promise<void> => {
-    // Update both our CSS custom properties system and Material-UI
+    // Update CSS custom properties system
     await switchTheme(newTheme as ThemeName);
+
+    // Create synchronized Material-UI theme
+    const baseTheme =
+      newTheme === 'dark'
+        ? darkTheme
+        : newTheme === 'light'
+          ? lightTheme
+          : newTheme === 'cool'
+            ? coolTheme
+            : nbTheme;
+
+    const muiThemeConfig = createMaterialUIThemeConfig(newTheme as ThemeName);
+    const syncedTheme = createTheme(baseTheme, muiThemeConfig);
+
     setTheme(newTheme);
+    setMaterialUITheme(syncedTheme);
   };
 
   return (
     <StyledEngineProvider injectFirst>
-      <EmotionThemeProvider theme={themeHash[theme]}>
-        <ThemeProvider theme={themeHash[theme]}>
+      <EmotionThemeProvider theme={materialUITheme}>
+        <ThemeProvider theme={materialUITheme}>
           <CssBaseline />
           <MsalProvider instance={msalInstance}>
             <Popup setTheme={handleThemeChange} theme={theme} />

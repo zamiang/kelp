@@ -1,17 +1,26 @@
-/* Theme Switching Utility */
+/* Theme Switching Utility - Enhanced with Theme Bridge */
 
-export type ThemeName = 'dark' | 'light' | 'cool' | 'nb';
+import { type ThemeName, syncThemeSystems } from './theme-bridge';
+
+export type { ThemeName };
 
 /**
- * Sets the theme by updating the data-theme attribute on the document element
+ * Sets the theme by updating both CSS custom properties and data-theme attribute
  * @param theme - The theme name to apply
+ * @param onMaterialUIThemeChange - Optional callback for Material-UI theme updates
  */
-export const setTheme = (theme: ThemeName): void => {
+export const setTheme = (
+  theme: ThemeName,
+  onMaterialUIThemeChange?: (themeConfig: any) => void,
+): void => {
   // Add theme-changing class to prevent transition flashing
   document.documentElement.classList.add('theme-changing');
 
   // Set the data-theme attribute
   document.documentElement.setAttribute('data-theme', theme);
+
+  // Sync both CSS custom properties and Material-UI theme
+  syncThemeSystems(theme, onMaterialUIThemeChange);
 
   // Remove theme-changing class after a brief delay
   setTimeout(() => {
