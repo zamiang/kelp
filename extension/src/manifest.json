@@ -15,15 +15,25 @@
   },
   "content_scripts": [
     {
-      "js": ["calendar.js"],
-      "matches": ["https://calendar.google.com/*"]
+      "js": ["content-script.js"],
+      "matches": ["<all_urls>"],
+      "run_at": "document_end"
     }
   ],
   "oauth2": {
     "client_id": "REPLACED IN WEBPACK CONFIG",
     "scopes": "REPLACED IN WEBPACK CONFIG"
   },
-  "permissions": ["identity", "tabs", "idle", "history", "storage", "activeTab", "alarms"],
+  "permissions": [
+    "identity",
+    "tabs",
+    "idle",
+    "history",
+    "storage",
+    "activeTab",
+    "alarms",
+    "scripting"
+  ],
   "host_permissions": ["<all_urls>"],
   "chrome_url_overrides": {
     "newtab": "dashboard.html"

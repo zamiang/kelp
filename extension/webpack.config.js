@@ -31,8 +31,8 @@ const getConfig = () => ({
   entry: {
     popup: path.join(__dirname, 'src/popup.tsx'),
     background: path.join(__dirname, 'src/background.ts'),
-    calendar: path.join(__dirname, 'src/calendar.ts'),
     color: path.join(__dirname, 'src/background-color.ts'),
+    'content-script': path.join(__dirname, 'src/content-script.ts'),
   },
   output: { path: path.join(__dirname, 'dist'), filename: '[name].js' },
   module: {

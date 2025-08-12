@@ -69,6 +69,29 @@ const storeTrackedVisit = async (
   }
 };
 
+// Helper function to extract Open Graph data using content script
+const extractOpenGraphData = async (
+  tabId: number,
+): Promise<{
+  title?: string;
+  description?: string;
+  image?: string;
+} | null> => {
+  try {
+    const response = await chrome.tabs.sendMessage(tabId, { action: 'extractOpenGraph' });
+    if (response && response.success) {
+      return {
+        title: response.data.title,
+        description: response.data.description,
+        image: response.data.image,
+      };
+    }
+  } catch (error) {
+    console.log('Content script not available or failed to extract data:', error);
+  }
+  return null;
+};
+
 const trackVisit = async (storeInstance: IStore | null, tab: chrome.tabs.Tab) => {
   if (!tab) {
     return;
@@ -94,7 +117,18 @@ const trackVisit = async (storeInstance: IStore | null, tab: chrome.tabs.Tab) =>
     console.log(e, 'failure to capture tab');
   }
 
-  return storeTrackedVisit(currentUrl, new Date(), validStore, tab.title);
+  // Try to extract Open Graph data using content script
+  const ogData = await extractOpenGraphData(tab.id);
+
+  if (ogData) {
+    const title = ogData.title || tab.title;
+    const description = ogData.description;
+    const imageUrl = ogData.image;
+    return storeTrackedVisit(currentUrl, new Date(), validStore, title, description, imageUrl);
+  } else {
+    // Fallback to just using tab title if content script fails
+    return storeTrackedVisit(currentUrl, new Date(), validStore, tab.title);
+  }
 };
 
 const getOrCreateStore = async () => {
