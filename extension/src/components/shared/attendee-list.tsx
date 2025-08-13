@@ -1,5 +1,4 @@
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { orderBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -8,20 +7,7 @@ import PersonRow from '../person/person-row';
 import { IFormattedAttendee, IPerson } from '../store/data-types';
 import PersonDataStore from '../store/models/person-model';
 import { IStore } from '../store/use-store';
-
-const PREFIX = 'AttendeeList';
-
-const classes = {
-  expand: `${PREFIX}-expand`,
-};
-
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')(() => ({
-  [`& .${classes.expand}`]: {
-    textDecoration: 'underline',
-    cursor: 'pointer',
-  },
-}));
+import '../../styles/components/shared/attendee-list.css';
 
 const Row = (props: {
   attendee: IFormattedAttendee;
@@ -85,7 +71,7 @@ const AttendeeList = (props: IProps) => {
     return null;
   }
   return (
-    <Root>
+    <div className="attendee-list">
       {isExpanded && <AttendeeRows {...props} />}
       {!isExpanded && (
         <Typography
@@ -96,7 +82,7 @@ const AttendeeList = (props: IProps) => {
           Show Full List
         </Typography>
       )}
-    </Root>
+    </div>
   );
 };
 

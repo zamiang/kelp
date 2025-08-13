@@ -1,0 +1,239 @@
+/* Microsoft Login Component Styles */
+
+.microsoft-login-root {
+  container-type: inline-size;
+  container-name: microsoft-login;
+}
+
+.microsoft-login-button {
+  width: 100%;
+  border-radius: 30px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  transition: opacity var(--transition-normal);
+  min-height: 48px;
+  opacity: 1;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: var(--font-size-md);
+}
+
+.microsoft-login-button:hover {
+  opacity: 0.6;
+}
+
+.microsoft-login-button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.microsoft-login-button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.microsoft-login-button:active {
+  transform: scale(0.98);
+}
+
+/* Logout button specific styling */
+.microsoft-login-logout-button {
+  margin-top: 20px;
+}
+
+/* Welcome user text */
+.microsoft-login-welcome {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Responsive design */
+@container microsoft-login (width < 768px) {
+  .microsoft-login-button {
+    min-height: 44px;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+
+  .microsoft-login-logout-button {
+    margin-top: var(--spacing-md);
+  }
+}
+
+@container microsoft-login (width < 480px) {
+  .microsoft-login-button {
+    min-height: 40px;
+    font-size: var(--font-size-sm);
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
+
+  .microsoft-login-logout-button {
+    margin-top: var(--spacing-sm);
+  }
+
+  .microsoft-login-welcome {
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* Loading state */
+.microsoft-login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.microsoft-login-loading {
+  position: relative;
+}
+
+.microsoft-login-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--color-on-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error state */
+.microsoft-login-error {
+  color: var(--color-error);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* Success state */
+.microsoft-login-success {
+  color: var(--color-success);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .microsoft-login-button {
+    border: 2px solid var(--color-primary-dark);
+    font-weight: 600;
+  }
+
+  .microsoft-login-welcome {
+    font-weight: 600;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .microsoft-login-button {
+    transition: none;
+  }
+
+  .microsoft-login-button:active {
+    transform: none;
+  }
+
+  .microsoft-login-loading::after {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .microsoft-login-button {
+    background: transparent;
+    color: #000;
+    border: 1px solid #000;
+  }
+}
+
+/* Dark theme specific adjustments */
+[data-theme='dark'] .microsoft-login-button {
+  background: var(--color-primary-dark);
+}
+
+[data-theme='dark'] .microsoft-login-button:hover {
+  background: var(--color-primary);
+}
+
+/* Focus ring improvements */
+.microsoft-login-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Enhanced interaction feedback */
+.microsoft-login-button:hover:not(:disabled) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Accessibility improvements */
+.microsoft-login-button[aria-pressed='true'] {
+  background: var(--color-primary-dark);
+}
+
+/* Animation for sign-in success */
+.microsoft-login-signed-in {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button group styling when both sign in and log out are present */
+.microsoft-login-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+@container microsoft-login (width < 480px) {
+  .microsoft-login-button-group {
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Microsoft branding colors (optional) */
+.microsoft-login-button.microsoft-branded {
+  background: #0078d4; /* Microsoft Blue */
+}
+
+.microsoft-login-button.microsoft-branded:hover {
+  background: #106ebe;
+}
+
+[data-theme='dark'] .microsoft-login-button.microsoft-branded {
+  background: #0078d4;
+}
+
+[data-theme='dark'] .microsoft-login-button.microsoft-branded:hover {
+  background: #106ebe;
+}

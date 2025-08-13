@@ -4,66 +4,12 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import config from '../../../../constants/config';
 import CloseIcon from '../../../../public/icons/close.svg';
 import { cleanupUrl } from '../shared/cleanup-url';
 import { IStore } from '../store/use-store';
-
-const PREFIX = 'WebsiteDialog';
-
-const classes = {
-  dialogContent: `${PREFIX}-dialogContent`,
-  button: `${PREFIX}-button`,
-  closeButton: `${PREFIX}-closeButton`,
-  columnList: `${PREFIX}-columnList`,
-  section: `${PREFIX}-section`,
-  smallButton: `${PREFIX}-smallButton`,
-};
-
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-  [`& .${classes.dialogContent}`]: {
-    padding: theme.spacing(6),
-    position: 'relative',
-    width: 480,
-  },
-  [`& .${classes.button}`]: {
-    textDecoration: 'none',
-    cursor: 'pointer',
-    borderRadius: 33,
-    background: theme.palette.background.paper,
-    color: theme.palette.primary.main,
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(3),
-    display: 'block',
-    width: '100%',
-    paddingTop: 12,
-    paddingBottom: 12,
-    marginTop: theme.spacing(2),
-  },
-  [`& .${classes.closeButton}`]: {},
-  [`& .${classes.columnList}`]: {
-    maxHeight: 300,
-    overflow: 'auto',
-    border: `1px solid ${theme.palette.divider}`,
-    marginTop: theme.spacing(1),
-    borderRadius: theme.shape.borderRadius,
-  },
-  [`& .${classes.section}`]: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-    '&:last-child': {
-      marginBottom: 0,
-    },
-  },
-  [`& .${classes.smallButton}`]: {
-    width: 100,
-    background: theme.palette.background.paper,
-    color: theme.palette.primary.main,
-    borderRadius: 16,
-  },
-}));
+import '../../styles/components/website/add-website-to-tag-dialog.css';
 
 export const AddWebsiteToTagDialog = (props: {
   tagForWebsiteToTagDialog?: string;
@@ -118,16 +64,16 @@ export const AddWebsiteToTagDialog = (props: {
   };
 
   return (
-    <StyledDialog
+    <Dialog
       maxWidth="md"
       open={!!props.tagForWebsiteToTagDialog}
-      onClose={(_event, reason) => {
+      onClose={(_event: any, reason: any) => {
         if (reason === 'backdropClick') {
           props.close();
         }
       }}
     >
-      <div className={classes.dialogContent}>
+      <div className="add-website-to-tag-dialog__content">
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box flex="0 0 83.33%">
             <Typography variant="h3" noWrap>
@@ -135,12 +81,16 @@ export const AddWebsiteToTagDialog = (props: {
             </Typography>
           </Box>
           <Box>
-            <IconButton onClick={props.close} className={classes.closeButton} size="large">
+            <IconButton
+              onClick={props.close}
+              className="add-website-to-tag-dialog__close-button"
+              size="large"
+            >
               <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
           </Box>
         </Box>
-        <div className={classes.section}>
+        <div className="add-website-to-tag-dialog__section">
           <TextField
             type="text"
             placeholder="Paste a url"
@@ -156,13 +106,13 @@ export const AddWebsiteToTagDialog = (props: {
             }}
           />
         </div>
-        <div className={classes.section}>
+        <div className="add-website-to-tag-dialog__section">
           <Box display="flex" alignItems="center" justifyContent="space-between">
             <Box flex="1">
               <Button
                 disableElevation={false}
                 variant="outlined"
-                className={classes.button}
+                className="add-website-to-tag-dialog__button"
                 onClick={() => props.tagForWebsiteToTagDialog && addWebsiteToTag()}
               >
                 Add website to &#8220;{props.tagForWebsiteToTagDialog}&#8221;
@@ -171,6 +121,6 @@ export const AddWebsiteToTagDialog = (props: {
           </Box>
         </div>
       </div>
-    </StyledDialog>
+    </Dialog>
   );
 };

@@ -1,39 +1,7 @@
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-
-const PREFIX = 'MostRecentTab';
-
-const classes = {
-  tab: `${PREFIX}-tab`,
-  text: `${PREFIX}-text`,
-  textContainer: `${PREFIX}-textContainer`,
-  imageContainer: `${PREFIX}-imageContainer`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.tab}`]: {
-    display: 'flex',
-    opacity: 1,
-    transition: 'opacity 0.3s',
-    '&:hover': { opacity: 0.7 },
-  },
-  [`& .${classes.text}`]: { color: theme.palette.text.primary },
-  [`& .${classes.imageContainer}`]: {
-    marginRight: theme.spacing(1),
-    display: 'inline-block',
-    verticalAlign: 'top',
-    marginTop: 1,
-  },
-  [`& .${classes.textContainer}`]: {
-    display: 'inline-block',
-    verticalAlign: 'top',
-    maxWidth: 140,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-}));
+import '../../styles/components/website/most-recent-tab.css';
 
 export const MostRecentTab = () => {
   const [tab, setTab] = useState<chrome.tabs.Tab | undefined>();
@@ -61,21 +29,21 @@ export const MostRecentTab = () => {
   }
 
   return (
-    <Root>
-      <div className={classes.tab}>
-        <div className={classes.imageContainer}>
+    <div className="most-recent-tab">
+      <div className="most-recent-tab__tab">
+        <div className="most-recent-tab__image-container">
           <Link href={tab.url}>
-            <img style={{ display: 'block' }} src={tab.favIconUrl} height="18" width="18" />
+            <img className="most-recent-tab__favicon" src={tab.favIconUrl} height="18" width="18" />
           </Link>
         </div>
-        <div className={classes.textContainer}>
+        <div className="most-recent-tab__text-container">
           <Link href={tab.url} underline="hover">
-            <Typography noWrap variant="body2" className={classes.text}>
+            <Typography noWrap variant="body2" className="most-recent-tab__text">
               {tab.title}
             </Typography>
           </Link>
         </div>
       </div>
-    </Root>
+    </div>
   );
 };

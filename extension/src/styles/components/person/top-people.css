@@ -1,20 +1,74 @@
 /* Top People Component Styles */
 
 .top-people {
-  /* Component root styles handled by Material-UI styled component */
+  /* Component root styles */
 }
 
-/* Utility classes for inline style replacements */
-.u-height-24 {
-  height: 24px;
+.top-people__person {
+  opacity: 1;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  display: flex;
 }
 
-.u-margin-right-8 {
-  margin-right: 8px;
+.top-people__person:hover {
+  opacity: 0.7;
 }
 
-/* Top people specific utilities */
+.top-people__container {
+  height: 38px;
+  overflow: hidden;
+}
+
+.top-people__avatar {
+  height: 20px;
+  width: 20px;
+}
+
+.top-people__text {
+  color: var(--color-text-primary);
+}
+
+.top-people__icon {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: var(--spacing-sm);
+  opacity: 0.6;
+  margin-top: 1px;
+}
+
+.top-people__image-container {
+  margin-right: var(--spacing-sm);
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 1px;
+}
+
+.top-people__text-container {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-people__logo {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.top-people__logo:hover {
+  opacity: 0.5;
+}
+
+.top-people__icon-image {
+  color: var(--color-text-primary);
+}
+
+.top-people__icon-selected {
+  color: var(--color-primary);
+}
+
 .top-people__kelp-icon {
-  height: 24px;
-  margin-right: 8px;
+  /* Grid item for kelp icon */
 }

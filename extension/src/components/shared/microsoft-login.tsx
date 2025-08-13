@@ -2,38 +2,17 @@ import { IPublicClientApplication } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import React from 'react';
 import { ensureDataRefresh } from './ensure-refresh';
-
-const PREFIX = 'MicrosoftLogin';
-
-const classes = {
-  button: `${PREFIX}-button`,
-};
-
-const Root = styled('div')(() => ({
-  [`& .${classes.button}`]: {
-    width: '100%',
-    borderRadius: 30,
-    paddingTop: 6,
-    paddingBottom: 6,
-    transition: 'opacity 0.3s',
-    minHeight: 48,
-    opacity: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
-    '&:hover': {
-      opacity: 0.6,
-    },
-  },
-}));
+import '../../styles/components/shared/microsoft-login.css';
 
 export const WelcomeUser = () => {
   const { accounts } = useMsal();
   const username = accounts[0].username;
 
-  return <Typography>You are signed in as {username}</Typography>;
+  return (
+    <Typography className="microsoft-login-welcome">You are signed in as {username}</Typography>
+  );
 };
 
 const getLoginUrl = async (msal: IPublicClientApplication) =>
@@ -78,18 +57,17 @@ export const SignInButton = () => {
   const { instance } = useMsal();
 
   return (
-    <Root>
+    <div className="microsoft-login-root">
       <Button
-        className={classes.button}
+        className="microsoft-login-button"
         variant="contained"
         disableElevation
         color="primary"
-        style={{ width: 100 }}
         onClick={() => signInClickHandler(instance)}
       >
         Sign In
       </Button>
-    </Root>
+    </div>
   );
 };
 
@@ -106,10 +84,9 @@ export const LogOutButton = () => {
   const { instance } = useMsal();
 
   return (
-    <Root>
+    <div className="microsoft-login-root">
       <Button
-        className={classes.button}
-        style={{ width: 100, marginTop: 20 }}
+        className="microsoft-login-button microsoft-login-logout-button"
         variant="contained"
         disableElevation
         color="primary"
@@ -117,6 +94,6 @@ export const LogOutButton = () => {
       >
         Log Out
       </Button>
-    </Root>
+    </div>
   );
 };

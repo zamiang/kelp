@@ -1,0 +1,57 @@
+/* Draggable Website Highlights Component Styles */
+
+.draggable-website-highlights {
+  position: relative;
+}
+
+.draggable-website-highlights__top-section {
+  margin-bottom: var(--spacing-md);
+  position: relative;
+  z-index: 5;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.draggable-website-highlights__loading {
+  opacity: 0.5;
+}
+
+.draggable-website-highlights__icon-text {
+  color: var(--color-text-primary);
+}
+
+.draggable-website-highlights__right-container {
+  margin-right: -47px;
+  width: 99px;
+}
+
+.draggable-website-highlights__icon-selected {
+  color: var(--color-primary);
+}
+
+.draggable-website-highlights__button {
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+.draggable-website-highlights__button:hover {
+  opacity: 0.5;
+}
+
+.draggable-website-highlights__side-button {
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+  position: absolute;
+  right: -50px;
+  top: calc(50% - 16px);
+  background: var(--color-background-paper);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+}
+
+.draggable-website-highlights__side-button:hover {
+  opacity: 0.5;
+}

@@ -1,11 +1,11 @@
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import DocumentRow, { MissingDocumentRow } from '../documents/document-row';
 import { IDocument, IPerson, ISegmentDocument } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { getTooltipText } from './tooltip-text';
+import '../../styles/components/shared/segment-document-list.css';
 
 const SegmentDocumentItem = (props: {
   store: IStore;
@@ -60,19 +60,6 @@ const SegmentDocumentItem = (props: {
   );
 };
 
-const PREFIX = 'SegmentDocumentList';
-
-const classes = {
-  showMoreButton: `${PREFIX}-showMoreButton`,
-};
-
-const SegmentDocumentContainer = styled('div')(() => ({
-  [`& .${classes.showMoreButton}`]: {
-    cursor: 'pointer',
-    textDecoration: 'underline',
-  },
-}));
-
 const SegmentDocumentForNonAttendees = (props: {
   segmentDocumentsForNonAttendeesCount: number;
   segmentDocumentsForNonAttendees: ISegmentDocument[];
@@ -81,13 +68,13 @@ const SegmentDocumentForNonAttendees = (props: {
 }) => {
   const [shouldDisplayNonAttendees, setShouldDisplayNonAttendees] = useState<boolean>(false);
   return (
-    <SegmentDocumentContainer>
+    <div className="segment-document-list">
       {props.segmentDocumentsForNonAttendeesCount > 0 && !shouldDisplayNonAttendees && (
         <div>
           <Typography
             onClick={() => setShouldDisplayNonAttendees(true)}
             variant="caption"
-            className={classes.showMoreButton}
+            className="segment-document-list__show-more-button"
           >
             + Show {props.segmentDocumentsForNonAttendeesCount} documents from non-attendees
           </Typography>
@@ -103,7 +90,7 @@ const SegmentDocumentForNonAttendees = (props: {
             isSmall={props.isSmall}
           />
         ))}
-    </SegmentDocumentContainer>
+    </div>
   );
 };
 

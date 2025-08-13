@@ -8,9 +8,10 @@ import PlusIcon from '../../../../public/icons/plus.svg';
 import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { Root, classes, fetchData } from './draggable-website-highlights';
+import { fetchData } from './draggable-website-highlights';
 import { IFeaturedWebsite, IWebsiteCache } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
+import '../../styles/components/website/draggable-website-highlights.css';
 
 export const WebsiteHighlights = (props: {
   store: IStore;
@@ -40,13 +41,13 @@ export const WebsiteHighlights = (props: {
   const shouldRenderLoading = props.store.isDocumentsLoading && topWebsites.length < 1;
 
   return (
-    <Root style={{ position: 'relative' }}>
+    <div className="draggable-website-highlights" style={{ position: 'relative' }}>
       {shouldRenderLoading && <LoadingSpinner />}
       <Box
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        className={classes.topSection}
+        className="draggable-website-highlights__top-section"
       >
         <Box>
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
@@ -54,7 +55,7 @@ export const WebsiteHighlights = (props: {
         {extraItemsCount > 0 && !shouldShowAll && (
           <Box>
             <IconButton
-              className={classes.button}
+              className="draggable-website-highlights__button"
               onClick={() => {
                 setShouldShowAll(!shouldShowAll);
               }}
@@ -62,7 +63,7 @@ export const WebsiteHighlights = (props: {
               <PlusIcon
                 width={config.ICON_SIZE}
                 height={config.ICON_SIZE}
-                className={classes.iconSelected}
+                className="draggable-website-highlights__icon-selected"
               />{' '}
             </IconButton>
           </Box>
@@ -82,6 +83,6 @@ export const WebsiteHighlights = (props: {
           ))}
         </Grid>
       </Box>
-    </Root>
+    </div>
   );
 };

@@ -1,0 +1,113 @@
+/* UI Blocks Component Styles */
+
+.ui-blocks__section-image-left {
+  padding-bottom: var(--spacing-xl);
+  padding-left: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  padding-right: var(--spacing-xl);
+}
+
+.ui-blocks__image {
+  max-width: 290px;
+  margin: 0px auto;
+  display: block;
+}
+
+.ui-blocks__grey-container {
+  width: 100%;
+}
+
+.ui-blocks__heading {
+  font-size: 24px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.ui-blocks__text-section {
+  margin-bottom: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+  text-align: center;
+}
+
+.ui-blocks__dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 10px;
+  margin-right: 22px;
+  background: var(--color-primary);
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 8px;
+}
+
+.ui-blocks__section-text {
+  padding: var(--spacing-xl);
+}
+
+.ui-blocks__section-image-right-top {
+  padding-bottom: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  padding-left: var(--spacing-xl);
+  padding-right: var(--spacing-xl);
+}
+
+.ui-blocks__section-image-right-bottom {
+  padding-bottom: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  padding-left: var(--spacing-xl);
+  padding-right: var(--spacing-xl);
+}
+
+.ui-blocks__section {
+  /* Section styles */
+}
+
+.ui-blocks__notification-container {
+  margin-right: 28px;
+}
+
+.ui-blocks__prepare-text-right {
+  margin-left: 0;
+}
+
+.ui-blocks__manage-work-text-left {
+  margin-right: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .ui-blocks__section-image-left {
+    padding: 0;
+  }
+
+  .ui-blocks__section-text {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: var(--spacing-lg);
+  }
+
+  .ui-blocks__section-image-right-top {
+    padding: 0;
+  }
+
+  .ui-blocks__section-image-right-bottom {
+    padding: 0;
+  }
+
+  .ui-blocks__section {
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+  }
+
+  .ui-blocks__notification-container {
+    margin-right: auto;
+  }
+
+  .ui-blocks__prepare-text-right {
+    margin-left: auto;
+  }
+
+  .ui-blocks__manage-work-text-left {
+    margin-right: auto;
+  }
+}
