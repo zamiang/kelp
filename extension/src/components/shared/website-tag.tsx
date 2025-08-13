@@ -2,6 +2,7 @@ import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import '../../styles/components/shared/website-tag.css';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from '../website/get-featured-websites';

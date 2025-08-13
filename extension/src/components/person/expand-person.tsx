@@ -75,7 +75,7 @@ const ExpandPerson = (props: {
         const websitesForMeetings = await Promise.all(
           filteredSegments.map(async (meeting) => {
             if (meeting) {
-              const result = await fetchWebsitesForMeetingFiltered(meeting, props.store, false, 4);
+              const result = await fetchWebsitesForMeetingFiltered(meeting, props.store, true, 10);
               return result;
             }
             return [];
@@ -84,8 +84,8 @@ const ExpandPerson = (props: {
 
         const flattenedWebsites = orderByCount(
           flatten(websitesForMeetings).filter(Boolean),
-          'websiteId',
-          'date',
+          'id',
+          'lastVisited',
         );
         setWebsites(flattenedWebsites);
 

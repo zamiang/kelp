@@ -13,6 +13,7 @@ import { IWebsiteImage, IWebsiteItem, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite } from './get-featured-websites';
 import '../../styles/components/website/large-website.css';
+import { getCurrentTheme } from '../../styles/theme-switcher';
 
 const WebsiteImage = (props: {
   image?: IWebsiteImage;
@@ -26,9 +27,7 @@ const WebsiteImage = (props: {
         style={{
           backgroundImage: `url('${props.ogImage || props.image.image}')`,
         }}
-      >
-        <div className="large-website__dots"></div>
-      </div>
+      ></div>
     );
   }
   const domain = new URL(props.item.id).hostname;
@@ -59,6 +58,8 @@ export const LargeWebsite = (props: {
   const [shouldShowRemove, setShouldShowRemove] = useState(false);
   const [image, setImage] = useState<IWebsiteImage>();
   const [website, setWebsite] = useState<IWebsiteItem>();
+
+  const theme = getCurrentTheme();
 
   useEffect(() => {
     let isSubscribed = true;
@@ -99,7 +100,11 @@ export const LargeWebsite = (props: {
           className="large-website__remove-button"
           onClick={() => void hideWebsite(props.item.id)}
         >
-          <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
+          <CloseIcon
+            width={config.ICON_SIZE}
+            height={config.ICON_SIZE}
+            color={theme === 'dark' || theme === 'light' ? 'white' : 'currentColor'}
+          />
         </IconButton>
       )}
       <Link href={website?.rawUrl} underline="none">

@@ -5,6 +5,7 @@ import { addDays, format, isSameDay, startOfWeek, subDays } from 'date-fns';
 import { last, times } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/components/summary/summary.css';
 import config from '../../../../constants/config';
 import { IWebsite } from '../store/data-types';
 import { ITfidfTag } from '../store/models/enhanced-tfidf-store';

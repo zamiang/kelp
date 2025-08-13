@@ -5,6 +5,9 @@ import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 import React, { Suspense, useEffect, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import '../../styles/components/dashboard/desktop-dashboard.css';
+import '../../styles/components/dashboard.css';
+import '../../styles/components/dashboard-extension.css';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import { Onboarding } from '../onboarding/onboarding';
@@ -175,6 +178,9 @@ export const DesktopDashboard = (props: {
                       width={config.ICON_SIZE}
                       height={config.ICON_SIZE}
                       className="top-tags-icon-image u-rotate-180"
+                      color={
+                        props.theme === 'dark' || props.theme === 'light' ? 'white' : 'currentColor'
+                      }
                     />
                   </IconButton>
                 </div>

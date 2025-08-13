@@ -1,46 +1,5 @@
 /* Top Tags Component Styles */
 
-.top-tags-root {
-  container-type: inline-size;
-  container-name: top-tags;
-}
-
-.top-tags-container {
-  max-height: 80vh;
-  overflow: auto;
-}
-
-.top-tags-tag {
-  cursor: pointer;
-  height: 20px;
-  opacity: 0.5;
-  transition: opacity var(--transition-slow);
-}
-
-.top-tags-tag:hover {
-  opacity: 1;
-}
-
-.top-tags-tag-container:hover .top-tags-dot {
-  width: 10px;
-  height: 10px;
-  background: var(--color-text-primary);
-}
-
-.top-tags-dot {
-  height: 6px;
-  width: 6px;
-  border-radius: 5px;
-  transition: all var(--transition-slow);
-  margin-right: auto;
-  margin-left: auto;
-  background: var(--color-divider);
-}
-
-.top-tags-dot-container {
-  width: var(--spacing-lg);
-}
-
 .top-tags-icon-image {
   color: var(--color-text-primary);
 }
@@ -50,117 +9,18 @@
   transform: rotate(180deg);
 }
 
-.u-font-weight-600 {
-  font-weight: 600;
-}
-
 /* Responsive design */
-@container top-tags (width < 768px) {
-  .top-tags-container {
-    max-height: 60vh;
-  }
-
-  .top-tags-tag {
-    height: auto;
-    min-height: 20px;
-  }
-
-  .top-tags-dot-container {
-    width: var(--spacing-md);
-  }
-}
-
-@container top-tags (width < 480px) {
-  .top-tags-container {
-    max-height: 50vh;
-  }
-
-  .top-tags-dot {
-    height: 4px;
-    width: 4px;
-  }
-
-  .top-tags-tag-container:hover .top-tags-dot {
-    width: 8px;
-    height: 8px;
-  }
-}
 
 /* Scrollbar styling */
-.top-tags-container::-webkit-scrollbar {
-  width: 4px;
-}
-
-.top-tags-container::-webkit-scrollbar-track {
-  background: var(--color-surface);
-}
-
-.top-tags-container::-webkit-scrollbar-thumb {
-  background: var(--color-divider);
-  border-radius: 2px;
-}
-
-.top-tags-container::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-secondary);
-}
 
 /* Accessibility improvements */
-.top-tags-tag:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-  opacity: 1;
-}
-
-.top-tags-tag:focus:not(:focus-visible) {
-  outline: none;
-}
 
 /* Keyboard navigation */
-.top-tags-tag[tabindex='0'] {
-  position: relative;
-}
-
-.top-tags-tag[tabindex='0']:focus::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border: 2px solid var(--color-primary);
-  border-radius: var(--radius-sm);
-  pointer-events: none;
-}
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
-  .top-tags-tag {
-    opacity: 0.8;
-  }
-
-  .top-tags-tag:hover,
-  .top-tags-tag:focus {
-    opacity: 1;
-    font-weight: 600;
-  }
-
-  .top-tags-dot {
-    border: 1px solid var(--color-text-primary);
-  }
-
-  .top-tags-tag-container:hover .top-tags-dot {
-    border-width: 2px;
-  }
-}
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .top-tags-tag,
-  .top-tags-dot {
-    transition: none;
-  }
-
   .u-rotate-180 {
     transform: rotate(180deg);
     transition: none;
@@ -168,35 +28,10 @@
 }
 
 /* Print styles */
-@media print {
-  .top-tags-container {
-    max-height: none;
-    overflow: visible;
-  }
-
-  .top-tags-tag {
-    opacity: 1;
-  }
-
-  .top-tags-dot {
-    background: #000;
-  }
-}
 
 /* Dark theme specific adjustments */
-[data-theme='dark'] .top-tags-dot {
-  background: var(--color-divider-dark);
-}
-
-[data-theme='dark'] .top-tags-tag-container:hover .top-tags-dot {
-  background: var(--color-text-primary-dark);
-}
 
 /* Focus management for better UX */
-.top-tags-tag:active {
-  opacity: 1;
-  transform: scale(0.98);
-}
 
 /* Smooth scroll behavior for tag navigation */
 html {
@@ -204,18 +39,5 @@ html {
 }
 
 /* Enhanced dot animation */
-.top-tags-dot-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 20px;
-}
 
 /* Tag text truncation improvements */
-.top-tags-tag {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}

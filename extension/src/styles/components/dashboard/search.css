@@ -44,33 +44,13 @@
 }
 
 /* Search results sections */
-.search-results-section {
-  margin-bottom: var(--spacing-xl);
-}
-
-.search-results-section h3 {
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-md);
-  font-weight: 600;
-}
 
 /* Website results grid */
-.search-website-results {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-md);
-}
 
 /* Responsive design */
 @container search (width < 768px) {
   .search-row {
     margin-top: var(--spacing-xl);
-  }
-
-  .search-website-results {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
   }
 
   .search-button {
@@ -91,43 +71,12 @@
 }
 
 /* Loading state */
-.search-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
 
 /* Empty state */
-.search-empty-state {
-  text-align: center;
-  padding: var(--spacing-6xl) var(--spacing-lg);
-  color: var(--color-text-secondary);
-}
-
-.search-empty-state h3 {
-  margin-bottom: var(--spacing-md);
-  color: var(--color-text-primary);
-}
 
 /* Search result items */
-.search-result-item {
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  transition: var(--transition-fast);
-  border: 1px solid transparent;
-}
-
-.search-result-item:hover {
-  background: var(--color-surface-hover);
-  border-color: var(--color-border);
-}
 
 /* Accessibility improvements */
-.search-result-item:focus-within {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
@@ -135,20 +84,11 @@
     border-width: 2px;
     font-weight: 600;
   }
-
-  .search-result-item {
-    border-width: 2px;
-  }
-
-  .search-results-section h3 {
-    font-weight: 700;
-  }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .search-button,
-  .search-result-item {
+  .search-button {
     transition: none;
   }
 }
@@ -158,10 +98,6 @@
   .search-button {
     background: transparent;
     border: 1px solid #000;
-  }
-
-  .search-website-results {
-    grid-template-columns: 1fr;
   }
 }
 

@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
+import '../../styles/components/user-profile/settings.css';
 import config from '../../../../constants/config';
 import CloseIcon from '../../../../public/icons/close.svg';
 import { GoogleLoginButton } from '../shared/google-login';

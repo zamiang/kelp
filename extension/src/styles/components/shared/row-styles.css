@@ -133,6 +133,7 @@
   color: #9d9d99;
   font-weight: 500;
   font-family: var(--font-family-medium);
+  margin-bottom: var(--spacing-md);
 }
 
 .row__heading-text {

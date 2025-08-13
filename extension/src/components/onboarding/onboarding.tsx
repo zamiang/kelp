@@ -1,25 +1,29 @@
+import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
 import RightArrow from '../../../../public/icons/right-arrow.svg';
+import '../../styles/components/onboarding/onboarding.css';
 
 const maxTips = 3;
 
 const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
     <img src="https://www.kelp.nyc/animations/tag-nav.gif" className="onboarding-image" />
-    <div className="onboarding-navigation">
-      <div className="onboarding-content">
+    <Grid container justifyContent={'space-between'} alignItems="center" spacing={2}>
+      <Grid>
         <Typography className="onboarding-step-counter" variant="h3">
           {props.step} / {maxTips}
         </Typography>
+      </Grid>
+      <Grid>
         <Typography variant="h3" className="onboarding-heading">
           Meet your magical website organizer
         </Typography>
-      </div>
-      <div className="onboarding-controls">
+      </Grid>
+      <Grid>
         <IconButton
           size="medium"
           className="onboarding-button"
@@ -31,24 +35,26 @@ const WelcomePopup = (props: { step: number; setStep: (step: number) => void }) 
             className="onboarding-icon"
           />
         </IconButton>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   </React.Fragment>
 );
 
 const PinAnimation = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
     <img src="https://www.kelp.nyc/animations/tag-group.gif" className="onboarding-image" />
-    <div className="onboarding-navigation">
-      <div className="onboarding-content">
+    <Grid container justifyContent={'space-between'} alignItems="center" spacing={2}>
+      <Grid>
         <Typography className="onboarding-step-counter" variant="h3">
           {props.step} / {maxTips}
         </Typography>
+      </Grid>
+      <Grid>
         <Typography variant="h3" className="onboarding-heading">
           Add Smart tags
         </Typography>
-      </div>
-      <div className="onboarding-controls">
+      </Grid>
+      <Grid>
         <IconButton
           size="medium"
           className="onboarding-button onboarding-left-button"
@@ -74,24 +80,26 @@ const PinAnimation = (props: { step: number; setStep: (step: number) => void }) 
             className="onboarding-icon"
           />
         </IconButton>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   </React.Fragment>
 );
 
 const MeetingsAnimation = (props: { step: number; setStep: (step: number) => void }) => (
   <React.Fragment>
     <img src="https://www.kelp.nyc/animations/tag-meeting.gif" className="onboarding-image" />
-    <div className="onboarding-navigation">
-      <div className="onboarding-content">
+    <Grid container justifyContent={'space-between'} alignItems="center" spacing={2}>
+      <Grid>
         <Typography className="onboarding-step-counter" variant="h3">
           {props.step} / {maxTips}
         </Typography>
+      </Grid>
+      <Grid>
         <Typography variant="h3" className="onboarding-heading">
           Associate webpages with meetings
         </Typography>
-      </div>
-      <div className="onboarding-controls">
+      </Grid>
+      <Grid>
         <IconButton
           size="medium"
           className="onboarding-button onboarding-left-button"
@@ -114,8 +122,8 @@ const MeetingsAnimation = (props: { step: number; setStep: (step: number) => voi
             className="onboarding-icon"
           />
         </IconButton>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   </React.Fragment>
 );
 

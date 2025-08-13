@@ -12,7 +12,7 @@
 
 .search-bar__icon {
   padding: 10px;
-  margin-top: 3px;
+  padding-top: 12px;
 }
 
 .search-bar__icon-image {
@@ -85,6 +85,7 @@
 /* Input Styling */
 .search-bar .MuiTextField-root {
   margin: 0;
+  margin-top: 8px;
 }
 
 .search-bar .MuiInputBase-root {

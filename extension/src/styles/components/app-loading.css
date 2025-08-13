@@ -18,17 +18,6 @@
 }
 
 /* Loading container */
-.app-loading-container {
-  display: grid;
-  place-items: center;
-  min-block-size: var(--app-min-height);
-  padding-inline: var(--spacing-lg);
-  padding-block: var(--spacing-xl);
-  background-color: var(--color-background);
-
-  /* CSS containment for performance */
-  contain: layout style paint;
-}
 
 /* Loading content wrapper */
 .app-loading-content {
@@ -55,12 +44,6 @@
   border-width: 4px;
 }
 
-.app-loading-spinner--small {
-  inline-size: clamp(24px, 6cqw, 32px);
-  block-size: clamp(24px, 6cqw, 32px);
-  border-width: 2px;
-}
-
 @keyframes app-loading-spin {
   to {
     transform: rotate(360deg);
@@ -83,76 +66,9 @@
   margin-block-start: 0;
 }
 
-.app-loading-details {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-tertiary);
-  line-height: var(--line-height-relaxed);
-  margin-block-start: var(--spacing-sm);
-}
-
 /* Loading progress indicator */
-.app-loading-progress {
-  inline-size: 100%;
-  max-inline-size: 200px;
-  block-size: 4px;
-  background-color: var(--color-border);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-  position: relative;
-}
-
-.app-loading-progress-bar {
-  block-size: 100%;
-  background-color: var(--color-primary);
-  border-radius: var(--radius-full);
-  animation: app-loading-progress 2s ease-in-out infinite;
-  transform-origin: left center;
-}
-
-@keyframes app-loading-progress {
-  0% {
-    transform: scaleX(0);
-  }
-  50% {
-    transform: scaleX(0.7);
-  }
-  100% {
-    transform: scaleX(1);
-  }
-}
 
 /* Loading skeleton placeholders */
-.app-loading-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-surface) 25%,
-    var(--color-border) 50%,
-    var(--color-surface) 75%
-  );
-  background-size: 200% 100%;
-  animation: app-loading-skeleton 1.5s ease-in-out infinite;
-  border-radius: var(--radius-sm);
-}
-
-@keyframes app-loading-skeleton {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-.app-loading-skeleton--text {
-  block-size: 1em;
-  inline-size: 100%;
-}
-
-.app-loading-skeleton--title {
-  block-size: 1.2em;
-  inline-size: 60%;
-  margin-block-end: var(--spacing-sm);
-}
 
 .app-loading-skeleton--button {
   block-size: 48px;
@@ -161,29 +77,8 @@
 }
 
 /* Loading states for different contexts */
-.app-loading--auth {
-  gap: var(--spacing-xl);
-}
-
-.app-loading--data {
-  gap: var(--spacing-md);
-}
-
-.app-loading--initial {
-  min-block-size: calc(var(--app-min-height) * 0.8);
-}
 
 /* Loading timeout state */
-.app-loading--timeout {
-  gap: var(--spacing-lg);
-}
-
-.app-loading-timeout-message {
-  color: var(--color-warning);
-  font-size: var(--font-size-sm);
-  text-align: center;
-  padding-inline: var(--spacing-md);
-}
 
 .app-loading-retry-button {
   inline-size: auto;
@@ -217,11 +112,6 @@
 
 /* Responsive loading layouts */
 @container (width < 300px) {
-  .app-loading-container {
-    padding-inline: var(--spacing-md);
-    padding-block: var(--spacing-lg);
-  }
-
   .app-loading-content {
     gap: var(--spacing-md);
     max-inline-size: 240px;
@@ -237,11 +127,6 @@
 }
 
 @container (width >= 400px) {
-  .app-loading-container {
-    padding-inline: var(--spacing-xl);
-    padding-block: var(--spacing-xxl);
-  }
-
   .app-loading-content {
     gap: var(--spacing-xl);
     max-inline-size: 320px;
@@ -249,9 +134,7 @@
 }
 
 /* Loading animation performance optimizations */
-.app-loading-spinner,
-.app-loading-progress-bar,
-.app-loading-skeleton {
+.app-loading-spinner {
   will-change: transform;
 }
 
@@ -262,10 +145,6 @@
     border-color: var(--color-text-primary);
     border-top-color: var(--color-primary);
   }
-
-  .app-loading-progress {
-    border: 1px solid var(--color-text-primary);
-  }
 }
 
 /* Reduced motion adjustments */
@@ -275,16 +154,6 @@
     border-top-color: var(--color-primary);
   }
 
-  .app-loading-progress-bar {
-    animation: none;
-    transform: scaleX(0.5);
-  }
-
-  .app-loading-skeleton {
-    animation: none;
-    background: var(--color-border);
-  }
-
   .app-loading-retry-button:hover,
   .app-loading-retry-button:active {
     transform: none;
@@ -292,21 +161,9 @@
 }
 
 /* Loading accessibility */
-.app-loading-container[aria-live='polite'] {
-  /* Ensure screen readers announce loading state changes */
-}
-
-.app-loading-spinner[role='progressbar'] {
-  /* Provide semantic meaning for assistive technology */
-}
 
 /* Print styles */
 @media print {
-  .app-loading-container {
-    background: white;
-    color: black;
-  }
-
   .app-loading-spinner {
     display: none;
   }

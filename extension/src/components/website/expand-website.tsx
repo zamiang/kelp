@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import '../../styles/components/website/expand-website.css';
 import config from '../../../../constants/config';
 import CloseIcon from '../../../../public/icons/close.svg';
 import { cleanupUrl } from '../shared/cleanup-url';
