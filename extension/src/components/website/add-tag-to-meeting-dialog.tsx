@@ -5,7 +5,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
@@ -13,70 +12,7 @@ import CloseIcon from '../../../../public/icons/close.svg';
 import { isSegmentTagSelected } from '../meeting/featured-meeting';
 import { ISegment, ISegmentTag, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-
-const PREFIX = 'AddTagToMeetingDialog';
-
-const classes = {
-  dialogContent: `${PREFIX}-dialogContent`,
-  button: `${PREFIX}-button`,
-  columnList: `${PREFIX}-columnList`,
-  closeButton: `${PREFIX}-closeButton`,
-  tag: `${PREFIX}-tag`,
-  tagSelected: `${PREFIX}-tagSelected`,
-};
-
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-  [`& .${classes.dialogContent}`]: {
-    padding: theme.spacing(6),
-    position: 'relative',
-    width: 480,
-  },
-
-  [`& .${classes.button}`]: {
-    textDecoration: 'none',
-    cursor: 'pointer',
-    borderRadius: 33,
-    background: theme.palette.background.paper,
-    color: theme.palette.primary.main,
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(3),
-    display: 'block',
-    width: '100%',
-    paddingTop: 12,
-    paddingBottom: 12,
-    marginTop: theme.spacing(2),
-  },
-
-  [`& .${classes.columnList}`]: {
-    maxHeight: 300,
-    overflow: 'auto',
-    border: `1px solid ${theme.palette.divider}`,
-    marginTop: theme.spacing(1),
-    borderRadius: theme.shape.borderRadius,
-  },
-  [`& .${classes.closeButton}`]: {
-    position: 'absolute',
-    top: 42,
-    right: 42,
-  },
-  [`& .${classes.tag}`]: {
-    display: 'inline-block',
-    marginRight: theme.spacing(2),
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: theme.spacing(0.5),
-    transition: 'opacity 0.3s',
-    borderRadius: 5,
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  [`& .${classes.tagSelected}`]: {
-    pointerEvents: 'all',
-    cursor: 'pointer',
-    background: theme.palette.primary.main,
-  },
-}));
+import '../../styles/components/website/add-tag-to-meeting-dialog.css';
 
 export const AddTagToMeetingDialog = (props: {
   meeting: ISegment;
@@ -101,7 +37,7 @@ export const AddTagToMeetingDialog = (props: {
   }, [props.store.isLoading]);
 
   return (
-    <StyledDialog
+    <Dialog
       maxWidth="md"
       open={props.isOpen}
       onClose={(_event, reason) => {
@@ -109,39 +45,45 @@ export const AddTagToMeetingDialog = (props: {
           props.close();
         }
       }}
+      sx={{
+        '& .MuiDialog-paper': {
+          containerType: 'inline-size',
+          containerName: 'add-tag-to-meeting-dialog',
+        },
+      }}
     >
-      <div className={classes.dialogContent}>
+      <div className="add-tag-to-meeting-dialog-content">
         <Box display="flex" justifyContent="space-between">
           <Box>
             <Typography variant="h3">Add tags to {props.meeting.summary}</Typography>
             <br />
-            <IconButton onClick={props.close} className={classes.closeButton} size="large">
+            <IconButton
+              onClick={props.close}
+              className="add-tag-to-meeting-dialog-close-button"
+              size="large"
+            >
               <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
           </Box>
         </Box>
-        <List className={classes.columnList} disablePadding>
+        <List className="add-tag-to-meeting-dialog-column-list" disablePadding>
           {websiteTags.map((t) => (
             <ListItem
               key={t}
               onClick={() =>
                 props.toggleMeetingTag(t, props.meeting.id, props.meeting.summary || '')
               }
-              sx={{
-                cursor: 'pointer',
-                backgroundColor: isSegmentTagSelected(props.meeting.id, t, props.meetingTags)
-                  ? 'action.selected'
-                  : 'transparent',
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                },
-              }}
+              className={`add-tag-to-meeting-dialog-list-item ${
+                isSegmentTagSelected(props.meeting.id, t, props.meetingTags)
+                  ? 'add-tag-to-meeting-dialog-list-item-selected'
+                  : ''
+              }`}
             >
               <ListItemText primary={t} />
             </ListItem>
           ))}
         </List>
       </div>
-    </StyledDialog>
+    </Dialog>
   );
 };

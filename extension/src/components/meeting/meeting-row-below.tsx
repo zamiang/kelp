@@ -2,7 +2,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React, { useEffect, useState } from 'react';
@@ -17,33 +16,7 @@ import {
 } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
 import { WebsiteHighlights } from '../website/website-highlights';
-
-const PREFIX = 'MeetingRowBelow';
-
-const classes = {
-  section: `${PREFIX}-section`,
-  title: `${PREFIX}-title`,
-  topSection: `${PREFIX}-topSection`,
-  icon: `${PREFIX}-icon`,
-};
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  [`& .${classes.section}`]: {
-    marginTop: theme.spacing(4),
-  },
-  [`& .${classes.icon}`]: {
-    color: theme.palette.text.primary,
-  },
-  [`& .${classes.title}`]: {
-    color: theme.palette.text.primary,
-    fontSize: theme.typography.h3.fontSize,
-  },
-  [`& .${classes.topSection}`]: {
-    marginBottom: theme.spacing(1),
-    position: 'relative',
-    zIndex: 5,
-  },
-}));
+import '../../styles/components/meeting/meeting-row-below.css';
 
 const MeetingRowBelow = (props: {
   meeting: ISegment;
@@ -83,7 +56,10 @@ const MeetingRowBelow = (props: {
   }
 
   return (
-    <StyledBox flex={props.isFullWidth ? '1' : '0 0 91.67%'}>
+    <Box
+      className={`meeting-row-below-root ${props.isFullWidth ? 'meeting-row-below-full-width' : 'meeting-row-below-constrained'}`}
+      flex={props.isFullWidth ? '1' : '0 0 91.67%'}
+    >
       <Box sx={{ flexGrow: 1 }}>
         <Grid container columns={3} spacing={2}>
           {websites.map((item) => (
@@ -108,14 +84,14 @@ const MeetingRowBelow = (props: {
           <PlusIcon
             width={config.ICON_SIZE}
             height={config.ICON_SIZE}
-            className={classes.icon}
+            className="meeting-row-below-icon"
           />{' '}
         </IconButton>
       )}
       {props.meetingTags.map((t) => (
-        <div className={classes.section} key={t.id}>
-          <div className={classes.topSection}>
-            <Typography className={classes.title}>{t.tag}</Typography>
+        <div className="meeting-row-below-section" key={t.id}>
+          <div className="meeting-row-below-top-section">
+            <Typography className="meeting-row-below-title">{t.tag}</Typography>
           </div>
           <WebsiteHighlights
             store={props.store}
@@ -126,7 +102,7 @@ const MeetingRowBelow = (props: {
           />
         </div>
       ))}
-    </StyledBox>
+    </Box>
   );
 };
 

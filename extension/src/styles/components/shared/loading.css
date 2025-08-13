@@ -1,25 +1,216 @@
 /* Loading Component Styles */
 
-.loading {
-  /* Component root styles handled by Material-UI styled component */
+.loading-backdrop {
+  z-index: 1300; /* Above drawer z-index */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  transition: opacity var(--transition-normal);
 }
 
-/* Utility classes for inline style replacements */
-.u-width-full {
-  width: 100%;
+.loading-backdrop.loading__backdrop {
+  /* Additional styling for the backdrop */
+  animation: fadeIn 0.2s ease-out;
 }
 
-.u-text-center {
-  text-align: center;
-}
-
-/* Loading specific utilities */
 .loading__progress-container {
-  width: 100%;
-  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Backdrop styles to replace makeStyles */
-.loading__backdrop {
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-on-surface);
+  background: var(--color-surface);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 300px;
+  margin: var(--spacing-md);
+}
+
+.loading-message {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  margin-top: var(--spacing-md);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .loading-content {
+    max-width: 280px;
+    padding: var(--spacing-lg);
+  }
+
+  .loading-message {
+    font-size: var(--font-size-md);
+  }
+
+  .loading__progress-container {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-content {
+    max-width: 260px;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm);
+  }
+
+  .loading-message {
+    font-size: var(--font-size-sm);
+  }
+
+  .loading__progress-container {
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .loading-backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .loading-content {
+    border: 2px solid var(--color-border);
+  }
+
+  .loading-message {
+    font-weight: 600;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .loading-backdrop {
+    transition: none;
+    animation: none;
+  }
+
+  .loading-backdrop.loading__backdrop {
+    animation: none;
+  }
+}
+
+/* Dark theme specific adjustments */
+[data-theme='dark'] .loading-backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme='dark'] .loading-content {
+  background: var(--color-surface-dark);
+  box-shadow: var(--shadow-lg-dark);
+}
+
+/* Print styles */
+@media print {
+  .loading-backdrop {
+    display: none;
+  }
+}
+
+/* Focus management */
+.loading-backdrop:focus {
+  outline: none;
+}
+
+/* Accessibility improvements */
+.loading-backdrop[aria-hidden='true'] {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.loading-backdrop[aria-hidden='false'] {
+  pointer-events: all;
+  opacity: 1;
+}
+
+/* Enhanced backdrop blur for modern browsers */
+@supports (backdrop-filter: blur(4px)) {
+  .loading-backdrop {
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme='dark'] .loading-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Loading spinner customization */
+.loading__progress-container .MuiCircularProgress-root {
+  color: var(--color-primary);
+  width: 40px !important;
+  height: 40px !important;
+}
+
+@media (max-width: 480px) {
+  .loading__progress-container .MuiCircularProgress-root {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+/* Alternative loading states */
+.loading-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  color: var(--color-text-secondary);
+}
+
+.loading-inline .MuiCircularProgress-root {
+  margin-right: var(--spacing-sm);
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Loading overlay for specific components */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 10;
+  border-radius: inherit;
+}
+
+[data-theme='dark'] .loading-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.loading-overlay .MuiCircularProgress-root {
+  color: var(--color-primary);
 }

@@ -1,0 +1,81 @@
+/* Meeting Highlight Component Styles */
+
+.meeting-highlight-root {
+  container-type: inline-size;
+  container-name: meeting-highlight;
+}
+
+.meeting-highlight {
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Responsive design */
+@container meeting-highlight (width < 768px) {
+  .meeting-highlight {
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+@container meeting-highlight (width < 480px) {
+  .meeting-highlight {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+/* Enhanced spacing for better visual hierarchy */
+.meeting-highlight + .meeting-highlight {
+  margin-top: var(--spacing-lg);
+}
+
+/* Accessibility improvements */
+.meeting-highlight:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .meeting-highlight {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Print styles */
+@media print {
+  .meeting-highlight {
+    margin-bottom: var(--spacing-md);
+    break-inside: avoid;
+  }
+}
+
+/* Loading state */
+.meeting-highlight.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Animation for when meeting appears */
+.meeting-highlight {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .meeting-highlight {
+    animation: none;
+  }
+}
