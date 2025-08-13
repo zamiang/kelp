@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { format, formatDistanceToNow, subMinutes } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/components/meeting/featured-meeting.css';
 import config from '../../../../constants/config';
 import PlusIcon from '../../../../public/icons/plus.svg';
 import VideoIcon from '../../../../public/icons/video.svg';

@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/components/person/person-row.css';
 import { IPerson } from '../store/data-types';
 
 const PersonRow = (props: {

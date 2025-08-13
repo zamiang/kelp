@@ -3,6 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import '../../styles/components/nav/search-bar.css';
 import config from '../../../../constants/config';
 import CloseIcon from '../../../../public/icons/close.svg';
 import SearchIcon from '../../../../public/icons/search.svg';

@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
 import RightArrow from '../../../../public/icons/right-arrow.svg';
+import '../../styles/components/onboarding/onboarding.css';
 
 const maxTips = 3;
 
