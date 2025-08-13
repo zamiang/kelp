@@ -45,7 +45,7 @@ const launchAuthFlow = (msal: IPublicClientApplication, url: string) =>
     );
   });
 
-const signInClickHandler = async (msal: IPublicClientApplication) => {
+export const signInClickHandler = async (msal: IPublicClientApplication) => {
   const url = (await getLoginUrl(msal)) as any;
   ensureDataRefresh();
   return await launchAuthFlow(msal, url);
