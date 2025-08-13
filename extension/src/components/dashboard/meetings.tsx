@@ -1,4 +1,3 @@
-import { styled } from '@mui/material/styles';
 import { differenceInCalendarDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { FeaturedMeeting } from '../meeting/featured-meeting';
@@ -6,24 +5,10 @@ import { LoadingSpinner } from '../shared/loading-spinner';
 import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache } from '../website/get-featured-websites';
-
-const PREFIX = 'AttendeeList';
+import '../../styles/components/dashboard/meetings.css';
 
 const DAYS_BACK = 5;
 const DAYS_FORWARD = -1;
-
-const classes = {
-  panel: `${PREFIX}-panel`,
-};
-
-const MeetingsContainer = styled('div')(() => ({
-  [`& .${classes.panel}`]: {
-    position: 'relative',
-    overscrollBehavior: 'contain',
-    overscrollBehaviorY: 'none',
-    overscrollBehaviorX: 'none',
-  },
-}));
 
 const Meetings = (props: {
   store: IStore;
@@ -48,8 +33,8 @@ const Meetings = (props: {
   const shouldRenderLoading = props.store.isMeetingsLoading;
 
   return (
-    <MeetingsContainer>
-      <div className={classes.panel}>
+    <div className="meetings-container">
+      <div className="meetings-panel">
         {shouldRenderLoading && <LoadingSpinner />}
         {meetings.map((meeting) => (
           <FeaturedMeeting
@@ -64,7 +49,7 @@ const Meetings = (props: {
           />
         ))}
       </div>
-    </MeetingsContainer>
+    </div>
   );
 };
 

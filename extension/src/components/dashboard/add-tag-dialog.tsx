@@ -2,7 +2,6 @@ import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { uniq } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -11,47 +10,7 @@ import CloseIcon from '../../../../public/icons/close.svg';
 import { isTagSelected } from '../shared/website-tag';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-
-const PREFIX = 'AddTaggDialog';
-
-const classes = {
-  dialogContent: `${PREFIX}-dialogContent`,
-  tag: `${PREFIX}-tag`,
-  tagContainer: `${PREFIX}-tagContainer`,
-  tagSelected: `${PREFIX}-tagSelected`,
-  closeButton: `${PREFIX}-closeButton`,
-  columnList: `${PREFIX}-columnList`,
-};
-
-const StyledDialog = styled(Dialog)(({ theme }) => ({
-  [`& .${classes.dialogContent}`]: {
-    padding: theme.spacing(6),
-    position: 'relative',
-    width: 480,
-  },
-  [`& .${classes.tag}`]: {
-    cursor: 'pointer',
-  },
-  [`& .${classes.tagContainer}`]: {
-    width: 95,
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-  [`& .${classes.tagSelected}`]: {
-    color: theme.palette.primary.main,
-    '&:hover': {
-      opacity: 0.8,
-    },
-  },
-  [`& .${classes.closeButton}`]: {
-    position: 'absolute',
-    top: 42,
-    right: 42,
-  },
-  [`& .${classes.columnList}`]: {
-    columnCount: 3,
-  },
-}));
+import '../../styles/components/dashboard/add-tag-dialog.css';
 
 export const AddTaggDialog = (props: {
   userTags: IWebsiteTag[];
@@ -83,7 +42,7 @@ export const AddTaggDialog = (props: {
   }, [props.isOpen]);
 
   return (
-    <StyledDialog
+    <Dialog
       maxWidth="md"
       open={props.isOpen}
       onClose={(_event, reason) => {
@@ -91,26 +50,29 @@ export const AddTaggDialog = (props: {
           props.close();
         }
       }}
+      sx={{
+        '& .MuiDialog-paper': { containerType: 'inline-size', containerName: 'add-tag-dialog' },
+      }}
     >
-      <div className={classes.dialogContent}>
+      <div className="add-tag-dialog-content">
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box flex={1}>
             <Typography variant="h3">Add tags </Typography>
           </Box>
           <Box>
-            <IconButton onClick={props.close} className={classes.closeButton} size="large">
+            <IconButton onClick={props.close} className="add-tag-dialog-close-button" size="large">
               <CloseIcon width={config.ICON_SIZE} height={config.ICON_SIZE} />
             </IconButton>
           </Box>
         </Box>
-        <ul className={classes.columnList}>
+        <ul className="add-tag-dialog-column-list">
           {websiteTags.map((t) => (
             <li key={t}>
-              <div className={classes.tagContainer}>
+              <div className="add-tag-dialog-tag-container">
                 <Typography
                   className={clsx(
-                    classes.tag,
-                    isTagSelected(t, props.userTags) && classes.tagSelected,
+                    'add-tag-dialog-tag',
+                    isTagSelected(t, props.userTags) && 'add-tag-dialog-tag-selected',
                   )}
                   onClick={() => props.toggleWebsiteTag(t)}
                   noWrap
@@ -122,6 +84,6 @@ export const AddTaggDialog = (props: {
           ))}
         </ul>
       </div>
-    </StyledDialog>
+    </Dialog>
   );
 };

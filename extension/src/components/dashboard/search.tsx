@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import Fuse, { FuseResult } from 'fuse.js';
 import { uniqBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -15,39 +14,7 @@ import { ISearchItem, enhancedSearchIndex } from '../store/utils/enhanced-search
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, IWebsiteCache } from '../website/get-featured-websites';
 import { LargeWebsite } from '../website/large-website';
-
-const PREFIX = 'Search';
-
-const classes = {
-  button: `${PREFIX}-button`,
-  row: `${PREFIX}-row`,
-  rowText: `${PREFIX}-rowText`,
-  container: `${PREFIX}-container`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.rowText}`]: {
-    marginBottom: theme.spacing(2),
-  },
-  [`& .${classes.row}`]: {
-    marginTop: theme.spacing(8),
-  },
-  [`& .${classes.container}`]: {
-    margin: 0,
-    width: 'auto',
-  },
-  [`& .${classes.button}`]: {
-    borderRadius: 21,
-    background: theme.palette.background.paper,
-    padding: 10,
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-}));
+import '../../styles/components/dashboard/search.css';
 
 // A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
 const minScore = 0.6;
@@ -128,10 +95,10 @@ const SearchResults = (props: {
   const filteredResults = filterSearchResults(results);
   return (
     <React.Fragment>
-      <div className={classes.container}>
+      <div className="search-container">
         {filteredResults.websites.length > 0 && (
-          <div className={classes.row} id="websites">
-            <Typography variant="h3" className={classes.rowText}>
+          <div className="search-row" id="websites">
+            <Typography variant="h3" className="search-row-text">
               Websites
             </Typography>
             <WebsiteResults
@@ -143,8 +110,8 @@ const SearchResults = (props: {
           </div>
         )}
         {filteredResults.people.length > 0 && (
-          <div className={classes.row} id="people">
-            <Typography variant="h3" className={classes.rowText}>
+          <div className="search-row" id="people">
+            <Typography variant="h3" className="search-row-text">
               People
             </Typography>
             {filteredResults.people.slice(0, 9).map((result: any) => (
@@ -157,8 +124,8 @@ const SearchResults = (props: {
           </div>
         )}
         {filteredResults.meetings.length > 0 && (
-          <div className={classes.row} id="meetings">
-            <Typography variant="h3" className={classes.rowText}>
+          <div className="search-row" id="meetings">
+            <Typography variant="h3" className="search-row-text">
               Meetings
             </Typography>
             {filteredResults.meetings.slice(0, 9).map((result: any) => (
@@ -226,10 +193,10 @@ const Search = (props: {
   });
 
   return (
-    <Root>
+    <div className="search-root">
       <Loading isOpen={isLoading} message={'Searching...'} />
       <SearchResults searchQuery={searchQuery} fuse={fuse} {...props} />
-    </Root>
+    </div>
   );
 };
 

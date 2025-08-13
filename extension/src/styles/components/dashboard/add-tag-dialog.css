@@ -1,0 +1,98 @@
+/* Add Tag Dialog Component Styles */
+
+.add-tag-dialog-content {
+  padding: var(--spacing-6xl);
+  position: relative;
+  width: 480px;
+}
+
+.add-tag-dialog-tag {
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.add-tag-dialog-tag-container {
+  width: 95px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.add-tag-dialog-tag-selected {
+  color: var(--color-primary);
+}
+
+.add-tag-dialog-tag-selected:hover {
+  opacity: 0.8;
+}
+
+.add-tag-dialog-close-button {
+  position: absolute;
+  top: 42px;
+  right: 42px;
+}
+
+.add-tag-dialog-column-list {
+  column-count: 3;
+  column-gap: var(--spacing-md);
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-lg) 0 0 0;
+}
+
+.add-tag-dialog-column-list li {
+  break-inside: avoid;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Responsive design for smaller dialogs */
+@container add-tag-dialog (width < 400px) {
+  .add-tag-dialog-content {
+    width: 100%;
+    padding: var(--spacing-lg);
+  }
+
+  .add-tag-dialog-column-list {
+    column-count: 2;
+  }
+
+  .add-tag-dialog-close-button {
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+  }
+}
+
+@container add-tag-dialog (width < 300px) {
+  .add-tag-dialog-column-list {
+    column-count: 1;
+  }
+
+  .add-tag-dialog-tag-container {
+    width: 100%;
+  }
+}
+
+/* Accessibility improvements */
+.add-tag-dialog-tag:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.add-tag-dialog-tag:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .add-tag-dialog-tag-selected {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .add-tag-dialog-tag {
+    transition: none;
+  }
+}

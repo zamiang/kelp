@@ -1,0 +1,50 @@
+/* Meetings Component Styles */
+
+.meetings-container {
+  container-type: inline-size;
+  container-name: meetings;
+}
+
+.meetings-panel {
+  position: relative;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
+}
+
+/* Responsive design */
+@container meetings (width < 768px) {
+  .meetings-panel {
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Loading state improvements */
+.meetings-panel .loading-spinner {
+  margin: var(--spacing-lg) auto;
+  display: block;
+}
+
+/* Accessibility improvements */
+.meetings-panel:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.meetings-panel:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .meetings-panel {
+    border: 1px solid var(--color-border);
+  }
+}
+
+/* Print styles */
+@media print {
+  .meetings-panel {
+    overscroll-behavior: auto;
+  }
+}

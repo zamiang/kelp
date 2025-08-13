@@ -1,28 +1,176 @@
-/* Top Nav Component Styles */
+/* Top Navigation Component Styles */
 
-.top-nav {
-  /* Component root styles handled by Material-UI styled component */
+.top-nav-root {
+  container-type: inline-size;
+  container-name: top-nav;
 }
 
-/* Utility classes for inline style replacements */
-.u-height-97vh {
-  height: 97vh;
+.top-nav-left-section {
+  position: fixed;
+  top: 47vh;
+  left: 0;
+  transition: background var(--transition-normal);
+  z-index: 10;
+  width: 228px;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-sm);
+  flex-shrink: 0;
 }
 
-.u-margin-left-10 {
-  margin-left: 10px;
+.top-nav-center-section {
+  padding: var(--spacing-sm);
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+  width: 100%;
+  z-index: 10;
+  border-bottom: 1px solid var(--color-divider);
 }
 
-.u-margin-top-7 {
-  margin-top: 7px;
+.top-nav-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  border-radius: 10px;
+  background: var(--color-text-secondary);
 }
 
-/* Top nav specific utilities */
+.top-nav-icon-cool {
+  background: var(--theme-cool-highlight);
+}
+
+.top-nav-icon-dark {
+  background: var(--theme-dark-highlight);
+}
+
+.top-nav-icon-nb {
+  background: var(--theme-nb-highlight);
+}
+
+.top-nav-icon-light {
+  background: var(--theme-light-highlight);
+}
+
+.top-nav-icon-image {
+  color: var(--color-text-primary);
+}
+
+.top-nav-icon-selected {
+  color: var(--color-primary);
+}
+
 .top-nav__full-height {
-  height: 97vh;
+  height: 100vh;
 }
 
 .top-nav__error-text {
-  margin-left: 10px;
-  margin-top: 7px;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  margin-top: var(--spacing-md);
+}
+
+/* Responsive breakpoints */
+@container top-nav (width < 1536px) {
+  .top-nav-left-section {
+    width: 187px;
+  }
+}
+
+@container top-nav (width < 1280px) {
+  .top-nav-left-section {
+    width: 179px;
+  }
+}
+
+@container top-nav (width < 1024px) {
+  .top-nav-left-section {
+    width: 139px;
+  }
+}
+
+/* Mobile responsive design */
+@container top-nav (width < 768px) {
+  .top-nav-left-section {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    padding: var(--spacing-sm);
+  }
+
+  .top-nav-center-section {
+    padding: var(--spacing-xs);
+  }
+
+  .top-nav__full-height {
+    height: auto;
+  }
+}
+
+/* Theme color variables for icons */
+:root {
+  --theme-cool-highlight: #4a90e2;
+  --theme-dark-highlight: #bb86fc;
+  --theme-nb-highlight: #ff6b6b;
+  --theme-light-highlight: #4caf50;
+  --icon-size: 24px;
+}
+
+/* Dark theme overrides */
+[data-theme='dark'] {
+  --theme-cool-highlight: #6bb6ff;
+  --theme-dark-highlight: #cf6679;
+  --theme-nb-highlight: #ff8a80;
+  --theme-light-highlight: #81c784;
+}
+
+/* Cool theme overrides */
+[data-theme='cool'] {
+  --theme-cool-highlight: #2196f3;
+  --theme-dark-highlight: #9c27b0;
+  --theme-nb-highlight: #f44336;
+  --theme-light-highlight: #4caf50;
+}
+
+/* NB theme overrides */
+[data-theme='nb'] {
+  --theme-cool-highlight: #3f51b5;
+  --theme-dark-highlight: #673ab7;
+  --theme-nb-highlight: #e91e63;
+  --theme-light-highlight: #8bc34a;
+}
+
+/* Accessibility improvements */
+.top-nav-icon:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.top-nav-icon:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .top-nav-icon-selected {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .top-nav-center-section {
+    border-bottom-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .top-nav-left-section {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .top-nav-left-section,
+  .top-nav-center-section {
+    display: none;
+  }
 }

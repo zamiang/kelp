@@ -1,30 +1,263 @@
 /* Document Row Component Styles */
 
+.document-row-root {
+  container-type: inline-size;
+  container-name: document-row;
+}
+
+.document-row-image {
+  display: block;
+  max-width: 18px;
+  margin: 0 auto;
+}
+
+.document-row-image-spacing {
+  width: 18px;
+  margin-top: 5px;
+}
+
+.document-row-time {
+  min-width: 160px;
+  max-width: 180px;
+}
+
+.document-row-border {
+  min-height: 48px;
+  margin: 0;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--color-divider);
+  border-radius: 0;
+}
+
+.document-row-border:hover {
+  border-color: var(--color-divider);
+}
+
 .document-row {
-  /* Component root styles handled by Material-UI styled component */
+  background: transparent;
+  transition:
+    background var(--transition-normal),
+    opacity var(--transition-normal);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  animation: fadeIn ease 0.4s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
-/* Utility classes for inline style replacements */
+.document-row:hover {
+  opacity: 0.8;
+}
+
+.document-row-top-padding {
+  padding-top: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+}
+
+.document-row-small {
+  padding: 0;
+}
+
+.document-row-left {
+  text-align: center;
+  margin-right: var(--spacing-md);
+}
+
+.document-row-primary-main {
+  background: var(--color-divider);
+}
+
+.document-row-primary-main:hover,
+.document-row-primary-main.selected {
+  border-color: var(--color-secondary-light);
+  background: var(--color-secondary-light);
+}
+
+/* Utility class for margin auto */
 .u-margin-auto {
-  margin: 0 auto;
+  margin: auto;
 }
 
-.u-margin-left-auto {
-  margin-left: auto;
-}
-
-.u-padding-zero {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-/* Document row specific utilities */
-.document-row__icon--centered {
-  margin: 0 auto;
-}
-
+/* Actions container */
 .document-row__actions {
-  margin-left: auto;
-  padding-top: 0;
-  padding-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.document-row:hover .document-row__actions {
+  opacity: 1;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive design */
+@container document-row (width < 768px) {
+  .document-row-time {
+    display: none;
+  }
+
+  .document-row-left {
+    margin-right: var(--spacing-sm);
+  }
+
+  .document-row-image {
+    max-width: 16px;
+  }
+
+  .document-row-image-spacing {
+    width: 16px;
+  }
+}
+
+@container document-row (width < 480px) {
+  .document-row-border {
+    min-height: 40px;
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+  }
+
+  .document-row-top-padding {
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+  }
+
+  .document-row__actions {
+    display: none;
+  }
+}
+
+/* Accessibility improvements */
+.document-row:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+.document-row:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Keyboard navigation */
+.document-row[tabindex='0']:focus {
+  background: var(--color-surface-hover);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .document-row-border {
+    border-bottom-width: 2px;
+  }
+
+  .document-row:hover {
+    opacity: 1;
+    background: var(--color-surface-hover);
+    font-weight: 600;
+  }
+
+  .document-row-primary-main {
+    border: 2px solid var(--color-secondary);
+  }
+
+  .document-row__actions {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .document-row {
+    animation: none;
+    transition: none;
+  }
+
+  .document-row__actions {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .document-row {
+    background: transparent !important;
+    animation: none;
+  }
+
+  .document-row-border {
+    border-bottom: 1px solid #000;
+  }
+
+  .document-row__actions {
+    display: none;
+  }
+}
+
+/* Dark theme specific adjustments */
+[data-theme='dark'] .document-row-primary-main {
+  background: var(--color-divider-dark);
+}
+
+[data-theme='dark'] .document-row-primary-main:hover,
+[data-theme='dark'] .document-row-primary-main.selected {
+  background: var(--color-secondary-light-dark);
+  border-color: var(--color-secondary-light-dark);
+}
+
+/* Loading state */
+.document-row.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.document-row.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, var(--color-surface-hover), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Enhanced interaction states */
+.document-row:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Smooth scrolling for selected items */
+.document-row.selected {
+  scroll-margin: 20px;
+}
+
+/* Icon button improvements */
+.document-row .MuiIconButton-root {
+  transition: all var(--transition-fast);
+}
+
+.document-row .MuiIconButton-root:hover {
+  background: var(--color-surface-hover);
+  transform: scale(1.1);
 }
