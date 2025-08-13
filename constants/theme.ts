@@ -11,7 +11,7 @@ declare module '@mui/styles/defaultTheme' {
   */
 
 const bodyFontFamily = "'basis-grotesque', sans-serif";
-export const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
+const mediumFontFamily = "'basis-grotesque-medium', sans-serif";
 
 const lightThemePalette = {
   mode: 'light',

@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 import React, { Suspense, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import { Onboarding } from '../onboarding/onboarding';
@@ -20,6 +20,9 @@ import Search from './search';
 import { TopNav } from './top-nav';
 import SearchBar from '../nav/search-bar';
 import performanceMonitor from '../../utils/performance-monitor';
+import IconButton from '@mui/material/IconButton';
+import LeftArrow from '../../../../public/icons/right-arrow.svg';
+import config from '../../../../constants/config';
 
 // Lazy load heavy components for better initial page load
 const Meetings = React.lazy(() => import('../dashboard/meetings'));
@@ -44,6 +47,7 @@ const classes = {
   container: 'desktop-dashboard',
   content: 'desktop-dashboard__content',
   footer: 'desktop-dashboard__footer',
+  backButton: 'desktop-dashboard__back-button',
   topMarginContent: 'desktop-dashboard__top-margin-content',
   tagAll: 'desktop-dashboard__tag-all',
 };
@@ -58,6 +62,7 @@ export const DesktopDashboard = (props: {
 }) => {
   const store = props.store;
   const navigate = useNavigate();
+  const location = useLocation();
   const [websiteTags, setWebsiteTags] = useState<IWebsiteTag[]>([]);
   const [websiteCache, setWebsiteCache] = useState<IWebsiteCache>({});
   const [tagForWebsiteToTagDialog, setTagForWebsiteToTagDialog] = useState<string>();
@@ -141,11 +146,6 @@ export const DesktopDashboard = (props: {
     return refetchWebsiteTags();
   };
 
-  const updateWebsiteTags = async (wt: IWebsiteTag[]) => {
-    setWebsiteTags(wt);
-    await props.store.websiteTagStore.updateWebsiteTags(wt);
-  };
-
   return (
     <ErrorBoundaryComponent>
       <div className={classes.container}>
@@ -164,20 +164,21 @@ export const DesktopDashboard = (props: {
           tagForWebsiteToTagDialog={tagForWebsiteToTagDialog}
         />
         <div className={classes.content}>
-          <TopNav
-            store={store}
-            theme={props.theme}
-            setTheme={props.setTheme}
-            websiteTags={websiteTags}
-            setWebsiteTags={updateWebsiteTags}
-            refetchWebsiteTags={refetchWebsiteTags}
-            isMicrosoftError={props.isMicrosoftError}
-            toggleWebsiteTag={toggleWebsiteTagClick}
-            websiteCache={websiteCache}
-          />
+          <TopNav store={store} theme={props.theme} setTheme={props.setTheme} />
           <Onboarding />
-          <Container maxWidth="md">
+          <Container maxWidth="md" style={{ position: 'relative' }}>
             <div>
+              {location.pathname !== '/home' && (
+                <div className={classes.backButton}>
+                  <IconButton onClick={() => navigate('/home')} size="small">
+                    <LeftArrow
+                      width={config.ICON_SIZE}
+                      height={config.ICON_SIZE}
+                      className="top-tags-icon-image u-rotate-180"
+                    />
+                  </IconButton>
+                </div>
+              )}
               <Routes>
                 <Route
                   path="/search"

@@ -82,12 +82,12 @@ class PerformanceMonitor {
 
   logMetrics() {
     const metrics = this.getMetrics();
-    console.group('🚀 Extension Performance Metrics');
+    console.group('🚀 New Tab Performance Metrics');
     console.log('DOM Content Loaded:', metrics.domContentLoaded?.toFixed(2) + 'ms');
     console.log('First Paint:', metrics.firstPaint?.toFixed(2) + 'ms');
     console.log('First Contentful Paint:', metrics.firstContentfulPaint?.toFixed(2) + 'ms');
-    console.log('Bundle Load Time:', metrics.bundleLoadTime?.toFixed(2) + 'ms');
-    console.log('Authentication Time:', metrics.authTime?.toFixed(2) + 'ms');
+    // console.log('Bundle Load Time:', metrics.bundleLoadTime?.toFixed(2) + 'ms');
+    // console.log('Authentication Time:', metrics.authTime?.toFixed(2) + 'ms');
     console.log('Database Ready Time:', metrics.databaseTime?.toFixed(2) + 'ms');
     console.log('Cache Compute Time:', metrics.cacheComputeTime?.toFixed(2) + 'ms');
     console.log('Time to Interactive:', metrics.timeToInteractive?.toFixed(2) + 'ms');
@@ -95,12 +95,12 @@ class PerformanceMonitor {
 
     // Log performance summary
     const tti = metrics.timeToInteractive || 0;
-    if (tti < 2000) {
-      console.log('✅ Excellent performance: TTI < 2s');
-    } else if (tti < 3000) {
-      console.log('⚡ Good performance: TTI < 3s');
+    if (tti < 300) {
+      console.log('✅ Excellent performance: TTI < 300ms');
+    } else if (tti < 500) {
+      console.log('⚡ Good performance: TTI < 500ms');
     } else {
-      console.log('⚠️ Performance needs improvement: TTI > 3s');
+      console.log('⚠️ Performance needs improvement: TTI > 500ms');
     }
   }
 

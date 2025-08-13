@@ -1,100 +1,25 @@
 import { TopPeople } from '../person/top-people';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../../../constants/config';
 import CalendarIcon from '../../../../public/icons/calendar.svg';
 import HomeIcon from '../../../../public/icons/home.svg';
 import MeetingsIcon from '../../../../public/icons/meetings.svg';
 import SettingsIcon from '../../../../public/icons/settings.svg';
-import { getTagsForWebsite } from '../shared/website-tag';
-import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { IWebsiteCache } from '../website/get-featured-websites';
-import { ExpandMeetingNav, ExpandPersonNav, TopTags, WebsiteTags } from './top-tags';
 import '../../styles/components/dashboard/top-nav.css';
 
-const LeftNavForRoute = (props: {
-  path: string;
-  tags?: string[];
-  store: IStore;
-  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
-  websiteTags: IWebsiteTag[];
-  setWebsiteTags: (t: IWebsiteTag[]) => void;
-  dragDropSource?: string;
-}) => {
-  if (props.path.includes('/people/')) {
-    return (
-      <Box>
-        <ExpandPersonNav />
-      </Box>
-    );
-  }
-  if (props.path.includes('/meetings/')) {
-    return (
-      <Box>
-        <ExpandMeetingNav />
-      </Box>
-    );
-  }
-  if (props.path.includes('/websites/') && props.tags) {
-    return (
-      <Box>
-        <WebsiteTags tags={props.tags} store={props.store} />
-      </Box>
-    );
-  }
-  return (
-    <Box>
-      <TopTags
-        websiteTags={props.websiteTags}
-        store={props.store}
-        toggleWebsiteTag={props.toggleWebsiteTag}
-        setWebsiteTags={props.setWebsiteTags}
-        dragDropSource={props.dragDropSource}
-      />
-    </Box>
-  );
-};
-
-export const TopNav = (props: {
-  store: IStore;
-  theme: string;
-  setTheme: (s: string) => void;
-  isMicrosoftError: boolean;
-  toggleWebsiteTag: (tag: string, websiteId?: string) => Promise<void>;
-  websiteTags: IWebsiteTag[];
-  setWebsiteTags: (t: IWebsiteTag[]) => void;
-  refetchWebsiteTags: () => void;
-  websiteCache: IWebsiteCache;
-  dragDropSource?: string;
-}) => {
+export const TopNav = (props: { store: IStore; theme: string; setTheme: (s: string) => void }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [tags, setTags] = useState<string[]>([]);
   const isMeetingsSelected = location.pathname === '/meetings';
   const isHomeSelected = location.pathname === '/home';
   const isSettingsSelected = location.pathname === '/settings';
   const isCalendarSelected = location.pathname === '/calendar';
-  const isWebsite = location.pathname.includes('/websites');
-  const slug = isWebsite ? location.pathname.replace('/websites/', '') : '';
-
-  useEffect(() => {
-    const fetchData = () => {
-      if (isWebsite && slug) {
-        const w = props.websiteCache[decodeURIComponent(slug)];
-        setTags(getTagsForWebsite(w.tags || '', props.websiteTags));
-      } else {
-        setTags([]);
-      }
-    };
-    void fetchData();
-  }, [props.store.isLoading, slug, isWebsite]);
 
   const setTheme = (theme: string) => {
     props.setTheme(theme);
@@ -105,39 +30,18 @@ export const TopNav = (props: {
 
   return (
     <div className="top-nav-root">
-      <div className="top-nav-left-section">
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          flexDirection="column"
-          className="top-nav__full-height"
-        >
-          <LeftNavForRoute
-            path={location.pathname}
-            store={props.store}
-            tags={tags}
-            dragDropSource={props.dragDropSource}
-            toggleWebsiteTag={props.toggleWebsiteTag}
-            setWebsiteTags={props.setWebsiteTags}
-            websiteTags={props.websiteTags}
-          />
-          {props.isMicrosoftError && (
-            <Box>
-              <Box>
-                <Typography color="error" className="top-nav__error-text">
-                  Error: please login to your Microsoft account
-                </Typography>
-              </Box>
-            </Box>
-          )}
-        </Box>
-      </div>
       <div className="top-nav-center-section">
-        <Grid container spacing={2} justifyContent="space-between" alignItems="center">
+        <Grid
+          container
+          spacing={2}
+          justifyContent="space-between"
+          alignItems="flex-start"
+          flexWrap="nowrap"
+        >
           <Grid>
             <TopPeople store={props.store} />
           </Grid>
-          <Grid>
+          <Grid style={{ minWidth: 416 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid>
                 <Tooltip title="Vert Theme" placement="bottom">
