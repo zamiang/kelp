@@ -1,55 +1,9 @@
 /* Advanced Responsive app Styles */
 
 /* Base responsive container */
-.app-responsive-container {
-  /* Dynamic sizing based on container queries */
-  inline-size: clamp(280px, 100cqw, 500px);
-  block-size: clamp(300px, 100cqh, 600px);
-
-  /* Aspect ratio constraints */
-  aspect-ratio: 3 / 4;
-  max-aspect-ratio: 1 / 1;
-  min-aspect-ratio: 2 / 3;
-
-  /* Modern CSS Grid with subgrid support */
-  display: grid;
-  grid-template-rows: subgrid;
-  grid-template-columns: subgrid;
-
-  /* Container query context */
-  container-type: inline-size;
-  container-name: app;
-}
 
 /* Ultra-narrow layout (< 280px) */
 @container app (width < 280px) {
-  .app-responsive-container {
-    --layout-mode: 'ultra-narrow';
-    --content-padding: var(--spacing-xs);
-    --button-size: 'compact';
-    --font-scale: 0.85;
-  }
-
-  .app-responsive-header {
-    padding-block: var(--spacing-sm);
-    text-align: center;
-  }
-
-  .app-responsive-title {
-    font-size: calc(var(--font-size-sm) * var(--font-scale));
-    line-height: var(--line-height-tight);
-  }
-
-  .app-responsive-content {
-    padding-inline: var(--spacing-xs);
-    gap: var(--spacing-sm);
-  }
-
-  .app-responsive-actions {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-xs);
-  }
-
   .app-responsive-button {
     min-block-size: 40px;
     padding-block: var(--spacing-xs);
@@ -60,32 +14,6 @@
 
 /* Narrow layout (280px - 350px) */
 @container app (width >= 280px) and (width < 350px) {
-  .app-responsive-container {
-    --layout-mode: 'narrow';
-    --content-padding: var(--spacing-sm);
-    --button-size: 'small';
-    --font-scale: 0.9;
-  }
-
-  .app-responsive-header {
-    padding-block: var(--spacing-md);
-  }
-
-  .app-responsive-title {
-    font-size: calc(var(--font-size-md) * var(--font-scale));
-    line-height: var(--line-height-snug);
-  }
-
-  .app-responsive-content {
-    padding-inline: var(--spacing-sm);
-    gap: var(--spacing-md);
-  }
-
-  .app-responsive-actions {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
-  }
-
   .app-responsive-button {
     min-block-size: 44px;
     padding-block: var(--spacing-sm);
@@ -96,32 +24,6 @@
 
 /* Standard layout (350px - 450px) */
 @container app (width >= 350px) and (width < 450px) {
-  .app-responsive-container {
-    --layout-mode: 'standard';
-    --content-padding: var(--spacing-md);
-    --button-size: 'medium';
-    --font-scale: 1;
-  }
-
-  .app-responsive-header {
-    padding-block: var(--spacing-lg);
-  }
-
-  .app-responsive-title {
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-snug);
-  }
-
-  .app-responsive-content {
-    padding-inline: var(--spacing-md);
-    gap: var(--spacing-lg);
-  }
-
-  .app-responsive-actions {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-md);
-  }
-
   .app-responsive-button {
     min-block-size: 48px;
     padding-block: var(--spacing-md);
@@ -136,37 +38,6 @@
 
 /* Wide layout (>= 450px) */
 @container app (width >= 450px) {
-  .app-responsive-container {
-    --layout-mode: 'wide';
-    --content-padding: var(--spacing-lg);
-    --button-size: 'large';
-    --font-scale: 1.1;
-  }
-
-  .app-responsive-header {
-    padding-block: var(--spacing-xl);
-  }
-
-  .app-responsive-title {
-    font-size: calc(var(--font-size-xl) * var(--font-scale));
-    line-height: var(--line-height-snug);
-  }
-
-  .app-responsive-content {
-    padding-inline: var(--spacing-lg);
-    gap: var(--spacing-xl);
-
-    /* Enhanced layout for wide screens */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-
-  .app-responsive-actions {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: var(--spacing-lg);
-  }
-
   .app-responsive-button {
     min-block-size: 52px;
     padding-block: var(--spacing-lg);
@@ -176,262 +47,23 @@
 }
 
 /* Dynamic typography scaling */
-.app-responsive-title {
-  font-size: clamp(
-    calc(var(--font-size-sm) * var(--font-scale, 1)),
-    calc(var(--font-size-md) + 2cqw),
-    calc(var(--font-size-xl) * var(--font-scale, 1))
-  );
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  margin-block-end: var(--spacing-sm);
-}
-
-.app-responsive-subtitle {
-  font-size: clamp(
-    calc(var(--font-size-xs) * var(--font-scale, 1)),
-    calc(var(--font-size-sm) + 1cqw),
-    calc(var(--font-size-md) * var(--font-scale, 1))
-  );
-  color: var(--color-text-secondary);
-  line-height: var(--line-height-relaxed);
-}
-
-.app-responsive-body {
-  font-size: clamp(
-    calc(var(--font-size-xs) * var(--font-scale, 1)),
-    calc(var(--font-size-xs) + 1cqw),
-    calc(var(--font-size-sm) * var(--font-scale, 1))
-  );
-  color: var(--color-text-primary);
-  line-height: var(--line-height-relaxed);
-}
 
 /* Responsive navigation patterns */
-.app-responsive-nav {
-  display: grid;
-  gap: var(--spacing-sm);
-}
-
-@container app (width < 350px) {
-  .app-responsive-nav {
-    grid-template-columns: 1fr;
-  }
-
-  .app-responsive-nav-item {
-    text-align: center;
-    padding-block: var(--spacing-sm);
-  }
-}
-
-@container app (width >= 350px) {
-  .app-responsive-nav {
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  }
-
-  .app-responsive-nav-item {
-    text-align: center;
-    padding-block: var(--spacing-md);
-  }
-}
 
 /* Responsive form layouts */
-.app-responsive-form {
-  display: grid;
-  gap: var(--spacing-md);
-}
-
-@container app (width < 350px) {
-  .app-responsive-form {
-    grid-template-columns: 1fr;
-  }
-
-  .app-responsive-form-group {
-    display: grid;
-    gap: var(--spacing-xs);
-  }
-
-  .app-responsive-form-label {
-    font-size: var(--font-size-xs);
-  }
-
-  .app-responsive-form-input {
-    min-block-size: 40px;
-    padding-inline: var(--spacing-sm);
-    font-size: var(--font-size-sm);
-  }
-}
-
-@container app (width >= 350px) {
-  .app-responsive-form {
-    grid-template-columns: 1fr;
-  }
-
-  .app-responsive-form-group {
-    display: grid;
-    gap: var(--spacing-sm);
-  }
-
-  .app-responsive-form-label {
-    font-size: var(--font-size-sm);
-  }
-
-  .app-responsive-form-input {
-    min-block-size: 48px;
-    padding-inline: var(--spacing-md);
-    font-size: var(--font-size-sm);
-  }
-}
-
-@container app (width >= 450px) {
-  .app-responsive-form-group--inline {
-    grid-template-columns: 1fr 2fr;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-}
 
 /* Responsive content sections */
-.app-responsive-section {
-  display: grid;
-  gap: var(--spacing-md);
-  padding-block: var(--spacing-md);
-  border-block-end: 1px solid var(--color-divider);
-}
-
-.app-responsive-section:last-child {
-  border-block-end: none;
-}
-
-@container app (width < 350px) {
-  .app-responsive-section {
-    gap: var(--spacing-sm);
-    padding-block: var(--spacing-sm);
-  }
-}
-
-@container app (width >= 450px) {
-  .app-responsive-section {
-    gap: var(--spacing-lg);
-    padding-block: var(--spacing-lg);
-  }
-
-  .app-responsive-section--two-column {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-}
 
 /* Responsive collapsible sections */
-.app-responsive-collapsible {
-  display: grid;
-  grid-template-rows: auto 0fr;
-  transition: grid-template-rows var(--transition-medium);
-}
-
-.app-responsive-collapsible--expanded {
-  grid-template-rows: auto 1fr;
-}
-
-.app-responsive-collapsible-content {
-  overflow: hidden;
-}
-
-@container app (width >= 400px) {
-  .app-responsive-collapsible {
-    /* Always expanded on wider screens */
-    grid-template-rows: auto 1fr;
-  }
-}
 
 /* Responsive spacing utilities */
-.app-responsive-spacing--compact {
-  gap: var(--spacing-xs);
-  padding-inline: var(--spacing-xs);
-  padding-block: var(--spacing-sm);
-}
-
-.app-responsive-spacing--comfortable {
-  gap: var(--spacing-md);
-  padding-inline: var(--spacing-md);
-  padding-block: var(--spacing-lg);
-}
-
-.app-responsive-spacing--spacious {
-  gap: var(--spacing-lg);
-  padding-inline: var(--spacing-lg);
-  padding-block: var(--spacing-xl);
-}
 
 /* Apply spacing based on container size */
-@container app (width < 300px) {
-  .app-responsive-auto-spacing {
-    @extend .app-responsive-spacing--compact;
-  }
-}
-
-@container app (width >= 300px) and (width < 400px) {
-  .app-responsive-auto-spacing {
-    @extend .app-responsive-spacing--comfortable;
-  }
-}
-
-@container app (width >= 400px) {
-  .app-responsive-auto-spacing {
-    @extend .app-responsive-spacing--spacious;
-  }
-}
 
 /* Responsive visibility utilities */
-@container app (width < 350px) {
-  .app-responsive-hide-narrow {
-    display: none;
-  }
-}
-
-@container app (width >= 450px) {
-  .app-responsive-show-wide {
-    display: block;
-  }
-}
-
-.app-responsive-show-wide {
-  display: none;
-}
 
 /* Performance optimizations for responsive elements */
-.app-responsive-container,
-.app-responsive-content,
-.app-responsive-actions {
-  contain: layout style;
-}
 
 /* Accessibility improvements for responsive design */
-@media (prefers-reduced-motion: reduce) {
-  .app-responsive-collapsible {
-    transition: none;
-  }
-}
-
-@media (prefers-contrast: high) {
-  .app-responsive-section {
-    border-block-end-width: 2px;
-  }
-}
 
 /* Print styles for responsive layout */
-@media print {
-  .app-responsive-container {
-    aspect-ratio: auto;
-    inline-size: 100%;
-    block-size: auto;
-  }
-
-  .app-responsive-content {
-    grid-template-columns: 1fr;
-  }
-
-  .app-responsive-actions {
-    grid-template-columns: 1fr;
-  }
-}
