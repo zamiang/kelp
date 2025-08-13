@@ -4,6 +4,10 @@
   /* Component root styles handled by Material-UI styled component */
 }
 
+.onboarding-step-container {
+  padding: var(--spacing-md);
+}
+
 /* Utility classes for inline style replacements */
 .u-rotate-180 {
   transform: rotate(180deg);
