@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -256,20 +257,18 @@ const ExpandWebsite = (props: {
             <Typography variant="h3" className="expand-website-section-heading">
               Related Websites
             </Typography>
-            <div className="expand-website-grid-container">
-              <div className="expand-website-grid">
-                {websitesAtDomain.map((item) => (
-                  <div className="expand-website-grid-item" key={item.id}>
-                    <LargeWebsite
-                      item={item}
-                      store={props.store}
-                      websiteTags={props.websiteTags}
-                      toggleWebsiteTag={props.toggleWebsiteTag}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+            <Grid container columns={3} spacing={2}>
+              {websitesAtDomain.map((item) => (
+                <Grid size={1} key={item.id}>
+                  <LargeWebsite
+                    item={item}
+                    store={props.store}
+                    websiteTags={props.websiteTags}
+                    toggleWebsiteTag={props.toggleWebsiteTag}
+                  />
+                </Grid>
+              ))}
+            </Grid>
           </div>
         )}
         {websiteTags.map((t) => (

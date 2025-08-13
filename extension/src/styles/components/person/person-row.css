@@ -8,6 +8,7 @@
   opacity: 1;
   padding-block: var(--spacing-sm);
   border-bottom: unset;
+  margin-bottom: var(--spacing-sm);
 }
 
 .person-row:hover {

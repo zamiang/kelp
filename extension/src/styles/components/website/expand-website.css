@@ -222,10 +222,11 @@
 }
 
 .expand-website-tag-input-container {
-  flex: 1;
+  flex: 2;
 }
 
 .expand-website-tag-button-container {
+  flex: 1;
   flex-shrink: 0;
 }
 
@@ -279,13 +280,14 @@
 }
 
 .expand-website-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   gap: var(--spacing-sm);
+  flex-wrap: wrap;
 }
 
 .expand-website-grid-item {
-  /* Grid item styles handled by child components */
+  display: flex;
+  flex: 1;
 }
 
 /* Links */
