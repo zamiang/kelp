@@ -3,11 +3,11 @@
   "compilerOptions": {
     "strict": true,
     "outDir": "./dist/",
-    "module": "es6",
+    "module": "es2020",
     "moduleResolution": "bundler",
     "isolatedModules": false,
     "noEmit": false,
-    "target": "es6",
+    "target": "es2020",
     "jsx": "react"
   },
   "include": ["../@types", "./src/**/*", "src/custom.d.ts"],

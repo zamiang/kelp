@@ -40,7 +40,6 @@ const getConfig = () => {
       background: path.join(__dirname, 'src/background.ts'),
       color: path.join(__dirname, 'src/background-color.ts'),
       'content-script': path.join(__dirname, 'src/content-script.ts'),
-      styles: path.join(__dirname, 'src/styles.js'),
     },
     output: { path: path.join(__dirname, 'dist'), filename: '[name].js' },
     module: {
@@ -120,6 +119,36 @@ const getConfig = () => {
       },
     },
     optimization: {
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          mui: {
+            test: /[\\/]node_modules[\\/]@mui[\\/]/,
+            name: 'mui',
+            chunks: 'all',
+            priority: 20,
+          },
+          msal: {
+            test: /[\\/]node_modules[\\/]@azure[\\/]/,
+            name: 'msal',
+            chunks: 'all',
+            priority: 20,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+            reuseExistingChunk: true,
+          },
+        },
+      },
       minimizer: [
         '...',
         ...(isProduction

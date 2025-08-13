@@ -4,11 +4,16 @@
     <title>Kelp</title>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" sizes="48x48" href="/icon48.png" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="app.css" />
   </head>
   <body>
     <script src="color.js"></script>
     <div id="app"></div>
+    <!-- Load chunks in correct order: vendors first, then mui, msal, common, then app -->
+    <script src="vendors.js"></script>
+    <script src="mui.js"></script>
+    <script src="msal.js"></script>
+    <script src="common.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
