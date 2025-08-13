@@ -35,7 +35,7 @@
     "typecheck": "node node_modules/.bin/tsc --project tsconfig.json --noEmit --pretty"
   },
   "dependencies": {
-    "@azure/msal-browser": "4.19.0",
+    "@azure/msal-browser": "4.20.0",
     "@azure/msal-react": "3.0.17",
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
