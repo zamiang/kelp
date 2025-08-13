@@ -1,0 +1,9 @@
+/* Tag Highlights Component Styles */
+
+.tag-highlights {
+  /* Component root styles */
+}
+
+.tag-highlights__section {
+  margin-bottom: var(--spacing-xl);
+}

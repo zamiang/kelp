@@ -2,7 +2,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
@@ -11,64 +10,7 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IFeaturedWebsite, IWebsiteCache, IWebsiteCacheItem } from './get-featured-websites';
 import { LargeWebsite } from './large-website';
-
-const PREFIX = 'DraggableWebsiteHighlights';
-
-export const classes = {
-  topSection: `${PREFIX}-topSection`,
-  button: `${PREFIX}-button`,
-  sideButton: `${PREFIX}-sideButton`,
-  loading: `${PREFIX}-loading`,
-  rightContainer: `${PREFIX}-rightContainer`,
-  iconSelected: `${PREFIX}-iconSelected`,
-  iconText: `${PREFIX}-iconText`,
-};
-
-export const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.topSection}`]: {
-    marginBottom: theme.spacing(2),
-    position: 'relative',
-    zIndex: 5,
-    opacity: 1,
-    transition: 'opacity 0.5s',
-  },
-  [`& .${classes.loading}`]: {
-    opacity: 0.5,
-  },
-  [`& .${classes.iconText}`]: {
-    color: theme.palette.text.primary,
-  },
-  [`& .${classes.rightContainer}`]: {
-    marginRight: -47,
-    width: 99,
-  },
-  [`& .${classes.iconSelected}`]: {
-    color: theme.palette.primary.main,
-  },
-  [`& .${classes.button}`]: {
-    opacity: 1,
-    transition: 'opacity 0.3s ease-out',
-    '&:hover': {
-      opacity: 0.5,
-    },
-  },
-  [`& .${classes.sideButton}`]: {
-    opacity: 1,
-    transition: 'opacity 0.3s ease-out',
-    position: 'absolute',
-    right: -50,
-    top: 'calc(50% - 16px)',
-    background: theme.palette.background.paper,
-    color: theme.palette.text.primary,
-    boxShadow: theme.shadows[1],
-    width: 32,
-    height: 32,
-    overflow: 'hidden',
-    '&:hover': {
-      opacity: 0.5,
-    },
-  },
-}));
+import '../../styles/components/website/draggable-website-highlights.css';
 
 const getWebsitesForTag = (websiteCache: IWebsiteCache, filterByTag?: string) => {
   const websites = Object.values(websiteCache);
@@ -184,18 +126,26 @@ export const DraggableWebsiteHighlights = (props: {
   ]);
 
   return (
-    <Root style={{ position: 'relative' }}>
+    <div className="draggable-website-highlights" style={{ position: 'relative' }}>
       <Box
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        className={clsx(classes.topSection, props.isLoading && classes.loading)}
+        className={clsx(
+          'draggable-website-highlights__top-section',
+          props.isLoading && 'draggable-website-highlights__loading',
+        )}
       >
         <Box>
           <Typography variant="h3">{props.filterByTag || 'Recent'}</Typography>
         </Box>
         <Box>
-          <Box display="flex" alignItems="center" gap={2} className={classes.rightContainer}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={2}
+            className="draggable-website-highlights__right-container"
+          >
             {props.filterByTag && props.showAddWebsiteDialog && (
               <Box>
                 <Typography
@@ -215,13 +165,13 @@ export const DraggableWebsiteHighlights = (props: {
             {props.filterByTag && !props.shouldHideCloseButton && (
               <Box>
                 <IconButton
-                  className={classes.button}
+                  className="draggable-website-highlights__button"
                   onClick={() => props.toggleWebsiteTag(props.filterByTag!)}
                 >
                   <CloseIcon
                     width={config.ICON_SIZE}
                     height={config.ICON_SIZE}
-                    className={classes.iconText}
+                    className="draggable-website-highlights__icon-text"
                   />
                 </IconButton>
               </Box>
@@ -237,7 +187,7 @@ export const DraggableWebsiteHighlights = (props: {
       />
       {extraItemsCount > 0 && !shouldShowAll && (
         <IconButton
-          className={classes.sideButton}
+          className="draggable-website-highlights__side-button"
           onClick={() => {
             setShouldShowAll(!shouldShowAll);
           }}
@@ -245,6 +195,6 @@ export const DraggableWebsiteHighlights = (props: {
           <Typography variant="body2">{extraItemsCount > 10 ? '10+' : extraItemsCount}</Typography>
         </IconButton>
       )}
-    </Root>
+    </div>
   );
 };

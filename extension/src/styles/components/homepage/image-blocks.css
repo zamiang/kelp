@@ -1,0 +1,34 @@
+/* Image Blocks Component Styles */
+
+.image-blocks__image {
+  margin: 0px auto;
+  display: block;
+  border-radius: 20px;
+  max-width: 100%;
+  height: auto;
+}
+
+.image-blocks__heading {
+  font-size: 24px;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.image-blocks__text-section {
+  margin-bottom: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+  text-align: center;
+}
+
+.image-blocks__section {
+  margin-bottom: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .image-blocks__section {
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+  }
+}

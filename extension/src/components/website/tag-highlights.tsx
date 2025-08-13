@@ -1,4 +1,3 @@
-import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/styles/useTheme';
 import React from 'react';
@@ -6,18 +5,7 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { DraggableWebsiteHighlights } from './draggable-website-highlights';
 import { IWebsiteCache } from './get-featured-websites';
-
-const PREFIX = 'TagHighlights';
-
-const classes = {
-  section: `${PREFIX}-section`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.section}`]: {
-    marginBottom: theme.spacing(8),
-  },
-}));
+import '../../styles/components/website/tag-highlights.css';
 
 export const TagHighlights = (props: {
   store: IStore;
@@ -33,9 +21,9 @@ export const TagHighlights = (props: {
   const isLarge = useMediaQuery((theme as any).breakpoints.up('lg'));
 
   return (
-    <Root>
+    <div className="tag-highlights">
       {orderedTags.map((t) => (
-        <div className={classes.section} key={t.id} id={`tag-${t.tag}`}>
+        <div className="tag-highlights__section" key={t.id} id={`tag-${t.tag}`}>
           <DraggableWebsiteHighlights
             store={props.store}
             toggleWebsiteTag={props.toggleWebsiteTag}
@@ -49,6 +37,6 @@ export const TagHighlights = (props: {
           />
         </div>
       ))}
-    </Root>
+    </div>
   );
 };
