@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -18,76 +17,7 @@ import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache } from '../website/get-featured-websites';
 import { ExpandMeetingNav, ExpandPersonNav, TopTags, WebsiteTags } from './top-tags';
-
-const PREFIX = 'TopNav';
-
-const classes = {
-  leftSection: `${PREFIX}-leftSection`,
-  icon: `${PREFIX}-icon`,
-  iconLight: `${PREFIX}-iconLight`,
-  iconDark: `${PREFIX}-iconDark`,
-  iconNb: `${PREFIX}-iconNb`,
-  iconCool: `${PREFIX}-iconCool`,
-  iconImage: `${PREFIX}-iconImage`,
-  iconSelected: `${PREFIX}-iconSelected`,
-  centerSection: `${PREFIX}-centerSection`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.leftSection}`]: {
-    position: 'fixed',
-    top: '47vh',
-    left: 0,
-    transition: 'background 0.3s',
-    zIndex: 10,
-    width: 228,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-    flexShrink: 0,
-    [theme.breakpoints.down('xl')]: {
-      width: 187,
-    },
-    [theme.breakpoints.down('xl')]: {
-      width: 179,
-    },
-    [theme.breakpoints.down('lg')]: {
-      width: 139,
-    },
-  },
-  [`& .${classes.centerSection}`]: {
-    padding: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    width: '100%',
-    zIndex: 10,
-    borderBottom: '1px solid',
-    borderColor: theme.palette.divider,
-  },
-  [`& .${classes.icon}`]: {
-    width: config.ICON_SIZE,
-    height: config.ICON_SIZE,
-    borderRadius: 10,
-    background: 'grey',
-  },
-  [`& .${classes.iconCool}`]: {
-    background: config.THEME_COOL_HIGHLIGHT_COLOR,
-  },
-  [`& .${classes.iconDark}`]: {
-    background: config.THEME_DARK_HIGHLIGHT_COLOR,
-  },
-  [`& .${classes.iconNb}`]: {
-    background: config.THEME_NB_HIGHLIGHT_COLOR,
-  },
-  [`& .${classes.iconLight}`]: {
-    background: config.THEME_LIGHT_HIGHLIGHT_COLOR,
-  },
-  [`& .${classes.iconImage}`]: {
-    color: theme.palette.text.primary,
-  },
-  [`& .${classes.iconSelected}`]: {
-    color: theme.palette.primary.main,
-  },
-}));
+import '../../styles/components/dashboard/top-nav.css';
 
 const LeftNavForRoute = (props: {
   path: string;
@@ -174,8 +104,8 @@ export const TopNav = (props: {
   };
 
   return (
-    <Root>
-      <div className={classes.leftSection}>
+    <div className="top-nav-root">
+      <div className="top-nav-left-section">
         <Box
           display="flex"
           justifyContent="space-between"
@@ -202,7 +132,7 @@ export const TopNav = (props: {
           )}
         </Box>
       </div>
-      <div className={classes.centerSection}>
+      <div className="top-nav-center-section">
         <Grid container spacing={2} justifyContent="space-between" alignItems="center">
           <Grid>
             <TopPeople store={props.store} />
@@ -220,7 +150,7 @@ export const TopNav = (props: {
                     }}
                     size="large"
                   >
-                    <div className={clsx(classes.icon, classes.iconLight)}></div>
+                    <div className={clsx('top-nav-icon', 'top-nav-icon-light')}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -235,7 +165,7 @@ export const TopNav = (props: {
                     }}
                     size="large"
                   >
-                    <div className={clsx(classes.icon, classes.iconNb)}></div>
+                    <div className={clsx('top-nav-icon', 'top-nav-icon-nb')}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -250,7 +180,7 @@ export const TopNav = (props: {
                     }}
                     size="large"
                   >
-                    <div className={clsx(classes.icon, classes.iconCool)}></div>
+                    <div className={clsx('top-nav-icon', 'top-nav-icon-cool')}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -265,7 +195,7 @@ export const TopNav = (props: {
                     }}
                     size="large"
                   >
-                    <div className={clsx(classes.icon, classes.iconDark)}></div>
+                    <div className={clsx('top-nav-icon', 'top-nav-icon-dark')}></div>
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -283,13 +213,13 @@ export const TopNav = (props: {
                       <HomeIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconSelected}
+                        className="top-nav-icon-selected"
                       />
                     ) : (
                       <HomeIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconImage}
+                        className="top-nav-icon-image"
                       />
                     )}
                   </IconButton>
@@ -309,13 +239,13 @@ export const TopNav = (props: {
                       <MeetingsIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconSelected}
+                        className="top-nav-icon-selected"
                       />
                     ) : (
                       <MeetingsIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconImage}
+                        className="top-nav-icon-image"
                       />
                     )}
                   </IconButton>
@@ -335,13 +265,13 @@ export const TopNav = (props: {
                       <CalendarIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconSelected}
+                        className="top-nav-icon-selected"
                       />
                     ) : (
                       <CalendarIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconImage}
+                        className="top-nav-icon-image"
                       />
                     )}
                   </IconButton>
@@ -361,13 +291,13 @@ export const TopNav = (props: {
                       <SettingsIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconSelected}
+                        className="top-nav-icon-selected"
                       />
                     ) : (
                       <SettingsIcon
                         width={config.ICON_SIZE}
                         height={config.ICON_SIZE}
-                        className={classes.iconImage}
+                        className="top-nav-icon-image"
                       />
                     )}
                   </IconButton>
@@ -377,6 +307,6 @@ export const TopNav = (props: {
           </Grid>
         </Grid>
       </div>
-    </Root>
+    </div>
   );
 };

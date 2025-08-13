@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import config from '../../../../constants/config';
@@ -9,52 +8,7 @@ import LeftArrow from '../../../../public/icons/right-arrow.svg';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { AddTaggDialog } from './add-tag-dialog';
-
-const PREFIX = 'TopTags';
-
-const classes = {
-  container: `${PREFIX}-container`,
-  tag: `${PREFIX}-tag`,
-  tagContainer: `${PREFIX}-tagContainer`,
-  dot: `${PREFIX}-dot`,
-  dotContainer: `${PREFIX}-dotContainer`,
-  iconImage: `${PREFIX}-iconImage`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.container}`]: { maxHeight: '80vh', overflow: 'auto' },
-  [`& .${classes.tag}`]: {
-    cursor: 'pointer',
-    height: 20,
-    opacity: 0.5,
-    transition: 'opacity 0.6s ease-out',
-    '&:hover': {
-      opacity: 1,
-    },
-  },
-  [`& .${classes.tagContainer}`]: {
-    [`&:hover .${classes.dot}`]: {
-      width: 10,
-      height: 10,
-      background: theme.palette.text.primary,
-    },
-  },
-  [`& .${classes.dot}`]: {
-    height: 6,
-    width: 6,
-    borderRadius: 5,
-    transition: 'all 0.6s ease-out',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    background: theme.palette.divider,
-  },
-  [`& .${classes.dotContainer}`]: {
-    width: theme.spacing(3),
-  },
-  [`& .${classes.iconImage}`]: {
-    color: theme.palette.text.primary,
-  },
-}));
+import '../../styles/components/dashboard/top-tags.css';
 
 export const TopTags = (props: {
   websiteTags: IWebsiteTag[];
@@ -83,7 +37,7 @@ export const TopTags = (props: {
   };
 
   return (
-    <Root>
+    <div className="top-tags-root">
       <AddTaggDialog
         userTags={props.websiteTags}
         isOpen={isDialogOpen}
@@ -92,7 +46,7 @@ export const TopTags = (props: {
         toggleWebsiteTag={props.toggleWebsiteTag}
       />
       <Box
-        className={classes.container}
+        className="top-tags-container"
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -104,7 +58,7 @@ export const TopTags = (props: {
               <LeftArrow
                 width={config.ICON_SIZE}
                 height={config.ICON_SIZE}
-                className={`${classes.iconImage} u-rotate-180`}
+                className="top-tags-icon-image u-rotate-180"
               />
             </IconButton>
           </Box>
@@ -115,19 +69,19 @@ export const TopTags = (props: {
               display="flex"
               alignItems="center"
               justifyContent="space-between"
-              className={classes.tagContainer}
+              className="top-tags-tag-container"
             >
               <Box flex={1} minWidth={0}>
                 <Box display="flex" alignItems="center">
                   <Box>
-                    <div className={classes.dotContainer}>
-                      <div className={classes.dot}></div>
+                    <div className="top-tags-dot-container">
+                      <div className="top-tags-dot"></div>
                     </div>
                   </Box>
                   <Box flex={1} minWidth={0}>
                     <Typography
                       noWrap
-                      className={classes.tag}
+                      className="top-tags-tag"
                       onClick={() => onClickTag(t.tag)}
                       variant="body2"
                     >
@@ -142,37 +96,41 @@ export const TopTags = (props: {
       </Box>
       <br />
       <Box
-        className={classes.container}
+        className="top-tags-container"
         display="flex"
         flexDirection="column"
         alignItems="center"
         gap={1}
       >
         <Box width="100%">
-          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+          <Box display="flex" alignItems="center" className="top-tags-tag-container">
             <Box>
-              <div className={classes.dotContainer}>
-                <div className={classes.dot}></div>
+              <div className="top-tags-dot-container">
+                <div className="top-tags-dot"></div>
               </div>
             </Box>
             <Box>
-              <Typography variant="body2" className={classes.tag} onClick={() => onClickTag('all')}>
+              <Typography
+                variant="body2"
+                className="top-tags-tag"
+                onClick={() => onClickTag('all')}
+              >
                 Recent
               </Typography>
             </Box>
           </Box>
         </Box>
         <Box width="100%">
-          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+          <Box display="flex" alignItems="center" className="top-tags-tag-container">
             <Box>
-              <div className={classes.dotContainer}>
-                <div className={classes.dot}></div>
+              <div className="top-tags-dot-container">
+                <div className="top-tags-dot"></div>
               </div>
             </Box>
             <Box>
               <Typography
                 variant="body2"
-                className={`${classes.tag} u-font-weight-600`}
+                className="top-tags-tag u-font-weight-600"
                 color="primary"
                 onClick={() => setDialogOpen(true)}
               >
@@ -182,7 +140,7 @@ export const TopTags = (props: {
           </Box>
         </Box>
       </Box>
-    </Root>
+    </div>
   );
 };
 
@@ -195,9 +153,9 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
   };
 
   return (
-    <Root>
+    <div className="top-tags-root">
       <Box
-        className={classes.container}
+        className="top-tags-container"
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -208,23 +166,23 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
             <LeftArrow
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              className={`${classes.iconImage} u-rotate-180`}
+              className="top-tags-icon-image u-rotate-180"
             />
           </IconButton>
         </Box>
         {props.tags.map((t) => (
           <Box width="100%" key={t}>
-            <Box display="flex" alignItems="center" className={classes.tagContainer}>
+            <Box display="flex" alignItems="center" className="top-tags-tag-container">
               <Box>
-                <div className={classes.dotContainer}>
-                  <div className={classes.dot}></div>
+                <div className="top-tags-dot-container">
+                  <div className="top-tags-dot"></div>
                 </div>
               </Box>
               <Box flex={1} minWidth={0}>
                 <Typography
                   noWrap
                   variant="body2"
-                  className={classes.tag}
+                  className="top-tags-tag"
                   onClick={() => onClickTag(t)}
                 >
                   {t}
@@ -234,16 +192,16 @@ export const WebsiteTags = (props: { tags: string[]; store: IStore }) => {
           </Box>
         ))}
       </Box>
-    </Root>
+    </div>
   );
 };
 
 export const ExpandMeetingNav = () => {
   const navigate = useNavigate();
   return (
-    <Root>
+    <div className="top-tags-root">
       <Box
-        className={classes.container}
+        className="top-tags-container"
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -254,22 +212,22 @@ export const ExpandMeetingNav = () => {
             <LeftArrow
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              className={`${classes.iconImage} u-rotate-180`}
+              className="top-tags-icon-image u-rotate-180"
             />
           </IconButton>
         </Box>
         <Box width="100%">
-          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+          <Box display="flex" alignItems="center" className="top-tags-tag-container">
             <Box>
-              <div className={classes.dotContainer}>
-                <div className={classes.dot}></div>
+              <div className="top-tags-dot-container">
+                <div className="top-tags-dot"></div>
               </div>
             </Box>
             <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
-                className={classes.tag}
+                className="top-tags-tag"
                 onClick={() =>
                   document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
                 }
@@ -280,17 +238,17 @@ export const ExpandMeetingNav = () => {
           </Box>
         </Box>
         <Box width="100%">
-          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+          <Box display="flex" alignItems="center" className="top-tags-tag-container">
             <Box>
-              <div className={classes.dotContainer}>
-                <div className={classes.dot}></div>
+              <div className="top-tags-dot-container">
+                <div className="top-tags-dot"></div>
               </div>
             </Box>
             <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
-                className={classes.tag}
+                className="top-tags-tag"
                 onClick={() =>
                   document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
                 }
@@ -301,16 +259,16 @@ export const ExpandMeetingNav = () => {
           </Box>
         </Box>
       </Box>
-    </Root>
+    </div>
   );
 };
 
 export const ExpandPersonNav = () => {
   const navigate = useNavigate();
   return (
-    <Root>
+    <div className="top-tags-root">
       <Box
-        className={classes.container}
+        className="top-tags-container"
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -321,22 +279,22 @@ export const ExpandPersonNav = () => {
             <LeftArrow
               width={config.ICON_SIZE}
               height={config.ICON_SIZE}
-              className={`${classes.iconImage} u-rotate-180`}
+              className="top-tags-icon-image u-rotate-180"
             />
           </IconButton>
         </Box>
         <Box width="100%">
-          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+          <Box display="flex" alignItems="center" className="top-tags-tag-container">
             <Box>
-              <div className={classes.dotContainer}>
-                <div className={classes.dot}></div>
+              <div className="top-tags-dot-container">
+                <div className="top-tags-dot"></div>
               </div>
             </Box>
             <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
-                className={classes.tag}
+                className="top-tags-tag"
                 onClick={() =>
                   document.getElementById('websites')?.scrollIntoView({ behavior: 'smooth' })
                 }
@@ -347,17 +305,17 @@ export const ExpandPersonNav = () => {
           </Box>
         </Box>
         <Box width="100%">
-          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+          <Box display="flex" alignItems="center" className="top-tags-tag-container">
             <Box>
-              <div className={classes.dotContainer}>
-                <div className={classes.dot}></div>
+              <div className="top-tags-dot-container">
+                <div className="top-tags-dot"></div>
               </div>
             </Box>
             <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
-                className={classes.tag}
+                className="top-tags-tag"
                 onClick={() =>
                   document.getElementById('people')?.scrollIntoView({ behavior: 'smooth' })
                 }
@@ -368,17 +326,17 @@ export const ExpandPersonNav = () => {
           </Box>
         </Box>
         <Box width="100%">
-          <Box display="flex" alignItems="center" className={classes.tagContainer}>
+          <Box display="flex" alignItems="center" className="top-tags-tag-container">
             <Box>
-              <div className={classes.dotContainer}>
-                <div className={classes.dot}></div>
+              <div className="top-tags-dot-container">
+                <div className="top-tags-dot"></div>
               </div>
             </Box>
             <Box flex={1} minWidth={0}>
               <Typography
                 noWrap
                 variant="body2"
-                className={classes.tag}
+                className="top-tags-tag"
                 onClick={() =>
                   document.getElementById('meetings')?.scrollIntoView({ behavior: 'smooth' })
                 }
@@ -389,6 +347,6 @@ export const ExpandPersonNav = () => {
           </Box>
         </Box>
       </Box>
-    </Root>
+    </div>
   );
 };
