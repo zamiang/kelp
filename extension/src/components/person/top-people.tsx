@@ -1,7 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import { getWeek } from 'date-fns';
 import { countBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -11,75 +10,7 @@ import { IStore } from '../store/use-store';
 import { MostRecentTab } from '../website/most-recent-tab';
 import Link from '@mui/material/Link';
 import KelpIcon from '../../../../public/kelp-24.svg';
-
-const PREFIX = 'TopPeople';
-
-const classes = {
-  person: `${PREFIX}-person`,
-  container: `${PREFIX}-container`,
-  avatar: `${PREFIX}-avatar`,
-  item: `${PREFIX}-item`,
-  text: `${PREFIX}-text`,
-  logo: `${PREFIX}-logo`,
-  icon: `${PREFIX}-icon`,
-  textContainer: `${PREFIX}-textContainer`,
-  imageContainer: `${PREFIX}-imageContainer`,
-  iconImage: `${PREFIX}-iconImage`,
-  iconSelected: `${PREFIX}-iconSelected`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`& .${classes.person}`]: {
-    opacity: 1,
-    transition: 'opacity 0.3s',
-    cursor: 'pointer',
-    display: 'flex',
-    '&:hover': { opacity: 0.7 },
-  },
-  [`& .${classes.container}`]: {
-    height: 38,
-    overflow: 'hidden',
-  },
-  [`& .${classes.item}`]: {},
-  [`& .${classes.avatar}`]: {
-    height: 20,
-    width: 20,
-  },
-  [`& .${classes.text}`]: { color: theme.palette.text.primary },
-  [`& .${classes.icon}`]: {
-    display: 'inline-block',
-    verticalAlign: 'top',
-    marginLeft: theme.spacing(1),
-    opacity: 0.6,
-    marginTop: 1,
-  },
-  [`& .${classes.imageContainer}`]: {
-    marginRight: theme.spacing(1),
-    display: 'inline-block',
-    verticalAlign: 'top',
-    marginTop: 1,
-  },
-  [`& .${classes.textContainer}`]: {
-    display: 'inline-block',
-    verticalAlign: 'top',
-    maxWidth: 140,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  [`& .${classes.logo}`]: {
-    opacity: 1,
-    transition: 'opacity 0.3s',
-    '&:hover': {
-      opacity: 0.5,
-    },
-  },
-  [`& .${classes.iconImage}`]: {
-    color: theme.palette.text.primary,
-  },
-  [`& .${classes.iconSelected}`]: {
-    color: theme.palette.primary.main,
-  },
-}));
+import '../../styles/components/person/top-people.css';
 
 export const TopPeople = (props: { store: IStore }) => {
   const [people, setTopPeople] = useState<IPerson[]>([]);
@@ -107,11 +38,11 @@ export const TopPeople = (props: { store: IStore }) => {
   }, [props.store.isLoading]);
 
   return (
-    <Root>
-      <Grid container spacing={2} className={classes.container} alignItems="center">
+    <div className="top-people">
+      <Grid container spacing={2} className="top-people__container" alignItems="center">
         <Grid className="top-people__kelp-icon">
-          <Link href="https://www.kelp.nyc" className={classes.logo}>
-            <KelpIcon height="24" width="24" className={classes.iconSelected} />
+          <Link href="https://www.kelp.nyc" className="top-people__logo">
+            <KelpIcon height="24" width="24" className="top-people__icon-selected" />
           </Link>
         </Grid>
         <Grid>
@@ -119,9 +50,9 @@ export const TopPeople = (props: { store: IStore }) => {
         </Grid>
         {people.map((person) => (
           <Grid key={person.id}>
-            <div className={classes.person}>
+            <div className="top-people__person">
               <div
-                className={classes.imageContainer}
+                className="top-people__image-container"
                 onClick={() => navigate(`/people/${encodeURIComponent(person.id)}`)}
               >
                 {person.imageUrl ? (
@@ -129,23 +60,23 @@ export const TopPeople = (props: { store: IStore }) => {
                     alt={`Profile photo for ${
                       person.name || person.emailAddresses[0] || undefined
                     }`}
-                    className={classes.avatar}
+                    className="top-people__avatar"
                     src={person.imageUrl}
                   />
                 ) : (
                   <Avatar
                     alt={person.name || person.emailAddresses[0] || undefined}
-                    className={classes.avatar}
+                    className="top-people__avatar"
                   >
                     {(person.name || person.id)[0]}
                   </Avatar>
                 )}
               </div>
               <div
-                className={classes.textContainer}
+                className="top-people__text-container"
                 onClick={() => navigate(`/people/${encodeURIComponent(person.id)}`)}
               >
-                <Typography noWrap variant="body2" className={classes.text}>
+                <Typography noWrap variant="body2" className="top-people__text">
                   {person.name}
                 </Typography>
               </div>
@@ -153,6 +84,6 @@ export const TopPeople = (props: { store: IStore }) => {
           </Grid>
         ))}
       </Grid>
-    </Root>
+    </div>
   );
 };

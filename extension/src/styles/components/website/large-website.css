@@ -1,37 +1,28 @@
 /* Large Website Component Styles */
 
 .large-website {
-  /* Component root styles handled by Material-UI styled component */
-}
-
-/* Utility classes for inline style replacements */
-.u-position-relative {
   position: relative;
 }
 
-/* Large website specific utilities */
+.large-website:hover .large-website__container {
+  opacity: 0.8;
+}
+
 .large-website__container {
-  position: relative;
-}
-
-.large-website__background-image {
-  /* Background image will be set dynamically via style attribute */
-  background-size: 105%;
-  background-position: top;
-  display: block;
-  padding-bottom: 61.8%;
+  background: var(--color-background-paper);
+  opacity: 1;
   overflow: hidden;
-  height: 0;
-  position: relative;
+  transition: opacity 0.3s;
+  border-radius: var(--radius-md);
 }
 
-/* CSS custom properties for pattern colors - to be used with theme system */
-:root {
-  --pattern-dots-light: radial-gradient(rgba(250, 250, 250, 0.5) 20%, transparent 20%);
-  --pattern-dots-dark: radial-gradient(rgba(100, 100, 100, 0.3) 20%, transparent 20%);
+.large-website__remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
 }
 
-/* Theme-aware pattern dots */
 .large-website__dots {
   background-image: var(--pattern-dots-light), var(--pattern-dots-light);
   background-position:
@@ -46,9 +37,68 @@
   height: 100%;
 }
 
+.large-website__image-container {
+  background-size: 105%;
+  background-position: top;
+  display: block;
+  padding-bottom: 61.8%;
+  overflow: hidden;
+  height: 0;
+  position: relative;
+}
+
+.large-website__favicon-container {
+  background: var(--color-background-paper);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: calc(30.9% - 16px);
+  padding-bottom: calc(30.9% - 16px);
+}
+
+.large-website__text {
+  margin-top: var(--spacing-md);
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.large-website__text-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.large-website__tags-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.large-website__dots-button {
+  opacity: 0.5;
+}
+
+.large-website__dots-icon {
+  color: var(--color-text-primary);
+}
+
+.large-website__icon {
+  display: block;
+  margin-right: var(--spacing-xs);
+}
+
+.large-website__icon-button {
+  background-color: var(--color-background-paper);
+}
+
 /* Dark theme pattern override */
 [data-theme='dark'] .large-website__dots,
 [data-theme='cool'] .large-website__dots,
 [data-theme='nb'] .large-website__dots {
   background-image: var(--pattern-dots-dark), var(--pattern-dots-dark);
+}
+
+/* Utility classes */
+.u-position-relative {
+  position: relative;
 }

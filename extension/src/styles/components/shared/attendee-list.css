@@ -1,11 +1,226 @@
 /* Attendee List Component Styles */
 
-.attendee-list {
-  /* Component root styles handled by Material-UI styled component */
+.attendee-list-root {
+  container-type: inline-size;
+  container-name: attendee-list;
 }
 
-/* Attendee list specific utilities */
-.attendee-list__expand {
+.attendee-list-expand {
   text-decoration: underline;
   cursor: pointer;
+  color: var(--color-primary);
+  transition: color var(--transition-fast);
+  display: inline-block;
+  padding: var(--spacing-xs) 0;
+}
+
+.attendee-list-expand:hover {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+}
+
+.attendee-list-expand:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.attendee-list-expand:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.attendee-list-expand:active {
+  transform: scale(0.98);
+}
+
+/* Attendee rows container */
+.attendee-list-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* Loading state */
+.attendee-list-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.attendee-list-loading .attendee-list-rows {
+  position: relative;
+}
+
+.attendee-list-loading .attendee-list-rows::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, var(--color-surface-hover), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Empty state */
+.attendee-list-empty {
+  display: none;
+}
+
+/* Responsive design */
+@container attendee-list (width < 768px) {
+  .attendee-list-rows {
+    gap: var(--spacing-xs);
+  }
+
+  .attendee-list-expand {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@container attendee-list (width < 480px) {
+  .attendee-list-expand {
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs) 0;
+  }
+}
+
+/* Accessibility improvements */
+.attendee-list-expand[role='button'] {
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: left;
+}
+
+.attendee-list-expand[tabindex='0']:focus {
+  background: var(--color-surface-hover);
+  padding: var(--spacing-xs);
+  margin: -var(--spacing-xs);
+  border-radius: var(--radius-sm);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .attendee-list-expand {
+    font-weight: 600;
+    border: 1px solid var(--color-primary);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+  }
+
+  .attendee-list-expand:hover {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .attendee-list-expand {
+    transition: none;
+  }
+
+  .attendee-list-expand:active {
+    transform: none;
+  }
+
+  .attendee-list-loading .attendee-list-rows::after {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .attendee-list-expand {
+    display: none;
+  }
+
+  .attendee-list-rows {
+    gap: var(--spacing-xs);
+  }
+}
+
+/* Dark theme specific adjustments */
+[data-theme='dark'] .attendee-list-expand:hover {
+  color: var(--color-primary-light);
+}
+
+/* Animation for expanded state */
+.attendee-list-rows {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced interaction states */
+.attendee-list-expand:hover {
+  background: var(--color-surface-hover);
+  padding: var(--spacing-xs);
+  margin: -var(--spacing-xs);
+  border-radius: var(--radius-sm);
+}
+
+/* Focus ring improvements */
+.attendee-list-expand:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Keyboard navigation improvements */
+.attendee-list-expand[aria-expanded='true'] {
+  display: none;
+}
+
+.attendee-list-expand[aria-expanded='false'] {
+  display: inline-block;
+}
+
+/* Status indicators for different attendee states */
+.attendee-list-rows .person-row[data-response-status='accepted'] {
+  border-left: 3px solid var(--color-success);
+  padding-left: var(--spacing-sm);
+}
+
+.attendee-list-rows .person-row[data-response-status='declined'] {
+  border-left: 3px solid var(--color-error);
+  padding-left: var(--spacing-sm);
+  opacity: 0.7;
+}
+
+.attendee-list-rows .person-row[data-response-status='tentative'] {
+  border-left: 3px solid var(--color-warning);
+  padding-left: var(--spacing-sm);
+}
+
+.attendee-list-rows .person-row[data-response-status='needsAction'] {
+  border-left: 3px solid var(--color-info);
+  padding-left: var(--spacing-sm);
+}
+
+/* Compact mode for small attendee lists */
+.attendee-list-compact .attendee-list-rows {
+  gap: 2px;
+}
+
+.attendee-list-compact .attendee-list-expand {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-xs);
 }

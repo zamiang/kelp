@@ -1,0 +1,50 @@
+/* Add Website to Tag Dialog Component Styles */
+
+.add-website-to-tag-dialog__content {
+  padding: var(--spacing-xl);
+  position: relative;
+  width: 480px;
+}
+
+.add-website-to-tag-dialog__button {
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 33px;
+  background: var(--color-background-paper);
+  color: var(--color-primary);
+  padding-right: var(--spacing-lg);
+  padding-left: var(--spacing-lg);
+  display: block;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-top: var(--spacing-md);
+}
+
+.add-website-to-tag-dialog__close-button {
+  /* Close button styles handled by Material-UI IconButton */
+}
+
+.add-website-to-tag-dialog__column-list {
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid var(--color-divider);
+  margin-top: var(--spacing-sm);
+  border-radius: var(--radius-md);
+}
+
+.add-website-to-tag-dialog__section {
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.add-website-to-tag-dialog__section:last-child {
+  margin-bottom: 0;
+}
+
+.add-website-to-tag-dialog__small-button {
+  width: 100px;
+  background: var(--color-background-paper);
+  color: var(--color-primary);
+  border-radius: 16px;
+}

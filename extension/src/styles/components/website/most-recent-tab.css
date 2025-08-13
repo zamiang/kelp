@@ -1,0 +1,38 @@
+/* Most Recent Tab Component Styles */
+
+.most-recent-tab {
+  /* Component root styles */
+}
+
+.most-recent-tab__tab {
+  display: flex;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.most-recent-tab__tab:hover {
+  opacity: 0.7;
+}
+
+.most-recent-tab__text {
+  color: var(--color-text-primary);
+}
+
+.most-recent-tab__image-container {
+  margin-right: var(--spacing-sm);
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 1px;
+}
+
+.most-recent-tab__text-container {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.most-recent-tab__favicon {
+  display: block;
+}

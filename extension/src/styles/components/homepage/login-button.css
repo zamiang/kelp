@@ -1,0 +1,28 @@
+/* Login Button Component Styles */
+
+.login-button {
+  min-width: 100px;
+  margin-left: auto;
+  padding-top: 15px;
+  padding-bottom: 14px;
+  padding-left: var(--spacing-xl);
+  padding-right: var(--spacing-xl);
+  border-radius: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1.25px;
+  font-size: 14px;
+}
+
+.login-button__avatar {
+  width: 22px;
+  height: 22px;
+  margin-right: var(--spacing-sm);
+  margin-left: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .login-button {
+    display: none;
+  }
+}

@@ -1,0 +1,10 @@
+/* Segment Document List Component Styles */
+
+.segment-document-list {
+  /* Component root styles */
+}
+
+.segment-document-list__show-more-button {
+  cursor: pointer;
+  text-decoration: underline;
+}
