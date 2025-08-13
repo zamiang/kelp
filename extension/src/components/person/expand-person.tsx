@@ -88,8 +88,8 @@ const ExpandPerson = (props: {
 
         const flattenedWebsites = orderByCount(
           flatten(websitesForMeetings).filter(Boolean),
-          'websiteId',
-          'date',
+          'id',
+          'lastVisited',
         );
         setWebsites(flattenedWebsites);
 
