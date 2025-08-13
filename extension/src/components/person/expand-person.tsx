@@ -61,7 +61,6 @@ const ExpandPerson = (props: {
           ),
         );
       if (s) {
-        console.log(s, '<<<<<<');
         const filteredSegments = s.filter(Boolean) as ISegment[];
         setSegments(filteredSegments);
 
@@ -77,14 +76,11 @@ const ExpandPerson = (props: {
           filteredSegments.map(async (meeting) => {
             if (meeting) {
               const result = await fetchWebsitesForMeetingFiltered(meeting, props.store, true, 10);
-              console.log(result, '<<<<<<<<<<<<<');
               return result;
             }
             return [];
           }),
         );
-
-        console.log(flatten(websitesForMeetings), '<<<<<websitesformeetings');
 
         const flattenedWebsites = orderByCount(
           flatten(websitesForMeetings).filter(Boolean),

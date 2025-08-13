@@ -1,7 +1,4 @@
 import { ThemeOptions, createTheme } from '@mui/material/styles';
-import BasisGrotesqueItalicWoff2 from '../public/fonts/basis-grotesque-italic-pro.woff2';
-import BasisGrotesqueMediumWoff2 from '../public/fonts/basis-grotesque-medium-pro.woff2';
-import BasisGrotesqueRegularWoff2 from '../public/fonts/basis-grotesque-regular-pro.woff2';
 import config from './config';
 
 /*
@@ -198,33 +195,6 @@ const themeConfig = {
     },
   },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-      @font-face {
-        font-family: "basis-grotesque";
-        font-style: "normal";
-        font-display: 'swap';
-        font-weight: 400;
-        src: url(${BasisGrotesqueRegularWoff2}) format('woff2');
-      }
-
-      @font-face {
-        font-family: 'basis-grotesque-italic';
-        font-style: 'italic';
-        font-display: 'swap';
-        font-weight: 400;
-        src: url(${BasisGrotesqueItalicWoff2}) format('woff2');
-      }
-
-      @font-face {
-        font-family: 'basis-grotesque-medium',
-        font-style: 'normal';
-        font-display: 'swap';
-        font-weight: 400;
-        src: url(${BasisGrotesqueMediumWoff2}) format('woff2');
-      }
-      `,
-    },
     MuiListItemIcon: {
       styleOverrides: {
         root: {
