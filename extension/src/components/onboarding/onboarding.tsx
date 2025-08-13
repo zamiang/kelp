@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import config from '../../../../constants/config';
 import RightArrow from '../../../../public/icons/right-arrow.svg';
 import '../../styles/components/onboarding/onboarding.css';
