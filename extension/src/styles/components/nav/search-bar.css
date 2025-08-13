@@ -85,6 +85,7 @@
 /* Input Styling */
 .search-bar .MuiTextField-root {
   margin: 0;
+  margin-top: 8px;
 }
 
 .search-bar .MuiInputBase-root {
