@@ -3,28 +3,41 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import Meetings from '../dashboard/meetings';
-import ExpandedDocument from '../documents/expand-document';
 import ErrorBoundaryComponent from '../error-tracking/error-boundary';
-import ExpandedMeeting from '../meeting/expand-meeting';
 import { MeetingHighlight } from '../meeting/meeting-highlight';
 import { Onboarding } from '../onboarding/onboarding';
-import ExpandPerson from '../person/expand-person';
 import { toggleWebsiteTag } from '../shared/website-tag';
+import { LoadingSpinner } from '../shared/loading-spinner';
 import { IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
-import { Summary } from '../summary/summary';
-import Settings from '../user-profile/settings';
 import { AddWebsiteToTagDialog } from '../website/add-website-to-tag-dialog';
-import ExpandWebsite from '../website/expand-website';
 import { IWebsiteCache, getWebsitesCache } from '../website/get-featured-websites';
 import { TagHighlights } from '../website/tag-highlights';
 import { WebsiteHighlights } from '../website/website-highlights';
 import Search from './search';
 import { TopNav } from './top-nav';
 import SearchBar from '../nav/search-bar';
+import performanceMonitor from '../../utils/performance-monitor';
+
+// Lazy load heavy components for better initial page load
+const Meetings = React.lazy(() => import('../dashboard/meetings'));
+const ExpandedDocument = React.lazy(() => import('../documents/expand-document'));
+const ExpandedMeeting = React.lazy(() => import('../meeting/expand-meeting'));
+const ExpandPerson = React.lazy(() => import('../person/expand-person'));
+const Summary = React.lazy(() =>
+  import('../summary/summary').then((module) => ({ default: module.Summary })),
+);
+const Settings = React.lazy(() => import('../user-profile/settings'));
+const ExpandWebsite = React.lazy(() => import('../website/expand-website'));
+
+// Loading fallback component
+const RouteLoadingFallback = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+    <LoadingSpinner />
+  </div>
+);
 
 // Modern CSS classes using BEM naming convention
 const classes = {
@@ -50,19 +63,49 @@ export const DesktopDashboard = (props: {
   const [tagForWebsiteToTagDialog, setTagForWebsiteToTagDialog] = useState<string>();
 
   const updateWebsiteCache = async () => {
-    const cache = await getWebsitesCache(
-      props.store.websiteVisitStore,
-      props.store.websiteStore,
-      props.store.domainBlocklistStore,
-      props.store.websiteBlocklistStore,
-    );
-    (cache as any).LAST_UPDATED = new Date();
+    // Use requestIdleCallback to avoid blocking the main thread
+    const computeCache = () =>
+      new Promise<IWebsiteCache>((resolve) => {
+        requestIdleCallback(async () => {
+          try {
+            const cache = await getWebsitesCache(
+              props.store.websiteVisitStore,
+              props.store.websiteStore,
+              props.store.domainBlocklistStore,
+              props.store.websiteBlocklistStore,
+            );
+            (cache as any).LAST_UPDATED = new Date();
+            resolve(cache);
+          } catch (error) {
+            console.error('Website cache computation error:', error);
+            resolve({});
+          }
+        });
+      });
+
+    const cache = await computeCache();
     setWebsiteCache(cache);
+    performanceMonitor.markCacheComputed();
   };
 
   useEffect(() => {
-    void updateWebsiteCache();
+    // Debounce cache updates to avoid excessive computation
+    const timeoutId = setTimeout(() => {
+      void updateWebsiteCache();
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
   }, [props.store.isLoading]);
+
+  // Mark time to interactive when the dashboard is fully loaded
+  useEffect(() => {
+    if (websiteCache && Object.keys(websiteCache).length > 0 && websiteTags.length >= 0) {
+      // Use a small delay to ensure rendering is complete
+      requestAnimationFrame(() => {
+        performanceMonitor.markTimeToInteractive();
+      });
+    }
+  }, [websiteCache, websiteTags]);
 
   const hash = window.location.hash;
   if (hash.includes('meetings/')) {
@@ -153,53 +196,79 @@ export const DesktopDashboard = (props: {
                 <Route
                   path="/websites/:slug"
                   element={
-                    <ExpandWebsite
-                      store={store}
-                      websiteTags={websiteTags}
-                      toggleWebsiteTag={toggleWebsiteTagClick}
-                      websiteCache={websiteCache}
-                    />
+                    <Suspense fallback={<RouteLoadingFallback />}>
+                      <ExpandWebsite
+                        store={store}
+                        websiteTags={websiteTags}
+                        toggleWebsiteTag={toggleWebsiteTagClick}
+                        websiteCache={websiteCache}
+                      />
+                    </Suspense>
                   }
                 />
                 <Route
                   path="/meetings/:slug"
                   element={
-                    <ExpandedMeeting
-                      store={store}
-                      websiteTags={websiteTags}
-                      toggleWebsiteTag={toggleWebsiteTagClick}
-                      websiteCache={websiteCache}
-                    />
+                    <Suspense fallback={<RouteLoadingFallback />}>
+                      <ExpandedMeeting
+                        store={store}
+                        websiteTags={websiteTags}
+                        toggleWebsiteTag={toggleWebsiteTagClick}
+                        websiteCache={websiteCache}
+                      />
+                    </Suspense>
                   }
                 />
                 <Route
                   path="/documents/:slug"
-                  element={<ExpandedDocument store={store} websiteCache={websiteCache} />}
+                  element={
+                    <Suspense fallback={<RouteLoadingFallback />}>
+                      <ExpandedDocument store={store} websiteCache={websiteCache} />
+                    </Suspense>
+                  }
                 />
                 <Route
                   path="/people/:slug"
                   element={
-                    <ExpandPerson
-                      store={store}
-                      toggleWebsiteTag={toggleWebsiteTagClick}
-                      websiteTags={websiteTags}
-                      websiteCache={websiteCache}
-                    />
+                    <Suspense fallback={<RouteLoadingFallback />}>
+                      <ExpandPerson
+                        store={store}
+                        toggleWebsiteTag={toggleWebsiteTagClick}
+                        websiteTags={websiteTags}
+                        websiteCache={websiteCache}
+                      />
+                    </Suspense>
                   }
                 />
                 <Route
                   path="/meetings"
                   element={
-                    <Meetings
-                      store={store}
-                      toggleWebsiteTag={toggleWebsiteTagClick}
-                      websiteTags={websiteTags}
-                      websiteCache={websiteCache}
-                    />
+                    <Suspense fallback={<RouteLoadingFallback />}>
+                      <Meetings
+                        store={store}
+                        toggleWebsiteTag={toggleWebsiteTagClick}
+                        websiteTags={websiteTags}
+                        websiteCache={websiteCache}
+                      />
+                    </Suspense>
                   }
                 />
-                <Route path="/calendar" element={<Summary store={store} />} />
-                <Route path="/settings" element={<Settings store={store} />} />
+                <Route
+                  path="/calendar"
+                  element={
+                    <Suspense fallback={<RouteLoadingFallback />}>
+                      <Summary store={store} />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <Suspense fallback={<RouteLoadingFallback />}>
+                      <Settings store={store} />
+                    </Suspense>
+                  }
+                />
                 <Route
                   path="/home"
                   element={

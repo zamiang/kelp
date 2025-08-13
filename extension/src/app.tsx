@@ -24,6 +24,7 @@ import db from './components/store/db';
 import getStore from './components/store/use-store';
 import config from '../../constants/config';
 import { coolTheme, darkTheme, lightTheme, nbTheme } from '../../constants/theme';
+import performanceMonitor from './utils/performance-monitor';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -241,45 +242,82 @@ const MainContent = (props: { theme: string; setTheme: (t: string) => void }) =>
     }
   });
 
+  // Initialize database first (non-blocking)
   useEffect(() => {
-    if (chrome.identity.getAuthToken) {
-      chrome.identity.getAuthToken({ interactive: true }, (result) => {
-        if (chrome.runtime.lastError) {
-          console.error(chrome.runtime.lastError);
-          if (
-            chrome.runtime.lastError.message?.includes('Service has been disabled for this account')
-          ) {
-            setHasGoogleAdvancedProtectionError(true);
-          } else {
-            setHasAuthError(true);
-          }
-        } else if (result) {
-          const token = typeof result === 'string' ? result : result.token;
-          setToken(token);
+    const initializeDatabase = async () => {
+      try {
+        const result = await db('production');
+        if (result) {
+          setDatabase(result);
+          performanceMonitor.markDatabaseReady();
         } else {
-          console.error('no token sad times');
-          if (localStorage.getItem(config.GOOGLE_ENABLED)) {
-            launchGoogleAuthFlow(true, setToken, () => setHasAuthError(true));
-          }
+          setHasDatabaseError(true);
         }
-      });
-    } else if (localStorage.getItem(config.GOOGLE_ENABLED)) {
-      launchGoogleAuthFlow(true, setToken, () => setHasAuthError(true));
-    } else {
-      setDoneFetchingToken(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await db('production');
-      if (result) {
-        setDatabase(result);
-      } else {
+      } catch (error) {
+        console.error('Database initialization error:', error);
         setHasDatabaseError(true);
       }
     };
-    void fetchData();
+    void initializeDatabase();
+  }, []);
+
+  // Initialize authentication asynchronously (non-blocking)
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        if (chrome.identity?.getAuthToken) {
+          // Use non-interactive first to avoid blocking
+          chrome.identity.getAuthToken({ interactive: false }, (result) => {
+            if (chrome.runtime.lastError) {
+              // If non-interactive fails, try interactive in background
+              requestIdleCallback(() => {
+                chrome.identity.getAuthToken({ interactive: true }, (interactiveResult) => {
+                  if (chrome.runtime.lastError) {
+                    console.error(chrome.runtime.lastError);
+                    if (
+                      chrome.runtime.lastError.message?.includes(
+                        'Service has been disabled for this account',
+                      )
+                    ) {
+                      setHasGoogleAdvancedProtectionError(true);
+                    } else {
+                      setHasAuthError(true);
+                    }
+                  } else if (interactiveResult) {
+                    const token =
+                      typeof interactiveResult === 'string'
+                        ? interactiveResult
+                        : interactiveResult.token;
+                    setToken(token);
+                    performanceMonitor.markAuthComplete();
+                  }
+                  setDoneFetchingToken(true);
+                });
+              });
+            } else if (result) {
+              const token = typeof result === 'string' ? result : result.token;
+              setToken(token);
+              setDoneFetchingToken(true);
+            } else {
+              setDoneFetchingToken(true);
+            }
+          });
+        } else if (localStorage.getItem(config.GOOGLE_ENABLED)) {
+          // Launch Google auth flow in background
+          requestIdleCallback(() => {
+            launchGoogleAuthFlow(true, setToken, () => setHasAuthError(true));
+          });
+          setDoneFetchingToken(true);
+        } else {
+          setDoneFetchingToken(true);
+        }
+      } catch (error) {
+        console.error('Authentication initialization error:', error);
+        setHasAuthError(true);
+        setDoneFetchingToken(true);
+      }
+    };
+    void initializeAuth();
   }, []);
 
   const shouldShowLoading = !hasAuthError && !hasDatabaseError && !database;
@@ -377,8 +415,17 @@ const App = () => {
   );
 };
 
+console.log('🚀 Extension app.tsx loaded');
+
 const mountNode = document.getElementById('app');
+console.log('🔍 Mount node:', mountNode);
+
 if (mountNode) {
+  console.log('✅ Creating React root');
   const root = createRoot(mountNode);
+  console.log('✅ Rendering App component');
   root.render(<App />);
+  console.log('✅ App rendered');
+} else {
+  console.error('❌ No mount node found with id "app"');
 }
