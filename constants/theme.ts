@@ -35,7 +35,7 @@ const lightThemePalette = {
   text: {
     primary: 'rgba(255,255,255,0.87)',
     secondary: 'rgba(255,255,255,0.5)',
-    disabled: 'rgba(0, 0, 0, 0.38)',
+    disabled: 'rgba(8, 3, 3, 0.38)',
   },
   divider: 'rgba(255,255,255,0.2)',
 };
