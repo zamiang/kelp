@@ -60,6 +60,12 @@
   margin-block-end: 80px; /* Keep existing spacing for now */
 }
 
+.desktop-dashboard__back-button {
+  position: absolute;
+  left: -21px;
+  top: 3px;
+}
+
 /* Responsive design using container queries */
 @container (width < 768px) {
   .desktop-dashboard__top-margin-content {

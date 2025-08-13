@@ -18,9 +18,8 @@
 }
 
 .top-nav-center-section {
-  padding: var(--spacing-sm);
+  padding: var(--spacing-xs);
   padding-left: var(--spacing-md);
-  padding-right: var(--spacing-md);
   width: 100%;
   z-index: 10;
   border-bottom: 1px solid var(--color-divider);

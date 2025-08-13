@@ -1,7 +1,9 @@
 /* Top People Component Styles */
 
 .top-people {
-  /* Component root styles */
+  height: 30px;
+  overflow: hidden;
+  margin-top: 9px;
 }
 
 .top-people__person {
@@ -16,8 +18,6 @@
 }
 
 .top-people__container {
-  height: 38px;
-  overflow: hidden;
 }
 
 .top-people__avatar {
