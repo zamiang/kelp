@@ -1,4 +1,3 @@
-import { styled } from '@mui/material/styles';
 import { setHours, setMinutes, subDays, subMinutes } from 'date-fns';
 import { Dictionary, flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -6,18 +5,7 @@ import { ISegment, IWebsiteTag } from '../store/data-types';
 import { IStore } from '../store/use-store';
 import { IWebsiteCache } from '../website/get-featured-websites';
 import { FeaturedMeeting } from './featured-meeting';
-
-const PREFIX = 'MeetingHighlight';
-
-const classes = {
-  highlight: `${PREFIX}-highlight`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-  [`&.${classes.highlight}`]: {
-    marginBottom: theme.spacing(4),
-  },
-}));
+import '../../styles/components/meeting/meeting-highlight.css';
 
 export const MeetingHighlight = (props: {
   store: IStore;
@@ -57,7 +45,7 @@ export const MeetingHighlight = (props: {
   }
 
   return (
-    <Root className={classes.highlight}>
+    <div className="meeting-highlight-root meeting-highlight">
       <FeaturedMeeting
         store={props.store}
         meeting={featuredMeeting}
@@ -66,6 +54,6 @@ export const MeetingHighlight = (props: {
         toggleWebsiteTag={props.toggleWebsiteTag}
         websiteCache={props.websiteCache}
       />
-    </Root>
+    </div>
   );
 };
