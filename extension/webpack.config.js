@@ -88,10 +88,6 @@ const getConfig = () => {
           use: ['@svgr/webpack'],
         },
         {
-          test: /\.(woff2)$/,
-          use: 'file-loader',
-        },
-        {
           test: /\.png$/,
           use: [
             {
@@ -260,7 +256,6 @@ const getConfig = () => {
       new CopyPlugin({
         patterns: [
           { from: path.join(__dirname, 'public'), to: '.' },
-          { from: path.join(__dirname, '../public/fonts'), to: 'fonts' },
           {
             from: path.join(__dirname, 'src/manifest.json'),
             to: 'manifest.json',

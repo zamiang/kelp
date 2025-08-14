@@ -56,10 +56,6 @@ const getConfig = () => ({
         use: ['@svgr/webpack'],
       },
       {
-        test: /\.(woff2)$/,
-        use: 'file-loader',
-      },
-      {
         test: /\.png$/,
         use: [
           {
