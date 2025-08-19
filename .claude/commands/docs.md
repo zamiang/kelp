@@ -17,12 +17,12 @@ Efficiently manage documentation using the dedicated docs script.
 
 # Delegate to the documentation script
 
-node scripts/docs.js "$@"
+node scripts/docs.cjs "$@"
 </bash>
 
 ## Notes
 
-Token-efficient command that delegates to `scripts/docs.js` for:
+Token-efficient command that delegates to `scripts/docs.cjs` for:
 
 - Update README badges and stats
 - Validate internal links

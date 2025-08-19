@@ -23,7 +23,7 @@ echo ""
 
 # Check CI status
 echo "📊 GitHub Actions Status:"
-node scripts/check-ci.js
+node scripts/check-ci.cjs
 echo ""
 
 # Quick hygiene check using npm scripts
@@ -31,8 +31,8 @@ npm run hygiene:full --silent
 
 echo ""
 echo "💡 For detailed analysis, run individual checks:"
-echo "  npm run lint:check      - Code quality"
-echo "  npm run test:check      - Test status"
+echo "  npm run lint      - Code quality"
+echo "  npm run test      - Test status"
 echo "  npm run deps:check      - Dependencies"
 echo "  npm run maintain:debt   - Technical debt"
 echo "  gh run list            - Full CI history"

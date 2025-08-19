@@ -47,7 +47,7 @@ The default permission prompts can interrupt flow. Two approaches:
 
 ```bash
 # Allow specific safe operations
-claude --allow "npm run lint:*,npm test,git status"
+claude --allow "npm run lint,npm test,git status"
 ```
 
 **Development Approach** (Use with caution):

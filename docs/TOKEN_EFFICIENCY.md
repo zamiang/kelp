@@ -86,8 +86,8 @@ Add comprehensive scripts to `package.json`:
   "scripts": {
     "hygiene": "npm run hygiene:quick --silent",
     "hygiene:quick": "npm run lint:check && npm run test:check",
-    "lint:check": "eslint . --max-warnings 10 || echo 'No linter'",
-    "test:check": "npm test || echo 'No tests'"
+    "lint": "eslint . --max-warnings 10 || echo 'No linter'",
+    "test": "npm test || echo 'No tests'"
   }
 }
 ```
@@ -138,7 +138,7 @@ Users can run scripts directly without Claude:
 
 ```bash
 npm run hygiene
-npm run lint:check
+npm run lint
 npm run maintain:debt
 ```
 
@@ -187,9 +187,9 @@ Complete migration for all commands.
 ### Quality Checks
 
 ```json
-"lint:check": "Code style validation",
-"test:check": "Run test suite",
-"build:check": "Build verification"
+"lint": "Code style validation",
+"test": "Run test suite",
+"build": "Build verification"
 ```
 
 ### Git Operations
