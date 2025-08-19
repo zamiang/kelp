@@ -288,7 +288,7 @@ Create `.claude/agents/reports/repo-quality-audit-[date].md`:
 ### Immediate Actions
 
 1. Fix broken references in README
-2. Update command count badge (shows 14, actually 37)
+2. Update documentation badges as needed
 3. Resolve tone contradiction in guidelines
 4. Add missing frontmatter to 3 commands
 
