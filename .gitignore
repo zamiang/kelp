@@ -25,3 +25,5 @@ tsconfig.tsbuildinfo
 extension/safari/extension Extension/Resources
 
 css-analysis
+
+coverage

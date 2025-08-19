@@ -33,6 +33,8 @@ export default defineConfig({
         'scripts/',
         'public/',
         'extension/safari/',
+        '.next/',
+        'extension/dist/',
         '**/*.d.ts',
         '**/__tests__/**',
         '**/*.test.{ts,tsx}',

@@ -1,14 +1,22 @@
+---
+description: Command organization and usage guide for all 18 Claude commands
+last-updated: 2025-08-19
+---
+
 # Claude Commands Structure
 
 ## Organization
 
 Commands are organized by frequency of use and purpose:
 
-### All Commands (14 total)
+### All Commands (18 total)
 
 - `commit` - Atomic commits with quality checks (1-3 files)
+- `deploy` - Production deployment workflow
+- `dev-setup` - Development environment setup
 - `docs` - Documentation maintenance
 - `docs-explain` - Educational documentation walkthrough
+- `extension-dev` - Chrome extension development workflow
 - `hygiene` - Code quality checks
 - `learn` - Capture insights and learnings
 - `maintainability` - Code quality analysis
@@ -19,6 +27,7 @@ Commands are organized by frequency of use and purpose:
 - `retrospective` - Session analysis
 - `session-history` - Session preservation
 - `tdd` - Test-driven development
+- `test-suite` - Comprehensive testing with coverage analysis
 - `todo` - Task management
 
 ## Usage

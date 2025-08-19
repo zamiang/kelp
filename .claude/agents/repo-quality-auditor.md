@@ -66,9 +66,9 @@ Identify commands with overlapping purposes:
 ```
 POTENTIAL DUPLICATES:
 - /reflect vs /retrospective (both for session reflection)
-- /learn vs /reflect quick (both capture insights)
+- /learn vs /reflect quick (both capture insights)  
 - /hygiene vs /hygiene:full vs /hygiene:quick (multiple variants)
-- Recovery commands (4 separate files for similar workflow)
+- Commands with overlapping functionality
 - Detailed commands vs regular commands (when to use which?)
 ```
 
@@ -108,13 +108,13 @@ Identify potentially redundant features:
 
 ```
 QUESTIONABLE UTILITY:
-1. Four separate recovery commands - recommend complete removal
+1. Commands that are overly specific or rarely used
 2. Detailed variants - unclear when to use vs regular
 3. Multiple reflection mechanisms - /reflect, /retrospective, /learn
-4. Task management in /todo
-5. Multiple reflection mechanisms
-6. Session management spread across multiple tools
-7. Multiple commands accessing GitHub issues (via API)
+4. Task management complexity
+5. Session management spread across multiple tools
+6. Commands better suited as npm scripts
+7. Overly complex workflows for simple tasks
 ```
 
 #### Usage Pattern Analysis
@@ -168,12 +168,12 @@ Commands that should be merged:
 
 ```
 RECOMMENDED ACTIONS:
-1. Remove all recovery commands entirely (not needed)
-2. Merge /reflect and /retrospective into unified reflection system
-3. Consolidate /hygiene variants into single command with flags
-4. Keep /todo focused on task management
-5. Combine detailed variants using --detailed flag
-6. Target: 23 commands (from 37)
+1. Evaluate command utility based on actual usage patterns
+2. Consider merging similar commands with overlapping functionality
+3. Consolidate variants into single commands with flags where appropriate
+4. Keep focused commands that serve distinct purposes
+5. Combine detailed variants using --detailed flag when beneficial
+6. Maintain clear separation of concerns
 ```
 
 #### Deprecation Candidates
@@ -294,7 +294,7 @@ Create `.claude/agents/reports/repo-quality-audit-[date].md`:
 
 ### Short Term (1-2 weeks)
 
-1. Consolidate recovery commands
+1. Review command consolidation opportunities
 2. Merge reflection tools
 3. Simplify complex commands
 4. Update COMMAND_CATALOG
