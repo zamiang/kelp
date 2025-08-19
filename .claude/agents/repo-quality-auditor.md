@@ -66,7 +66,7 @@ Identify commands with overlapping purposes:
 ```
 POTENTIAL DUPLICATES:
 - /reflect vs /retrospective (both for session reflection)
-- /learn vs /reflect quick (both capture insights)  
+- /learn vs /reflect quick (both capture insights)
 - /hygiene vs /hygiene:full vs /hygiene:quick (multiple variants)
 - Commands with overlapping functionality
 - Detailed commands vs regular commands (when to use which?)
