@@ -85,7 +85,7 @@ Add comprehensive scripts to `package.json`:
 {
   "scripts": {
     "hygiene": "npm run hygiene:quick --silent",
-    "hygiene:quick": "npm run lint:check && npm run test:check",
+    "hygiene:quick": "npm run lint && npm run test",
     "lint": "eslint . --max-warnings 10 || echo 'No linter'",
     "test": "npm test || echo 'No tests'"
   }
