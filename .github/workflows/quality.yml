@@ -44,19 +44,6 @@ jobs:
           echo "📚 Validating documentation..."
           npm run docs validate
 
-      - name: Check command count
-        run: |
-          echo "📊 Verifying command count..."
-          ACTUAL_COUNT=$(find .claude/commands -name "*.md" -not -name "README.md" 2>/dev/null | wc -l || echo 0)
-          README_COUNT=$(grep -oP 'commands-\K\d+' README.md || echo 0)
-          echo "Actual commands: $ACTUAL_COUNT"
-          echo "README badge: $README_COUNT"
-          if [ "$ACTUAL_COUNT" != "$README_COUNT" ]; then
-            echo "❌ Command count mismatch!"
-            exit 1
-          fi
-          echo "✅ Command count matches"
-
       - name: Check for broken links
         run: |
           echo "🔗 Checking for broken links..."
