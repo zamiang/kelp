@@ -27,7 +27,8 @@ Write a test. Get perfect code. Every time.
 #!/bin/bash
 
 # Start your TDD journey
-node scripts/tdd.js "$@"
+
+node scripts/tdd.cjs "$@"
 </bash>
 
 ## Quick Examples
@@ -54,6 +55,7 @@ With TDD, Claude becomes a senior engineer who ships perfect code.
 ## Your First TDD Experience
 
 Try this right now:
+
 ```bash
 /tdd demo
 ```
@@ -75,6 +77,7 @@ Watch Claude transform from chaos to clarity.
 ## Notes
 
 This command delegates to `scripts/tdd.js` which handles:
+
 - Test framework detection (Jest, Vitest, Mocha)
 - Automatic test running
 - RED-GREEN-REFACTOR cycle enforcement
@@ -84,4 +87,4 @@ For more patterns, see [TDD with Claude](../../docs/TDD_WITH_CLAUDE.md).
 
 ---
 
-*"TDD with Claude isn't a process, it's a superpower." - Every developer who tried it*
+_"TDD with Claude isn't a process, it's a superpower." - Every developer who tried it_

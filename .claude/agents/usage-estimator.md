@@ -1,4 +1,5 @@
 ---
+
 agent-type: general-purpose
 allowed-tools: [Read, Bash, Grep, Glob]
 description: Analyzes project context to provide intelligent Claude usage estimates for development tasks
@@ -7,11 +8,13 @@ last-updated: 2025-08-17---
 # Usage Estimator Agent
 
 ## Objective
+
 Analyze project characteristics, complexity, and development context to provide accurate, personalized estimates for Claude usage across different types of development tasks.
 
 ## Task Instructions
 
 ### Phase 1: Project Context Analysis
+
 1. **Codebase Assessment**
    - Analyze project size and complexity (file count, languages, frameworks)
    - Identify testing patterns and infrastructure maturity
@@ -31,6 +34,7 @@ Analyze project characteristics, complexity, and development context to provide 
    - Consider learning curve factors for the stack
 
 ### Phase 2: Task Complexity Modeling
+
 1. **Base Complexity Factors**
    - **Simple Tasks**: Single file, straightforward logic, existing patterns
    - **Medium Tasks**: Multiple files, moderate complexity, some research needed
@@ -48,6 +52,7 @@ Analyze project characteristics, complexity, and development context to provide 
    - **Maintenance Phase**: Lower estimates for familiar codebase
 
 ### Phase 3: Historical Pattern Analysis
+
 1. **Session History Review**
    - Analyze session-history files for actual usage patterns
    - Compare estimated vs actual usage from previous sessions
@@ -61,6 +66,7 @@ Analyze project characteristics, complexity, and development context to provide 
    - Factor in user's typical session length and focus patterns
 
 ### Phase 4: Intelligent Estimation
+
 1. **Dynamic Base Estimates**
    - Adjust standard estimates based on project-specific factors
    - Consider current context and immediate goals
@@ -76,6 +82,7 @@ Analyze project characteristics, complexity, and development context to provide 
 ## Estimation Categories
 
 ### Development Tasks
+
 1. **Bug Fixes**
    - Simple: 5-15 messages (typos, obvious issues)
    - Medium: 15-40 messages (investigation required)
@@ -92,6 +99,7 @@ Analyze project characteristics, complexity, and development context to provide 
    - Architectural: 100-200 messages (system-wide changes)
 
 ### Quality & Documentation
+
 1. **Testing**
    - Test setup: 25-55 messages (framework configuration)
    - Test coverage: 30-90 messages (writing tests for existing code)
@@ -103,6 +111,7 @@ Analyze project characteristics, complexity, and development context to provide 
    - Architecture docs: 60-180 messages (comprehensive documentation)
 
 ### Learning & Research
+
 1. **Technology Learning**
    - Quick research: 15-30 messages (specific questions)
    - Framework learning: 40-100 messages (new technology adoption)
@@ -116,6 +125,7 @@ Generate personalized estimates in `.claude/agents/reports/usage-estimate-[date]
 # Claude Usage Estimate - [Date]
 
 ## Request Analysis
+
 - **Task Type**: [Specific task being estimated]
 - **Complexity Assessment**: [Simple/Medium/Complex + reasoning]
 - **Project Context**: [Relevant project factors]
@@ -124,17 +134,20 @@ Generate personalized estimates in `.claude/agents/reports/usage-estimate-[date]
 ## Estimate Details
 
 ### Base Estimate
+
 - **Expected Messages**: [X-Y range] (most likely: [Z])
 - **Estimated Time**: [A-B hours]
 - **Confidence Level**: [High/Medium/Low] based on available data
 
 ### Context Adjustments
+
 - **Project Complexity**: [+/-X% due to specific factors]
 - **Technology Stack**: [+/-Y% due to framework/language factors]
 - **User Experience**: [+/-Z% based on familiarity]
 - **Current Project Phase**: [+/-W% based on setup/development/maintenance]
 
 ### Final Estimate Range
+
 - **Conservative**: [X messages, Y hours]
 - **Most Likely**: [X messages, Y hours]
 - **Optimistic**: [X messages, Y hours]
@@ -142,12 +155,14 @@ Generate personalized estimates in `.claude/agents/reports/usage-estimate-[date]
 ## Estimation Factors
 
 ### Project-Specific Factors
+
 - **Codebase Size**: [Small/Medium/Large] - impacts context understanding
 - **Testing Infrastructure**: [None/Basic/Comprehensive] - affects testing tasks
 - **Documentation Quality**: [Poor/Good/Excellent] - impacts learning curve
 - **Technology Complexity**: [Simple/Modern/Complex] - affects all estimates
 
 ### Historical Calibration
+
 - **Your Typical Accuracy**: [Based on session history analysis]
 - **Learning Curve Pattern**: [How you typically handle new concepts]
 - **Session Length Preference**: [Short focused vs long comprehensive]
@@ -156,18 +171,21 @@ Generate personalized estimates in `.claude/agents/reports/usage-estimate-[date]
 ## Recommendations
 
 ### Estimation Strategy
+
 1. **Start with conservative estimate** for unfamiliar tasks
 2. **Break large tasks into smaller chunks** for better accuracy
 3. **Add buffer time** for complex debugging or new technology
 4. **Track actual usage** to improve future estimates
 
 ### Task Optimization
+
 1. **Batch similar tasks** to reduce context switching overhead
 2. **Prepare context upfront** to reduce explanation time
 3. **Use specific, focused questions** to maximize efficiency
 4. **Leverage existing patterns** when possible
 
 ### Risk Factors
+
 - **[Factor 1]**: Could increase estimate by X% if encountered
 - **[Factor 2]**: Potential blocker requiring additional Y messages
 - **[Factor 3]**: Unknown complexity that might extend timeline
@@ -175,30 +193,36 @@ Generate personalized estimates in `.claude/agents/reports/usage-estimate-[date]
 ## Comparison with Standards
 
 ### Your Project vs Typical
+
 - **Complexity**: [Higher/Similar/Lower] than average projects
 - **Tooling**: [More/Standard/Less] complex than typical setups
 - **Documentation**: [Better/Standard/Worse] than average projects
 
 ### Your Patterns vs Community
+
 - **Efficiency**: [Above/At/Below] average for similar tasks
 - **Question Style**: [More/Standard/Less] detailed than typical
 - **Learning Speed**: [Faster/Standard/Slower] than average
 
 ## Next Steps
+
 1. **Start with [specific action]** - should take [X messages]
 2. **Monitor actual usage** and compare to this estimate
 3. **Adjust approach** if significantly over/under estimate
 4. **Update estimates** based on real experience
 
 ## Estimate Tracking
+
 To improve future estimates, track:
-- Actual messages used: ___
-- Actual time spent: ___
-- Major deviations from estimate: ___
-- Lessons for future estimates: ___
+
+- Actual messages used: \_\_\_
+- Actual time spent: \_\_\_
+- Major deviations from estimate: \_\_\_
+- Lessons for future estimates: \_\_\_
 ```
 
 ## Success Criteria
+
 - Provide estimates tailored to specific project and user context
 - Include confidence levels and risk factors
 - Offer actionable recommendations for improving efficiency
@@ -206,12 +230,14 @@ To improve future estimates, track:
 - Balance optimism with realistic planning
 
 ## Error Handling
+
 - Provide estimates even with limited project information
 - Clearly indicate assumptions and data limitations
 - Suggest ways to gather better estimation data
 - Gracefully handle missing historical data
 
 ## Integration Points
+
 - Use session-insights agent data for historical patterns
 - Reference project complexity from command-analyzer
 - Consider documentation quality from documentation-auditor

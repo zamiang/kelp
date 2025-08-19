@@ -8,10 +8,13 @@ last-updated: 2025-08-18
 # Next Priorities Agent
 
 ## Objective
+
 Perform intelligent analysis of the current project state across multiple dimensions (git status, project health, active tasks, development phase) to provide prioritized recommendations for next actions.
 
 ## Required Commands
+
 Use these specific commands to gather information:
+
 - `gh issue list --state open --limit 50` - Get open issues
 - `gh issue list --label "priority:high" --state open` - High priority issues
 - `gh issue list --label "status:blocked" --state open` - Blocked issues
@@ -23,6 +26,7 @@ Use these specific commands to gather information:
 ## Task Instructions
 
 ### Phase 1: Project State Discovery
+
 1. **Repository Analysis**
    - Check git status (uncommitted changes, unpushed commits)
    - Analyze recent commit patterns and activity
@@ -48,6 +52,7 @@ Use these specific commands to gather information:
    - Assess testing coverage and quality
 
 ### Phase 2: Intelligent Priority Analysis
+
 1. **Critical Issues Identification**
    - Failing builds or tests (HIGHEST PRIORITY)
    - Uncommitted work at risk of loss
@@ -67,6 +72,7 @@ Use these specific commands to gather information:
    - Documentation that enables collaboration
 
 ### Phase 3: Context-Aware Recommendations
+
 1. **Time-Based Optimization**
    - Consider time of day for task complexity matching
    - Account for day of week patterns
@@ -86,6 +92,7 @@ Use these specific commands to gather information:
    - Maintenance phase: Updates and documentation
 
 ### Phase 4: Actionable Recommendations
+
 1. **Immediate Actions (Next 1-2 Hours)**
    - Critical fixes that unblock progress
    - Quick wins that build momentum
@@ -107,18 +114,21 @@ Use these specific commands to gather information:
 ## Analysis Patterns
 
 ### High-Priority Triggers
+
 1. **Build/Test Failures**: Drop everything and fix
 2. **Uncommitted Changes**: Risk of work loss
 3. **Security Issues**: Dependency vulnerabilities
 4. **Blocking Bugs**: Preventing other work
 
 ### Development Flow Optimization
+
 1. **Feature Completion**: Finish started work before beginning new
 2. **Testing Gaps**: Add tests for recently changed code
 3. **Documentation Debt**: Document complex or new features
 4. **Refactoring Opportunities**: Clean up after feature addition
 
 ### Context Switching Costs
+
 1. **Batch Similar Tasks**: Group related activities
 2. **Minimize Context Switches**: Complete logical units
 3. **Prepare for Interruptions**: Good stopping points
@@ -132,19 +142,23 @@ Generate structured recommendations in `.claude/agents/reports/next-priorities-[
 # Next Priorities Analysis - [Date] [Time]
 
 ## Executive Summary
+
 - **Project Health**: [Excellent/Good/Fair/Critical]
 - **Immediate Action Required**: [Yes/No - what needs attention]
 - **Development Focus**: [Current primary focus area]
 - **Recommended Next Step**: [Specific action to take now]
 
 ## Critical Issues (Address Immediately)
+
 ### 🔴 Blocking Problems
+
 1. **Issue**: [Specific problem]
    **Impact**: [Why this blocks progress]
    **Action**: [Exact steps to resolve]
    **Command**: [Specific command to use]
 
 ### ⚠️ Risk Factors
+
 1. **Risk**: [Potential problem]
    **Mitigation**: [How to prevent/address]
    **Timeline**: [When to address]
@@ -152,6 +166,7 @@ Generate structured recommendations in `.claude/agents/reports/next-priorities-[
 ## Recommended Next Actions
 
 ### 🎯 Now (Next 30 minutes)
+
 1. **[Action]**
    - **Why**: [Reason this is priority]
    - **How**: [Specific steps]
@@ -159,12 +174,14 @@ Generate structured recommendations in `.claude/agents/reports/next-priorities-[
    - **Expected Time**: [Realistic estimate]
 
 ### 📅 Today (Next 2-4 hours)
+
 1. **[Action]**
    - **Context**: [Why this makes sense now]
    - **Prerequisites**: [What needs to be done first]
    - **Success Criteria**: [How you know it's complete]
 
 ### 📈 This Week (Strategic Focus)
+
 1. **[Initiative]**
    - **Strategic Value**: [Why this matters]
    - **Approach**: [High-level plan]
@@ -173,18 +190,21 @@ Generate structured recommendations in `.claude/agents/reports/next-priorities-[
 ## Project State Analysis
 
 ### Repository Status
+
 - **Branch**: [current branch]
 - **Uncommitted Files**: [count and significance]
 - **Unpushed Commits**: [count and description]
 - **Recent Activity**: [pattern analysis]
 
 ### Health Indicators
+
 - **Build Status**: [passing/failing + details]
 - **Test Coverage**: [status and gaps]
 - **Code Quality**: [linting/type issues]
 - **Dependencies**: [security/outdated issues]
 
 ### Task Management (GitHub Issues)
+
 - **Open Issues**: [count by priority label]
 - **Recently Closed**: [issues closed in last 7 days]
 - **Blocked Issues**: [issues with status:blocked label]
@@ -193,16 +213,19 @@ Generate structured recommendations in `.claude/agents/reports/next-priorities-[
 ## Context Factors
 
 ### Time Optimization
+
 - **Current Time**: [time-appropriate tasks]
 - **Energy Level**: [suggested task complexity]
 - **Day Pattern**: [weekly context consideration]
 
 ### Development Phase
+
 - **Phase**: [Setup/Development/Polish/Maintenance]
 - **Phase-Appropriate Tasks**: [what fits current phase]
 - **Phase Transition**: [signals to move to next phase]
 
 ## Command Recommendations
+
 Based on current state, these commands will be most helpful:
 
 1. **`/[command]`** - [why this command now]
@@ -211,24 +234,28 @@ Based on current state, these commands will be most helpful:
 4. **Use [agent] agent** - [for complex analysis needs]
 
 ## Issue Management Recommendations
+
 - **Issues to Create**: [new tasks discovered during analysis]
 - **Issues to Close**: [completed work not yet closed]
 - **Issues to Label**: [unlabeled issues needing categorization]
 - **Issues to Update**: [stale issues needing status updates]
 
 ## Productivity Insights
+
 - **Momentum Builders**: [quick wins available]
 - **Focus Sustainers**: [how to maintain current flow]
 - **Blocker Removers**: [what's slowing you down]
 - **Energy Optimizers**: [how to work with natural rhythms]
 
 ## Next Review
+
 - **When**: [suggested time for next priority analysis]
 - **Triggers**: [conditions that warrant earlier review]
 - **Tracking**: [what to monitor between reviews]
 ```
 
 ## Success Criteria
+
 - Identify all critical blocking issues
 - Provide clear, actionable next steps
 - Prioritize by impact and urgency
@@ -238,12 +265,14 @@ Based on current state, these commands will be most helpful:
 - Balance immediate needs with strategic goals
 
 ## Error Handling
+
 - Continue analysis even if some data sources unavailable
 - Provide recommendations based on available information
 - Note what additional context would improve recommendations
 - Gracefully handle missing files or tools
 
 ## Integration Points
+
 - Use `npm run hygiene` for health assessment
 - Use `gh issue list` for task context and priorities
 - Use `gh issue view [number]` for detailed task information

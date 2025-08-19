@@ -16,12 +16,14 @@ Efficiently capture and organize development insights.
 #!/bin/bash
 
 # Delegate to learning capture script
-node scripts/learn.js "$@"
+
+node scripts/learn.cjs "$@"
 </bash>
 
 ## Notes
 
-Token-efficient command that delegates to `scripts/learn.js` for:
+Token-efficient command that delegates to `scripts/learn.cjs` for:
+
 - Capture new insights and learnings
 - List and review captured knowledge
 - Search through past learnings

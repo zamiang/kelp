@@ -1,4 +1,5 @@
 ---
+
 agent-type: general-purpose
 allowed-tools: [Read, Glob, Grep, Bash, Write]
 description: Analyzes codebase to identify untested code and recommend testing opportunities
@@ -7,22 +8,25 @@ last-updated: 2025-08-17---
 # Test Coverage Advisor Agent
 
 ## Objective
+
 Analyze the codebase to identify functions, modules, and scenarios that lack test coverage and provide specific, actionable testing recommendations.
 
 ## Task Instructions
 
 ### Phase 1: Codebase Discovery
+
 1. **Find Source Code**
-   - Scan for source files (*.js, *.ts, *.jsx, *.tsx, *.py, etc.)
+   - Scan for source files (_.js, _.ts, _.jsx, _.tsx, \*.py, etc.)
    - Identify main application directories (src/, lib/, app/)
    - Map project structure and entry points
 
 2. **Find Existing Tests**
-   - Locate test files (*.test.*, *.spec.*, test/, __tests__/)
+   - Locate test files (_.test._, _.spec._, test/, **tests**/)
    - Identify testing framework in use (Jest, Mocha, Vitest, etc.)
    - Map which source files have corresponding tests
 
 ### Phase 2: Coverage Gap Analysis
+
 1. **Untested Files**
    - Identify source files with no corresponding tests
    - Prioritize by file importance (entry points, utilities, core logic)
@@ -39,6 +43,7 @@ Analyze the codebase to identify functions, modules, and scenarios that lack tes
    - Locate integration points between modules
 
 ### Phase 3: Risk Assessment
+
 1. **High-Risk Untested Code**
    - Functions handling user input
    - Data validation and transformation
@@ -53,6 +58,7 @@ Analyze the codebase to identify functions, modules, and scenarios that lack tes
    - Functions with external dependencies
 
 ### Phase 4: Testing Recommendations
+
 1. **Prioritized Test Plan**
    - Critical functions that must have tests
    - Integration scenarios that need coverage
@@ -74,7 +80,9 @@ Analyze the codebase to identify functions, modules, and scenarios that lack tes
 ## Analysis Patterns
 
 ### High-Priority Testing Targets
+
 1. **User-Facing Functions**
+
    ```javascript
    // Functions that handle user input
    function validateEmail(email) { ... }
@@ -82,6 +90,7 @@ Analyze the codebase to identify functions, modules, and scenarios that lack tes
    ```
 
 2. **Data Transformation**
+
    ```javascript
    // Functions that transform or validate data
    function sanitizeInput(input) { ... }
@@ -96,6 +105,7 @@ Analyze the codebase to identify functions, modules, and scenarios that lack tes
    ```
 
 ### Medium-Priority Testing Targets
+
 1. **Utility Functions**
    - Helper functions used across modules
    - String/date/number formatting
@@ -107,6 +117,7 @@ Analyze the codebase to identify functions, modules, and scenarios that lack tes
    - Initialization routines
 
 ### Test Coverage Metrics
+
 1. **Function Coverage**: % of functions with at least one test
 2. **Branch Coverage**: % of code paths covered by tests
 3. **Critical Path Coverage**: % of high-risk code tested
@@ -116,10 +127,11 @@ Analyze the codebase to identify functions, modules, and scenarios that lack tes
 
 Create `.claude/agents/reports/test-coverage-analysis-[date].md`:
 
-```markdown
+````markdown
 # Test Coverage Analysis Report - [Date]
 
 ## Executive Summary
+
 - **Files analyzed**: X source files
 - **Test coverage**: Y% of files have tests
 - **Critical gaps**: Z high-priority functions untested
@@ -128,6 +140,7 @@ Create `.claude/agents/reports/test-coverage-analysis-[date].md`:
 ## Critical Testing Gaps
 
 ### High Priority (Test Immediately)
+
 1. **File**: `src/auth/validator.js`
    **Function**: `validateUserCredentials()`
    **Risk**: Handles authentication, no tests found
@@ -147,6 +160,7 @@ Create `.claude/agents/reports/test-coverage-analysis-[date].md`:
    - Invalid payment data
 
 ### Medium Priority
+
 1. **File**: `src/utils/formatter.js`
    **Functions**: 5 utility functions untested
    **Risk**: Used throughout app, data formatting
@@ -155,22 +169,25 @@ Create `.claude/agents/reports/test-coverage-analysis-[date].md`:
 ## Coverage Statistics
 
 ### By File Type
-| File Type | Total Files | With Tests | Coverage % |
-|-----------|-------------|------------|------------|
-| JavaScript | 45 | 28 | 62% |
-| TypeScript | 23 | 18 | 78% |
-| Components | 34 | 12 | 35% |
+
+| File Type  | Total Files | With Tests | Coverage % |
+| ---------- | ----------- | ---------- | ---------- |
+| JavaScript | 45          | 28         | 62%        |
+| TypeScript | 23          | 18         | 78%        |
+| Components | 34          | 12         | 35%        |
 
 ### By Directory
-| Directory | Files | Tested | Priority |
-|-----------|-------|--------|----------|
-| src/auth/ | 8 | 2 | HIGH |
-| src/api/ | 12 | 7 | MEDIUM |
-| src/utils/ | 15 | 11 | LOW |
+
+| Directory  | Files | Tested | Priority |
+| ---------- | ----- | ------ | -------- |
+| src/auth/  | 8     | 2      | HIGH     |
+| src/api/   | 12    | 7      | MEDIUM   |
+| src/utils/ | 15    | 11     | LOW      |
 
 ## Recommended Test Files to Create
 
 ### Immediate (This Sprint)
+
 1. **`src/auth/validator.test.js`**
    - Test all authentication functions
    - Focus on security scenarios
@@ -182,6 +199,7 @@ Create `.claude/agents/reports/test-coverage-analysis-[date].md`:
    - Include integration scenarios
 
 ### Next Sprint
+
 1. **`src/components/UserProfile.test.jsx`**
    - Component rendering tests
    - User interaction scenarios
@@ -190,28 +208,32 @@ Create `.claude/agents/reports/test-coverage-analysis-[date].md`:
 ## Test Implementation Guide
 
 ### Setup Required
+
 - Testing framework: [Jest/Vitest/Mocha detected]
 - Mocking: Set up for API calls, database
 - Test data: Create fixtures for complex objects
 
 ### Sample Test Structure
+
 ```javascript
 describe('validateUserCredentials', () => {
   it('should accept valid credentials', () => {
     // Test implementation
   });
-  
+
   it('should reject invalid password', () => {
     // Test implementation
   });
-  
+
   it('should handle missing fields', () => {
     // Test implementation
   });
 });
 ```
+````
 
 ## Quality Metrics Goals
+
 - **Target function coverage**: 90%
 - **Critical path coverage**: 100%
 - **Integration test coverage**: 80%
@@ -220,31 +242,37 @@ describe('validateUserCredentials', () => {
 ## Implementation Roadmap
 
 ### Week 1: Critical Security
+
 - Authentication functions
 - Input validation
 - Payment processing
 
 ### Week 2: Core Business Logic
+
 - Data processing functions
 - Calculation logic
 - State management
 
 ### Week 3: User Interface
+
 - Component rendering
 - User interactions
 - Form validation
 
 ### Week 4: Integration & E2E
+
 - API integration tests
 - End-to-end user flows
 - Performance scenarios
 
 ## Long-term Recommendations
+
 1. **Add pre-commit hooks** to require tests for new functions
 2. **Set up coverage reporting** in CI/CD pipeline
 3. **Establish coverage thresholds** (90% for critical code)
 4. **Regular coverage reviews** during code reviews
 5. **Test-driven development** for new features
+
 ```
 
 ## Success Criteria
@@ -267,3 +295,4 @@ describe('validateUserCredentials', () => {
 - Align with project testing practices in CLAUDE.md
 
 Execute this analysis to provide a comprehensive testing strategy that improves code quality and reduces bugs in production.
+```

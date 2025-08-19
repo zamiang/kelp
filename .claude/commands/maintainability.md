@@ -8,6 +8,7 @@ description: Code maintainability analysis and improvement recommendations
 Analyze code health and maintainability metrics using npm scripts.
 
 ## Your Task
+
 Run maintainability analysis:
 
 ```bash

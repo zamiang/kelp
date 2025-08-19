@@ -8,6 +8,7 @@ description: Task management using GitHub Issues for better collaboration and tr
 Manage tasks efficiently using GitHub Issues.
 
 ## Your Task
+
 Handle todo operations via GitHub Issues:
 
 **IMPORTANT**: If adding dates, always use `date "+%Y-%m-%d"` to get the current date. Never guess or assume dates.
@@ -24,7 +25,7 @@ case "$COMMAND" in
     echo "📋 GitHub Issues:"
     npm run todo:list --silent
     ;;
-    
+
   "add"|"create")
     if [ -z "$ARGS" ]; then
       echo "❌ Error: Title required"
@@ -33,7 +34,7 @@ case "$COMMAND" in
     echo "➕ Creating issue: $ARGS"
     npm run todo:add --silent -- "$ARGS"
     ;;
-    
+
   "done"|"close")
     ISSUE_NUM="$1"
     if [ -z "$ISSUE_NUM" ]; then
@@ -43,7 +44,7 @@ case "$COMMAND" in
     echo "✅ Closing issue #$ISSUE_NUM"
     npm run todo:done --silent -- "$ISSUE_NUM"
     ;;
-    
+
   "comment")
     ISSUE_NUM="$1"
     shift
@@ -54,12 +55,12 @@ case "$COMMAND" in
     fi
     npm run todo:comment --silent -- "$ISSUE_NUM" "$COMMENT"
     ;;
-    
+
   "stats")
     echo "📊 Issue Statistics:"
     npm run todo:stats --silent
     ;;
-    
+
   *)
     echo "Usage: /todo [list|add|done|comment|stats] [args]"
     echo "  list         - Show open issues"

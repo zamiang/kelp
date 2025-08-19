@@ -11,6 +11,7 @@ best-for: Quick daily health checks
 Comprehensive project health assessment using npm scripts for efficiency.
 
 ## Your Task
+
 Run the project hygiene check:
 
 ```bash
@@ -31,7 +32,7 @@ npm run hygiene:full --silent
 echo ""
 echo "💡 For detailed analysis, run individual checks:"
 echo "  npm run lint:check      - Code quality"
-echo "  npm run test:check      - Test status" 
+echo "  npm run test:check      - Test status"
 echo "  npm run deps:check      - Dependencies"
 echo "  npm run maintain:debt   - Technical debt"
 echo "  gh run list            - Full CI history"

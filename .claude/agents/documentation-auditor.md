@@ -8,11 +8,13 @@ last-updated: 2025-08-18
 # Documentation Auditor Agent
 
 ## Objective
+
 Perform comprehensive audit of documentation quality, completeness, consistency, and tone across commands, agents, and project documentation to ensure professional standards and a welcoming developer experience. Consider the repository's purpose (production, learning, experimental) when evaluating documentation patterns and making recommendations.
 
 ## Task Instructions
 
 ### Phase 1: Documentation Discovery
+
 1. Scan all documentation files:
    - `.claude/commands/*.md` and subdirectories (exclude README.md from command count)
    - `.claude/agents/*.md`
@@ -24,7 +26,9 @@ Perform comprehensive audit of documentation quality, completeness, consistency,
 4. Determine repository type (production, learning, experimental) based on content and patterns
 
 ### Phase 2: Command Documentation Audit
+
 For each command file (excluding README.md files), verify:
+
 1. **Frontmatter Completeness**
    - `allowed-tools` field exists and is valid (commands only, not README files)
    - `description` field exists and is descriptive
@@ -42,6 +46,7 @@ For each command file (excluding README.md files), verify:
    - Command naming follows conventions
 
 ### Phase 3: Cross-Reference Validation
+
 1. **README Accuracy**
    - All commands listed in README exist
    - Command counts match actual count (excluding README.md files in commands directory)
@@ -58,6 +63,7 @@ For each command file (excluding README.md files), verify:
    - Anchors and fragments are valid
 
 ### Phase 4: Content Quality Assessment
+
 1. **Clarity and Completeness**
    - Instructions are actionable
    - Examples are realistic and helpful
@@ -75,6 +81,7 @@ For each command file (excluding README.md files), verify:
    - Learning path is clear
 
 ### Phase 5: Tone and Voice Analysis
+
 1. **Tone Assessment**
    - Professional but not stiff
    - Friendly but not unprofessional
@@ -95,6 +102,7 @@ For each command file (excluding README.md files), verify:
    - Respectful assumptions
 
 ### Phase 6: Standards Compliance
+
 1. **Format Consistency**
    - Heading hierarchy is consistent
    - Code block formatting is uniform
@@ -113,6 +121,7 @@ For each command file (excluding README.md files), verify:
 ## Audit Categories
 
 ### Critical Issues (Must Fix)
+
 - Missing frontmatter (commands only, not README files)
 - Broken internal links
 - Incorrect npm script references
@@ -120,6 +129,7 @@ For each command file (excluding README.md files), verify:
 - Missing critical documentation
 
 ### Quality Issues (Context-Dependent)
+
 - Pattern variety (assess based on repo type - learning vs production)
 - Unclear instructions
 - Missing examples
@@ -127,6 +137,7 @@ For each command file (excluding README.md files), verify:
 - Poor organization
 
 ### Enhancement Opportunities (Optional)
+
 - Additional examples (if gaps exist)
 - More comprehensive troubleshooting
 - Better cross-references
@@ -143,6 +154,7 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 # Documentation Audit Report - [Date]
 
 ## Executive Summary
+
 - Files audited: X
 - Critical issues: Y
 - Quality issues: Z
@@ -151,12 +163,14 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 ## Critical Issues Requiring Immediate Attention
 
 ### Broken References
+
 1. **File**: path/to/file.md
    **Issue**: Link to non-existent file
    **Line**: 42
    **Action**: Update link to correct path
 
 ### Missing Required Elements
+
 1. **File**: command-name.md
    **Issue**: Missing allowed-tools frontmatter
    **Action**: Add frontmatter with tool list
@@ -164,11 +178,13 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 ## Quality Issues for Improvement
 
 ### Format Inconsistencies
+
 1. **Pattern**: Inconsistent heading levels
    **Files**: [list of affected files]
    **Recommendation**: Standardize to H1 for title, H2 for sections
 
 ### Content Gaps
+
 1. **Command**: /command-name
    **Issue**: Missing usage examples
    **Impact**: Users cannot understand practical application
@@ -176,23 +192,25 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 
 ## Documentation Completeness Matrix
 
-| Category | Commands | Complete | Partial | Missing |
-|----------|----------|----------|---------|---------|
-| Core Workflow | 4 | 4 | 0 | 0 |
-| Planning | 4 | 3 | 1 | 0 |
-| Documentation | 4 | 2 | 2 | 0 |
-| Release | 4 | 4 | 0 | 0 |
-| Utilities | 3 | 2 | 1 | 0 |
+| Category      | Commands | Complete | Partial | Missing |
+| ------------- | -------- | -------- | ------- | ------- |
+| Core Workflow | 4        | 4        | 0       | 0       |
+| Planning      | 4        | 3        | 1       | 0       |
+| Documentation | 4        | 2        | 2       | 0       |
+| Release       | 4        | 4        | 0       | 0       |
+| Utilities     | 3        | 2        | 1       | 0       |
 
 ## Cross-Reference Validation
 
 ### README Accuracy
+
 - ✅ Command count matches actual
 - ❌ 3 commands missing from list
 - ✅ All listed commands exist
 - ⚠️ 2 examples need updating
 
 ### Command Catalog Sync
+
 - ✅ All commands documented
 - ❌ 5 descriptions don't match source
 - ✅ Categories properly assigned
@@ -201,12 +219,14 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 ## Recommendations
 
 ### Critical Fixes Only
+
 1. Fix broken links
 2. Add missing frontmatter to command files (not README)
 3. Update incorrect npm script references
 4. Correct invalid command syntax
 
 ### Context-Aware Improvements
+
 - For learning repos: maintain variety if educational
 - For production repos: consider standardization
 - Only recommend changes that align with project goals
@@ -215,21 +235,25 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 ## Tone and Voice Assessment
 
 ### Files with Excellent Tone
+
 1. **[file.md]**: Professional yet approachable
 2. **[file.md]**: Clear guidance without condescension
 
 ### Tone Issues to Address
+
 1. **[file.md]** - Line X: Uses "obviously" - suggest removing
 2. **[file.md]** - Line Y: Overly complex jargon - simplify
 3. **[file.md]** - Line Z: Dismissive tone - rewrite supportively
 
 ### Tone Improvement Recommendations
+
 - Replace "just do X" with "you can do X"
 - Change "simply run" to "run"
 - Avoid "trivial" when describing tasks
 - Use active voice consistently
 
 ## Quality Metrics
+
 - Average examples per command: X
 - Commands with complete documentation: Y%
 - Cross-reference accuracy: Z%
@@ -237,17 +261,20 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 - Tone quality score: V%
 
 ## Automated Checks Recommendations
+
 1. Create linter for frontmatter validation
 2. Add link checker to CI/CD
 3. Implement spell-check automation
 4. Set up documentation sync validation
 
 ## Template Compliance
+
 - Commands following current template: X/Y
 - Agents following established format: X/Y
 - Documentation using standard structure: X/Y
 
 ## Next Steps
+
 1. Address critical issues immediately
 2. Create documentation improvement plan
 3. Establish ongoing quality processes
@@ -255,6 +282,7 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 ```
 
 ## Success Criteria
+
 - Complete audit of all documentation files
 - Identification of all critical issues
 - Context-aware assessment based on repository type
@@ -265,12 +293,14 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 - Welcoming developer experience validation
 
 ## Error Handling
+
 - Skip unreadable files but log them
 - Continue audit even with partial failures
 - Note ambiguous issues for manual review
 - Provide alternative solutions when possible
 
 ## Quality Standards Reference
+
 - Frontmatter: Required fields present and valid (commands only, not README files)
 - Links: All internal links functional
 - Examples: At least one realistic example per command
@@ -280,6 +310,7 @@ Create `.claude/agents/reports/documentation-audit-[date].md`:
 - Context: Patterns evaluated based on repository purpose
 
 ## Integration Points
+
 - Reference existing style guides
 - Use command-analyzer results for accuracy checks
 - Align with session-insights for real-world usage patterns

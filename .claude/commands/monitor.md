@@ -13,31 +13,31 @@ Keep an eye on your repository's health in the background.
 #!/bin/bash
 
 case "$1" in
-  start)
-    echo "🚀 Starting repository monitoring..."
-    npm run monitor:start
-    echo "Monitor running in background. Use '/monitor status' to check."
-    ;;
-  stop)
-    echo "🛑 Stopping repository monitoring..."
-    npm run monitor:stop
-    ;;
-  status|check)
-    npm run monitor:status
-    ;;
-  *)
-    echo "📊 GitHub Repository Monitor"
-    echo ""
-    echo "Usage:"
-    echo "  /monitor start   - Start background monitoring"
-    echo "  /monitor stop    - Stop monitoring"
-    echo "  /monitor status  - Check current status"
-    echo ""
-    echo "The monitor checks every 5 minutes for:"
-    echo "  • Failed workflow runs"
-    echo "  • Open pull requests"
-    echo "  • Running workflows"
-    ;;
+start)
+echo "🚀 Starting repository monitoring..."
+npm run monitor:start
+echo "Monitor running in background. Use '/monitor status' to check."
+;;
+stop)
+echo "🛑 Stopping repository monitoring..."
+npm run monitor:stop
+;;
+status|check)
+npm run monitor:status
+;;
+\*)
+echo "📊 GitHub Repository Monitor"
+echo ""
+echo "Usage:"
+echo " /monitor start - Start background monitoring"
+echo " /monitor stop - Stop monitoring"
+echo " /monitor status - Check current status"
+echo ""
+echo "The monitor checks every 5 minutes for:"
+echo " • Failed workflow runs"
+echo " • Open pull requests"
+echo " • Running workflows"
+;;
 esac
 </bash>
 

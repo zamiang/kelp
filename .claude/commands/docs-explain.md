@@ -44,12 +44,13 @@ path: docs/
 </grep>
 
 ### Token Cost Analysis
+
 - Reading files: ~500 tokens
-- Git commands: ~200 tokens  
+- Git commands: ~200 tokens
 - Grep searches: ~300 tokens
 - Edit operations: ~500 tokens
 - Claude's reasoning: ~500 tokens
-**Total: ~2000 tokens**
+  **Total: ~2000 tokens**
 
 ## Approach 2: Script Delegation (Current Implementation)
 
@@ -59,9 +60,10 @@ node scripts/docs.js
 </bash>
 
 ### Token Cost Analysis
+
 - Single command: ~50 tokens
 - Script output: ~50 tokens
-**Total: ~100 tokens**
+  **Total: ~100 tokens**
 
 ## Approach 3: Hybrid (Best of Both Worlds)
 
@@ -71,15 +73,17 @@ node scripts/docs.js collect-only
 </bash>
 
 Then Claude can:
+
 - Intelligently select best examples
 - Write custom descriptions
 - Make context-aware decisions
 - Handle edge cases
 
 ### Token Cost Analysis
+
 - Script execution: ~100 tokens
 - Claude's intelligent processing: ~400 tokens
-**Total: ~500 tokens**
+  **Total: ~500 tokens**
 
 ## Key Lessons
 
@@ -89,17 +93,18 @@ Then Claude can:
 
 ## When to Use Each
 
-| Scenario | Best Approach | Why |
-|----------|--------------|-----|
-| First time setup | Direct | Need to understand the problem |
-| Daily updates | Script | Same task, predictable outcome |
-| Complex changes | Hybrid | Need both efficiency and judgment |
-| Teaching someone | Direct | Show the thinking process |
-| Production work | Script | Optimize for speed/cost |
+| Scenario         | Best Approach | Why                               |
+| ---------------- | ------------- | --------------------------------- |
+| First time setup | Direct        | Need to understand the problem    |
+| Daily updates    | Script        | Same task, predictable outcome    |
+| Complex changes  | Hybrid        | Need both efficiency and judgment |
+| Teaching someone | Direct        | Show the thinking process         |
+| Production work  | Script        | Optimize for speed/cost           |
 
 ## Try It Yourself
 
 To see the direct approach in action:
+
 1. Comment out the script delegation in `/docs`
 2. Implement the steps shown above
 3. Track token usage manually
@@ -107,6 +112,7 @@ To see the direct approach in action:
 ## The Philosophy
 
 This command exists to teach, not to execute efficiently. By showing multiple approaches, we help users understand:
+
 - How Claude naturally solves problems
 - Where scripts provide value
 - When to use each approach

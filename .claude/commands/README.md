@@ -5,6 +5,7 @@
 Commands are organized by frequency of use and purpose:
 
 ### All Commands (14 total)
+
 - `commit` - Atomic commits with quality checks (1-3 files)
 - `docs` - Documentation maintenance
 - `docs-explain` - Educational documentation walkthrough
@@ -23,6 +24,7 @@ Commands are organized by frequency of use and purpose:
 ## Usage
 
 All commands work the same way:
+
 ```bash
 /commit
 /maintainability
