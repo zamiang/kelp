@@ -131,7 +131,7 @@
     "purgecss": "7.0.2",
     "purgecss-webpack-plugin": "7.0.2",
     "style-loader": "4.0.0",
-    "ts-loader": "9.5.2",
+    "ts-loader": "9.5.4",
     "ts-unused-exports": "11.0.1",
     "typescript-eslint": "8.40.0",
     "url-loader": "4.1.1",
